@@ -15,6 +15,7 @@ import PartiteConstruction.Partite.InducedBased
 import PartiteConstruction.Partite.InducedStep
 import PartiteConstruction.Partite.InducedConstruction
 import PartiteConstruction.Iterated.LocalTreeLike
+import PartiteConstruction.Iterated.Initial
 import PartiteConstruction.Relational.Attachment
 import PartiteConstruction.Relational.Order
 import PartiteConstruction.Partite.Operations
