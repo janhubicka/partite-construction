@@ -26,3 +26,16 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.orderedRamseyFromProjections
 #print axioms StructuralRamsey.Partite.increasingProjectionRamsey
 #print axioms StructuralRamsey.Partite.orderedRamsey
+
+#print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.comp
+#print axioms StructuralRamsey.Partite.Induced.power_isPartiteOver
+#print axioms StructuralRamsey.Partite.Induced.partiteLemma
+#print axioms StructuralRamsey.RelStructure.Attachment.irreducible_core_or_copy
+#print axioms StructuralRamsey.Partite.Attachment.attach_isPartiteOver
+#print axioms StructuralRamsey.Partite.Induced.pictureLemma
+#print axioms StructuralRamsey.Partite.Induced.Initial.picture_covers
+#print axioms StructuralRamsey.Partite.Induced.relevant_iff_image_contained
+#print axioms StructuralRamsey.Partite.Induced.Attachment.attach_covers
+#print axioms StructuralRamsey.Partite.Induced.canonical_based
+#print axioms StructuralRamsey.Partite.Induced.pictureStep
+#print axioms StructuralRamsey.Partite.Induced.inducedConstruction
