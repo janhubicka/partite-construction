@@ -202,6 +202,20 @@ theorem Irreducible.range_embedding
     rw [hzj]
     exact hb
 
+/-- An embedded substructure whose image lies inside an embedded copy of an
+irreducible structure is contained in an irreducible substructure. -/
+theorem Embedding.containedInIrreducible_of_range_subset
+    {X : Type z} {D : RelStructure L V} {A : RelStructure L W}
+    {T : RelStructure L X}
+    (hA : A.Irreducible) (α : Embedding A T) (g : Embedding D T)
+    (h : ∀ d, ∃ a, g d = α a) :
+    g.ContainedInIrreducible := by
+  let S : Set X := Set.range α
+  refine ⟨S, hA.range_embedding α, ?_⟩
+  intro d
+  obtain ⟨a, ha⟩ := h d
+  exact ⟨a, ha.symm⟩
+
 namespace IsHomomorphismEmbedding
 
 variable {X : Type z} {A : RelStructure L V}
