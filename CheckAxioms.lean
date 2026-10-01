@@ -21,4 +21,8 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.Embedding.completeOrder
 #print axioms StructuralRamsey.RelStructure.arrow_completeOrder
 #print axioms StructuralRamsey.RelStructure.exists_order_extension
+#print axioms StructuralRamsey.FiniteRamsey.strictMono
+#print axioms StructuralRamsey.RelStructure.Embedding.strictMono
 #print axioms StructuralRamsey.Partite.orderedRamseyFromProjections
+#print axioms StructuralRamsey.Partite.increasingProjectionRamsey
+#print axioms StructuralRamsey.Partite.orderedRamsey

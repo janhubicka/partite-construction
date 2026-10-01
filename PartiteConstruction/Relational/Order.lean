@@ -36,6 +36,17 @@ def ExtendsOrder (C : RelStructure L.withOrder W) [LT W] : Prop :=
 
 namespace Embedding
 
+/-- An induced embedding between ordered expansions is strictly monotone. -/
+theorem strictMono {A : RelStructure L V} [LinearOrder V]
+    {B : RelStructure L W} [LinearOrder W]
+    (f : Embedding A.ordered B.ordered) : StrictMono f := by
+  intro x y hxy
+  have h := (f.map_rel_iff (.inr ()) ![x, y]).mpr hxy
+  have heq : f ∘ ![x, y] = ![f x, f y] := by
+    funext i
+    fin_cases i <;> rfl
+  exact Eq.mp (congrArg (B.ordered.rel (.inr ())) heq) h
+
 def completeOrder {A : RelStructure L V} [LinearOrder V]
     {C : RelStructure L.withOrder W} [LinearOrder W]
     (hC : C.ExtendsOrder) (f : Embedding A.ordered C) :

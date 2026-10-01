@@ -13,5 +13,6 @@ import PartiteConstruction.Partite.Picture
 import PartiteConstruction.Partite.Initial
 import PartiteConstruction.Partite.Construction
 import PartiteConstruction.Partite.Invariants
+import PartiteConstruction.Ramsey.Finite
 import PartiteConstruction.Ramsey.FromProjections
 import PartiteConstruction.Ramsey.Ordered
