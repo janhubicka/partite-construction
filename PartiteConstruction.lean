@@ -14,6 +14,7 @@ import PartiteConstruction.Partite.InducedInvariant
 import PartiteConstruction.Partite.InducedBased
 import PartiteConstruction.Partite.InducedStep
 import PartiteConstruction.Partite.InducedConstruction
+import PartiteConstruction.Iterated.LocalTreeLike
 import PartiteConstruction.Relational.Attachment
 import PartiteConstruction.Relational.Order
 import PartiteConstruction.Partite.Operations
