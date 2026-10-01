@@ -53,7 +53,7 @@ theorem power_projection_homomorphism (hB : B.IsPartiteOver A) (hN : 0 < N) :
   have hA := hB.1 R (fun j => (z j).coord i0) hcoord
   convert hA using 1
   funext j
-  exact (z j).belongs i0
+  exact ((z j).belongs i0).symm
 
 /-- Reflection for each Hales--Jewett line is immediate from a parameter
 coordinate; preservation at constant coordinates uses the projection
@@ -75,7 +75,8 @@ theorem lineMap_rel_iff (hB : B.IsPartiteOver A)
         have hA : A.rel R (B.part ∘ x) := hB.1 R x hx
         have he : B.rel R (e ∘ (B.part ∘ x)) :=
           (e.toEmbedding.map_rel_iff R (B.part ∘ x)).mpr hA
-        simpa only [NonInduced.lineMap, hi, Function.comp_apply] using he
+        change B.rel R (fun j => e (B.part (x j)))
+        convert he using 1
 
 /-- Every parameter word gives an induced part-preserving embedding into the
 coordinatewise power. -/
