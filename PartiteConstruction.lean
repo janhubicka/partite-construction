@@ -7,6 +7,7 @@ import PartiteConstruction.Partite.Fusion
 import PartiteConstruction.HalesJewett.Finite
 import PartiteConstruction.Partite.NonInduced
 import PartiteConstruction.Partite.Induced
+import PartiteConstruction.Partite.InducedAttachment
 import PartiteConstruction.Relational.Attachment
 import PartiteConstruction.Relational.Order
 import PartiteConstruction.Partite.Operations
