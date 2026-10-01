@@ -1,10 +1,9 @@
 # Appendix A coverage
 
 The non-induced **Partite Lemma**, **Picture Lemma**, initial pictures, finite
-iteration, final extraction, and order completion are checked. The assembled
-ordered theorem has an explicit `ProjectionRamsey` input. Ordinary finite
-subset Ramsey and its translation to that input remain open, so the
-unconditional Nešetřil–Rödl theorem is not yet marked as verified.
+iteration, final extraction, finite Ramsey input, increasing-placement
+reduction, and order completion are checked. The unconditional ordered
+Nešetřil–Rödl theorem is assembled as `Partite.orderedRamsey`.
 
 | Survey location | Lean declaration | Status |
 | --- | --- | --- |
@@ -25,17 +24,18 @@ unconditional Nešetřil–Rödl theorem is not yet marked as verified.
 | Repeated application of the Picture Lemma | `Partite.nonInducedConstruction`, `allProjections` | Proved; all local existence hypotheses discharged |
 | Backward-induction paragraph | `Partite.backwardFusion` | Proved; its required local properties are now supplied by `pictureLemma` |
 | Projected-relation invariant (including increasing order) | `Partite.Picture.respects`, `nonInducedConstruction_preserving` | Proved for every constraint on projected relation tuples |
-| Monochromatic extraction from the final picture | `Partite.ramseyFromProjections` | Proved **assuming `ProjectionRamsey`**, including default colours for unrealized projections |
+| Finite Ramsey input | `FiniteRamsey.strictMono` | Proved for strictly increasing tuples and every finite colour type |
+| Increasing placements | `Partite.increasingProjectionRamsey` | Proved; finite Ramsey supplies the abstract `ProjectionRamsey` input |
+| Monochromatic extraction from the final picture | `Partite.ramseyFromProjections` | Proved, including default colours for unrealized projections |
 | Final order completion | `RelStructure.exists_order_extension`, `arrow_completeOrder` | Proved; induced copies and the Ramsey arrow survive |
-| `thm:unNR`, assembled ordered conclusion | `Partite.orderedRamseyFromProjections` | Proved **assuming `ProjectionRamsey`**; finite subset Ramsey and its interface remain open |
+| `thm:unNR`, assembled ordered conclusion | `Partite.orderedRamsey` | Proved unconditionally for finite ordered relational structures and finite nonempty colour types |
 | Induced, iterated, and recursive constructions | — | Later milestones |
 
 All names above are in the `StructuralRamsey` namespace. In the survey,
-green markers identify proved statements, blue markers identify the precise
-representation interface, and orange markers on the final extraction and
-assembled conclusion record the remaining finite subset Ramsey input. The
-backward-induction marker is now green. No marker asserts that the
-unconditional `thm:unNR` or all of Appendix A has been verified.
+green markers identify proved statements and blue markers identify the precise
+representation interface. All markers in the non-induced construction,
+including the finite Ramsey step and `thm:unNR`, are now green. Later induced,
+iterated, and recursive parts of Appendix A remain future milestones.
 
 ## Mathematical scope
 
@@ -77,7 +77,7 @@ The fixed-length bridge combines hypothetical bad colourings at each length
 into one colouring of all finite words and applies that theorem.
 
 `CheckAxioms.lean` prints the transitive axiom dependencies of the main results.
-All 22 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
+All 26 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
 every requested declaration produced a result. In particular, `sorryAx`, a
 custom HJ axiom, and native-evaluation axioms cannot pass this audit.
 
