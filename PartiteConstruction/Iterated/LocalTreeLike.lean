@@ -85,4 +85,50 @@ def LocallyTreeLike
             ∀ a : U, ∀ ha : α a ∈ S,
               ∃ a' : U, f ⟨α a, ha⟩ = α' a'
 
+
+namespace LocallyTreeLike
+
+variable {A : RelStructure L U} {B : RelStructure L V}
+  {C : RelStructure L W} {m n : ℕ}
+
+/-- Local tree-likeness is monotone in the size bound. -/
+theorem mono (h : LocallyTreeLike A B C n) (hmn : m ≤ n) :
+    LocallyTreeLike A B C m := by
+  intro S hS
+  exact h S (hS.trans hmn)
+
+/-- If `C` homomorphism-embeds into irreducible `A`, and `A` embeds into
+`B`, then `C` is locally tree-like at every scale, witnessed by the
+one-copy tree amalgam `B`. -/
+theorem of_homEmbedding_to_base
+    (hA : A.Irreducible) (eAB : Embedding A B)
+    (p : W → U) (hp : C.IsHomomorphismEmbedding A p) (n : ℕ) :
+    LocallyTreeLike A B C n := by
+  intro S _
+  refine ⟨V, B, TreeAmalgam.copy (Iso.refl B), ?_⟩
+  let f : ↥(↑S : Set W) → V := fun x => eAB (p x.1)
+  have hIncl :
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding C Subtype.val :=
+    (RelStructure.inclusion C (↑S : Set W)).isHomomorphismEmbedding
+  have hRestrict :
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding A
+        (p ∘ Subtype.val) :=
+    hp.comp hIncl
+  have hf :
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding B f := by
+    change (C.induce (↑S : Set W)).IsHomomorphismEmbedding B
+      (eAB ∘ (p ∘ Subtype.val))
+    exact eAB.isHomomorphismEmbedding.comp hRestrict
+  refine ⟨f, hf, ?_⟩
+  intro α
+  obtain ⟨g, hg⟩ := hp.after_irreducible_embedding hA α
+  let α' : Embedding A B := eAB.comp g
+  refine ⟨α', ?_⟩
+  intro a ha
+  refine ⟨a, ?_⟩
+  change eAB (p (α a)) = eAB (g a)
+  exact congrArg eAB (hg a).symm
+
+end LocallyTreeLike
+
 end StructuralRamsey.RelStructure
