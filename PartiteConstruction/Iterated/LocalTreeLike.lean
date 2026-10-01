@@ -35,21 +35,58 @@ def HereditarilyIrreducible (A : RelStructure L U) : Prop :=
 theorem HereditarilyIrreducible.irreducible
     {A : RelStructure L U} (hA : HereditarilyIrreducible A) :
     A.Irreducible := by
-  let e : A.induce (Set.univ : Set U) ≃ A := {
-    toFun := Subtype.val
-    invFun := fun x => ⟨x, Set.mem_univ x⟩
-    left_inv := by intro x; exact Subtype.ext rfl
-    right_inv := by intro x; rfl
-  }
   intro x y hxy
+  let xu : (Set.univ : Set U) := ⟨x, Set.mem_univ x⟩
+  let yu : (Set.univ : Set U) := ⟨y, Set.mem_univ y⟩
+  have hxu : xu ≠ yu := by
+    intro h
+    exact hxy (congrArg Subtype.val h)
   obtain ⟨R, z, i, j, hz, hzi, hzj⟩ :=
-    hA (Set.univ : Set U) (x := ⟨x, Set.mem_univ x⟩)
-      (y := ⟨y, Set.mem_univ y⟩) (by
-        intro h
-        exact hxy (congrArg Subtype.val h))
-  let z' : Fin (L.arity R) → U := fun k => (z k).1
-  exact ⟨R, z', i, j, hz, congrArg Subtype.val hzi,
-    congrArg Subtype.val hzj⟩
+    hA (Set.univ : Set U) hxu
+  change A.rel R (Subtype.val ∘ z) at hz
+  exact ⟨R, Subtype.val ∘ z, i, j, hz,
+    congrArg Subtype.val hzi, congrArg Subtype.val hzj⟩
+
+/-- Any structure embedding into a hereditarily irreducible structure is
+irreducible. -/
+theorem HereditarilyIrreducible.of_embedding
+    {A : RelStructure L U} {D : RelStructure L V}
+    (hA : HereditarilyIrreducible A) (e : Embedding D A) :
+    D.Irreducible := by
+  let S : Set U := Set.range e
+  have hS : (A.induce S).Irreducible := hA S
+  intro x y hxy
+  let xs : S := ⟨e x, ⟨x, rfl⟩⟩
+  let ys : S := ⟨e y, ⟨y, rfl⟩⟩
+  have hxsys : xs ≠ ys := by
+    intro h
+    apply hxy
+    apply e.injective
+    exact congrArg Subtype.val h
+  obtain ⟨R, z, i, j, hz, hzi, hzj⟩ := hS hxsys
+  let q : Fin (L.arity R) → V :=
+    fun k => Classical.choose (z k).property
+  have hq (k : Fin (L.arity R)) : e (q k) = (z k).1 :=
+    Classical.choose_spec (z k).property
+  have hAz : A.rel R (e ∘ q) := by
+    change A.rel R (Subtype.val ∘ z) at hz
+    convert hz using 1
+    funext k
+    exact (hq k).symm
+  have hDz : D.rel R q := (e.map_rel_iff R q).mp hAz
+  have hqi : q i = x := by
+    apply e.injective
+    calc
+      e (q i) = (z i).1 := hq i
+      _ = xs.1 := congrArg Subtype.val hzi
+      _ = e x := rfl
+  have hqj : q j = y := by
+    apply e.injective
+    calc
+      e (q j) = (z j).1 := hq j
+      _ = ys.1 := congrArg Subtype.val hzj
+      _ = e y := rfl
+  exact ⟨R, q, i, j, hDz, hqi, hqj⟩
 
 /-- The image of an embedding is contained in some irreducible substructure. -/
 def Embedding.ContainedInIrreducible
