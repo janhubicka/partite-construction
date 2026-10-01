@@ -40,7 +40,7 @@ variable (B : System L P V) (α : RelStructure.Embedding A D)
 /-- A partite system is `(B, α(A))`-based when it is isomorphic to the
 canonical free attachment over a positive power of the restriction of `B`
 to the parts in `α(A)`. -/
-def System.BasedOn {X : Type*} (C : System L P X) : Prop :=
+def BasedOn {X : Type*} (C : System L P X) : Prop :=
   ∃ N : ℕ, 0 < N ∧ Nonempty
     (SystemIso C
       (Picture.build B α.toFunctionEmbedding
@@ -48,8 +48,9 @@ def System.BasedOn {X : Type*} (C : System L P X) : Prop :=
 
 /-- The canonical Picture-Lemma output is based by definition. -/
 theorem canonical_based (N : ℕ) (hN : 0 < N) :
-    (Picture.build B α.toFunctionEmbedding
-      (Induced.power (B.restrict α.toFunctionEmbedding) N)).BasedOn A D B α := by
+    BasedOn A D B α
+      (Picture.build B α.toFunctionEmbedding
+        (Induced.power (B.restrict α.toFunctionEmbedding) N)) := by
   exact ⟨N, hN, ⟨SystemIso.refl _⟩⟩
 
 end Induced
