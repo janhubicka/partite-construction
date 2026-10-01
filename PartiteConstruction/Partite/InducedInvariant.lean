@@ -71,7 +71,7 @@ the irreducible-image invariant is automatic. -/
 theorem covers_of_parts_in_copy
     (C : System L P X) (β : RelStructure.Embedding B₀ D₀)
     (hpart : ∀ x : X, ∃ b : V, C.part x = β b) :
-    C.CoversIrreduciblesBy B₀ D₀ := by
+    CoversIrreduciblesBy C B₀ D₀ := by
   intro T _
   exact ⟨β, fun z => hpart z.1⟩
 
@@ -86,9 +86,9 @@ variable (f : I → Partite.Embedding (C.induce S) E)
 /-- The irreducible-image invariant is preserved by the same free attachment
 used in the Picture Lemma. -/
 theorem attach_covers
-    (hC : C.CoversIrreduciblesBy B₀ D₀)
-    (hE : E.CoversIrreduciblesBy B₀ D₀) :
-    (Partite.Attachment.attach C S E f).CoversIrreduciblesBy B₀ D₀ := by
+    (hC : CoversIrreduciblesBy C B₀ D₀)
+    (hE : CoversIrreduciblesBy E B₀ D₀) :
+    CoversIrreduciblesBy (Partite.Attachment.attach C S E f) B₀ D₀ := by
   classical
   intro T hT
   have hsplit :=
@@ -210,7 +210,7 @@ part of the core inside the witnessing copy of `B₀` in `D₀`. -/
 theorem relabel_covers_of_relevant
     {Y : Type*} (E : System L U Y)
     (α : RelevantEmbedding A B₀ D₀) :
-    (E.relabel α.1.toFunctionEmbedding).CoversIrreduciblesBy B₀ D₀ := by
+    CoversIrreduciblesBy (E.relabel α.1.toFunctionEmbedding) B₀ D₀ := by
   rcases α.2 with ⟨β, e, hfac⟩
   apply System.covers_of_parts_in_copy B₀ D₀ _ β
   intro y
