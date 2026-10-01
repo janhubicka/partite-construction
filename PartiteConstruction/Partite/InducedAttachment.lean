@@ -80,7 +80,7 @@ theorem attach_isPartiteOver
         convert hA using 1
         funext k
         have hk := hpre (xs k)
-        change part B S D (x k) = D.part (y k)
+        change D.part (y k) = part B S D (x k)
         rw [hk]
         rfl
       have hDrel := hD.reflect_rel_on U hU R y hyU hApart
@@ -137,9 +137,9 @@ theorem attach_isPartiteOver
         convert hA using 1
         funext k
         have hk := hpre (xs k)
-        change part B S D (x k) = B.part (y k)
+        change B.part (y k) = part B S D (x k)
         rw [hk]
-        exact part_copyMap B S D f i (y k)
+        exact (part_copyMap B S D f i (y k)).symm
       have hBrel := hB.reflect_rel_on U hU R y hyU hApart
       have heq :
           x = RelStructure.Attachment.copyMap B.toRelStructure S D.toRelStructure
