@@ -1,0 +1,7 @@
+import PartiteConstruction.Relational.Basic
+import PartiteConstruction.Ramsey.Basic
+import PartiteConstruction.Partite.Predicates
+import PartiteConstruction.Partite.Projection
+import PartiteConstruction.Partite.Fusion
+import PartiteConstruction.HalesJewett.Finite
+import PartiteConstruction.Partite.NonInduced
