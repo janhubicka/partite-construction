@@ -53,7 +53,7 @@ theorem relevant_iff_image_contained
         have hα := α.map_rel_iff R x
         have hβiff := β.map_rel_iff R (e ∘ x)
         rw [← hα, hfun]
-        exact hβiff
+        exact hβiff.symm
     }
     refine ⟨β, emb, ?_⟩
     apply RelStructure.Embedding.ext
