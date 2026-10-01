@@ -20,11 +20,11 @@ theorem pictureStep
     (C₀ : System L P X) (α : RelevantEmbedding A B₀ D₀)
     [Finite U] [Finite X] (κ : Type*) [Fintype κ]
     (hPartite : C₀.IsPartiteOver D₀)
-    (hCover : C₀.CoversIrreduciblesBy B₀ D₀) :
+    (hCover : CoversIrreduciblesBy C₀ B₀ D₀) :
     ∃ (Y : Type v) (_ : Finite Y) (C₁ : System L P Y),
       C₁.IsPartiteOver D₀ ∧
-      C₁.CoversIrreduciblesBy B₀ D₀ ∧
-      C₁.BasedOn A D₀ C₀ α.1 ∧
+      CoversIrreduciblesBy C₁ B₀ D₀ ∧
+      BasedOn A D₀ C₀ α.1 C₁ ∧
       PictureProperty A C₀ α.1.toFunctionEmbedding C₁ κ := by
   classical
   let αf : U ↪ P := α.1.toFunctionEmbedding
@@ -41,13 +41,13 @@ theorem pictureStep
     exact Partite.Attachment.attach_isPartiteOver
       C₀ (C₀.support αf) (E.relabel αf)
       (Picture.attachingMap C₀ αf E) hPartite hCorePartite
-  have hCoreCover : (E.relabel αf).CoversIrreduciblesBy B₀ D₀ :=
+  have hCoreCover : CoversIrreduciblesBy (E.relabel αf) B₀ D₀ :=
     relabel_covers_of_relevant A B₀ D₀ E α
-  have hC₁Cover : C₁.CoversIrreduciblesBy B₀ D₀ := by
+  have hC₁Cover : CoversIrreduciblesBy C₁ B₀ D₀ := by
     exact Attachment.attach_covers B₀ D₀
       C₀ (C₀.support αf) (E.relabel αf)
       (Picture.attachingMap C₀ αf E) hCover hCoreCover
-  have hBased : C₁.BasedOn A D₀ C₀ α.1 := by
+  have hBased : BasedOn A D₀ C₀ α.1 C₁ := by
     exact canonical_based (A := A) (D := D₀) (B := C₀) (α := α.1) N hN
   have hPicture : PictureProperty A C₀ αf C₁ κ :=
     Picture.property C₀ αf E κ hArrow
