@@ -1,5 +1,6 @@
 import PartiteConstruction.Relational.Homomorphism
 import PartiteConstruction.Partite.NonInduced
+import PartiteConstruction.Partite.Operations
 
 /-! # The induced Partite Lemma
 
@@ -13,7 +14,7 @@ namespace StructuralRamsey.Partite
 
 open RelStructure HalesJewett SuccessorTree
 
-universe u v w
+universe u v w z
 
 variable {L : RelLanguage.{u}} {P : Type v} {V : Type w}
 
@@ -25,6 +26,99 @@ def System.IsPartiteOver (B : System L P V) (A : RelStructure L P) : Prop :=
 namespace Induced
 
 variable (A : RelStructure L P) (B : System L P V)
+
+/-- Relabelling the parts along an induced embedding preserves the
+homomorphism-embedding projection invariant. -/
+theorem relabel_isPartiteOver {Q : Type z} {D : RelStructure L Q}
+    (hB : B.IsPartiteOver A) (α : RelStructure.Embedding A D) :
+    (B.relabel α.toFunctionEmbedding).IsPartiteOver D := by
+  change B.toRelStructure.IsHomomorphismEmbedding D (α ∘ B.part)
+  exact α.isHomomorphismEmbedding.comp hB
+
+/-- Restricting a partite system to the parts in the image of an induced
+embedding again gives a partite system over the source structure. -/
+theorem restrict_isPartiteOver {Q : Type z} (D : RelStructure L P)
+    (C : System L P V) (A₀ : RelStructure L Q)
+    (hC : C.IsPartiteOver D) (α : RelStructure.Embedding A₀ D) :
+    (C.restrict α.toFunctionEmbedding).IsPartiteOver A₀ := by
+  let αf : Q ↪ P := α.toFunctionEmbedding
+  let E := C.restrict αf
+  have hhom : E.toRelStructure.IsHomomorphism A₀ E.part := by
+    intro R x hx
+    have hD : D.rel R (C.part ∘ (Subtype.val ∘ x)) :=
+      hC.1 R (Subtype.val ∘ x) hx
+    have heq : α ∘ (E.part ∘ x) = C.part ∘ (Subtype.val ∘ x) := by
+      funext i
+      exact C.restrictedPart_spec αf (x i)
+    have htarget : D.rel R (α ∘ (E.part ∘ x)) := by
+      rw [heq]
+      exact hD
+    exact (α.map_rel_iff R (E.part ∘ x)).mp htarget
+  refine ⟨hhom, ?_⟩
+  intro S hS
+  let T : Set V := Set.range (fun s : S => (s.1 : C.support αf).1)
+  have hT : (C.toRelStructure.induce T).Irreducible := by
+    intro a b hab
+    rcases a.property with ⟨sa, hsa⟩
+    rcases b.property with ⟨sb, hsb⟩
+    have hsab : sa ≠ sb := by
+      intro heq
+      apply hab
+      apply Subtype.ext
+      rw [← hsa, ← hsb, heq]
+    obtain ⟨R, x, i, j, hx, hxi, hxj⟩ := hS hsab
+    change E.rel R (Subtype.val ∘ x) at hx
+    let xT : Fin (L.arity R) → T :=
+      fun k => ⟨((x k).1 : C.support αf).1, ⟨x k, rfl⟩⟩
+    refine ⟨R, xT, i, j, ?_, ?_, ?_⟩
+    · change C.rel R (Subtype.val ∘ xT)
+      convert hx using 1
+      funext k
+      rfl
+    · apply Subtype.ext
+      change ((x i).1 : C.support αf).1 = a.1
+      rw [hxi]
+      exact hsa
+    · apply Subtype.ext
+      change ((x j).1 : C.support αf).1 = b.1
+      rw [hxj]
+      exact hsb
+  let e : RelStructure.Embedding (E.toRelStructure.induce S) A₀ := {
+    toFun := fun x => E.part x.1
+    injective := by
+      intro x y hxy
+      by_contra hne
+      obtain ⟨R, z, i, j, hz, hzi, hzj⟩ := hS hne
+      change E.rel R (Subtype.val ∘ z) at hz
+      have hp :
+          E.part ((Subtype.val ∘ z) i) =
+            E.part ((Subtype.val ∘ z) j) := by
+        simpa [Function.comp_apply, hzi, hzj] using hxy
+      have hv := E.transversal R (Subtype.val ∘ z) hz i j hp
+      have hzij : z i = z j := Subtype.ext hv
+      exact hne (hzi.symm.trans (hzij.trans hzj))
+    map_rel_iff := by
+      intro R x
+      constructor
+      · intro hA
+        let y : Fin (L.arity R) → V :=
+          fun k => ((x k).1 : C.support αf).1
+        have hyT : ∀ k, y k ∈ T := by
+          intro k
+          exact ⟨x k, rfl⟩
+        have hDα : D.rel R (α ∘ (E.part ∘ (Subtype.val ∘ x))) :=
+          (α.map_rel_iff R (E.part ∘ (Subtype.val ∘ x))).mpr hA
+        have hD : D.rel R (C.part ∘ y) := by
+          convert hDα using 1
+          funext k
+          exact (C.restrictedPart_spec αf ((x k).1)).symm
+        have hCrel := hC.reflect_rel_on T hT R y hyT hD
+        change E.rel R (Subtype.val ∘ x)
+        exact hCrel
+      · intro hx
+        exact hhom R (Subtype.val ∘ x) hx
+  }
+  exact ⟨e, fun _ => rfl⟩
 
 abbrev Letter := NonInduced.Letter A B
 abbrev Vertex (N : ℕ) := NonInduced.Vertex B N
