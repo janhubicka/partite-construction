@@ -10,7 +10,7 @@ definition used by the induced partite construction.
 namespace StructuralRamsey
 namespace RelStructure
 
-universe u v w
+universe u v w z
 
 variable {L : RelLanguage.{u}} {V : Type v} {W : Type w}
 
@@ -78,9 +78,74 @@ theorem reflect_rel_on (h : A.IsHomomorphismEmbedding B f) (S : Set V)
 
 end IsHomomorphismEmbedding
 
+
+namespace IsHomomorphismEmbedding
+
+variable {X : Type z} {A : RelStructure L V} {B : RelStructure L W}
+  {C : RelStructure L X} {f : V → W} {g : W → X}
+
+/-- Homomorphism-embeddings compose. The only point needing proof is that the
+image of an irreducible substructure under the first induced restriction is
+again irreducible. -/
+theorem comp (hg : B.IsHomomorphismEmbedding C g)
+    (hf : A.IsHomomorphismEmbedding B f) :
+    A.IsHomomorphismEmbedding C (g ∘ f) := by
+  constructor
+  · intro R x hx
+    exact hg.1 R (f ∘ x) (hf.1 R x hx)
+  · intro S hS
+    obtain ⟨e, he⟩ := hf.embeddingOn S hS
+    let T : Set W := Set.range e
+    have hT : (B.induce T).Irreducible := by
+      intro a b hab
+      rcases a.property with ⟨sa, hsa⟩
+      rcases b.property with ⟨sb, hsb⟩
+      have hsab : sa ≠ sb := by
+        intro hs
+        apply hab
+        apply Subtype.ext
+        rw [← hsa, ← hsb, hs]
+      obtain ⟨R, z, i, j, hz, hzi, hzj⟩ := hS hsab
+      let zT : Fin (L.arity R) → T := fun k => ⟨e (z k), ⟨z k, rfl⟩⟩
+      refine ⟨R, zT, i, j, ?_, ?_, ?_⟩
+      · change B.rel R (Subtype.val ∘ zT)
+        have hzB := (e.map_rel_iff R z).mpr hz
+        convert hzB using 1
+        funext k
+        rfl
+      · apply Subtype.ext
+        change e (z i) = a.1
+        rw [hzi]
+        exact hsa
+      · apply Subtype.ext
+        change e (z j) = b.1
+        rw [hzj]
+        exact hsb
+    obtain ⟨d, hd⟩ := hg.embeddingOn T hT
+    let eT : Embedding (A.induce S) (B.induce T) := {
+      toFun := fun x => ⟨e x, ⟨x, rfl⟩⟩
+      injective := fun _ _ h => e.injective (congrArg Subtype.val h)
+      map_rel_iff := fun R x => by
+        change B.rel R (e ∘ x) ↔ A.rel R (Subtype.val ∘ x)
+        exact e.map_rel_iff R x
+    }
+    refine ⟨d.comp eT, ?_⟩
+    intro x
+    change d (eT x) = g (f x.1)
+    rw [hd (eT x), he x]
+    rfl
+
+end IsHomomorphismEmbedding
+
 namespace Embedding
 
 variable {A : RelStructure L V} {B : RelStructure L W}
+
+/-- Forget the relational data and retain the underlying injective map. -/
+def toFunctionEmbedding (e : Embedding A B) : V ↪ W where
+  toFun := e
+  inj' := e.injective
+
 
 /-- Every induced embedding is, in particular, a homomorphism-embedding. -/
 theorem isHomomorphismEmbedding (e : Embedding A B) :
