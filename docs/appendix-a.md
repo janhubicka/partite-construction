@@ -1,10 +1,12 @@
 # Appendix A coverage
 
-The non-induced **Partite Lemma**, **Picture Lemma**, initial pictures, finite
-iteration, final extraction, and order completion are checked. The assembled
-ordered theorem has an explicit `ProjectionRamsey` input. Ordinary finite
-subset Ramsey and its translation to that input remain open, so the
-unconditional Nešetřil–Rödl theorem is not yet marked as verified.
+The non-induced construction is checked end to end, with the unconditional
+ordered theorem assembled as `Partite.orderedRamsey`. The **relational induced
+partite construction** is now checked end to end as well: homomorphism-
+embeddings, positive coordinatewise powers, the induced Partite and Picture
+Lemmas, initial pictures, based stages, the irreducible-image invariant, finite
+iteration, and the final Ramsey extraction are all formalized. The set-valued
+function extension is intentionally left to the later recursive construction.
 
 | Survey location | Lean declaration | Status |
 | --- | --- | --- |
@@ -25,17 +27,33 @@ unconditional Nešetřil–Rödl theorem is not yet marked as verified.
 | Repeated application of the Picture Lemma | `Partite.nonInducedConstruction`, `allProjections` | Proved; all local existence hypotheses discharged |
 | Backward-induction paragraph | `Partite.backwardFusion` | Proved; its required local properties are now supplied by `pictureLemma` |
 | Projected-relation invariant (including increasing order) | `Partite.Picture.respects`, `nonInducedConstruction_preserving` | Proved for every constraint on projected relation tuples |
-| Monochromatic extraction from the final picture | `Partite.ramseyFromProjections` | Proved **assuming `ProjectionRamsey`**, including default colours for unrealized projections |
+| Finite Ramsey input | `FiniteRamsey.strictMono` | Proved for strictly increasing tuples and every finite colour type |
+| Increasing placements | `Partite.increasingProjectionRamsey` | Proved; finite Ramsey supplies the abstract `ProjectionRamsey` input |
+| Monochromatic extraction from the final picture | `Partite.ramseyFromProjections` | Proved, including default colours for unrealized projections |
 | Final order completion | `RelStructure.exists_order_extension`, `arrow_completeOrder` | Proved; induced copies and the Ramsey arrow survive |
-| `thm:unNR`, assembled ordered conclusion | `Partite.orderedRamseyFromProjections` | Proved **assuming `ProjectionRamsey`**; finite subset Ramsey and its interface remain open |
-| Induced, iterated, and recursive constructions | — | Later milestones |
+| `thm:unNR`, assembled ordered conclusion | `Partite.orderedRamsey` | Proved unconditionally for finite ordered relational structures and finite nonempty colour types |
+| Relational irreducibility / homomorphism-embedding | `RelStructure.Irreducible`, `IsHomomorphismEmbedding`, `IsHomomorphismEmbedding.comp` | Proved; matches the relational specialization of the survey definition |
+| `A`-partite-system projection invariant | `Partite.System.IsPartiteOver` | Proved using a partition map whose projection is a homomorphism-embedding |
+| `def:power`, coordinatewise relational power | `Partite.Induced.power`, `power_isPartiteOver` | Proved for positive exponents; positivity is essential |
+| `lem:indpartite` | `Partite.Induced.partiteLemma` | Proved for relational languages and every finite colour type |
+| Irreducibles under free attachment | `RelStructure.Attachment.irreducible_core_or_copy`, `Partite.Attachment.attach_isPartiteOver` | Proved: every irreducible lies in the core or one attached copy, and the projection invariant survives |
+| `def:based` | `Partite.Induced.BasedOn`, `canonical_based` | Formalized as isomorphism to the canonical positive-power free attachment |
+| `lem:indpicutre` | `Partite.Induced.pictureLemma` | Proved for relational languages, with a finite based witness |
+| Relevant embeddings in the proof of `thm:inducedpartite` | `Partite.Induced.Relevant`, `relevant_iff_image_contained` | Factorization through a `B`-copy is proved equivalent to the manuscript's image-containment formulation |
+| Initial picture and invariant (3) | `Partite.Induced.Initial.picture_isPartiteOver`, `picture_covers` | Proved for the disjoint union of all `B`-copies in `D` |
+| Preservation of invariant (3) | `Partite.Induced.Attachment.attach_covers`, `pictureStep` | Proved simultaneously with the based-stage Picture property |
+| `thm:inducedpartite`, finite construction | `Partite.Induced.Stage`, `Trace`, `inducedConstruction` | Proved end to end for finite relational structures; the trace certifies every intermediate stage and the default-colour extraction is explicit |
+| Iterated construction | — | Next milestone |
+| Recursive construction / set-valued functions | — | Later milestone; required for the survey's general function language |
 
 All names above are in the `StructuralRamsey` namespace. In the survey,
-green markers identify proved statements, blue markers identify the precise
-representation interface, and orange markers on the final extraction and
-assembled conclusion record the remaining finite subset Ramsey input. The
-backward-induction marker is now green. No marker asserts that the
-unconditional `thm:unNR` or all of Appendix A has been verified.
+green markers identify statements proved in the formalized relational setting,
+blue markers identify representation interfaces, and orange markers identify
+manuscript statements whose stated scope is broader than the theorem checked
+in Lean. The non-induced construction is fully green. The induced construction
+is complete for relational languages; its theorem-level markers remain orange
+where the survey presently quantifies over the general language with genuinely
+set-valued function symbols.
 
 ## Mathematical scope
 
@@ -64,8 +82,22 @@ unconditional `thm:unNR` or all of Appendix A has been verified.
 * Low-level attachments, restrictions, and the Picture Lemma are universe
   polymorphic. Iteration and the assembled theorem use a common carrier
   universe, which includes the usual `Type` presentation of finite structures.
+* The induced construction is formalized for relational languages. Its
+  coordinatewise power requires `N > 0`; at exponent zero relation conditions
+  are vacuous and the projection need not remain a homomorphism.
+* `Relevant` embeddings are those `A → D` maps factoring through a copy
+  `B → D`; Lean proves this is equivalent to the survey's statement that the
+  image of the `A`-copy is contained in the image of a `B`-copy.
+* The final induced extraction assigns a fixed default colour to embeddings
+  `A → D` not contained in any `B`-copy before applying the Ramsey arrow on
+  `D`. This is the same bookkeeping issue that appears in the non-induced
+  projection argument.
 * Functions and closures are intentionally deferred to the recursive partite
-  construction. The present relational API is a reusable reduct layer.
+  construction. In particular, the coordinatewise argument is not valid for
+  arbitrary set-valued functions: different coordinates may choose different
+  function values, creating a mixed value not lying in the image of any
+  single source function value. The later `U`-transversal machinery is the
+  appropriate layer for that case.
 
 ## Trust and dependency
 
@@ -77,23 +109,48 @@ The fixed-length bridge combines hypothetical bad colourings at each length
 into one colouring of all finite words and applies that theorem.
 
 `CheckAxioms.lean` prints the transitive axiom dependencies of the main results.
-All 22 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
+All 38 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
 every requested declaration produced a result. In particular, `sorryAx`, a
 custom HJ axiom, and native-evaluation axioms cannot pass this audit.
 
 ## Survey corrections recorded as inline notes
 
+The formalization has identified the following proposed manuscript corrections.
+They are recorded in `\todo[inline]{Řehořek: ...}` notes rather than silently
+changing the circulation text.
+
+### Non-induced construction
+
 1. A linearly ordered partite system need not be transversal as defined:
    projection is injective, but some named parts may be empty. Delete unused
    parts and relabel to obtain the defined transversal presentation.
-2. In the Picture Lemma's pullback colouring, the quantified embedding has
+2. The definition of a word should use the bound `i < N`, not `i < n`.
+   The Partite Lemma proof also needs a positive Hales--Jewett length for the
+   assertion that every word lies on a parameter line.
+3. In the Picture Lemma's pullback colouring, the quantified embedding has
    codomain C′, not B′.
-3. In the unrestricted construction, the set of new predicates is
+4. In the unrestricted construction, the set of new predicates is
    `L_P \\ L`, not `L \\ L_P`.
-4. The last proof's embeddings of A into a picture must be into its L-reduct,
-   since A has not been given the picture's unary predicates. Projections not
-   realized by an A-copy need an arbitrary default colour in the induced
-   colouring of all injections.
+5. Embeddings of the L-structure A into a picture have codomain its L-reduct.
+   Projections not realized by an A-copy need an arbitrary default colour in
+   the induced colouring of all increasing injections.
 
-These are proposed corrections in `\todo[inline]{Řehořek: ...}` notes; the
-surrounding mathematical prose is retained for author review.
+### Induced construction
+
+6. The coordinatewise power must use `N > 0` (or separately define the zero
+   power). At `N = 0`, relational conditions are vacuous, so the projection
+   need not be a homomorphism and the power need not be A-partite.
+7. The sentence assuming without loss that every vertex of B lies in an A-copy
+   is unnecessary and is not an evident reduction; deleting such vertices
+   changes the target B. The checked proof works for arbitrary B.
+8. The Hales--Jewett alphabet must consist of part-preserving copies
+   `Emb(A′,B)` (equivalently projected A-copies), not arbitrary embeddings of
+   the L-reduct A into B. Correspondingly the displayed arrow has source A′.
+9. The sentence saying function symbols are analogous is not valid for the
+   survey's genuinely set-valued functions without additional hypotheses.
+   The relational induced theorem is checked; the set-valued case belongs to
+   the later transversality/recursive machinery.
+10. In the final induced Ramsey extraction, backward fusion colours only the
+    relevant embeddings A→D lying inside B-copies. Assign a fixed default
+    colour to the remaining embeddings before applying D→(B)^A.
+
