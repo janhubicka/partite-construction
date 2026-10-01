@@ -23,6 +23,13 @@ def refl (A : RelStructure L V) : Iso A A where
   toEquiv := Equiv.refl V
   map_rel_iff := fun _ _ => Iff.rfl
 
+def toEmbedding {A : RelStructure L V} {B : RelStructure L W}
+    (h : Iso A B) : Embedding A B where
+  toFun := h.toEquiv
+  injective := h.toEquiv.injective
+  map_rel_iff := h.map_rel_iff
+
+
 end Iso
 
 /-- Every induced substructure is irreducible.  Ordered relational
@@ -119,6 +126,25 @@ theorem IsHomomorphismEmbedding.on_substructure_of_hereditarilyIrreducible
     ∃ g : Embedding (A.induce S) T, ∀ x, g x = f (e x) := by
   exact hf.after_irreducible_embedding (hA S) e
 
+/-- Factor an embedding through another embedding whose range contains it. -/
+noncomputable def Embedding.factorThroughRange
+    {A : RelStructure L U} {B : RelStructure L V} {C : RelStructure L W}
+    (e : Embedding A C) (i : Embedding B C)
+    (h : ∀ x : U, ∃ b : V, e x = i b) :
+    Embedding A B where
+  toFun x := Classical.choose (h x)
+  injective := by
+    intro x y hxy
+    apply e.injective
+    rw [Classical.choose_spec (h x), Classical.choose_spec (h y), hxy]
+  map_rel_iff := by
+    intro R x
+    have heq : i ∘ (fun k => Classical.choose (h (x k))) = e ∘ x := by
+      funext k
+      exact (Classical.choose_spec (h (x k))).symm
+    rw [← i.map_rel_iff R (fun k => Classical.choose (h (x k))), heq]
+    exact e.map_rel_iff R x
+
 /-- A concrete relational structure is the free amalgam of `A` and `B`
 over `D` when it is covered by induced copies of the two sides, those copies
 intersect exactly in the prescribed common image, and every relation tuple
@@ -135,6 +161,47 @@ structure IsFreeAmalgam
     C.rel R z ↔
       (∃ x : Fin (L.arity R) → V, A.rel R x ∧ z = iA ∘ x) ∨
       (∃ y : Fin (L.arity R) → W, B.rel R y ∧ z = iB ∘ y)
+
+namespace IsFreeAmalgam
+
+/-- Every irreducible substructure of a free amalgam lies on one side. -/
+theorem irreducible_side
+    {D : RelStructure L U} {A : RelStructure L V}
+    {B : RelStructure L W} {C : RelStructure L X}
+    {fA : Embedding D A} {fB : Embedding D B}
+    {iA : Embedding A C} {iB : Embedding B C}
+    (hfree : IsFreeAmalgam fA fB iA iB)
+    (S : Set X) (hS : (C.induce S).Irreducible) :
+    (∀ z : S, ∃ a : V, z.1 = iA a) ∨
+      (∀ z : S, ∃ b : W, z.1 = iB b) := by
+  classical
+  by_cases hleft : ∀ z : S, ∃ a : V, z.1 = iA a
+  · exact Or.inl hleft
+  · push Not at hleft
+    obtain ⟨z₀, hz₀⟩ := hleft
+    obtain hz₀side | hz₀side := hfree.covers z₀.1
+    · exact (hz₀ hz₀side).elim
+    · refine Or.inr ?_
+      intro z
+      by_cases hzz : z = z₀
+      · subst z
+        exact hz₀side
+      · obtain ⟨R, x, k, l, hx, hxk, hxl⟩ := hS hzz
+        change C.rel R (Subtype.val ∘ x) at hx
+        rcases (hfree.rel_iff R (Subtype.val ∘ x)).mp hx with hArel | hBrel
+        · rcases hArel with ⟨y, hy, heq⟩
+          have hz₀left : ∃ a : V, z₀.1 = iA a := by
+            refine ⟨y l, ?_⟩
+            have h := congrFun heq l
+            simpa only [Function.comp_apply, hxl] using h
+          exact (hz₀ hz₀left).elim
+        · rcases hBrel with ⟨y, hy, heq⟩
+          refine ⟨y k, ?_⟩
+          have h := congrFun heq k
+          simpa only [Function.comp_apply, hxk] using h
+
+end IsFreeAmalgam
+
 
 /-- Tree amalgams of copies of a fixed relational structure, following the
 survey definition.  Every gluing takes place over a substructure whose image
@@ -155,6 +222,60 @@ inductive TreeAmalgam (Base : RelStructure L V) :
       (i₁ : Embedding T₁ T) (i₂ : Embedding T₂ T)
       (hfree : IsFreeAmalgam f₁ f₂ i₁ i₂) :
       TreeAmalgam Base W T
+
+namespace TreeAmalgam
+
+/-- Every embedded irreducible structure in a tree amalgam is contained in
+one of the constituent copies of the base structure. -/
+theorem irreducible_contained_in_copy
+    {Base : RelStructure L V} {T : RelStructure L W}
+    (hT : TreeAmalgam Base W T)
+    {A : RelStructure L U} (hA : A.Irreducible)
+    (e : Embedding A T) :
+    ∃ j : Embedding Base T, ∀ a : U, ∃ b : V, e a = j b := by
+  induction hT with
+  | copy h =>
+      let j := h.toEmbedding
+      refine ⟨j, ?_⟩
+      intro a
+      refine ⟨h.toEquiv.symm (e a), ?_⟩
+      change e a = h.toEquiv (h.toEquiv.symm (e a))
+      exact (h.toEquiv.apply_symm_apply (e a)).symm
+  | @glue W₁ W₂ Z W T₁ T₂ D T h₁ h₂ f₁ f₂ hc₁ hc₂ i₁ i₂ hfree ih₁ ih₂ =>
+      let S : Set W := Set.range e
+      have hS : (T.induce S).Irreducible := hA.range_embedding e
+      rcases hfree.irreducible_side S hS with hleft | hright
+      · have he : ∀ a : U, ∃ x : W₁, e a = i₁ x := by
+          intro a
+          exact hleft ⟨e a, ⟨a, rfl⟩⟩
+        let e₁ : Embedding A T₁ := e.factorThroughRange i₁ he
+        obtain ⟨j₁, hj₁⟩ := ih₁ hA e₁
+        refine ⟨i₁.comp j₁, ?_⟩
+        intro a
+        obtain ⟨b, hb⟩ := hj₁ a
+        refine ⟨b, ?_⟩
+        have hea := Classical.choose_spec (he a)
+        change e a = i₁ (j₁ b)
+        calc
+          e a = i₁ (e₁ a) := hea
+          _ = i₁ (j₁ b) := congrArg i₁ hb
+      · have he : ∀ a : U, ∃ x : W₂, e a = i₂ x := by
+          intro a
+          exact hright ⟨e a, ⟨a, rfl⟩⟩
+        let e₂ : Embedding A T₂ := e.factorThroughRange i₂ he
+        obtain ⟨j₂, hj₂⟩ := ih₂ hA e₂
+        refine ⟨i₂.comp j₂, ?_⟩
+        intro a
+        obtain ⟨b, hb⟩ := hj₂ a
+        refine ⟨b, ?_⟩
+        have hea := Classical.choose_spec (he a)
+        change e a = i₂ (j₂ b)
+        calc
+          e a = i₂ (e₂ a) := hea
+          _ = i₂ (j₂ b) := congrArg i₂ hb
+
+end TreeAmalgam
+
 
 /-- Relational formalization of the survey's `(A,B,n)`-local tree-likeness.
 For every induced substructure on at most `n` vertices there is a
