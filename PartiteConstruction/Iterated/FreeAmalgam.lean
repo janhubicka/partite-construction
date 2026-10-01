@@ -155,6 +155,289 @@ theorem map_isHomomorphism
     exact map_right D A B fA fB A₂ B₂ gA gB hA hB
       hcompatA hcompatB (y k)
 
+/-- Compatible homomorphism-embeddings on the two sides induce a
+homomorphism-embedding of the free amalgams. -/
+theorem map_isHomomorphismEmbedding
+    (hcompatA : ∀ d, hA (fA d) = gA d)
+    (hcompatB : ∀ d, hB (fB d) = gB d)
+    (hhA : A.IsHomomorphismEmbedding A₂ hA)
+    (hhB : B.IsHomomorphismEmbedding B₂ hB) :
+    (structure D A B fA fB).IsHomomorphismEmbedding
+      (structure D A₂ B₂ gA gB)
+      (map D A B fA fB A₂ B₂ gA gB hA hB) := by
+  classical
+  let S := support D A B fA fB
+  let ov := overlapEmbedding D A B fA fB
+  let F := map D A B fA fB A₂ B₂ gA gB hA hB
+  apply IsHomomorphismEmbedding.of_map_reflect
+  · exact map_isHomomorphism D A B fA fB A₂ B₂ gA gB hA hB
+      hcompatA hcompatB hhA.1 hhB.1
+  · intro T hT
+    have hsplit :=
+      Attachment.irreducible_core_or_copy
+        (B := B) (S := S) (D := A) (f := fun _ : Unit => ov) T hT
+    rcases hsplit with hcore | ⟨i, hcopy⟩
+    · let pre : T → V := fun z => Classical.choose (hcore z)
+      have hpre (z : T) : z.1 = Sum.inl (pre z) :=
+        Classical.choose_spec (hcore z)
+      let Rng : Set V := Set.range pre
+      have hRng : (A.induce Rng).Irreducible := by
+        intro a b hab
+        rcases a.property with ⟨sa, hsa⟩
+        rcases b.property with ⟨sb, hsb⟩
+        have hsab : sa ≠ sb := by
+          intro hs
+          apply hab
+          apply Subtype.ext
+          rw [← hsa, ← hsb, hs]
+        obtain ⟨R, z, k, l, hz, hzk, hzl⟩ := hT hsab
+        change (structure D A B fA fB).rel R (Subtype.val ∘ z) at hz
+        let y : Fin (L.arity R) → V := fun q => pre (z q)
+        have heq : Subtype.val ∘ z = Sum.inl ∘ y := by
+          funext q
+          exact hpre (z q)
+        rw [heq] at hz
+        have hArel :=
+          (Attachment.core_rel_iff
+            (B := B) (S := S) (D := A)
+            (f := fun _ : Unit => ov) R y).mp hz
+        let yR : Fin (L.arity R) → Rng :=
+          fun q => ⟨y q, ⟨z q, rfl⟩⟩
+        refine ⟨R, yR, k, l, hArel, ?_, ?_⟩
+        · apply Subtype.ext
+          change pre (z k) = a.1
+          rw [hzk]
+          exact hsa
+        · apply Subtype.ext
+          change pre (z l) = b.1
+          rw [hzl]
+          exact hsb
+      intro x hx y hy hxy
+      let xs : T := ⟨x, hx⟩
+      let ys : T := ⟨y, hy⟩
+      have hFx :
+          F x = leftEmbedding D A₂ B₂ gA gB (hA (pre xs)) := by
+        change F xs.1 = _
+        rw [hpre xs]
+        rfl
+      have hFy :
+          F y = leftEmbedding D A₂ B₂ gA gB (hA (pre ys)) := by
+        change F ys.1 = _
+        rw [hpre ys]
+        rfl
+      have hh : hA (pre xs) = hA (pre ys) := by
+        apply (leftEmbedding D A₂ B₂ gA gB).injective
+        rw [← hFx, ← hFy]
+        exact hxy
+      have hpreEq : pre xs = pre ys :=
+        hhA.injOn Rng hRng ⟨xs, rfl⟩ ⟨ys, rfl⟩ hh
+      calc
+        x = xs.1 := rfl
+        _ = Sum.inl (pre xs) := hpre xs
+        _ = Sum.inl (pre ys) := congrArg Sum.inl hpreEq
+        _ = ys.1 := (hpre ys).symm
+        _ = y := rfl
+    · have hi : i = () := Subsingleton.elim _ _
+      subst i
+      let pre : T → W := fun z => Classical.choose (hcopy z)
+      have hpre (z : T) :
+          z.1 = Attachment.copyMap B S A
+            (fun _ : Unit => ov) () (pre z) :=
+        Classical.choose_spec (hcopy z)
+      let Rng : Set W := Set.range pre
+      have hRng : (B.induce Rng).Irreducible := by
+        intro a b hab
+        rcases a.property with ⟨sa, hsa⟩
+        rcases b.property with ⟨sb, hsb⟩
+        have hsab : sa ≠ sb := by
+          intro hs
+          apply hab
+          apply Subtype.ext
+          rw [← hsa, ← hsb, hs]
+        obtain ⟨R, z, k, l, hz, hzk, hzl⟩ := hT hsab
+        change (structure D A B fA fB).rel R (Subtype.val ∘ z) at hz
+        let y : Fin (L.arity R) → W := fun q => pre (z q)
+        have heq :
+            Subtype.val ∘ z =
+              Attachment.copyMap B S A
+                (fun _ : Unit => ov) () ∘ y := by
+          funext q
+          exact hpre (z q)
+        rw [heq] at hz
+        have hBrel :=
+          (Attachment.copy_rel_iff
+            (B := B) (S := S) (D := A)
+            (f := fun _ : Unit => ov) () R y).mp hz
+        let yR : Fin (L.arity R) → Rng :=
+          fun q => ⟨y q, ⟨z q, rfl⟩⟩
+        refine ⟨R, yR, k, l, hBrel, ?_, ?_⟩
+        · apply Subtype.ext
+          change pre (z k) = a.1
+          rw [hzk]
+          exact hsa
+        · apply Subtype.ext
+          change pre (z l) = b.1
+          rw [hzl]
+          exact hsb
+      intro x hx y hy hxy
+      let xs : T := ⟨x, hx⟩
+      let ys : T := ⟨y, hy⟩
+      have hFx :
+          F x = rightEmbedding D A₂ B₂ gA gB (hB (pre xs)) := by
+        change F xs.1 = _
+        rw [hpre xs]
+        exact map_right D A B fA fB A₂ B₂ gA gB hA hB
+          hcompatA hcompatB (pre xs)
+      have hFy :
+          F y = rightEmbedding D A₂ B₂ gA gB (hB (pre ys)) := by
+        change F ys.1 = _
+        rw [hpre ys]
+        exact map_right D A B fA fB A₂ B₂ gA gB hA hB
+          hcompatA hcompatB (pre ys)
+      have hh : hB (pre xs) = hB (pre ys) := by
+        apply (rightEmbedding D A₂ B₂ gA gB).injective
+        rw [← hFx, ← hFy]
+        exact hxy
+      have hpreEq : pre xs = pre ys :=
+        hhB.injOn Rng hRng ⟨xs, rfl⟩ ⟨ys, rfl⟩ hh
+      calc
+        x = xs.1 := rfl
+        _ = Attachment.copyMap B S A
+              (fun _ : Unit => ov) () (pre xs) := hpre xs
+        _ = Attachment.copyMap B S A
+              (fun _ : Unit => ov) () (pre ys) :=
+            congrArg (Attachment.copyMap B S A
+              (fun _ : Unit => ov) ()) hpreEq
+        _ = ys.1 := (hpre ys).symm
+        _ = y := rfl
+  · intro T hT R x hxT htarget
+    have hsplit :=
+      Attachment.irreducible_core_or_copy
+        (B := B) (S := S) (D := A) (f := fun _ : Unit => ov) T hT
+    rcases hsplit with hcore | ⟨i, hcopy⟩
+    · let pre : T → V := fun z => Classical.choose (hcore z)
+      have hpre (z : T) : z.1 = Sum.inl (pre z) :=
+        Classical.choose_spec (hcore z)
+      let Rng : Set V := Set.range pre
+      have hRng : (A.induce Rng).Irreducible := by
+        intro a b hab
+        rcases a.property with ⟨sa, hsa⟩
+        rcases b.property with ⟨sb, hsb⟩
+        have hsab : sa ≠ sb := by
+          intro hs
+          apply hab
+          apply Subtype.ext
+          rw [← hsa, ← hsb, hs]
+        obtain ⟨R', z, k, l, hz, hzk, hzl⟩ := hT hsab
+        change (structure D A B fA fB).rel R' (Subtype.val ∘ z) at hz
+        let y : Fin (L.arity R') → V := fun q => pre (z q)
+        have heq : Subtype.val ∘ z = Sum.inl ∘ y := by
+          funext q
+          exact hpre (z q)
+        rw [heq] at hz
+        have hArel :=
+          (Attachment.core_rel_iff
+            (B := B) (S := S) (D := A)
+            (f := fun _ : Unit => ov) R' y).mp hz
+        let yR : Fin (L.arity R') → Rng :=
+          fun q => ⟨y q, ⟨z q, rfl⟩⟩
+        refine ⟨R', yR, k, l, hArel, ?_, ?_⟩
+        · apply Subtype.ext
+          change pre (z k) = a.1
+          rw [hzk]
+          exact hsa
+        · apply Subtype.ext
+          change pre (z l) = b.1
+          rw [hzl]
+          exact hsb
+      let xs : Fin (L.arity R) → T := fun k => ⟨x k, hxT k⟩
+      let y : Fin (L.arity R) → V := fun k => pre (xs k)
+      have hyR : ∀ k, y k ∈ Rng := fun k => ⟨xs k, rfl⟩
+      have heqTarget :
+          F ∘ x =
+            leftEmbedding D A₂ B₂ gA gB ∘ (hA ∘ y) := by
+        funext k
+        change F (xs k).1 =
+          leftEmbedding D A₂ B₂ gA gB (hA (y k))
+        rw [hpre (xs k)]
+        rfl
+      rw [heqTarget] at htarget
+      have hA₂ :
+          A₂.rel R (hA ∘ y) :=
+        ((leftEmbedding D A₂ B₂ gA gB).map_rel_iff R (hA ∘ y)).mp htarget
+      have hArel := hhA.reflect_rel_on Rng hRng R y hyR hA₂
+      have heqSource : x = Sum.inl ∘ y := by
+        funext k
+        exact hpre (xs k)
+      rw [heqSource]
+      exact Or.inl ⟨y, hArel, rfl⟩
+    · have hi : i = () := Subsingleton.elim _ _
+      subst i
+      let pre : T → W := fun z => Classical.choose (hcopy z)
+      have hpre (z : T) :
+          z.1 = Attachment.copyMap B S A
+            (fun _ : Unit => ov) () (pre z) :=
+        Classical.choose_spec (hcopy z)
+      let Rng : Set W := Set.range pre
+      have hRng : (B.induce Rng).Irreducible := by
+        intro a b hab
+        rcases a.property with ⟨sa, hsa⟩
+        rcases b.property with ⟨sb, hsb⟩
+        have hsab : sa ≠ sb := by
+          intro hs
+          apply hab
+          apply Subtype.ext
+          rw [← hsa, ← hsb, hs]
+        obtain ⟨R', z, k, l, hz, hzk, hzl⟩ := hT hsab
+        change (structure D A B fA fB).rel R' (Subtype.val ∘ z) at hz
+        let y : Fin (L.arity R') → W := fun q => pre (z q)
+        have heq :
+            Subtype.val ∘ z =
+              Attachment.copyMap B S A
+                (fun _ : Unit => ov) () ∘ y := by
+          funext q
+          exact hpre (z q)
+        rw [heq] at hz
+        have hBrel :=
+          (Attachment.copy_rel_iff
+            (B := B) (S := S) (D := A)
+            (f := fun _ : Unit => ov) () R' y).mp hz
+        let yR : Fin (L.arity R') → Rng :=
+          fun q => ⟨y q, ⟨z q, rfl⟩⟩
+        refine ⟨R', yR, k, l, hBrel, ?_, ?_⟩
+        · apply Subtype.ext
+          change pre (z k) = a.1
+          rw [hzk]
+          exact hsa
+        · apply Subtype.ext
+          change pre (z l) = b.1
+          rw [hzl]
+          exact hsb
+      let xs : Fin (L.arity R) → T := fun k => ⟨x k, hxT k⟩
+      let y : Fin (L.arity R) → W := fun k => pre (xs k)
+      have hyR : ∀ k, y k ∈ Rng := fun k => ⟨xs k, rfl⟩
+      have heqTarget :
+          F ∘ x =
+            rightEmbedding D A₂ B₂ gA gB ∘ (hB ∘ y) := by
+        funext k
+        change F (xs k).1 =
+          rightEmbedding D A₂ B₂ gA gB (hB (y k))
+        rw [hpre (xs k)]
+        exact map_right D A B fA fB A₂ B₂ gA gB hA hB
+          hcompatA hcompatB (y k)
+      rw [heqTarget] at htarget
+      have hB₂ :
+          B₂.rel R (hB ∘ y) :=
+        ((rightEmbedding D A₂ B₂ gA gB).map_rel_iff R (hB ∘ y)).mp htarget
+      have hBrel := hhB.reflect_rel_on Rng hRng R y hyR hB₂
+      have heqSource :
+          x = Attachment.copyMap B S A
+            (fun _ : Unit => ov) () ∘ y := by
+        funext k
+        exact hpre (xs k)
+      rw [heqSource]
+      exact Or.inr ⟨(), y, hBrel, rfl⟩
+
 end Map
 
 /-- The concrete attachment is the free amalgam in the explicit sense used by
