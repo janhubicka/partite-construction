@@ -213,6 +213,8 @@ theorem inducedConstruction
   have h := hβ e₁ e₂
   rw [hθ α₁ hα₁ (initialProjectedCopy (A := A) B D β e₁),
       hθ α₂ hα₂ (initialProjectedCopy (A := A) B D β e₂)] at h
-  simpa only [j, initialProjectedCopy, RelStructure.Embedding.comp_assoc] using h
+  rw [RelStructure.Embedding.comp_assoc,
+    RelStructure.Embedding.comp_assoc]
+  simpa only [j, initialProjectedCopy] using h
 
 end StructuralRamsey.Partite.Induced
