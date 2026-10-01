@@ -25,6 +25,32 @@ def refl (A : RelStructure L V) : Iso A A where
 
 end Iso
 
+/-- Every induced substructure is irreducible.  Ordered relational
+structures with a complete binary order relation satisfy this condition, and
+it is exactly what makes arbitrary overlaps inside an `A`-copy visible to a
+homomorphism-embedding as induced substructures. -/
+def HereditarilyIrreducible (A : RelStructure L U) : Prop :=
+  ∀ S : Set U, (A.induce S).Irreducible
+
+theorem HereditarilyIrreducible.irreducible
+    {A : RelStructure L U} (hA : HereditarilyIrreducible A) :
+    A.Irreducible := by
+  let e : A.induce (Set.univ : Set U) ≃ A := {
+    toFun := Subtype.val
+    invFun := fun x => ⟨x, Set.mem_univ x⟩
+    left_inv := by intro x; exact Subtype.ext rfl
+    right_inv := by intro x; rfl
+  }
+  intro x y hxy
+  obtain ⟨R, z, i, j, hz, hzi, hzj⟩ :=
+    hA (Set.univ : Set U) (x := ⟨x, Set.mem_univ x⟩)
+      (y := ⟨y, Set.mem_univ y⟩) (by
+        intro h
+        exact hxy (congrArg Subtype.val h))
+  let z' : Fin (L.arity R) → U := fun k => (z k).1
+  exact ⟨R, z', i, j, hz, congrArg Subtype.val hzi,
+    congrArg Subtype.val hzj⟩
+
 /-- The image of an embedding is contained in some irreducible substructure. -/
 def Embedding.ContainedInIrreducible
     {A : RelStructure L U} {B : RelStructure L V}
@@ -45,6 +71,16 @@ theorem Embedding.containedInIrreducible_of_range_subset
   obtain ⟨a, ha⟩ := h d
   exact ⟨a, ha.symm⟩
 
+
+/-- Under hereditary irreducibility, a homomorphism-embedding is an
+ordinary embedding on the image of every embedded substructure of `A`. -/
+theorem IsHomomorphismEmbedding.on_substructure_of_hereditarilyIrreducible
+    {A : RelStructure L U} {C : RelStructure L V} {T : RelStructure L W}
+    (hA : HereditarilyIrreducible A) (S : Set U)
+    (e : Embedding (A.induce S) C)
+    {f : V → W} (hf : C.IsHomomorphismEmbedding T f) :
+    ∃ g : Embedding (A.induce S) T, ∀ x, g x = f (e x) := by
+  exact hf.after_irreducible_embedding (hA S) e
 
 /-- A concrete relational structure is the free amalgam of `A` and `B`
 over `D` when it is covered by induced copies of the two sides, those copies
