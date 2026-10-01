@@ -69,7 +69,12 @@ theorem reflect_rel_on (h : A.IsHomomorphismEmbedding B f) (S : Set V)
     funext i
     exact he (xs i)
   have hsource := (e.map_rel_iff R xs).mp htarget
-  simpa [RelStructure.induce, xs] using hsource
+  change A.rel R (Subtype.val ∘ xs) at hsource
+  have heq : Subtype.val ∘ xs = x := by
+    funext i
+    rfl
+  rw [heq] at hsource
+  exact hsource
 
 end IsHomomorphismEmbedding
 
