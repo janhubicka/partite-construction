@@ -48,6 +48,39 @@ theorem embeddingOn (h : A.IsHomomorphismEmbedding B f) (S : Set V)
     ∃ e : Embedding (A.induce S) B, ∀ x, e x = f x.1 :=
   h.2 S hS
 
+/-- Build a homomorphism-embedding from global relation preservation,
+injectivity on irreducible subsets, and relation reflection on those subsets. -/
+theorem of_map_reflect
+    (hmap : A.IsHomomorphism B f)
+    (hinj : ∀ (S : Set V), (A.induce S).Irreducible → Set.InjOn f S)
+    (hrefl : ∀ (S : Set V), (A.induce S).Irreducible →
+      ∀ (R : L.Symbol) (x : Fin (L.arity R) → V),
+        (∀ i, x i ∈ S) → B.rel R (f ∘ x) → A.rel R x) :
+    A.IsHomomorphismEmbedding B f := by
+  constructor
+  · exact hmap
+  · intro S hS
+    let e : Embedding (A.induce S) B := {
+      toFun := fun x => f x.1
+      injective := by
+        intro x y hxy
+        apply Subtype.ext
+        exact hinj S hS x.2 y.2 hxy
+      map_rel_iff := by
+        intro R x
+        constructor
+        · intro htarget
+          apply hrefl S hS R (Subtype.val ∘ x)
+          · exact fun i => (x i).2
+          · convert htarget using 1
+            funext i
+            rfl
+        · intro hsource
+          apply hmap R (Subtype.val ∘ x)
+          exact hsource
+    }
+    exact ⟨e, fun _ => rfl⟩
+
 theorem injOn (h : A.IsHomomorphismEmbedding B f) (S : Set V)
     (hS : (A.induce S).Irreducible) : Set.InjOn f S := by
   obtain ⟨e, he⟩ := h.embeddingOn S hS
