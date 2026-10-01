@@ -18,7 +18,11 @@ variable {U V W X Y : Type v}
 variable (D : RelStructure L U) (A : RelStructure L V) (B : RelStructure L W)
 variable (fA : Embedding D A) (fB : Embedding D B)
 
-def support : Set W := Set.range fB
+def support : Set W := by
+  let _keepD := D
+  let _keepA := A
+  let _keepfA := fA
+  exact Set.range fB
 
 noncomputable def preimage (x : support D A B fA fB) : U :=
   Classical.choose x.property
@@ -52,15 +56,15 @@ noncomputable def overlapEmbedding :
 abbrev Vertex :=
   Attachment.Vertex (support D A B fA fB) (W := V) (I := Unit)
 
-noncomputable def structure : RelStructure L (Vertex D A B fA fB) :=
+noncomputable def amalgam : RelStructure L (Vertex D A B fA fB) :=
   Attachment.attach B (support D A B fA fB) A
     (fun _ : Unit => overlapEmbedding D A B fA fB)
 
-noncomputable def leftEmbedding : Embedding A (structure D A B fA fB) :=
+noncomputable def leftEmbedding : Embedding A (amalgam D A B fA fB) :=
   Attachment.coreEmbedding B (support D A B fA fB) A
     (fun _ : Unit => overlapEmbedding D A B fA fB)
 
-noncomputable def rightEmbedding : Embedding B (structure D A B fA fB) :=
+noncomputable def rightEmbedding : Embedding B (amalgam D A B fA fB) :=
   Attachment.copyEmbedding B (support D A B fA fB) A
     (fun _ : Unit => overlapEmbedding D A B fA fB) ()
 
@@ -134,8 +138,8 @@ theorem map_isHomomorphism
     (hcompatB : ∀ d, hB (fB d) = gB d)
     (hhA : A.IsHomomorphism A₂ hA)
     (hhB : B.IsHomomorphism B₂ hB) :
-    (structure D A B fA fB).IsHomomorphism
-      (structure D A₂ B₂ gA gB)
+    (amalgam D A B fA fB).IsHomomorphism
+      (amalgam D A₂ B₂ gA gB)
       (map D A B fA fB A₂ B₂ gA gB hA hB) := by
   intro R z hz
   rcases hz with ⟨x, hx, rfl⟩ | ⟨i, y, hy, rfl⟩
@@ -162,8 +166,8 @@ theorem map_isHomomorphismEmbedding
     (hcompatB : ∀ d, hB (fB d) = gB d)
     (hhA : A.IsHomomorphismEmbedding A₂ hA)
     (hhB : B.IsHomomorphismEmbedding B₂ hB) :
-    (structure D A B fA fB).IsHomomorphismEmbedding
-      (structure D A₂ B₂ gA gB)
+    (amalgam D A B fA fB).IsHomomorphismEmbedding
+      (amalgam D A₂ B₂ gA gB)
       (map D A B fA fB A₂ B₂ gA gB hA hB) := by
   classical
   let S := support D A B fA fB
@@ -191,7 +195,7 @@ theorem map_isHomomorphismEmbedding
           apply Subtype.ext
           rw [← hsa, ← hsb, hs]
         obtain ⟨R, z, k, l, hz, hzk, hzl⟩ := hT hsab
-        change (structure D A B fA fB).rel R (Subtype.val ∘ z) at hz
+        change (amalgam D A B fA fB).rel R (Subtype.val ∘ z) at hz
         let y : Fin (L.arity R) → V := fun q => pre (z q)
         have heq : Subtype.val ∘ z = Sum.inl ∘ y := by
           funext q
@@ -255,7 +259,7 @@ theorem map_isHomomorphismEmbedding
           apply Subtype.ext
           rw [← hsa, ← hsb, hs]
         obtain ⟨R, z, k, l, hz, hzk, hzl⟩ := hT hsab
-        change (structure D A B fA fB).rel R (Subtype.val ∘ z) at hz
+        change (amalgam D A B fA fB).rel R (Subtype.val ∘ z) at hz
         let y : Fin (L.arity R) → W := fun q => pre (z q)
         have heq :
             Subtype.val ∘ z =
@@ -329,7 +333,7 @@ theorem map_isHomomorphismEmbedding
           apply Subtype.ext
           rw [← hsa, ← hsb, hs]
         obtain ⟨R', z, k, l, hz, hzk, hzl⟩ := hT hsab
-        change (structure D A B fA fB).rel R' (Subtype.val ∘ z) at hz
+        change (amalgam D A B fA fB).rel R' (Subtype.val ∘ z) at hz
         let y : Fin (L.arity R') → V := fun q => pre (z q)
         have heq : Subtype.val ∘ z = Sum.inl ∘ y := by
           funext q
@@ -389,7 +393,7 @@ theorem map_isHomomorphismEmbedding
           apply Subtype.ext
           rw [← hsa, ← hsb, hs]
         obtain ⟨R', z, k, l, hz, hzk, hzl⟩ := hT hsab
-        change (structure D A B fA fB).rel R' (Subtype.val ∘ z) at hz
+        change (amalgam D A B fA fB).rel R' (Subtype.val ∘ z) at hz
         let y : Fin (L.arity R') → W := fun q => pre (z q)
         have heq :
             Subtype.val ∘ z =
@@ -513,7 +517,7 @@ theorem treeAmalgam
     (hA : TreeAmalgam Base V A) (hB : TreeAmalgam Base W B)
     (hcA : fA.ContainedInIrreducible)
     (hcB : fB.ContainedInIrreducible) :
-    TreeAmalgam Base (Vertex D A B fA fB) (structure D A B fA fB) :=
+    TreeAmalgam Base (Vertex D A B fA fB) (amalgam D A B fA fB) :=
   TreeAmalgam.glue hA hB fA fB hcA hcB
     (leftEmbedding D A B fA fB) (rightEmbedding D A B fA fB)
     (isFreeAmalgam D A B fA fB)
