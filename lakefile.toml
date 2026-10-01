@@ -1,0 +1,11 @@
+name = "partite-construction"
+version = "0.1.0"
+defaultTargets = ["PartiteConstruction"]
+
+[[require]]
+name = "successor-tree-lean"
+git = "https://github.com/janhubicka/lean-successors.git"
+rev = "ce5ce187ef88e28d84a4a465517b3f9c87a0640a"
+
+[[lean_lib]]
+name = "PartiteConstruction"
