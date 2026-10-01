@@ -23,6 +23,26 @@ is a homomorphism-embedding of the relational reduct to `A`. -/
 def System.IsPartiteOver (B : System L P V) (A : RelStructure L P) : Prop :=
   B.toRelStructure.IsHomomorphismEmbedding A B.part
 
+/-- In an irreducible substructure of a partite system, the partition
+projection is injective. -/
+theorem System.part_injOn_irreducible (B : System L P V) (S : Set V)
+    (hS : (B.toRelStructure.induce S).Irreducible) :
+    Set.InjOn B.part S := by
+  intro x hx y hy hpart
+  by_cases hxy : x = y
+  · exact hxy
+  have hsub : (⟨x, hx⟩ : S) ≠ ⟨y, hy⟩ := by
+    intro h
+    exact hxy (congrArg Subtype.val h)
+  obtain ⟨R, z, i, j, hz, hzi, hzj⟩ := hS hsub
+  change B.rel R (Subtype.val ∘ z) at hz
+  have hp :
+      B.part ((Subtype.val ∘ z) i) =
+        B.part ((Subtype.val ∘ z) j) := by
+    simpa [Function.comp_apply, hzi, hzj] using hpart
+  have hv := B.transversal R (Subtype.val ∘ z) hz i j hp
+  simpa [Function.comp_apply, hzi, hzj] using hv
+
 namespace Induced
 
 variable (A : RelStructure L P) (B : System L P V)
