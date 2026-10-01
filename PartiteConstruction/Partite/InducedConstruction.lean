@@ -174,7 +174,11 @@ theorem inducedConstruction
   let projected (α : RelStructure.Embedding A D)
       (hα : Relevant A B D α) :
       ProjectedEmbedding A P₀ α.toFunctionEmbedding := by
-    rcases hα with ⟨β, e, hfac⟩
+    let β : RelStructure.Embedding B D := Classical.choose hα
+    have hrest : ∃ e : RelStructure.Embedding A B, α = β.comp e :=
+      Classical.choose_spec hα
+    let e : RelStructure.Embedding A B := Classical.choose hrest
+    have hfac : α = β.comp e := Classical.choose_spec hrest
     refine ⟨(Partite.Initial.copyEmbedding B
       (fun γ : RelStructure.Embedding B D => γ.toFunctionEmbedding) β).comp e, ?_⟩
     intro x
@@ -209,6 +213,6 @@ theorem inducedConstruction
   have h := hβ e₁ e₂
   rw [hθ α₁ hα₁ (initialProjectedCopy (A := A) B D β e₁),
       hθ α₂ hα₂ (initialProjectedCopy (A := A) B D β e₂)] at h
-  simpa only [j, RelStructure.Embedding.comp_assoc] using h
+  simpa only [j, initialProjectedCopy, RelStructure.Embedding.comp_assoc] using h
 
 end StructuralRamsey.Partite.Induced
