@@ -31,6 +31,21 @@ def Embedding.ContainedInIrreducible
     (f : Embedding A B) : Prop :=
   ∃ S : Set V, (B.induce S).Irreducible ∧ ∀ x : U, f x ∈ S
 
+/-- An embedded substructure whose image lies inside an embedded copy of an
+irreducible structure satisfies the gluing-side condition. -/
+theorem Embedding.containedInIrreducible_of_range_subset
+    {D : RelStructure L U} {A : RelStructure L V}
+    {T : RelStructure L W}
+    (hA : A.Irreducible) (α : Embedding A T) (g : Embedding D T)
+    (h : ∀ d, ∃ a, g d = α a) :
+    g.ContainedInIrreducible := by
+  let S : Set W := Set.range α
+  refine ⟨S, hA.range_embedding α, ?_⟩
+  intro d
+  obtain ⟨a, ha⟩ := h d
+  exact ⟨a, ha⟩
+
+
 /-- A concrete relational structure is the free amalgam of `A` and `B`
 over `D` when it is covered by induced copies of the two sides, those copies
 intersect exactly in the prescribed common image, and every relation tuple
