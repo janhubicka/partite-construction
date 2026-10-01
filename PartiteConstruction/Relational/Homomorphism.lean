@@ -170,6 +170,67 @@ theorem comp (hg : B.IsHomomorphismEmbedding C g)
 
 end IsHomomorphismEmbedding
 
+/-- The image of an irreducible structure under an induced embedding is
+irreducible as an induced substructure of the target. -/
+theorem Irreducible.range_embedding
+    {A : RelStructure L V} {B : RelStructure L W}
+    (hA : A.Irreducible) (e : Embedding A B) :
+    (B.induce (Set.range e)).Irreducible := by
+  intro x y hxy
+  rcases x.property with ⟨a, ha⟩
+  rcases y.property with ⟨b, hb⟩
+  have hab : a ≠ b := by
+    intro hab
+    apply hxy
+    apply Subtype.ext
+    rw [← ha, ← hb, hab]
+  obtain ⟨R, z, i, j, hz, hzi, hzj⟩ := hA hab
+  let z' : Fin (L.arity R) → Set.range e :=
+    fun k => ⟨e (z k), ⟨z k, rfl⟩⟩
+  refine ⟨R, z', i, j, ?_, ?_, ?_⟩
+  · change B.rel R (Subtype.val ∘ z')
+    have hrel := (e.map_rel_iff R z).mpr hz
+    convert hrel using 1
+    funext k
+    rfl
+  · apply Subtype.ext
+    change e (z i) = x.1
+    rw [hzi]
+    exact ha
+  · apply Subtype.ext
+    change e (z j) = y.1
+    rw [hzj]
+    exact hb
+
+namespace IsHomomorphismEmbedding
+
+variable {X : Type z} {A : RelStructure L V}
+  {C : RelStructure L W} {B : RelStructure L X} {f : W → X}
+
+/-- A homomorphism-embedding followed along an irreducible induced copy gives
+an ordinary induced embedding of that copy. -/
+theorem after_irreducible_embedding
+    (h : C.IsHomomorphismEmbedding B f)
+    (hA : A.Irreducible) (e : Embedding A C) :
+    ∃ g : Embedding A B, ∀ a, g a = f (e a) := by
+  let S : Set W := Set.range e
+  have hS : (C.induce S).Irreducible :=
+    hA.range_embedding e
+  obtain ⟨d, hd⟩ := h.embeddingOn S hS
+  let eS : Embedding A (C.induce S) := {
+    toFun := fun a => ⟨e a, ⟨a, rfl⟩⟩
+    injective := fun _ _ hxy => e.injective (congrArg Subtype.val hxy)
+    map_rel_iff := fun R x => by
+      change C.rel R (e ∘ x) ↔ A.rel R x
+      exact e.map_rel_iff R x
+  }
+  refine ⟨d.comp eS, ?_⟩
+  intro a
+  change d (eS a) = f (e a)
+  exact hd (eS a)
+
+end IsHomomorphismEmbedding
+
 namespace Embedding
 
 variable {A : RelStructure L V} {B : RelStructure L W}
