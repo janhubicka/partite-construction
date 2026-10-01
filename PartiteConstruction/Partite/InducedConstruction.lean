@@ -35,10 +35,10 @@ def initialStage (B : RelStructure L V) (D : RelStructure L P)
   finiteVertex := inferInstance
   system := Partite.Initial.picture B
     (fun β : RelStructure.Embedding B D => β.toFunctionEmbedding)
-  isPartite := Initial.picture_isPartiteOver D
-    (fun β : RelStructure.Embedding B D => β)
-  covers := Initial.picture_covers D
-    (fun β : RelStructure.Embedding B D => β)
+  isPartite := Initial.picture_isPartiteOver
+    (B := B) (D := D) (γ := fun β : RelStructure.Embedding B D => β)
+  covers := Initial.picture_covers
+    (B := B) (D := D) (γ := fun β : RelStructure.Embedding B D => β)
 
 /-- Every node of the trace is already a stage satisfying invariant (3);
 each transition additionally records that the new picture is based on the
@@ -55,8 +55,28 @@ inductive Trace
 /-- The list of partition projections corresponding to a list of relevant
 embeddings. -/
 def projectionProfiles
+    (A : RelStructure L U) (B : RelStructure L V) (D : RelStructure L P)
     (xs : List (RelevantEmbedding A B D)) : List (U ↪ P) :=
   xs.map (fun α => α.1.toFunctionEmbedding)
+
+/-- A fixed enumeration of all relevant embeddings, without exposing a
+noncomputable `Fintype` choice in theorem statements. -/
+noncomputable def allRelevant
+    (A : RelStructure L U) (B : RelStructure L V) (D : RelStructure L P)
+    [Finite U] [Finite V] [Finite P] :
+    List (RelevantEmbedding A B D) := by
+  classical
+  letI : Fintype (RelevantEmbedding A B D) := Fintype.ofFinite _
+  exact Finset.univ.toList
+
+@[simp] theorem mem_allRelevant
+    (A : RelStructure L U) (B : RelStructure L V) (D : RelStructure L P)
+    [Finite U] [Finite V] [Finite P]
+    (α : RelevantEmbedding A B D) :
+    α ∈ allRelevant A B D := by
+  classical
+  letI : Fintype (RelevantEmbedding A B D) := Fintype.ofFinite _
+  simp [allRelevant]
 
 /-- Build all requested stages.  The trace runs in the reverse of the input
 list because the witness object is assembled by the same backwards induction
@@ -139,16 +159,13 @@ theorem inducedConstruction
       nonempty_embedding_of_arrow A B D κ hRamsey
     let S₀ := initialStage B D
     ∃ T : Stage B D,
-      Trace A B D S₀
-        (Finset.univ.toList :
-          List (RelevantEmbedding A B D)).reverse T ∧
+      Trace A B D S₀ (allRelevant A B D).reverse T ∧
       StructuralRamsey.Arrow A B T.system.toRelStructure κ := by
   classical
   letI : Nonempty (RelStructure.Embedding B D) :=
     nonempty_embedding_of_arrow A B D κ hRamsey
   let S₀ := initialStage B D
-  letI : Fintype (RelevantEmbedding A B D) := Fintype.ofFinite _
-  let xs : List (RelevantEmbedding A B D) := Finset.univ.toList
+  let xs : List (RelevantEmbedding A B D) := allRelevant A B D
   obtain ⟨T, hTrace, hCanon⟩ := build A B D S₀ xs κ
   refine ⟨T, hTrace, ?_⟩
   intro χ
