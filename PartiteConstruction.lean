@@ -12,6 +12,7 @@ import PartiteConstruction.Partite.InducedPicture
 import PartiteConstruction.Partite.InducedInitial
 import PartiteConstruction.Partite.InducedInvariant
 import PartiteConstruction.Partite.InducedBased
+import PartiteConstruction.Partite.InducedStep
 import PartiteConstruction.Relational.Attachment
 import PartiteConstruction.Relational.Order
 import PartiteConstruction.Partite.Operations
