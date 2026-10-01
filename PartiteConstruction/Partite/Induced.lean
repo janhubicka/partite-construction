@@ -153,6 +153,8 @@ theorem lineMap_rel_iff (hB : B.IsPartiteOver A)
           (e.toEmbedding.map_rel_iff R (B.part ∘ x)).mpr hA
         have htarget : B.rel R (fun j => e (B.part (x j))) := by
           convert he using 1
+          funext j
+          rfl
         simpa only [NonInduced.lineMap, hi, Function.comp_apply] using htarget
 
 /-- Every parameter word gives an induced part-preserving embedding into the
