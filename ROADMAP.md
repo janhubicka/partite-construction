@@ -9,13 +9,14 @@ and update the survey's validation markers at an immutable proof commit.
 2. **Complete:** reusable finite free attachment; the Picture Lemma; initial
    pictures; finite iteration; preservation of projected relation constraints;
    extraction from a Ramsey family of placements; order completion preserving
-   induced embeddings and the arrow. The combined ordered theorem has an
-   explicit `ProjectionRamsey` hypothesis.
-3. **Next:** prove ordinary finite subset Ramsey and translate increasing
-   placements to `ProjectionRamsey`, discharging the remaining hypothesis of
-   the unrestricted ordered Nešetřil–Rödl theorem.
-4. **Induced construction:** homomorphism-embeddings, coordinatewise powers,
-   the induced Partite Lemma, based pictures, and the irreducible-image invariant.
+   induced embeddings and the arrow.
+3. **Complete:** ordinary finite Ramsey for strictly increasing tuples;
+   translation of a homogeneous subset to increasing placements and
+   `ProjectionRamsey`; the unconditional unrestricted ordered
+   Nešetřil–Rödl theorem.
+4. **Next — induced construction:** homomorphism-embeddings, coordinatewise
+   powers, the induced Partite Lemma, based pictures, and the
+   irreducible-image invariant.
 5. **Applications and iteration:** ordered forbidden-substructure classes,
    partial orders, tree amalgams, local tree-likeness, and sparsening.
 6. **Recursive construction:** set-valued functions, closed embeddings,
