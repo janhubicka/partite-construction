@@ -1,4 +1,5 @@
 import PartiteConstruction.Relational.Basic
+import PartiteConstruction.Relational.Homomorphism
 
 /-! # Free attachment of copies along an induced substructure
 
@@ -82,7 +83,7 @@ theorem relation_eq_copy_of_contains_outside
   · have hcoord := congrFun hcopy k
     rw [hk] at hcoord
     by_cases hmem : y k ∈ S
-    · rw [copyMap_mem j (y k) hmem] at hcoord
+    · simp only [Function.comp_apply, copyMap_mem j (y k) hmem] at hcoord
       simp at hcoord
     · have hp : (j, ⟨y k, hmem⟩) = (i, x) := by
         apply Sum.inr.inj
@@ -105,7 +106,7 @@ theorem irreducible_core_or_copy
   · push Not at hcore
     obtain ⟨a, ha⟩ := hcore
     cases hval : a.1 with
-    | inl y => exact (ha ⟨y, hval⟩).elim
+    | inl y => exact (ha y hval).elim
     | inr ix =>
         let i : I := ix.1
         let x0 : {x : V // x ∉ S} := ix.2
