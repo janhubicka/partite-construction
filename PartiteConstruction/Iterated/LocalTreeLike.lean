@@ -43,7 +43,7 @@ theorem Embedding.containedInIrreducible_of_range_subset
   refine ⟨S, hA.range_embedding α, ?_⟩
   intro d
   obtain ⟨a, ha⟩ := h d
-  exact ⟨a, ha⟩
+  exact ⟨a, ha.symm⟩
 
 
 /-- A concrete relational structure is the free amalgam of `A` and `B`
