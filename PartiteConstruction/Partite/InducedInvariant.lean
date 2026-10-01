@@ -58,7 +58,7 @@ theorem relevant_iff_image_contained
     refine ⟨β, emb, ?_⟩
     apply RelStructure.Embedding.ext
     intro a
-    exact (he a).symm
+    exact he a
 
 instance [Finite U] [Finite V] [Finite P] :
     Finite (RelevantEmbedding A B₀ D₀) := by
