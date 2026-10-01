@@ -1,4 +1,5 @@
 import PartiteConstruction.Relational.Basic
+import PartiteConstruction.Relational.Homomorphism
 import PartiteConstruction.Ramsey.Basic
 import PartiteConstruction.Partite.Predicates
 import PartiteConstruction.Partite.Projection
