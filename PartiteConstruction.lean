@@ -5,3 +5,13 @@ import PartiteConstruction.Partite.Projection
 import PartiteConstruction.Partite.Fusion
 import PartiteConstruction.HalesJewett.Finite
 import PartiteConstruction.Partite.NonInduced
+import PartiteConstruction.Relational.Attachment
+import PartiteConstruction.Relational.Order
+import PartiteConstruction.Partite.Operations
+import PartiteConstruction.Partite.Attachment
+import PartiteConstruction.Partite.Picture
+import PartiteConstruction.Partite.Initial
+import PartiteConstruction.Partite.Construction
+import PartiteConstruction.Partite.Invariants
+import PartiteConstruction.Ramsey.FromProjections
+import PartiteConstruction.Ramsey.Ordered
