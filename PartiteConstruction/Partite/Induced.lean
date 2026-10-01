@@ -55,6 +55,76 @@ theorem power_projection_homomorphism (hB : B.IsPartiteOver A) (hN : 0 < N) :
   funext j
   exact ((z j).belongs i0).symm
 
+/-- Positive coordinate powers remain `A`-partite. The nontrivial
+reflection step is checked on each coordinate image of an irreducible
+substructure: that image is again irreducible, so the original projection
+homomorphism-embedding reflects the relation there. -/
+theorem power_isPartiteOver (hB : B.IsPartiteOver A) (hN : 0 < N) :
+    (power B N).IsPartiteOver A := by
+  constructor
+  · exact power_projection_homomorphism hB hN
+  · intro S hS
+    let e : RelStructure.Embedding ((power B N).toRelStructure.induce S) A := {
+      toFun := fun x => (power B N).part x.1
+      injective := by
+        intro x y hxy
+        by_contra hne
+        obtain ⟨R, z, i, j, hz, hzi, hzj⟩ := hS hne
+        change (power B N).rel R (Subtype.val ∘ z) at hz
+        have hp :
+            (power B N).part ((Subtype.val ∘ z) i) =
+              (power B N).part ((Subtype.val ∘ z) j) := by
+          simpa [Function.comp_apply, hzi, hzj] using hxy
+        have hv := (power B N).transversal R (Subtype.val ∘ z) hz i j hp
+        have hzij : z i = z j := Subtype.ext hv
+        exact hne (hzi.symm.trans (hzij.trans hzj))
+      map_rel_iff := by
+        intro R x
+        constructor
+        · intro hA
+          change (power B N).rel R (Subtype.val ∘ x)
+          intro k
+          let y : Fin (L.arity R) → V := fun j => (x j).1.coord k
+          let T : Set V := Set.range (fun s : S => s.1.coord k)
+          have hT : (B.toRelStructure.induce T).Irreducible := by
+            intro a b hab
+            rcases a.property with ⟨sa, hsa⟩
+            rcases b.property with ⟨sb, hsb⟩
+            have hsab : sa ≠ sb := by
+              intro heq
+              apply hab
+              apply Subtype.ext
+              rw [← hsa, ← hsb, heq]
+            obtain ⟨R', z, i, j, hz, hzi, hzj⟩ := hS hsab
+            change (power B N).rel R' (Subtype.val ∘ z) at hz
+            have hzB : B.rel R' (fun t => (z t).1.coord k) := hz k
+            let zT : Fin (L.arity R') → T :=
+              fun t => ⟨(z t).1.coord k, ⟨z t, rfl⟩⟩
+            refine ⟨R', zT, i, j, ?_, ?_, ?_⟩
+            · change B.rel R' (Subtype.val ∘ zT)
+              convert hzB using 1
+            · apply Subtype.ext
+              change (z i).1.coord k = a.1
+              rw [hzi, hsa]
+            · apply Subtype.ext
+              change (z j).1.coord k = b.1
+              rw [hzj, hsb]
+          have hyT : ∀ j, y j ∈ T := by
+            intro j
+            exact ⟨x j, rfl⟩
+          have hAcoord : A.rel R (B.part ∘ y) := by
+            convert hA using 1
+            funext j
+            exact ((x j).1.belongs k).symm
+          exact hB.reflect_rel_on T hT R y hyT hAcoord
+        · intro hx
+          change (power B N).rel R (Subtype.val ∘ x) at hx
+          have hA := power_projection_homomorphism hB hN R
+            (Subtype.val ∘ x) hx
+          convert hA using 1
+    }
+    exact ⟨e, fun _ => rfl⟩
+
 /-- Reflection for each Hales--Jewett line is immediate from a parameter
 coordinate; preservation at constant coordinates uses the projection
 homomorphism and the letter embedding. -/
