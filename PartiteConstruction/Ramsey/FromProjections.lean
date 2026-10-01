@@ -14,8 +14,8 @@ on projected relation tuples are retained for later order completion.
 -/
 namespace StructuralRamsey.Partite
 
-universe u v
-variable {L : RelLanguage.{u}} {U V P I : Type v}
+universe u v w
+variable {L : RelLanguage.{u}} {U V I : Type v} {P : Type w}
 variable (A : RelStructure L U) (B : RelStructure L V) (β : I → V ↪ P)
 
 def copyProjection (i : I) (e : RelStructure.Embedding A B) : U ↪ P where
