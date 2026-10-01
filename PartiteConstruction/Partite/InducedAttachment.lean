@@ -81,8 +81,10 @@ theorem attach_isPartiteOver
         funext k
         change D.part (pre ⟨x k, hxT k⟩) = part B S D (x k)
         have hk := hpre ⟨x k, hxT k⟩
-        rw [hk]
-        rfl
+        calc
+          D.part (pre ⟨x k, hxT k⟩) =
+              part B S D (Sum.inl (pre ⟨x k, hxT k⟩)) := rfl
+          _ = part B S D (x k) := (congrArg (part B S D) hk).symm
       have hDrel := hD.reflect_rel_on U hU R y hyU hApart
       have heq : x = Sum.inl ∘ y := by
         funext k
@@ -138,8 +140,8 @@ theorem attach_isPartiteOver
         funext k
         change B.part (pre ⟨x k, hxT k⟩) = part B S D (x k)
         have hk := hpre ⟨x k, hxT k⟩
-        rw [hk]
-        exact (part_copyMap B S D f i (pre ⟨x k, hxT k⟩)).symm
+        exact (part_copyMap B S D f i (pre ⟨x k, hxT k⟩)).symm.trans
+          (congrArg (part B S D) hk).symm
       have hBrel := hB.reflect_rel_on U hU R y hyU hApart
       have heq :
           x = RelStructure.Attachment.copyMap B.toRelStructure S D.toRelStructure
