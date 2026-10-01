@@ -114,8 +114,9 @@ theorem increasingProjectionRamsey (A : RelStructure L U) (B : RelStructure L V)
     apply Function.Embedding.ext
     intro x
     change βemb (e (uIso (uRank x)).val) = βemb (e x)
-    have hx := uIso.apply_symm_apply ⟨x, Finset.mem_univ x⟩
-    exact congrArg (fun y => βemb (e y.val)) hx
+    have hx : (uIso (uRank x)).val = x := by
+      exact congrArg Subtype.val (uIso.apply_symm_apply ⟨x, Finset.mem_univ x⟩)
+    rw [hx]
   have hcolour (e : RelStructure.Embedding A.ordered B.ordered) :
       colour (tuple e) =
         θ (copyProjection A.ordered B.ordered
