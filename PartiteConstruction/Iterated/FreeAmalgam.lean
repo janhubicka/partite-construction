@@ -133,10 +133,11 @@ theorem isFreeAmalgam :
 /-- Free amalgams of two tree amalgams are again tree amalgams whenever the
 gluing images satisfy the irreducible-containment condition. -/
 theorem treeAmalgam
-    (hA : TreeAmalgam B V A) (hB : TreeAmalgam B W B)
+    {Q : Type v} (Base : RelStructure L Q)
+    (hA : TreeAmalgam Base V A) (hB : TreeAmalgam Base W B)
     (hcA : fA.ContainedInIrreducible)
     (hcB : fB.ContainedInIrreducible) :
-    TreeAmalgam B (Vertex D A B fA fB) (structure D A B fA fB) :=
+    TreeAmalgam Base (Vertex D A B fA fB) (structure D A B fA fB) :=
   TreeAmalgam.glue hA hB fA fB hcA hcB
     (leftEmbedding D A B fA fB) (rightEmbedding D A B fA fB)
     (isFreeAmalgam D A B fA fB)
