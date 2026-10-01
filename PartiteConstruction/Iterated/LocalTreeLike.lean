@@ -72,7 +72,7 @@ theorem HereditarilyIrreducible.of_embedding
     change A.rel R (Subtype.val ∘ z) at hz
     convert hz using 1
     funext k
-    exact (hq k).symm
+    simpa [Function.comp_apply] using hq k
   have hDz : D.rel R q := (e.map_rel_iff R q).mp hAz
   have hqi : q i = x := by
     apply e.injective
