@@ -26,6 +26,40 @@ def Relevant (α : RelStructure.Embedding A D₀) : Prop :=
 abbrev RelevantEmbedding :=
   {α : RelStructure.Embedding A D₀ // Relevant A B₀ D₀ α}
 
+/-- The factorization definition of relevance is equivalent to the survey's
+image-containment formulation. -/
+theorem relevant_iff_image_contained
+    (α : RelStructure.Embedding A D₀) :
+    Relevant A B₀ D₀ α ↔
+      ∃ β : RelStructure.Embedding B₀ D₀,
+        ∀ a : U, ∃ b : V, α a = β b := by
+  constructor
+  · rintro ⟨β, e, rfl⟩
+    exact ⟨β, fun a => ⟨e a, rfl⟩⟩
+  · rintro ⟨β, hβ⟩
+    choose e he using hβ
+    have hinj : Function.Injective e := by
+      intro x y hxy
+      apply α.injective
+      rw [he x, he y, hxy]
+    let emb : RelStructure.Embedding A B₀ := {
+      toFun := e
+      injective := hinj
+      map_rel_iff := by
+        intro R x
+        have hfun : α ∘ x = β ∘ (e ∘ x) := by
+          funext i
+          exact he (x i)
+        have hα := α.map_rel_iff R x
+        have hβiff := β.map_rel_iff R (e ∘ x)
+        rw [← hα, hfun]
+        exact hβiff
+    }
+    refine ⟨β, emb, ?_⟩
+    apply RelStructure.Embedding.ext
+    intro a
+    exact (he a).symm
+
 instance [Finite U] [Finite V] [Finite P] :
     Finite (RelevantEmbedding A B₀ D₀) := by
   infer_instance
