@@ -66,6 +66,73 @@ noncomputable def attach : RelStructure L (Vertex S (W := W) (I := I)) where
 
 variable {B S D f}
 
+/-- Any relation tuple containing a vertex outside the core belongs to the
+unique attached copy indexed by that vertex. -/
+theorem relation_eq_copy_of_contains_outside
+    {R : L.Symbol} {z : Fin (L.arity R) → Vertex S (W := W) (I := I)}
+    (hz : (attach B S D f).rel R z) (k : Fin (L.arity R))
+    (i : I) (x : {x : V // x ∉ S}) (hk : z k = .inr (i, x)) :
+    ∃ y : Fin (L.arity R) → V, B.rel R y ∧
+      z = copyMap B S D f i ∘ y := by
+  classical
+  rcases hz with ⟨y, hy, hcore⟩ | ⟨j, y, hy, hcopy⟩
+  · have h := congrFun hcore k
+    rw [hk] at h
+    simp at h
+  · have hcoord := congrFun hcopy k
+    rw [hk] at hcoord
+    by_cases hmem : y k ∈ S
+    · rw [copyMap_mem j (y k) hmem] at hcoord
+      simp at hcoord
+    · have hp : (j, ⟨y k, hmem⟩) = (i, x) := by
+        apply Sum.inr.inj
+        simpa only [copyMap_not_mem j (y k) hmem, Function.comp_apply] using hcoord.symm
+      have hji : j = i := congrArg Prod.fst hp
+      subst j
+      exact ⟨y, hy, hcopy⟩
+
+/-- An irreducible substructure of a free attachment lies wholly in the core
+or wholly in one attached copy. This is the structural invariant used by the
+induced Picture Lemma. -/
+theorem irreducible_core_or_copy
+    (T : Set (Vertex S (W := W) (I := I)))
+    (hT : ((attach B S D f).induce T).Irreducible) :
+    (∀ z : T, ∃ y : W, z.1 = .inl y) ∨
+      ∃ i : I, ∀ z : T, ∃ x : V, z.1 = copyMap B S D f i x := by
+  classical
+  by_cases hcore : ∀ z : T, ∃ y : W, z.1 = .inl y
+  · exact Or.inl hcore
+  · push Not at hcore
+    obtain ⟨a, ha⟩ := hcore
+    cases hval : a.1 with
+    | inl y => exact (ha ⟨y, hval⟩).elim
+    | inr ix =>
+        let i : I := ix.1
+        let x0 : {x : V // x ∉ S} := ix.2
+        refine Or.inr ⟨i, ?_⟩
+        intro b
+        by_cases hba : b = a
+        · subst b
+          refine ⟨x0.1, ?_⟩
+          change a.1 = copyMap B S D f i x0.1
+          rw [hval]
+          symm
+          exact copyMap_not_mem i x0.1 x0.2
+        · have hab : a ≠ b := Ne.symm hba
+          obtain ⟨R, z, k, l, hz, hza, hzb⟩ := hT hab
+          change (attach B S D f).rel R (Subtype.val ∘ z) at hz
+          have hk : (Subtype.val ∘ z) k = .inr (i, x0) := by
+            change (z k).1 = .inr (i, x0)
+            rw [hza]
+            exact hval
+          obtain ⟨y, hy, heq⟩ :=
+            relation_eq_copy_of_contains_outside hz k i x0 hk
+          refine ⟨y l, ?_⟩
+          have hl := congrFun heq l
+          change (z l).1 = copyMap B S D f i (y l) at hl
+          rw [hzb] at hl
+          exact hl
+
 theorem core_rel_iff (R : L.Symbol) (x : Fin (L.arity R) → W) :
     (attach B S D f).rel R (Sum.inl ∘ x) ↔ D.rel R x := by
   classical
