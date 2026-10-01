@@ -72,6 +72,7 @@ theorem restrict_isPartiteOver {Q : Type z} (D : RelStructure L P)
       fun k => ⟨((x k).1 : C.support αf).1, ⟨x k, rfl⟩⟩
     refine ⟨R, xT, i, j, ?_, ?_, ?_⟩
     · change C.rel R (Subtype.val ∘ xT)
+      change C.rel R (Subtype.val ∘ (Subtype.val ∘ x)) at hx
       convert hx using 1
       funext k
       rfl
