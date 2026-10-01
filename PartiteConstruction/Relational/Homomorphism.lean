@@ -132,8 +132,8 @@ theorem comp (hg : B.IsHomomorphismEmbedding C g)
     refine ⟨d.comp eT, ?_⟩
     intro x
     change d (eT x) = g (f x.1)
-    rw [hd (eT x), he x]
-    rfl
+    rw [hd (eT x)]
+    exact congrArg g (he x)
 
 end IsHomomorphismEmbedding
 
