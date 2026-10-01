@@ -22,7 +22,7 @@ structure Stage (B : RelStructure L V) (D : RelStructure L P) where
   finiteVertex : Finite Vertex
   system : System L P Vertex
   isPartite : system.IsPartiteOver D
-  covers : system.CoversIrreduciblesBy B D
+  covers : CoversIrreduciblesBy system B D
 
 attribute [instance] Stage.finiteVertex
 
@@ -49,7 +49,7 @@ inductive Trace
   | nil (S : Stage B D) : Trace A B D S [] S
   | snoc {S T R : Stage B D} {xs : List (RelevantEmbedding A B D)}
       (h : Trace A B D S xs T) (α : RelevantEmbedding A B D)
-      (hBased : R.system.BasedOn A D T.system α.1) :
+      (hBased : BasedOn A D T.system α.1 R.system) :
       Trace A B D S (xs ++ [α]) R
 
 /-- The list of partition projections corresponding to a list of relevant
