@@ -4,16 +4,17 @@ Reusable Lean formalization of structural Ramsey theory, starting with the
 non-induced partite construction in Appendix A of the survey *Twenty years of
 Nešetřil's classification programme of Ramsey classes*.
 
-The finite non-induced **Partite Lemma**, **Picture Lemma**, and **finite
-iteration** are proved with induced embeddings. The library also constructs
-initial pictures, preserves constraints on projected relations, extracts a
-monochromatic copy from a Ramsey family of placements, and completes the order
-without losing the Ramsey arrow.
+The finite non-induced **Partite Lemma**, **Picture Lemma**, **finite
+iteration**, and final ordered theorem are proved with induced embeddings. The
+library also constructs initial pictures, preserves constraints on projected
+relations, proves finite Ramsey for increasing tuples, extracts the required
+increasing placements, and completes the order without losing the Ramsey
+arrow.
 
-`orderedRamseyFromProjections` assembles the structural argument into one
-theorem. Its `ProjectionRamsey` hypothesis is explicit: the ordinary finite
-subset Ramsey theorem and its increasing-placement interface remain to be
-formalized before claiming the unconditional Nešetřil–Rödl theorem.
+`orderedRamseyFromProjections` exposes the structural argument with an
+explicit `ProjectionRamsey` input. The theorem `increasingProjectionRamsey`
+discharges that input from finite Ramsey, and `orderedRamsey` is the
+unconditional ordered Nešetřil–Rödl conclusion used by the survey.
 
 Hales–Jewett is imported from a pinned commit of
 [lean-successors](https://github.com/janhubicka/lean-successors), then converted
@@ -51,8 +52,9 @@ axioms against the standard logical axioms only.
 * `Partite/Initial`, `Construction`: initial pictures and finite iteration, with
   all local existence hypotheses discharged.
 * `Partite/Invariants`: preservation of constraints on projected relation tuples.
-* `Ramsey/FromProjections`, `Ordered`: the final reduction and ordered conclusion
-  from the explicitly stated combinatorial Ramsey input.
+* `Ramsey/Finite`: finite Ramsey for strictly increasing tuples.
+* `Ramsey/FromProjections`, `Ordered`: the final reduction, increasing-placement
+  interface, and unconditional ordered conclusion.
 
 See [the coverage map](docs/appendix-a.md) and [the roadmap](ROADMAP.md) for the
 exact correspondence with the survey and the remaining obligations.
