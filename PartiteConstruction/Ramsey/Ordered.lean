@@ -13,8 +13,16 @@ namespace StructuralRamsey.Partite
 universe u v w
 variable {L : RelLanguage.{u}} {U V I : Type v} {P : Type w}
 
-def IncreasingInjection (V : Type v) (P : Type w) [LT V] [LT P] :=
+def IncreasingInjection (V : Type v) (P : Type w) [Preorder V] [Preorder P] :=
   {f : V ↪ P // StrictMono f}
+
+instance [Preorder V] [Preorder P] [Finite V] [Finite P] :
+    Finite (IncreasingInjection V P) := by
+  apply Finite.of_injective (fun f : IncreasingInjection V P => (f.1 : V → P))
+  intro f g h
+  apply Subtype.ext
+  ext x
+  exact congrFun h x
 
 theorem orderedRamseyFromProjections (A : RelStructure L U) (B : RelStructure L V)
     [LinearOrder U] [LinearOrder V] [LinearOrder P]
@@ -52,25 +60,28 @@ theorem increasingProjectionRamsey (A : RelStructure L U) (B : RelStructure L V)
   classical
   letI : Fintype U := Fintype.ofFinite U
   letI : Fintype V := Fintype.ofFinite V
-  let m := Fintype.card U
-  let M := Fintype.card V
-  obtain ⟨N, hN⟩ := FiniteRamsey.strictMono κ m M
+  obtain ⟨N, hN⟩ :=
+    FiniteRamsey.strictMono κ (Fintype.card U) (Fintype.card V)
   refine ⟨N, ?_⟩
   intro θ
-  let uIso := (Finset.univ : Finset U).orderIsoOfFin (by simp [m])
-  let uRank : U → Fin m := fun x => uIso.symm ⟨x, Finset.mem_univ x⟩
+  let uIso : Fin (Fintype.card U) ≃o (Finset.univ : Finset U) :=
+    (Finset.univ : Finset U).orderIsoOfFin (by simp)
+  let uRank : U → Fin (Fintype.card U) :=
+    fun x => uIso.symm ⟨x, Finset.mem_univ x⟩
   have huRank : StrictMono uRank := by
     intro x y hxy
     exact uIso.symm.strictMono hxy
-  let toProjection : ∀ a : Fin m → Fin N, StrictMono a → U ↪ Fin N :=
+  let toProjection : ∀ a : Fin (Fintype.card U) → Fin N, StrictMono a → U ↪ Fin N :=
     fun a ha => ⟨fun x => a (uRank x), ha.injective.comp huRank.injective⟩
-  let colour : (Fin m → Fin N) → κ := fun a =>
+  let colour : (Fin (Fintype.card U) → Fin N) → κ := fun a =>
     if ha : StrictMono a then θ (toProjection a ha)
     else Classical.choice (inferInstance : Nonempty κ)
   obtain ⟨S, hScard, hS⟩ := hN colour
   obtain ⟨T, hTsub, hTcard⟩ := Finset.exists_subset_card_eq (s := S) hScard
-  let vIso := (Finset.univ : Finset V).orderIsoOfFin (by simp [M])
-  let vRank : V → Fin M := fun x => vIso.symm ⟨x, Finset.mem_univ x⟩
+  let vIso : Fin (Fintype.card V) ≃o (Finset.univ : Finset V) :=
+    (Finset.univ : Finset V).orderIsoOfFin (by simp)
+  let vRank : V → Fin (Fintype.card V) :=
+    fun x => vIso.symm ⟨x, Finset.mem_univ x⟩
   have hvRank : StrictMono vRank := by
     intro x y hxy
     exact vIso.symm.strictMono hxy
@@ -81,7 +92,8 @@ theorem increasingProjectionRamsey (A : RelStructure L U) (B : RelStructure L V)
   let i : IncreasingInjection V (Fin N) := ⟨βemb, hβfun⟩
   refine ⟨i, ?_⟩
   intro e₁ e₂
-  let tuple (e : RelStructure.Embedding A.ordered B.ordered) : Fin m → Fin N :=
+  let tuple (e : RelStructure.Embedding A.ordered B.ordered) :
+      Fin (Fintype.card U) → Fin N :=
     fun j => βemb (e (uIso j).val)
   have htuple (e : RelStructure.Embedding A.ordered B.ordered) :
       StrictMono (tuple e) := by
