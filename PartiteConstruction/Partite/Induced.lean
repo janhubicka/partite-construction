@@ -103,25 +103,31 @@ theorem power_isPartiteOver (hB : B.IsPartiteOver A) (hN : 0 < N) :
             refine ⟨R', zT, i, j, ?_, ?_, ?_⟩
             · change B.rel R' (Subtype.val ∘ zT)
               convert hzB using 1
+              funext t
+              rfl
             · apply Subtype.ext
               change (z i).1.coord k = a.1
-              rw [hzi, hsa]
+              rw [hzi]
+              exact hsa
             · apply Subtype.ext
               change (z j).1.coord k = b.1
-              rw [hzj, hsb]
+              rw [hzj]
+              exact hsb
           have hyT : ∀ j, y j ∈ T := by
             intro j
             exact ⟨x j, rfl⟩
           have hAcoord : A.rel R (B.part ∘ y) := by
             convert hA using 1
             funext j
-            exact ((x j).1.belongs k).symm
+            exact (x j).1.belongs k
           exact hB.reflect_rel_on T hT R y hyT hAcoord
         · intro hx
           change (power B N).rel R (Subtype.val ∘ x) at hx
           have hA := power_projection_homomorphism hB hN R
             (Subtype.val ∘ x) hx
           convert hA using 1
+          funext j
+          rfl
     }
     exact ⟨e, fun _ => rfl⟩
 
@@ -145,8 +151,9 @@ theorem lineMap_rel_iff (hB : B.IsPartiteOver A)
         have hA : A.rel R (B.part ∘ x) := hB.1 R x hx
         have he : B.rel R (e ∘ (B.part ∘ x)) :=
           (e.toEmbedding.map_rel_iff R (B.part ∘ x)).mpr hA
-        change B.rel R (fun j => e (B.part (x j)))
-        convert he using 1
+        have htarget : B.rel R (fun j => e (B.part (x j))) := by
+          convert he using 1
+        simpa only [NonInduced.lineMap, hi, Function.comp_apply] using htarget
 
 /-- Every parameter word gives an induced part-preserving embedding into the
 coordinatewise power. -/
