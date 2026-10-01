@@ -14,13 +14,17 @@ and update the survey's validation markers at an immutable proof commit.
    translation of a homogeneous subset to increasing placements and
    `ProjectionRamsey`; the unconditional unrestricted ordered
    Nešetřil–Rödl theorem.
-4. **Next — induced construction:** homomorphism-embeddings, coordinatewise
-   powers, the induced Partite Lemma, based pictures, and the
-   irreducible-image invariant.
-5. **Applications and iteration:** ordered forbidden-substructure classes,
-   partial orders, tree amalgams, local tree-likeness, and sparsening.
-6. **Recursive construction:** set-valued functions, closed embeddings,
-   U-transversality, and the recursive construction with closures.
+4. **Complete for relational languages — induced construction:**
+   homomorphism-embeddings, positive coordinatewise powers, the induced
+   Partite and Picture Lemmas, disjoint-union initial pictures, formally based
+   stages, the irreducible-image invariant, finite iteration, and the final
+   Ramsey extraction with a trace certifying every stage.
+5. **Next — applications and iteration:** ordered forbidden-substructure
+   classes, partial orders, tree amalgams, local tree-likeness, and sparsening.
+6. **Recursive construction / functions:** set-valued functions, closed
+   embeddings, U-transversality, and the recursive construction with closures.
+   The coordinatewise induced proof is not claimed for arbitrary set-valued
+   functions without this additional machinery.
 
 Keep hypotheses visible. An abstract fusion lemma is not a proof of existence
 of its input pictures. A library representation change is not a manuscript
