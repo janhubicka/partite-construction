@@ -17,7 +17,7 @@ variable {L : RelLanguage.{u}} {P : Type v} {V : Type w} {I : Type z}
 /-- The projection of every irreducible substructure of a partite system
 extends inside a copy of `B` in `D`. This packages invariant (3) of the
 induced partite construction. -/
-def System.CoversIrreduciblesBy {X : Type*} (C : System L P X)
+def CoversIrreduciblesBy {X : Type*} (C : System L P X)
     (B : RelStructure L V) (D : RelStructure L P) : Prop :=
   ∀ (T : Set X), (C.toRelStructure.induce T).Irreducible →
     ∃ β : RelStructure.Embedding B D,
@@ -85,14 +85,14 @@ theorem picture_isPartiteOver [Nonempty I] :
     refine ⟨i, y, hB, ?_⟩
     funext k
     apply Prod.ext
-    · exact hi ⟨x k, hxT k⟩ |>.symm
+    · exact hi ⟨x k, hxT k⟩
     · rfl
 
 /-- The initial picture satisfies invariant (3): every irreducible
 substructure projects into one of the indexed copies of `B` in `D`. -/
 theorem picture_covers [Nonempty I] :
-    (Partite.Initial.picture B (fun i => (γ i).toFunctionEmbedding)).
-      CoversIrreduciblesBy B D := by
+    CoversIrreduciblesBy
+      (Partite.Initial.picture B (fun i => (γ i).toFunctionEmbedding)) B D := by
   intro T hT
   obtain ⟨i, hi⟩ :=
     irreducible_same_index B (fun j => (γ j).toFunctionEmbedding) T hT
