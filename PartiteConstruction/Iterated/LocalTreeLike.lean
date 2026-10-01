@@ -78,8 +78,8 @@ def LocallyTreeLike
   ∀ S : Finset W, S.card ≤ n →
     ∃ (Y : Type v) (T : RelStructure L Y),
       TreeAmalgam B Y T ∧
-      ∃ f : (S : Set W) → Y,
-        (C.induce (S : Set W)).IsHomomorphismEmbedding T f ∧
+      ∃ f : ↥(↑S : Set W) → Y,
+        (C.induce (↑S : Set W)).IsHomomorphismEmbedding T f ∧
         ∀ α : Embedding A C,
           ∃ α' : Embedding A T,
             ∀ a : U, ∀ ha : α a ∈ S,
