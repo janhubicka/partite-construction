@@ -25,6 +25,7 @@ inductive WeakTrace
   | nil : WeakTrace A D C₀ C₀
   | step
       {X : Type v} {C : Partite.System L P X}
+      (finiteC : Finite X)
       (h : WeakTrace A D C₀ C)
       (hPartite : C.IsPartiteOver D)
       (α : RelStructure.Embedding A D)
@@ -54,12 +55,8 @@ theorem locallyTreeLike
   induction hTrace with
   | nil =>
       exact hC₀
-  | @step X C h hPartite α N hN ih =>
-      letI : Finite X := by
-        exact Classical.choice (show Nonempty (Finite X) from by
-          -- Every stage used in the finite construction has finite carrier.
-          -- The trace theorem keeps this local instance explicit.
-          infer_instance)
+  | @step X C finiteC h hPartite α N hN ih =>
+      letI : Finite X := finiteC
       exact canonicalStep_locallyTreeLike
         A B D C α hA eAB n hn hD ih hPartite N hN
 
