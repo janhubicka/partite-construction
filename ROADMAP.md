@@ -19,8 +19,11 @@ and update the survey's validation markers at an immutable proof commit.
    Partite and Picture Lemmas, disjoint-union initial pictures, formally based
    stages, the irreducible-image invariant, finite iteration, and the final
    Ramsey extraction with a trace certifying every stage.
-5. **Next — applications and iteration:** ordered forbidden-substructure
-   classes, partial orders, tree amalgams, local tree-likeness, and sparsening.
+5. **In progress — applications and iteration:** weak substructures for
+   function languages, tree amalgams, weak local tree-likeness, the initial
+   case, and the canonical one-step size induction are formalized. Remaining:
+   package the repeated steps into the finite trace and finish the final
+   sparsening attachment lemma.
 6. **Recursive construction / functions:** set-valued functions, closed
    embeddings, U-transversality, and the recursive construction with closures.
    The coordinatewise induced proof is not claimed for arbitrary set-valued
