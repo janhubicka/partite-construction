@@ -554,6 +554,51 @@ theorem pullback_embedding
   rw [heq]
   exact ha'
 
+/-- Extract a controlled tree witness for the whole of a finite structure. -/
+theorem fullWitness
+    [Finite W]
+    (hC : LocallyTreeLike A B C n)
+    (hcard : Fintype.card W ≤ n) :
+    ∃ (Y : Type v) (T : RelStructure L Y),
+      TreeAmalgam B Y T ∧
+      ∃ f : W → Y,
+        C.IsHomomorphismEmbedding T f ∧
+        ∀ α : Embedding A C,
+          ∃ α' : Embedding A T,
+            ∀ a : U, ∃ a' : U, f (α a) = α' a' := by
+  classical
+  letI : Fintype W := Fintype.ofFinite W
+  obtain ⟨Y, T, hTree, g, hg, hctrl⟩ :=
+    hC (Finset.univ : Finset W) (by simpa using hcard)
+  let allEquiv : W ≃ ↥(↑(Finset.univ : Finset W) : Set W) := {
+    toFun := fun x => ⟨x, Finset.mem_univ x⟩
+    invFun := fun x => x.1
+    left_inv := fun _ => rfl
+    right_inv := fun x => Subtype.ext rfl
+  }
+  let allEmb : Embedding C
+      (C.induce (↑(Finset.univ : Finset W) : Set W)) := {
+    toFun := allEquiv
+    injective := allEquiv.injective
+    map_rel_iff := by
+      intro R x
+      change C.rel R (Subtype.val ∘ (allEquiv ∘ x)) ↔ C.rel R x
+      have heq : Subtype.val ∘ (allEquiv ∘ x) = x := by
+        funext i
+        rfl
+      rw [heq]
+  }
+  let f : W → Y := g ∘ allEmb
+  have hf : C.IsHomomorphismEmbedding T f :=
+    hg.comp allEmb.isHomomorphismEmbedding
+  refine ⟨Y, T, hTree, f, hf, ?_⟩
+  intro α
+  obtain ⟨α', hα'⟩ := hctrl (allEmb.comp α)
+  refine ⟨α', ?_⟩
+  intro a
+  obtain ⟨a', ha'⟩ := hα' a (Finset.mem_univ (α a))
+  exact ⟨a', ha'⟩
+
 /-- Local tree-likeness is monotone in the size bound. -/
 theorem mono (h : LocallyTreeLike A B C n) (hmn : m ≤ n) :
     LocallyTreeLike A B C m := by
