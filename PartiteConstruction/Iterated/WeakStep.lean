@@ -246,12 +246,12 @@ theorem canonicalStep_locallyTreeLike
                       (fun j => (Partite.Picture.attachingMap C₀ αf E j).toEmbedding)
                       i z₁.1 := by
                   have hePiece := e.property
-                  change (iPiece e) ∈
-                    RelStructure.Attachment.pieceSet
-                      Brel Ssupp Dcore
-                      (fun j => (Partite.Picture.attachingMap C₀ αf E j).toEmbedding)
-                      Tset i at hePiece
-                  simpa [hv] using hePiece
+                  change RelStructure.Attachment.InCopy
+                    Brel Ssupp Dcore
+                    (fun j => (Partite.Picture.attachingMap C₀ αf E j).toEmbedding)
+                    i (iPiece e).1 at hePiece
+                  rw [hv] at hePiece
+                  exact hePiece
                 exact hz₁ hpieceZ
               exact Finset.mem_erase.mpr ⟨hne, hmemI⟩
             have hPieceCard :
@@ -280,9 +280,10 @@ theorem canonicalStep_locallyTreeLike
                 have hrestZ :
                     ¬ RelStructure.Attachment.OutsideAt (S := Ssupp) i z₀.1 := by
                   have heRest := e.property
-                  change (iRest e) ∈
-                    RelStructure.Attachment.restSet Ssupp Tset i at heRest
-                  simpa [hv] using heRest
+                  change ¬ RelStructure.Attachment.OutsideAt
+                    (S := Ssupp) i (iRest e).1 at heRest
+                  rw [hv] at heRest
+                  exact heRest
                 exact hrestZ hzOutside
               exact Finset.mem_erase.mpr ⟨hne, hmemI⟩
             have hRestCard :
@@ -314,8 +315,7 @@ theorem canonicalStep_locallyTreeLike
                 apply hNotOut
                 refine ⟨⟨x, hxS⟩, ?_⟩
                 rw [hx]
-                exact
-                  (RelStructure.Attachment.copyMap_not_mem i x hxS).symm
+                exact RelStructure.Attachment.copyMap_not_mem i x hxS
               rcases hxSupp with ⟨a, ha⟩
               refine ⟨a, ?_⟩
               change C₁.part d.1.1 = α a
@@ -337,8 +337,7 @@ theorem canonicalStep_locallyTreeLike
                 hA hFree pSmall hpSmall α hOverlapRange
                 (n - 1) hD hPieceCard hRestCard
             have hf' :
-                (C₁.toRelStructure.induce (↑S : Set _)).
-                  IsHomomorphismEmbedding T f := by
+                (C₁.toRelStructure.induce (↑S : Set _)).IsHomomorphismEmbedding T f := by
               simpa [RelStructure.Attachment.Small, Tset, Brel, Ssupp, Dcore,
                 C₁, Core, E, R, αf, Partite.Picture.build] using hf
             exact RelStructure.LocallyTreeLike.completeControl
