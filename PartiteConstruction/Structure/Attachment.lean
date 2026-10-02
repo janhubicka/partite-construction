@@ -268,39 +268,4 @@ theorem copy_extends (i : I) (x : S) :
       coreEmbedding B S hS D f (f i x) :=
   copyMap_mem i x.1 x.2
 
-/-- The canonical full attachment is a free amalgam of the core and any one
-attached copy over the overlap. -/
-theorem isFreeAmalgam (i : I) :
-    IsFreeAmalgam (f i) (Embedding.id (B.induce S hS))
-      (coreEmbedding B S hS D f) (copyEmbedding B S hS D f i) := by
-  -- This theorem is intentionally stated for one attached copy; the full
-  -- multi-copy localization theorem is proved separately.
-  constructor
-  · intro z
-    cases z with
-    | inl y => exact Or.inl ⟨y, rfl⟩
-    | inr p =>
-        rcases p with ⟨j, x⟩
-        by_cases hji : j = i
-        · subst j
-          exact Or.inr ⟨x.1, (copyMap_not_mem i x.1 x.2).symm⟩
-        · -- vertices from another copy are not covered by these two sides
-          -- and therefore this two-side statement is not valid globally.
-          contradiction
-  · intro a b
-    constructor
-    · intro hab
-      by_cases hb : b ∈ S
-      · refine ⟨⟨b, hb⟩, ?_, rfl⟩
-        apply (f i).injective
-        exact Sum.inl.inj (by
-          simpa only [copyMap_mem i b hb] using hab)
-      · simp [copyMap_not_mem i b hb] at hab
-    · rintro ⟨d, rfl, rfl⟩
-      exact copy_extends B S hS D f i d
-  · intro R z
-    exact Iff.rfl
-  · intro F x y
-    exact Iff.rfl
-
 end StructuralRamsey.Structure.Attachment
