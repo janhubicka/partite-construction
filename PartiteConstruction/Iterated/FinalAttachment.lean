@@ -1,4 +1,7 @@
 import PartiteConstruction.Iterated.FreeAmalgam
+import PartiteConstruction.Iterated.AttachmentDecompose
+import PartiteConstruction.Iterated.WitnessGlue
+import PartiteConstruction.Iterated.ControlCompletion
 
 /-! # Projection through a final free attachment
 
@@ -9,6 +12,43 @@ witness.  This file supplies the reusable one-step projection lemma.
 Two homomorphism-embeddings of the sides of a concrete free amalgam can be
 folded to a common target whenever they agree on the overlap.
 -/
+
+namespace StructuralRamsey.RelStructure
+
+universe u v
+variable {L : RelLanguage.{u}}
+
+/-- Hereditary irreducibility pulls back along induced embeddings. -/
+theorem HereditarilyIrreducible.pullback
+    {U V : Type v} {A : RelStructure L U} {B : RelStructure L V}
+    (hB : HereditarilyIrreducible B) (e : Embedding A B) :
+    HereditarilyIrreducible A := by
+  intro S
+  exact hB.of_embedding (e.comp (inclusion A S))
+
+namespace LocallyTreeLike
+
+/-- The base structure itself is locally tree-like over one copy of itself. -/
+theorem base
+    {U V : Type v} (A : RelStructure L U) (B : RelStructure L V)
+    (n : ℕ) :
+    LocallyTreeLike A B B n := by
+  intro S _
+  refine ⟨V, B, TreeAmalgam.copy (Iso.refl B), ?_⟩
+  let f : ↥(↑S : Set V) → V := Subtype.val
+  have hf :
+      (B.induce (↑S : Set V)).IsHomomorphismEmbedding B f :=
+    (inclusion B (↑S : Set V)).isHomomorphismEmbedding
+  refine ⟨f, hf, ?_⟩
+  intro α
+  refine ⟨α, ?_⟩
+  intro a ha
+  exact ⟨a, rfl⟩
+
+end LocallyTreeLike
+
+end StructuralRamsey.RelStructure
+
 namespace StructuralRamsey.RelStructure.FreeAmalgam
 
 open Attachment
