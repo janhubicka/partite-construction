@@ -48,22 +48,18 @@ theorem comp
     (hf : FunctionClosedMap A B f) :
     FunctionClosedMap A C (g ∘ f) := by
   intro F x y hy
+  have htuple :
+      Structure.funcTuple (g ∘ (f ∘ x)) y =
+        Structure.funcTuple ((g ∘ f) ∘ x) y := by
+    funext i
+    refine Fin.lastCases ?_ (fun j => ?_) i
+    · simp [Structure.funcTuple]
+    · rfl
   have hy' :
       C.rel (.inr F)
         (Structure.funcTuple (g ∘ (f ∘ x)) y) := by
-    have htuple :
-        Structure.funcTuple (g ∘ (f ∘ x)) y =
-          Structure.funcTuple ((g ∘ f) ∘ x) y := by
-      funext i
-      refine Fin.lastCases ?_ (fun j => ?_) i
-      · simp [Structure.funcTuple]
-      · rfl
-    have hy' :
-        A.rel (.inr F)
-          (Structure.funcTuple (Subtype.val ∘ x) y) := by
-      simpa [RelStructure.inclusion] using hy
-    exact Eq.mpr
-      (congrArg (A.rel (.inr F)) htuple).symm hy'
+    rw [htuple]
+    exact hy
   obtain ⟨b, hb, hby⟩ := hg F (f ∘ x) y hy'
   obtain ⟨a, ha, hab⟩ := hf F x b hb
   refine ⟨a, ha, ?_⟩
@@ -101,8 +97,17 @@ def inclusion
   toEmbedding := RelStructure.inclusion A S
   closed := by
     intro F x y hy
+    have hyAmbient :
+        A.rel (.inr F)
+          (Structure.funcTuple (Subtype.val ∘ x) y) := by
+      change
+        A.rel (.inr F)
+          (Structure.funcTuple
+            ((RelStructure.inclusion A S).toFun ∘ x) y) at hy
+      exact hy
     have hxS : ∀ i, (x i).1 ∈ S := fun i => (x i).2
-    have hyS : y ∈ S := hS F (Subtype.val ∘ x) y hy hxS
+    have hyS : y ∈ S :=
+      hS F (Subtype.val ∘ x) y hyAmbient hxS
     refine ⟨⟨y, hyS⟩, ?_, rfl⟩
     change
       A.rel (.inr F)
@@ -114,8 +119,9 @@ def inclusion
       refine Fin.lastCases ?_ (fun j => ?_) i
       · simp [Structure.funcTuple, Function.comp_apply]
       · simp [Structure.funcTuple, Function.comp_apply]
-    rw [htuple]
-    exact hy
+    exact Eq.mp
+      (congrArg (fun t => A.rel (.inr F) t) htuple.symm)
+      hyAmbient
 
 
 def id (A : RelStructure L.graph V) : ClosedEmbedding A A where
