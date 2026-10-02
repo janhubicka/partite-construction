@@ -67,7 +67,7 @@ theorem locallyTreeLike
   induction hTrace with
   | nil =>
       exact hS
-  | @snoc S T R xs h α hBased ih =>
+  | @snoc T R xs h α hBased ih =>
       exact Partite.Iterated.basedStep_locallyTreeLike
         A B D T.system α.1 R.system
         hA eAB n hn hD ih T.isPartite hBased
