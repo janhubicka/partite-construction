@@ -28,10 +28,12 @@ and update the survey's validation markers at an immutable proof commit.
    Remaining: resolve the gap from the survey's stated hypothesis that only A
    is irreducible (and the corresponding function-language/graph-encoding
    presentation issue).
-6. **Recursive construction / functions:** set-valued functions, closed
-   embeddings, U-transversality, and the recursive construction with closures.
-   The coordinatewise induced proof is not claimed for arbitrary set-valued
-   functions without this additional machinery.
+6. **Recursive construction / functions — in progress:** set-valued functions,
+   closed embeddings, U-transversality, the ordinary-indexed closed initial
+   picture, and the half-closed induced partite construction are formalized.
+   This verifies the corrected positive-arity form of the survey's
+   `lem:rpartite`. Remaining: the arbitrary-projection outer Picture/repair
+   step and the assembled proof of `thm:models2`.
 
 Keep hypotheses visible. An abstract fusion lemma is not a proof of existence
 of its input pictures. A library representation change is not a manuscript
