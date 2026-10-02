@@ -107,7 +107,7 @@ theorem build_list
         let fCore : Embedding D₀ T.C :=
           T.core.comp (inclusion Orig (↑S₀ : Set O))
         have hcover :
-            ∀ d : D₀, ∃ b : VB,
+            ∀ d : ↥(↑S₀ : Set O), ∃ b : VB,
               T.projection (fCore d) = β b := by
           intro d
           obtain ⟨b, hb⟩ := hβ d
