@@ -101,8 +101,12 @@ theorem IsHomomorphism.graph
             imageSet f (A.func F (fun i => x i.castSucc)) :=
         ⟨_, hs, rfl⟩
       rw [h.2 F (fun i => x i.castSucc)] at himg
-      change f (x (Fin.last (L.funcArity F))) ∈
-        B.func F (f ∘ (fun i => x i.castSucc))
+      have hfun :
+          (f ∘ (fun i => x i.castSucc)) =
+            (fun i => f (x i.castSucc)) := by
+        funext i
+        rfl
+      rw [hfun] at himg
       exact himg
 
 namespace Embedding
@@ -126,10 +130,14 @@ def graph (e : Embedding A B) : RelStructure.Embedding A.graph B.graph where
             A.func F (fun i => x i.castSucc))
         constructor
         · intro hy
+          have hfun :
+              (e ∘ (fun i => x i.castSucc)) =
+                (fun i => e (x i.castSucc)) := by
+            funext i
+            rfl
           have hy' : e (x (Fin.last (L.funcArity F))) ∈
               B.func F (e ∘ (fun i => x i.castSucc)) := by
-            change e (x (Fin.last (L.funcArity F))) ∈
-              B.func F (fun i => e (x i.castSucc)) at hy
+            rw [hfun]
             exact hy
           rw [← e.map_func F (fun i => x i.castSucc)] at hy'
           rcases hy' with ⟨z, hz, heq⟩
@@ -140,8 +148,12 @@ def graph (e : Embedding A B) : RelStructure.Embedding A.graph B.graph where
                 imageSet e (A.func F (fun i => x i.castSucc)) :=
             ⟨_, hy, rfl⟩
           rw [e.map_func F (fun i => x i.castSucc)] at himg
-          change e (x (Fin.last (L.funcArity F))) ∈
-            B.func F (e ∘ (fun i => x i.castSucc))
+          have hfun :
+              (e ∘ (fun i => x i.castSucc)) =
+                (fun i => e (x i.castSucc)) := by
+            funext i
+            rfl
+          rw [hfun] at himg
           exact himg
 
 /-- A relational graph embedding with function-closed image reconstructs the
@@ -172,7 +184,10 @@ def ofGraphClosed
           B.func F (fun i => e (t i.castSucc)) at htarget
       have htarget' : e z ∈ B.func F (fun i => e (x i)) := by
         simpa [t, funcTuple] using htarget
-      change e z ∈ B.func F (e ∘ x)
+      have hfun : (e ∘ x) = (fun i => e (x i)) := by
+        funext i
+        rfl
+      rw [hfun]
       exact htarget'
     · intro hy
       exact hclosed F x y hy
