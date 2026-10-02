@@ -2,6 +2,7 @@ import PartiteConstruction.Partite.InducedPicture
 import PartiteConstruction.Iterated.AttachmentDecompose
 import PartiteConstruction.Iterated.ProjectedGlue
 import PartiteConstruction.Iterated.WeakLocalTreeLike
+import PartiteConstruction.Iterated.ControlCompletion
 
 /-! # One-step weak local tree-likeness for the induced picture construction
 
@@ -102,7 +103,15 @@ theorem canonicalStep_locallyTreeLike
       letI : Fintype Tset := Fintype.ofFinite Tset
       have hcardT : Fintype.card Tset ≤ n := by
         simpa [Tset] using hScard
-      exact hSmallLTL.fullWitness hcardT
+      obtain ⟨Y, T, hTree, f, hf, _⟩ :=
+        hSmallLTL.fullWitness hcardT
+      have hf' :
+          (C₁.toRelStructure.induce (↑S : Set _)).
+            IsHomomorphismEmbedding T f := by
+        simpa [Small, Tset] using hf
+      exact RelStructure.LocallyTreeLike.completeControl
+        (A := A) (B := B) (C := C₁.toRelStructure)
+        hA eAB S hTree f hf'
     · push Not at hcore
       obtain ⟨z₀, hz₀⟩ := hcore
       cases hzval : z₀.1 with
@@ -144,7 +153,15 @@ theorem canonicalStep_locallyTreeLike
             letI : Fintype Tset := Fintype.ofFinite Tset
             have hcardT : Fintype.card Tset ≤ n := by
               simpa [Tset] using hScard
-            exact hSmallLTL.fullWitness hcardT
+            obtain ⟨Y, T, hTree, f, hf, _⟩ :=
+              hSmallLTL.fullWitness hcardT
+            have hf' :
+                (C₁.toRelStructure.induce (↑S : Set _)).
+                  IsHomomorphismEmbedding T f := by
+              simpa [Small, Tset] using hf
+            exact RelStructure.LocallyTreeLike.completeControl
+              (A := A) (B := B) (C := C₁.toRelStructure)
+              hA eAB S hTree f hf'
           · push Not at hcopy
             obtain ⟨z₁, hz₁⟩ := hcopy
 
