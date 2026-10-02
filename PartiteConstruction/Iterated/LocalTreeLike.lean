@@ -384,7 +384,7 @@ theorem projectedWitness
 /-- Whole-finite-structure version of `projectedWitness`.  The side map
 itself is retained, not merely its restriction to a finite subtype. -/
 theorem projectedWitnessFull
-    {D : RelStructure L X} [Finite W] [DecidableEq X]
+    {D : RelStructure L X} [Fintype W] [DecidableEq X]
     (hA : A.Irreducible)
     (hD : LocallyTreeLike A B D m)
     (p : W → X) (hp : C.IsHomomorphismEmbedding D p)
@@ -437,11 +437,13 @@ theorem projectedWitnessFull
       g ⟨p x, Finset.mem_image.mpr ⟨x, Finset.mem_univ x, rfl⟩⟩
     exact hfEq (allEmb x)
   · intro α
-    obtain ⟨α', hα'⟩ := hctrlS (allEmb.comp α)
+    obtain ⟨α', hα'⟩ := hctrlS α
     refine ⟨α', ?_⟩
     intro a
     obtain ⟨a', ha'⟩ := hα' a (Finset.mem_univ (α a))
-    exact ⟨a', ha'⟩
+    refine ⟨a', ?_⟩
+    change fS (allEmb (α a)) = α' a'
+    exact ha'
 
 /-- Pull a local-tree witness back along a homomorphism-embedding whenever
 the image of the tested finite set is within the available size bound. -/
@@ -556,7 +558,7 @@ theorem pullback_embedding
 
 /-- Extract a controlled tree witness for the whole of a finite structure. -/
 theorem fullWitness
-    [Finite W]
+    [Fintype W]
     (hC : LocallyTreeLike A B C n)
     (hcard : Fintype.card W ≤ n) :
     ∃ (Y : Type v) (T : RelStructure L Y),
@@ -567,7 +569,6 @@ theorem fullWitness
           ∃ α' : Embedding A T,
             ∀ a : U, ∃ a' : U, f (α a) = α' a' := by
   classical
-  letI : Fintype W := Fintype.ofFinite W
   obtain ⟨Y, T, hTree, g, hg, hctrl⟩ :=
     hC (Finset.univ : Finset W) (by simpa using hcard)
   let allEquiv : W ≃ ↥(↑(Finset.univ : Finset W) : Set W) := {
@@ -593,11 +594,13 @@ theorem fullWitness
     hg.comp allEmb.isHomomorphismEmbedding
   refine ⟨Y, T, hTree, f, hf, ?_⟩
   intro α
-  obtain ⟨α', hα'⟩ := hctrl (allEmb.comp α)
+  obtain ⟨α', hα'⟩ := hctrl α
   refine ⟨α', ?_⟩
   intro a
   obtain ⟨a', ha'⟩ := hα' a (Finset.mem_univ (α a))
-  exact ⟨a', ha'⟩
+  refine ⟨a', ?_⟩
+  change g (allEmb (α a)) = α' a'
+  exact ha'
 
 /-- Local tree-likeness is monotone in the size bound. -/
 theorem mono (h : LocallyTreeLike A B C n) (hmn : m ≤ n) :
