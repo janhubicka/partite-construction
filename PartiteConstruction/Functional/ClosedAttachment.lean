@@ -1,4 +1,4 @@
-import PartiteConstruction.Functional.Closed
+import PartiteConstruction.Functional.ClosedPartite
 import PartiteConstruction.Partite.Attachment
 
 /-! # U-closed free attachment
@@ -16,15 +16,17 @@ universe u v
 variable {L : Language.{u}} {P V W I : Type v}
 variable (B : Partite.System L.graph P V) (S : Set V)
 variable (D : Partite.System L.graph P W)
-variable (f : I → Partite.Closed.Embedding (B.induce S) D)
 
 abbrev Vertex (S : Set V) (W I : Type v) :=
   Partite.Attachment.Vertex S (W := W) (I := I)
 
-noncomputable def attach : Partite.System L.graph P (Vertex S W I) :=
+noncomputable def attach
+    (f : I → Partite.Closed.Embedding (B.induce S) D) :
+    Partite.System L.graph P (Vertex S W I) :=
   Partite.Attachment.attach B S D (fun i => (f i).1)
 
-variable {B S D f}
+variable {B S D}
+variable {f : I → Partite.Closed.Embedding (B.induce S) D}
 
 /-- If the overlap is U-closed, the core inclusion is U-closed. -/
 theorem core_closed
