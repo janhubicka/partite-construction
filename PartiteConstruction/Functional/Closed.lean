@@ -407,7 +407,13 @@ def graphOfGraphClosed :
                 (Structure.funcTuple
                   (fun i => x (Fin.castSucc i))
                   (x (Fin.last (L.funcArity F))))
-          rw [Structure.funcTuple_eta]
+          have heta :
+              Structure.funcTuple
+                  (fun i => x (Fin.castSucc i))
+                  (x (Fin.last (L.funcArity F))) = x := by
+            simpa [Language.graph] using
+              (Structure.funcTuple_eta (t := x))
+          rw [heta]
   }
   closed := by
     intro F x y hy
@@ -459,12 +465,28 @@ theorem arrow_ofGraph_iff_closed
       (embeddingEquivClosedTarget (A := B) (R := R)) f
     refine ⟨fclosed, ?_⟩
     intro e₁ e₂
-    let e₁f := Structure.Embedding.ofClosedGraph
-      (A := A) (B := B) e₁.toEmbedding e₁.closed
-    let e₂f := Structure.Embedding.ofClosedGraph
-      (A := A) (B := B) e₂.toEmbedding e₂.closed
+    let e₁f := Structure.Embedding.ofClosedGraph e₁
+    let e₂f := Structure.Embedding.ofClosedGraph e₂
     have hh := hf e₁f e₂f
-    simpa [χfull, e₁f, e₂f, fclosed] using hh
+    have hc₁ :
+        (embeddingEquivClosedTarget (A := A) (R := R))
+            (f.comp e₁f) =
+          RelStructure.ClosedEmbedding.comp fclosed e₁ := by
+      apply RelStructure.ClosedEmbedding.ext
+      intro x
+      rfl
+    have hc₂ :
+        (embeddingEquivClosedTarget (A := A) (R := R))
+            (f.comp e₂f) =
+          RelStructure.ClosedEmbedding.comp fclosed e₂ := by
+      apply RelStructure.ClosedEmbedding.ext
+      intro x
+      rfl
+    change
+      χ (RelStructure.ClosedEmbedding.comp fclosed e₁) =
+        χ (RelStructure.ClosedEmbedding.comp fclosed e₂)
+    rw [← hc₁, ← hc₂]
+    exact hh
   · intro h χ
     let χclosed : RelStructure.ClosedEmbedding A.graph R → κ :=
       fun e => χ ((embeddingEquivClosedTarget (A := A) (R := R)).symm e)
@@ -476,7 +498,25 @@ theorem arrow_ofGraph_iff_closed
     have hh := hf
       (Structure.Embedding.toClosedGraph e₁)
       (Structure.Embedding.toClosedGraph e₂)
-    simpa [χclosed, ffull] using hh
+    have hc₁ :
+        (embeddingEquivClosedTarget (A := A) (R := R)).symm
+          (RelStructure.ClosedEmbedding.comp f
+            (Structure.Embedding.toClosedGraph e₁)) =
+          ffull.comp e₁ := by
+      apply Structure.Embedding.ext
+      intro x
+      rfl
+    have hc₂ :
+        (embeddingEquivClosedTarget (A := A) (R := R)).symm
+          (RelStructure.ClosedEmbedding.comp f
+            (Structure.Embedding.toClosedGraph e₂)) =
+          ffull.comp e₂ := by
+      apply Structure.Embedding.ext
+      intro x
+      rfl
+    change χ (ffull.comp e₁) = χ (ffull.comp e₂)
+    rw [← hc₁, ← hc₂]
+    exact hh
 
 end Structure
 
