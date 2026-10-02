@@ -79,11 +79,16 @@ theorem glueProjectedFull
   let Fimg : Finset P := (Finset.univ : Finset F).image pF
   let incGE : Embedding Gov (D.induce (↑Eimg : Set P)) := {
     toFun := fun z => ⟨z.1, by
-      rcases z.2 with ⟨d, rfl⟩
-      exact Finset.mem_image.mpr ⟨sE d, Finset.mem_univ _, rfl⟩⟩
+      rcases z.2 with ⟨d, hd⟩
+      apply Finset.mem_image.mpr
+      refine ⟨sE d, Finset.mem_univ _, ?_⟩
+      change pE (sE d) = z.1
+      exact hd⟩
     injective := by
       intro x y h
-      exact Subtype.ext (congrArg Subtype.val h)
+      apply Subtype.ext
+      exact congrArg
+        (fun q : ↥(↑Eimg : Set P) => q.1) h
     map_rel_iff := fun _ _ => Iff.rfl
   }
   let incGF : Embedding Gov (D.induce (↑Fimg : Set P)) := {
@@ -96,7 +101,9 @@ theorem glueProjectedFull
       exact hd⟩
     injective := by
       intro x y h
-      exact Subtype.ext (congrArg Subtype.val h)
+      apply Subtype.ext
+      exact congrArg
+        (fun q : ↥(↑Fimg : Set P) => q.1) h
     map_rel_iff := fun _ _ => Iff.rfl
   }
 
