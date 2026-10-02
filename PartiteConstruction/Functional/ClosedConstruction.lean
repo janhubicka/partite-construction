@@ -82,6 +82,8 @@ def initialStage
 relevant projections. -/
 def CanonicalOn
     (A : RelStructure L.graph U)
+    (B : RelStructure L.graph V)
+    (D : RelStructure L.graph P)
     {X Y : Type v}
     (S : Partite.System L.graph P X)
     (T : Partite.System L.graph P Y)
@@ -99,13 +101,12 @@ theorem build
     (A : RelStructure L.graph U)
     (B : RelStructure L.graph V)
     (D : RelStructure L.graph P)
-    {X : Type v}
     (S : Stage B D)
     [Finite U]
     (xs : List (RelevantEmbedding A B D))
     (κ : Type*) [Fintype κ] :
     ∃ T : Stage B D,
-      CanonicalOn A S.system T.system xs κ := by
+      CanonicalOn A B D S.system T.system xs κ := by
   induction xs with
   | nil =>
       refine ⟨S, ?_⟩
@@ -211,13 +212,6 @@ theorem inducedConstruction
     have hfac : α = β.comp e := Classical.choose_spec hrest
     rw [hfac]
     exact initialProjectedCopy hpos B D β e
-  let θ : RelStructure.ClosedEmbedding A D → κ := fun α =>
-    if hα : Relevant A B D α then
-      χ (RelStructure.ClosedEmbedding.comp
-        (Classical.choose (hCanon
-          (fun _ => Classical.choice (inferInstance : Nonempty κ)))).toRelClosed
-        (projected α hα).1)
-    else Classical.choice (inferInstance : Nonempty κ)
   -- Obtain the canonical copy first; define the induced colouring using it.
   obtain ⟨f, hf⟩ := hCanon χ
   let θ' : RelStructure.ClosedEmbedding A D → κ := fun α =>
