@@ -381,6 +381,68 @@ theorem projectedWitness
     rw [hsub]
     exact ha'
 
+/-- Whole-finite-structure version of `projectedWitness`.  The side map
+itself is retained, not merely its restriction to a finite subtype. -/
+theorem projectedWitnessFull
+    {D : RelStructure L X} [Finite W] [DecidableEq X]
+    (hA : A.Irreducible)
+    (hD : LocallyTreeLike A B D m)
+    (p : W → X) (hp : C.IsHomomorphismEmbedding D p)
+    (hcard : ((Finset.univ : Finset W).image p).card ≤ m) :
+    ∃ (Y : Type v) (T : RelStructure L Y),
+      TreeAmalgam B Y T ∧
+      ∃ g : ↥(↑((Finset.univ : Finset W).image p) : Set X) → Y,
+        (D.induce (↑((Finset.univ : Finset W).image p) : Set X)).
+          IsHomomorphismEmbedding T g ∧
+        (∀ α : Embedding A D,
+          ∃ α' : Embedding A T,
+            ∀ a : U, ∀ ha : α a ∈ (Finset.univ : Finset W).image p,
+              ∃ a' : U, g ⟨α a, ha⟩ = α' a') ∧
+        ∃ f : W → Y,
+          C.IsHomomorphismEmbedding T f ∧
+          (∀ x : W,
+            f x = g ⟨p x,
+              Finset.mem_image.mpr ⟨x, Finset.mem_univ x, rfl⟩⟩) ∧
+          ∀ α : Embedding A C,
+            ∃ α' : Embedding A T,
+              ∀ a : U, ∃ a' : U, f (α a) = α' a' := by
+  classical
+  let S : Finset W := Finset.univ
+  obtain ⟨Y, T, hTree, g, hg, hctrl, fS, hfS, hfEq, hctrlS⟩ :=
+    projectedWitness (A := A) (B := B) (C := C)
+      hA hD p hp S hcard
+  let allEquiv : W ≃ ↥(↑S : Set W) := {
+    toFun := fun x => ⟨x, Finset.mem_univ x⟩
+    invFun := fun x => x.1
+    left_inv := fun _ => rfl
+    right_inv := fun x => Subtype.ext rfl
+  }
+  let allEmb : Embedding C (C.induce (↑S : Set W)) := {
+    toFun := allEquiv
+    injective := allEquiv.injective
+    map_rel_iff := by
+      intro R x
+      change C.rel R (Subtype.val ∘ (allEquiv ∘ x)) ↔ C.rel R x
+      have heq : Subtype.val ∘ (allEquiv ∘ x) = x := by
+        funext i
+        rfl
+      rw [heq]
+  }
+  let f : W → Y := fS ∘ allEmb
+  have hf : C.IsHomomorphismEmbedding T f :=
+    hfS.comp allEmb.isHomomorphismEmbedding
+  refine ⟨Y, T, hTree, g, hg, hctrl, f, hf, ?_, ?_⟩
+  · intro x
+    change fS (allEmb x) =
+      g ⟨p x, Finset.mem_image.mpr ⟨x, Finset.mem_univ x, rfl⟩⟩
+    exact hfEq (allEmb x)
+  · intro α
+    obtain ⟨α', hα'⟩ := hctrlS (allEmb.comp α)
+    refine ⟨α', ?_⟩
+    intro a
+    obtain ⟨a', ha'⟩ := hα' a (Finset.mem_univ (α a))
+    exact ⟨a', ha'⟩
+
 /-- Pull a local-tree witness back along a homomorphism-embedding whenever
 the image of the tested finite set is within the available size bound. -/
 theorem witness_of_homEmbedding_image
