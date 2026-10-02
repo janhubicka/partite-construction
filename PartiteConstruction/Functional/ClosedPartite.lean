@@ -305,9 +305,6 @@ theorem lineEmbedding_comp_letter
     Partite.NonInduced.lineMap_comp_letter
       (forgetLine W) e.1 p
   rw [hleft]
-  have hfirst := Partite.NonInduced.wordEmbedding_apply
-    (A := A) (B := B) hN
-    (fun i => ((W.eval e) i).1) p
   have hEval :
       (forgetLine W).eval e.1 =
         fun i => ((W.eval e) i).1 := by
@@ -318,7 +315,21 @@ theorem lineEmbedding_comp_letter
     | const d =>
         simp [forgetLine, Line.eval, LineSymbol.eval, hi]
   rw [hEval]
-  exact hfirst.symm
+  have hright :=
+    Partite.NonInduced.lineMap_comp_letter
+      (forgetLine (firstLine hN (W.eval e)))
+      ((W.eval e ⟨0, hN⟩).1) p
+  rw [hright]
+  have hEvalFirst :
+      (forgetLine (firstLine hN (W.eval e))).eval
+          ((W.eval e ⟨0, hN⟩).1) =
+        fun i => ((W.eval e) i).1 := by
+    funext i
+    by_cases hi : i = ⟨0, hN⟩
+    · subst i
+      simp [forgetLine, firstLine, Line.eval, LineSymbol.eval]
+    · simp [forgetLine, firstLine, Line.eval, LineSymbol.eval, hi]
+  rw [hEvalFirst]
 
 /-- Induced Partite Lemma with closures. -/
 theorem partiteLemma
