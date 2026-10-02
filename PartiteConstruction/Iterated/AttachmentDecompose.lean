@@ -38,12 +38,18 @@ abbrev Piece := (Small B S D f T).induce (pieceSet B S D f T i)
 abbrev Rest := (Small B S D f T).induce (restSet (W := W) (I := I) S T i)
 abbrev Overlap := (Small B S D f T).induce (overlapSet (W := W) (I := I) B S D f T i)
 
+abbrev PieceV := pieceSet B S D f T i
+abbrev RestV := restSet (W := W) (I := I) S T i
+abbrev OverlapV := overlapSet (W := W) (I := I) B S D f T i
+
 def overlapToPiece :
     Embedding (Overlap B S D f T i) (Piece B S D f T i) where
   toFun x := ⟨x.1, x.2.1⟩
   injective := by
     intro x y h
-    exact Subtype.ext (congrArg Subtype.val h)
+    apply Subtype.ext
+    exact congrArg
+      (fun q : PieceV B S D f T i => q.1) h
   map_rel_iff := fun _ _ => Iff.rfl
 
 def overlapToRest :
@@ -51,7 +57,9 @@ def overlapToRest :
   toFun x := ⟨x.1, x.2.2⟩
   injective := by
     intro x y h
-    exact Subtype.ext (congrArg Subtype.val h)
+    apply Subtype.ext
+    exact congrArg
+      (fun q : RestV (W := W) (I := I) S T i => q.1) h
   map_rel_iff := fun _ _ => Iff.rfl
 
 def pieceInclusion :
@@ -89,24 +97,26 @@ theorem decompose :
   · intro z
     by_cases hout : OutsideAt (W := W) (I := I) S i z.1
     · rcases hout with ⟨x, hx⟩
-      let e : Piece B S D f T i :=
+      let e : PieceV B S D f T i :=
         ⟨z, ⟨x.1, by
           rw [hx]
           symm
           exact copyMap_not_mem i x.1 x.2⟩⟩
       exact Or.inl ⟨e, rfl⟩
-    · let r : Rest B S D f T i := ⟨z, hout⟩
+    · let r : RestV (W := W) (I := I) S T i := ⟨z, hout⟩
       exact Or.inr ⟨r, rfl⟩
   · intro e r
     constructor
     · intro her
-      have hval : e.1 = r.1 := congrArg Subtype.val her
+      have hval : e.1 = r.1 := by
+        change e.1 = r.1 at her
+        exact her
       let z : T := e.1
       have hp : z ∈ pieceSet B S D f T i := e.2
       have hr : z ∈ restSet (W := W) (I := I) S T i := by
         change ¬ OutsideAt (W := W) (I := I) S i z.1
         simpa [z, hval] using r.2
-      let h : Overlap B S D f T i := ⟨z, hp, hr⟩
+      let h : OverlapV (W := W) (I := I) B S D f T i := ⟨z, hp, hr⟩
       refine ⟨h, ?_, ?_⟩
       · apply Subtype.ext
         rfl
@@ -128,7 +138,7 @@ theorem decompose :
           have hk := congrFun heq k
           rw [hx] at hk
           simp at hk
-        let zr : Fin (L.arity R) → Rest B S D f T i :=
+        let zr : Fin (L.arity R) → RestV (W := W) (I := I) S T i :=
           fun k => ⟨z k, hrest k⟩
         refine Or.inr ⟨zr, ?_, ?_⟩
         · exact hz
@@ -141,13 +151,13 @@ theorem decompose :
             intro k
             refine ⟨y k, ?_⟩
             exact (congrFun heq k).symm
-          let ze : Fin (L.arity R) → Piece B S D f T i :=
+          let ze : Fin (L.arity R) → PieceV B S D f T i :=
             fun k => ⟨z k, hpiece k⟩
           refine Or.inl ⟨ze, ?_, ?_⟩
           · exact hz
           · funext k
             rfl
-        · let zr : Fin (L.arity R) → Rest B S D f T i :=
+        · let zr : Fin (L.arity R) → RestV (W := W) (I := I) S T i :=
             fun k => ⟨z k, by
               change ¬ OutsideAt (W := W) (I := I) S i (z k).1.1
               intro hout
