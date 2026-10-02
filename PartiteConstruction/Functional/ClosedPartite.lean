@@ -38,7 +38,7 @@ def id (A : Partite.System L.graph P V) : Embedding A A :=
     intro F x y hy
     exact ⟨y, hy, rfl⟩⟩
 
-def comp {X : Type*} {C : Partite.System L.graph P X}
+def comp {X : Type v} {C : Partite.System L.graph P X}
     (g : Embedding B C) (f : Embedding A B) :
     Embedding A C :=
   ⟨g.1.comp f.1, g.2.comp f.2⟩
@@ -57,11 +57,11 @@ end Embedding
 
 def Arrow (A : Partite.System L.graph P V)
     (B : Partite.System L.graph P W)
-    {X : Type*} (C : Partite.System L.graph P X)
+    {X : Type v} (C : Partite.System L.graph P X)
     (κ : Type*) : Prop :=
   ∀ χ : Embedding A C → κ, ∃ f : Embedding B C,
     ∀ e₁ e₂ : Embedding A B,
-      χ (f.comp e₁) = χ (f.comp e₂)
+      χ (Embedding.comp f e₁) = χ (Embedding.comp f e₂)
 
 namespace Induced
 
@@ -69,6 +69,9 @@ variable (A : RelStructure L.graph P)
     (B : Partite.System L.graph P V)
 
 abbrev Letter := Embedding (Partite.transversal A) B
+
+instance [Finite P] [Finite V] : Finite (Letter A B) :=
+  Finite.of_injective Subtype.val Subtype.val_injective
 
 variable {A B} {N : ℕ}
 
@@ -80,7 +83,11 @@ def forgetLine (W : Line (Letter A B) N) :
     | .const e => .const e.1
   hasParameter := by
     obtain ⟨i, hi⟩ := W.hasParameter
-    exact ⟨i, by simp [forgetLine, hi]⟩
+    refine ⟨i, ?_⟩
+    change (match W.symbol i with
+      | .parameter => LineSymbol.parameter
+      | .const e => LineSymbol.const e.1) = .parameter
+    rw [hi]
 
 def lineMap (W : Line (Letter A B) N) (x : V) :
     Partite.Induced.Vertex B N :=
@@ -277,7 +284,7 @@ def wordEmbedding
     (hN : 0 < N)
     (w : Fin N → Letter A B) :
     Embedding (Partite.transversal A) (Partite.Induced.power B N) :=
-  (lineEmbedding hB hU (firstLine hN w)).comp (w ⟨0, hN⟩)
+  Embedding.comp (lineEmbedding hB hU (firstLine hN w)) (w ⟨0, hN⟩)
 
 theorem lineEmbedding_comp_letter
     (hB : B.IsPartiteOver A)
@@ -285,7 +292,7 @@ theorem lineEmbedding_comp_letter
     (hN : 0 < N)
     (W : Line (Letter A B) N)
     (e : Letter A B) :
-    (lineEmbedding hB hU W).comp e =
+    Embedding.comp (lineEmbedding hB hU W) e =
       wordEmbedding hB hU hN (W.eval e) := by
   apply Embedding.ext
   intro p
