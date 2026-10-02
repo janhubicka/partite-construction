@@ -48,6 +48,39 @@ theorem embeddingOn (h : A.IsHomomorphismEmbedding B f) (S : Set V)
     ∃ e : Embedding (A.induce S) B, ∀ x, e x = f x.1 :=
   h.2 S hS
 
+/-- Restrict the codomain of a homomorphism-embedding to any induced
+substructure containing its range. -/
+theorem codRestrict (h : A.IsHomomorphismEmbedding B f)
+    (T : Set W) (hT : ∀ x : V, f x ∈ T) :
+    A.IsHomomorphismEmbedding (B.induce T)
+      (fun x => ⟨f x, hT x⟩) := by
+  constructor
+  · intro R x hx
+    change B.rel R (Subtype.val ∘ (fun i => ⟨f (x i), hT (x i)⟩))
+    convert h.1 R x hx using 1
+    funext i
+    rfl
+  · intro S hS
+    obtain ⟨e, he⟩ := h.embeddingOn S hS
+    let d : Embedding (A.induce S) (B.induce T) := {
+      toFun := fun x => ⟨e x, by
+        rw [he x]
+        exact hT x.1⟩
+      injective := by
+        intro x y hxy
+        apply e.injective
+        exact congrArg Subtype.val hxy
+      map_rel_iff := by
+        intro R x
+        change B.rel R (e ∘ x) ↔ A.rel R (Subtype.val ∘ x)
+        exact e.map_rel_iff R x
+    }
+    refine ⟨d, ?_⟩
+    intro x
+    apply Subtype.ext
+    exact he x
+
+
 /-- Build a homomorphism-embedding from global relation preservation,
 injectivity on irreducible subsets, and relation reflection on those subsets. -/
 theorem of_map_reflect
