@@ -417,7 +417,7 @@ theorem freeAmalgam
 
   have hpSmall' :
       (Whole.induce (↑S : Set _)).IsHomomorphismEmbedding T pSmall := by
-    simpa [Small, Tset, Whole] using hpSmall
+    simpa [Small, Tset, Whole, g, Support, FreeAmalgam.amalgam] using hpSmall
   exact completeControl
     (A := Control) (B := Base) (C := Whole)
     hControl eControlBase S hTree pSmall hpSmall'
