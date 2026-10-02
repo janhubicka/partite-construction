@@ -154,6 +154,7 @@ theorem lineMap_rel_iff
         have hA : A.rel R (B.part ∘ x) := hB.1 R x hx
         have he : B.rel R (e ∘ (B.part ∘ x)) :=
           (e.toEmbedding.map_rel_iff R (B.part ∘ x)).mpr hA
+        change B.rel R (fun j => e (B.part (x j))) at he
         simpa only [lineMap, hi, Function.comp_apply] using he
 
 /-- Exact preservation of set-valued function images by a Hales--Jewett line
@@ -191,6 +192,8 @@ theorem lineMap_func
             Structure.imageSet e (A.func F (B.part ∘ x)) =
               B.func F (e ∘ (B.part ∘ x)) at hm
           rw [hm] at himg
+          change e (B.part y) ∈
+            B.func F (fun j => e (B.part (x j))) at himg
           exact himg
         simpa only [lineMap, hi, Function.comp_apply] using heValue
   · intro hz
@@ -234,7 +237,10 @@ theorem lineMap_func
           have hzi :
               z.coord i ∈ B.func F (e ∘ (B.part ∘ x)) := by
             have hzi0 := hz i
-            simpa only [lineMap, hi, Function.comp_apply] using hzi0
+            change z.coord i ∈
+              B.func F (fun j => e (B.part (x j))) at hzi0
+            change z.coord i ∈ B.func F (e ∘ (B.part ∘ x))
+            exact hzi0
           have hparts :
               B.part (e (B.part y)) = B.part (z.coord i) := by
             calc
