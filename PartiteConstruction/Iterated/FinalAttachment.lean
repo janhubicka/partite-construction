@@ -152,4 +152,51 @@ theorem fold_isHomomorphismEmbedding
           apply congrArg F
           exact hz.symm
 
+/-- Attach one fresh copy of \`B\` over an irreducible substructure while
+preserving a homomorphism-embedding into a common target \`Q\`.
+
+It is enough that the projected overlap is contained in the image of one
+embedding \`β : B ↪ Q\`.  The embedding of the overlap into the fresh copy of
+\`B\` is reconstructed from the homomorphism-embedding property on the
+irreducible overlap. -/
+theorem attachOverIrreducible_preservesProjection
+    (hD : D.Irreducible)
+    (pA : V → Y)
+    (hpA : A.IsHomomorphismEmbedding Q pA)
+    (β : Embedding B Q)
+    (hcover : ∀ d : U, ∃ b : W, pA (fA d) = β b) :
+    ∃ fB : Embedding D B,
+      ∃ p : Vertex D A B fA fB → Y,
+        (amalgam D A B fA fB).IsHomomorphismEmbedding Q p ∧
+        (∀ a : V, p (leftEmbedding D A B fA fB a) = pA a) ∧
+        ∀ b : W, p (rightEmbedding D A B fA fB b) = β b := by
+  classical
+  obtain ⟨eDQ, heDQ⟩ :=
+    hpA.after_irreducible_embedding hD fA
+  have hrange : ∀ d : U, ∃ b : W, eDQ d = β b := by
+    intro d
+    obtain ⟨b, hb⟩ := hcover d
+    exact ⟨b, (heDQ d).trans hb⟩
+  let fB' : Embedding D B :=
+    eDQ.factorThroughRange β hrange
+  have hcompat : ∀ d : U, pA (fA d) = β (fB' d) := by
+    intro d
+    calc
+      pA (fA d) = eDQ d := (heDQ d).symm
+      _ = β (fB' d) := by
+        change eDQ d = β (Classical.choose (hrange d))
+        exact Classical.choose_spec (hrange d)
+  let p : Vertex D A B fA fB' → Y :=
+    fold (D := D) (A := A) (B := B) (fA := fA) (fB := fB')
+      pA β hcompat
+  have hp :
+      (amalgam D A B fA fB').IsHomomorphismEmbedding Q p := by
+    exact fold_isHomomorphismEmbedding pA β hcompat
+      hpA β.isHomomorphismEmbedding
+  refine ⟨fB', p, hp, ?_, ?_⟩
+  · intro a
+    exact fold_left pA β hcompat a
+  · intro b
+    exact fold_right pA β hcompat b
+
 end StructuralRamsey.RelStructure.FreeAmalgam
