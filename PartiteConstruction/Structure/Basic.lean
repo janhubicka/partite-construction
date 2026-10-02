@@ -138,6 +138,11 @@ def comp (g : Embedding B C) (f : Embedding A B) : Embedding A C where
 @[simp] theorem comp_apply (g : Embedding B C) (f : Embedding A B) (x : V) :
     g.comp f x = g (f x) := rfl
 
+def toFunctionEmbedding (f : Embedding A B) : V ↪ W where
+  toFun := f
+  inj' := f.injective
+
+
 theorem isHomomorphism (f : Embedding A B) : A.IsHomomorphism B f := by
   constructor
   · intro R x hx
