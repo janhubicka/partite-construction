@@ -34,9 +34,11 @@ abbrev RelevantEmbedding
     (D : RelStructure L.graph P) :=
   {α : RelStructure.ClosedEmbedding A D // Relevant A B D α}
 
-instance [Finite U] [Finite V] [Finite P] :
-    Finite (RelevantEmbedding A B D) := by
-  infer_instance
+instance {A : RelStructure L.graph U}
+    {B : RelStructure L.graph V} {D : RelStructure L.graph P}
+    [Finite U] [Finite V] [Finite P] :
+    Finite (RelevantEmbedding A B D) :=
+  Finite.of_injective Subtype.val Subtype.val_injective
 
 /-- A stage of the functional induced construction. -/
 structure Stage
@@ -242,9 +244,48 @@ theorem inducedConstruction
       ⟨α₂, hα₂⟩ hm₂
       (initialProjectedCopy hpos B D β e₂)
       (projected α₂ hα₂)
-  have hmono := hβ e₁ e₂
-  simp only [θ', dite_eq_left hα₁, dite_eq_left hα₂] at hmono
-  rw [← hcanon, ← hcanon₂] at hmono
-  exact hmono
+  have hmono0 := hβ e₁ e₂
+  have hmono :
+      χ (RelStructure.ClosedEmbedding.comp
+        f.toRelClosed (projected α₁ hα₁).1) =
+      χ (RelStructure.ClosedEmbedding.comp
+        f.toRelClosed (projected α₂ hα₂).1) := by
+    simpa [θ', α₁, α₂, hα₁, hα₂] using hmono0
+  have hinit :
+      χ (RelStructure.ClosedEmbedding.comp
+        f.toRelClosed (initialProjectedCopy hpos B D β e₁).1) =
+      χ (RelStructure.ClosedEmbedding.comp
+        f.toRelClosed (initialProjectedCopy hpos B D β e₂).1) := by
+    exact hcanon.trans (hmono.trans hcanon₂.symm)
+  have hj₁ :
+      (initialProjectedCopy hpos B D β e₁).1 =
+        RelStructure.ClosedEmbedding.comp j e₁ := by
+    apply RelStructure.ClosedEmbedding.ext
+    intro x
+    rfl
+  have hj₂ :
+      (initialProjectedCopy hpos B D β e₂).1 =
+        RelStructure.ClosedEmbedding.comp j e₂ := by
+    apply RelStructure.ClosedEmbedding.ext
+    intro x
+    rfl
+  have hassoc₁ :
+      RelStructure.ClosedEmbedding.comp
+          (RelStructure.ClosedEmbedding.comp f.toRelClosed j) e₁ =
+        RelStructure.ClosedEmbedding.comp
+          f.toRelClosed (RelStructure.ClosedEmbedding.comp j e₁) := by
+    apply RelStructure.ClosedEmbedding.ext
+    intro x
+    rfl
+  have hassoc₂ :
+      RelStructure.ClosedEmbedding.comp
+          (RelStructure.ClosedEmbedding.comp f.toRelClosed j) e₂ =
+        RelStructure.ClosedEmbedding.comp
+          f.toRelClosed (RelStructure.ClosedEmbedding.comp j e₂) := by
+    apply RelStructure.ClosedEmbedding.ext
+    intro x
+    rfl
+  rw [hassoc₁, hassoc₂, ← hj₁, ← hj₂]
+  exact hinit
 
 end StructuralRamsey.Partite.Closed.Construction
