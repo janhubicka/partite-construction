@@ -24,6 +24,7 @@ import PartiteConstruction.Iterated.WitnessGlue
 import PartiteConstruction.Iterated.ProjectedGlue
 import PartiteConstruction.Iterated.Step
 import PartiteConstruction.Iterated.Based
+import PartiteConstruction.Iterated.Trace
 import PartiteConstruction.Relational.Attachment
 import PartiteConstruction.Relational.Order
 import PartiteConstruction.Partite.Operations
