@@ -47,7 +47,9 @@ def copyEmbedding
         calc
           i = (Structure.funcTuple
                 ((Partite.Initial.copyEmbedding B (β B D) i) ∘ x) y
-                (Fin.castSucc k0)).1 := by rfl
+                (Fin.castSucc k0)).1 := by
+            rw [Structure.funcTuple_castSucc]
+            rfl
           _ = (((fun v => (j, v)) ∘ t) (Fin.castSucc k0)).1 := hk'
           _ = j := by rfl
       exact hij.symm
@@ -63,7 +65,9 @@ def copyEmbedding
         x k =
             (Structure.funcTuple
               ((Partite.Initial.copyEmbedding B (β B D) i) ∘ x) y
-              (Fin.castSucc k)).2 := by rfl
+              (Fin.castSucc k)).2 := by
+          rw [Structure.funcTuple_castSucc]
+          rfl
         _ = (((fun v => (i, v)) ∘ t) (Fin.castSucc k)).2 := hk'
         _ = t (Fin.castSucc k) := by rfl
         _ = args k := by rfl
@@ -83,7 +87,8 @@ def copyEmbedding
       _ = Structure.funcTuple
             ((Partite.Initial.copyEmbedding B (β B D) i) ∘ x) y
             (Fin.last (L.funcArity F)) := hout.symm
-      _ = y := by rfl
+      _ = y := by
+        rw [Structure.funcTuple_last]
 
 /-- The disjoint-union initial picture is U-transversal for positive-arity
 functions. -/
@@ -100,32 +105,36 @@ theorem uTransversal
   have hidxa : (x k0).1 = i := by
     calc
       (x k0).1 =
-          (Structure.funcTuple x y (Fin.castSucc k0)).1 := by rfl
+          (Structure.funcTuple x y (Fin.castSucc k0)).1 := by
+        rw [Structure.funcTuple_castSucc]
       _ = (((fun v => (i, v)) ∘ a) (Fin.castSucc k0)).1 :=
         congrArg Prod.fst hya
       _ = i := by rfl
   have hidxb : (x k0).1 = j := by
     calc
       (x k0).1 =
-          (Structure.funcTuple x z (Fin.castSucc k0)).1 := by rfl
+          (Structure.funcTuple x z (Fin.castSucc k0)).1 := by
+        rw [Structure.funcTuple_castSucc]
       _ = (((fun v => (j, v)) ∘ b) (Fin.castSucc k0)).1 :=
         congrArg Prod.fst hzb
       _ = j := by rfl
   have hij : j = i := hidxb.symm.trans hidxa
-  subst j
+  rw [hij] at heqb hb hzb
   let ay : V := a (Fin.last (L.funcArity F))
   let bz : V := b (Fin.last (L.funcArity F))
   have houta := congrFun heqa (Fin.last (L.funcArity F))
   have houtb := congrFun heqb (Fin.last (L.funcArity F))
   have hyEq : y = (i, ay) := by
     calc
-      y = Structure.funcTuple x y (Fin.last (L.funcArity F)) := by rfl
+      y = Structure.funcTuple x y (Fin.last (L.funcArity F)) := by
+        rw [Structure.funcTuple_last]
       _ = (((fun v => (i, v)) ∘ a)
             (Fin.last (L.funcArity F))) := houta
       _ = (i, ay) := by rfl
   have hzEq : z = (i, bz) := by
     calc
-      z = Structure.funcTuple x z (Fin.last (L.funcArity F)) := by rfl
+      z = Structure.funcTuple x z (Fin.last (L.funcArity F)) := by
+        rw [Structure.funcTuple_last]
       _ = (((fun v => (i, v)) ∘ b)
             (Fin.last (L.funcArity F))) := houtb
       _ = (i, bz) := by rfl
