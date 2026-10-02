@@ -83,6 +83,25 @@ theorem IsHomomorphism.closedMap
   rw [← h.2 F x] at hy
   exact hy
 
+namespace ClosedMap
+
+variable {X : Type*} {A : Structure L V} {B : Structure L W}
+  {C : Structure L X} {f : V → W} {g : W → X}
+
+theorem comp (hg : B.ClosedMap C g) (hf : A.ClosedMap B f) :
+    A.ClosedMap C (g ∘ f) := by
+  intro F x y hy
+  have hy' : y ∈ C.func F (g ∘ (f ∘ x)) := by
+    simpa [Function.comp_assoc] using hy
+  obtain ⟨b, hb, hby⟩ := hg F (f ∘ x) y hy'
+  obtain ⟨a, ha, hab⟩ := hf F x b hb
+  refine ⟨a, ha, ?_⟩
+  change g (f a) = y
+  rw [hab, hby]
+
+end ClosedMap
+
+
 theorem IsHomomorphism.graph
     {A : Structure L V} {B : Structure L W} {f : V → W}
     (h : A.IsHomomorphism B f) :
