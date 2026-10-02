@@ -408,6 +408,7 @@ theorem freeAmalgam
 
   obtain ⟨Y, T, hTree, pSmall, hpSmall, _⟩ :=
     glueControlled
+      (tE := tPiece) (tF := tRest)
       hControl.irreducible hFree hOverlapIrreducible
       (TreeAmalgam.copy (Iso.refl Base)) hTreeR
       (fun z : OverlapV => z) pPiece pRest
