@@ -32,11 +32,10 @@ theorem canonicalStep_locallyTreeLike
     (hC₀ : RelStructure.LocallyTreeLike A B C₀.toRelStructure n)
     (hPartite : C₀.IsPartiteOver D)
     (N : ℕ) (hN : 0 < N) :
-    let αf := α.toFunctionEmbedding
-    let R := C₀.restrict αf
-    let E := Partite.Induced.power R N
-    let C₁ := Partite.Picture.build C₀ αf E
-    RelStructure.LocallyTreeLike A B C₁.toRelStructure n := by
+    RelStructure.LocallyTreeLike A B
+      (Partite.Picture.build C₀ α.toFunctionEmbedding
+        (Partite.Induced.power
+          (C₀.restrict α.toFunctionEmbedding) N)).toRelStructure n := by
   classical
   let αf := α.toFunctionEmbedding
   let R := C₀.restrict αf
@@ -89,7 +88,7 @@ theorem canonicalStep_locallyTreeLike
       exact hC₁Partite.comp smallIncl.isHomomorphismEmbedding
 
     by_cases hcore :
-        ∀ z : Tset, ∃ w : E,
+        ∀ z : Tset, ∃ w : Partite.Induced.Vertex R N,
           z.1 = Partite.Picture.coreEmbedding C₀ αf E w
     · let eCore : RelStructure.Embedding Small Core.toRelStructure :=
         smallIncl.factorThroughRange
