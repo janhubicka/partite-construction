@@ -315,6 +315,45 @@ theorem mono (h : LocallyTreeLike A B C n) (hmn : m ≤ n) :
   intro S hS
   exact h S (hS.trans hmn)
 
+/-- If `A ↪ B ↪ C`, then `C` is `(A,B,0)`-locally
+tree-like.  The copy `B ↪ C` also synchronizes nullary relations on the
+empty induced substructure. -/
+theorem zero_of_embeddings
+    (eAB : Embedding A B) (jBC : Embedding B C) :
+    LocallyTreeLike A B C 0 := by
+  intro S hS
+  have hEmpty : S = ∅ := by
+    apply Finset.card_eq_zero.mp
+    omega
+  subst S
+  refine ⟨V, B, TreeAmalgam.copy (Iso.refl B), ?_⟩
+  let f : ↥(↑(∅ : Finset W) : Set W) → V :=
+    fun x => (Finset.notMem_empty x.1 x.2).elim
+  have hf :
+      (C.induce (↑(∅ : Finset W) : Set W)).IsHomomorphismEmbedding B f := by
+    apply IsHomomorphismEmbedding.of_map_reflect
+    · intro R x hx
+      have htarget : C.rel R (jBC ∘ (f ∘ x)) := by
+        change C.rel R (Subtype.val ∘ x) at hx
+        convert hx using 1
+        funext i
+        exact (Finset.notMem_empty (x i).1 (x i).2).elim
+      exact (jBC.map_rel_iff R (f ∘ x)).mp htarget
+    · intro T hT x hx y hy hxy
+      exact (Finset.notMem_empty x.1.1 x.1.2).elim
+    · intro T hT R x hxT hB
+      change C.rel R (Subtype.val ∘ x)
+      have htarget : C.rel R (jBC ∘ (f ∘ (Subtype.val ∘ x))) :=
+        (jBC.map_rel_iff R (f ∘ (Subtype.val ∘ x))).mpr hB
+      convert htarget using 1
+      funext i
+      exact (Finset.notMem_empty (x i).1.1 (x i).1.2).elim
+  refine ⟨f, hf, ?_⟩
+  intro α
+  refine ⟨eAB, ?_⟩
+  intro a ha
+  exact (Finset.notMem_empty _ ha).elim
+
 /-- If `C` homomorphism-embeds into irreducible `A`, and `A` embeds into
 `B`, then `C` is locally tree-like at every scale, witnessed by the
 one-copy tree amalgam `B`. -/
