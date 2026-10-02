@@ -147,17 +147,17 @@ theorem canonicalStep_locallyTreeLike
             obtain ⟨z₁, hz₁⟩ := hcopy
 
             let Piece :=
-              RelStructure.Attachment.Piece
+              RelStructure.Attachment.PieceV
                 Brel Ssupp Dcore
                 (fun j => (Partite.Picture.attachingMap C₀ αf E j).toEmbedding)
                 Tset i
             let Rest :=
-              RelStructure.Attachment.Rest
-                Brel Ssupp Dcore
-                (fun j => (Partite.Picture.attachingMap C₀ αf E j).toEmbedding)
-                Tset i
+              RelStructure.Attachment.RestV
+                (W := E) (I := Partite.Embedding (C₀.restrict αf) E)
+                Ssupp Tset i
             let Overlap :=
-              RelStructure.Attachment.Overlap
+              RelStructure.Attachment.OverlapV
+                (W := E) (I := Partite.Embedding (C₀.restrict αf) E)
                 Brel Ssupp Dcore
                 (fun j => (Partite.Picture.attachingMap C₀ αf E j).toEmbedding)
                 Tset i
