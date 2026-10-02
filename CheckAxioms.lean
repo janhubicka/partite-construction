@@ -67,3 +67,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.FreeAmalgam.attachOverIrreducible_preservesProjectionAndLocalTree
 #print axioms StructuralRamsey.RelStructure.FreeAmalgam.irreduciblesExtendTo_amalgam
 #print axioms StructuralRamsey.RelStructure.FinalCompletion.exists_completion
+#print axioms StructuralRamsey.RelStructure.FinalSparsening.build_all
+#print axioms StructuralRamsey.RelStructure.FinalSparsening.Stage.arrow
