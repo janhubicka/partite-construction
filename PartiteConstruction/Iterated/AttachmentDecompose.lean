@@ -139,7 +139,8 @@ theorem decompose :
           change ¬ OutsideAt (W := W) (I := I) S i (z k).1
           intro hout
           rcases hout with ⟨x, hx⟩
-          have hk := congrFun heq k
+          have hk : (z k).1 = Sum.inl (y k) := by
+            simpa [Function.comp_apply] using congrFun heq k
           rw [hx] at hk
           simp at hk
         let zr : Fin (L.arity R) → RestV (W := W) (I := I) S T i :=
@@ -147,9 +148,9 @@ theorem decompose :
         refine Or.inr ⟨zr, ?_, ?_⟩
         · change (attach B S D f).rel R
             (Subtype.val ∘ (Subtype.val ∘ zr))
-          convert hz using 1
-          funext k
-          rfl
+          exact Or.inl ⟨y, hy, by
+            funext k
+            simpa [Function.comp_apply] using congrFun heq k⟩
         · funext k
           rfl
       · rcases hcopy with ⟨j, y, hy, heq⟩
@@ -164,9 +165,9 @@ theorem decompose :
           refine Or.inl ⟨ze, ?_, ?_⟩
           · change (attach B S D f).rel R
               (Subtype.val ∘ (Subtype.val ∘ ze))
-            convert hz using 1
-            funext k
-            rfl
+            exact Or.inr ⟨i, y, hy, by
+              funext k
+              simpa [Function.comp_apply] using congrFun heq k⟩
           · funext k
             rfl
         · let zr : Fin (L.arity R) → RestV (W := W) (I := I) S T i :=
@@ -176,14 +177,16 @@ theorem decompose :
               apply copyMap_not_outside_of_ne
                 (B := B) (S := S) (D := D) (f := f)
                 (i := i) j hji (y k)
-              rw [← congrFun heq k]
+              have hk : (z k).1 = copyMap B S D f j (y k) := by
+                simpa [Function.comp_apply] using congrFun heq k
+              rw [← hk]
               exact hout⟩
           refine Or.inr ⟨zr, ?_, ?_⟩
           · change (attach B S D f).rel R
               (Subtype.val ∘ (Subtype.val ∘ zr))
-            convert hz using 1
-            funext k
-            rfl
+            exact Or.inr ⟨j, y, hy, by
+              funext k
+              simpa [Function.comp_apply] using congrFun heq k⟩
           · funext k
             rfl
     · rintro (⟨ze, hze, heq⟩ | ⟨zr, hzr, heq⟩)
