@@ -12,6 +12,7 @@ import PartiteConstruction.Functional.ClosedPicture
 import PartiteConstruction.Functional.ClosedConstruction
 import PartiteConstruction.Functional.InducedConstruction
 import PartiteConstruction.Structure.Relationalize
+import PartiteConstruction.Structure.WeakSubstructure
 import PartiteConstruction.Structure.UClosed
 import PartiteConstruction.Structure.Basic
 import PartiteConstruction.Structure.FreeAmalgam
@@ -32,6 +33,10 @@ import PartiteConstruction.Partite.InducedBased
 import PartiteConstruction.Partite.InducedStep
 import PartiteConstruction.Partite.InducedConstruction
 import PartiteConstruction.Iterated.LocalTreeLike
+import PartiteConstruction.Iterated.WeakLocalTreeLike
+import PartiteConstruction.Iterated.ControlCompletion
+import PartiteConstruction.Iterated.WeakStep
+import PartiteConstruction.Iterated.WeakTrace
 import PartiteConstruction.Iterated.Initial
 import PartiteConstruction.Iterated.Ordered
 import PartiteConstruction.Iterated.FreeAmalgam

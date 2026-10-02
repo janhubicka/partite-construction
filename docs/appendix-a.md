@@ -60,7 +60,11 @@ all checked end to end.  The full-language consequence is
 | closed-`α` part of `lem:indpicutreU` | `Partite.Closed.Picture.pictureLemma` | Proved; the arbitrary non-closed-`α` transversality claim is false and is marked in the survey |
 | corrected functional induced construction | `Partite.Closed.Construction.inducedConstruction` | Proved end to end for positive-arity function symbols |
 | full relation/function Ramsey consequence | `Structure.inducedRamsey` | Proved via decoding the final graph structure |
-| Iterated construction | — | Next milestone |
+| Weak substructures for functions | `Structure.weakInduce`, `weakInduce_graph_rel_iff`, `WeakLocallyTreeLike`, `weakLocallyTreeLike_iff` | Proved: weak restriction is exactly induced restriction of the relational graph encoding |
+| Iterated tree invariant, base case | `Partite.Iterated.initial_locallyTreeLike` | Proved for irreducible `A` |
+| Iterated tree invariant, canonical step | `Partite.Iterated.canonicalStep_locallyTreeLike` | Proved for weak/graph-induced substructures under the recorded stronger hereditary-irreducibility hypothesis |
+| Ambient A-copy control completion | `RelStructure.LocallyTreeLike.completeControl` | Proved by successive free attachments |
+| Iterated construction | base and one-step induction verified; finite trace packaging is the next milestone | In progress |
 
 All names above are in the `StructuralRamsey` namespace. In the survey,
 green markers identify statements proved in the formalized relational setting,
@@ -125,6 +129,16 @@ set-valued function symbols.
   `Structure.inducedRamsey` connect the corrected graph construction back to
   genuine embeddings and Ramsey arrows in the original relation/function
   language.
+* For the sparsening/tree-invariant induction, arbitrary vertex subsets are
+  treated as **weak substructures**: relations are restricted and function
+  outputs outside the subset are discarded.  Lean proves that the graph of
+  `A.weakInduce S` is exactly the ordinary induced substructure
+  `A.graph.induce S`, so induction on the size of a weak substructure becomes
+  the existing relational induction on arbitrary finite vertex sets.
+* The verified one-step tree invariant currently assumes every weak/graph-
+  induced substructure of `A` is irreducible.  This is automatic in the
+  ordered applications but remains stronger than the survey theorem's stated
+  hypothesis that `A` itself is irreducible.
 
 ## Trust and dependency
 
@@ -136,7 +150,7 @@ The fixed-length bridge combines hypothetical bad colourings at each length
 into one colouring of all finite words and applies that theorem.
 
 `CheckAxioms.lean` prints the transitive axiom dependencies of the main results.
-All 49 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
+All 53 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
 every requested declaration produced a result. In particular, `sorryAx`, a
 custom HJ axiom, and native-evaluation axioms cannot pass this audit.
 
