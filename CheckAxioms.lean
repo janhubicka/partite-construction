@@ -58,3 +58,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Iterated.canonicalStep_locallyTreeLike
 
 #print axioms StructuralRamsey.Partite.Iterated.WeakTrace.locallyTreeLike
+
+#print axioms StructuralRamsey.RelStructure.FreeAmalgam.fold_isHomomorphismEmbedding
