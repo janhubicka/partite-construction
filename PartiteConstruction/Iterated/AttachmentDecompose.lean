@@ -115,7 +115,11 @@ theorem decompose :
       have hp : z ∈ pieceSet B S D f T i := e.2
       have hr : z ∈ restSet (W := W) (I := I) S T i := by
         change ¬ OutsideAt (W := W) (I := I) S i z.1
-        simpa [z, hval] using r.2
+        intro hout
+        apply r.2
+        change OutsideAt (W := W) (I := I) S i r.1.1
+        rw [← hval]
+        exact hout
       let h : OverlapV (W := W) (I := I) B S D f T i := ⟨z, hp, hr⟩
       refine ⟨h, ?_, ?_⟩
       · apply Subtype.ext
@@ -132,7 +136,7 @@ theorem decompose :
       · rcases hcore with ⟨y, hy, heq⟩
         have hrest : ∀ k, (z k) ∈ restSet (W := W) (I := I) S T i := by
           intro k
-          change ¬ OutsideAt (W := W) (I := I) S i (z k).1.1
+          change ¬ OutsideAt (W := W) (I := I) S i (z k).1
           intro hout
           rcases hout with ⟨x, hx⟩
           have hk := congrFun heq k
@@ -141,7 +145,11 @@ theorem decompose :
         let zr : Fin (L.arity R) → RestV (W := W) (I := I) S T i :=
           fun k => ⟨z k, hrest k⟩
         refine Or.inr ⟨zr, ?_, ?_⟩
-        · exact hz
+        · change (attach B S D f).rel R
+            (Subtype.val ∘ (Subtype.val ∘ zr))
+          convert hz using 1
+          funext k
+          rfl
         · funext k
           rfl
       · rcases hcopy with ⟨j, y, hy, heq⟩
@@ -150,16 +158,20 @@ theorem decompose :
           have hpiece : ∀ k, (z k) ∈ pieceSet B S D f T i := by
             intro k
             refine ⟨y k, ?_⟩
-            exact (congrFun heq k).symm
+            exact congrFun heq k
           let ze : Fin (L.arity R) → PieceV B S D f T i :=
             fun k => ⟨z k, hpiece k⟩
           refine Or.inl ⟨ze, ?_, ?_⟩
-          · exact hz
+          · change (attach B S D f).rel R
+              (Subtype.val ∘ (Subtype.val ∘ ze))
+            convert hz using 1
+            funext k
+            rfl
           · funext k
             rfl
         · let zr : Fin (L.arity R) → RestV (W := W) (I := I) S T i :=
             fun k => ⟨z k, by
-              change ¬ OutsideAt (W := W) (I := I) S i (z k).1.1
+              change ¬ OutsideAt (W := W) (I := I) S i (z k).1
               intro hout
               apply copyMap_not_outside_of_ne
                 (B := B) (S := S) (D := D) (f := f)
@@ -167,7 +179,11 @@ theorem decompose :
               rw [← congrFun heq k]
               exact hout⟩
           refine Or.inr ⟨zr, ?_, ?_⟩
-          · exact hz
+          · change (attach B S D f).rel R
+              (Subtype.val ∘ (Subtype.val ∘ zr))
+            convert hz using 1
+            funext k
+            rfl
           · funext k
             rfl
     · rintro (⟨ze, hze, heq⟩ | ⟨zr, hzr, heq⟩)
