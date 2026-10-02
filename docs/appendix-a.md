@@ -64,7 +64,11 @@ all checked end to end.  The full-language consequence is
 | Iterated tree invariant, base case | `Partite.Iterated.initial_locallyTreeLike` | Proved for irreducible `A` |
 | Iterated tree invariant, canonical step | `Partite.Iterated.canonicalStep_locallyTreeLike` | Proved for weak/graph-induced substructures under the recorded stronger hereditary-irreducibility hypothesis |
 | Ambient A-copy control completion | `RelStructure.LocallyTreeLike.completeControl` | Proved by successive free attachments |
-| Iterated construction | `Partite.Iterated.WeakTrace`, `WeakTrace.locallyTreeLike` | Finite weak-substructure Picture trace verified; final sparsening attachment remains open |
+| Iterated construction | `Partite.Iterated.WeakTrace`, `WeakTrace.locallyTreeLike`; `Partite.Induced.Trace.locallyTreeLike`, `inducedConstruction_locallyTreeLike` | Abstract weak trace and the actual induced-construction trace both verified under hereditary irreducibility of A |
+| Repeated sparsening iteration | `RelStructure.ProjectsIrreduciblesInto.precomp`, `Partite.IteratedSparsening.build` | Ramsey arrow, composite projection, local tree-likeness, and projected irreducible coverage propagated through all positive levels |
+| Final sparsening attachment | `RelStructure.FreeAmalgam.attachOverIrreducible_preservesProjection`, `LocallyTreeLike.freeAmalgam`, `attachOverIrreducible_preservesProjectionAndLocalTree` | Projection preservation needs only irreducibility of the overlap; local-tree preservation is verified when the overlap is hereditarily irreducible |
+| Final irreducible completion | `RelStructure.FinalSparsening.build_all`, `FinalCompletion.exists_completion` | Finite attachment phase gives actual B-copies covering all irreducibles while preserving the checked invariants under hereditary irreducibility of B |
+| Strengthened sparsening theorem | `Partite.IteratedSparsening.sparseningRamsey_hereditarilyIrreducible_all` | End-to-end relational theorem for every n, assuming A and B hereditarily irreducible; no separate A↪B hypothesis is needed |
 
 All names above are in the `StructuralRamsey` namespace. In the survey,
 green markers identify statements proved in the formalized relational setting,
@@ -135,10 +139,15 @@ set-valued function symbols.
   `A.weakInduce S` is exactly the ordinary induced substructure
   `A.graph.induce S`, so induction on the size of a weak substructure becomes
   the existing relational induction on arbitrary finite vertex sets.
-* The verified one-step tree invariant currently assumes every weak/graph-
-  induced substructure of `A` is irreducible.  This is automatic in the
-  ordered applications but remains stronger than the survey theorem's stated
-  hypothesis that `A` itself is irreducible.
+* The verified one-step tree invariant assumes every weak/graph-induced
+  substructure of `A` is irreducible.  The final free-attachment preservation
+  step additionally uses hereditary irreducibility of `B`: an arbitrary
+  small test set may meet the irreducible gluing overlap in a reducible proper
+  subset, and a homomorphism-embedding need not restrict to an embedding on
+  that subset.  Under hereditary irreducibility the overlap embeds into `B`
+  and all its induced substructures are irreducible, so the checked tree-gluing
+  proof applies.  This is automatic in the intended ordered applications but
+  is stronger than the survey theorem's stated general hypothesis.
 
 ## Trust and dependency
 
@@ -150,7 +159,7 @@ The fixed-length bridge combines hypothetical bad colourings at each length
 into one colouring of all finite words and applies that theorem.
 
 `CheckAxioms.lean` prints the transitive axiom dependencies of the main results.
-All 54 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
+All 70 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
 every requested declaration produced a result. In particular, `sorryAx`, a
 custom HJ axiom, and native-evaluation axioms cannot pass this audit.
 
