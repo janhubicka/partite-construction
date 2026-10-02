@@ -59,6 +59,8 @@ all checked end to end.  The full-language consequence is
 | Closed free attachment | `Closed.Attachment.core_closed`, `copy_closed`, `uTransversal` | Proved when the overlap is `U`-closed and attaching maps are closed |
 | closed-`α` part of `lem:indpicutreU` | `Partite.Closed.Picture.pictureLemma` | Proved; the arbitrary non-closed-`α` transversality claim is false and is marked in the survey |
 | corrected functional induced construction | `Partite.Closed.Construction.inducedConstruction` | Proved end to end for positive-arity function symbols |
+| Half-closed initial picture | `Partite.HalfClosed.Initial.copyEmbedding`, `uTransversal`, `isPartiteOver` | Ordinary B→D projections are allowed; each actual copy is U-closed and the picture is U-transversal for positive function arities |
+| `lem:rpartite`, half-closed induced construction | `RelStructure.HalfClosedArrow`, `Partite.HalfClosed.Construction.inducedConstruction` | Proved for positive-arity function symbols; repairs an ordinary returned B-copy to a genuine closed Ramsey arrow |
 | full relation/function Ramsey consequence | `Structure.inducedRamsey` | Proved via decoding the final graph structure |
 | Weak substructures for functions | `Structure.weakInduce`, `weakInduce_graph_rel_iff`, `WeakLocallyTreeLike`, `weakLocallyTreeLike_iff` | Proved: weak restriction is exactly induced restriction of the relational graph encoding |
 | Iterated tree invariant, base case | `Partite.Iterated.initial_locallyTreeLike` | Proved for irreducible `A` |
@@ -125,10 +127,12 @@ set-valued function symbols.
   The survey's claim that the same free attachment remains
   `U`-transversal for arbitrary non-closed `α` is false; a unary
   counterexample is recorded in the manuscript.
-* The closed initial disjoint union assumes every original function has
-  positive arity. Nullary functions/constants need a separate initial object:
-  the empty input does not determine a copy index, so different copies can
-  contribute distinct outputs in one part.
+* The closed and half-closed initial disjoint unions assume every original
+  function has positive arity. Nullary functions/constants need a separate
+  initial object: the empty input does not determine a copy index, so different
+  copies can contribute distinct outputs in one part.  The half-closed initial
+  picture is indexed by ordinary B→D embeddings; nevertheless each copy inside
+  the picture is U-closed because a positive-arity input fixes its copy index.
 * `Structure.embeddingEquivClosedGraph`, `arrow_ofGraph_iff_closed`, and
   `Structure.inducedRamsey` connect the corrected graph construction back to
   genuine embeddings and Ramsey arrows in the original relation/function
@@ -159,7 +163,7 @@ The fixed-length bridge combines hypothetical bad colourings at each length
 into one colouring of all finite words and applies that theorem.
 
 `CheckAxioms.lean` prints the transitive axiom dependencies of the main results.
-All 70 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
+All 73 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
 every requested declaration produced a result. In particular, `sorryAx`, a
 custom HJ axiom, and native-evaluation axioms cannot pass this audit.
 
