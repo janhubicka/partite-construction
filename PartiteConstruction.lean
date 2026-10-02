@@ -1,6 +1,7 @@
 import PartiteConstruction.Relational.Basic
 import PartiteConstruction.Functional.Basic
 import PartiteConstruction.Functional.Induced
+import PartiteConstruction.Functional.Operations
 import PartiteConstruction.Structure.Relationalize
 import PartiteConstruction.Structure.Basic
 import PartiteConstruction.Relational.Homomorphism
