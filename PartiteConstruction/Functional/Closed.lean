@@ -187,6 +187,94 @@ def toFull (e : ClosedEmbedding A B) :
 
 end RelStructure.ClosedEmbedding
 
+namespace Structure
+
+variable {A : Structure L V} {B : Structure L W}
+
+/-- Recover a full embedding directly from a closed embedding of the graph
+encodings. -/
+def Embedding.ofClosedGraph
+    (e : RelStructure.ClosedEmbedding A.graph B.graph) :
+    Structure.Embedding A B := by
+  apply Structure.Embedding.ofGraphClosed e.toEmbedding
+  intro F x y hy
+  have ht :
+      B.graph.rel (.inr F)
+        (Structure.funcTuple (e ∘ x) y) :=
+    (Structure.graph_func_snoc B F (e ∘ x) y).2 hy
+  obtain ⟨z, hz, hzy⟩ := e.closed F x y ht
+  refine ⟨z, ?_, hzy⟩
+  exact (Structure.graph_func_snoc A F x z).1 hz
+
+/-- Full embeddings are equivalent to U-closed graph embeddings. -/
+def embeddingEquivClosedGraph :
+    Structure.Embedding A B ≃
+      RelStructure.ClosedEmbedding A.graph B.graph where
+  toFun := Structure.Embedding.toClosedGraph
+  invFun := Structure.Embedding.ofClosedGraph
+  left_inv := by
+    intro e
+    apply Structure.Embedding.ext
+    intro x
+    rfl
+  right_inv := by
+    intro e
+    apply RelStructure.ClosedEmbedding.ext
+    intro x
+    rfl
+
+end Structure
+
+namespace RelStructure
+
+/-- Ramsey arrow using only U-closed embeddings. -/
+def ClosedArrow
+    (A : RelStructure L.graph V)
+    (B : RelStructure L.graph W)
+    {X : Type*} (C : RelStructure L.graph X)
+    (κ : Type*) : Prop :=
+  ∀ χ : ClosedEmbedding A C → κ,
+    ∃ f : ClosedEmbedding B C,
+      ∀ e₁ e₂ : ClosedEmbedding A B,
+        χ (f.comp e₁) = χ (f.comp e₂)
+
+end RelStructure
+
+namespace Structure
+
+variable {A : Structure L V} {B : Structure L W}
+
+/-- The full structural Ramsey arrow is exactly the closed-arrow statement for
+the relational graph encodings. -/
+theorem arrow_iff_closedGraph
+    {X : Type*} (C : Structure L X) (κ : Type*) :
+    Structure.Arrow A B C κ ↔
+      RelStructure.ClosedArrow A.graph B.graph C.graph κ := by
+  constructor
+  · intro h χ
+    let χfull : Structure.Embedding A C → κ :=
+      fun e => χ (Structure.Embedding.toClosedGraph e)
+    obtain ⟨f, hf⟩ := h χfull
+    refine ⟨Structure.Embedding.toClosedGraph f, ?_⟩
+    intro e₁ e₂
+    let e₁f := Structure.Embedding.ofClosedGraph e₁
+    let e₂f := Structure.Embedding.ofClosedGraph e₂
+    have hh := hf e₁f e₂f
+    simpa [χfull, e₁f, e₂f] using hh
+  · intro h χ
+    let χgraph :
+        RelStructure.ClosedEmbedding A.graph C.graph → κ :=
+      fun e => χ (Structure.Embedding.ofClosedGraph e)
+    obtain ⟨f, hf⟩ := h χgraph
+    refine ⟨Structure.Embedding.ofClosedGraph f, ?_⟩
+    intro e₁ e₂
+    have hh := hf
+      (Structure.Embedding.toClosedGraph e₁)
+      (Structure.Embedding.toClosedGraph e₂)
+    simpa [χgraph] using hh
+
+end Structure
+
 namespace Partite
 
 /-- U-transversality for the encoded function graph relations: all outputs
