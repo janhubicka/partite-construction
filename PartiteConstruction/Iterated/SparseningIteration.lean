@@ -97,7 +97,8 @@ theorem succ
   have hProjected :
       RelStructure.ProjectsIrreduciblesInto
         B R.system.toRelStructure Q p := by
-    exact S.projected.precomp R.isPartite
+    exact RelStructure.ProjectsIrreduciblesInto.precomp
+      R.isPartite S.projected
   let T : Stage A B Q κ (k + 1) := {
     Vertex := R.Vertex
     finiteVertex := R.finiteVertex
