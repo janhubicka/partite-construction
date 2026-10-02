@@ -34,6 +34,29 @@ def graph (A : Structure L V) : RelStructure L.graph V where
         x (Fin.last (L.funcArity F)) ∈
           A.func F (fun i => x i.castSucc)
 
+/-- Reconstruct a relation/function structure from an arbitrary relational
+structure in the graph language. -/
+def ofGraph (R : RelStructure L.graph V) : Structure L V where
+  rel S x := R.rel (.inl S) x
+  func F x := {y | R.rel (.inr F) (Fin.snoc x y)}
+
+@[simp] theorem ofGraph_rel (R : RelStructure L.graph V)
+    (S : L.RelSymbol) (x : Fin (L.relArity S) → V) :
+    (ofGraph R).rel S x ↔ R.rel (.inl S) x := Iff.rfl
+
+@[simp] theorem ofGraph_func (R : RelStructure L.graph V)
+    (F : L.FuncSymbol) (x : Fin (L.funcArity F) → V) (y : V) :
+    y ∈ (ofGraph R).func F x ↔ R.rel (.inr F) (Fin.snoc x y) := Iff.rfl
+
+/-- Relational graph membership for a function tuple built by snoc. -/
+@[simp] theorem graph_func_snoc (A : Structure L V)
+    (F : L.FuncSymbol) (x : Fin (L.funcArity F) → V) (y : V) :
+    A.graph.rel (.inr F) (Fin.snoc x y) ↔ y ∈ A.func F x := by
+  change (Fin.snoc x y) (Fin.last (L.funcArity F)) ∈
+    A.func F (fun i => (Fin.snoc x y) i.castSucc) ↔ _
+  simp
+
+
 /-- The target contains no function value over an image tuple outside the
 image of the source function value set. -/
 def ClosedMap (A : Structure L V) (B : Structure L W) (f : V → W) : Prop :=
