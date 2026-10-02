@@ -38,8 +38,8 @@ variable {A : RelStructure L.graph U}
   exact RelStructure.ClosedEmbedding.ext h
 
 def comp {X : Type v} {C : Partite.System L.graph P X}
-    (f : Closed.Embedding B C)
-    (e : ProjectedEmbedding A B α) :
+    (e : ProjectedEmbedding A B α)
+    (f : Closed.Embedding B C) :
     ProjectedEmbedding A C α :=
   ⟨RelStructure.ClosedEmbedding.comp f.toRelClosed e.1,
     fun x => (f.1.map_part (e.1 x)).trans (e.2 x)⟩
@@ -123,11 +123,10 @@ def attachingMap
 
 abbrev Vertex :=
   Closed.Attachment.Vertex
-    B (B.support α.toEmbedding.toFunctionEmbedding)
-    (E.relabel α.toEmbedding.toFunctionEmbedding)
-    (fun f : Closed.Embedding
-      (B.restrict α.toEmbedding.toFunctionEmbedding) E =>
-        attachingMap E f)
+    (B.support α.toEmbedding.toFunctionEmbedding)
+    W
+    (Closed.Embedding
+      (B.restrict α.toEmbedding.toFunctionEmbedding) E)
 
 noncomputable def build :
     Partite.System L.graph P (Vertex E) :=
