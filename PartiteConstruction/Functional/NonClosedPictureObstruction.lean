@@ -55,12 +55,9 @@ theorem copy_comp_not_functionClosed
     refine Or.inr ⟨j, Structure.funcTuple q y, hrel, ?_⟩
     funext k
     refine Fin.lastCases ?_ (fun t => ?_) k
-    · rw [Structure.funcTuple_last, Structure.funcTuple_last]
+    · simp only [Function.comp_apply, Structure.funcTuple_last]
       rfl
-    · rw [Structure.funcTuple_castSucc, Structure.funcTuple_castSucc]
-      change
-        copyMap B S D f i (e (x t)) =
-          copyMap B S D f j (q t)
+    · simp only [Function.comp_apply, Structure.funcTuple_castSucc]
       exact hinputs t
   obtain ⟨z, _, hz⟩ := hclosed F x out htarget
   have hselected :
@@ -72,5 +69,6 @@ theorem copy_comp_not_functionClosed
     exact copyMap_not_mem j y hy
   change copyMap B S D f i (e z) = out at hz
   rw [hselected, hout] at hz
+  exact Sum.noConfusion hz
 
 end StructuralRamsey.RelStructure.Attachment
