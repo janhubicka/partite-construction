@@ -21,6 +21,12 @@ def graph (L : Language.{u}) : RelLanguage.{u} where
     | .inl R => L.relArity R
     | .inr F => L.funcArity F + 1
 
+@[simp] theorem graph_arity_rel (L : Language.{u}) (R : L.RelSymbol) :
+    L.graph.arity (.inl R) = L.relArity R := rfl
+
+@[simp] theorem graph_arity_func (L : Language.{u}) (F : L.FuncSymbol) :
+    L.graph.arity (.inr F) = L.funcArity F + 1 := rfl
+
 end Language
 
 namespace Structure
@@ -39,6 +45,14 @@ def funcTuple {n : ℕ} (x : Fin n → V) (y : V) : Fin (n + 1) → V :=
     (i : Fin n) :
     funcTuple x y i.castSucc = x i := by
   simp [funcTuple]
+
+@[simp] theorem funcTuple_eta {n : ℕ} (t : Fin (n + 1) → V) :
+    funcTuple (fun i => t i.castSucc) (t (Fin.last n)) = t := by
+  funext i
+  refine Fin.lastCases ?_ (fun j => ?_) i
+  · simp
+  · simp
+
 
 def graph (A : Structure L V) : RelStructure L.graph V where
   rel
