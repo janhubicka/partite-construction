@@ -180,6 +180,21 @@ theorem canonicalStep_locallyTreeLike
                 Brel Ssupp Dcore
                 (fun j => (Partite.Picture.attachingMap C₀ αf E j).toEmbedding)
                 Tset i
+            let PieceV :=
+              RelStructure.Attachment.PieceV
+                Brel Ssupp Dcore
+                (fun j => (Partite.Picture.attachingMap C₀ αf E j).toEmbedding)
+                Tset i
+            let RestV :=
+              RelStructure.Attachment.RestV
+                (W := Partite.Induced.Vertex R N)
+                (I := Partite.Embedding (C₀.restrict αf) E)
+                Ssupp Tset i
+            let OverlapV :=
+              RelStructure.Attachment.OverlapV
+                Brel Ssupp Dcore
+                (fun j => (Partite.Picture.attachingMap C₀ αf E j).toEmbedding)
+                Tset i
             let sPiece :=
               RelStructure.Attachment.overlapToPiece
                 Brel Ssupp Dcore
@@ -208,15 +223,15 @@ theorem canonicalStep_locallyTreeLike
                 Tset i
 
             let pSmall : Tset → P := p ∘ Subtype.val
-            let pPiece : Piece → P := pSmall ∘ iPiece
-            let pRest : Rest → P := pSmall ∘ iRest
+            let pPiece : PieceV → P := pSmall ∘ iPiece
+            let pRest : RestV → P := pSmall ∘ iRest
 
             letI : Fintype Tset := Fintype.ofFinite Tset
-            letI : Fintype Piece := Fintype.ofFinite Piece
-            letI : Fintype Rest := Fintype.ofFinite Rest
+            letI : Fintype PieceV := Fintype.ofFinite PieceV
+            letI : Fintype RestV := Fintype.ofFinite RestV
 
             have hPieceSubset :
-                ((Finset.univ : Finset Piece).image pPiece) ⊆
+                ((Finset.univ : Finset PieceV).image pPiece) ⊆
                   I.erase (p z₁.1) := by
               intro q hq
               rcases Finset.mem_image.mp hq with ⟨e, _, rfl⟩
@@ -241,9 +256,9 @@ theorem canonicalStep_locallyTreeLike
                 exact hz₁ hpieceZ
               exact Finset.mem_erase.mpr ⟨hne, hmemI⟩
             have hPieceCard :
-                ((Finset.univ : Finset Piece).image pPiece).card ≤ n - 1 := by
+                ((Finset.univ : Finset PieceV).image pPiece).card ≤ n - 1 := by
               calc
-                ((Finset.univ : Finset Piece).image pPiece).card
+                ((Finset.univ : Finset PieceV).image pPiece).card
                     ≤ (I.erase (p z₁.1)).card :=
                   Finset.card_le_card hPieceSubset
                 _ = I.card - 1 := by
@@ -252,7 +267,7 @@ theorem canonicalStep_locallyTreeLike
                 _ ≤ n - 1 := by rw [hIeq]
 
             have hRestSubset :
-                ((Finset.univ : Finset Rest).image pRest) ⊆
+                ((Finset.univ : Finset RestV).image pRest) ⊆
                   I.erase (p z₀.1) := by
               intro q hq
               rcases Finset.mem_image.mp hq with ⟨e, _, rfl⟩
@@ -271,9 +286,9 @@ theorem canonicalStep_locallyTreeLike
                 exact hrestZ hzOutside
               exact Finset.mem_erase.mpr ⟨hne, hmemI⟩
             have hRestCard :
-                ((Finset.univ : Finset Rest).image pRest).card ≤ n - 1 := by
+                ((Finset.univ : Finset RestV).image pRest).card ≤ n - 1 := by
               calc
-                ((Finset.univ : Finset Rest).image pRest).card
+                ((Finset.univ : Finset RestV).image pRest).card
                     ≤ (I.erase (p z₀.1)).card :=
                   Finset.card_le_card hRestSubset
                 _ = I.card - 1 := by
@@ -282,7 +297,7 @@ theorem canonicalStep_locallyTreeLike
                 _ ≤ n - 1 := by rw [hIeq]
 
             have hOverlapRange :
-                ∀ d : Overlap,
+                ∀ d : OverlapV,
                   ∃ a : U, pSmall (iPiece (sPiece d)) = α a := by
               intro d
               have hInCopy :
