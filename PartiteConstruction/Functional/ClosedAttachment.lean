@@ -16,12 +16,12 @@ universe u v
 variable {L : Language.{u}} {P V W I : Type v}
 variable (B : Partite.System L.graph P V) (S : Set V)
 variable (D : Partite.System L.graph P W)
-variable (f : I → Closed.Embedding (B.induce S) D)
+variable (f : I → Partite.Closed.Embedding (B.induce S) D)
 
-abbrev Vertex :=
+abbrev Vertex (S : Set V) (W I : Type v) :=
   Partite.Attachment.Vertex S (W := W) (I := I)
 
-noncomputable def attach : Partite.System L.graph P (Vertex B S D f) :=
+noncomputable def attach : Partite.System L.graph P (Vertex S W I) :=
   Partite.Attachment.attach B S D (fun i => (f i).1)
 
 variable {B S D f}
@@ -298,7 +298,7 @@ theorem uTransversal
   by_cases hcoreArgs : ∀ k : Fin (L.funcArity F), ∃ a : W, x k = .inl a
   · choose a ha using hcoreArgs
     have hcoreOutput :
-        ∀ {t : Vertex B S D f},
+        ∀ {t : Vertex S W I},
           R.rel (.inr F) (Structure.funcTuple x t) →
           ∃ b : W, t = .inl b := by
       intro t ht
@@ -368,7 +368,7 @@ theorem uTransversal
         let i := ix.1
         let outx := ix.2
         have getCopy :
-            ∀ {t : Vertex B S D f},
+            ∀ {t : Vertex S W I},
               R.rel (.inr F) (Structure.funcTuple x t) →
               ∃ q : Fin (L.funcArity F) → V, ∃ b : V,
                 B.rel (.inr F) (Structure.funcTuple q b) ∧
@@ -404,7 +404,7 @@ theorem uTransversal
             have hj := congrFun heq (Fin.last (L.funcArity F))
             simpa [b, Structure.funcTuple, Function.comp_apply] using hj
           exact ⟨q, b, hrel, hargs, hout⟩
-        obtain ⟨qy, by, hry, hargsY, houtY⟩ := getCopy hy
+        obtain ⟨qy, byv, hry, hargsY, houtY⟩ := getCopy hy
         obtain ⟨qz, bz, hrz, hargsZ, houtZ⟩ := getCopy hz
         have hq : qy = qz := by
           funext j
@@ -414,9 +414,9 @@ theorem uTransversal
           have := congrFun (hargsY.trans hargsZ.symm) j
           simpa [Function.comp_apply] using this
         subst qz
-        have hpB : B.part by = B.part bz := by
+        have hpB : B.part byv = B.part bz := by
           simpa [houtY, houtZ, Partite.Attachment.part_copyMap] using hp
-        have hbybz := hB F qy by bz hry hrz hpB
+        have hbybz := hB F qy byv bz hry hrz hpB
         subst bz
         exact houtY.trans houtZ.symm
 
