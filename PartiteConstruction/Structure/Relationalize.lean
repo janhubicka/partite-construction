@@ -53,6 +53,15 @@ def funcTuple {n : ℕ} (x : Fin n → V) (y : V) : Fin (n + 1) → V :=
   · simp
   · simp
 
+@[simp] theorem comp_funcTuple {X : Type*} {n : ℕ}
+    (f : V → X) (x : Fin n → V) (y : V) :
+    f ∘ funcTuple x y = funcTuple (f ∘ x) (f y) := by
+  funext i
+  refine Fin.lastCases ?_ (fun j => ?_) i
+  · simp [funcTuple, Function.comp_apply]
+  · simp [funcTuple, Function.comp_apply]
+
+
 
 def graph (A : Structure L V) : RelStructure L.graph V where
   rel
