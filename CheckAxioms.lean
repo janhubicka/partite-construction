@@ -56,3 +56,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Structure.weakLocallyTreeLike_iff
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.completeControl
 #print axioms StructuralRamsey.Partite.Iterated.canonicalStep_locallyTreeLike
+
+#print axioms StructuralRamsey.Partite.Iterated.WeakTrace.locallyTreeLike
