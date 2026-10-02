@@ -2,11 +2,21 @@
 
 The non-induced construction is checked end to end, with the unconditional
 ordered theorem assembled as `Partite.orderedRamsey`. The **relational induced
-partite construction** is now checked end to end as well: homomorphism-
-embeddings, positive coordinatewise powers, the induced Partite and Picture
-Lemmas, initial pictures, based stages, the irreducible-image invariant, finite
-iteration, and the final Ramsey extraction are all formalized. The set-valued
-function extension is intentionally left to the later recursive construction.
+partite construction** is checked end to end as well: homomorphism-embeddings,
+positive coordinatewise powers, the induced Partite and Picture Lemmas, initial
+pictures, based stages, the irreducible-image invariant, finite iteration, and
+the final Ramsey extraction are all formalized.
+
+The survey's genuinely set-valued function language is also formalized, but the
+formalization shows that the ordinary induced `D`-partite invariant is not
+stable under free attachment.  The corrected construction therefore uses the
+survey's relational graph encoding, `U`-closed embeddings, and
+`U`-transversality.  Full embeddings of the original function structures are
+proved equivalent to closed graph embeddings.  For **positive-arity**
+functions, the closed Partite Lemma, closed initial picture, closed attachment,
+closed-`α` Picture Lemma, finite iteration, and final Ramsey extraction are
+all checked end to end.  The full-language consequence is
+`Structure.inducedRamsey`.
 
 | Survey location | Lean declaration | Status |
 | --- | --- | --- |
@@ -43,8 +53,14 @@ function extension is intentionally left to the later recursive construction.
 | Initial picture and invariant (3) | `Partite.Induced.Initial.picture_isPartiteOver`, `picture_covers` | Proved for the disjoint union of all `B`-copies in `D` |
 | Preservation of invariant (3) | `Partite.Induced.Attachment.attach_covers`, `pictureStep` | Proved simultaneously with the based-stage Picture property |
 | `thm:inducedpartite`, finite construction | `Partite.Induced.Stage`, `Trace`, `inducedConstruction` | Proved end to end for finite relational structures; the trace certifies every intermediate stage and the default-colour extraction is explicit |
+| Function graph encoding / closed embeddings | `Structure.embeddingEquivClosedGraph`, `arrow_ofGraph_iff_closed` | Proved: full embeddings and Ramsey arrows are equivalent to `U`-closed graph embeddings |
+| `lem:indpartiteU` | `Partite.Closed.Induced.partiteLemma` | Proved; coordinate powers preserve `U`-transversality and Hales--Jewett line/word maps are closed |
+| `obs:disaster1` | `Partite.Closed.support_functionClosed` | Proved |
+| Closed free attachment | `Closed.Attachment.core_closed`, `copy_closed`, `uTransversal` | Proved when the overlap is `U`-closed and attaching maps are closed |
+| closed-`α` part of `lem:indpicutreU` | `Partite.Closed.Picture.pictureLemma` | Proved; the arbitrary non-closed-`α` transversality claim is false and is marked in the survey |
+| corrected functional induced construction | `Partite.Closed.Construction.inducedConstruction` | Proved end to end for positive-arity function symbols |
+| full relation/function Ramsey consequence | `Structure.inducedRamsey` | Proved via decoding the final graph structure |
 | Iterated construction | — | Next milestone |
-| Recursive construction / set-valued functions | — | Later milestone; required for the survey's general function language |
 
 All names above are in the `StructuralRamsey` namespace. In the survey,
 green markers identify statements proved in the formalized relational setting,
@@ -92,12 +108,23 @@ set-valued function symbols.
   `A → D` not contained in any `B`-copy before applying the Ramsey arrow on
   `D`. This is the same bookkeeping issue that appears in the non-induced
   projection argument.
-* Functions and closures are intentionally deferred to the recursive partite
-  construction. In particular, the coordinatewise argument is not valid for
-  arbitrary set-valued functions: different coordinates may choose different
-  function values, creating a mixed value not lying in the image of any
-  single source function value. The later `U`-transversal machinery is the
-  appropriate layer for that case.
+* For set-valued functions, the direct coordinatewise power requires
+  function-output transversality.  More importantly, ordinary free attachment
+  does not preserve the full function-homomorphic partition projection on
+  mixed tuples, so the functional theorem is carried out in the relational
+  graph encoding with `U`-closed embeddings.
+* The closed Picture theorem is proved for `U`-closed `α : A → D`.
+  The survey's claim that the same free attachment remains
+  `U`-transversal for arbitrary non-closed `α` is false; a unary
+  counterexample is recorded in the manuscript.
+* The closed initial disjoint union assumes every original function has
+  positive arity. Nullary functions/constants need a separate initial object:
+  the empty input does not determine a copy index, so different copies can
+  contribute distinct outputs in one part.
+* `Structure.embeddingEquivClosedGraph`, `arrow_ofGraph_iff_closed`, and
+  `Structure.inducedRamsey` connect the corrected graph construction back to
+  genuine embeddings and Ramsey arrows in the original relation/function
+  language.
 
 ## Trust and dependency
 
@@ -109,7 +136,7 @@ The fixed-length bridge combines hypothetical bad colourings at each length
 into one colouring of all finite words and applies that theorem.
 
 `CheckAxioms.lean` prints the transitive axiom dependencies of the main results.
-All 38 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
+All 49 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
 every requested declaration produced a result. In particular, `sorryAx`, a
 custom HJ axiom, and native-evaluation axioms cannot pass this audit.
 
