@@ -65,3 +65,4 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.base
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.freeAmalgam
 #print axioms StructuralRamsey.RelStructure.FreeAmalgam.attachOverIrreducible_preservesProjectionAndLocalTree
+#print axioms StructuralRamsey.RelStructure.FreeAmalgam.irreduciblesExtendTo_amalgam
