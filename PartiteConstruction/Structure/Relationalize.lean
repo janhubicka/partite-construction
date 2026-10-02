@@ -1,5 +1,5 @@
 import PartiteConstruction.Structure.Basic
-import PartiteConstruction.Relational.Basic
+import PartiteConstruction.Relational.Homomorphism
 import Mathlib.Data.Fin.Tuple.Basic
 
 /-! # Relational graph encoding of set-valued functions
@@ -27,6 +27,19 @@ namespace Structure
 
 variable {L : Language.{u}} {V : Type v} {W : Type w}
 
+/-- Append a function value as the last coordinate of its graph tuple. -/
+def funcTuple {n : ℕ} (x : Fin n → V) (y : V) : Fin (n + 1) → V :=
+  Fin.lastCases y x
+
+@[simp] theorem funcTuple_last {n : ℕ} (x : Fin n → V) (y : V) :
+    funcTuple x y (Fin.last n) = y := by
+  simp [funcTuple]
+
+@[simp] theorem funcTuple_castSucc {n : ℕ} (x : Fin n → V) (y : V)
+    (i : Fin n) :
+    funcTuple x y i.castSucc = x i := by
+  simp [funcTuple]
+
 def graph (A : Structure L V) : RelStructure L.graph V where
   rel
     | .inl R, x => A.rel R x
@@ -38,7 +51,7 @@ def graph (A : Structure L V) : RelStructure L.graph V where
 structure in the graph language. -/
 def ofGraph (R : RelStructure L.graph V) : Structure L V where
   rel S x := R.rel (.inl S) x
-  func F x := {y | R.rel (.inr F) (Fin.snoc x y)}
+  func F x := {y | R.rel (.inr F) (funcTuple x y)}
 
 @[simp] theorem ofGraph_rel (R : RelStructure L.graph V)
     (S : L.RelSymbol) (x : Fin (L.relArity S) → V) :
@@ -46,14 +59,14 @@ def ofGraph (R : RelStructure L.graph V) : Structure L V where
 
 @[simp] theorem ofGraph_func (R : RelStructure L.graph V)
     (F : L.FuncSymbol) (x : Fin (L.funcArity F) → V) (y : V) :
-    y ∈ (ofGraph R).func F x ↔ R.rel (.inr F) (Fin.snoc x y) := Iff.rfl
+    y ∈ (ofGraph R).func F x ↔ R.rel (.inr F) (funcTuple x y) := Iff.rfl
 
 /-- Relational graph membership for a function tuple built by snoc. -/
 @[simp] theorem graph_func_snoc (A : Structure L V)
     (F : L.FuncSymbol) (x : Fin (L.funcArity F) → V) (y : V) :
-    A.graph.rel (.inr F) (Fin.snoc x y) ↔ y ∈ A.func F x := by
-  change (Fin.snoc x y) (Fin.last (L.funcArity F)) ∈
-    A.func F (fun i => (Fin.snoc x y) i.castSucc) ↔ _
+    A.graph.rel (.inr F) (funcTuple x y) ↔ y ∈ A.func F x := by
+  change (funcTuple x y) (Fin.last (L.funcArity F)) ∈
+    A.func F (fun i => (funcTuple x y) i.castSucc) ↔ _
   simp
 
 
@@ -73,7 +86,7 @@ theorem IsHomomorphism.closedMap
 theorem IsHomomorphism.graph
     {A : Structure L V} {B : Structure L W} {f : V → W}
     (h : A.IsHomomorphism B f) :
-    A.graph.IsHomomorphism B.graph f := by
+    RelStructure.IsHomomorphism A.graph B.graph f := by
   intro R x hx
   cases R with
   | inl R =>
@@ -113,7 +126,7 @@ def graph (e : Embedding A B) : RelStructure.Embedding A.graph B.graph where
         · intro hy
           have hy' : e (x (Fin.last (L.funcArity F))) ∈
               B.func F (e ∘ (fun i => x i.castSucc)) := by
-            simpa [Function.comp_apply] using hy
+            convert hy using 1
           rw [← e.map_func F (fun i => x i.castSucc)] at hy'
           rcases hy' with ⟨z, hz, heq⟩
           exact e.injective heq ▸ hz
@@ -123,7 +136,7 @@ def graph (e : Embedding A B) : RelStructure.Embedding A.graph B.graph where
                 imageSet e (A.func F (fun i => x i.castSucc)) :=
             ⟨_, hy, rfl⟩
           rw [e.map_func F (fun i => x i.castSucc)] at himg
-          simpa [Function.comp_apply] using himg
+          convert himg using 1
 
 /-- A relational graph embedding with function-closed image reconstructs the
 full set-valued-function embedding. -/
@@ -141,12 +154,15 @@ def ofGraphClosed
     ext y
     constructor
     · rintro ⟨z, hz, rfl⟩
-      let t : Fin (L.funcArity F + 1) → V := Fin.snoc x z
+      let t : Fin (L.funcArity F + 1) → V := funcTuple x z
       have ht : A.graph.rel (.inr F) t := by
         change t (Fin.last (L.funcArity F)) ∈
           A.func F (fun i => t i.castSucc)
-        simpa [t]
+        simp [t]
       have htarget := (e.map_rel_iff (.inr F) t).mpr ht
+      change
+        e (t (Fin.last (L.funcArity F))) ∈
+          B.func F (fun i => e (t i.castSucc)) at htarget
       change e z ∈ B.func F (e ∘ x)
       simpa [t, Function.comp_apply] using htarget
     · intro hy
