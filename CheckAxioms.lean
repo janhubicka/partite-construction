@@ -78,3 +78,4 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.Partite.HalfClosed.Initial.uTransversal
 #print axioms StructuralRamsey.Partite.HalfClosed.Initial.isPartiteOver
+#print axioms StructuralRamsey.Partite.HalfClosed.Construction.inducedConstruction
