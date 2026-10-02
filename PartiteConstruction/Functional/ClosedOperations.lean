@@ -47,7 +47,7 @@ theorem support_functionClosed
     rw [← htuple]
     exact hproj0
   obtain ⟨z, hz, hzy⟩ := α.closed F a (B.part y) hproj
-  exact ⟨z, hzy.symm⟩
+  exact ⟨z, hzy⟩
 
 /-- Inclusion of the restriction over a U-closed alpha is itself U-closed. -/
 def restrictInclusion
@@ -56,16 +56,12 @@ def restrictInclusion
     (hB : B.IsPartiteOver D)
     (A : RelStructure L.graph Q)
     (α : RelStructure.ClosedEmbedding A D) :
-    Embedding
-      (B.restrict α.toEmbedding.toFunctionEmbedding) B :=
-  ⟨Partite.System.inclusion B
-      (B.support α.toEmbedding.toFunctionEmbedding),
-    by
-      intro F x y hy
-      have hyS :=
-        support_functionClosed D B hB A α F
-          (Subtype.val ∘ x) y hy (fun i => (x i).2)
-      refine ⟨⟨y, hyS⟩, ?_, rfl⟩
-      exact hy⟩
+    RelStructure.ClosedEmbedding
+      (B.restrict α.toEmbedding.toFunctionEmbedding).toRelStructure
+      B.toRelStructure :=
+  RelStructure.ClosedEmbedding.inclusion
+    B.toRelStructure
+    (B.support α.toEmbedding.toFunctionEmbedding)
+    (support_functionClosed D B hB A α)
 
 end StructuralRamsey.Partite.Closed
