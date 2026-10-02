@@ -6,8 +6,8 @@ namespace StructuralRamsey.FunctionalPartite
 
 open Structure
 
-universe u v w
-variable {L : Language.{u}} {P : Type v} {V : Type w}
+universe u v
+variable {L : Language.{u}} {P V : Type v}
 
 /-- The full survey notion of an A-partite system: the partition projection is
 a homomorphism-embedding for both relations and set-valued functions. -/
