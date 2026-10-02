@@ -31,8 +31,7 @@ theorem weakLocallyTreeLike_iff
         ∃ (Y : Type v) (T : RelStructure L.graph Y),
           RelStructure.TreeAmalgam B.graph Y T ∧
           ∃ f : ↥(↑S : Set W) → Y,
-            ((C.weakInduce (↑S : Set W)).graph).
-              IsHomomorphismEmbedding T f ∧
+            (C.weakInduce (↑S : Set W)).graph.IsHomomorphismEmbedding T f ∧
             ∀ α : RelStructure.Embedding A.graph C.graph,
               ∃ α' : RelStructure.Embedding A.graph T,
                 ∀ a : U, ∀ ha : α a ∈ S,
