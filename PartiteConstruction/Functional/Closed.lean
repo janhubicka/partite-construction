@@ -24,19 +24,6 @@ def FunctionClosedSet
     A.rel (.inr F) (Structure.funcTuple x y) →
     (∀ i, x i ∈ S) → y ∈ S
 
-/-- Inclusion of a function-closed subset is a closed relational embedding. -/
-def closedInclusion
-    (A : RelStructure L.graph V) (S : Set V)
-    (hS : FunctionClosedSet A S) :
-    RelStructure.ClosedEmbedding (A.induce S) A where
-  toEmbedding := RelStructure.inclusion A S
-  closed := by
-    intro F x y hy
-    have hxS : ∀ i, (x i).1 ∈ S := fun i => (x i).2
-    have hyS : y ∈ S := hS F (Subtype.val ∘ x) y hy hxS
-    refine ⟨⟨y, hyS⟩, ?_, rfl⟩
-    exact hy
-
 /-- Closedness of a map for the function-graph relations. -/
 def FunctionClosedMap
     (A : RelStructure L.graph V) (B : RelStructure L.graph W)
@@ -89,6 +76,20 @@ instance {A : RelStructure L.graph V} {B : RelStructure L.graph W} :
 namespace ClosedEmbedding
 
 variable {A : RelStructure L.graph V} {B : RelStructure L.graph W}
+
+/-- Inclusion of a function-closed subset is a closed relational embedding. -/
+def inclusion
+    (A : RelStructure L.graph V) (S : Set V)
+    (hS : FunctionClosedSet A S) :
+    ClosedEmbedding (A.induce S) A where
+  toEmbedding := RelStructure.inclusion A S
+  closed := by
+    intro F x y hy
+    have hxS : ∀ i, (x i).1 ∈ S := fun i => (x i).2
+    have hyS : y ∈ S := hS F (Subtype.val ∘ x) y hy hxS
+    refine ⟨⟨y, hyS⟩, ?_, rfl⟩
+    exact hy
+
 
 def id (A : RelStructure L.graph V) : ClosedEmbedding A A where
   toEmbedding := Embedding.id A
