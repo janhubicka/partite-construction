@@ -5,9 +5,6 @@ import PartiteConstruction.Functional.Induced
 import PartiteConstruction.Functional.Operations
 import PartiteConstruction.Functional.Closed
 import PartiteConstruction.Functional.ClosedOperations
-import PartiteConstruction.Functional.ClosedAttachment
-import PartiteConstruction.Functional.ClosedPicture
-import PartiteConstruction.Functional.ClosedInitial
 import PartiteConstruction.Functional.ClosedPartite
 import PartiteConstruction.Structure.Relationalize
 import PartiteConstruction.Structure.UClosed
