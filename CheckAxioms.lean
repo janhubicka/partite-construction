@@ -73,3 +73,4 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Induced.inducedConstruction_locallyTreeLike
 #print axioms StructuralRamsey.RelStructure.ProjectsIrreduciblesInto.precomp
 #print axioms StructuralRamsey.Partite.IteratedSparsening.build
+#print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_hereditarilyIrreducible
