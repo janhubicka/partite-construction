@@ -12,6 +12,7 @@ import PartiteConstruction.Functional.ClosedPicture
 import PartiteConstruction.Functional.ClosedConstruction
 import PartiteConstruction.Functional.InducedConstruction
 import PartiteConstruction.Structure.Relationalize
+import PartiteConstruction.Structure.WeakSubstructure
 import PartiteConstruction.Structure.UClosed
 import PartiteConstruction.Structure.Basic
 import PartiteConstruction.Structure.FreeAmalgam
