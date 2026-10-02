@@ -10,30 +10,33 @@ case of the iterated partite construction.
 -/
 namespace StructuralRamsey.RelStructure.Attachment
 
+noncomputable section
+
 universe u v
 variable {L : RelLanguage.{u}}
 variable {V W I : Type v}
 variable (B : RelStructure L V) (S : Set V) (D : RelStructure L W)
 variable (f : I → Embedding (B.induce S) D)
 
-abbrev AV := Vertex S (W := W) (I := I)
+abbrev AV (S : Set V) (W : Type v) (I : Type v) :=
+  Vertex S (W := W) (I := I)
 
-def InCopy (i : I) (z : AV (S := S)) : Prop :=
+def InCopy (i : I) (z : AV S W I) : Prop :=
   ∃ x : V, z = copyMap B S D f i x
 
-def OutsideAt (i : I) (z : AV (S := S)) : Prop :=
+def OutsideAt (i : I) (z : AV S W I) : Prop :=
   ∃ x : {x : V // x ∉ S}, z = .inr (i, x)
 
-variable (T : Set (AV (S := S))) (i : I)
+variable (T : Set (AV S W I)) (i : I)
 
 def pieceSet : Set T := {z | InCopy B S D f i z.1}
-def restSet : Set T := {z | ¬ OutsideAt (S := S) i z.1}
-def overlapSet : Set T := {z | z ∈ pieceSet B S D f T i ∧ z ∈ restSet S T i}
+def restSet : Set T := {z | ¬ OutsideAt (W := W) (I := I) S i z.1}
+def overlapSet : Set T := {z | z ∈ pieceSet B S D f T i ∧ z ∈ restSet (W := W) (I := I) S T i}
 
 abbrev Small := (attach B S D f).induce T
 abbrev Piece := (Small B S D f T).induce (pieceSet B S D f T i)
-abbrev Rest := (Small B S D f T).induce (restSet S T i)
-abbrev Overlap := (Small B S D f T).induce (overlapSet B S D f T i)
+abbrev Rest := (Small B S D f T).induce (restSet (W := W) (I := I) S T i)
+abbrev Overlap := (Small B S D f T).induce (overlapSet (W := W) (I := I) B S D f T i)
 
 def overlapToPiece :
     Embedding (Overlap B S D f T i) (Piece B S D f T i) where
@@ -57,11 +60,11 @@ def pieceInclusion :
 
 def restInclusion :
     Embedding (Rest B S D f T i) (Small B S D f T) :=
-  inclusion (Small B S D f T) (restSet S T i)
+  inclusion (Small B S D f T) (restSet (W := W) (I := I) S T i)
 
 theorem copyMap_not_outside_of_ne
     (j : I) (hji : j ≠ i) (x : V) :
-    ¬ OutsideAt (S := S) i (copyMap B S D f j x) := by
+    ¬ OutsideAt (W := W) (I := I) S i (copyMap B S D f j x) := by
   classical
   intro h
   rcases h with ⟨y, hy⟩
@@ -84,7 +87,7 @@ theorem decompose :
   classical
   constructor
   · intro z
-    by_cases hout : OutsideAt (S := S) i z.1
+    by_cases hout : OutsideAt (W := W) (I := I) S i z.1
     · rcases hout with ⟨x, hx⟩
       let e : Piece B S D f T i :=
         ⟨z, ⟨x.1, by
@@ -100,8 +103,8 @@ theorem decompose :
       have hval : e.1 = r.1 := congrArg Subtype.val her
       let z : T := e.1
       have hp : z ∈ pieceSet B S D f T i := e.2
-      have hr : z ∈ restSet S T i := by
-        change ¬ OutsideAt (S := S) i z.1
+      have hr : z ∈ restSet (W := W) (I := I) S T i := by
+        change ¬ OutsideAt (W := W) (I := I) S i z.1
         simpa [z, hval] using r.2
       let h : Overlap B S D f T i := ⟨z, hp, hr⟩
       refine ⟨h, ?_, ?_⟩
@@ -117,9 +120,9 @@ theorem decompose :
       change (attach B S D f).rel R (Subtype.val ∘ (Subtype.val ∘ z)) at hz
       rcases hz with hcore | hcopy
       · rcases hcore with ⟨y, hy, heq⟩
-        have hrest : ∀ k, (z k) ∈ restSet S T i := by
+        have hrest : ∀ k, (z k) ∈ restSet (W := W) (I := I) S T i := by
           intro k
-          change ¬ OutsideAt (S := S) i (z k).1.1
+          change ¬ OutsideAt (W := W) (I := I) S i (z k).1.1
           intro hout
           rcases hout with ⟨x, hx⟩
           have hk := congrFun heq k
@@ -146,7 +149,7 @@ theorem decompose :
             rfl
         · let zr : Fin (L.arity R) → Rest B S D f T i :=
             fun k => ⟨z k, by
-              change ¬ OutsideAt (S := S) i (z k).1.1
+              change ¬ OutsideAt (W := W) (I := I) S i (z k).1.1
               intro hout
               apply copyMap_not_outside_of_ne
                 (B := B) (S := S) (D := D) (f := f)
@@ -170,5 +173,7 @@ theorem decompose :
       funext k
       have hk := congrFun heq k
       exact congrArg (fun q => q.1.1) hk
+
+end
 
 end StructuralRamsey.RelStructure.Attachment
