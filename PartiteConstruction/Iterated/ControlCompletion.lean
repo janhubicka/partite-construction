@@ -85,7 +85,7 @@ theorem addControl
   intro β hβ
   rcases List.mem_cons.mp hβ with hβα | hβ
   · subst β
-  · let α' : Embedding A T' := r.comp eAB
+    let α' : Embedding A T' := r.comp eAB
     refine ⟨α', ?_⟩
     intro a ha
     refine ⟨a, ?_⟩
