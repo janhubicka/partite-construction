@@ -64,3 +64,4 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.HereditarilyIrreducible.pullback
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.base
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.freeAmalgam
+#print axioms StructuralRamsey.RelStructure.FreeAmalgam.attachOverIrreducible_preservesProjectionAndLocalTree
