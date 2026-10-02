@@ -18,6 +18,7 @@ import PartiteConstruction.Iterated.LocalTreeLike
 import PartiteConstruction.Iterated.Initial
 import PartiteConstruction.Iterated.Ordered
 import PartiteConstruction.Iterated.FreeAmalgam
+import PartiteConstruction.Iterated.Glue
 import PartiteConstruction.Relational.Attachment
 import PartiteConstruction.Relational.Order
 import PartiteConstruction.Partite.Operations
