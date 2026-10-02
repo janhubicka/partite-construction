@@ -26,6 +26,14 @@ theorem HereditarilyIrreducible.pullback
   intro S
   exact hB.of_embedding (e.comp (inclusion A S))
 
+
+/-- Every irreducible induced substructure of \`C\` is contained in an embedded
+copy of \`B\`.  This is property (3) of the sparsening theorem. -/
+def IrreduciblesExtendTo
+    {V W : Type v} (B : RelStructure L V) (C : RelStructure L W) : Prop :=
+  ∀ (S : Set W), (C.induce S).Irreducible →
+    ∃ e : Embedding B C, ∀ z : S, ∃ b : V, z.1 = e b
+
 namespace LocallyTreeLike
 
 /-- The base structure itself is locally tree-like over one copy of itself. -/
@@ -191,6 +199,53 @@ theorem fold_isHomomorphismEmbedding
         _ = F z.1 := by
           apply congrArg F
           exact hz.symm
+
+
+/-- Once every irreducible on the old side extends to a copy of \`B\`, this
+property is preserved by freely attaching one more copy of \`B\`. -/
+theorem irreduciblesExtendTo_amalgam
+    (hA : IrreduciblesExtendTo B A) :
+    IrreduciblesExtendTo B (amalgam D A B fA fB) := by
+  classical
+  intro S hS
+  let Whole := amalgam D A B fA fB
+  let inc : Embedding (Whole.induce S) Whole :=
+    inclusion Whole S
+  have hsplit :=
+    Attachment.irreducible_core_or_copy
+      (B := B) (S := support D A B fA fB) (D := A)
+      (f := fun _ : Unit => overlapEmbedding D A B fA fB) S hS
+  rcases hsplit with hcore | ⟨i, hcopy⟩
+  · have hrange :
+        ∀ z : S, ∃ a : V,
+          inc z = leftEmbedding D A B fA fB a := by
+      intro z
+      rcases hcore z with ⟨a, ha⟩
+      exact ⟨a, ha⟩
+    let eS : Embedding (Whole.induce S) A :=
+      inc.factorThroughRange (leftEmbedding D A B fA fB) hrange
+    let Rng : Set V := Set.range eS
+    have hRng : (A.induce Rng).Irreducible :=
+      hS.range_embedding eS
+    obtain ⟨β, hβ⟩ := hA Rng hRng
+    refine ⟨(leftEmbedding D A B fA fB).comp β, ?_⟩
+    intro z
+    let q : Rng := ⟨eS z, ⟨z, rfl⟩⟩
+    obtain ⟨b, hb⟩ := hβ q
+    refine ⟨b, ?_⟩
+    have hz := Classical.choose_spec (hrange z)
+    change z.1 = leftEmbedding D A B fA fB (β b)
+    calc
+      z.1 = inc z := rfl
+      _ = leftEmbedding D A B fA fB (eS z) := hz
+      _ = leftEmbedding D A B fA fB (β b) :=
+        congrArg (leftEmbedding D A B fA fB) hb
+  · have hi : i = () := Subsingleton.elim _ _
+    subst i
+    refine ⟨rightEmbedding D A B fA fB, ?_⟩
+    intro z
+    rcases hcopy z with ⟨b, hb⟩
+    exact ⟨b, hb⟩
 
 /-- Attach one fresh copy of \`B\` over an irreducible substructure while
 preserving a homomorphism-embedding into a common target \`Q\`.
