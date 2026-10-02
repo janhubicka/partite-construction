@@ -119,7 +119,7 @@ theorem uTransversal
         congrArg Prod.fst hzb
       _ = j := by rfl
   have hij : j = i := hidxb.symm.trans hidxa
-  rw [hij] at heqb hb hzb
+  rw [hij] at heqb hzb
   let ay : V := a (Fin.last (L.funcArity F))
   let bz : V := b (Fin.last (L.funcArity F))
   have houta := congrFun heqa (Fin.last (L.funcArity F))
