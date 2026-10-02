@@ -50,8 +50,8 @@ theorem liftOutput_existsUnique
       subst a
       subst b
       rw [hcompatA d, hcompatB d]
-      exact (hTgt.overlap (tA (q d)) (tB (q d))).mpr
-        ⟨q d, rfl, rfl⟩
+      exact ((hTgt.overlap (tA (q d)) (tB (q d))).mpr
+        ⟨q d, rfl, rfl⟩).symm
   · rcases hzB with ⟨b, rfl⟩
     refine ⟨jB (hB b), Or.inr ⟨b, rfl, rfl⟩, ?_⟩
     intro w hw
@@ -60,8 +60,8 @@ theorem liftOutput_existsUnique
       subst a
       subst b
       rw [hcompatA d, hcompatB d]
-      exact ((hTgt.overlap (tA (q d)) (tB (q d))).mpr
-        ⟨q d, rfl, rfl⟩).symm
+      exact (hTgt.overlap (tA (q d)) (tB (q d))).mpr
+        ⟨q d, rfl, rfl⟩
     · have hbb : b = b' := iB.injective hb'
       subst b'
       rfl
@@ -85,8 +85,8 @@ theorem liftMap_spec
     (z : C) :
     LiftOutput iA iB jA jB hA hB z
       (liftMap hSrc hTgt q hA hB hcompatA hcompatB z) :=
-  Classical.choose_spec
-    (liftOutput_existsUnique hSrc hTgt q hA hB hcompatA hcompatB z)
+  (Classical.choose_spec
+    (liftOutput_existsUnique hSrc hTgt q hA hB hcompatA hcompatB z)).1
 
 theorem liftMap_left
     (hSrc : IsFreeAmalgam sA sB iA iB)
@@ -139,7 +139,10 @@ theorem liftMap_isHomomorphismEmbedding
         (jA.map_rel_iff R (hA ∘ y)).mpr hA₂rel
       convert hC₂rel using 1
       funext k
-      rw [← hxy]
+      have hxk : x k = iA (y k) := congrFun hxy k
+      change liftMap hSrc hTgt q hA hB hcompatA hcompatB (x k) =
+        jA (hA (y k))
+      rw [hxk]
       exact liftMap_left hSrc hTgt q hA hB hcompatA hcompatB (y k)
     · rcases hright with ⟨y, hy, hxy⟩
       have hB₂rel : B₂.rel R (hB ∘ y) := hhB.1 R y hy
@@ -147,7 +150,10 @@ theorem liftMap_isHomomorphismEmbedding
         (jB.map_rel_iff R (hB ∘ y)).mpr hB₂rel
       convert hC₂rel using 1
       funext k
-      rw [← hxy]
+      have hxk : x k = iB (y k) := congrFun hxy k
+      change liftMap hSrc hTgt q hA hB hcompatA hcompatB (x k) =
+        jB (hB (y k))
+      rw [hxk]
       exact liftMap_right hSrc hTgt q hA hB hcompatA hcompatB (y k)
   · intro S hS
     rcases hSrc.irreducible_side S hS with hleft | hright
