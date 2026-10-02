@@ -89,7 +89,7 @@ theorem addControl
     refine ⟨α', ?_⟩
     intro a ha
     refine ⟨a, ?_⟩
-    let ah : H := ⟨a, ha⟩
+    let ah : Hset := ⟨a, ha⟩
     have he : eHT ah = f (eHS ah) := heHT ah
     change l (f ⟨α a, ha⟩) = r (eAB a)
     calc
