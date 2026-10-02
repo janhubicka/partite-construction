@@ -258,7 +258,7 @@ theorem irreducible_contained_in_copy
           intro a
           exact hleft ⟨e a, ⟨a, rfl⟩⟩
         let e₁ : Embedding A T₁ := e.factorThroughRange i₁ he
-        obtain ⟨j₁, hj₁⟩ := ih₁ e₁ hA
+        obtain ⟨j₁, hj₁⟩ := ih₁ e₁
         refine ⟨i₁.comp j₁, ?_⟩
         intro a
         obtain ⟨b, hb⟩ := hj₁ a
@@ -272,7 +272,7 @@ theorem irreducible_contained_in_copy
           intro a
           exact hright ⟨e a, ⟨a, rfl⟩⟩
         let e₂ : Embedding A T₂ := e.factorThroughRange i₂ he
-        obtain ⟨j₂, hj₂⟩ := ih₂ e₂ hA
+        obtain ⟨j₂, hj₂⟩ := ih₂ e₂
         refine ⟨i₂.comp j₂, ?_⟩
         intro a
         obtain ⟨b, hb⟩ := hj₂ a
@@ -312,7 +312,7 @@ variable {A : RelStructure L U} {B : RelStructure L V}
 /-- Pull a local-tree witness back along a homomorphism-embedding whenever
 the image of the tested finite set is within the available size bound. -/
 theorem witness_of_homEmbedding_image
-    {D : RelStructure L X}
+    {D : RelStructure L X} [DecidableEq X]
     (hA : A.Irreducible)
     (hD : LocallyTreeLike A B D m)
     (p : W → X) (hp : C.IsHomomorphismEmbedding D p)
@@ -379,7 +379,7 @@ theorem pullback_embedding
   intro S hS
   let I : Finset W := S.image e
   have hcard : I.card = S.card := by
-    exact Finset.card_image_iff.mpr e.injective
+    exact Finset.card_image_iff.mpr (fun _ _ _ _ h => e.injective h)
   obtain ⟨Y, T, hTree, g, hg, hctrl⟩ := hC I (by
     rw [hcard]
     exact hS)
@@ -438,27 +438,48 @@ theorem zero_of_embeddings
     omega
   subst S
   refine ⟨V, B, TreeAmalgam.copy (Iso.refl B), ?_⟩
+  have hempty (x : ↥(↑(∅ : Finset W) : Set W)) : False :=
+    Finset.notMem_empty x.1 x.2
   let f : ↥(↑(∅ : Finset W) : Set W) → V :=
-    fun x => (Finset.notMem_empty x.1 x.2).elim
+    fun x => (hempty x).elim
   have hf :
       (C.induce (↑(∅ : Finset W) : Set W)).IsHomomorphismEmbedding B f := by
-    apply IsHomomorphismEmbedding.of_map_reflect
+    constructor
     · intro R x hx
-      have htarget : C.rel R (jBC ∘ (f ∘ x)) := by
-        change C.rel R (Subtype.val ∘ x) at hx
-        convert hx using 1
+      change C.rel R (Subtype.val ∘ x) at hx
+      have heq :
+          jBC ∘ (f ∘ x) = Subtype.val ∘ x := by
         funext i
-        exact (Finset.notMem_empty (x i).1 (x i).2).elim
+        exact (hempty (x i)).elim
+      have htarget : C.rel R (jBC ∘ (f ∘ x)) := by
+        rw [heq]
+        exact hx
       exact (jBC.map_rel_iff R (f ∘ x)).mp htarget
-    · intro T hT x hx y hy hxy
-      exact (Finset.notMem_empty x.1.1 x.1.2).elim
-    · intro T hT R x hxT hB
-      change C.rel R (Subtype.val ∘ x)
-      have htarget : C.rel R (jBC ∘ (f ∘ (Subtype.val ∘ x))) :=
-        (jBC.map_rel_iff R (f ∘ (Subtype.val ∘ x))).mpr hB
-      convert htarget using 1
-      funext i
-      exact (Finset.notMem_empty (x i).1.1 (x i).1.2).elim
+    · intro T hT
+      let e : Embedding
+          ((C.induce (↑(∅ : Finset W) : Set W)).induce T) B := {
+        toFun := fun x => (hempty x.1).elim
+        injective := by
+          intro x y h
+          exact (hempty x.1).elim
+        map_rel_iff := by
+          intro R x
+          let q : Fin (L.arity R) → V := fun i => (hempty (x i).1).elim
+          have heq :
+              jBC ∘ q =
+                Subtype.val ∘ (Subtype.val ∘ x) := by
+            funext i
+            exact (hempty (x i).1).elim
+          calc
+            B.rel R q ↔ C.rel R (jBC ∘ q) :=
+              (jBC.map_rel_iff R q).symm
+            _ ↔ C.rel R (Subtype.val ∘ (Subtype.val ∘ x)) := by rw [heq]
+            _ ↔ (C.induce (↑(∅ : Finset W) : Set W)).induce T |>.rel R x :=
+              Iff.rfl
+      }
+      refine ⟨e, ?_⟩
+      intro x
+      exact (hempty x.1).elim
   refine ⟨f, hf, ?_⟩
   intro α
   refine ⟨eAB, ?_⟩
