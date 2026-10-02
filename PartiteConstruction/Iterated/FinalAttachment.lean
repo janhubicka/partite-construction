@@ -423,3 +423,60 @@ theorem freeAmalgam
     hControl eControlBase S hTree pSmall hpSmall'
 
 end StructuralRamsey.RelStructure.LocallyTreeLike
+
+
+namespace StructuralRamsey.RelStructure.FreeAmalgam
+
+universe u v
+variable {L : RelLanguage.{u}}
+variable {UA VB H X Y : Type v}
+variable {Control : RelStructure L UA} {Base : RelStructure L VB}
+variable {D : RelStructure L H} {Core : RelStructure L X}
+variable {Q : RelStructure L Y}
+variable {fCore : Embedding D Core}
+
+/-- The one-step final sparsening attachment with both invariants.
+
+For a hereditarily irreducible base \`B\`, the embedding of the irreducible
+overlap reconstructed by the projection lemma makes the overlap itself
+hereditarily irreducible.  Hence the local-tree preservation theorem applies.
+This is the exact final-attachment step available in the ordered applications.
+-/
+theorem attachOverIrreducible_preservesProjectionAndLocalTree
+    [Finite UA] [Finite VB] [Finite H] [Finite X]
+    (hControl : HereditarilyIrreducible Control)
+    (eControlBase : Embedding Control Base)
+    (hBase : HereditarilyIrreducible Base)
+    (hD : D.Irreducible)
+    (n : ℕ)
+    (hCoreLTL : LocallyTreeLike Control Base Core n)
+    (pCore : X → Y)
+    (hpCore : Core.IsHomomorphismEmbedding Q pCore)
+    (β : Embedding Base Q)
+    (hcover : ∀ d : H, ∃ b : VB, pCore (fCore d) = β b) :
+    ∃ fBase : Embedding D Base,
+      ∃ p :
+          Vertex D Core Base fCore fBase → Y,
+        (amalgam D Core Base fCore fBase).IsHomomorphismEmbedding Q p ∧
+        LocallyTreeLike Control Base
+          (amalgam D Core Base fCore fBase) n ∧
+        (∀ x : X,
+          p (leftEmbedding D Core Base fCore fBase x) = pCore x) ∧
+        ∀ b : VB,
+          p (rightEmbedding D Core Base fCore fBase b) = β b := by
+  classical
+  obtain ⟨fBase, p, hp, hleft, hright⟩ :=
+    attachOverIrreducible_preservesProjection
+      (D := D) (A := Core) (B := Base) (Q := Q)
+      (fA := fCore) hD pCore hpCore β hcover
+  have hDher : HereditarilyIrreducible D :=
+    hBase.pullback fBase
+  have hLocal :
+      LocallyTreeLike Control Base
+        (amalgam D Core Base fCore fBase) n :=
+    LocallyTreeLike.freeAmalgam
+      (fCore := fCore) (fBase := fBase)
+      hControl eControlBase hDher n hCoreLTL
+  exact ⟨fBase, p, hp, hLocal, hleft, hright⟩
+
+end StructuralRamsey.RelStructure.FreeAmalgam
