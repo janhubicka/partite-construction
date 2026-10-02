@@ -101,7 +101,9 @@ theorem IsHomomorphism.graph
             imageSet f (A.func F (fun i => x i.castSucc)) :=
         ⟨_, hs, rfl⟩
       rw [h.2 F (fun i => x i.castSucc)] at himg
-      simpa [Function.comp_apply] using himg
+      change f (x (Fin.last (L.funcArity F))) ∈
+        B.func F (f ∘ (fun i => x i.castSucc))
+      exact himg
 
 namespace Embedding
 
@@ -126,7 +128,9 @@ def graph (e : Embedding A B) : RelStructure.Embedding A.graph B.graph where
         · intro hy
           have hy' : e (x (Fin.last (L.funcArity F))) ∈
               B.func F (e ∘ (fun i => x i.castSucc)) := by
-            convert hy using 1
+            change e (x (Fin.last (L.funcArity F))) ∈
+              B.func F (fun i => e (x i.castSucc)) at hy
+            exact hy
           rw [← e.map_func F (fun i => x i.castSucc)] at hy'
           rcases hy' with ⟨z, hz, heq⟩
           exact e.injective heq ▸ hz
@@ -136,7 +140,9 @@ def graph (e : Embedding A B) : RelStructure.Embedding A.graph B.graph where
                 imageSet e (A.func F (fun i => x i.castSucc)) :=
             ⟨_, hy, rfl⟩
           rw [e.map_func F (fun i => x i.castSucc)] at himg
-          convert himg using 1
+          change e (x (Fin.last (L.funcArity F))) ∈
+            B.func F (e ∘ (fun i => x i.castSucc))
+          exact himg
 
 /-- A relational graph embedding with function-closed image reconstructs the
 full set-valued-function embedding. -/
@@ -158,13 +164,16 @@ def ofGraphClosed
       have ht : A.graph.rel (.inr F) t := by
         change t (Fin.last (L.funcArity F)) ∈
           A.func F (fun i => t i.castSucc)
-        simp [t]
+        change z ∈ A.func F x
+        exact hz
       have htarget := (e.map_rel_iff (.inr F) t).mpr ht
       change
         e (t (Fin.last (L.funcArity F))) ∈
           B.func F (fun i => e (t i.castSucc)) at htarget
+      have htarget' : e z ∈ B.func F (fun i => e (x i)) := by
+        simpa [t, funcTuple] using htarget
       change e z ∈ B.func F (e ∘ x)
-      simpa [t, Function.comp_apply] using htarget
+      exact htarget'
     · intro hy
       exact hclosed F x y hy
 
