@@ -23,6 +23,8 @@ variable {jA : Embedding A₂ C₂} {jB : Embedding B₂ C₂}
 
 /-- Candidate output values for a point of the source amalgam. -/
 def LiftOutput
+    (iA : Embedding A₁ C₁) (iB : Embedding B₁ C₁)
+    (jA : Embedding A₂ C₂) (jB : Embedding B₂ C₂)
     (hA : E → E₂) (hB : F → F₂) (z : C) (w : T) : Prop :=
   (∃ a : E, z = iA a ∧ w = jA (hA a)) ∨
   (∃ b : F, z = iB b ∧ w = jB (hB b))
@@ -34,7 +36,7 @@ theorem liftOutput_existsUnique
     (hcompatA : ∀ d, hA (sA d) = tA (q d))
     (hcompatB : ∀ d, hB (sB d) = tB (q d))
     (z : C) :
-    ∃! w : T, LiftOutput hA hB z w := by
+    ∃! w : T, LiftOutput iA iB jA jB hA hB z w := by
   classical
   obtain hzA | hzB := hSrc.covers z
   · rcases hzA with ⟨a, rfl⟩
@@ -81,7 +83,7 @@ theorem liftMap_spec
     (hcompatA : ∀ d, hA (sA d) = tA (q d))
     (hcompatB : ∀ d, hB (sB d) = tB (q d))
     (z : C) :
-    LiftOutput hA hB z
+    LiftOutput iA iB jA jB hA hB z
       (liftMap hSrc hTgt q hA hB hcompatA hcompatB z) :=
   Classical.choose_spec
     (liftOutput_existsUnique hSrc hTgt q hA hB hcompatA hcompatB z)
