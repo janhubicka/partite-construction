@@ -127,7 +127,7 @@ theorem decompose :
   · intro R z
     constructor
     · intro hz
-      change (attach B S D f).rel R (Subtype.val ∘ (Subtype.val ∘ z)) at hz
+      change (attach B S D f).rel R (Subtype.val ∘ z) at hz
       rcases hz with hcore | hcopy
       · rcases hcore with ⟨y, hy, heq⟩
         have hrest : ∀ k, (z k) ∈ restSet (W := W) (I := I) S T i := by
@@ -171,18 +171,20 @@ theorem decompose :
           · funext k
             rfl
     · rintro (⟨ze, hze, heq⟩ | ⟨zr, hzr, heq⟩)
-      · change (attach B S D f).rel R (Subtype.val ∘ (Subtype.val ∘ z))
-      change (Small B S D f T).rel R (Subtype.val ∘ ze) at hze
-      convert hze using 1
-      funext k
-      have hk := congrFun heq k
-      exact congrArg (fun q => q.1.1) hk
-      · change (attach B S D f).rel R (Subtype.val ∘ (Subtype.val ∘ z))
-      change (Small B S D f T).rel R (Subtype.val ∘ zr) at hzr
-      convert hzr using 1
-      funext k
-      have hk := congrFun heq k
-      exact congrArg (fun q => q.1.1) hk
+      · change (attach B S D f).rel R (Subtype.val ∘ z)
+        change (attach B S D f).rel R
+          (Subtype.val ∘ (Subtype.val ∘ ze)) at hze
+        convert hze using 1
+        funext k
+        have hk := congrFun heq k
+        exact congrArg Subtype.val hk
+      · change (attach B S D f).rel R (Subtype.val ∘ z)
+        change (attach B S D f).rel R
+          (Subtype.val ∘ (Subtype.val ∘ zr)) at hzr
+        convert hzr using 1
+        funext k
+        have hk := congrFun heq k
+        exact congrArg Subtype.val hk
 
 end
 
