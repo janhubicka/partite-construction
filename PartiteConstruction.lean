@@ -10,6 +10,7 @@ import PartiteConstruction.Functional.ClosedInitial
 import PartiteConstruction.Functional.ClosedAttachment
 import PartiteConstruction.Functional.ClosedPicture
 import PartiteConstruction.Functional.ClosedConstruction
+import PartiteConstruction.Functional.InducedConstruction
 import PartiteConstruction.Structure.Relationalize
 import PartiteConstruction.Structure.UClosed
 import PartiteConstruction.Structure.Basic
