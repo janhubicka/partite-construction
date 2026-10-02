@@ -38,6 +38,18 @@ theorem uClosed_iff_closedMap
     refine ⟨z, ?_, heq⟩
     simpa using hz
 
+
+/-- U-closed graph embeddings compose. -/
+theorem UClosed.comp
+    {X : Type v} {C : Structure L X}
+    {e : RelStructure.Embedding A.graph B.graph}
+    {g : RelStructure.Embedding B.graph C.graph}
+    (hg : UClosed g) (he : UClosed e) :
+    UClosed (g.comp e) := by
+  rw [uClosed_iff_closedMap]
+  exact ((uClosed_iff_closedMap g).mp hg).comp
+    ((uClosed_iff_closedMap e).mp he)
+
 /-- A full embedding has a U-closed relational graph embedding. -/
 theorem Embedding.graph_uClosed (e : Embedding A B) :
     UClosed e.graph := by
