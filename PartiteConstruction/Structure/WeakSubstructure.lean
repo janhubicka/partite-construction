@@ -105,9 +105,10 @@ def induceToWeak
   map_func := by
     intro F x
     ext y
-    constructor <;> intro hy
-    · exact ⟨y, hy, rfl⟩
-    · rcases hy with ⟨z, hz, hzy⟩
-      simpa only using hzy ▸ hz
+    constructor
+    · rintro ⟨z, hz, rfl⟩
+      exact hz
+    · intro hy
+      exact ⟨y, hy, rfl⟩
 
 end StructuralRamsey.Structure
