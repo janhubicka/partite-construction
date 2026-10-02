@@ -62,7 +62,6 @@ theorem copy_comp_not_functionClosed
           Structure.funcTuple
             (copyMap B S D f j ∘ q) (copyMap B S D f j y) := by
         rw [hargs]
-        rfl
       _ = copyMap B S D f j ∘ Structure.funcTuple q y :=
         (Structure.comp_funcTuple (copyMap B S D f j) q y).symm
   have htarget :
@@ -79,7 +78,6 @@ theorem copy_comp_not_functionClosed
     exact copyMap_not_mem j y hy
   change copyMap B S D f i (e z) = out at hz
   rw [hselected, hout] at hz
-  have : False := by simpa using hz
-  exact this
+  simp at hz
 
 end StructuralRamsey.RelStructure.Attachment
