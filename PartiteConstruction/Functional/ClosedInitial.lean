@@ -33,7 +33,7 @@ def copyEmbedding
   toEmbedding := Partite.Initial.copyEmbedding B (β B D) i
   closed := by
     intro F x y hy
-    rcases hpos F with hF
+    have hF : 0 < L.funcArity F := hpos F
     let k0 : Fin (L.funcArity F) := ⟨0, hF⟩
     change
       (picture B D).rel (.inr F)
@@ -42,42 +42,33 @@ def copyEmbedding
     rcases hy with ⟨j, t, ht, heq⟩
     have hidx : j = i := by
       have hk := congrFun heq (Fin.castSucc k0)
-      have hleft :
-          Structure.funcTuple
-            ((Partite.Initial.copyEmbedding B (β B D) i) ∘ x) y
-            (Fin.castSucc k0) =
-          (i, x k0) := by
-        simp [Structure.funcTuple, Function.comp_apply,
-          Partite.Initial.copyEmbedding]
-      have hright :
-          ((fun v => (j, v)) ∘ t) (Fin.castSucc k0) =
-          (j, t (Fin.castSucc k0)) := rfl
-      rw [hleft, hright] at hk
-      exact (congrArg Prod.fst hk).symm
+      have hk' := congrArg Prod.fst hk
+      have hij : i = j := by
+        simpa [Structure.funcTuple, Function.comp_apply,
+          Partite.Initial.copyEmbedding] using hk'
+      exact hij.symm
     subst j
+    let args : Fin (L.funcArity F) → V :=
+      fun k => t (Fin.castSucc k)
     let z : V := t (Fin.last (L.funcArity F))
-    have hargs : ∀ k : Fin (L.funcArity F),
-        x k = t (Fin.castSucc k) := by
-      intro k
+    have hargs : x = args := by
+      funext k
       have hk := congrFun heq (Fin.castSucc k)
       have hk' := congrArg Prod.snd hk
-      change x k = t (Fin.castSucc k) at hk'
-      exact hk'
-    have htuple : Structure.funcTuple x z = t := by
-      funext q
-      refine Fin.lastCases ?_ (fun k => ?_) q
-      · change z = t (Fin.last (L.funcArity F))
-        rfl
-      · change x k = t (Fin.castSucc k)
-        exact hargs k
+      simpa [args, Structure.funcTuple, Function.comp_apply,
+        Partite.Initial.copyEmbedding] using hk'
+    have heta : Structure.funcTuple args z = t := by
+      simpa [args, z, Language.graph] using
+        (Structure.funcTuple_eta (t := t))
     have hrel : B.rel (.inr F) (Structure.funcTuple x z) := by
-      rw [htuple]
+      rw [hargs, heta]
       exact ht
     refine ⟨z, hrel, ?_⟩
     have hout := congrFun heq (Fin.last (L.funcArity F))
-    have hout' := hout.symm
-    change (i, z) = y at hout'
-    exact hout'
+    have hout' : y = (i, z) := by
+      simpa [z, Structure.funcTuple, Function.comp_apply,
+        Partite.Initial.copyEmbedding] using hout
+    exact hout'.symm
 
 /-- The disjoint-union initial picture is U-transversal for positive-arity
 functions. -/
@@ -85,49 +76,39 @@ theorem uTransversal
     (hpos : L.PositiveFuncArity) :
     (picture B D).FunctionOutputTransversal := by
   intro F x y z hy hz hp
-  rcases hpos F with hF
+  have hF : 0 < L.funcArity F := hpos F
   let k0 : Fin (L.funcArity F) := ⟨0, hF⟩
   rcases hy with ⟨i, a, ha, heqa⟩
   rcases hz with ⟨j, b, hb, heqb⟩
   have hij : i = j := by
     have hya := congrFun heqa (Fin.castSucc k0)
     have hzb := congrFun heqb (Fin.castSucc k0)
-    have hsame :
-        (i, a (Fin.castSucc k0)) =
-          (j, b (Fin.castSucc k0)) := by
-      calc
-        (i, a (Fin.castSucc k0)) =
-            Structure.funcTuple x y (Fin.castSucc k0) := hya.symm
-        _ = x k0 := by simp [Structure.funcTuple]
-        _ = Structure.funcTuple x z (Fin.castSucc k0) := by
-          simp [Structure.funcTuple]
-        _ = (j, b (Fin.castSucc k0)) := hzb
-    exact congrArg Prod.fst hsame
+    have hi :
+        (i, a (Fin.castSucc k0)) = x k0 := by
+      symm
+      simpa [Structure.funcTuple, Function.comp_apply] using hya
+    have hj :
+        (j, b (Fin.castSucc k0)) = x k0 := by
+      symm
+      simpa [Structure.funcTuple, Function.comp_apply] using hzb
+    exact congrArg Prod.fst (hi.trans hj.symm)
   subst j
-  have houta := congrFun heqa (Fin.last (L.funcArity F))
-  have houtb := congrFun heqb (Fin.last (L.funcArity F))
-  have houta' :
-      y = (i, a (Fin.last (L.funcArity F))) := by
-    change y = (i, a (Fin.last (L.funcArity F))) at houta
-    exact houta
-  have houtb' :
-      z = (i, b (Fin.last (L.funcArity F))) := by
-    change z = (i, b (Fin.last (L.funcArity F))) at houtb
-    exact houtb
+  let ay : V := a (Fin.last (L.funcArity F))
+  let bz : V := b (Fin.last (L.funcArity F))
+  have houta : y = (i, ay) := by
+    have h := congrFun heqa (Fin.last (L.funcArity F))
+    simpa [ay, Structure.funcTuple, Function.comp_apply] using h
+  have houtb : z = (i, bz) := by
+    have h := congrFun heqb (Fin.last (L.funcArity F))
+    simpa [bz, Structure.funcTuple, Function.comp_apply] using h
   have hp' := hp
-  rw [houta', houtb'] at hp'
-  have hpart :
-      (β B D i) (a (Fin.last (L.funcArity F))) =
-        (β B D i) (b (Fin.last (L.funcArity F))) := hp'
-  have houtEq :
-      a (Fin.last (L.funcArity F)) =
-        b (Fin.last (L.funcArity F)) :=
-    (β B D i).injective hpart
+  rw [houta, houtb] at hp'
+  have hpart : (β B D i) ay = (β B D i) bz := hp'
+  have houtEq : ay = bz := (β B D i).injective hpart
   calc
-    y = (i, a (Fin.last (L.funcArity F))) := houta'
-    _ = (i, b (Fin.last (L.funcArity F))) :=
-      congrArg (fun q => (i, q)) houtEq
-    _ = z := houtb'.symm
+    y = (i, ay) := houta
+    _ = (i, bz) := congrArg (fun q => (i, q)) houtEq
+    _ = z := houtb.symm
 
 /-- The initial picture is relationally D-partite. -/
 theorem isPartiteOver [Nonempty (Index B D)] :
