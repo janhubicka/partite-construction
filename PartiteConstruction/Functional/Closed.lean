@@ -86,6 +86,14 @@ namespace ClosedEmbedding
 
 variable {A : RelStructure L.graph V} {B : RelStructure L.graph W}
 
+instance [Finite V] [Finite W] : Finite (ClosedEmbedding A B) :=
+  Finite.of_injective
+    (fun e : ClosedEmbedding A B => e.toEmbedding)
+    (fun _ _ h => by
+      apply ext
+      intro x
+      exact congrArg (fun q : Embedding A B => q x) h)
+
 @[ext] theorem ext {f g : ClosedEmbedding A B}
     (h : ∀ x, f x = g x) : f = g := by
   cases f
