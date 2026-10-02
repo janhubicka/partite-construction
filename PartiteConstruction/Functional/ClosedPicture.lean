@@ -64,14 +64,16 @@ variable (D : RelStructure L.graph P)
 variable (B : Partite.System L.graph P V)
 variable (α : RelStructure.ClosedEmbedding A D)
 
-abbrev αf : U ↪ P := α.toEmbedding.toFunctionEmbedding
-
 /-- A prescribed U-closed copy restricts to a U-closed partite embedding into
 the selected parts. -/
 def restrictEmbedding
     (e : ProjectedEmbedding A B α) :
-    Closed.Embedding (Partite.transversal A) (B.restrict αf) := by
-  let pe : Partite.Embedding (Partite.transversal A) (B.restrict αf) := {
+    Closed.Embedding
+      (Partite.transversal A)
+      (B.restrict α.toEmbedding.toFunctionEmbedding) := by
+  let αinj := α.toEmbedding.toFunctionEmbedding
+  let pe : Partite.Embedding
+      (Partite.transversal A) (B.restrict αinj) := {
     toFun := fun x => ⟨e.1 x, x, (e.2 x).symm⟩
     injective := by
       intro x y h
@@ -83,29 +85,37 @@ def restrictEmbedding
       intro x
       apply α.toEmbedding.injective
       exact
-        (B.restrictedPart_spec αf
+        (B.restrictedPart_spec αinj
           ⟨e.1 x, x, (e.2 x).symm⟩).trans (e.2 x)
   }
   refine ⟨pe, ?_⟩
   intro F x y hy
+  have hy0 :
+      B.rel (.inr F)
+        (Subtype.val ∘
+          Structure.funcTuple (pe ∘ x) y) := hy
+  have htuple :
+      Subtype.val ∘ Structure.funcTuple (pe ∘ x) y =
+        Structure.funcTuple (e.1 ∘ x) y.1 := by
+    calc
+      Subtype.val ∘ Structure.funcTuple (pe ∘ x) y =
+          Structure.funcTuple
+            (Subtype.val ∘ (pe ∘ x)) y.1 :=
+        Structure.comp_funcTuple Subtype.val (pe ∘ x) y
+      _ = Structure.funcTuple (e.1 ∘ x) y.1 := by
+        congr 1
+        funext i
+        rfl
   have hyB :
       B.rel (.inr F)
-        (Structure.funcTuple (e.1 ∘ (Subtype.val ∘ x)) y.1) := by
-    change
-      (B.restrict αf).rel (.inr F)
-        (Structure.funcTuple x y) at hy
-    exact hy
-  have hyB' :
-      B.rel (.inr F)
-        (Structure.funcTuple (e.1 ∘ (Subtype.val ∘ x)) y.1) := hyB
-  obtain ⟨z, hz, hzy⟩ :=
-    e.1.closed F (Subtype.val ∘ x) y.1 hyB'
+        (Structure.funcTuple (e.1 ∘ x) y.1) :=
+    Eq.mp (congrArg (fun t => B.rel (.inr F) t) htuple) hy0
+  obtain ⟨z, hz, hzy⟩ := e.1.closed F x y.1 hyB
   have hzSupport :
-      e.1 z ∈ B.support αf := ⟨z, (e.2 z).symm⟩
-  refine ⟨⟨e.1 z, hzSupport⟩, ?_, ?_⟩
-  · exact hz
-  · apply Subtype.ext
-    exact hzy
+      e.1 z ∈ B.support αinj := ⟨z, (e.2 z).symm⟩
+  refine ⟨z, hz, ?_⟩
+  apply Subtype.ext
+  exact hzy
 
 variable {A D B α}
 variable (E : Partite.System L.graph U W)
@@ -121,7 +131,12 @@ def attachingMap
       B α.toEmbedding.toFunctionEmbedding E f.1,
     f.2⟩
 
-abbrev Vertex :=
+abbrev Vertex
+    (A : RelStructure L.graph U)
+    (D : RelStructure L.graph P)
+    (B : Partite.System L.graph P V)
+    (α : RelStructure.ClosedEmbedding A D)
+    (E : Partite.System L.graph U W) :=
   Closed.Attachment.Vertex
     (B.support α.toEmbedding.toFunctionEmbedding)
     W
@@ -129,7 +144,7 @@ abbrev Vertex :=
       (B.restrict α.toEmbedding.toFunctionEmbedding) E)
 
 noncomputable def build :
-    Partite.System L.graph P (Vertex E) :=
+    Partite.System L.graph P (Vertex A D B α E) :=
   Closed.Attachment.attach
     B (B.support α.toEmbedding.toFunctionEmbedding)
     (E.relabel α.toEmbedding.toFunctionEmbedding)
@@ -147,7 +162,7 @@ noncomputable def coreEmbedding
     (hB : B.IsPartiteOver D) :
     Closed.Embedding
       (E.relabel α.toEmbedding.toFunctionEmbedding)
-      (build E) := by
+      (build A D B α E) := by
   let maps :=
     fun f : Closed.Embedding
       (B.restrict α.toEmbedding.toFunctionEmbedding) E =>
@@ -168,7 +183,7 @@ noncomputable def copyEmbedding
     (hB : B.IsPartiteOver D)
     (f : Closed.Embedding
       (B.restrict α.toEmbedding.toFunctionEmbedding) E) :
-    Closed.Embedding B (build E) := by
+    Closed.Embedding B (build A D B α E) := by
   let maps :=
     fun g : Closed.Embedding
       (B.restrict α.toEmbedding.toFunctionEmbedding) E =>
@@ -188,13 +203,13 @@ noncomputable def copyEmbedding
 noncomputable def coreLetter
     (hB : B.IsPartiteOver D)
     (e : Closed.Embedding (Partite.transversal A) E) :
-    ProjectedEmbedding A (build E) α := by
-  let ce := coreEmbedding (E := E) hB
+    ProjectedEmbedding A (build A D B α E) α := by
+  let ce := coreEmbedding (A := A) (D := D) (B := B) (α := α) E hB
   let comp := RelStructure.ClosedEmbedding.comp ce.toRelClosed e.toRelClosed
   refine ⟨comp, ?_⟩
   intro x
   change
-    (build E).part
+    (build A D B α E).part
       (Partite.Attachment.coreEmbedding
         B (B.support α.toEmbedding.toFunctionEmbedding)
         (E.relabel α.toEmbedding.toFunctionEmbedding)
@@ -210,8 +225,8 @@ theorem copy_comp_restrict
     (f : Closed.Embedding
       (B.restrict α.toEmbedding.toFunctionEmbedding) E)
     (e : ProjectedEmbedding A B α) :
-    e.comp (copyEmbedding (E := E) hB f) =
-      coreLetter (E := E) hB
+    e.comp (copyEmbedding (A := A) (D := D) (B := B) (α := α) E hB f) =
+      coreLetter (A := A) (D := D) (B := B) (α := α) E hB
         (Closed.Embedding.comp f (restrictEmbedding A D B α e)) := by
   apply ProjectedEmbedding.ext
   intro x
@@ -246,11 +261,11 @@ theorem property
       (Partite.transversal A)
       (B.restrict α.toEmbedding.toFunctionEmbedding)
       E κ) :
-    PictureProperty A B α (build E) κ := by
+    PictureProperty A B α (build A D B α E) κ := by
   intro χ
   obtain ⟨f, hf⟩ :=
-    hE (fun e => χ (coreLetter (E := E) hB e))
-  refine ⟨copyEmbedding (E := E) hB f, ?_⟩
+    hE (fun e => χ (coreLetter (A := A) (D := D) (B := B) (α := α) E hB e))
+  refine ⟨copyEmbedding (A := A) (D := D) (B := B) (α := α) E hB f, ?_⟩
   intro e₁ e₂
   rw [copy_comp_restrict, copy_comp_restrict]
   exact hf
@@ -275,17 +290,38 @@ theorem pictureLemma
     Partite.Induced.restrict_isPartiteOver D B A hB α.toEmbedding
   have hRU : R.FunctionOutputTransversal := by
     intro F x y z hy hz hp
+    have hy0 :
+        B.rel (.inr F)
+          (Subtype.val ∘ Structure.funcTuple x y) := hy
+    have hz0 :
+        B.rel (.inr F)
+          (Subtype.val ∘ Structure.funcTuple x z) := hz
+    have hty :
+        Subtype.val ∘ Structure.funcTuple x y =
+          Structure.funcTuple (Subtype.val ∘ x) y.1 :=
+      Structure.comp_funcTuple Subtype.val x y
+    have htz :
+        Subtype.val ∘ Structure.funcTuple x z =
+          Structure.funcTuple (Subtype.val ∘ x) z.1 :=
+      Structure.comp_funcTuple Subtype.val x z
+    have hyB :
+        B.rel (.inr F)
+          (Structure.funcTuple (Subtype.val ∘ x) y.1) :=
+      Eq.mp (congrArg (fun t => B.rel (.inr F) t) hty) hy0
+    have hzB :
+        B.rel (.inr F)
+          (Structure.funcTuple (Subtype.val ∘ x) z.1) :=
+      Eq.mp (congrArg (fun t => B.rel (.inr F) t) htz) hz0
+    have hpB : B.part y.1 = B.part z.1 :=
+      (B.restrictedPart_spec αinj y).symm.trans
+        ((congrArg (fun q => α q) hp).trans
+          (B.restrictedPart_spec αinj z))
     apply Subtype.ext
-    exact hU F (Subtype.val ∘ x) y.1 z.1 hy hz (by
-      apply α.toEmbedding.injective
-      exact
-        (B.restrictedPart_spec αinj y).symm.trans
-          ((congrArg α.toEmbedding hp).trans
-            (B.restrictedPart_spec αinj z)))
+    exact hU F (Subtype.val ∘ x) y.1 z.1 hyB hzB hpB
   obtain ⟨N, hN, hPowerU, hArrow⟩ :=
     Closed.Induced.partiteLemma (A := A) (B := R) hR hRU κ
   let E := Partite.Induced.power R N
-  let C := build (A := A) (D := D) (B := B) (α := α) E
+  let C := build A D B α E
   have hE : E.IsPartiteOver A :=
     Partite.Induced.power_isPartiteOver hR hN
   have hCorePartite :
@@ -311,7 +347,7 @@ theorem pictureLemma
           (α := α) E f)
       (supportClosed (A := A) (D := D) (B := B) (α := α) hB)
       hU hCoreU
-  exact ⟨Vertex (A := A) (D := D) (B := B) (α := α) E,
+  exact ⟨Vertex A D B α E,
     inferInstance, C, hCPartite, hCU,
     property (A := A) (D := D) (B := B) (α := α)
       E hB κ hArrow⟩
