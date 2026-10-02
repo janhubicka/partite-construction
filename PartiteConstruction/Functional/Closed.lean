@@ -95,6 +95,17 @@ def inclusion
     have hxS : ∀ i, (x i).1 ∈ S := fun i => (x i).2
     have hyS : y ∈ S := hS F (Subtype.val ∘ x) y hy hxS
     refine ⟨⟨y, hyS⟩, ?_, rfl⟩
+    change
+      A.rel (.inr F)
+        (Subtype.val ∘ Structure.funcTuple x ⟨y, hyS⟩)
+    have htuple :
+        Subtype.val ∘ Structure.funcTuple x ⟨y, hyS⟩ =
+          Structure.funcTuple (Subtype.val ∘ x) y := by
+      funext i
+      refine Fin.lastCases ?_ (fun j => ?_) i
+      · simp [Structure.funcTuple, Function.comp_apply]
+      · simp [Structure.funcTuple, Function.comp_apply]
+    rw [htuple]
     exact hy
 
 
