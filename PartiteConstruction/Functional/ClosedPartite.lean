@@ -49,6 +49,10 @@ def comp {X : Type v} {C : Partite.System L.graph P X}
   apply Partite.Embedding.ext
   exact h
 
+instance [Finite V] [Finite W] : Finite (Embedding A B) :=
+  Finite.of_injective Subtype.val Subtype.val_injective
+
+
 def toRelClosed (e : Embedding A B) :
     RelStructure.ClosedEmbedding A.toRelStructure B.toRelStructure :=
   ⟨e.1.toEmbedding, e.2⟩
