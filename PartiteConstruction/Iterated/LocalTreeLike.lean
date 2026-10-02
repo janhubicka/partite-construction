@@ -392,8 +392,8 @@ theorem projectedWitnessFull
     ∃ (Y : Type v) (T : RelStructure L Y),
       TreeAmalgam B Y T ∧
       ∃ g : ↥(↑((Finset.univ : Finset W).image p) : Set X) → Y,
-        (D.induce (↑((Finset.univ : Finset W).image p) : Set X)).
-          IsHomomorphismEmbedding T g ∧
+        IsHomomorphismEmbedding
+          (D.induce (↑((Finset.univ : Finset W).image p) : Set X)) T g ∧
         (∀ α : Embedding A D,
           ∃ α' : Embedding A T,
             ∀ a : U, ∀ ha : α a ∈ (Finset.univ : Finset W).image p,
