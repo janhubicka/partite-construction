@@ -45,7 +45,7 @@ def graph (A : Structure L V) : RelStructure L.graph V where
     | .inl R, x => A.rel R x
     | .inr F, x =>
         x (Fin.last (L.funcArity F)) ∈
-          A.func F (fun i => x i.castSucc)
+          A.func F (fun i : Fin (L.funcArity F) => x (Fin.castSucc i))
 
 /-- Reconstruct a relation/function structure from an arbitrary relational
 structure in the graph language. -/
@@ -112,17 +112,17 @@ theorem IsHomomorphism.graph
       exact h.1 R x hx
   | inr F =>
       change f (x (Fin.last (L.funcArity F))) ∈
-        B.func F (fun i => f (x i.castSucc))
+        B.func F (fun i : Fin (L.funcArity F) => f (x (Fin.castSucc i)))
       have hs : x (Fin.last (L.funcArity F)) ∈
-          A.func F (fun i => x i.castSucc) := hx
+          A.func F (fun i : Fin (L.funcArity F) => x (Fin.castSucc i)) := hx
       have himg :
           f (x (Fin.last (L.funcArity F))) ∈
-            imageSet f (A.func F (fun i => x i.castSucc)) :=
+            imageSet f (A.func F (fun i : Fin (L.funcArity F) => x (Fin.castSucc i))) :=
         ⟨_, hs, rfl⟩
-      rw [h.2 F (fun i => x i.castSucc)] at himg
+      rw [h.2 F (fun i : Fin (L.funcArity F) => x (Fin.castSucc i))] at himg
       have hfun :
-          (f ∘ (fun i => x i.castSucc)) =
-            (fun i => f (x i.castSucc)) := by
+          (f ∘ (fun i : Fin (L.funcArity F) => x (Fin.castSucc i))) =
+            (fun i : Fin (L.funcArity F) => f (x (Fin.castSucc i))) := by
         funext i
         rfl
       rw [hfun] at himg
@@ -144,32 +144,32 @@ def graph (e : Embedding A B) : RelStructure.Embedding A.graph B.graph where
     | inr F =>
         change
           (e (x (Fin.last (L.funcArity F))) ∈
-            B.func F (fun i => e (x i.castSucc))) ↔
+            B.func F (fun i : Fin (L.funcArity F) => e (x (Fin.castSucc i)))) ↔
           (x (Fin.last (L.funcArity F)) ∈
-            A.func F (fun i => x i.castSucc))
+            A.func F (fun i : Fin (L.funcArity F) => x (Fin.castSucc i)))
         constructor
         · intro hy
           have hfun :
-              (e ∘ (fun i => x i.castSucc)) =
-                (fun i => e (x i.castSucc)) := by
+              (e ∘ (fun i : Fin (L.funcArity F) => x (Fin.castSucc i))) =
+                (fun i : Fin (L.funcArity F) => e (x (Fin.castSucc i))) := by
             funext i
             rfl
           have hy' : e (x (Fin.last (L.funcArity F))) ∈
-              B.func F (e ∘ (fun i => x i.castSucc)) := by
+              B.func F (e ∘ (fun i : Fin (L.funcArity F) => x (Fin.castSucc i))) := by
             rw [hfun]
             exact hy
-          rw [← e.map_func F (fun i => x i.castSucc)] at hy'
+          rw [← e.map_func F (fun i : Fin (L.funcArity F) => x (Fin.castSucc i))] at hy'
           rcases hy' with ⟨z, hz, heq⟩
           exact e.injective heq ▸ hz
         · intro hy
           have himg :
               e (x (Fin.last (L.funcArity F))) ∈
-                imageSet e (A.func F (fun i => x i.castSucc)) :=
+                imageSet e (A.func F (fun i : Fin (L.funcArity F) => x (Fin.castSucc i))) :=
             ⟨_, hy, rfl⟩
-          rw [e.map_func F (fun i => x i.castSucc)] at himg
+          rw [e.map_func F (fun i : Fin (L.funcArity F) => x (Fin.castSucc i))] at himg
           have hfun :
-              (e ∘ (fun i => x i.castSucc)) =
-                (fun i => e (x i.castSucc)) := by
+              (e ∘ (fun i : Fin (L.funcArity F) => x (Fin.castSucc i))) =
+                (fun i : Fin (L.funcArity F) => e (x (Fin.castSucc i))) := by
             funext i
             rfl
           rw [hfun] at himg
@@ -193,14 +193,11 @@ def ofGraphClosed
     · rintro ⟨z, hz, rfl⟩
       let t : Fin (L.funcArity F + 1) → V := funcTuple x z
       have ht : A.graph.rel (.inr F) t := by
-        change t (Fin.last (L.funcArity F)) ∈
-          A.func F (fun i => t i.castSucc)
-        change z ∈ A.func F x
-        exact hz
+        exact (graph_func_snoc A F x z).2 hz
       have htarget := (e.map_rel_iff (.inr F) t).mpr ht
       change
         e (t (Fin.last (L.funcArity F))) ∈
-          B.func F (fun i => e (t i.castSucc)) at htarget
+          B.func F (fun i : Fin (L.funcArity F) => e (t (Fin.castSucc i))) at htarget
       have htarget' : e z ∈ B.func F (fun i => e (x i)) := by
         simpa [t, funcTuple] using htarget
       have hfun : (e ∘ x) = (fun i => e (x i)) := by
