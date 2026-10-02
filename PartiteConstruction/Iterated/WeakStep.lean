@@ -339,7 +339,8 @@ theorem canonicalStep_locallyTreeLike
             have hf' :
                 (C₁.toRelStructure.induce (↑S : Set _)).IsHomomorphismEmbedding T f := by
               simpa [RelStructure.Attachment.Small, Tset, Brel, Ssupp, Dcore,
-                C₁, Core, E, R, αf, Partite.Picture.build] using hf
+                C₁, Core, E, R, αf, Partite.Picture.build,
+                Partite.Attachment.attach] using hf
             exact RelStructure.LocallyTreeLike.completeControl
               (A := A) (B := B) (C := C₁.toRelStructure)
               hA eAB S hTree f hf'
