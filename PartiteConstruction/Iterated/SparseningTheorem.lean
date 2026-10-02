@@ -49,7 +49,7 @@ theorem sparseningRamsey_hereditarilyIrreducible
       S.projectionHE S.locallyTreeLike S.projected
   have hArrow :
       StructuralRamsey.Arrow A B T.C κ :=
-    RelStructure.FinalSparsening.Stage.arrow T S.arrow
+    S.arrow.of_embedding T.core
   exact ⟨T.Vertex, inferInstance, T.C, hArrow,
     T.projection, T.projectionHE, T.locallyTreeLike, hExtend⟩
 
