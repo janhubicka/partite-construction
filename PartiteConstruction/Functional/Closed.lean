@@ -15,12 +15,16 @@ open Structure
 universe u v w
 variable {L : Language.{u}} {P : Type v} {V : Type v} {W : Type w}
 
-namespace RelStructure
+namespace Language
 
 /-- Every original function symbol has positive arity. Under graph encoding
 this says every distinguished output relation has arity at least two. -/
-def Language.PositiveFuncArity (L : Language.{u}) : Prop :=
+def PositiveFuncArity (L : Language.{u}) : Prop :=
   ∀ F, 0 < L.funcArity F
+
+end Language
+
+namespace RelStructure
 
 /-- A subset is closed for the encoded function-output relations. -/
 def FunctionClosedSet
