@@ -81,11 +81,12 @@ def comp (g : Embedding B C) (f : Embedding A B) : Embedding A C where
     constructor
     · rintro ⟨a, ha, rfl⟩
       have hfa : f a ∈ B.func F (f ∘ x) := by
-        have h := Set.mem_of_mem_image (f := f.toFun) ha
+        have h : f a ∈ imageSet f (A.func F x) := ⟨a, ha, rfl⟩
         rw [f.map_func F x] at h
         exact h
       have hga : g (f a) ∈ C.func F (g ∘ (f ∘ x)) := by
-        have h := Set.mem_of_mem_image (f := g.toFun) hfa
+        have h : g (f a) ∈ imageSet g (B.func F (f ∘ x)) :=
+          ⟨f a, hfa, rfl⟩
         rw [g.map_func F (f ∘ x)] at h
         exact h
       simpa [Function.comp_assoc] using hga
