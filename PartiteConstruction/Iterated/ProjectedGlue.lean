@@ -24,7 +24,7 @@ variable {iE : Embedding Esrc Csrc} {iF : Embedding Fsrc Csrc}
 /-- Glue two finite sides using local-tree witnesses for their projected
 images in D. -/
 theorem glueProjectedFull
-    [Finite E] [Finite F]
+    [Fintype E] [Fintype F] [DecidableEq P]
     (hControl : HereditarilyIrreducible Control)
     (hSrc : IsFreeAmalgam sE sF iE iF)
     (p : C → P) (hp : Csrc.IsHomomorphismEmbedding D p)
