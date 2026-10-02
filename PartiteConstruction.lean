@@ -4,6 +4,7 @@ import PartiteConstruction.Functional.Homomorphism
 import PartiteConstruction.Functional.Induced
 import PartiteConstruction.Functional.Operations
 import PartiteConstruction.Structure.Relationalize
+import PartiteConstruction.Structure.UClosed
 import PartiteConstruction.Structure.Basic
 import PartiteConstruction.Structure.FreeAmalgam
 import PartiteConstruction.Structure.Attachment
