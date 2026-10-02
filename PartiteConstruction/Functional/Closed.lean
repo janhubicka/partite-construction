@@ -58,8 +58,12 @@ theorem comp
       refine Fin.lastCases ?_ (fun j => ?_) i
       · simp [Structure.funcTuple]
       · rfl
-    rw [htuple]
-    exact hy
+    have hy' :
+        A.rel (.inr F)
+          (Structure.funcTuple (Subtype.val ∘ x) y) := by
+      simpa [RelStructure.inclusion] using hy
+    exact Eq.mpr
+      (congrArg (A.rel (.inr F)) htuple).symm hy'
   obtain ⟨b, hb, hby⟩ := hg F (f ∘ x) y hy'
   obtain ⟨a, ha, hab⟩ := hf F x b hb
   refine ⟨a, ha, ?_⟩
@@ -226,8 +230,8 @@ def Embedding.ofClosedGraphTarget
         refine Fin.lastCases ?_ (fun j => ?_) i
         · simp [Structure.funcTuple, Function.comp_apply]
         · simp [Structure.funcTuple, Function.comp_apply]
-      rw [htuple] at ht
-      exact ht
+      exact Eq.mp
+        (congrArg (R.rel (.inr F)) htuple) ht
     · intro hy
       have ht :
           R.rel (.inr F) (Structure.funcTuple (e ∘ x) y) := hy
@@ -305,7 +309,27 @@ theorem arrow_iff_closedGraph
     let e₁f := Structure.Embedding.ofClosedGraph e₁
     let e₂f := Structure.Embedding.ofClosedGraph e₂
     have hh := hf e₁f e₂f
-    simpa [χfull, e₁f, e₂f] using hh
+    have hc₁ :
+        Structure.Embedding.toClosedGraph (f.comp e₁f) =
+          RelStructure.ClosedEmbedding.comp
+            (Structure.Embedding.toClosedGraph f) e₁ := by
+      apply RelStructure.ClosedEmbedding.ext
+      intro x
+      rfl
+    have hc₂ :
+        Structure.Embedding.toClosedGraph (f.comp e₂f) =
+          RelStructure.ClosedEmbedding.comp
+            (Structure.Embedding.toClosedGraph f) e₂ := by
+      apply RelStructure.ClosedEmbedding.ext
+      intro x
+      rfl
+    change
+      χ (RelStructure.ClosedEmbedding.comp
+        (Structure.Embedding.toClosedGraph f) e₁) =
+      χ (RelStructure.ClosedEmbedding.comp
+        (Structure.Embedding.toClosedGraph f) e₂)
+    rw [← hc₁, ← hc₂]
+    exact hh
   · intro h χ
     let χgraph :
         RelStructure.ClosedEmbedding A.graph C.graph → κ :=
@@ -316,7 +340,27 @@ theorem arrow_iff_closedGraph
     have hh := hf
       (Structure.Embedding.toClosedGraph e₁)
       (Structure.Embedding.toClosedGraph e₂)
-    simpa [χgraph] using hh
+    have hc₁ :
+        Structure.Embedding.ofClosedGraph
+          (RelStructure.ClosedEmbedding.comp f
+            (Structure.Embedding.toClosedGraph e₁)) =
+          (Structure.Embedding.ofClosedGraph f).comp e₁ := by
+      apply Structure.Embedding.ext
+      intro x
+      rfl
+    have hc₂ :
+        Structure.Embedding.ofClosedGraph
+          (RelStructure.ClosedEmbedding.comp f
+            (Structure.Embedding.toClosedGraph e₂)) =
+          (Structure.Embedding.ofClosedGraph f).comp e₂ := by
+      apply Structure.Embedding.ext
+      intro x
+      rfl
+    change
+      χ ((Structure.Embedding.ofClosedGraph f).comp e₁) =
+      χ ((Structure.Embedding.ofClosedGraph f).comp e₂)
+    rw [← hc₁, ← hc₂]
+    exact hh
 
 end Structure
 
