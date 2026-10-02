@@ -69,19 +69,4 @@ def embeddingEquivUClosed :
     intro x
     rfl
 
-/-- U-closed structural Ramsey arrow on relational graph embeddings. -/
-def ArrowU (A : Structure L V) (B : Structure L W)
-    {X : Type v} (C : Structure L X) (κ : Type*) : Prop :=
-  ∀ χ : {e : RelStructure.Embedding A.graph C.graph // UClosed e} → κ,
-    ∃ f : {e : RelStructure.Embedding B.graph C.graph // UClosed e},
-      ∀ e₁ e₂ : {e : RelStructure.Embedding A.graph B.graph // UClosed e},
-        χ ⟨f.1.comp e₁.1, by
-          rw [uClosed_iff_closedMap]
-          exact (Embedding.ofGraphUClosed f.1 f.2).isHomomorphism.closedMap.comp
-            (Embedding.ofGraphUClosed e₁.1 e₁.2).isHomomorphism.closedMap⟩ =
-        χ ⟨f.1.comp e₂.1, by
-          rw [uClosed_iff_closedMap]
-          exact (Embedding.ofGraphUClosed f.1 f.2).isHomomorphism.closedMap.comp
-            (Embedding.ofGraphUClosed e₂.1 e₂.2).isHomomorphism.closedMap⟩
-
 end StructuralRamsey.Structure
