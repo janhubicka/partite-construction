@@ -23,6 +23,7 @@ import PartiteConstruction.Iterated.Glue
 import PartiteConstruction.Iterated.WitnessGlue
 import PartiteConstruction.Iterated.ProjectedGlue
 import PartiteConstruction.Iterated.Step
+import PartiteConstruction.Iterated.Based
 import PartiteConstruction.Relational.Attachment
 import PartiteConstruction.Relational.Order
 import PartiteConstruction.Partite.Operations
