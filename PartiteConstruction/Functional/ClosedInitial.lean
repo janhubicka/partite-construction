@@ -60,20 +60,24 @@ def copyEmbedding
         x k = t (Fin.castSucc k) := by
       intro k
       have hk := congrFun heq (Fin.castSucc k)
-      simpa [Structure.funcTuple, Function.comp_apply,
-        Partite.Initial.copyEmbedding] using congrArg Prod.snd hk
+      have hk' := congrArg Prod.snd hk
+      change x k = t (Fin.castSucc k) at hk'
+      exact hk'
     have htuple : Structure.funcTuple x z = t := by
       funext q
       refine Fin.lastCases ?_ (fun k => ?_) q
-      · rfl
-      · exact hargs k
+      · change z = t (Fin.last (L.funcArity F))
+        rfl
+      · change x k = t (Fin.castSucc k)
+        exact hargs k
     have hrel : B.rel (.inr F) (Structure.funcTuple x z) := by
       rw [htuple]
       exact ht
     refine ⟨z, hrel, ?_⟩
     have hout := congrFun heq (Fin.last (L.funcArity F))
-    simpa [Structure.funcTuple, Function.comp_apply,
-      Partite.Initial.copyEmbedding, z] using hout.symm
+    have hout' := hout.symm
+    change (i, z) = y at hout'
+    exact hout'
 
 /-- The disjoint-union initial picture is U-transversal for positive-arity
 functions. -/
@@ -102,28 +106,33 @@ theorem uTransversal
   subst j
   have houta := congrFun heqa (Fin.last (L.funcArity F))
   have houtb := congrFun heqb (Fin.last (L.funcArity F))
+  have houta' :
+      y = (i, a (Fin.last (L.funcArity F))) := by
+    change y = (i, a (Fin.last (L.funcArity F))) at houta
+    exact houta
+  have houtb' :
+      z = (i, b (Fin.last (L.funcArity F))) := by
+    change z = (i, b (Fin.last (L.funcArity F))) at houtb
+    exact houtb
+  have hp' := hp
+  rw [houta', houtb'] at hp'
   have hpart :
       (β B D i) (a (Fin.last (L.funcArity F))) =
-        (β B D i) (b (Fin.last (L.funcArity F))) := by
-    change
-      (picture B D).part (i, a (Fin.last (L.funcArity F))) =
-        (picture B D).part (i, b (Fin.last (L.funcArity F)))
-    rw [← houta, ← houtb]
-    exact hp
+        (β B D i) (b (Fin.last (L.funcArity F))) := hp'
   have houtEq :
       a (Fin.last (L.funcArity F)) =
         b (Fin.last (L.funcArity F)) :=
     (β B D i).injective hpart
   calc
-    y = (i, a (Fin.last (L.funcArity F))) := houta
+    y = (i, a (Fin.last (L.funcArity F))) := houta'
     _ = (i, b (Fin.last (L.funcArity F))) :=
       congrArg (fun q => (i, q)) houtEq
-    _ = z := houtb.symm
+    _ = z := houtb'.symm
 
 /-- The initial picture is relationally D-partite. -/
-theorem isPartiteOver :
+theorem isPartiteOver [Nonempty (Index B D)] :
     (picture B D).IsPartiteOver D :=
-  Partite.Induced.Initial.picture_isPartiteOver D
-    (fun e : Index B D => e.toEmbedding)
+  Partite.Induced.Initial.picture_isPartiteOver
+    (B := B) D (fun e : Index B D => e.toEmbedding)
 
 end StructuralRamsey.Partite.Closed.Initial
