@@ -53,23 +53,27 @@ def copyEmbedding
           ((fun v => (j, v)) ∘ t) (Fin.castSucc k0) =
           (j, t (Fin.castSucc k0)) := rfl
       rw [hleft, hright] at hk
-      exact congrArg Prod.fst hk
+      exact (congrArg Prod.fst hk).symm
     subst j
     let z : V := t (Fin.last (L.funcArity F))
     have hargs : ∀ k : Fin (L.funcArity F),
         x k = t (Fin.castSucc k) := by
       intro k
       have hk := congrFun heq (Fin.castSucc k)
-      exact congrArg Prod.snd hk
-    have hrel : B.rel (.inr F) (Structure.funcTuple x z) := by
-      convert ht using 1
+      simpa [Structure.funcTuple, Function.comp_apply,
+        Partite.Initial.copyEmbedding] using congrArg Prod.snd hk
+    have htuple : Structure.funcTuple x z = t := by
       funext q
       refine Fin.lastCases ?_ (fun k => ?_) q
       · rfl
-      · exact (hargs k).symm
+      · exact hargs k
+    have hrel : B.rel (.inr F) (Structure.funcTuple x z) := by
+      rw [htuple]
+      exact ht
     refine ⟨z, hrel, ?_⟩
     have hout := congrFun heq (Fin.last (L.funcArity F))
-    exact hout.symm
+    simpa [Structure.funcTuple, Function.comp_apply,
+      Partite.Initial.copyEmbedding, z] using hout.symm
 
 /-- The disjoint-union initial picture is U-transversal for positive-arity
 functions. -/
