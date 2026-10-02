@@ -69,3 +69,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.FinalCompletion.exists_completion
 #print axioms StructuralRamsey.RelStructure.FinalSparsening.build_all
 #print axioms StructuralRamsey.RelStructure.FinalSparsening.Stage.arrow
+#print axioms StructuralRamsey.Partite.Induced.Trace.locallyTreeLike
+#print axioms StructuralRamsey.Partite.Induced.inducedConstruction_locallyTreeLike
