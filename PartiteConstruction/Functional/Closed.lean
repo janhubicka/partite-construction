@@ -383,6 +383,144 @@ theorem arrow_iff_closedGraph
 
 end Structure
 
+namespace Structure
+
+variable {A : Structure L V}
+variable {R : RelStructure L.graph W}
+
+/-- Identity from the graph of the reconstructed structure back to the
+original relational graph. -/
+def graphOfGraphClosed :
+    RelStructure.ClosedEmbedding (Structure.ofGraph R).graph R where
+  toEmbedding := {
+    toFun := id
+    injective := Function.injective_id
+    map_rel_iff := by
+      intro S x
+      cases S with
+      | inl S =>
+          rfl
+      | inr F =>
+          change
+            R.rel (.inr F) x ↔
+              R.rel (.inr F)
+                (Structure.funcTuple
+                  (fun i => x (Fin.castSucc i))
+                  (x (Fin.last (L.funcArity F))))
+          rw [Structure.funcTuple_eta]
+  }
+  closed := by
+    intro F x y hy
+    exact ⟨y, by
+      change
+        (Structure.ofGraph R).graph.rel (.inr F)
+          (Structure.funcTuple x y)
+      change
+        R.rel (.inr F)
+          (Structure.funcTuple
+            (fun i => Structure.funcTuple x y (Fin.castSucc i))
+            (Structure.funcTuple x y (Fin.last (L.funcArity F))))
+      simpa using hy, rfl⟩
+
+/-- Recover a full embedding into the reconstructed structure from a closed
+graph embedding into an arbitrary encoded relational structure. -/
+def Embedding.ofClosedGraphTarget
+    (e : RelStructure.ClosedEmbedding A.graph R) :
+    Structure.Embedding A (Structure.ofGraph R) where
+  toFun := e
+  injective := e.toEmbedding.injective
+  map_rel_iff := by
+    intro S x
+    exact e.toEmbedding.map_rel_iff (.inl S) x
+  map_func := by
+    intro F x
+    ext y
+    constructor
+    · rintro ⟨z, hz, rfl⟩
+      have hs :
+          A.graph.rel (.inr F) (Structure.funcTuple x z) :=
+        (Structure.graph_func_snoc A F x z).2 hz
+      have ht :=
+        (e.toEmbedding.map_rel_iff
+          (.inr F) (Structure.funcTuple x z)).mpr hs
+      change
+        R.rel (.inr F)
+          (Structure.funcTuple (e ∘ x) (e z))
+      have htuple :
+          e ∘ Structure.funcTuple x z =
+            Structure.funcTuple (e ∘ x) (e z) := by
+        funext i
+        refine Fin.lastCases ?_ (fun j => ?_) i
+        · simp [Structure.funcTuple, Function.comp_apply]
+        · simp [Structure.funcTuple, Function.comp_apply]
+      rw [← htuple]
+      exact ht
+    · intro hy
+      have ht :
+          R.rel (.inr F)
+            (Structure.funcTuple (e ∘ x) y) := hy
+      obtain ⟨z, hz, hzy⟩ := e.closed F x y ht
+      refine ⟨z, ?_, hzy⟩
+      exact (Structure.graph_func_snoc A F x z).1 hz
+
+/-- Full embeddings into ofGraph R are equivalent to closed graph embeddings
+into R. -/
+def embeddingEquivClosedTarget :
+    Structure.Embedding A (Structure.ofGraph R) ≃
+      RelStructure.ClosedEmbedding A.graph R where
+  toFun e :=
+    RelStructure.ClosedEmbedding.comp
+      (graphOfGraphClosed (R := R))
+      (Structure.Embedding.toClosedGraph e)
+  invFun := Structure.Embedding.ofClosedGraphTarget
+  left_inv := by
+    intro e
+    apply Structure.Embedding.ext
+    intro x
+    rfl
+  right_inv := by
+    intro e
+    apply RelStructure.ClosedEmbedding.ext
+    intro x
+    rfl
+
+/-- Ramsey arrows into a constructed graph target are exactly full Ramsey
+arrows into its reconstructed relation/function structure. -/
+theorem arrow_ofGraph_iff_closed
+    {B : Structure L P}
+    (R : RelStructure L.graph W) (κ : Type*) :
+    Structure.Arrow A B (Structure.ofGraph R) κ ↔
+      RelStructure.ClosedArrow A.graph B.graph R κ := by
+  constructor
+  · intro h χ
+    let χfull : Structure.Embedding A (Structure.ofGraph R) → κ :=
+      fun e => χ ((embeddingEquivClosedTarget (A := A) (R := R)) e)
+    obtain ⟨f, hf⟩ := h χfull
+    let fclosed :=
+      (embeddingEquivClosedTarget (A := B) (R := R)) f
+    refine ⟨fclosed, ?_⟩
+    intro e₁ e₂
+    let e₁f := Structure.Embedding.ofClosedGraph
+      (A := A) (B := B) e₁.toEmbedding e₁.closed
+    let e₂f := Structure.Embedding.ofClosedGraph
+      (A := A) (B := B) e₂.toEmbedding e₂.closed
+    have hh := hf e₁f e₂f
+    simpa [χfull, e₁f, e₂f, fclosed] using hh
+  · intro h χ
+    let χclosed : RelStructure.ClosedEmbedding A.graph R → κ :=
+      fun e => χ ((embeddingEquivClosedTarget (A := A) (R := R)).symm e)
+    obtain ⟨f, hf⟩ := h χclosed
+    let ffull :=
+      (embeddingEquivClosedTarget (A := B) (R := R)).symm f
+    refine ⟨ffull, ?_⟩
+    intro e₁ e₂
+    have hh := hf
+      (Structure.Embedding.toClosedGraph e₁)
+      (Structure.Embedding.toClosedGraph e₂)
+    simpa [χclosed, ffull] using hh
+
+end Structure
+
 namespace Partite
 
 /-- U-transversality for the encoded function graph relations: all outputs
