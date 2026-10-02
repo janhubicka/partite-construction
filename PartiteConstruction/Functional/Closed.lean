@@ -86,6 +86,13 @@ namespace ClosedEmbedding
 
 variable {A : RelStructure L.graph V} {B : RelStructure L.graph W}
 
+@[ext] theorem ext {f g : ClosedEmbedding A B}
+    (h : ∀ x, f x = g x) : f = g := by
+  cases f
+  cases g
+  simp only [ClosedEmbedding.mk.injEq]
+  exact RelStructure.Embedding.ext h
+
 instance [Finite V] [Finite W] : Finite (ClosedEmbedding A B) :=
   Finite.of_injective
     (fun e : ClosedEmbedding A B => e.toEmbedding)
@@ -94,12 +101,6 @@ instance [Finite V] [Finite W] : Finite (ClosedEmbedding A B) :=
       intro x
       exact congrArg (fun q : Embedding A B => q x) h)
 
-@[ext] theorem ext {f g : ClosedEmbedding A B}
-    (h : ∀ x, f x = g x) : f = g := by
-  cases f
-  cases g
-  simp only [ClosedEmbedding.mk.injEq]
-  exact RelStructure.Embedding.ext h
 
 /-- Inclusion of a function-closed subset is a closed relational embedding. -/
 def inclusion
