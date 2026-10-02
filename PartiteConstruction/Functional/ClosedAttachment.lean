@@ -43,29 +43,22 @@ theorem core_closed
   classical
   intro F x y hy
   let g := relMaps (f := f)
+  let core : W → Vertex S W I := fun d => Sum.inl d
   change
     (RelStructure.Attachment.attach
       B.toRelStructure S D.toRelStructure g).rel
-      (.inr F)
-      (Structure.funcTuple (Sum.inl ∘ x) y) at hy
+      (.inr F) (Structure.funcTuple (core ∘ x) y) at hy
   cases y with
   | inl d =>
       have hcore :
           (RelStructure.Attachment.attach
             B.toRelStructure S D.toRelStructure g).rel
-            (.inr F)
-            (Sum.inl ∘ Structure.funcTuple x d) := by
-        have htuple :
-            Sum.inl ∘ Structure.funcTuple x d =
-              Structure.funcTuple (Sum.inl ∘ x) (Sum.inl d) := by
-          funext q
-          refine Fin.lastCases ?_ (fun k => ?_) q
-          · simp [Structure.funcTuple, Function.comp_apply]
-          · simp [Structure.funcTuple, Function.comp_apply]
-        rw [htuple]
+            (.inr F) (core ∘ Structure.funcTuple x d) := by
+        rw [Structure.comp_funcTuple]
         exact hy
-      have hd :=
-        (RelStructure.Attachment.core_rel_iff
+      have hd :
+          D.rel (.inr F) (Structure.funcTuple x d) := by
+        exact (RelStructure.Attachment.core_rel_iff
           (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
           (f := g) (.inr F) (Structure.funcTuple x d)).mp hcore
       exact ⟨d, hd, rfl⟩
@@ -73,10 +66,9 @@ theorem core_closed
       let j := p.1
       let out0 := p.2
       have hk :
-          (Structure.funcTuple (Sum.inl ∘ x) (Sum.inr p))
+          (Structure.funcTuple (core ∘ x) (Sum.inr p))
               (Fin.last (L.funcArity F)) =
-            Sum.inr (j, out0) := by
-        rfl
+            Sum.inr (j, out0) := by rfl
       obtain ⟨q, hq, heq⟩ :=
         RelStructure.Attachment.relation_eq_copy_of_contains_outside
           (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
@@ -96,13 +88,23 @@ theorem core_closed
           (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
           (f := g)
         have h := congrFun heq (Fin.castSucc k)
-        simpa [args, Structure.funcTuple, Function.comp_apply] using h.symm
+        have h' :
+            core (x k) =
+              RelStructure.Attachment.copyMap
+                B.toRelStructure S D.toRelStructure g j (args k) := by
+          simpa [core, args, Structure.funcTuple, Function.comp_apply] using h
+        exact h'.symm
       have houtS : out ∈ S := hS F args out hrel hargsS
       have hout := congrFun heq (Fin.last (L.funcArity F))
-      simp [out, Structure.funcTuple, Function.comp_apply,
-        RelStructure.Attachment.copyMap_mem
-          (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-          (f := g) j out houtS] at hout
+      have hout' :
+          Sum.inr (j, out0) =
+            RelStructure.Attachment.copyMap
+              B.toRelStructure S D.toRelStructure g j out := by
+        simpa [out, Structure.funcTuple, Function.comp_apply] using hout
+      rw [RelStructure.Attachment.copyMap_mem
+        (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
+        (f := g) j out houtS] at hout'
+      exact (Sum.noConfusion hout')
 
 /-- If the overlap is U-closed and the attaching maps are U-closed, every
 attached-copy inclusion is U-closed. -/
@@ -117,57 +119,75 @@ theorem copy_closed
   classical
   intro F x y hy
   let g := relMaps (f := f)
-  let cm :=
+  let cm : V → Vertex S W I :=
     RelStructure.Attachment.copyMap
       B.toRelStructure S D.toRelStructure g i
+  let core : W → Vertex S W I := fun d => Sum.inl d
   change
     (RelStructure.Attachment.attach
       B.toRelStructure S D.toRelStructure g).rel
-      (.inr F)
-      (Structure.funcTuple (cm ∘ x) y) at hy
+      (.inr F) (Structure.funcTuple (cm ∘ x) y) at hy
   by_cases hxS : ∀ k, x k ∈ S
   · let xs : Fin (L.funcArity F) → S :=
       fun k => ⟨x k, hxS k⟩
-    have hcoreTuple :
-        Structure.funcTuple (Sum.inl ∘ ((f i) ∘ xs)) y =
-          Structure.funcTuple (cm ∘ x) y := by
-      funext q
-      refine Fin.lastCases ?_ (fun k => ?_) q
-      · rfl
-      · simp [xs, cm, Structure.funcTuple, Function.comp_apply,
-          RelStructure.Attachment.copyMap_mem
-            (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-            (f := g) i (x k) (hxS k)]
+    have hinput :
+        cm ∘ x = core ∘ ((f i) ∘ xs) := by
+      funext k
+      change
+        RelStructure.Attachment.copyMap
+          B.toRelStructure S D.toRelStructure g i (x k) =
+          Sum.inl ((f i) ⟨x k, hxS k⟩)
+      exact RelStructure.Attachment.copyMap_mem
+        (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
+        (f := g) i (x k) (hxS k)
     have hyCore :
         (RelStructure.Attachment.attach
           B.toRelStructure S D.toRelStructure g).rel
           (.inr F)
-          (Structure.funcTuple (Sum.inl ∘ ((f i) ∘ xs)) y) := by
-      rw [hcoreTuple]
+          (Structure.funcTuple
+            (core ∘ ((f i) ∘ xs)) y) := by
+      rw [← hinput]
       exact hy
-    have hclosedCore :=
-      core_closed (B := B) (S := S) (D := D) (f := f) hS
     obtain ⟨d, hd, hdy⟩ :=
-      hclosedCore F ((f i) ∘ xs) y hyCore
+      core_closed (B := B) (S := S) (D := D) (f := f) hS
+        F ((f i) ∘ xs) y hyCore
     obtain ⟨z, hz, hzd⟩ := (f i).2 F xs d hd
-    refine ⟨z.1, hz, ?_⟩
-    have hzS : z.1 ∈ S := z.2
-    change cm z.1 = y
-    rw [RelStructure.Attachment.copyMap_mem
-      (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-      (f := g) i z.1 hzS]
-    rw [hzd]
-    exact hdy
+    have hzB :
+        B.rel (.inr F) (Structure.funcTuple x z.1) := by
+      change
+        B.rel (.inr F)
+          (Subtype.val ∘ Structure.funcTuple xs z) at hz
+      have htuple :
+          Subtype.val ∘ Structure.funcTuple xs z =
+            Structure.funcTuple x z.1 := by
+        funext q
+        refine Fin.lastCases ?_ (fun k => ?_) q
+        · rfl
+        · rfl
+      rw [htuple] at hz
+      exact hz
+    refine ⟨z.1, hzB, ?_⟩
+    calc
+      cm z.1 = core ((f i) z) := by
+        change
+          RelStructure.Attachment.copyMap
+            B.toRelStructure S D.toRelStructure g i z.1 =
+            Sum.inl ((f i) z)
+        exact RelStructure.Attachment.copyMap_mem
+          (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
+          (f := g) i z.1 z.2
+      _ = core d := congrArg core hzd
+      _ = y := hdy
   · push Not at hxS
     obtain ⟨k, hkS⟩ := hxS
     let outside : {x : V // x ∉ S} := ⟨x k, hkS⟩
     have hk :
         (Structure.funcTuple (cm ∘ x) y) (Fin.castSucc k) =
           Sum.inr (i, outside) := by
-      simp [cm, outside, Structure.funcTuple, Function.comp_apply,
-        RelStructure.Attachment.copyMap_not_mem
-          (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-          (f := g) i (x k) hkS]
+      change cm (x k) = Sum.inr (i, outside)
+      exact RelStructure.Attachment.copyMap_not_mem
+        (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
+        (f := g) i (x k) hkS
     obtain ⟨q, hq, heq⟩ :=
       RelStructure.Attachment.relation_eq_copy_of_contains_outside
         (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
@@ -181,6 +201,9 @@ theorem copy_closed
         (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
         (f := g) i
       have hj := congrFun heq (Fin.castSucc j)
+      change cm (x j) =
+        RelStructure.Attachment.copyMap
+          B.toRelStructure S D.toRelStructure g i (args j)
       simpa [cm, args, Structure.funcTuple, Function.comp_apply] using hj
     have hrel : B.rel (.inr F) (Structure.funcTuple x out) := by
       have heta : Structure.funcTuple args out = q := by
@@ -190,7 +213,10 @@ theorem copy_closed
       exact hq
     refine ⟨out, hrel, ?_⟩
     have hout := congrFun heq (Fin.last (L.funcArity F))
-    simpa [cm, out, Structure.funcTuple, Function.comp_apply] using hout.symm
+    change y =
+      RelStructure.Attachment.copyMap
+        B.toRelStructure S D.toRelStructure g i out at hout
+    exact hout.symm
 
 /-- Closed free attachment preserves U-transversality. -/
 theorem uTransversal
