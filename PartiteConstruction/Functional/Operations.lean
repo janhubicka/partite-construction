@@ -130,10 +130,12 @@ theorem restrict_projectionHom
           B.part ∘ (Subtype.val ∘ x) := by
         funext i
         exact B.restrictedPart_spec α.toFunctionEmbedding (x i)
+      have houtEq : α (E.part y) = B.part y.1 := by
+        change α (B.restrictedPart α.toFunctionEmbedding y) = B.part y.1
+        exact B.restrictedPart_spec α.toFunctionEmbedding y
       have hpartY' : α (E.part y) ∈
           D.func F (α ∘ (E.part ∘ x)) := by
-        have hout := B.restrictedPart_spec α.toFunctionEmbedding y
-        rw [hout, heq]
+        rw [houtEq, heq]
         exact hpartY
       rw [← α.map_func F (E.part ∘ x)] at hpartY'
       rcases hpartY' with ⟨b, hb, hab⟩
