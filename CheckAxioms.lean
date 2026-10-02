@@ -71,3 +71,4 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.FinalSparsening.Stage.arrow
 #print axioms StructuralRamsey.Partite.Induced.Trace.locallyTreeLike
 #print axioms StructuralRamsey.Partite.Induced.inducedConstruction_locallyTreeLike
+#print axioms StructuralRamsey.RelStructure.ProjectsIrreduciblesInto.precomp
