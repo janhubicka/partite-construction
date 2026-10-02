@@ -4,6 +4,7 @@ import PartiteConstruction.Functional.Induced
 import PartiteConstruction.Functional.Operations
 import PartiteConstruction.Structure.Relationalize
 import PartiteConstruction.Structure.Basic
+import PartiteConstruction.Structure.FreeAmalgam
 import PartiteConstruction.Relational.Homomorphism
 import PartiteConstruction.Ramsey.Basic
 import PartiteConstruction.Partite.Predicates
