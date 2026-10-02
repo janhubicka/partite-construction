@@ -315,6 +315,43 @@ theorem mono (h : LocallyTreeLike A B C n) (hmn : m ≤ n) :
   intro S hS
   exact h S (hS.trans hmn)
 
+/-- If `A` embeds into `B`, every structure is
+`(A,B,0)`-locally tree-like: the only tested substructure is empty. -/
+theorem zero_of_embedding
+    (eAB : Embedding A B) :
+    LocallyTreeLike A B C 0 := by
+  intro S hS
+  have hEmpty : S = ∅ := by
+    apply Finset.card_eq_zero.mp
+    omega
+  subst S
+  refine ⟨V, B, TreeAmalgam.copy (Iso.refl B), ?_⟩
+  let f : ↥(↑(∅ : Finset W) : Set W) → V := fun x => (Finset.notMem_empty x.1 x.2).elim
+  have hf :
+      (C.induce (↑(∅ : Finset W) : Set W)).IsHomomorphismEmbedding B f := by
+    constructor
+    · intro R x hx
+      exact (Fin.elim0 (α := fun _ => B.rel R (f ∘ x)) ?_ : B.rel R (f ∘ x))
+    · intro T hT
+      let e : Embedding ((C.induce (↑(∅ : Finset W) : Set W)).induce T) B := {
+        toFun := fun x => (Finset.notMem_empty x.1.1 x.1.2).elim
+        injective := by
+          intro x
+          exact (Finset.notMem_empty x.1.1 x.1.2).elim
+        map_rel_iff := by
+          intro R x
+          exact (Fin.elim0 (α := fun _ => B.rel R ((fun q => (Finset.notMem_empty q.1.1 q.1.2).elim) ∘ x) ↔
+            (C.induce (↑(∅ : Finset W) : Set W)).induce T |>.rel R x) ?_ :
+            B.rel R ((fun q => (Finset.notMem_empty q.1.1 q.1.2).elim) ∘ x) ↔
+              (C.induce (↑(∅ : Finset W) : Set W)).induce T |>.rel R x)
+      }
+      exact ⟨e, fun x => (Finset.notMem_empty x.1.1 x.1.2).elim⟩
+  refine ⟨f, hf, ?_⟩
+  intro α
+  refine ⟨eAB, ?_⟩
+  intro a ha
+  exact (Finset.notMem_empty _ ha).elim
+
 /-- If `C` homomorphism-embeds into irreducible `A`, and `A` embeds into
 `B`, then `C` is locally tree-like at every scale, witnessed by the
 one-copy tree amalgam `B`. -/
