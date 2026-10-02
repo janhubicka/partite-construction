@@ -77,6 +77,13 @@ namespace ClosedEmbedding
 
 variable {A : RelStructure L.graph V} {B : RelStructure L.graph W}
 
+@[ext] theorem ext {f g : ClosedEmbedding A B}
+    (h : ∀ x, f x = g x) : f = g := by
+  cases f
+  cases g
+  simp only [ClosedEmbedding.mk.injEq]
+  exact RelStructure.Embedding.ext h
+
 /-- Inclusion of a function-closed subset is a closed relational embedding. -/
 def inclusion
     (A : RelStructure L.graph V) (S : Set V)
