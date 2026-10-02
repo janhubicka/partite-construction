@@ -221,7 +221,10 @@ theorem inducedConstruction
       χ (RelStructure.ClosedEmbedding.comp f.toRelClosed (projected α hα).1)
     else Classical.choice (inferInstance : Nonempty κ)
   obtain ⟨β, hβ⟩ := hRamsey θ'
-  let j := Partite.Closed.Initial.copyEmbedding B D hpos β
+  let j : RelStructure.ClosedEmbedding B S₀.system.toRelStructure := by
+    change RelStructure.ClosedEmbedding B
+      (Partite.Closed.Initial.picture B D).toRelStructure
+    exact Partite.Closed.Initial.copyEmbedding B D hpos β
   refine ⟨RelStructure.ClosedEmbedding.comp f.toRelClosed j, ?_⟩
   intro e₁ e₂
   let α₁ := β.comp e₁
