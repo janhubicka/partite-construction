@@ -66,4 +66,26 @@ theorem inducedTrace_locallyTreeLike
     exact initial_locallyTreeLike A B β hA.irreducible n
   exact trace_locallyTreeLike A B D hA n hn hD hTrace hInitial
 
+/-- One induced Ramsey construction simultaneously yields the Ramsey arrow
+and the strengthened local-tree invariant under hereditary irreducibility. -/
+theorem inducedConstruction_locallyTreeLike
+    (A : RelStructure L U) (B : RelStructure L V) (D : RelStructure L P)
+    [Finite U] [Finite V] [Finite P]
+    (κ : Type*) [Fintype κ] [Nonempty κ]
+    (hRamsey : StructuralRamsey.Arrow A B D κ)
+    (hA : A.HereditarilyIrreducible)
+    (n : ℕ) (hn : 0 < n)
+    (hD : RelStructure.LocallyTreeLike A B D (n - 1)) :
+    ∃ T : Partite.Induced.Stage B D,
+      StructuralRamsey.Arrow A B T.system.toRelStructure κ ∧
+      RelStructure.LocallyTreeLike A B T.system.toRelStructure n := by
+  classical
+  letI : Nonempty (RelStructure.Embedding B D) :=
+    Partite.Induced.nonempty_embedding_of_arrow A B D κ hRamsey
+  obtain ⟨T, hTrace, hArrow⟩ :=
+    Partite.Induced.inducedConstruction A B D κ hRamsey
+  have hLocal :=
+    inducedTrace_locallyTreeLike A B D hA n hn hD hTrace
+  exact ⟨T, hArrow, hLocal⟩
+
 end StructuralRamsey.Partite.Iterated
