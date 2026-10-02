@@ -58,3 +58,20 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Iterated.canonicalStep_locallyTreeLike
 
 #print axioms StructuralRamsey.Partite.Iterated.WeakTrace.locallyTreeLike
+
+#print axioms StructuralRamsey.RelStructure.FreeAmalgam.fold_isHomomorphismEmbedding
+#print axioms StructuralRamsey.RelStructure.FreeAmalgam.attachOverIrreducible_preservesProjection
+#print axioms StructuralRamsey.RelStructure.HereditarilyIrreducible.pullback
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.base
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.freeAmalgam
+#print axioms StructuralRamsey.RelStructure.FreeAmalgam.attachOverIrreducible_preservesProjectionAndLocalTree
+#print axioms StructuralRamsey.RelStructure.FreeAmalgam.irreduciblesExtendTo_amalgam
+#print axioms StructuralRamsey.RelStructure.FinalCompletion.exists_completion
+#print axioms StructuralRamsey.RelStructure.FinalSparsening.build_all
+#print axioms StructuralRamsey.RelStructure.FinalSparsening.Stage.arrow
+#print axioms StructuralRamsey.Partite.Induced.Trace.locallyTreeLike
+#print axioms StructuralRamsey.Partite.Induced.inducedConstruction_locallyTreeLike
+#print axioms StructuralRamsey.RelStructure.ProjectsIrreduciblesInto.precomp
+#print axioms StructuralRamsey.Partite.IteratedSparsening.build
+#print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_hereditarilyIrreducible
+#print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_hereditarilyIrreducible_all

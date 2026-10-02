@@ -12,13 +12,13 @@ namespace StructuralRamsey.RelStructure.Attachment
 
 noncomputable section
 
-universe u v
+universe u v w z
 variable {L : RelLanguage.{u}}
-variable {V W I : Type v}
+variable {V : Type v} {W : Type w} {I : Type z}
 variable (B : RelStructure L V) (S : Set V) (D : RelStructure L W)
 variable (f : I → Embedding (B.induce S) D)
 
-abbrev AV (S : Set V) (W : Type v) (I : Type v) :=
+abbrev AV (S : Set V) (W : Type w) (I : Type z) :=
   Vertex S (W := W) (I := I)
 
 def InCopy (i : I) (z : AV S W I) : Prop :=

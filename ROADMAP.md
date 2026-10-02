@@ -19,12 +19,15 @@ and update the survey's validation markers at an immutable proof commit.
    Partite and Picture Lemmas, disjoint-union initial pictures, formally based
    stages, the irreducible-image invariant, finite iteration, and the final
    Ramsey extraction with a trace certifying every stage.
-5. **In progress — applications and iteration:** weak substructures for
-   function languages, tree amalgams, weak local tree-likeness, the initial
-   case, the canonical one-step size induction, ambient A-copy control, and the
-   finite heterogeneous weak Picture trace are formalized. Remaining: finish
-   the final sparsening attachment lemma and resolve the recorded gap between
-   irreducibility of A and hereditary irreducibility of its weak substructures.
+5. **Checked under hereditary irreducibility — applications and iteration:**
+   weak substructures for function languages, tree amalgams, weak local
+   tree-likeness, the actual induced-construction trace, repeated sparsening
+   iteration, projected irreducible coverage, the final finite attachment
+   phase, and an end-to-end strengthened sparsening theorem are formalized.
+   The checked theorem assumes hereditary irreducibility of both A and B.
+   Remaining: resolve the gap from the survey's stated hypothesis that only A
+   is irreducible (and the corresponding function-language/graph-encoding
+   presentation issue).
 6. **Recursive construction / functions:** set-valued functions, closed
    embeddings, U-transversality, and the recursive construction with closures.
    The coordinatewise induced proof is not claimed for arbitrary set-valued
