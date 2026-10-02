@@ -422,47 +422,6 @@ def graphOfGraphClosed :
             (Structure.funcTuple x y (Fin.last (L.funcArity F))))
       simpa using hy, rfl⟩
 
-/-- Recover a full embedding into the reconstructed structure from a closed
-graph embedding into an arbitrary encoded relational structure. -/
-def Embedding.ofClosedGraphTarget
-    (e : RelStructure.ClosedEmbedding A.graph R) :
-    Structure.Embedding A (Structure.ofGraph R) where
-  toFun := e
-  injective := e.toEmbedding.injective
-  map_rel_iff := by
-    intro S x
-    exact e.toEmbedding.map_rel_iff (.inl S) x
-  map_func := by
-    intro F x
-    ext y
-    constructor
-    · rintro ⟨z, hz, rfl⟩
-      have hs :
-          A.graph.rel (.inr F) (Structure.funcTuple x z) :=
-        (Structure.graph_func_snoc A F x z).2 hz
-      have ht :=
-        (e.toEmbedding.map_rel_iff
-          (.inr F) (Structure.funcTuple x z)).mpr hs
-      change
-        R.rel (.inr F)
-          (Structure.funcTuple (e ∘ x) (e z))
-      have htuple :
-          e ∘ Structure.funcTuple x z =
-            Structure.funcTuple (e ∘ x) (e z) := by
-        funext i
-        refine Fin.lastCases ?_ (fun j => ?_) i
-        · simp [Structure.funcTuple, Function.comp_apply]
-        · simp [Structure.funcTuple, Function.comp_apply]
-      rw [← htuple]
-      exact ht
-    · intro hy
-      have ht :
-          R.rel (.inr F)
-            (Structure.funcTuple (e ∘ x) y) := hy
-      obtain ⟨z, hz, hzy⟩ := e.closed F x y ht
-      refine ⟨z, ?_, hzy⟩
-      exact (Structure.graph_func_snoc A F x z).1 hz
-
 /-- Full embeddings into ofGraph R are equivalent to closed graph embeddings
 into R. -/
 def embeddingEquivClosedTarget :
