@@ -48,6 +48,7 @@ import PartiteConstruction.Iterated.AttachmentDecompose
 import PartiteConstruction.Iterated.Glue
 import PartiteConstruction.Iterated.WitnessGlue
 import PartiteConstruction.Iterated.ProjectedGlue
+import PartiteConstruction.Iterated.ProjectedCover
 import PartiteConstruction.Relational.Attachment
 import PartiteConstruction.Relational.Order
 import PartiteConstruction.Partite.Operations
