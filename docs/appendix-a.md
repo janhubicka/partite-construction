@@ -64,7 +64,7 @@ all checked end to end.  The full-language consequence is
 | Iterated tree invariant, base case | `Partite.Iterated.initial_locallyTreeLike` | Proved for irreducible `A` |
 | Iterated tree invariant, canonical step | `Partite.Iterated.canonicalStep_locallyTreeLike` | Proved for weak/graph-induced substructures under the recorded stronger hereditary-irreducibility hypothesis |
 | Ambient A-copy control completion | `RelStructure.LocallyTreeLike.completeControl` | Proved by successive free attachments |
-| Iterated construction | base and one-step induction verified; finite trace packaging is the next milestone | In progress |
+| Iterated construction | `Partite.Iterated.WeakTrace`, `WeakTrace.locallyTreeLike` | Finite weak-substructure Picture trace verified; final sparsening attachment remains open |
 
 All names above are in the `StructuralRamsey` namespace. In the survey,
 green markers identify statements proved in the formalized relational setting,
@@ -150,7 +150,7 @@ The fixed-length bridge combines hypothetical bad colourings at each length
 into one colouring of all finite words and applies that theorem.
 
 `CheckAxioms.lean` prints the transitive axiom dependencies of the main results.
-All 53 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
+All 54 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
 every requested declaration produced a result. In particular, `sorryAx`, a
 custom HJ axiom, and native-evaluation axioms cannot pass this audit.
 

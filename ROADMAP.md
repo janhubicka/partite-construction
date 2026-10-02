@@ -21,9 +21,10 @@ and update the survey's validation markers at an immutable proof commit.
    Ramsey extraction with a trace certifying every stage.
 5. **In progress — applications and iteration:** weak substructures for
    function languages, tree amalgams, weak local tree-likeness, the initial
-   case, and the canonical one-step size induction are formalized. Remaining:
-   package the repeated steps into the finite trace and finish the final
-   sparsening attachment lemma.
+   case, the canonical one-step size induction, ambient A-copy control, and the
+   finite heterogeneous weak Picture trace are formalized. Remaining: finish
+   the final sparsening attachment lemma and resolve the recorded gap between
+   irreducibility of A and hereditary irreducibility of its weak substructures.
 6. **Recursive construction / functions:** set-valued functions, closed
    embeddings, U-transversality, and the recursive construction with closures.
    The coordinatewise induced proof is not claimed for arbitrary set-valued
