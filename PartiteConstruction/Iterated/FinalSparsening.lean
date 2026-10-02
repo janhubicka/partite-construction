@@ -112,8 +112,9 @@ theorem build_list
           intro d
           obtain ⟨b, hb⟩ := hβ d
           refine ⟨b, ?_⟩
+          change T.projection (T.core d.1) = β b
           calc
-            T.projection (fCore d) =
+            T.projection (T.core d.1) =
                 pOrig d.1 := T.core_projection d.1
             _ = β b := hb
         obtain ⟨fBase, p, hp, hLocal, hleft, hright⟩ :=
