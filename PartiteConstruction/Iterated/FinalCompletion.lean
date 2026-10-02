@@ -138,8 +138,10 @@ theorem coversIrrList_amalgam
   let l := leftEmbedding D₀ Current Base fCurrent fBase
   let r := rightEmbedding D₀ Current Base fCurrent fBase
   intro S hmem hS
-  rcases hmem with rfl | hmem
-  · refine ⟨r, ?_⟩
+  simp only [List.mem_cons] at hmem
+  rcases hmem with hEq | hmem
+  · subst S
+    refine ⟨r, ?_⟩
     intro z
     refine ⟨fBase z, ?_⟩
     change l (j z.1) = r (fBase z)
@@ -157,7 +159,7 @@ theorem completion_list
     (sets : List (Finset O))
     (hEmb : ∀ (S : Finset O), S ∈ sets →
       (Orig.induce (↑S : Set O)).Irreducible →
-      ∃ e : Embedding (Orig.induce (↑S : Set O)) Base) :
+      Nonempty (Embedding (Orig.induce (↑S : Set O)) Base)) :
     ∃ (Y : Type v) (_ : Finite Y) (C' : RelStructure L Y)
       (j : Embedding Orig C'),
       CoreOrBase (Orig := Orig) (Base := Base) j ∧
@@ -172,7 +174,7 @@ theorem completion_list
       have hEmbTail :
           ∀ (S : Finset O), S ∈ sets →
             (Orig.induce (↑S : Set O)).Irreducible →
-            ∃ e : Embedding (Orig.induce (↑S : Set O)) Base := by
+            Nonempty (Embedding (Orig.induce (↑S : Set O)) Base) := by
         intro S hmem hS
         exact hEmb S (List.mem_cons_of_mem S₀ hmem) hS
       obtain ⟨Y, hY, C', j, hCore, hCov⟩ := ih hEmbTail
@@ -197,8 +199,10 @@ theorem completion_list
         exact ⟨_, inferInstance, Whole, j', hCore', hCov'⟩
       · refine ⟨Y, hY, C', j, hCore, ?_⟩
         intro S hmem hS
-        rcases hmem with rfl | hmem
-        · exact (hS₀ hS).elim
+        simp only [List.mem_cons] at hmem
+        rcases hmem with hEq | hmem
+        · subst S
+          exact (hS₀ hS).elim
         · exact hCov S hmem hS
 
 /-- If every irreducible induced substructure of a finite original structure
@@ -207,7 +211,7 @@ substructure extends to a base copy. -/
 theorem exists_completion
     [Fintype O] [DecidableEq O] [Finite B]
     (hEmb : ∀ (S : Set O), (Orig.induce S).Irreducible →
-      ∃ e : Embedding (Orig.induce S) Base) :
+      Nonempty (Embedding (Orig.induce S) Base)) :
     ∃ (Y : Type v) (_ : Finite Y) (C' : RelStructure L Y)
       (j : Embedding Orig C'),
       IrreduciblesExtendTo Base C' := by
@@ -216,7 +220,7 @@ theorem exists_completion
   have hEmbList :
       ∀ (S : Finset O), S ∈ sets →
         (Orig.induce (↑S : Set O)).Irreducible →
-        ∃ e : Embedding (Orig.induce (↑S : Set O)) Base := by
+        Nonempty (Embedding (Orig.induce (↑S : Set O)) Base) := by
     intro S _ hS
     exact hEmb (↑S : Set O) hS
   obtain ⟨Y, hY, C', j, hCore, hCov⟩ :=
