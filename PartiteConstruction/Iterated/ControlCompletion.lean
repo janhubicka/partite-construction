@@ -83,7 +83,8 @@ theorem addControl
     l.isHomomorphismEmbedding.comp hf
   refine ⟨_, T', hTree', f', hf', ?_⟩
   intro β hβ
-  rcases hβ with rfl | hβ
+  rcases List.mem_cons.mp hβ with hβα | hβ
+  · subst β
   · let α' : Embedding A T' := r.comp eAB
     refine ⟨α', ?_⟩
     intro a ha
@@ -147,12 +148,12 @@ theorem completeControl
     | cons α ys ih =>
         intro Y T hT f hf zs hzs
         obtain ⟨Y₁, T₁, hT₁, f₁, hf₁, hctrl₁⟩ :=
-          addControl (A := A) (B := B) (C := C)
-            hA eAB S hT f hf zs hzs α
+          ih hT f hf zs hzs
         obtain ⟨Z, T', hT', f', hf', hctrl'⟩ :=
-          ih hT₁ f₁ hf₁ (α :: zs) hctrl₁
+          addControl (A := A) (B := B) (C := C)
+            hA eAB S hT₁ f₁ hf₁ (ys ++ zs) hctrl₁ α
         refine ⟨Z, T', hT', f', hf', ?_⟩
-        simpa [List.cons_append, List.append_assoc] using hctrl'
+        simpa only [List.cons_append] using hctrl'
   obtain ⟨Z, T', hT', f', hf', hctrl'⟩ :=
     aux xs hTree f hf [] (by
       intro α h
