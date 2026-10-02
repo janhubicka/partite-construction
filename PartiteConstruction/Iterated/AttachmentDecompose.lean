@@ -144,12 +144,7 @@ theorem decompose :
           · exact hz
           · funext k
             rfl
-        · have hrest : ∀ k, (z k) ∈ restSet S T i := by
-            intro k
-            exact copyMap_not_outside_of_ne
-              (B := B) (S := S) (D := D) (f := f)
-              (i := i) j hji (y k) |>.mpr? -- placeholder
-          let zr : Fin (L.arity R) → Rest B S D f T i :=
+        · let zr : Fin (L.arity R) → Rest B S D f T i :=
             fun k => ⟨z k, by
               change ¬ OutsideAt (S := S) i (z k).1.1
               intro hout
