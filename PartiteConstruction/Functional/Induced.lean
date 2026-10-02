@@ -152,10 +152,17 @@ theorem lineMap_rel_iff
         simpa only [lineMap, hi, Function.comp_apply] using hx
     | const e =>
         have hA : A.rel R (B.part ∘ x) := hB.1 R x hx
-        have he : B.rel R (e ∘ (B.part ∘ x)) :=
+        have he0 : B.rel R (e ∘ (B.part ∘ x)) :=
           (e.toEmbedding.map_rel_iff R (B.part ∘ x)).mpr hA
-        change B.rel R (fun j => e (B.part (x j))) at he
-        simpa only [lineMap, hi, Function.comp_apply] using he
+        let args : Fin (L.relArity R) → V :=
+          fun j => e (B.part (x j))
+        have hargs : (e ∘ (B.part ∘ x)) = args := by
+          funext j
+          rfl
+        have he : B.rel R args := by
+          rw [← hargs]
+          exact he0
+        simpa only [args, lineMap, hi, Function.comp_apply] using he
 
 /-- Exact preservation of set-valued function images by a Hales--Jewett line
 map.  The reverse inclusion uses a parameter coordinate and output
@@ -181,8 +188,13 @@ theorem lineMap_func
             ⟨y, hy, rfl⟩
           rw [hB.2 F x] at himg
           exact himg
+        let args : Fin (L.funcArity F) → V :=
+          fun j => e (B.part (x j))
+        have hargs : (e ∘ (B.part ∘ x)) = args := by
+          funext j
+          rfl
         have heValue :
-            e (B.part y) ∈ B.func F (e ∘ (B.part ∘ x)) := by
+            e (B.part y) ∈ B.func F args := by
           have himg :
               e (B.part y) ∈
                 Structure.imageSet e (A.func F (B.part ∘ x)) :=
@@ -191,11 +203,9 @@ theorem lineMap_func
           change
             Structure.imageSet e (A.func F (B.part ∘ x)) =
               B.func F (e ∘ (B.part ∘ x)) at hm
-          rw [hm] at himg
-          change e (B.part y) ∈
-            B.func F (fun j => e (B.part (x j))) at himg
+          rw [hm, hargs] at himg
           exact himg
-        simpa only [lineMap, hi, Function.comp_apply] using heValue
+        simpa only [args, lineMap, hi, Function.comp_apply] using heValue
   · intro hz
     obtain ⟨i0, hi0⟩ := W.hasParameter
     let y : V := z.coord i0
@@ -222,8 +232,13 @@ theorem lineMap_func
               ⟨y, hy, rfl⟩
             rw [hB.2 F x] at himg
             exact himg
+          let args : Fin (L.funcArity F) → V :=
+            fun j => e (B.part (x j))
+          have hargs : (e ∘ (B.part ∘ x)) = args := by
+            funext j
+            rfl
           have heValue :
-              e (B.part y) ∈ B.func F (e ∘ (B.part ∘ x)) := by
+              e (B.part y) ∈ B.func F args := by
             have himg :
                 e (B.part y) ∈
                   Structure.imageSet e (A.func F (B.part ∘ x)) :=
@@ -232,15 +247,11 @@ theorem lineMap_func
             change
               Structure.imageSet e (A.func F (B.part ∘ x)) =
                 B.func F (e ∘ (B.part ∘ x)) at hm
-            rw [hm] at himg
+            rw [hm, hargs] at himg
             exact himg
-          have hzi :
-              z.coord i ∈ B.func F (e ∘ (B.part ∘ x)) := by
+          have hzi : z.coord i ∈ B.func F args := by
             have hzi0 := hz i
-            change z.coord i ∈
-              B.func F (fun j => e (B.part (x j))) at hzi0
-            change z.coord i ∈ B.func F (e ∘ (B.part ∘ x))
-            exact hzi0
+            simpa only [args, lineMap, hi, Function.comp_apply] using hzi0
           have hparts :
               B.part (e (B.part y)) = B.part (z.coord i) := by
             calc
@@ -248,7 +259,7 @@ theorem lineMap_func
               _ = z.part := z.belongs i0
               _ = B.part (z.coord i) := (z.belongs i).symm
           simpa only [lineMap, hi] using
-            B.funcTransversal F (e ∘ (B.part ∘ x))
+            B.funcTransversal F args
               (e (B.part y)) (z.coord i) heValue hzi hparts
 
 def lineEmbedding
