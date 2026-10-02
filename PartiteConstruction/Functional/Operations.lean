@@ -53,7 +53,7 @@ theorem support_closed
   have hargs : ∀ i, ∃ a : Q, B.part (x i) = α a := by
     intro i
     rcases hx i with ⟨a, ha⟩
-    exact ⟨a, ha⟩
+    exact ⟨a, ha.symm⟩
   choose a ha using hargs
   have hinput : B.part ∘ x = α ∘ a := by
     funext i
@@ -69,7 +69,7 @@ theorem support_closed
     exact hpartY
   rw [← α.map_func F a] at hpartY'
   rcases hpartY' with ⟨b, hb, hby⟩
-  exact ⟨b, hby.symm⟩
+  exact ⟨b, hby⟩
 
 /-- Restrict to the parts selected by a full embedding alpha:A -> D. -/
 noncomputable def restrict
@@ -132,7 +132,8 @@ theorem restrict_projectionHom
         exact B.restrictedPart_spec α.toFunctionEmbedding (x i)
       have hpartY' : α (E.part y) ∈
           D.func F (α ∘ (E.part ∘ x)) := by
-        rw [heq, B.restrictedPart_spec α.toFunctionEmbedding y]
+        have hout := B.restrictedPart_spec α.toFunctionEmbedding y
+        rw [hout, heq]
         exact hpartY
       rw [← α.map_func F (E.part ∘ x)] at hpartY'
       rcases hpartY' with ⟨b, hb, hab⟩
