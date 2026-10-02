@@ -80,3 +80,4 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.HalfClosed.Initial.isPartiteOver
 #print axioms StructuralRamsey.Partite.HalfClosed.Construction.inducedConstruction
 #print axioms StructuralRamsey.Partite.HalfClosed.Construction.relevant_iff_image_contained
+#print axioms StructuralRamsey.Partite.ClosedRepair.disjointCopies_uTransversal
