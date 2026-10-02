@@ -51,3 +51,8 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Closed.Picture.pictureLemma
 #print axioms StructuralRamsey.Partite.Closed.Construction.inducedConstruction
 #print axioms StructuralRamsey.Structure.inducedRamsey
+
+#print axioms StructuralRamsey.Structure.weakInduce_graph_rel_iff
+#print axioms StructuralRamsey.Structure.weakLocallyTreeLike_iff
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.completeControl
+#print axioms StructuralRamsey.Partite.Iterated.canonicalStep_locallyTreeLike
