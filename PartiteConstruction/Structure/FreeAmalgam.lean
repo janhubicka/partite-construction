@@ -40,23 +40,11 @@ structure IsFreeAmalgam
       (∃ a : Fin (L.funcArity F) → W, ∃ b : W,
         b ∈ B.func F a ∧ x = iB ∘ a ∧ y = iB b)
 
-/-- Irreducibility in the free-amalgamation sense. This universal formulation
-is equivalent, for finite structures, to saying that the structure is not the
-free amalgam of two proper substructures. -/
+/-- Irreducibility in the survey's free-amalgamation sense, in universal
+no-crossing form: an embedded copy of A in any free amalgam lies wholly in one
+side. For finite structures this is equivalent to A not being the free amalgam
+of two proper substructures. -/
 def Irreducible (A : Structure L U) : Prop :=
-  ∀ {V W X : Type v}
-    {B : Structure L V} {C : Structure L W} {E : Structure L X}
-    {fB : Embedding B E} {fC : Embedding C E},
-    IsFreeAmalgam
-      (Embedding.id A) (Embedding.id A)
-      (Embedding.id A) (Embedding.id A) → True
-
-/-! The dummy definition above is immediately replaced below by the useful
-universal formulation. Keeping it separate would be misleading, so redefine
-through a named predicate with the actual parameters. -/
-
-/-- Universal no-crossing formulation of irreducibility. -/
-def IsIrreducible (A : Structure L U) : Prop :=
   ∀ {H E F C : Type v}
     {Dsrc : Structure L H} {Esrc : Structure L E}
     {Fsrc : Structure L F} {Csrc : Structure L C}
@@ -67,15 +55,12 @@ def IsIrreducible (A : Structure L U) : Prop :=
       (∀ a : U, ∃ x : E, e a = iE x) ∨
       (∀ a : U, ∃ x : F, e a = iF x)
 
-/-- This is the public irreducibility predicate used below. -/
-abbrev FullIrreducible (A : Structure L U) : Prop := IsIrreducible A
-
 namespace IsFreeAmalgam
 
 /-- The universal irreducibility predicate gives side localization directly. -/
 theorem irreducible_side
     {A : Structure L U}
-    (hA : FullIrreducible A)
+    (hA : Irreducible A)
     {H E F C : Type v}
     {Dsrc : Structure L H} {Esrc : Structure L E}
     {Fsrc : Structure L F} {Csrc : Structure L C}
@@ -96,7 +81,7 @@ is an embedding". -/
 def IsHomomorphismEmbedding (A : Structure L U) (B : Structure L V)
     (f : U → V) : Prop :=
   A.IsHomomorphism B f ∧
-  ∀ {X : Type v} (E : Structure L X), FullIrreducible E →
+  ∀ {X : Type v} (E : Structure L X), Irreducible E →
     ∀ e : Embedding E A,
       ∃ g : Embedding E B, ∀ x, g x = f (e x)
 
