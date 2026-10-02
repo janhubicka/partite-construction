@@ -136,14 +136,21 @@ noncomputable def Embedding.factorThroughRange
   injective := by
     intro x y hxy
     apply e.injective
-    rw [Classical.choose_spec (h x), Classical.choose_spec (h y), hxy]
+    calc
+      e x = i (Classical.choose (h x)) := Classical.choose_spec (h x)
+      _ = i (Classical.choose (h y)) := congrArg i hxy
+      _ = e y := (Classical.choose_spec (h y)).symm
   map_rel_iff := by
     intro R x
-    have heq : i ∘ (fun k => Classical.choose (h (x k))) = e ∘ x := by
+    let q : U → V := fun a => Classical.choose (h a)
+    have heq : i ∘ (q ∘ x) = e ∘ x := by
       funext k
       exact (Classical.choose_spec (h (x k))).symm
-    rw [← i.map_rel_iff R (fun k => Classical.choose (h (x k))), heq]
-    exact e.map_rel_iff R x
+    calc
+      B.rel R (q ∘ x) ↔ C.rel R (i ∘ (q ∘ x)) :=
+        (i.map_rel_iff R (q ∘ x)).symm
+      _ ↔ C.rel R (e ∘ x) := by rw [heq]
+      _ ↔ A.rel R x := e.map_rel_iff R x
 
 /-- A concrete relational structure is the free amalgam of `A` and `B`
 over `D` when it is covered by induced copies of the two sides, those copies
@@ -180,7 +187,8 @@ theorem irreducible_side
   · push Not at hleft
     obtain ⟨z₀, hz₀⟩ := hleft
     obtain hz₀side | hz₀side := hfree.covers z₀.1
-    · exact (hz₀ hz₀side).elim
+    · rcases hz₀side with ⟨a, ha⟩
+      exact (hz₀ a ha).elim
     · refine Or.inr ?_
       intro z
       by_cases hzz : z = z₀
@@ -194,7 +202,8 @@ theorem irreducible_side
             refine ⟨y l, ?_⟩
             have h := congrFun heq l
             simpa only [Function.comp_apply, hxl] using h
-          exact (hz₀ hz₀left).elim
+          rcases hz₀left with ⟨a, ha⟩
+          exact (hz₀ a ha).elim
         · rcases hBrel with ⟨y, hy, heq⟩
           refine ⟨y k, ?_⟩
           have h := congrFun heq k
@@ -249,7 +258,7 @@ theorem irreducible_contained_in_copy
           intro a
           exact hleft ⟨e a, ⟨a, rfl⟩⟩
         let e₁ : Embedding A T₁ := e.factorThroughRange i₁ he
-        obtain ⟨j₁, hj₁⟩ := ih₁ hA e₁
+        obtain ⟨j₁, hj₁⟩ := ih₁ e₁ hA
         refine ⟨i₁.comp j₁, ?_⟩
         intro a
         obtain ⟨b, hb⟩ := hj₁ a
@@ -263,7 +272,7 @@ theorem irreducible_contained_in_copy
           intro a
           exact hright ⟨e a, ⟨a, rfl⟩⟩
         let e₂ : Embedding A T₂ := e.factorThroughRange i₂ he
-        obtain ⟨j₂, hj₂⟩ := ih₂ hA e₂
+        obtain ⟨j₂, hj₂⟩ := ih₂ e₂ hA
         refine ⟨i₂.comp j₂, ?_⟩
         intro a
         obtain ⟨b, hb⟩ := hj₂ a
