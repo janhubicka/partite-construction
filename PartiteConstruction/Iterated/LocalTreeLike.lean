@@ -369,6 +369,57 @@ theorem witness_of_homEmbedding_image
   rw [hsub]
   exact ha'
 
+/-- Local tree-likeness pulls back along an induced embedding. -/
+theorem pullback_embedding
+    {D : RelStructure L X}
+    (hC : LocallyTreeLike A B C n)
+    (e : Embedding D C) :
+    LocallyTreeLike A B D n := by
+  classical
+  intro S hS
+  let I : Finset W := S.image e
+  have hcard : I.card = S.card := by
+    exact Finset.card_image_iff.mpr e.injective
+  obtain ⟨Y, T, hTree, g, hg, hctrl⟩ := hC I (by
+    rw [hcard]
+    exact hS)
+  let eS : ↥(↑S : Set X) → ↥(↑I : Set W) :=
+    fun x => ⟨e x.1, Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩⟩
+  let ee : Embedding (D.induce (↑S : Set X)) (C.induce (↑I : Set W)) := {
+    toFun := eS
+    injective := by
+      intro x y hxy
+      apply Subtype.ext
+      apply e.injective
+      exact congrArg Subtype.val hxy
+    map_rel_iff := by
+      intro R x
+      change C.rel R (e ∘ (Subtype.val ∘ x)) ↔
+        D.rel R (Subtype.val ∘ x)
+      exact e.map_rel_iff R (Subtype.val ∘ x)
+  }
+  let f : ↥(↑S : Set X) → Y := g ∘ ee
+  have hf :
+      (D.induce (↑S : Set X)).IsHomomorphismEmbedding T f :=
+    hg.comp ee.isHomomorphismEmbedding
+  refine ⟨Y, T, hTree, f, hf, ?_⟩
+  intro α
+  obtain ⟨α', hα'⟩ := hctrl (e.comp α)
+  refine ⟨α', ?_⟩
+  intro a ha
+  have hi : e (α a) ∈ I :=
+    Finset.mem_image.mpr ⟨α a, ha, rfl⟩
+  obtain ⟨a', ha'⟩ := hα' a hi
+  refine ⟨a', ?_⟩
+  change g (ee ⟨α a, ha⟩) = α' a'
+  have heq :
+      ee ⟨α a, ha⟩ =
+        (⟨e (α a), hi⟩ : ↥(↑I : Set W)) := by
+    apply Subtype.ext
+    rfl
+  rw [heq]
+  exact ha'
+
 /-- Local tree-likeness is monotone in the size bound. -/
 theorem mono (h : LocallyTreeLike A B C n) (hmn : m ≤ n) :
     LocallyTreeLike A B C m := by
