@@ -153,18 +153,19 @@ theorem coversIrrList_amalgam
 /-- Process an arbitrary finite list of subsets, attaching a base copy exactly
 at the irreducible members. -/
 theorem completion_list
+    [Finite O] [Finite B]
     (sets : List (Finset O))
     (hEmb : ∀ (S : Finset O), S ∈ sets →
       (Orig.induce (↑S : Set O)).Irreducible →
       ∃ e : Embedding (Orig.induce (↑S : Set O)) Base) :
-    ∃ (Y : Type v) (C' : RelStructure L Y)
+    ∃ (Y : Type v) (_ : Finite Y) (C' : RelStructure L Y)
       (j : Embedding Orig C'),
       CoreOrBase (Orig := Orig) (Base := Base) j ∧
       CoversIrrList (Orig := Orig) (Base := Base) j sets := by
   classical
   induction sets with
   | nil =>
-      refine ⟨O, Orig, Embedding.id Orig, coreOrBase_id, ?_⟩
+      refine ⟨O, inferInstance, Orig, Embedding.id Orig, coreOrBase_id, ?_⟩
       intro S hmem
       simp at hmem
   | cons S₀ sets ih =>
@@ -174,7 +175,8 @@ theorem completion_list
             ∃ e : Embedding (Orig.induce (↑S : Set O)) Base := by
         intro S hmem hS
         exact hEmb S (List.mem_cons_of_mem S₀ hmem) hS
-      obtain ⟨Y, C', j, hCore, hCov⟩ := ih hEmbTail
+      obtain ⟨Y, hY, C', j, hCore, hCov⟩ := ih hEmbTail
+      letI : Finite Y := hY
       by_cases hS₀ : (Orig.induce (↑S₀ : Set O)).Irreducible
       · obtain ⟨fBase⟩ := hEmb S₀ (by simp) hS₀
         let D₀ := Orig.induce (↑S₀ : Set O)
@@ -192,8 +194,8 @@ theorem completion_list
             (coversIrrList_amalgam
               (Orig := Orig) (Base := Base) (Current := C')
               sets S₀ fBase hCov)
-        exact ⟨_, Whole, j', hCore', hCov'⟩
-      · refine ⟨Y, C', j, hCore, ?_⟩
+        exact ⟨_, inferInstance, Whole, j', hCore', hCov'⟩
+      · refine ⟨Y, hY, C', j, hCore, ?_⟩
         intro S hmem hS
         rcases hmem with rfl | hmem
         · exact (hS₀ hS).elim
@@ -217,12 +219,8 @@ theorem exists_completion
         ∃ e : Embedding (Orig.induce (↑S : Set O)) Base := by
     intro S _ hS
     exact hEmb (↑S : Set O) hS
-  obtain ⟨Y, C', j, hCore, hCov⟩ :=
+  obtain ⟨Y, hY, C', j, hCore, hCov⟩ :=
     completion_list (Orig := Orig) (Base := Base) sets hEmbList
-  have hY : Finite Y := by
-    -- The recursive construction starts finite and uses only finite free
-    -- amalgams.  The instance is synthesized from the returned construction.
-    infer_instance
   refine ⟨Y, hY, C', j, ?_⟩
   intro T hT
   rcases hCore T hT with hOrig | hBase
