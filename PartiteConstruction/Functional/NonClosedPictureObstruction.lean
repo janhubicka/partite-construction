@@ -49,24 +49,26 @@ theorem copy_comp_not_functionClosed
   intro hclosed
   let out : Vertex S (W := W) (I := I) :=
     copyMap B S D f j y
+  have hargs :
+      ((copyMap B S D f i ∘ e) ∘ x) =
+        copyMap B S D f j ∘ q := by
+    funext k
+    exact hinputs k
+  have htuple :
+      Structure.funcTuple ((copyMap B S D f i ∘ e) ∘ x) out =
+        copyMap B S D f j ∘ Structure.funcTuple q y := by
+    calc
+      Structure.funcTuple ((copyMap B S D f i ∘ e) ∘ x) out =
+          Structure.funcTuple
+            (copyMap B S D f j ∘ q) (copyMap B S D f j y) := by
+        rw [hargs]
+        rfl
+      _ = copyMap B S D f j ∘ Structure.funcTuple q y :=
+        (Structure.comp_funcTuple (copyMap B S D f j) q y).symm
   have htarget :
       (attach B S D f).rel (.inr F)
         (Structure.funcTuple ((copyMap B S D f i ∘ e) ∘ x) out) := by
-    refine Or.inr ⟨j, Structure.funcTuple q y, hrel, ?_⟩
-    funext k
-    refine Fin.lastCases ?_ (fun t => ?_) k
-    · dsimp [out]
-      change
-        copyMap B S D f j y =
-          copyMap B S D f j
-            (Structure.funcTuple q y (Fin.last (L.funcArity F)))
-      rw [Structure.funcTuple_last]
-    · change
-        copyMap B S D f i (e (x t)) =
-          copyMap B S D f j
-            (Structure.funcTuple q y t.castSucc)
-      rw [Structure.funcTuple_castSucc]
-      exact hinputs t
+    exact Or.inr ⟨j, Structure.funcTuple q y, hrel, htuple⟩
   obtain ⟨z, _, hz⟩ := hclosed F x out htarget
   have hselected :
       copyMap B S D f i (e z) =
