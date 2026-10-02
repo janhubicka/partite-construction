@@ -53,4 +53,53 @@ theorem sparseningRamsey_hereditarilyIrreducible
   exact ⟨T.Vertex, inferInstance, T.C, hArrow,
     T.projection, T.projectionHE, T.locallyTreeLike, hExtend⟩
 
+
+/-- Strengthened relational sparsening theorem with no separate embedding
+assumption and for every size bound \`n\`.
+
+If \`A\` does not embed into \`B\`, the Ramsey arrow inside a copy of \`B\` is
+vacuous, so \`B\` itself is already a witness.  Otherwise we run the checked
+positive-level construction at level \`n+1\` and then use monotonicity of local
+tree-likeness. -/
+theorem sparseningRamsey_hereditarilyIrreducible_all
+    (A : RelStructure L UA) (B : RelStructure L VB)
+    (C₀ : RelStructure L P)
+    [Finite UA] [Finite VB] [Finite P]
+    (κ : Type*) [Fintype κ] [Nonempty κ]
+    (hRamsey : StructuralRamsey.Arrow A B C₀ κ)
+    (hA : A.HereditarilyIrreducible)
+    (hB : B.HereditarilyIrreducible)
+    (n : ℕ) :
+    ∃ (Z : Type v) (_ : Finite Z) (C : RelStructure L Z),
+      StructuralRamsey.Arrow A B C κ ∧
+      ∃ p : Z → P,
+        C.IsHomomorphismEmbedding C₀ p ∧
+        RelStructure.LocallyTreeLike A B C n ∧
+        RelStructure.IrreduciblesExtendTo B C := by
+  classical
+  by_cases hAB : Nonempty (RelStructure.Embedding A B)
+  · let eAB : RelStructure.Embedding A B := Classical.choice hAB
+    obtain ⟨Z, hZ, C, hArrow, p, hp, hLocal, hExt⟩ :=
+      sparseningRamsey_hereditarilyIrreducible
+        A B C₀ κ hRamsey hA hB eAB (n + 1) (by omega)
+    refine ⟨Z, hZ, C, hArrow, p, hp, ?_, hExt⟩
+    exact hLocal.mono (Nat.le_succ n)
+  · letI : IsEmpty (RelStructure.Embedding A B) :=
+      ⟨fun e => hAB ⟨e⟩⟩
+    letI : Nonempty (RelStructure.Embedding B C₀) :=
+      Partite.Induced.nonempty_embedding_of_arrow A B C₀ κ hRamsey
+    let β : RelStructure.Embedding B C₀ :=
+      Classical.choice (inferInstance : Nonempty (RelStructure.Embedding B C₀))
+    have hArrowSelf : StructuralRamsey.Arrow A B B κ :=
+      StructuralRamsey.arrow_of_isEmpty
+    have hLocal : RelStructure.LocallyTreeLike A B B n :=
+      RelStructure.LocallyTreeLike.base A B n
+    have hExt : RelStructure.IrreduciblesExtendTo B B := by
+      intro S _
+      refine ⟨RelStructure.Embedding.id B, ?_⟩
+      intro z
+      exact ⟨z.1, rfl⟩
+    exact ⟨VB, inferInstance, B, hArrowSelf,
+      β, β.isHomomorphismEmbedding, hLocal, hExt⟩
+
 end StructuralRamsey.Partite.IteratedSparsening
