@@ -309,6 +309,78 @@ namespace LocallyTreeLike
 variable {A : RelStructure L U} {B : RelStructure L V}
   {C : RelStructure L W} {m n : ℕ}
 
+/-- A projected local-tree witness retains both the witness on the image in
+the base structure and its pullback along the homomorphism-embedding.  This
+extra bookkeeping is what is needed to glue two witnesses compatibly on a
+common projected overlap. -/
+theorem projectedWitness
+    {D : RelStructure L X} [DecidableEq X]
+    (hA : A.Irreducible)
+    (hD : LocallyTreeLike A B D m)
+    (p : W → X) (hp : C.IsHomomorphismEmbedding D p)
+    (S : Finset W) (hcard : (S.image p).card ≤ m) :
+    ∃ (Y : Type v) (T : RelStructure L Y),
+      TreeAmalgam B Y T ∧
+      ∃ g : ↥(↑(S.image p) : Set X) → Y,
+        (D.induce (↑(S.image p) : Set X)).IsHomomorphismEmbedding T g ∧
+        (∀ α : Embedding A D,
+          ∃ α' : Embedding A T,
+            ∀ a : U, ∀ ha : α a ∈ S.image p,
+              ∃ a' : U, g ⟨α a, ha⟩ = α' a') ∧
+        ∃ f : ↥(↑S : Set W) → Y,
+          (C.induce (↑S : Set W)).IsHomomorphismEmbedding T f ∧
+          (∀ x : ↥(↑S : Set W),
+            f x = g ⟨p x.1, Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩⟩) ∧
+          ∀ α : Embedding A C,
+            ∃ α' : Embedding A T,
+              ∀ a : U, ∀ ha : α a ∈ S,
+                ∃ a' : U, f ⟨α a, ha⟩ = α' a' := by
+  classical
+  obtain ⟨Y, T, hTree, g, hg, hctrl⟩ := hD (S.image p) hcard
+  let pS : ↥(↑S : Set W) → ↥(↑(S.image p) : Set X) :=
+    fun x => ⟨p x.1, Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩⟩
+  have hIncl :
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding C Subtype.val :=
+    (RelStructure.inclusion C (↑S : Set W)).isHomomorphismEmbedding
+  have hToD :
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding D
+        (p ∘ Subtype.val) :=
+    hp.comp hIncl
+  have hRange :
+      ∀ x : ↥(↑S : Set W), (p ∘ Subtype.val) x ∈ (↑(S.image p) : Set X) := by
+    intro x
+    exact Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩
+  have hpS :
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding
+        (D.induce (↑(S.image p) : Set X)) pS := by
+    exact hToD.codRestrict (↑(S.image p) : Set X) hRange
+  let f : ↥(↑S : Set W) → Y := g ∘ pS
+  have hf :
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding T f :=
+    hg.comp hpS
+  refine ⟨Y, T, hTree, g, hg, hctrl, f, hf, ?_, ?_⟩
+  · intro x
+    rfl
+  · intro α
+    obtain ⟨αD, hαD⟩ := hp.after_irreducible_embedding hA α
+    obtain ⟨α', hα'⟩ := hctrl αD
+    refine ⟨α', ?_⟩
+    intro a ha
+    have himg : αD a ∈ S.image p := by
+      apply Finset.mem_image.mpr
+      refine ⟨α a, ha, ?_⟩
+      exact (hαD a).symm
+    obtain ⟨a', ha'⟩ := hα' a himg
+    refine ⟨a', ?_⟩
+    change g (pS ⟨α a, ha⟩) = α' a'
+    have hsub :
+        pS ⟨α a, ha⟩ =
+          (⟨αD a, himg⟩ : ↥(↑(S.image p) : Set X)) := by
+      apply Subtype.ext
+      exact (hαD a).symm
+    rw [hsub]
+    exact ha'
+
 /-- Pull a local-tree witness back along a homomorphism-embedding whenever
 the image of the tested finite set is within the available size bound. -/
 theorem witness_of_homEmbedding_image
