@@ -474,7 +474,7 @@ theorem zero_of_embeddings
             B.rel R q ↔ C.rel R (jBC ∘ q) :=
               (jBC.map_rel_iff R q).symm
             _ ↔ C.rel R (Subtype.val ∘ (Subtype.val ∘ x)) := by rw [heq]
-            _ ↔ (C.induce (↑(∅ : Finset W) : Set W)).induce T |>.rel R x :=
+            _ ↔ ((C.induce (↑(∅ : Finset W) : Set W)).induce T).rel R x :=
               Iff.rfl
       }
       refine ⟨e, ?_⟩
