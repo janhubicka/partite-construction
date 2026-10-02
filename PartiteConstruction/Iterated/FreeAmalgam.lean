@@ -38,10 +38,13 @@ noncomputable def overlapEmbedding :
   injective := by
     intro x y hxy
     apply Subtype.ext
-    apply fB.injective
-    rw [← preimage_spec D A B fA fB x,
-      ← preimage_spec D A B fA fB y]
-    exact fA.injective hxy
+    have hp : preimage D A B fA fB x =
+        preimage D A B fA fB y := fA.injective hxy
+    calc
+      x.1 = fB (preimage D A B fA fB x) :=
+        (preimage_spec D A B fA fB x).symm
+      _ = fB (preimage D A B fA fB y) := congrArg fB hp
+      _ = y.1 := preimage_spec D A B fA fB y
   map_rel_iff := by
     intro R x
     let d : Fin (L.arity R) → U :=
@@ -124,11 +127,7 @@ theorem isFreeAmalgam :
       rw [hcopy] at h
       have ha : a = g ⟨b, hb⟩ := Sum.inl.inj h
       change a = fA (preimage D A B fA fB ⟨b, hb⟩)
-      rw [ha]
-      apply congrArg fA
-      apply fB.injective
-      rw [preimage_spec D A B fA fB]
-      exact hd.symm
+      simpa [g, overlapEmbedding] using ha
     · rintro ⟨d, rfl, rfl⟩
       change Sum.inl (fA d) =
         Attachment.copyMap B S A (fun _ : Unit => g) () (fB d)
