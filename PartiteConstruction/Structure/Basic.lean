@@ -49,6 +49,42 @@ structure Embedding (A : Structure L V) (B : Structure L W) where
 instance {A : Structure L V} {B : Structure L W} :
     CoeFun (Embedding A B) (fun _ => V → W) := ⟨Embedding.toFun⟩
 
+namespace IsHomomorphism
+
+variable {A : Structure L V} {B : Structure L W} {C : Structure L X}
+  {f : V → W} {g : W → X}
+
+theorem comp (hg : B.IsHomomorphism C g)
+    (hf : A.IsHomomorphism B f) :
+    A.IsHomomorphism C (g ∘ f) := by
+  constructor
+  · intro R x hx
+    exact hg.1 R (f ∘ x) (hf.1 R x hx)
+  · intro F x
+    ext z
+    constructor
+    · rintro ⟨a, ha, rfl⟩
+      have hfa : f a ∈ B.func F (f ∘ x) := by
+        have h : f a ∈ imageSet f (A.func F x) := ⟨a, ha, rfl⟩
+        rw [hf.2 F x] at h
+        exact h
+      have hga : g (f a) ∈ C.func F (g ∘ (f ∘ x)) := by
+        have h : g (f a) ∈ imageSet g (B.func F (f ∘ x)) :=
+          ⟨f a, hfa, rfl⟩
+        rw [hg.2 F (f ∘ x)] at h
+        exact h
+      simpa [Function.comp_assoc] using hga
+    · intro hz
+      have hz' : z ∈ C.func F (g ∘ (f ∘ x)) := by
+        simpa [Function.comp_assoc] using hz
+      rw [← hg.2 F (f ∘ x)] at hz'
+      rcases hz' with ⟨b, hb, rfl⟩
+      rw [← hf.2 F x] at hb
+      rcases hb with ⟨a, ha, rfl⟩
+      exact ⟨a, ha, rfl⟩
+
+end IsHomomorphism
+
 namespace Embedding
 
 variable {A : Structure L V} {B : Structure L W} {C : Structure L X}
