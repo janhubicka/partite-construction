@@ -22,6 +22,15 @@ structure SystemIso (A : System L P V) (B : System L P W) where
 
 namespace SystemIso
 
+/-- Forget the part map and view a partite-system isomorphism as an induced
+embedding of the underlying relational structures. -/
+def toRelEmbedding {A : System L P V} {B : System L P W}
+    (h : SystemIso A B) :
+    RelStructure.Embedding A.toRelStructure B.toRelStructure where
+  toFun := h.toEquiv
+  injective := h.toEquiv.injective
+  map_rel_iff := h.map_rel_iff
+
 def refl (A : System L P V) : SystemIso A A where
   toEquiv := Equiv.refl V
   map_part := fun _ => rfl
