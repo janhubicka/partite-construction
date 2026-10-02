@@ -7,6 +7,7 @@ import PartiteConstruction.Functional.Closed
 import PartiteConstruction.Functional.ClosedOperations
 import PartiteConstruction.Functional.ClosedPartite
 import PartiteConstruction.Functional.ClosedInitial
+import PartiteConstruction.Functional.ClosedAttachment
 import PartiteConstruction.Structure.Relationalize
 import PartiteConstruction.Structure.UClosed
 import PartiteConstruction.Structure.Basic
