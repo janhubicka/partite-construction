@@ -39,3 +39,15 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Induced.canonical_based
 #print axioms StructuralRamsey.Partite.Induced.pictureStep
 #print axioms StructuralRamsey.Partite.Induced.inducedConstruction
+
+#print axioms StructuralRamsey.Structure.embeddingEquivClosedGraph
+#print axioms StructuralRamsey.Structure.arrow_ofGraph_iff_closed
+#print axioms StructuralRamsey.Partite.Closed.Induced.partiteLemma
+#print axioms StructuralRamsey.Partite.Closed.support_functionClosed
+#print axioms StructuralRamsey.Partite.Closed.Initial.uTransversal
+#print axioms StructuralRamsey.Partite.Closed.Attachment.core_closed
+#print axioms StructuralRamsey.Partite.Closed.Attachment.copy_closed
+#print axioms StructuralRamsey.Partite.Closed.Attachment.uTransversal
+#print axioms StructuralRamsey.Partite.Closed.Picture.pictureLemma
+#print axioms StructuralRamsey.Partite.Closed.Construction.inducedConstruction
+#print axioms StructuralRamsey.Structure.inducedRamsey
