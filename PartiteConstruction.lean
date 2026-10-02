@@ -41,6 +41,7 @@ import PartiteConstruction.Iterated.Initial
 import PartiteConstruction.Iterated.Ordered
 import PartiteConstruction.Iterated.FreeAmalgam
 import PartiteConstruction.Iterated.FinalAttachment
+import PartiteConstruction.Iterated.FinalCompletion
 import PartiteConstruction.Iterated.AttachmentDecompose
 import PartiteConstruction.Iterated.Glue
 import PartiteConstruction.Iterated.WitnessGlue
