@@ -39,9 +39,15 @@ theorem comp
   have hy' :
       C.rel (.inr F)
         (Structure.funcTuple (g ∘ (f ∘ x)) y) := by
-    convert hy using 1
-    funext i
-    fin_cases i <;> rfl
+    have htuple :
+        Structure.funcTuple (g ∘ (f ∘ x)) y =
+          Structure.funcTuple ((g ∘ f) ∘ x) y := by
+      funext i
+      refine Fin.lastCases ?_ (fun j => ?_) i
+      · simp [Structure.funcTuple]
+      · rfl
+    rw [htuple]
+    exact hy
   obtain ⟨b, hb, hby⟩ := hg F (f ∘ x) y hy'
   obtain ⟨a, ha, hab⟩ := hf F x b hb
   refine ⟨a, ha, ?_⟩
@@ -125,9 +131,15 @@ def toFull (e : ClosedEmbedding A B) :
       change
         B.rel (.inr F)
           (Structure.funcTuple (e ∘ x) (e z))
-      convert ht using 1
-      funext i
-      fin_cases i <;> rfl
+      have htuple :
+          Structure.funcTuple (e ∘ x) (e z) =
+            e ∘ Structure.funcTuple x z := by
+        funext i
+        refine Fin.lastCases ?_ (fun j => ?_) i
+        · simp [Structure.funcTuple]
+        · simp [Structure.funcTuple, Function.comp_apply]
+      rw [htuple]
+      exact ht
     · intro hy
       have ht :
           B.rel (.inr F) (Structure.funcTuple (e ∘ x) y) := hy
