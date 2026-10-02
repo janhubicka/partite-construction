@@ -3,10 +3,11 @@ import PartiteConstruction.Partite.Attachment
 
 /-! # U-closed free attachment
 
-If the overlap is closed for the encoded function relations and each attaching
-map is U-closed, then the core and every attached copy are U-closed in the
-free attachment. Under U-transversality of the pieces, the attachment remains
-U-transversal.
+If the overlap is U-closed and every attaching map is U-closed, then the core
+and every attached copy are U-closed in the relational free attachment.
+Moreover U-transversality is preserved. The proof uses only the dichotomy:
+all function inputs lie in the core, or one input lies outside and therefore
+determines the unique attached copy containing the entire graph tuple.
 -/
 namespace StructuralRamsey.Partite.Closed.Attachment
 
@@ -28,6 +29,9 @@ noncomputable def attach
 variable {B S D}
 variable {f : I → Partite.Closed.Embedding (B.induce S) D}
 
+private abbrev relMaps :=
+  fun i => (f i).1.toEmbedding
+
 /-- If the overlap is U-closed, the core inclusion is U-closed. -/
 theorem core_closed
     (hS : RelStructure.FunctionClosedSet B.toRelStructure S) :
@@ -38,90 +42,69 @@ theorem core_closed
         B S D (fun i => (f i).1)) := by
   classical
   intro F x y hy
-  change
-    (Partite.Attachment.attach B S D (fun i => (f i).1)).rel
-      (.inr F)
-      (Structure.funcTuple
-        ((Partite.Attachment.coreEmbedding
-          B S D (fun i => (f i).1)) ∘ x) y) at hy
-  let g := fun i => (f i).1.toEmbedding
+  let g := relMaps (f := f)
   change
     (RelStructure.Attachment.attach
       B.toRelStructure S D.toRelStructure g).rel
       (.inr F)
       (Structure.funcTuple (Sum.inl ∘ x) y) at hy
-  rcases hy with hcore | hcopy
-  · rcases hcore with ⟨a, ha, heq⟩
-    have hargs : a = x := by
-      funext j
-      have hj := congrFun heq (Fin.castSucc j)
-      exact Sum.inl.inj (by
-        simpa [Structure.funcTuple, Function.comp_apply] using hj)
-    subst a
-    have hout := congrFun heq (Fin.last (L.funcArity F))
-    refine ⟨?_, ha, ?_⟩
-    · exact y
-    · exact Sum.inl.inj (by
-        simpa [Structure.funcTuple, Function.comp_apply] using hout).symm
-  · rcases hcopy with ⟨i, a, ha, heq⟩
-    have haS : ∀ j : Fin (L.funcArity F), a (Fin.castSucc j) ∈ S := by
-      intro j
-      apply RelStructure.Attachment.mem_of_copyMap_eq_inl
-        (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-        (f := g)
-      have hj := congrFun heq (Fin.castSucc j)
-      simpa [Structure.funcTuple, Function.comp_apply] using hj.symm
-    let args : Fin (L.funcArity F) → V :=
-      fun j => a (Fin.castSucc j)
-    let out : V := a (Fin.last (L.funcArity F))
-    have hrel : B.rel (.inr F) (Structure.funcTuple args out) := by
-      convert ha using 1
-      funext j
-      refine Fin.lastCases ?_ (fun k => ?_) j
-      · rfl
-      · rfl
-    have houtS : out ∈ S := hS F args out hrel haS
-    let argsS : Fin (L.funcArity F) → S :=
-      fun j => ⟨args j, haS j⟩
-    let outS : S := ⟨out, houtS⟩
-    have hDrel :
-        D.rel (.inr F)
-          (Structure.funcTuple
-            ((f i) ∘ argsS) ((f i) outS)) := by
-      have hsRel :
-          (B.induce S).rel (.inr F)
-            (Structure.funcTuple argsS outS) := by
-        exact hrel
-      have ht :=
-        ((f i).1.toEmbedding.map_rel_iff
-          (.inr F) (Structure.funcTuple argsS outS)).mpr hsRel
-      have htuple :
-          (f i).1 ∘ Structure.funcTuple argsS outS =
-            Structure.funcTuple ((f i) ∘ argsS) ((f i) outS) := by
-        funext j
-        refine Fin.lastCases ?_ (fun k => ?_) j
-        · simp [Structure.funcTuple, Function.comp_apply]
-        · simp [Structure.funcTuple, Function.comp_apply]
-      rw [← htuple]
-      exact ht
-    have hargsD : (f i) ∘ argsS = x := by
-      funext j
-      have hj := congrFun heq (Fin.castSucc j)
-      apply Sum.inl.inj
-      simpa [argsS, args, Structure.funcTuple, Function.comp_apply,
-        RelStructure.Attachment.copyMap_mem (f := g) i (args j) (haS j)]
-        using hj
-    rw [hargsD] at hDrel
-    have houtEq :
-        y = Sum.inl ((f i) outS) := by
-      have hj := congrFun heq (Fin.last (L.funcArity F))
-      simpa [outS, out, Structure.funcTuple, Function.comp_apply,
-        RelStructure.Attachment.copyMap_mem (f := g) i out houtS]
-        using hj.symm
-    refine ⟨(f i) outS, hDrel, ?_⟩
-    exact houtEq.symm
+  cases y with
+  | inl d =>
+      have hcore :
+          (RelStructure.Attachment.attach
+            B.toRelStructure S D.toRelStructure g).rel
+            (.inr F)
+            (Sum.inl ∘ Structure.funcTuple x d) := by
+        have htuple :
+            Sum.inl ∘ Structure.funcTuple x d =
+              Structure.funcTuple (Sum.inl ∘ x) (Sum.inl d) := by
+          funext q
+          refine Fin.lastCases ?_ (fun k => ?_) q
+          · simp [Structure.funcTuple, Function.comp_apply]
+          · simp [Structure.funcTuple, Function.comp_apply]
+        rw [htuple]
+        exact hy
+      have hd :=
+        (RelStructure.Attachment.core_rel_iff
+          (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
+          (f := g) (.inr F) (Structure.funcTuple x d)).mp hcore
+      exact ⟨d, hd, rfl⟩
+  | inr p =>
+      let j := p.1
+      let out0 := p.2
+      have hk :
+          (Structure.funcTuple (Sum.inl ∘ x) (Sum.inr p))
+              (Fin.last (L.funcArity F)) =
+            Sum.inr (j, out0) := by
+        rfl
+      obtain ⟨q, hq, heq⟩ :=
+        RelStructure.Attachment.relation_eq_copy_of_contains_outside
+          (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
+          (f := g) hy (Fin.last (L.funcArity F)) j out0 hk
+      let args : Fin (L.funcArity F) → V :=
+        fun k => q (Fin.castSucc k)
+      let out : V := q (Fin.last (L.funcArity F))
+      have hrel : B.rel (.inr F) (Structure.funcTuple args out) := by
+        have heta : Structure.funcTuple args out = q := by
+          simpa [args, out, Language.graph] using
+            (Structure.funcTuple_eta (t := q))
+        rw [heta]
+        exact hq
+      have hargsS : ∀ k, args k ∈ S := by
+        intro k
+        apply RelStructure.Attachment.mem_of_copyMap_eq_inl
+          (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
+          (f := g)
+        have h := congrFun heq (Fin.castSucc k)
+        simpa [args, Structure.funcTuple, Function.comp_apply] using h.symm
+      have houtS : out ∈ S := hS F args out hrel hargsS
+      have hout := congrFun heq (Fin.last (L.funcArity F))
+      simp [out, Structure.funcTuple, Function.comp_apply,
+        RelStructure.Attachment.copyMap_mem
+          (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
+          (f := g) j out houtS] at hout
 
-/-- If the overlap is U-closed and the attaching maps are U-closed, each
+/-- If the overlap is U-closed and the attaching maps are U-closed, every
 attached-copy inclusion is U-closed. -/
 theorem copy_closed
     (hS : RelStructure.FunctionClosedSet B.toRelStructure S)
@@ -133,156 +116,81 @@ theorem copy_closed
         B S D (fun j => (f j).1) i) := by
   classical
   intro F x y hy
-  let g := fun j => (f j).1.toEmbedding
-  let cm := RelStructure.Attachment.copyMap
-    B.toRelStructure S D.toRelStructure g i
+  let g := relMaps (f := f)
+  let cm :=
+    RelStructure.Attachment.copyMap
+      B.toRelStructure S D.toRelStructure g i
   change
     (RelStructure.Attachment.attach
       B.toRelStructure S D.toRelStructure g).rel
       (.inr F)
       (Structure.funcTuple (cm ∘ x) y) at hy
-  rcases hy with hcore | hcopy
-  · rcases hcore with ⟨a, ha, heq⟩
-    have hxS : ∀ j : Fin (L.funcArity F), x j ∈ S := by
-      intro j
-      apply RelStructure.Attachment.mem_of_copyMap_eq_inl
+  by_cases hxS : ∀ k, x k ∈ S
+  · let xs : Fin (L.funcArity F) → S :=
+      fun k => ⟨x k, hxS k⟩
+    have hcoreTuple :
+        Structure.funcTuple (Sum.inl ∘ ((f i) ∘ xs)) y =
+          Structure.funcTuple (cm ∘ x) y := by
+      funext q
+      refine Fin.lastCases ?_ (fun k => ?_) q
+      · rfl
+      · simp [xs, cm, Structure.funcTuple, Function.comp_apply,
+          RelStructure.Attachment.copyMap_mem
+            (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
+            (f := g) i (x k) (hxS k)]
+    have hyCore :
+        (RelStructure.Attachment.attach
+          B.toRelStructure S D.toRelStructure g).rel
+          (.inr F)
+          (Structure.funcTuple (Sum.inl ∘ ((f i) ∘ xs)) y) := by
+      rw [hcoreTuple]
+      exact hy
+    have hclosedCore :=
+      core_closed (B := B) (S := S) (D := D) (f := f) hS
+    obtain ⟨d, hd, hdy⟩ :=
+      hclosedCore F ((f i) ∘ xs) y hyCore
+    obtain ⟨z, hz, hzd⟩ := (f i).2 F xs d hd
+    refine ⟨z.1, hz, ?_⟩
+    have hzS : z.1 ∈ S := z.2
+    change cm z.1 = y
+    rw [RelStructure.Attachment.copyMap_mem
+      (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
+      (f := g) i z.1 hzS]
+    rw [hzd]
+    exact hdy
+  · push Not at hxS
+    obtain ⟨k, hkS⟩ := hxS
+    let outside : {x : V // x ∉ S} := ⟨x k, hkS⟩
+    have hk :
+        (Structure.funcTuple (cm ∘ x) y) (Fin.castSucc k) =
+          Sum.inr (i, outside) := by
+      simp [cm, outside, Structure.funcTuple, Function.comp_apply,
+        RelStructure.Attachment.copyMap_not_mem
+          (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
+          (f := g) i (x k) hkS]
+    obtain ⟨q, hq, heq⟩ :=
+      RelStructure.Attachment.relation_eq_copy_of_contains_outside
         (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-        (f := g)
-      have hj := congrFun heq (Fin.castSucc j)
-      simpa [cm, Structure.funcTuple, Function.comp_apply] using hj
-    let xs : Fin (L.funcArity F) → S := fun j => ⟨x j, hxS j⟩
-    have hargs : (f i) ∘ xs = a := by
+        (f := g) hy (Fin.castSucc k) i outside hk
+    let args : Fin (L.funcArity F) → V :=
+      fun j => q (Fin.castSucc j)
+    let out : V := q (Fin.last (L.funcArity F))
+    have hargs : x = args := by
       funext j
-      exact Sum.inl.inj (by
-        have hj := congrFun heq (Fin.castSucc j)
-        simpa [cm, xs, Structure.funcTuple, Function.comp_apply,
-          RelStructure.Attachment.copyMap_mem (f := g) i (x j) (hxS j)]
-          using hj)
-    have hyD : y ∈ Set.range Sum.inl := by
-      let b := a (Fin.last (L.funcArity F))
-      exact ⟨b, by
-        have hj := congrFun heq (Fin.last (L.funcArity F))
-        simpa [Structure.funcTuple, Function.comp_apply] using hj.symm⟩
-    rcases hyD with ⟨yD, rfl⟩
-    have hDrel : D.rel (.inr F)
-        (Structure.funcTuple ((f i) ∘ xs) yD) := by
-      have htuple :
-          Structure.funcTuple ((f i) ∘ xs) yD = a := by
-        funext j
-        refine Fin.lastCases ?_ (fun k => ?_) j
-        · rfl
-        · exact congrFun hargs k
-      rw [htuple]
-      exact ha
-    obtain ⟨z, hz, hzy⟩ :=
-      (f i).2 F xs yD hDrel
-    refine ⟨z.1, ?_, ?_⟩
-    · exact hz
-    · have hzS : z.1 ∈ S := z.2
-      change cm z.1 = Sum.inl yD
-      rw [RelStructure.Attachment.copyMap_mem
+      apply RelStructure.Attachment.copyMap_injective
         (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-        (f := g) i z.1 hzS]
-      exact congrArg Sum.inl hzy
-  · rcases hcopy with ⟨j, a, ha, heq⟩
-    by_cases hxS : ∀ k : Fin (L.funcArity F), x k ∈ S
-    · have haS : ∀ k : Fin (L.funcArity F), a (Fin.castSucc k) ∈ S := by
-        intro k
-        apply RelStructure.Attachment.mem_of_copyMap_eq_inl
-          (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-          (f := g) (i := j)
-        have hk := congrFun heq (Fin.castSucc k)
-        exact hk.symm.trans
-          (RelStructure.Attachment.copyMap_mem
-            (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-            (f := g) i (x k) (hxS k))
-      let args : Fin (L.funcArity F) → V :=
-        fun k => a (Fin.castSucc k)
-      let out : V := a (Fin.last (L.funcArity F))
-      have hrel : B.rel (.inr F) (Structure.funcTuple args out) := by
-        convert ha using 1
-        funext k
-        refine Fin.lastCases ?_ (fun q => ?_) k <;> rfl
-      have houtS : out ∈ S := hS F args out hrel haS
-      let argsS : Fin (L.funcArity F) → S :=
-        fun k => ⟨args k, haS k⟩
-      let outS : S := ⟨out, houtS⟩
-      have hjRel :
-          D.rel (.inr F)
-            (Structure.funcTuple ((f j) ∘ argsS) ((f j) outS)) := by
-        have hsRel :
-            (B.induce S).rel (.inr F)
-              (Structure.funcTuple argsS outS) := hrel
-        have ht :=
-          ((f j).1.toEmbedding.map_rel_iff
-            (.inr F) (Structure.funcTuple argsS outS)).mpr hsRel
-        have htuple :
-            (f j).1 ∘ Structure.funcTuple argsS outS =
-              Structure.funcTuple ((f j) ∘ argsS) ((f j) outS) := by
-          funext k
-          refine Fin.lastCases ?_ (fun q => ?_) k
-          · simp [Structure.funcTuple, Function.comp_apply]
-          · simp [Structure.funcTuple, Function.comp_apply]
-        rw [← htuple]
-        exact ht
-      let xs : Fin (L.funcArity F) → S := fun k => ⟨x k, hxS k⟩
-      have hargsEq : (f i) ∘ xs = (f j) ∘ argsS := by
-        funext k
-        apply Sum.inl.inj
-        have hk := congrFun heq (Fin.castSucc k)
-        simpa [cm, xs, argsS, args, Structure.funcTuple,
-          Function.comp_apply,
-          RelStructure.Attachment.copyMap_mem
-            (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-            (f := g) i (x k) (hxS k),
-          RelStructure.Attachment.copyMap_mem
-            (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-            (f := g) j (args k) (haS k)] using hk
-      rw [← hargsEq] at hjRel
-      obtain ⟨z, hz, hzy⟩ :=
-        (f i).2 F xs ((f j) outS) hjRel
-      refine ⟨z.1, hz, ?_⟩
-      have hzS : z.1 ∈ S := z.2
-      have houtEq : y =
-          Sum.inl ((f j) outS) := by
-        have hk := congrFun heq (Fin.last (L.funcArity F))
-        simpa [outS, out, Structure.funcTuple, Function.comp_apply,
-          RelStructure.Attachment.copyMap_mem
-            (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-            (f := g) j out houtS] using hk.symm
-      change cm z.1 = y
-      rw [houtEq,
-        RelStructure.Attachment.copyMap_mem
-          (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-          (f := g) i z.1 hzS]
-      exact congrArg Sum.inl hzy
-    · push Not at hxS
-      obtain ⟨k, hk⟩ := hxS
-      have hij :=
-        RelStructure.Attachment.index_eq_of_outside
-          (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-          (f := g) hk (by
-            have hcoord := congrFun heq (Fin.castSucc k)
-            simpa [cm, Structure.funcTuple, Function.comp_apply] using hcoord)
-      subst j
-      let out := a (Fin.last (L.funcArity F))
-      refine ⟨out, ?_, ?_⟩
-      · have hrel : B.rel (.inr F) (Structure.funcTuple x out) := by
-          have hargs : x = fun q => a (Fin.castSucc q) := by
-            funext q
-            apply RelStructure.Attachment.copyMap_injective
-              (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-              (f := g) i
-            have hcoord := congrFun heq (Fin.castSucc q)
-            simpa [cm, Structure.funcTuple, Function.comp_apply] using hcoord
-          convert ha using 1
-          funext q
-          refine Fin.lastCases ?_ (fun r => ?_) q
-          · rfl
-          · exact (congrFun hargs r).symm
-        exact hrel
-      · have hout := congrFun heq (Fin.last (L.funcArity F))
-        simpa [cm, out, Structure.funcTuple, Function.comp_apply] using hout.symm
+        (f := g) i
+      have hj := congrFun heq (Fin.castSucc j)
+      simpa [cm, args, Structure.funcTuple, Function.comp_apply] using hj
+    have hrel : B.rel (.inr F) (Structure.funcTuple x out) := by
+      have heta : Structure.funcTuple args out = q := by
+        simpa [args, out, Language.graph] using
+          (Structure.funcTuple_eta (t := q))
+      rw [hargs, heta]
+      exact hq
+    refine ⟨out, hrel, ?_⟩
+    have hout := congrFun heq (Fin.last (L.funcArity F))
+    simpa [cm, out, Structure.funcTuple, Function.comp_apply] using hout.symm
 
 /-- Closed free attachment preserves U-transversality. -/
 theorem uTransversal
@@ -292,134 +200,116 @@ theorem uTransversal
     (attach B S D f).FunctionOutputTransversal := by
   classical
   intro F x y z hy hz hp
-  let g := fun i => (f i).1.toEmbedding
-  let R := (RelStructure.Attachment.attach
-    B.toRelStructure S D.toRelStructure g)
-  change R.rel (.inr F) (Structure.funcTuple x y) at hy
-  change R.rel (.inr F) (Structure.funcTuple x z) at hz
-  by_cases hcoreArgs : ∀ k : Fin (L.funcArity F), ∃ a : W, x k = .inl a
-  · choose a ha using hcoreArgs
-    have hcoreOutput :
-        ∀ {t : Vertex S W I},
-          R.rel (.inr F) (Structure.funcTuple x t) →
-          ∃ b : W, t = .inl b := by
-      intro t ht
-      rcases ht with hcore | hcopy
-      · rcases hcore with ⟨q, hq, heq⟩
-        refine ⟨q (Fin.last (L.funcArity F)), ?_⟩
-        have hout := congrFun heq (Fin.last (L.funcArity F))
-        simpa [Structure.funcTuple, Function.comp_apply] using hout.symm
-      · rcases hcopy with ⟨i, q, hq, heq⟩
-        have hqS : ∀ k : Fin (L.funcArity F),
-            q (Fin.castSucc k) ∈ S := by
-          intro k
-          apply RelStructure.Attachment.mem_of_copyMap_eq_inl
-            (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-            (f := g)
-          have hk := congrFun heq (Fin.castSucc k)
-          rw [ha k] at hk
-          simpa [Structure.funcTuple, Function.comp_apply] using hk.symm
-        let args : Fin (L.funcArity F) → V :=
-          fun k => q (Fin.castSucc k)
-        let out : V := q (Fin.last (L.funcArity F))
-        have hrel : B.rel (.inr F) (Structure.funcTuple args out) := by
-          convert hq using 1
-          funext j
-          refine Fin.lastCases ?_ (fun k => ?_) j <;> rfl
-        have houtS : out ∈ S := hS F args out hrel hqS
-        refine ⟨(f i) ⟨out, houtS⟩, ?_⟩
-        have houtEq := congrFun heq (Fin.last (L.funcArity F))
-        simpa [out, Structure.funcTuple, Function.comp_apply,
-          RelStructure.Attachment.copyMap_mem
-            (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-            (f := g) i out houtS] using houtEq.symm
-    obtain ⟨yy, hyy⟩ := hcoreOutput hy
-    obtain ⟨zz, hzz⟩ := hcoreOutput hz
-    subst y
-    subst z
-    have hargsD :
-        ∀ k, x k = Sum.inl (a k) := ha
-    have hyD : D.rel (.inr F)
-        (Structure.funcTuple a yy) := by
-      exact (RelStructure.Attachment.core_rel_iff
-        (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-        (f := g) (.inr F) (Structure.funcTuple a yy)).mp (by
-          convert hy using 1
-          funext j
-          refine Fin.lastCases ?_ (fun k => ?_) j
-          · rfl
-          · simp [Structure.funcTuple, hargsD])
-    have hzD : D.rel (.inr F)
-        (Structure.funcTuple a zz) := by
-      exact (RelStructure.Attachment.core_rel_iff
-        (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-        (f := g) (.inr F) (Structure.funcTuple a zz)).mp (by
-          convert hz using 1
-          funext j
-          refine Fin.lastCases ?_ (fun k => ?_) j
-          · rfl
-          · simp [Structure.funcTuple, hargsD])
+  let g := relMaps (f := f)
+  by_cases hcore : ∀ k, ∃ a : W, x k = Sum.inl a
+  · choose a ha using hcore
+    have hargs :
+        x = Sum.inl ∘ a := by
+      funext k
+      exact ha k
+    have hy' :
+        (RelStructure.Attachment.attach
+          B.toRelStructure S D.toRelStructure g).rel
+          (.inr F)
+          (Structure.funcTuple (Sum.inl ∘ a) y) := by
+      rw [← hargs]
+      exact hy
+    have hz' :
+        (RelStructure.Attachment.attach
+          B.toRelStructure S D.toRelStructure g).rel
+          (.inr F)
+          (Structure.funcTuple (Sum.inl ∘ a) z) := by
+      rw [← hargs]
+      exact hz
+    obtain ⟨yy, hyy, hyout⟩ :=
+      core_closed (B := B) (S := S) (D := D) (f := f) hS
+        F a y hy'
+    obtain ⟨zz, hzz, hzout⟩ :=
+      core_closed (B := B) (S := S) (D := D) (f := f) hS
+        F a z hz'
     have hpD : D.part yy = D.part zz := by
-      simpa [Partite.Attachment.part] using hp
-    exact congrArg Sum.inl (hD F a yy zz hyD hzD hpD)
-  · push Not at hcoreArgs
-    obtain ⟨k, hk⟩ := hcoreArgs
+      have hp' := hp
+      change
+        (attach B S D f).part y =
+          (attach B S D f).part z at hp'
+      rw [← hyout, ← hzout] at hp'
+      exact hp'
+    have heq := hD F a yy zz hyy hzz hpD
+    calc
+      y = Sum.inl yy := hyout.symm
+      _ = Sum.inl zz := congrArg Sum.inl heq
+      _ = z := hzout
+  · push Not at hcore
+    obtain ⟨k, hk⟩ := hcore
     cases hx : x k with
     | inl a => exact (hk a hx).elim
-    | inr ix =>
-        let i := ix.1
-        let outx := ix.2
+    | inr p =>
+        let i := p.1
+        let outside := p.2
         have getCopy :
             ∀ {t : Vertex S W I},
-              R.rel (.inr F) (Structure.funcTuple x t) →
-              ∃ q : Fin (L.funcArity F) → V, ∃ b : V,
-                B.rel (.inr F) (Structure.funcTuple q b) ∧
+              (RelStructure.Attachment.attach
+                B.toRelStructure S D.toRelStructure g).rel
+                (.inr F) (Structure.funcTuple x t) →
+              ∃ args : Fin (L.funcArity F) → V, ∃ out : V,
+                B.rel (.inr F) (Structure.funcTuple args out) ∧
                 x = RelStructure.Attachment.copyMap
-                    B.toRelStructure S D.toRelStructure g i ∘ q ∧
+                    B.toRelStructure S D.toRelStructure g i ∘ args ∧
                 t = RelStructure.Attachment.copyMap
-                    B.toRelStructure S D.toRelStructure g i b := by
+                    B.toRelStructure S D.toRelStructure g i out := by
           intro t ht
-          have htupleOutside :
+          have hk' :
               (Structure.funcTuple x t) (Fin.castSucc k) =
-                .inr (i, outx) := by
-            simp [Structure.funcTuple, hx, i, outx]
-          obtain ⟨qall, hq, heq⟩ :=
+                Sum.inr (i, outside) := by
+            simpa [i, outside, Structure.funcTuple] using hx
+          obtain ⟨q, hq, heq⟩ :=
             RelStructure.Attachment.relation_eq_copy_of_contains_outside
               (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
-              (f := g) ht (Fin.castSucc k) i outx htupleOutside
-          let q : Fin (L.funcArity F) → V :=
-            fun j => qall (Fin.castSucc j)
-          let b : V := qall (Fin.last (L.funcArity F))
-          have hrel : B.rel (.inr F) (Structure.funcTuple q b) := by
-            convert hq using 1
-            funext j
-            refine Fin.lastCases ?_ (fun r => ?_) j <;> rfl
+              (f := g) ht (Fin.castSucc k) i outside hk'
+          let args : Fin (L.funcArity F) → V :=
+            fun j => q (Fin.castSucc j)
+          let out : V := q (Fin.last (L.funcArity F))
+          have hrel : B.rel (.inr F) (Structure.funcTuple args out) := by
+            have heta : Structure.funcTuple args out = q := by
+              simpa [args, out, Language.graph] using
+                (Structure.funcTuple_eta (t := q))
+            rw [heta]
+            exact hq
           have hargs :
               x = RelStructure.Attachment.copyMap
-                B.toRelStructure S D.toRelStructure g i ∘ q := by
+                  B.toRelStructure S D.toRelStructure g i ∘ args := by
             funext j
             have hj := congrFun heq (Fin.castSucc j)
-            simpa [q, Structure.funcTuple, Function.comp_apply] using hj
+            simpa [args, Structure.funcTuple, Function.comp_apply] using hj
           have hout :
               t = RelStructure.Attachment.copyMap
-                B.toRelStructure S D.toRelStructure g i b := by
+                  B.toRelStructure S D.toRelStructure g i out := by
             have hj := congrFun heq (Fin.last (L.funcArity F))
-            simpa [b, Structure.funcTuple, Function.comp_apply] using hj
-          exact ⟨q, b, hrel, hargs, hout⟩
-        obtain ⟨qy, byv, hry, hargsY, houtY⟩ := getCopy hy
-        obtain ⟨qz, bz, hrz, hargsZ, houtZ⟩ := getCopy hz
-        have hq : qy = qz := by
+            simpa [out, Structure.funcTuple, Function.comp_apply] using hj
+          exact ⟨args, out, hrel, hargs, hout⟩
+        obtain ⟨ay, byv, hry, hargsY, houtY⟩ := getCopy hy
+        obtain ⟨az, bz, hrz, hargsZ, houtZ⟩ := getCopy hz
+        have hargsEq : ay = az := by
           funext j
           apply RelStructure.Attachment.copyMap_injective
             (B := B.toRelStructure) (S := S) (D := D.toRelStructure)
             (f := g) i
-          have := congrFun (hargsY.trans hargsZ.symm) j
-          simpa [Function.comp_apply] using this
-        subst qz
+          have hj := congrFun (hargsY.trans hargsZ.symm) j
+          simpa [Function.comp_apply] using hj
+        subst az
         have hpB : B.part byv = B.part bz := by
-          simpa [houtY, houtZ, Partite.Attachment.part_copyMap] using hp
-        have hbybz := hB F qy byv bz hry hrz hpB
-        subst bz
-        exact houtY.trans houtZ.symm
+          have hp' := hp
+          rw [houtY, houtZ] at hp'
+          simpa [Partite.Attachment.part_copyMap] using hp'
+        have houtEq := hB F ay byv bz hry hrz hpB
+        calc
+          y = RelStructure.Attachment.copyMap
+                B.toRelStructure S D.toRelStructure g i byv := houtY
+          _ = RelStructure.Attachment.copyMap
+                B.toRelStructure S D.toRelStructure g i bz :=
+              congrArg
+                (RelStructure.Attachment.copyMap
+                  B.toRelStructure S D.toRelStructure g i) houtEq
+          _ = z := houtZ.symm
 
 end StructuralRamsey.Partite.Closed.Attachment
