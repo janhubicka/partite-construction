@@ -102,10 +102,7 @@ def restrictEmbedding
           Structure.funcTuple
             (Subtype.val ∘ (pe ∘ x)) y.1 :=
         Structure.comp_funcTuple Subtype.val (pe ∘ x) y
-      _ = Structure.funcTuple (e.1 ∘ x) y.1 := by
-        congr 1
-        funext i
-        rfl
+      _ = Structure.funcTuple (e.1 ∘ x) y.1 := rfl
   have hyB :
       B.rel (.inr F)
         (Structure.funcTuple (e.1 ∘ x) y.1) :=
@@ -123,6 +120,11 @@ variable (E : Partite.System L.graph U W)
 /-- A closed embedding of the restriction into the power gives a closed
 attaching map on the underlying selected support. -/
 def attachingMap
+    (A : RelStructure L.graph U)
+    (D : RelStructure L.graph P)
+    (B : Partite.System L.graph P V)
+    (α : RelStructure.ClosedEmbedding A D)
+    (E : Partite.System L.graph U W)
     (f : Closed.Embedding (B.restrict α.toEmbedding.toFunctionEmbedding) E) :
     Closed.Embedding
       (B.induce (B.support α.toEmbedding.toFunctionEmbedding))
@@ -143,22 +145,36 @@ abbrev Vertex
     (Closed.Embedding
       (B.restrict α.toEmbedding.toFunctionEmbedding) E)
 
-noncomputable def build :
+noncomputable def build
+    (A : RelStructure L.graph U)
+    (D : RelStructure L.graph P)
+    (B : Partite.System L.graph P V)
+    (α : RelStructure.ClosedEmbedding A D)
+    (E : Partite.System L.graph U W) :
     Partite.System L.graph P (Vertex A D B α E) :=
   Closed.Attachment.attach
     B (B.support α.toEmbedding.toFunctionEmbedding)
     (E.relabel α.toEmbedding.toFunctionEmbedding)
     (fun f : Closed.Embedding
       (B.restrict α.toEmbedding.toFunctionEmbedding) E =>
-        attachingMap E f)
+        attachingMap A D B α E f)
 
 theorem supportClosed
+    (A : RelStructure L.graph U)
+    (D : RelStructure L.graph P)
+    (B : Partite.System L.graph P V)
+    (α : RelStructure.ClosedEmbedding A D)
     (hB : B.IsPartiteOver D) :
     RelStructure.FunctionClosedSet B.toRelStructure
       (B.support α.toEmbedding.toFunctionEmbedding) :=
   Closed.support_functionClosed D B hB A α
 
 noncomputable def coreEmbedding
+    (A : RelStructure L.graph U)
+    (D : RelStructure L.graph P)
+    (B : Partite.System L.graph P V)
+    (α : RelStructure.ClosedEmbedding A D)
+    (E : Partite.System L.graph U W)
     (hB : B.IsPartiteOver D) :
     Closed.Embedding
       (E.relabel α.toEmbedding.toFunctionEmbedding)
@@ -166,7 +182,7 @@ noncomputable def coreEmbedding
   let maps :=
     fun f : Closed.Embedding
       (B.restrict α.toEmbedding.toFunctionEmbedding) E =>
-        attachingMap E f
+        attachingMap A D B α E f
   let pe :=
     Partite.Attachment.coreEmbedding
       B (B.support α.toEmbedding.toFunctionEmbedding)
@@ -177,9 +193,14 @@ noncomputable def coreEmbedding
     (B := B)
     (S := B.support α.toEmbedding.toFunctionEmbedding)
     (D := E.relabel α.toEmbedding.toFunctionEmbedding)
-    (f := maps) (supportClosed hB)
+    (f := maps) (supportClosed A D B α hB)
 
 noncomputable def copyEmbedding
+    (A : RelStructure L.graph U)
+    (D : RelStructure L.graph P)
+    (B : Partite.System L.graph P V)
+    (α : RelStructure.ClosedEmbedding A D)
+    (E : Partite.System L.graph U W)
     (hB : B.IsPartiteOver D)
     (f : Closed.Embedding
       (B.restrict α.toEmbedding.toFunctionEmbedding) E) :
@@ -187,7 +208,7 @@ noncomputable def copyEmbedding
   let maps :=
     fun g : Closed.Embedding
       (B.restrict α.toEmbedding.toFunctionEmbedding) E =>
-        attachingMap E g
+        attachingMap A D B α E g
   let pe :=
     Partite.Attachment.copyEmbedding
       B (B.support α.toEmbedding.toFunctionEmbedding)
@@ -198,13 +219,18 @@ noncomputable def copyEmbedding
     (B := B)
     (S := B.support α.toEmbedding.toFunctionEmbedding)
     (D := E.relabel α.toEmbedding.toFunctionEmbedding)
-    (f := maps) (supportClosed hB) f
+    (f := maps) (supportClosed A D B α hB) f
 
 noncomputable def coreLetter
+    (A : RelStructure L.graph U)
+    (D : RelStructure L.graph P)
+    (B : Partite.System L.graph P V)
+    (α : RelStructure.ClosedEmbedding A D)
+    (E : Partite.System L.graph U W)
     (hB : B.IsPartiteOver D)
     (e : Closed.Embedding (Partite.transversal A) E) :
     ProjectedEmbedding A (build A D B α E) α := by
-  let ce := coreEmbedding (A := A) (D := D) (B := B) (α := α) E hB
+  let ce := coreEmbedding A D B α E hB
   let comp := RelStructure.ClosedEmbedding.comp ce.toRelClosed e.toRelClosed
   refine ⟨comp, ?_⟩
   intro x
@@ -215,18 +241,23 @@ noncomputable def coreLetter
         (E.relabel α.toEmbedding.toFunctionEmbedding)
         (fun f : Closed.Embedding
           (B.restrict α.toEmbedding.toFunctionEmbedding) E =>
-            (attachingMap E f).1)
+            (attachingMap A D B α E f).1)
         (e.1 x)) =
       α x
   exact congrArg α.toEmbedding (e.1.map_part x)
 
 theorem copy_comp_restrict
+    (A : RelStructure L.graph U)
+    (D : RelStructure L.graph P)
+    (B : Partite.System L.graph P V)
+    (α : RelStructure.ClosedEmbedding A D)
+    (E : Partite.System L.graph U W)
     (hB : B.IsPartiteOver D)
     (f : Closed.Embedding
       (B.restrict α.toEmbedding.toFunctionEmbedding) E)
     (e : ProjectedEmbedding A B α) :
-    e.comp (copyEmbedding (A := A) (D := D) (B := B) (α := α) E hB f) =
-      coreLetter (A := A) (D := D) (B := B) (α := α) E hB
+    e.comp (copyEmbedding A D B α E hB f) =
+      coreLetter A D B α E hB
         (Closed.Embedding.comp f (restrictEmbedding A D B α e)) := by
   apply ProjectedEmbedding.ext
   intro x
@@ -236,25 +267,30 @@ theorem copy_comp_restrict
       (E.relabel α.toEmbedding.toFunctionEmbedding)
       (fun g : Closed.Embedding
         (B.restrict α.toEmbedding.toFunctionEmbedding) E =>
-          (attachingMap E g).1)
+          (attachingMap A D B α E g).1)
       f (e.1 x) =
     Partite.Attachment.coreEmbedding
       B (B.support α.toEmbedding.toFunctionEmbedding)
       (E.relabel α.toEmbedding.toFunctionEmbedding)
       (fun g : Closed.Embedding
         (B.restrict α.toEmbedding.toFunctionEmbedding) E =>
-          (attachingMap E g).1)
+          (attachingMap A D B α E g).1)
       (f.1 ⟨e.1 x, x, (e.2 x).symm⟩)
   exact Partite.Attachment.copy_extends
     B (B.support α.toEmbedding.toFunctionEmbedding)
     (E.relabel α.toEmbedding.toFunctionEmbedding)
     (fun g : Closed.Embedding
       (B.restrict α.toEmbedding.toFunctionEmbedding) E =>
-        (attachingMap E g).1)
+        (attachingMap A D B α E g).1)
     f ⟨e.1 x, x, (e.2 x).symm⟩
 
 /-- Closed Picture property from a closed Ramsey core. -/
 theorem property
+    (A : RelStructure L.graph U)
+    (D : RelStructure L.graph P)
+    (B : Partite.System L.graph P V)
+    (α : RelStructure.ClosedEmbedding A D)
+    (E : Partite.System L.graph U W)
     (hB : B.IsPartiteOver D)
     (κ : Type*)
     (hE : Closed.Arrow
@@ -264,10 +300,11 @@ theorem property
     PictureProperty A B α (build A D B α E) κ := by
   intro χ
   obtain ⟨f, hf⟩ :=
-    hE (fun e => χ (coreLetter (A := A) (D := D) (B := B) (α := α) E hB e))
-  refine ⟨copyEmbedding (A := A) (D := D) (B := B) (α := α) E hB f, ?_⟩
+    hE (fun e => χ (coreLetter A D B α E hB e))
+  refine ⟨copyEmbedding A D B α E hB f, ?_⟩
   intro e₁ e₂
-  rw [copy_comp_restrict, copy_comp_restrict]
+  rw [copy_comp_restrict A D B α E hB,
+    copy_comp_restrict A D B α E hB]
   exact hf
     (restrictEmbedding A D B α e₁)
     (restrictEmbedding A D B α e₂)
@@ -349,8 +386,7 @@ theorem pictureLemma
       hU hCoreU
   exact ⟨Vertex A D B α E,
     inferInstance, C, hCPartite, hCU,
-    property (A := A) (D := D) (B := B) (α := α)
-      E hB κ hArrow⟩
+    property A D B α E hB κ hArrow⟩
 
 end Picture
 end StructuralRamsey.Partite.Closed
