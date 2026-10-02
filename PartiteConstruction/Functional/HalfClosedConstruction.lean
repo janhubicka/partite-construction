@@ -67,6 +67,67 @@ def Relevant
     (e : RelStructure.ClosedEmbedding A B),
     ∀ x, α x = β (e x)
 
+/-- For a closed alpha, factorization through an ordinary B-copy is
+equivalent to the survey's image-containment formulation.  Closedness of alpha
+forces the induced A -> B factor to be closed even when beta itself is not. -/
+theorem relevant_iff_image_contained
+    (A : RelStructure L.graph U)
+    (B : RelStructure L.graph V)
+    (D : RelStructure L.graph P)
+    (α : RelStructure.ClosedEmbedding A D) :
+    Relevant A B D α ↔
+      ∃ β : RelStructure.Embedding B D,
+        ∀ a : U, ∃ b : V, α a = β b := by
+  constructor
+  · rintro ⟨β, e, hfac⟩
+    exact ⟨β, fun a => ⟨e a, hfac a⟩⟩
+  · rintro ⟨β, hβ⟩
+    choose q hq using hβ
+    have hinj : Function.Injective q := by
+      intro x y hxy
+      apply α.toEmbedding.injective
+      rw [hq x, hq y, hxy]
+    let e0 : RelStructure.Embedding A B := {
+      toFun := q
+      injective := hinj
+      map_rel_iff := by
+        intro R x
+        have hfun : α.toEmbedding ∘ x = β ∘ (q ∘ x) := by
+          funext i
+          exact hq (x i)
+        have hα := α.toEmbedding.map_rel_iff R x
+        have hβmap := β.map_rel_iff R (q ∘ x)
+        rw [← hα, hfun]
+        exact hβmap.symm
+    }
+    have hclosed : RelStructure.FunctionClosedMap A B q := by
+      intro F x y hy
+      have hyD0 :
+          D.rel (.inr F)
+            (β ∘ Structure.funcTuple (q ∘ x) y) :=
+        (β.map_rel_iff (.inr F)
+          (Structure.funcTuple (q ∘ x) y)).mpr hy
+      have htuple :
+          β ∘ Structure.funcTuple (q ∘ x) y =
+            Structure.funcTuple (α ∘ x) (β y) := by
+        funext i
+        refine Fin.lastCases ?_ (fun j => ?_) i
+        · simp [Structure.funcTuple, Function.comp_apply]
+        · simp [Structure.funcTuple, Function.comp_apply, hq]
+      have hyD :
+          D.rel (.inr F)
+            (Structure.funcTuple (α ∘ x) (β y)) := by
+        rw [← htuple]
+        exact hyD0
+      obtain ⟨z, hz, hzy⟩ := α.closed F x (β y) hyD
+      refine ⟨z, hz, ?_⟩
+      apply β.injective
+      calc
+        β (q z) = α z := (hq z).symm
+        _ = β y := hzy
+    let e : RelStructure.ClosedEmbedding A B := ⟨e0, hclosed⟩
+    exact ⟨β, e, fun x => hq x⟩
+
 abbrev RelevantEmbedding
     (A : RelStructure L.graph U)
     (B : RelStructure L.graph V)
