@@ -297,3 +297,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.witness_of_homEmbedding_image
 #print axioms StructuralRamsey.Partite.Iterated.pureCopy_projectedHistoryWitness
 #print axioms StructuralRamsey.Partite.Iterated.pureCore_projectedHistoryWitness
+
+#print axioms StructuralRamsey.RelStructure.RelativeLabelledLocallyTreeLike.zero_of_embeddings
+#print axioms StructuralRamsey.RelStructure.RelativeLabelledLocallyTreeLike.of_homEmbedding_to_control
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.glueProjectedFull_relativeLabelled
