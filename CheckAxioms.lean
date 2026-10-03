@@ -83,3 +83,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.Attachment.copy_comp_not_functionClosed
 #print axioms StructuralRamsey.Partite.PartExpansion.Embedding.expandedGraphEquiv
 #print axioms StructuralRamsey.Partite.PartExpansion.ClosedEmbedding.expandedGraphEquiv
+#print axioms StructuralRamsey.Partite.PartExpansion.halfClosedArrow_iff_expanded
+#print axioms StructuralRamsey.Partite.PartExpansion.closedArrow_iff_expanded
