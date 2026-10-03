@@ -84,9 +84,9 @@ theorem addControl_of_embeddedIntersection
         eHT.ContainedInIrreducible) :
     ∃ (Z : Type v) (T' : RelStructure L Z),
       TreeAmalgam B Z T' ∧
-      ∃ f' : ↥(↑S : Set W) → Z,
-        (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' f' ∧
-        Controls (A := A) (C := C) (T := T') S f' (α :: xs) := by
+      ∃ j : Embedding T T',
+        (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' (j ∘ f) ∧
+        Controls (A := A) (C := C) (T := T') S (j ∘ f) (α :: xs) := by
   classical
   let Hset : Set U := {a : U | α a ∈ S}
   let H := A.induce Hset
@@ -105,11 +105,10 @@ theorem addControl_of_embeddedIntersection
   have hTree' : TreeAmalgam B _ T' :=
     FreeAmalgam.treeAmalgam H T B eHT eHB B
       hTree (TreeAmalgam.copy (Iso.refl B)) hcT hcB
-  let f' : ↥(↑S : Set W) → _ := l ∘ f
   have hf' :
-      (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' f' :=
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' (l ∘ f) :=
     l.isHomomorphismEmbedding.comp hf
-  refine ⟨_, T', hTree', f', hf', ?_⟩
+  refine ⟨_, T', hTree', l, hf', ?_⟩
   · intro β hβ
     rcases List.mem_cons.mp hβ with hβα | hβ
     · subst β
