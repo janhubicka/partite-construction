@@ -264,3 +264,12 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.Attachment.irreducible_copy_or_intersection_in_support
 
 #print axioms StructuralRamsey.Partite.Induced.embedding_coordinate
+
+
+#print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.pullback_embedding
+#print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.embeddedIntersections
+#print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.toLocallyTreeLike
+#print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.rebase_identity
+#print axioms StructuralRamsey.Partite.Iterated.pureCopy_projectedPartialWitness
+
+#print axioms StructuralRamsey.Partite.Iterated.pureCore_projectedPartialWitness
