@@ -151,3 +151,8 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.Partite.SemiClosed.Picture.build_isPartiteOver
 #print axioms StructuralRamsey.Partite.SemiClosed.Picture.halfClosedProperty
+
+#print axioms StructuralRamsey.Partite.Attachment.selectedCopy_closed_of_projection
+#print axioms StructuralRamsey.Partite.SemiClosed.Recursive.step
+#print axioms StructuralRamsey.Partite.SemiClosed.Recursive.build
+#print axioms StructuralRamsey.Partite.SemiClosed.Recursive.recursiveConstruction
