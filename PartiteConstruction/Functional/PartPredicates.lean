@@ -274,7 +274,7 @@ theorem halfClosedArrow_iff_functionalExpanded
           (lift e.expandFunctional)
     refine ⟨β', lift', ?_, ?_⟩
     · intro e x
-      change lift e.expandFunctional x = β e.expandFunctional x
+      change lift e.expandFunctional x = β (e x)
       exact hmap _ x
     · intro e₁ e₂
       exact hmono e₁.expandFunctional e₂.expandFunctional
