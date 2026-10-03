@@ -48,6 +48,33 @@ theorem System.FunctionOutputSingleValued.uTransversal
   intro F x y z hy hz _
   exact h F x y z hy hz
 
+/-- Induced subsystems inherit global singleton-valuedness. -/
+theorem System.induce_singleValued
+    {A : System L.graph P V} {S : Set V}
+    (h : A.FunctionOutputSingleValued) :
+    (A.induce S).FunctionOutputSingleValued := by
+  intro F x y z hy hz
+  apply Subtype.ext
+  exact h F (Subtype.val ∘ x) y.1 z.1 hy hz
+
+/-- Restricting to a set of parts inherits global singleton-valuedness. -/
+theorem System.restrict_singleValued
+    {Q : Type v}
+    {A : System L.graph P V}
+    (α : Q ↪ P)
+    (h : A.FunctionOutputSingleValued) :
+    (A.restrict α).FunctionOutputSingleValued := by
+  exact System.induce_singleValued h
+
+/-- Relabelling parts changes no relation tuples. -/
+theorem System.relabel_singleValued
+    {Q : Type v}
+    {A : System L.graph P V}
+    (α : P ↪ Q)
+    (h : A.FunctionOutputSingleValued) :
+    (A.relabel α).FunctionOutputSingleValued :=
+  h
+
 namespace Closed.Induced
 
 /-- Positive coordinate powers preserve global singleton-valuedness. -/
