@@ -88,3 +88,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Nested.flatten_uTransversal
 #print axioms StructuralRamsey.Partite.closedArrow_iff_functionalExpanded
 #print axioms StructuralRamsey.Partite.functionOutputTransversal_of_expanded
+#print axioms StructuralRamsey.Language.PositiveFuncArity.withParts
+#print axioms StructuralRamsey.Partite.halfClosedArrow_iff_functionalExpanded
