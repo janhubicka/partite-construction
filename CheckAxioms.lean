@@ -262,3 +262,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Iterated.pureCore_embeddedWitness
 
 #print axioms StructuralRamsey.RelStructure.Attachment.irreducible_copy_or_intersection_in_support
+
+#print axioms StructuralRamsey.Partite.Induced.embedding_coordinate
