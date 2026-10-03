@@ -118,7 +118,7 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.Partite.System.FunctionOutputSingleValued.uTransversal
 #print axioms StructuralRamsey.Partite.Closed.Induced.power_singleValued
-#print axioms StructuralRamsey.Partite.HalfClosed.Initial.singleValued
+#print axioms StructuralRamsey.Partite.HalfClosed.InitialsingleValued
 #print axioms StructuralRamsey.Partite.Closed.Attachment.singleValued
 #print axioms StructuralRamsey.Partite.Nested.flatten_singleValued
 
@@ -172,3 +172,9 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Structure.orderedRamsey_singleton
 #print axioms StructuralRamsey.Structure.orderedRamsey
 #print axioms StructuralRamsey.Structure.orderedClosedGraphRamsey
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.rootedWitness_controlled
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.rootedWitness
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.freeAmalgam_rootBudget
+#print axioms StructuralRamsey.RelStructure.FreeAmalgam.attachOverIrreducible_preservesProjectionAndLocalTree_rootBudget
+#print axioms StructuralRamsey.RelStructure.RootBudgetTrace.locallyTreeLike
