@@ -63,6 +63,55 @@ def profile
     Partite.System L.graph P U :=
   Partite.withProjection A α.toFunctionEmbedding
 
+/-- Forget the part labels on a closed profile embedding, normalizing its
+source definitionally to A. -/
+def profileToRelClosed
+    {X : Type v}
+    {A : RelStructure L.graph U}
+    {D : RelStructure L.graph P}
+    {α : RelStructure.Embedding A D}
+    {S : Partite.System L.graph P X}
+    (e : Partite.Closed.Embedding (profile A D α) S) :
+    RelStructure.ClosedEmbedding A S.toRelStructure := by
+  exact e.toRelClosed
+
+theorem profileToRelClosed_comp
+    {X Y : Type v}
+    {A : RelStructure L.graph U}
+    {D : RelStructure L.graph P}
+    {α : RelStructure.Embedding A D}
+    {S : Partite.System L.graph P X}
+    {T : Partite.System L.graph P Y}
+    (f : Partite.Closed.Embedding S T)
+    (e : Partite.Closed.Embedding (profile A D α) S) :
+    profileToRelClosed (Partite.Closed.Embedding.comp f e) =
+      RelStructure.ClosedEmbedding.comp f.toRelClosed
+        (profileToRelClosed e) := by
+  apply RelStructure.ClosedEmbedding.ext
+  intro x
+  rfl
+
+theorem profile_comp_assoc
+    {X Y Z : Type v}
+    {A : RelStructure L.graph U}
+    {D : RelStructure L.graph P}
+    {α : RelStructure.Embedding A D}
+    {S : Partite.System L.graph P X}
+    {T : Partite.System L.graph P Y}
+    {C : Partite.System L.graph P Z}
+    (g : Partite.Closed.Embedding T C)
+    (f : Partite.Closed.Embedding S T)
+    (e : Partite.Closed.Embedding (profile A D α) S) :
+    RelStructure.ClosedEmbedding.comp
+        (Partite.Closed.Embedding.comp g f).toRelClosed
+        (profileToRelClosed e) =
+      RelStructure.ClosedEmbedding.comp g.toRelClosed
+        (RelStructure.ClosedEmbedding.comp f.toRelClosed
+          (profileToRelClosed e)) := by
+  apply RelStructure.ClosedEmbedding.ext
+  intro x
+  rfl
+
 /-- One finite stage of the outer recursive construction. -/
 structure Stage
     (B : RelStructure L.graph V)
@@ -104,9 +153,9 @@ def CanonicalOn
         ∀ e₁ e₂ :
             Partite.Closed.Embedding (profile A D α) S,
           χ (RelStructure.ClosedEmbedding.comp
-            f.toRelClosed e₁.toRelClosed) =
+            f.toRelClosed (profileToRelClosed e₁)) =
           χ (RelStructure.ClosedEmbedding.comp
-            f.toRelClosed e₂.toRelClosed)
+            f.toRelClosed (profileToRelClosed e₂))
 
 
 /-- Closed embeddings of a profile system are exactly closed embeddings of A
@@ -119,7 +168,7 @@ def profileEmbeddingToProjected
     {S : Partite.System L.graph P X}
     (e : Partite.Closed.Embedding (profile A D α) S) :
     Partite.Closed.ProjectedEmbedding A S α :=
-  ⟨e.toRelClosed, e.1.map_part⟩
+  ⟨profileToRelClosed e, e.1.map_part⟩
 
 /-- The inverse conversion from a closed projected A-copy to a closed
 embedding of the profile system. -/
@@ -258,7 +307,7 @@ theorem build
       refine ⟨R, ?_⟩
       intro χ
       obtain ⟨g, hg⟩ :=
-        hStep (fun e => χ e.toRelClosed)
+        hStep (fun e => χ (profileToRelClosed e))
       obtain ⟨f, hf⟩ :=
         hCanon
           (fun e =>
@@ -270,23 +319,11 @@ theorem build
           hg
             (Partite.Closed.Embedding.comp f e₁)
             (Partite.Closed.Embedding.comp f e₂)
-        simp only [toRelClosed_comp] at hlocal
-        change
-          χ (RelStructure.ClosedEmbedding.comp g.toRelClosed
-              (RelStructure.ClosedEmbedding.comp
-                f.toRelClosed e₁.toRelClosed)) =
-            χ (RelStructure.ClosedEmbedding.comp g.toRelClosed
-              (RelStructure.ClosedEmbedding.comp
-                f.toRelClosed e₂.toRelClosed))
+        rw [profileToRelClosed_comp, profileToRelClosed_comp] at hlocal
+        rw [profile_comp_assoc, profile_comp_assoc]
         exact hlocal
       · have hold := hf β hβ e₁ e₂
-        change
-          χ (RelStructure.ClosedEmbedding.comp g.toRelClosed
-              (RelStructure.ClosedEmbedding.comp
-                f.toRelClosed e₁.toRelClosed)) =
-            χ (RelStructure.ClosedEmbedding.comp g.toRelClosed
-              (RelStructure.ClosedEmbedding.comp
-                f.toRelClosed e₂.toRelClosed))
+        rw [profile_comp_assoc, profile_comp_assoc]
         exact hold
 
 /-- Enumerate every ordinary A-copy in D. -/
@@ -393,14 +430,14 @@ theorem recursiveConstruction_of_localPictures
   let θ : RelStructure.Embedding A D → κ := fun α =>
     if hα : Liftable α then
       χ (RelStructure.ClosedEmbedding.comp
-        f.toRelClosed (Classical.choice hα).toRelClosed)
+        f.toRelClosed (profileToRelClosed (Classical.choice hα)))
     else Classical.choice (inferInstance : Nonempty κ)
   have hθ
       (α : RelStructure.Embedding A D)
       (e : Partite.Closed.Embedding (profile A D α) S₀.system) :
       θ α =
         χ (RelStructure.ClosedEmbedding.comp
-          f.toRelClosed e.toRelClosed) := by
+          f.toRelClosed (profileToRelClosed e)) := by
     have hLift : Liftable α := ⟨e⟩
     simp only [θ, dif_pos hLift]
     have hmem : α ∈ xs := by
@@ -424,13 +461,13 @@ theorem recursiveConstruction_of_localPictures
   have hmono := hβ e₁.toEmbedding e₂.toEmbedding
   rw [hθ α₁ p₁, hθ α₂ p₂] at hmono
   have hp₁ :
-      p₁.toRelClosed =
+      profileToRelClosed p₁ =
         RelStructure.ClosedEmbedding.comp j e₁ := by
     apply RelStructure.ClosedEmbedding.ext
     intro a
     rfl
   have hp₂ :
-      p₂.toRelClosed =
+      profileToRelClosed p₂ =
         RelStructure.ClosedEmbedding.comp j e₂ := by
     apply RelStructure.ClosedEmbedding.ext
     intro a
