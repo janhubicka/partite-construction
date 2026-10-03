@@ -178,3 +178,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.freeAmalgam_rootBudget
 #print axioms StructuralRamsey.RelStructure.FreeAmalgam.attachOverIrreducible_preservesProjectionAndLocalTree_rootBudget
 #print axioms StructuralRamsey.RelStructure.RootBudgetTrace.locallyTreeLike
+
+#print axioms StructuralRamsey.RelStructure.TreeAmalgam.exists_base_embedding
+#print axioms StructuralRamsey.RelStructure.TreeAmalgam.attachIndexedList
+#print axioms StructuralRamsey.RelStructure.TreeAmalgam.attachIndexed
