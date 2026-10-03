@@ -178,3 +178,59 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.freeAmalgam_rootBudget
 #print axioms StructuralRamsey.RelStructure.FreeAmalgam.attachOverIrreducible_preservesProjectionAndLocalTree_rootBudget
 #print axioms StructuralRamsey.RelStructure.RootBudgetTrace.locallyTreeLike
+
+#print axioms StructuralRamsey.RelStructure.TreeAmalgam.exists_base_embedding
+#print axioms StructuralRamsey.RelStructure.TreeAmalgam.attachIndexedList
+#print axioms StructuralRamsey.RelStructure.TreeAmalgam.attachIndexed
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.attachmentWitness_of_selected
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.testTrace
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.eq_of_testTrace_eq
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.exists_selected_indices
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.fixedSupportBudget
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.attachment_locallyTreeLike_fixedSupport
+
+#print axioms StructuralRamsey.RelStructure.Attachment.fold
+#print axioms StructuralRamsey.RelStructure.Attachment.fold_copy
+#print axioms StructuralRamsey.RelStructure.Attachment.fold_isHomomorphismEmbedding
+
+#print axioms StructuralRamsey.RelStructure.Embedding.rangeInverse
+#print axioms StructuralRamsey.RelStructure.Embedding.rangeInverse_apply
+#print axioms StructuralRamsey.RelStructure.Embedding.rangeInverse_left
+
+#print axioms StructuralRamsey.RelStructure.Embedding.imageFinset
+#print axioms StructuralRamsey.RelStructure.Embedding.mem_imageFinset_iff
+#print axioms StructuralRamsey.RelStructure.Embedding.imageInverse
+#print axioms StructuralRamsey.RelStructure.Embedding.imageInverse_apply
+#print axioms StructuralRamsey.RelStructure.Embedding.imageInverse_left
+
+#print axioms StructuralRamsey.RelStructure.rootEmbeddingIntoBase
+
+#print axioms StructuralRamsey.RelStructure.Embedding.imageInverseAt
+#print axioms StructuralRamsey.RelStructure.Embedding.imageInverseAt_apply
+
+#print axioms StructuralRamsey.RelStructure.FinalSupport.Root.beta
+#print axioms StructuralRamsey.RelStructure.FinalSupport.Root.toBase
+#print axioms StructuralRamsey.RelStructure.FinalSupport.Root.support
+#print axioms StructuralRamsey.RelStructure.FinalSupport.Root.supportEmbedding
+#print axioms StructuralRamsey.RelStructure.FinalSupport.AtSupport.embedding
+#print axioms StructuralRamsey.RelStructure.FinalSupport.AtSupport.embedding_compat
+
+#print axioms StructuralRamsey.RelStructure.FinalSupport.Root.support_irreducible
+
+#print axioms StructuralRamsey.RelStructure.FinalCompletion.coreOrBase_attachment
+
+#print axioms StructuralRamsey.RelStructure.UniformFinal.initial
+#print axioms StructuralRamsey.RelStructure.UniformFinal.attachSupport
+
+#print axioms StructuralRamsey.FiniteTrace.selectIndices
+#print axioms StructuralRamsey.FiniteTrace.selectIndices_cardBound
+
+#print axioms StructuralRamsey.RelStructure.UniformFinal.CoversSupport.of_embedding
+#print axioms StructuralRamsey.RelStructure.UniformFinal.attachSupportList
+#print axioms StructuralRamsey.RelStructure.UniformFinal.build_all_supports
+
+#print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_uniformFinal
+#print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_uniformFinal_all
