@@ -64,18 +64,22 @@ theorem glueProjectedFull_relativeLabelled
   let Hset : Set UA := Set.range qA
   have hHE : ∀ a : Hset, α a.1 ∈ Eimg := by
     intro a
-    rcases a.2 with ⟨d, rfl⟩
+    rcases a.2 with ⟨d, hd⟩
     apply Finset.mem_image.mpr
     refine ⟨sE d, Finset.mem_univ _, ?_⟩
-    exact (hqA d).symm
+    calc
+      pE (sE d) = q0 d := rfl
+      _ = α (qA d) := hqA d
+      _ = α a.1 := congrArg α hd
   have hHF : ∀ a : Hset, α a.1 ∈ Fimg := by
     intro a
-    rcases a.2 with ⟨d, rfl⟩
+    rcases a.2 with ⟨d, hd⟩
     apply Finset.mem_image.mpr
     refine ⟨sF d, Finset.mem_univ _, ?_⟩
     calc
       pF (sF d) = q0 d := (hqF d).symm
       _ = α (qA d) := hqA d
+      _ = α a.1 := congrArg α hd
 
   obtain ⟨TE, TEs, hTreeE, gE, hgE, ctrlDE, targetE, htargetE⟩ :=
     hD.2 Eimg hEcard α Hset hHE
@@ -162,7 +166,8 @@ theorem glueProjectedFull_relativeLabelled
         pEsub (sE d) =
           (⟨α (qA d), hmem⟩ : ↥(↑Eimg : Set P)) := by
       apply Subtype.ext
-      exact (hqA d).symm
+      change pE (sE d) = α (qA d)
+      exact hqA d
     rw [heq]
     exact htargetE aH
   have hcompatF : ∀ d, fF (sF d) = targetF (qA d) := by
