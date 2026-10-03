@@ -118,7 +118,7 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.Partite.System.FunctionOutputSingleValued.uTransversal
 #print axioms StructuralRamsey.Partite.Closed.Induced.power_singleValued
-#print axioms StructuralRamsey.Partite.HalfClosed.InitialsingleValued
+#print axioms StructuralRamsey.Partite.HalfClosed.Initial.singleValued
 #print axioms StructuralRamsey.Partite.Closed.Attachment.singleValued
 #print axioms StructuralRamsey.Partite.Nested.flatten_singleValued
 
