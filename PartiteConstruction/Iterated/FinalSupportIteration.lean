@@ -118,7 +118,7 @@ theorem attachSupportList
         CoversSupports Control Base Orig Q pOrig hpOrig hProjected
           S1 supports := by
   classical
-  induction supports generalizing S0 with
+  induction supports with
   | nil =>
       refine ⟨S0, Embedding.id S0.C, ?_, ?_, ?_⟩
       · intro x
@@ -155,8 +155,9 @@ theorem attachSupportList
         rfl
       · intro U hU
         simp only [List.mem_cons] at hU
-        rcases hU with rfl | hU
-        · exact
+        rcases hU with hEq | hU
+        · subst U
+          exact
             CoversSupport.of_embedding
               Control Base Orig Q pOrig hpOrig hProjected
               T e1 hcore1 hcovT
@@ -229,7 +230,8 @@ theorem build_all_supports
     have hTmem : T ∈ supports := by
       exact
         root_support_mem_allSupports
-          Orig Base Q pOrig hpOrig hProjected r
+          (Orig := Orig) (Base := Base) (Q := Q) (pOrig := pOrig)
+          hpOrig hProjected r
     have hcovT :=
       hcov T hTmem
     let rs :
