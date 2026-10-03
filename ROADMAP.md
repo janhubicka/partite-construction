@@ -29,13 +29,13 @@ and update the survey's validation markers at an immutable proof commit.
    is irreducible (and the corresponding function-language/graph-encoding
    presentation issue).
 6. **Recursive construction / functions — in progress:** set-valued functions,
-   closed embeddings, U-transversality, the ordinary-indexed closed initial
-   picture, and the half-closed induced partite construction are formalized.
-   The non-closed free-attachment obstruction is isolated.  A post-processing
-   repair is also checked: retain only tuples lying in closed copies of the
-   previous stage; this preserves the closed Ramsey arrow and forces
-   U-transversality. Remaining: carry the outer D-partition through the nested
-   half-closed construction and assemble `thm:models2`.
+   closed embeddings, U-transversality, the ordinary-indexed half-closed
+   construction, unary part-predicate expansion, and nested flattening are
+   formalized.  The native theorem `Partite.HalfClosed.inducedPartite`
+   verifies the corrected positive-arity half-closed step exactly in partite
+   language, with U-transversality composed through the nested projection.
+   The non-closed arbitrary-alpha Picture obstruction remains the missing
+   outer step before assembling `thm:models2`.
 
 Keep hypotheses visible. An abstract fusion lemma is not a proof of existence
 of its input pictures. A library representation change is not a manuscript
