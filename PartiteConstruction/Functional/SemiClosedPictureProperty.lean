@@ -52,7 +52,8 @@ theorem halfClosedProperty
     (α : RelStructure.Embedding A D)
     (E : Partite.System L.withFunctionDomains.graph U W)
     (hAtotal : A.FunctionDomainTotal)
-    (hBroot : B.OutputImpliesDomain)
+    (hDroot : D.OutputImpliesDomain)
+    (hBPartite : B.IsPartiteOver D)
     (hBsingle : B.FunctionOutputSingleValued)
     (κ : Type*) [Nonempty κ]
     (hE : Partite.Closed.Arrow
@@ -68,7 +69,7 @@ theorem halfClosedProperty
         (Partite.transversal A) E → κ := fun d =>
     if hd : CoreLiftable A D B α E d then
       χ (liftCore A D B α E
-        hAtotal hBroot hBsingle d hd)
+        hAtotal hDroot hBPartite hBsingle d hd)
     else Classical.choice (inferInstance : Nonempty κ)
   obtain ⟨f, hf⟩ := hE θ
   let β : Partite.Embedding B (build A D B α E) :=
@@ -105,17 +106,17 @@ theorem halfClosedProperty
         (Partite.Recursive.profile A D α)
         (build A D B α E) :=
     liftCore A D B α E
-      hAtotal hBroot hBsingle
+      hAtotal hDroot hBPartite hBsingle
       (coreLetter e) (coreLiftable e)
   refine ⟨β, lift, ?_, ?_⟩
   · intro e a
     have hLift :=
       liftCore_apply A D B α E
-        hAtotal hBroot hBsingle
+        hAtotal hDroot hBPartite hBsingle
         (coreLetter e) (coreLiftable e) a
     have hSelected :=
       selectedLift_core A D B α E
-        hAtotal hBroot hBsingle
+        hAtotal hDroot hBPartite hBsingle
         f (projected e) a
     calc
       lift e a =
@@ -136,7 +137,7 @@ theorem halfClosedProperty
             (f (restrictRelevant A D B α (projected e) a)) := rfl
       _ =
           selectedLift A D B α E
-            hAtotal hBroot hBsingle
+            hAtotal hDroot hBPartite hBsingle
             f (projected e) a := hSelected.symm
       _ = β (e a) := rfl
   · intro e₁ e₂
@@ -148,7 +149,7 @@ theorem halfClosedProperty
       simp only [θ, dif_pos hcl, lift]
       exact congrArg χ
         (liftCore_unique A D B α E
-          hAtotal hBroot hBsingle
+          hAtotal hDroot hBPartite hBsingle
           (coreLetter e) _ _)
     have hm :=
       hf
@@ -169,7 +170,7 @@ theorem pictureLemma
     (α : RelStructure.Embedding A D)
     (hBPartite : B.IsPartiteOver D)
     (hAtotal : A.FunctionDomainTotal)
-    (hBroot : B.OutputImpliesDomain)
+    (hDroot : D.OutputImpliesDomain)
     (hBsingle : B.FunctionOutputSingleValued)
     [Finite U] [Finite V]
     (κ : Type*) [Fintype κ] [Nonempty κ] :
@@ -197,6 +198,6 @@ theorem pictureLemma
   exact ⟨Vertex A D B α E, inferInstance, O,
     build_isPartiteOver A D B α E hBPartite hEPartite,
     halfClosedProperty A D B α E
-      hAtotal hBroot hBsingle κ hArrow⟩
+      hAtotal hDroot hBPartite hBsingle κ hArrow⟩
 
 end StructuralRamsey.Partite.SemiClosed.Picture
