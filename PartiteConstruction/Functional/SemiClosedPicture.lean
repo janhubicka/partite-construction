@@ -215,7 +215,9 @@ noncomputable def overlapToRestriction
             Structure.funcTuple (pe ∘ x) y) =
           Subtype.val ∘ Structure.funcTuple x z := by
       funext j
-      refine Fin.lastCases ?_ (fun k => ?_) j <;> rfl
+      refine Fin.lastCases ?_ (fun k => ?_) j
+      · simp [pe, toInner, z, Structure.funcTuple, Function.comp_apply]
+      · simp [pe, toInner, z, Structure.funcTuple, Function.comp_apply]
     exact Eq.mp (congrArg (fun t => B.rel (.inr F) t) ht) hy
   · apply Subtype.ext
     apply Subtype.ext
