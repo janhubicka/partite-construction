@@ -297,3 +297,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.witness_of_homEmbedding_image
 #print axioms StructuralRamsey.Partite.Iterated.pureCopy_projectedHistoryWitness
 #print axioms StructuralRamsey.Partite.Iterated.pureCore_projectedHistoryWitness
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.completeControlList_of_embeddedIntersections_with_embedding
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.completeControl_of_embeddedIntersections_with_embedding
