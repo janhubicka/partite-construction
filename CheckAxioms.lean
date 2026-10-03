@@ -105,4 +105,3 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.RelevantCore.core_uTransversal
 #print axioms StructuralRamsey.Partite.RelevantCore.vertex_covered
 #print axioms StructuralRamsey.Partite.RelevantCore.ambientRelevant_functionClosed_unary
-#print axioms StructuralRamsey.Partite.RelevantCore.coreInclusionClosed_unary
