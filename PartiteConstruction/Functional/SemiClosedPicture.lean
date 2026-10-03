@@ -275,7 +275,8 @@ noncomputable def selectedLift
     (α : RelStructure.Embedding A D)
     (E : Partite.System L.withFunctionDomains.graph U W)
     (hAtotal : A.FunctionDomainTotal)
-    (hBroot : B.OutputImpliesDomain)
+    (hDroot : D.OutputImpliesDomain)
+    (hBPartite : B.IsPartiteOver D)
     (hBsingle : B.FunctionOutputSingleValued)
     (f : Partite.Closed.Embedding (restriction A D B α) E)
     (e : Partite.Closed.ProjectedEmbedding A B (fun a => α a)) :
@@ -299,12 +300,13 @@ noncomputable def selectedLift
   refine ⟨pe, ?_⟩
   have heCovered : ∀ a : U, e.1 a ∈ coveredSet A D B α :=
     fun a => ⟨e, a, rfl⟩
-  exact Partite.Attachment.selectedCopy_closed
-    (A := A) (B := B)
+  exact Partite.Attachment.selectedCopy_closed_of_projection
+    (A := A) (D₀ := D) (B := B)
     (S := coveredSet A D B α)
     (D := E.relabel α.toFunctionEmbedding)
     (f := maps)
-    hAtotal hBroot hBsingle f e.1 heCovered
+    hAtotal hDroot hBPartite hBsingle α
+    f e.1 e.2 heCovered
 
 @[simp] theorem selectedLift_apply
     (A : RelStructure L.withFunctionDomains.graph U)
@@ -313,12 +315,14 @@ noncomputable def selectedLift
     (α : RelStructure.Embedding A D)
     (E : Partite.System L.withFunctionDomains.graph U W)
     (hAtotal : A.FunctionDomainTotal)
-    (hBroot : B.OutputImpliesDomain)
+    (hDroot : D.OutputImpliesDomain)
+    (hBPartite : B.IsPartiteOver D)
     (hBsingle : B.FunctionOutputSingleValued)
     (f : Partite.Closed.Embedding (restriction A D B α) E)
     (e : Partite.Closed.ProjectedEmbedding A B (fun a => α a))
     (a : U) :
-    selectedLift A D B α E hAtotal hBroot hBsingle f e a =
+    selectedLift A D B α E
+      hAtotal hDroot hBPartite hBsingle f e a =
       Partite.Attachment.copyEmbedding
         B (coveredSet A D B α)
         (E.relabel α.toFunctionEmbedding)
