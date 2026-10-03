@@ -127,3 +127,6 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.Partite.HalfClosed.Construction.build_singleValued
 #print axioms StructuralRamsey.Partite.HalfClosed.Construction.inducedConstruction_singleValued
+
+#print axioms StructuralRamsey.Partite.HalfClosed.inducedPartiteOver_singleton
+#print axioms StructuralRamsey.Partite.HalfClosed.inducedPartiteOver_singleton_uTransversal
