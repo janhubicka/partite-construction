@@ -64,7 +64,7 @@ theorem attachmentWitness_of_selected
       TreeAmalgam Base Y T ∧
       ∃ q : ↥(↑Test : Set (Attachment.Vertex S (W := W) (I := I))) → Y,
         ((Attachment.attach Base S Core f).induce
-          (↑Test : Set (Attachment.Vertex S (W := W) (I := I))).
+          (↑Test : Set (Attachment.Vertex S (W := W) (I := I)))).
           IsHomomorphismEmbedding T q ∧
         ∀ α : Embedding Control (Attachment.attach Base S Core f),
           ∃ α' : Embedding Control T,
@@ -183,7 +183,7 @@ theorem attachmentWitness_of_selected
 
   have hq :
       ((Attachment.attach Base S Core f).induce
-          (↑Test : Set (Attachment.Vertex S (W := W) (I := I))).
+          (↑Test : Set (Attachment.Vertex S (W := W) (I := I)))).
         IsHomomorphismEmbedding T q := by
     constructor
     · intro Rel z hz
