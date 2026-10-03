@@ -85,7 +85,7 @@ theorem liftMap_injective_of_reflectsOverlap
   intro x y hxy
   rcases hSrc.covers x with ⟨a, rfl⟩ | ⟨b, rfl⟩
   · rcases hSrc.covers y with ⟨a', rfl⟩ | ⟨b, rfl⟩
-    · apply iA.injective
+    · apply congrArg iA
       apply hA.injective
       apply jA.injective
       rw [← liftMap_left hSrc hTgt q hA hB hcompatA hcompatB a,
@@ -103,7 +103,7 @@ theorem liftMap_injective_of_reflectsOverlap
       have hdd : da = db := hqinj (hqA.trans hqB.symm)
       subst db
       exact (hSrc.overlap a b).mpr
-        ⟨da, hda.symm, hdb.symm⟩
+        ⟨da, hda, hdb⟩
   · rcases hSrc.covers y with ⟨a, rfl⟩ | ⟨b', rfl⟩
     · symm
       have hcross :
@@ -118,8 +118,8 @@ theorem liftMap_injective_of_reflectsOverlap
       have hdd : da = db := hqinj (hqA.trans hqB.symm)
       subst db
       exact (hSrc.overlap a b).mpr
-        ⟨da, hda.symm, hdb.symm⟩
-    · apply iB.injective
+        ⟨da, hda, hdb⟩
+    · apply congrArg iB
       apply hB.injective
       apply jB.injective
       rw [← liftMap_right hSrc hTgt q hA hB hcompatA hcompatB b,
@@ -166,14 +166,11 @@ noncomputable def liftEmbedding
                   _ = jA (y k) := congrFun hFy k
               obtain ⟨g, hyg, hbg⟩ :=
                 (hTgt.overlap (y k) (hB b)).mp hEq.symm
-              obtain ⟨d, hbd, hqd⟩ := hexB b g hbg
-              exact ⟨sA d, by
-                calc
-                  x k = iB b := hxb
-                  _ = iB (sB d) := congrArg iB hbd
-                  _ = iA (sA d) :=
-                    (hSrc.overlap (sA d) (sB d)).mpr
-                      ⟨d, rfl, rfl⟩ |>.symm⟩)
+              obtain ⟨d, hbd, _hqd⟩ := hexB b g hbg
+              have hov : iA (sA d) = iB (sB d) :=
+                (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
+              exact ⟨sA d,
+                hxb.trans ((congrArg iB hbd).trans hov.symm)⟩)
         have hpre (k : Fin (L.arity R)) : x k = iA (pre k) :=
           Classical.choose_spec (by
             rcases hSrc.covers (x k) with hxA | hxB
@@ -191,14 +188,11 @@ noncomputable def liftEmbedding
                   _ = jA (y k) := congrFun hFy k
               obtain ⟨g, hyg, hbg⟩ :=
                 (hTgt.overlap (y k) (hB b)).mp hEq.symm
-              obtain ⟨d, hbd, hqd⟩ := hexB b g hbg
-              exact ⟨sA d, by
-                calc
-                  x k = iB b := hxb
-                  _ = iB (sB d) := congrArg iB hbd
-                  _ = iA (sA d) :=
-                    (hSrc.overlap (sA d) (sB d)).mpr
-                      ⟨d, rfl, rfl⟩ |>.symm⟩)
+              obtain ⟨d, hbd, _hqd⟩ := hexB b g hbg
+              have hov : iA (sA d) = iB (sB d) :=
+                (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
+              exact ⟨sA d,
+                hxb.trans ((congrArg iB hbd).trans hov.symm)⟩)
         have hmap : hA ∘ pre = y := by
           funext k
           apply jA.injective
@@ -234,14 +228,11 @@ noncomputable def liftEmbedding
                   _ = jB (y k) := congrFun hFy k
               obtain ⟨g, hag, hyg⟩ :=
                 (hTgt.overlap (hA a) (y k)).mp hEq
-              obtain ⟨d, had, hqd⟩ := hexA a g hag
-              exact ⟨sB d, by
-                calc
-                  x k = iA a := hxa
-                  _ = iA (sA d) := congrArg iA had
-                  _ = iB (sB d) :=
-                    (hSrc.overlap (sA d) (sB d)).mpr
-                      ⟨d, rfl, rfl⟩⟩
+              obtain ⟨d, had, _hqd⟩ := hexA a g hag
+              have hov : iA (sA d) = iB (sB d) :=
+                (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
+              exact ⟨sB d,
+                hxa.trans ((congrArg iA had).trans hov)⟩
             · rcases hxB with ⟨b, hxb⟩
               exact ⟨b, hxb⟩)
         have hpre (k : Fin (L.arity R)) : x k = iB (pre k) :=
@@ -259,14 +250,11 @@ noncomputable def liftEmbedding
                   _ = jB (y k) := congrFun hFy k
               obtain ⟨g, hag, hyg⟩ :=
                 (hTgt.overlap (hA a) (y k)).mp hEq
-              obtain ⟨d, had, hqd⟩ := hexA a g hag
-              exact ⟨sB d, by
-                calc
-                  x k = iA a := hxa
-                  _ = iA (sA d) := congrArg iA had
-                  _ = iB (sB d) :=
-                    (hSrc.overlap (sA d) (sB d)).mpr
-                      ⟨d, rfl, rfl⟩⟩
+              obtain ⟨d, had, _hqd⟩ := hexA a g hag
+              have hov : iA (sA d) = iB (sB d) :=
+                (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
+              exact ⟨sB d,
+                hxa.trans ((congrArg iA had).trans hov)⟩
             · rcases hxB with ⟨b, hxb⟩
               exact ⟨b, hxb⟩)
         have hmap : hB ∘ pre = y := by
