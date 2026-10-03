@@ -253,3 +253,8 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.glueControlled_of_contained
 
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.glueProjectedFull_intersectionStrong
+
+#print axioms StructuralRamsey.RelStructure.Embedding.ContainedInIrreducible.postcomp
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.EmbeddedIntersections.postcomp
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.addControl_of_embeddedIntersection
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.completeControl_of_embeddedIntersections
