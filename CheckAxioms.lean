@@ -87,3 +87,9 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.ClosedRepair.copyGenerated_arrow
 #print axioms StructuralRamsey.Partite.Nested.flatten_isPartiteOver
 #print axioms StructuralRamsey.Partite.Nested.flatten_uTransversal
+#print axioms StructuralRamsey.Language.PositiveFuncArity.withParts
+#print axioms StructuralRamsey.Partite.closedArrow_iff_functionalExpanded
+#print axioms StructuralRamsey.Partite.halfClosedArrow_iff_functionalExpanded
+#print axioms StructuralRamsey.Partite.irreducible_expandFunctional_of_reduct
+#print axioms StructuralRamsey.Partite.isPartiteOver_of_functionalExpanded
+#print axioms StructuralRamsey.Partite.functionOutputTransversal_of_expanded
