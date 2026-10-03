@@ -55,20 +55,32 @@ theorem System.induce_singleValued
     (h : A.FunctionOutputSingleValued) :
     (A.induce S).FunctionOutputSingleValued := by
   intro F x y z hy hz
+  have hy0 :
+      A.rel (.inr F)
+        (Subtype.val ∘ Structure.funcTuple x y) := hy
+  have hty :
+      Subtype.val ∘ Structure.funcTuple x y =
+        Structure.funcTuple (Subtype.val ∘ x) y.1 :=
+    Structure.comp_funcTuple Subtype.val x y
   have hyA :
       A.rel (.inr F)
-        (Structure.funcTuple (Subtype.val ∘ x) y.1) := by
-    change A.rel (.inr F)
-      (Subtype.val ∘ Structure.funcTuple x y) at hy
-    rw [Structure.comp_funcTuple] at hy
-    exact hy
+        (Structure.funcTuple (Subtype.val ∘ x) y.1) :=
+    Eq.mp
+      (congrArg (fun t => A.rel (.inr F) t) hty)
+      hy0
+  have hz0 :
+      A.rel (.inr F)
+        (Subtype.val ∘ Structure.funcTuple x z) := hz
+  have htz :
+      Subtype.val ∘ Structure.funcTuple x z =
+        Structure.funcTuple (Subtype.val ∘ x) z.1 :=
+    Structure.comp_funcTuple Subtype.val x z
   have hzA :
       A.rel (.inr F)
-        (Structure.funcTuple (Subtype.val ∘ x) z.1) := by
-    change A.rel (.inr F)
-      (Subtype.val ∘ Structure.funcTuple x z) at hz
-    rw [Structure.comp_funcTuple] at hz
-    exact hz
+        (Structure.funcTuple (Subtype.val ∘ x) z.1) :=
+    Eq.mp
+      (congrArg (fun t => A.rel (.inr F) t) htz)
+      hz0
   apply Subtype.ext
   exact h F (Subtype.val ∘ x) y.1 z.1 hyA hzA
 
