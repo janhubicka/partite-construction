@@ -274,3 +274,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.toLocallyTreeLike
 #print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.rebase_identity
 #print axioms StructuralRamsey.Partite.Iterated.pureCopy_projectedPartialWitness
+
+#print axioms StructuralRamsey.Partite.Iterated.pureCore_projectedPartialWitness
