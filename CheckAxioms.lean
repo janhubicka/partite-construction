@@ -172,3 +172,9 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Structure.orderedRamsey_singleton
 #print axioms StructuralRamsey.Structure.orderedRamsey
 #print axioms StructuralRamsey.Structure.orderedClosedGraphRamsey
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.rootedWitness_controlled
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.rootedWitness
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.freeAmalgam_rootBudget
+#print axioms StructuralRamsey.RelStructure.FreeAmalgam.attachOverIrreducible_preservesProjectionAndLocalTree_rootBudget
+#print axioms StructuralRamsey.RelStructure.RootBudgetTrace.locallyTreeLike

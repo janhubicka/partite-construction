@@ -67,6 +67,9 @@ import PartiteConstruction.Iterated.Initial
 import PartiteConstruction.Iterated.Ordered
 import PartiteConstruction.Iterated.FreeAmalgam
 import PartiteConstruction.Iterated.FinalAttachment
+import PartiteConstruction.Iterated.RootedWitness
+import PartiteConstruction.Iterated.FinalAttachmentBudget
+import PartiteConstruction.Iterated.RootBudgetTrace
 import PartiteConstruction.Iterated.FinalCompletion
 import PartiteConstruction.Iterated.FinalSparsening
 import PartiteConstruction.Iterated.SparseningIteration
