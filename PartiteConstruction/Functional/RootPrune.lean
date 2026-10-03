@@ -39,7 +39,16 @@ theorem rootPrune_outputImpliesDomain
     (rootPrune D).OutputImpliesDomain := by
   intro F x y hy
   change D.rel (.inl (.inr F)) x
-  simpa [Structure.funcTuple] using hy.2
+  have hargs :
+      (fun i =>
+        Structure.funcTuple x y (Fin.castSucc i)) = x := by
+    funext i
+    rw [Structure.funcTuple_castSucc]
+  exact Eq.mp
+    (congrArg
+      (fun t => D.rel (.inl (.inr F)) t)
+      hargs)
+    hy.2
 
 namespace Embedding
 
