@@ -32,9 +32,10 @@ structure BoundaryEmbedding
   agrees : ∀ x, boundary x = f ⟨α x.1, x.2⟩
   contained : boundary.ContainedInIrreducible
 
-/-- Add one controlled A-copy when an induced boundary embedding is supplied
-explicitly.  No hereditary irreducibility assumption on A is used. -/
-theorem addControl_of_boundary
+/-- Add one controlled A-copy and expose the embedding of the old target
+into the new target.  This is the transport-friendly form used by finite
+boundary-system iteration. -/
+theorem addControl_of_boundary_with_embedding
     (hA : A.Irreducible)
     (eAB : Embedding A B)
     (S : Finset W)
@@ -47,9 +48,11 @@ theorem addControl_of_boundary
     (hbd : BoundaryEmbedding (A := A) (C := C) (T := T) S f α) :
     ∃ (Z : Type v) (T' : RelStructure L Z),
       TreeAmalgam B Z T' ∧
-      ∃ f' : ↥(↑S : Set W) → Z,
-        (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' f' ∧
-        Controls (A := A) (C := C) (T := T') S f' (α :: xs) := by
+      ∃ e : Embedding T T',
+        ∃ f' : ↥(↑S : Set W) → Z,
+          f' = e ∘ f ∧
+          (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' f' ∧
+          Controls (A := A) (C := C) (T := T') S f' (α :: xs) := by
   classical
   let Hset : Set U := {a | α a ∈ S}
   let H := A.induce Hset
@@ -58,8 +61,7 @@ theorem addControl_of_boundary
     eAB.comp (RelStructure.inclusion A Hset)
   have hcT : eHT.ContainedInIrreducible := hbd.contained
   have hcB : eHB.ContainedInIrreducible := by
-    apply Embedding.containedInIrreducible_of_range_subset
-      hA eAB eHB
+    apply Embedding.containedInIrreducible_of_range_subset hA eAB eHB
     intro x
     exact ⟨x.1, rfl⟩
   let T' := FreeAmalgam.amalgam H T B eHT eHB
@@ -74,7 +76,7 @@ theorem addControl_of_boundary
   have hf' :
       (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' f' :=
     l.isHomomorphismEmbedding.comp hf
-  refine ⟨_, T', hTree', f', hf', ?_⟩
+  refine ⟨_, T', hTree', l, f', rfl, hf', ?_⟩
   intro β hβ
   rcases List.mem_cons.mp hβ with hβα | hβ
   · subst β
@@ -96,5 +98,29 @@ theorem addControl_of_boundary
     intro a ha
     obtain ⟨a', ha'⟩ := hβ' a ha
     exact ⟨a', congrArg l ha'⟩
+
+/-- Add one controlled A-copy when an induced boundary embedding is supplied
+explicitly.  No hereditary irreducibility assumption on A is used. -/
+theorem addControl_of_boundary
+    (hA : A.Irreducible)
+    (eAB : Embedding A B)
+    (S : Finset W)
+    (hTree : TreeAmalgam B Y T)
+    (f : ↥(↑S : Set W) → Y)
+    (hf : (C.induce (↑S : Set W)).IsHomomorphismEmbedding T f)
+    (xs : List (Embedding A C))
+    (hctrl : Controls (A := A) (C := C) (T := T) S f xs)
+    (α : Embedding A C)
+    (hbd : BoundaryEmbedding (A := A) (C := C) (T := T) S f α) :
+    ∃ (Z : Type v) (T' : RelStructure L Z),
+      TreeAmalgam B Z T' ∧
+      ∃ f' : ↥(↑S : Set W) → Z,
+        (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' f' ∧
+        Controls (A := A) (C := C) (T := T') S f' (α :: xs) := by
+  obtain ⟨Z, T', hT', e, f', _, hf', hctrl'⟩ :=
+    addControl_of_boundary_with_embedding
+      (A := A) (B := B) (C := C)
+      hA eAB S hTree f hf xs hctrl α hbd
+  exact ⟨Z, T', hT', f', hf', hctrl'⟩
 
 end StructuralRamsey.RelStructure.LocallyTreeLike
