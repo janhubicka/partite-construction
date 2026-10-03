@@ -279,6 +279,60 @@ theorem halfClosedArrow_iff_functionalExpanded
     · intro e₁ e₂
       exact hmono e₁.expandFunctional e₂.expandFunctional
 
+
+/-- Irreducibility of the original graph reduct implies irreducibility after
+adding unary part predicates, since the original witnessing relation tuple is
+still present. -/
+theorem irreducible_expandFunctional_of_reduct
+    {Q : Type v}
+    (C : System (L.withParts P).graph Q V)
+    (S : Set V)
+    (hS : ((C.ofFunctionalExpansion).toRelStructure.induce S).Irreducible) :
+    (C.toRelStructure.induce S).Irreducible := by
+  intro x y hxy
+  obtain ⟨R, z, i, j, hz, hzi, hzj⟩ := hS hxy
+  cases R with
+  | inl R =>
+      exact ⟨.inl (.inl (ULift.up R)), z, i, j, hz, hzi, hzj⟩
+  | inr F =>
+      exact ⟨.inr (ULift.up F), z, i, j, hz, hzi, hzj⟩
+
+/-- If an expanded-language partite system projects homomorphism-embedding-wise
+to the unary-predicate expansion of D, then forgetting the unary predicates
+leaves an ordinary D-partite system. -/
+theorem isPartiteOver_of_functionalExpanded
+    {Q : Type v}
+    (D : System L.graph P Q)
+    (C : System (L.withParts P).graph Q V)
+    (hC : C.IsPartiteOver D.expandFunctional) :
+    (C.ofFunctionalExpansion).IsPartiteOver D.toRelStructure := by
+  constructor
+  · intro R x hx
+    cases R with
+    | inl R =>
+        exact hC.1 (.inl (.inl (ULift.up R))) x hx
+    | inr F =>
+        exact hC.1 (.inr (ULift.up F)) x hx
+  · intro S hS
+    have hSexp :
+        (C.toRelStructure.induce S).Irreducible :=
+      irreducible_expandFunctional_of_reduct C S hS
+    obtain ⟨e, he⟩ := hC.embeddingOn S hSexp
+    let d : RelStructure.Embedding
+        ((C.ofFunctionalExpansion).toRelStructure.induce S)
+        D.toRelStructure := {
+      toFun := e
+      injective := e.injective
+      map_rel_iff := by
+        intro R x
+        cases R with
+        | inl R =>
+            exact e.map_rel_iff (.inl (.inl (ULift.up R))) x
+        | inr F =>
+            exact e.map_rel_iff (.inr (ULift.up F)) x
+    }
+    exact ⟨d, he⟩
+
 /-- U-transversality is unchanged when forgetting the unary part predicates. -/
 theorem functionOutputTransversal_of_expanded
     {Q : Type v}
