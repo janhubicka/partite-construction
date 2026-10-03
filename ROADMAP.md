@@ -31,9 +31,11 @@ and update the survey's validation markers at an immutable proof commit.
 6. **Recursive construction / functions — in progress:** set-valued functions,
    closed embeddings, U-transversality, the ordinary-indexed closed initial
    picture, and the half-closed induced partite construction are formalized.
-   This verifies the corrected positive-arity form of the survey's
-   `lem:rpartite`. Remaining: the arbitrary-projection outer Picture/repair
-   step and the assembled proof of `thm:models2`.
+   The non-closed free-attachment obstruction is isolated.  A post-processing
+   repair is also checked: retain only tuples lying in closed copies of the
+   previous stage; this preserves the closed Ramsey arrow and forces
+   U-transversality. Remaining: carry the outer D-partition through the nested
+   half-closed construction and assemble `thm:models2`.
 
 Keep hypotheses visible. An abstract fusion lemma is not a proof of existence
 of its input pictures. A library representation change is not a manuscript
