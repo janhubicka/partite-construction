@@ -31,8 +31,9 @@ variable {f : I → Embedding (Base.induce S) Core}
 noncomputable def testTrace
     (Test : Finset (Attachment.Vertex S (W := W) (I := I)))
     (α : Embedding Control (Attachment.attach Base S Core f)) :
-    UA → Option ↥(↑Test : Set (Attachment.Vertex S (W := W) (I := I))) :=
-  fun a =>
+    UA → Option ↥(↑Test : Set (Attachment.Vertex S (W := W) (I := I))) := by
+  classical
+  exact fun a =>
     if ha : α a ∈ Test then some ⟨α a, ha⟩ else none
 
 /-- Equal traces agree on every tested labelled control vertex. -/
@@ -42,26 +43,31 @@ theorem eq_of_testTrace_eq
     (h : testTrace Test α = testTrace Test β)
     (a : UA) (ha : α a ∈ Test) :
     β a ∈ Test ∧ α a = β a := by
+  classical
   have hfun := congrFun h a
+  change
+    (if hα : α a ∈ Test then
+      some (⟨α a, hα⟩ :
+        ↥(↑Test : Set (Attachment.Vertex S (W := W) (I := I))))
+     else none) =
+    (if hβ : β a ∈ Test then
+      some (⟨β a, hβ⟩ :
+        ↥(↑Test : Set (Attachment.Vertex S (W := W) (I := I))))
+     else none) at hfun
   by_cases hb : β a ∈ Test
-  · have hsome :
-        (some ⟨α a, ha⟩ :
-          Option ↥(↑Test : Set (Attachment.Vertex S (W := W) (I := I)))) =
-        some ⟨β a, hb⟩ := by
-      simpa [testTrace, ha, hb] using hfun
+  · rw [dif_pos ha, dif_pos hb] at hfun
     have hsub : (⟨α a, ha⟩ :
         ↥(↑Test : Set (Attachment.Vertex S (W := W) (I := I)))) =
-      ⟨β a, hb⟩ := Option.some.inj hsome
+      ⟨β a, hb⟩ := Option.some.inj hfun
     exact ⟨hb, congrArg Subtype.val hsub⟩
-  · have : False := by
-      simpa [testTrace, ha, hb] using hfun
-    exact this.elim
+  · rw [dif_pos ha, dif_neg hb] at hfun
+    cases hfun
 
 /-- There is a uniformly bounded set of attachment indices containing all
 active indices and one representative for every labelled control trace
 realized inside an attached copy. -/
 theorem exists_selected_indices
-    [Finite UA] [Finite VB] [Finite W] [Fintype I]
+    [Fintype UA] [Finite VB] [Finite W] [Fintype I]
     (Test : Finset (Attachment.Vertex S (W := W) (I := I))) :
     ∃ J : Finset I,
       (∀ i : I, ∀ x : {x : VB // x ∉ S},
@@ -88,9 +94,11 @@ theorem exists_selected_indices
     {α : Embedding Control Whole //
       ∃ i : I, ∀ a : UA, ∃ b : VB,
         α a = Attachment.copyMap Base S Core f i b}
+  letI : Fintype CopyAmbient := Fintype.ofFinite CopyAmbient
   let Trace :=
     UA → Option ↥(↑Test :
       Set (Attachment.Vertex S (W := W) (I := I)))
+  letI : Fintype Trace := Fintype.ofFinite Trace
   let traces : Finset Trace :=
     Finset.univ.image (fun α : CopyAmbient => testTrace Test α.1)
 
