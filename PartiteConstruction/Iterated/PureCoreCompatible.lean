@@ -42,8 +42,10 @@ theorem pureCore_embeddedWitness
             Partite.Picture.coreEmbedding
               C₀ α.toFunctionEmbedding E w) :
     let C₁ := Partite.Picture.build C₀ α.toFunctionEmbedding E
-    let Small := C₁.toRelStructure.induce (↑Test : Set _)
-    ∃ f : ↥(↑Test : Set _) → V,
+    let TestSet : Set (Partite.Picture.Vertex C₀ α.toFunctionEmbedding E) :=
+      ↑Test
+    let Small := C₁.toRelStructure.induce TestSet
+    ∃ f : ↥TestSet → V,
       Small.IsHomomorphismEmbedding B f ∧
       RelStructure.LocallyTreeLike.EmbeddedIntersections
         (A := A) (C := C₁.toRelStructure) (T := B) Test f := by
