@@ -52,8 +52,9 @@ noncomputable def postcompBoundaryEmbedding
     BoundaryEmbedding (A := A) (C := C) (T := T') S (e ∘ f) α where
   boundary := e.comp hbd.boundary
   agrees := fun x => congrArg e (hbd.agrees x)
-  contained := hbd.boundary.ContainedInIrreducible.postcomp
-    hbd.contained e
+  contained :=
+    Embedding.ContainedInIrreducible.postcomp
+      hbd.boundary hbd.contained e
 
 /-- A whole boundary system transports through an embedding of targets. -/
 noncomputable def postcompBoundarySystem
