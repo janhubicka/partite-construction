@@ -46,7 +46,7 @@ theorem relativeCompletion
     let Gset : Set P := Set.range q0
     let Q : RelStructure L Gset := D.induce Gset
     let q : H → Gset := fun d => ⟨q0 d, ⟨d, rfl⟩⟩
-    QuotientRelativeTreeCompletion Q q Base s := by
+    Nonempty (QuotientRelativeTreeCompletion Q q Base s) := by
   classical
   let I : Finset P := (Finset.univ : Finset E).image p
   obtain ⟨Y, T, hTree, g, hg, hPart⟩ := hD I hcard
@@ -134,8 +134,8 @@ theorem relativeCompletion
     rw [hbQ (q d)]
     rfl
 
-  exact QuotientRelativeTreeCompletion.mkOfBoundary
-    hTree f hf bQ hagree hcQ
+  exact ⟨QuotientRelativeTreeCompletion.mkOfBoundary
+    hTree f hf bQ hagree hcQ⟩
 
 end ProjectedPartialLocallyTreeLike
 end StructuralRamsey.RelStructure
