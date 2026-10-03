@@ -49,3 +49,60 @@ theorem rangeInverse_left (e : Embedding A B) (x : V) :
   exact e.rangeInverse_apply ⟨e x, ⟨x, rfl⟩⟩
 
 end StructuralRamsey.RelStructure.Embedding
+
+
+namespace StructuralRamsey.RelStructure.Embedding
+
+universe u v
+variable {L : RelLanguage.{u}}
+variable {V W : Type v}
+variable {A : RelStructure L V} {B : RelStructure L W}
+
+/-- Finite image support of an embedding. -/
+noncomputable def imageFinset [Fintype V] (e : Embedding A B) : Finset W :=
+  Finset.univ.image e
+
+@[simp] theorem mem_imageFinset_iff [Fintype V] (e : Embedding A B) (w : W) :
+    w ∈ e.imageFinset ↔ ∃ v : V, e v = w := by
+  simp [imageFinset]
+
+/-- Inverse embedding from the finite image support. -/
+noncomputable def imageInverse [Fintype V] (e : Embedding A B) :
+    Embedding (B.induce (↑e.imageFinset : Set W)) A where
+  toFun z := Classical.choose ((e.mem_imageFinset_iff z.1).mp z.2)
+  injective := by
+    intro x y hxy
+    apply Subtype.ext
+    calc
+      x.1 = e (Classical.choose ((e.mem_imageFinset_iff x.1).mp x.2)) :=
+        (Classical.choose_spec ((e.mem_imageFinset_iff x.1).mp x.2)).symm
+      _ = e (Classical.choose ((e.mem_imageFinset_iff y.1).mp y.2)) :=
+        congrArg e hxy
+      _ = y.1 :=
+        Classical.choose_spec ((e.mem_imageFinset_iff y.1).mp y.2)
+  map_rel_iff := by
+    intro R x
+    let q : Fin (L.arity R) → V :=
+      fun i => Classical.choose ((e.mem_imageFinset_iff (x i).1).mp (x i).2)
+    have heq : e ∘ q = Subtype.val ∘ x := by
+      funext i
+      exact Classical.choose_spec
+        ((e.mem_imageFinset_iff (x i).1).mp (x i).2)
+    calc
+      A.rel R q ↔ B.rel R (e ∘ q) := (e.map_rel_iff R q).symm
+      _ ↔ B.rel R (Subtype.val ∘ x) := by rw [heq]
+      _ ↔ (B.induce (↑e.imageFinset : Set W)).rel R x := Iff.rfl
+
+@[simp] theorem imageInverse_apply [Fintype V] (e : Embedding A B)
+    (z : ↥(↑e.imageFinset : Set W)) :
+    e (e.imageInverse z) = z.1 :=
+  Classical.choose_spec ((e.mem_imageFinset_iff z.1).mp z.2)
+
+theorem imageInverse_left [Fintype V] (e : Embedding A B) (x : V) :
+    e.imageInverse
+      ⟨e x, (e.mem_imageFinset_iff (e x)).mpr ⟨x, rfl⟩⟩ = x := by
+  apply e.injective
+  exact e.imageInverse_apply
+    ⟨e x, (e.mem_imageFinset_iff (e x)).mpr ⟨x, rfl⟩⟩
+
+end StructuralRamsey.RelStructure.Embedding
