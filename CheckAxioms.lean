@@ -278,3 +278,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.liftMap_collision_of_overlap_leakage
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.liftMap_injective_of_reflectsOverlap
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.liftEmbedding
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.not_containedInIrreducible_of_straddles
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.not_containedInIrreducible_of_exclusive_images
