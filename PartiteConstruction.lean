@@ -60,6 +60,7 @@ import PartiteConstruction.Partite.InducedConstruction
 import PartiteConstruction.Iterated.LocalTreeLike
 import PartiteConstruction.Iterated.WeakLocalTreeLike
 import PartiteConstruction.Iterated.ControlCompletion
+import PartiteConstruction.Iterated.ControlCompletionCompatible
 import PartiteConstruction.Iterated.WeakStep
 import PartiteConstruction.Iterated.WeakTrace
 import PartiteConstruction.Iterated.InducedTraceLocal
