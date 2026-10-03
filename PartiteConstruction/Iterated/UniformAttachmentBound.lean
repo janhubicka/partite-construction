@@ -152,7 +152,7 @@ theorem attachment_locallyTreeLike_fixedSupport
       J.card ≤ n + Fintype.card (UA → Option (Fin n)) := by
     calc
       J.card ≤ Test.card + Fintype.card (UA → Option TestType) := by
-        simpa [TestType] using hJcard
+        simpa [TestType, Nat.card_eq_fintype_card] using hJcard
       _ ≤ n + Fintype.card (UA → Option (Fin n)) :=
         Nat.add_le_add hTest hTraceCard
 
