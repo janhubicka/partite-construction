@@ -17,6 +17,7 @@ import PartiteConstruction.Functional.HalfClosedPartite
 import PartiteConstruction.Functional.SingletonExpansion
 import PartiteConstruction.Functional.SingletonReduction
 import PartiteConstruction.Functional.PartialDomainEncoding
+import PartiteConstruction.Functional.SingletonPartite
 import PartiteConstruction.Functional.RecursiveConstruction
 import PartiteConstruction.Functional.ClosedAttachment
 import PartiteConstruction.Functional.ClosedPicture
