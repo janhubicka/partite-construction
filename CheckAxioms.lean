@@ -82,3 +82,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.HalfClosed.Construction.relevant_iff_image_contained
 #print axioms StructuralRamsey.Partite.ClosedRepair.disjointCopies_uTransversal
 #print axioms StructuralRamsey.Partite.ClosedRepair.uTransversal_of_tupleCovered
+#print axioms StructuralRamsey.Partite.ClosedRepair.copyGenerated_uTransversal
+#print axioms StructuralRamsey.Partite.ClosedRepair.copyGenerated_arrow
