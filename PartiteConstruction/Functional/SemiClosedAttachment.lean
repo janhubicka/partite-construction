@@ -44,21 +44,14 @@ def restrictClosedToInduce
       exact congrArg Subtype.val hab
     map_rel_iff := by
       intro R x
-      change
-        B.rel R
-          (Subtype.val ∘
-            (fun i => (⟨e (x i), heS (x i)⟩ : S))) ↔
-          A.rel R x
-      convert e.toEmbedding.map_rel_iff R x using 1
-      funext i
-      rfl
+      change B.rel R (e ∘ x) ↔ A.rel R x
+      exact e.toEmbedding.map_rel_iff R x
   }
   closed := by
     intro F x y hy
     have hyB :
         B.rel (.inr F)
-          (Structure.funcTuple
-            (e ∘ (Subtype.val ∘ x)) y.1) := by
+          (Structure.funcTuple (e ∘ x) y.1) := by
       change
         B.rel (.inr F)
           (Subtype.val ∘
@@ -68,8 +61,7 @@ def restrictClosedToInduce
           Subtype.val ∘
               Structure.funcTuple
                 ((fun a => (⟨e a, heS a⟩ : S)) ∘ x) y =
-            Structure.funcTuple
-              (e ∘ (Subtype.val ∘ x)) y.1 := by
+            Structure.funcTuple (e ∘ x) y.1 := by
         funext j
         refine Fin.lastCases ?_ (fun k => ?_) j
         · simp [Structure.funcTuple, Function.comp_apply]
@@ -78,13 +70,10 @@ def restrictClosedToInduce
         (congrArg (fun t => B.rel (.inr F) t) ht)
         hy
     obtain ⟨z, hz, hzy⟩ :=
-      e.closed F (Subtype.val ∘ x) y.1 hyB
-    refine ⟨⟨z, heS z⟩, ?_, ?_⟩
-    · change A.rel (.inr F)
-        (Structure.funcTuple (Subtype.val ∘ x) z)
-      exact hz
-    · apply Subtype.ext
-      exact hzy
+      e.closed F x y.1 hyB
+    refine ⟨⟨z, heS z⟩, hz, ?_⟩
+    apply Subtype.ext
+    exact hzy
 
 /-- A selected closed A-copy stays closed through an ordinary free attachment
 as soon as it is fully contained in the overlap and every overlap embedding
@@ -159,16 +148,16 @@ theorem selectedCopy_closed
     rw [hargs] at hy
     exact hy
   rcases hy0 with ⟨q, hq, hcore⟩ | ⟨j, q, hq, hcopy⟩
-  · let args : Fin (L.funcArity F) → W :=
+  · let args : Fin (L.withFunctionDomains.funcArity F) → W :=
       fun k => q (Fin.castSucc k)
-    let out : W := q (Fin.last (L.funcArity F))
+    let out : W := q (Fin.last (L.withFunctionDomains.funcArity F))
     have hargsEq : d ∘ x = args := by
       funext k
       have hk := congrFun hcore (Fin.castSucc k)
       rw [Structure.funcTuple_castSucc] at hk
       exact Sum.inl.inj hk
     have houtEq : y = core out := by
-      have hk := congrFun hcore (Fin.last (L.funcArity F))
+      have hk := congrFun hcore (Fin.last (L.withFunctionDomains.funcArity F))
       rw [Structure.funcTuple_last] at hk
       exact hk
     have hrelD :
@@ -187,9 +176,9 @@ theorem selectedCopy_closed
         B S D (fun j => (f j).1) i).toEmbedding (e z) = y
     rw [hselected z, houtEq]
     exact congrArg core hzd
-  · let args : Fin (L.funcArity F) → V :=
+  · let args : Fin (L.withFunctionDomains.funcArity F) → V :=
       fun k => q (Fin.castSucc k)
-    let out : V := q (Fin.last (L.funcArity F))
+    let out : V := q (Fin.last (L.withFunctionDomains.funcArity F))
     have hrelB :
         B.rel (.inr F)
           (Structure.funcTuple args out) := by
@@ -208,7 +197,7 @@ theorem selectedCopy_closed
       change
         core (d (x k)) = cm j (args k) at hk
       exact hk.symm
-    let argsS : Fin (L.funcArity F) → S :=
+    let argsS : Fin (L.withFunctionDomains.funcArity F) → S :=
       fun k => ⟨args k, hargsS k⟩
     have hrootB :
         B.rel (.inl (.inr F)) args :=
@@ -292,7 +281,7 @@ theorem selectedCopy_closed
       hBsingle F args out r.1 hrelB hrB
     have hyEq : y = cm j out := by
       have hk := congrFun hcopy
-        (Fin.last (L.funcArity F))
+        (Fin.last (L.withFunctionDomains.funcArity F))
       rw [Structure.funcTuple_last] at hk
       exact hk
     refine ⟨z, hz, ?_⟩
