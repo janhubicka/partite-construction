@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.SemiClosedPictureProperty
+import PartiteConstruction.Functional.RootPrune
 import PartiteConstruction.Functional.SingletonHalfClosedPartite
 
 /-! # End-to-end recursive construction for partial functions
