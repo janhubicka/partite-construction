@@ -71,7 +71,7 @@ def restrictClosedToInduce
         hy
     obtain ⟨z, hz, hzy⟩ :=
       e.closed F x y.1 hyB
-    refine ⟨⟨z, heS z⟩, hz, ?_⟩
+    refine ⟨z, hz, ?_⟩
     apply Subtype.ext
     exact hzy
 
@@ -210,11 +210,7 @@ theorem selectedCopy_closed
       change
         B.rel (.inl (.inr F))
           (Subtype.val ∘ argsS)
-      have hval : Subtype.val ∘ argsS = args := by
-        funext k
-        rfl
-      rw [hval]
-      exact hrootB
+      simpa [argsS] using hrootB
     have hfjargs :
         (f j).toRelClosed ∘ argsS = d ∘ x := by
       funext k
@@ -289,8 +285,8 @@ theorem selectedCopy_closed
       have ht :
           Subtype.val ∘
               Structure.funcTuple argsS r =
-            Structure.funcTuple args r.1 := by
-        apply Structure.comp_funcTuple
+            Structure.funcTuple args r.1 :=
+        Structure.comp_funcTuple Subtype.val argsS r
       exact Eq.mp
         (congrArg (fun t => B.rel (.inr F) t) ht)
         hrB0
