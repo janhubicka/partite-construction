@@ -26,6 +26,23 @@ structure BoundarySystem
   get : ∀ α : Embedding A C,
     BoundaryEmbedding (A := A) (C := C) (T := T) S f α
 
+/-- Containment in an irreducible target substructure survives postcomposition
+with an embedding. -/
+theorem Embedding.ContainedInIrreducible.postcomp
+    {X Z : Type v} {D : RelStructure L X} {T' : RelStructure L Z}
+    (b : Embedding D T)
+    (hb : b.ContainedInIrreducible)
+    (e : Embedding T T') :
+    (e.comp b).ContainedInIrreducible := by
+  rcases hb with ⟨R, hR, hsub⟩
+  let eR : Embedding (T.induce R) T' :=
+    e.comp (inclusion T R)
+  refine ⟨Set.range eR, hR.range_embedding eR, ?_⟩
+  intro x
+  obtain ⟨r, hr⟩ := hsub x
+  let rr : R := ⟨b x, hr⟩
+  exact ⟨rr, rfl⟩
+
 /-- Boundary embeddings transport through an embedding of targets. -/
 noncomputable def BoundaryEmbedding.postcomp
     {Z : Type v} {T' : RelStructure L Z}
@@ -33,23 +50,11 @@ noncomputable def BoundaryEmbedding.postcomp
     (α : Embedding A C)
     (hbd : BoundaryEmbedding (A := A) (C := C) (T := T) S f α)
     (e : Embedding T T') :
-    BoundaryEmbedding (A := A) (C := C) (T := T') S (e ∘ f) α := by
-  rcases hbd.contained with ⟨R, hR, hsub⟩
-  refine {
-    boundary := e.comp hbd.boundary
-    agrees := ?_
-    contained := ?_
-  }
-  · intro x
-    exact congrArg e (hbd.agrees x)
-  · let eR : Embedding (T.induce R) T' :=
-      e.comp (inclusion T R)
-    refine ⟨Set.range eR, hR.range_embedding eR, ?_⟩
-    intro x
-    obtain ⟨r, hr⟩ := hsub x
-    let rr : R := ⟨hbd.boundary x, hr⟩
-    refine ⟨rr, ?_⟩
-    rfl
+    BoundaryEmbedding (A := A) (C := C) (T := T') S (e ∘ f) where
+  boundary := e.comp hbd.boundary
+  agrees := fun x => congrArg e (hbd.agrees x)
+  contained := hbd.boundary.ContainedInIrreducible.postcomp
+    hbd.contained e
 
 /-- A whole boundary system transports through an embedding of targets. -/
 noncomputable def BoundarySystem.postcomp
@@ -75,8 +80,8 @@ theorem completeControlList_of_boundaries
       TreeAmalgam B Z T' ∧
       ∃ f' : ↥(↑S : Set W) → Z,
         (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' f' ∧
-        BoundarySystem A C T' S f' ∧
-        Controls (A := A) (C := C) (T := T') S f' xs := by
+        ∃ hbd' : BoundarySystem A C T' S f',
+          Controls (A := A) (C := C) (T := T') S f' xs := by
   classical
   induction xs with
   | nil =>
