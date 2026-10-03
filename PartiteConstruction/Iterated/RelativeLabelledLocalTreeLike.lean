@@ -32,7 +32,7 @@ def RelativeLabelledLocallyTreeLike (n : ℕ) : Prop :=
   LocallyTreeLike A B D n ∧
   ∀ I : Finset P, I.card ≤ n →
     ∀ (β : Embedding A D) (H : Set U),
-      (∀ a : H, β a.1 ∈ I) →
+      ∀ hH : (∀ a : H, β a.1 ∈ I),
       ∃ (Y : Type v) (T : RelStructure L Y),
         TreeAmalgam B Y T ∧
         ∃ f : ↥(↑I : Set P) → Y,
@@ -42,7 +42,7 @@ def RelativeLabelledLocallyTreeLike (n : ℕ) : Prop :=
               ∀ a : U, ∀ ha : γ a ∈ I,
                 ∃ a' : U, f ⟨γ a, ha⟩ = γ' a') ∧
           ∃ target : Embedding A T,
-            ∀ a : H, f ⟨β a.1, a.2⟩ = target a.1
+            ∀ a : H, f ⟨β a.1, hH a⟩ = target a.1
 
 namespace RelativeLabelledLocallyTreeLike
 
