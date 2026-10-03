@@ -135,3 +135,9 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Structure.Embedding.withFunctionDomains
 #print axioms StructuralRamsey.RelStructure.withFunctionDomains_graph_semiClosed
 #print axioms StructuralRamsey.RelStructure.closedEmbedding_of_localSemiClosed
+
+#print axioms StructuralRamsey.Partite.System.induce_outputImpliesDomain
+#print axioms StructuralRamsey.Partite.Closed.Induced.power_outputImpliesDomain
+#print axioms StructuralRamsey.Partite.HalfClosed.Initial.outputImpliesDomain
+#print axioms StructuralRamsey.Partite.Attachment.outputImpliesDomain
+#print axioms StructuralRamsey.Partite.Nested.flatten_outputImpliesDomain
