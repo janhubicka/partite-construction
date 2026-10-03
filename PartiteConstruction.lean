@@ -91,6 +91,7 @@ import PartiteConstruction.Iterated.AttachmentDecompose
 import PartiteConstruction.Iterated.Glue
 import PartiteConstruction.Iterated.WitnessGlue
 import PartiteConstruction.Iterated.MixedOverlapObstruction
+import PartiteConstruction.Iterated.MixedOverlapExample
 import PartiteConstruction.Iterated.ProjectedGlue
 import PartiteConstruction.Iterated.ProjectedCover
 import PartiteConstruction.Relational.Attachment
