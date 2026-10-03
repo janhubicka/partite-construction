@@ -118,4 +118,89 @@ theorem glue
   exact ⟨_, Target, hTree, f, hf⟩
 
 end RelativeTreeCompletion
+
+/-- Relative completion over a common quotient of the source overlap.
+The compatibility map q need not be injective or relation-reflecting; the
+target overlap Q itself is embedded on each side.  This is the form naturally
+produced by a partite projection on a reducible source overlap. -/
+structure QuotientRelativeTreeCompletion
+    {K : Type v} (Q : RelStructure L K)
+    (q : H → K)
+    (Base : RelStructure L VB)
+    (s : Embedding G Esrc) where
+  TargetType : Type v
+  target : RelStructure L TargetType
+  tree : TreeAmalgam Base TargetType target
+  map : E → TargetType
+  mapHE : Esrc.IsHomomorphismEmbedding target map
+  boundary : Embedding Q target
+  agrees : ∀ x : H, map (s x) = boundary (q x)
+  contained : boundary.ContainedInIrreducible
+
+namespace QuotientRelativeTreeCompletion
+
+variable {K : Type v} {Q : RelStructure L K} {q : H → K}
+variable {sE : Embedding G Esrc} {sF : Embedding G Fsrc}
+variable {iE : Embedding Esrc Csrc} {iF : Embedding Fsrc Csrc}
+
+/-- Package quotient-boundary witness data. -/
+def mkOfBoundary
+    {Y : Type v} {T : RelStructure L Y}
+    (hTree : TreeAmalgam Base Y T)
+    (f : E → Y)
+    (hf : Esrc.IsHomomorphismEmbedding T f)
+    (b : Embedding Q T)
+    (hagrees : ∀ x : H, f (sE x) = b (q x))
+    (hcontained : b.ContainedInIrreducible) :
+    QuotientRelativeTreeCompletion Q q Base sE where
+  TargetType := Y
+  target := T
+  tree := hTree
+  map := f
+  mapHE := hf
+  boundary := b
+  agrees := hagrees
+  contained := hcontained
+
+/-- Two side completions through the same quotient overlap glue to a tree
+completion of the source free amalgam. -/
+theorem glue
+    (hSrc : IsFreeAmalgam sE sF iE iF)
+    (hE : QuotientRelativeTreeCompletion Q q Base sE)
+    (hF : QuotientRelativeTreeCompletion Q q Base sF) :
+    HasTreeCompletion Base Csrc := by
+  classical
+  let Target :=
+    FreeAmalgam.amalgam Q hE.target hF.target
+      hE.boundary hF.boundary
+  let jE :=
+    FreeAmalgam.leftEmbedding Q hE.target hF.target
+      hE.boundary hF.boundary
+  let jF :=
+    FreeAmalgam.rightEmbedding Q hE.target hF.target
+      hE.boundary hF.boundary
+  have hTree :
+      TreeAmalgam Base
+        (FreeAmalgam.Vertex Q hE.target hF.target
+          hE.boundary hF.boundary)
+        Target :=
+    FreeAmalgam.treeAmalgam
+      Q hE.target hF.target hE.boundary hF.boundary Base
+      hE.tree hF.tree hE.contained hF.contained
+  have hTgt :
+      IsFreeAmalgam hE.boundary hF.boundary jE jF :=
+    FreeAmalgam.isFreeAmalgam
+      Q hE.target hF.target hE.boundary hF.boundary
+  let f : C →
+      FreeAmalgam.Vertex Q hE.target hF.target
+        hE.boundary hF.boundary :=
+    IsFreeAmalgam.liftMap
+      hSrc hTgt q hE.map hF.map hE.agrees hF.agrees
+  have hf : Csrc.IsHomomorphismEmbedding Target f :=
+    IsFreeAmalgam.liftMap_isHomomorphismEmbedding
+      hSrc hTgt q hE.map hF.map hE.agrees hF.agrees
+      hE.mapHE hF.mapHE
+  exact ⟨_, Target, hTree, f, hf⟩
+
+end QuotientRelativeTreeCompletion
 end StructuralRamsey.RelStructure
