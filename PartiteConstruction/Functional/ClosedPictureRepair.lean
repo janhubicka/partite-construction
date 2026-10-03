@@ -306,12 +306,11 @@ noncomputable def generatedCopy
       intro R q
       constructor
       · rintro ⟨d, r, hr, hEq⟩
-        have hC :
-            C.rel R (e ∘ q) := by
-          exact (d.1.toEmbedding.map_rel_iff R r).mpr hr
-            |> fun h => by
-              convert h using 1
-              exact hEq.symm
+        have hC0 : C.rel R (d ∘ r) :=
+          (d.1.toEmbedding.map_rel_iff R r).mpr hr
+        have hC : C.rel R (e ∘ q) := by
+          rw [hEq]
+          exact hC0
         exact (e.1.toEmbedding.map_rel_iff R q).mp hC
       · intro hq
         exact ⟨e, q, hq, rfl⟩
@@ -323,9 +322,12 @@ noncomputable def generatedCopy
       C.rel (.inr F)
         (Structure.funcTuple (e ∘ x) y) := by
     rcases hy with ⟨d, q, hq, hEq⟩
-    have h := (d.1.toEmbedding.map_rel_iff (.inr F) q).mpr hq
-    convert h using 1
-    exact hEq.symm
+    have h : C.rel (.inr F) (d ∘ q) :=
+      (d.1.toEmbedding.map_rel_iff (.inr F) q).mpr hq
+    change C.rel (.inr F)
+      (Structure.funcTuple (pe ∘ x) y)
+    rw [hEq]
+    exact h
   obtain ⟨z, hz, hzy⟩ := e.2 F x y hyC
   exact ⟨z, hz, hzy⟩
 
