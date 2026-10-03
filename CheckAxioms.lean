@@ -205,3 +205,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.Embedding.imageInverse
 #print axioms StructuralRamsey.RelStructure.Embedding.imageInverse_apply
 #print axioms StructuralRamsey.RelStructure.Embedding.imageInverse_left
+
+#print axioms StructuralRamsey.RelStructure.rootEmbeddingIntoBase
