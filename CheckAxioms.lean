@@ -264,3 +264,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.Attachment.irreducible_copy_or_intersection_in_support
 
 #print axioms StructuralRamsey.Partite.Induced.embedding_coordinate
+
+#print axioms StructuralRamsey.Partite.Induced.LinePicture.copy_comp_restrict
+#print axioms StructuralRamsey.Partite.Induced.LinePicture.property
+#print axioms StructuralRamsey.Partite.Induced.LinePicture.isPartiteOver
