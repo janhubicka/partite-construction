@@ -280,3 +280,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.QuotientRelativeTreeCompletion.glue
 
 #print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.relativeCompletion
+
+#print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.relativeCompletionOver
