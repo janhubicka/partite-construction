@@ -81,23 +81,25 @@ theorem of_homEmbedding_to_base
     exact eAB.isHomomorphismEmbedding.comp hToA
   let hbd :
       LocallyTreeLike.BoundarySystem A C B S f := {
-    get := fun α => by
-      obtain ⟨q, hq⟩ := hp.after_irreducible_embedding hA α
+    get := fun α =>
+      let hqex := hp.after_irreducible_embedding hA α
+      let q : Embedding A A := Classical.choose hqex
+      let hq : ∀ a, q a = p (α a) := Classical.choose_spec hqex
       let Hset : Set U := {a : U | α a ∈ S}
       let boundary : Embedding (A.induce Hset) B :=
         (eAB.comp q).comp (inclusion A Hset)
-      refine {
+      {
         boundary := boundary
-        agrees := ?_
-        contained := ?_
+        agrees := by
+          intro x
+          change eAB (q x.1) = eAB (p (α x.1))
+          exact congrArg eAB (hq x.1)
+        contained := by
+          apply Embedding.containedInIrreducible_of_range_subset
+            hA (eAB.comp q) boundary
+          intro x
+          exact ⟨x.1, rfl⟩
       }
-      · intro x
-        change eAB (q x.1) = eAB (p (α x.1))
-        exact congrArg eAB (hq x.1)
-      · apply Embedding.containedInIrreducible_of_range_subset
-          hA (eAB.comp q) boundary
-        intro x
-        exact ⟨x.1, rfl⟩
   }
   exact ⟨V, B, TreeAmalgam.copy (Iso.refl B),
     f, hf, ⟨hbd⟩⟩
