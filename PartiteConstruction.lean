@@ -72,6 +72,7 @@ import PartiteConstruction.Iterated.FinalAttachmentBudget
 import PartiteConstruction.Iterated.RootBudgetTrace
 import PartiteConstruction.Iterated.IndexedTarget
 import PartiteConstruction.Iterated.UniformAttachment
+import PartiteConstruction.Iterated.TraceSelector
 import PartiteConstruction.Iterated.AttachmentTrace
 import PartiteConstruction.Iterated.UniformAttachmentBound
 import PartiteConstruction.Iterated.AttachmentProjection
