@@ -255,3 +255,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.glueProjectedFull_intersectionStrong
 
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.addControl_of_boundary
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.addControl_of_boundary_with_embedding
