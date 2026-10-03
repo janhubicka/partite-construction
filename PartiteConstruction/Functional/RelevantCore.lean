@@ -48,14 +48,22 @@ theorem induce_uTransversal
     change
       S.rel (.inr F)
         (Subtype.val ∘ Structure.funcTuple x y) at hy
-    simpa only [Structure.comp_funcTuple] using hy
+    have ht := Structure.comp_funcTuple Subtype.val x y
+    exact Eq.mp
+      (congrArg
+        (fun t => S.rel (show L.graph.Symbol from Sum.inr F) t) ht)
+      hy
   have hz' :
       S.rel (.inr F)
         (Structure.funcTuple (Subtype.val ∘ x) z.1) := by
     change
       S.rel (.inr F)
         (Subtype.val ∘ Structure.funcTuple x z) at hz
-    simpa only [Structure.comp_funcTuple] using hz
+    have ht := Structure.comp_funcTuple Subtype.val x z
+    exact Eq.mp
+      (congrArg
+        (fun t => S.rel (show L.graph.Symbol from Sum.inr F) t) ht)
+      hz
   apply Subtype.ext
   exact hS F
     (Subtype.val ∘ x) y.1 z.1 hy' hz' hp
@@ -163,18 +171,32 @@ theorem core_uTransversal
       change
         S.rel (.inr F)
           (Subtype.val ∘ Structure.funcTuple x y) at hy
-      simpa only [Structure.comp_funcTuple] using hy
+      have ht := Structure.comp_funcTuple Subtype.val x y
+      exact Eq.mp
+        (congrArg
+          (fun t => S.rel (show L.graph.Symbol from Sum.inr F) t) ht)
+        hy
     have hz' :
         S.rel (.inr F)
           (Structure.funcTuple (Subtype.val ∘ x) z.1) := by
       change
         S.rel (.inr F)
           (Subtype.val ∘ Structure.funcTuple x z) at hz
-      simpa only [Structure.comp_funcTuple] using hz
+      have ht := Structure.comp_funcTuple Subtype.val x z
+      exact Eq.mp
+        (congrArg
+          (fun t => S.rel (show L.graph.Symbol from Sum.inr F) t) ht)
+        hz
+    have hpS : S.part y.1 = S.part z.1 := by
+      calc
+        S.part y.1 = α (R.part y) :=
+          (S.restrictedPart_spec α.toFunctionEmbedding y).symm
+        _ = α (R.part z) := congrArg α hp
+        _ = S.part z.1 :=
+          S.restrictedPart_spec α.toFunctionEmbedding z
     apply Subtype.ext
     exact hS F
-      (Subtype.val ∘ x) y.1 z.1 hy' hz'
-      (congrArg α.toFunctionEmbedding hp)
+      (Subtype.val ∘ x) y.1 z.1 hy' hz' hpS
   exact induce_uTransversal R hR (RelevantSet S α)
 
 /-- Every closed projected A-copy factors as a closed embedding into the
@@ -199,9 +221,9 @@ noncomputable def factorProjected
       intro R x
       change
         (S.restrict α.toFunctionEmbedding).rel R
-          (Subtype.val ∘ (f ∘ x)) ↔ A.rel R x
-      simpa [f, Function.comp_def] using
-        (r.1.map_rel_iff R x)
+          (fun i => r (x i)) ↔
+        (Partite.transversal A).rel R x
+      exact r.1.map_rel_iff R x
     map_part := by
       intro a
       exact r.1.map_part a
@@ -230,7 +252,6 @@ noncomputable def factorProjected
   obtain ⟨a, ha, hay⟩ := r.2 F x y.1 hyR
   refine ⟨a, ha, ?_⟩
   apply Subtype.ext
-  apply Subtype.ext
   exact hay
 
 /-- Every vertex of the relevant core lies in one of its factored closed
@@ -247,8 +268,7 @@ theorem vertex_covered
   refine ⟨factorProjected S α e, a, ?_⟩
   apply Subtype.ext
   apply Subtype.ext
-  change e.1 a = x.1.1
-  exact hea
+  simpa [factorProjected, restrictProjected] using hea
 
 
 /-- The same relevant vertices, viewed in the ambient carrier. -/
@@ -284,8 +304,9 @@ theorem ambientRelevant_functionClosed_unary
     funext i
     have hi : i = i0 := by
       apply Fin.ext
+      have hAr := hUnary F
       have hiLt := i.isLt
-      have hi0Lt := i0.isLt
+      dsimp [i0]
       omega
     subst i
     exact hea
@@ -297,66 +318,5 @@ theorem ambientRelevant_functionClosed_unary
   obtain ⟨z, hz, hzy⟩ := e.1.closed F xa y hy'
   exact ⟨e, z, hzy⟩
 
-/-- In the unary-function case the relevant core includes into the ambient
-stage by a closed embedding. -/
-noncomputable def coreInclusionClosed_unary
-    {A : RelStructure L.graph U}
-    {D : RelStructure L.graph P}
-    (S : Partite.System L.graph P X)
-    (α : RelStructure.Embedding A D)
-    (hUnary : ∀ F, L.funcArity F = 1) :
-    RelStructure.ClosedEmbedding
-      (core S α).toRelStructure S.toRelStructure := by
-  let toAmbient : RelevantSet S α → X := fun x => x.1.1
-  let emb : RelStructure.Embedding
-      (core S α).toRelStructure S.toRelStructure := {
-    toFun := toAmbient
-    injective := by
-      intro x y hxy
-      apply Subtype.ext
-      apply Subtype.ext
-      exact hxy
-    map_rel_iff := by
-      intro R x
-      rfl
-  }
-  refine ⟨emb, ?_⟩
-  intro F x y hy
-  have hxRel : ∀ i, toAmbient (x i) ∈ AmbientRelevantSet S α := by
-    intro i
-    exact (x i).2
-  have hyRel : y ∈ AmbientRelevantSet S α :=
-    ambientRelevant_functionClosed_unary S α hUnary
-      F (toAmbient ∘ x) y hy hxRel
-  rcases hyRel with ⟨e, a, hea⟩
-  have hSupport : y ∈ S.support α.toFunctionEmbedding := by
-    exact ⟨a, (e.2 a).symm.trans (congrArg S.part hea)⟩
-  let ys : S.support α.toFunctionEmbedding := ⟨y, hSupport⟩
-  have hRelevant : ys ∈ RelevantSet S α := by
-    exact ⟨e, a, hea⟩
-  let z : RelevantSet S α := ⟨ys, hRelevant⟩
-  refine ⟨z, ?_, ?_⟩
-  · change
-      (S.restrict α.toFunctionEmbedding).rel (.inr F)
-        (Subtype.val ∘
-          Structure.funcTuple x z)
-    change
-      S.rel (.inr F)
-        (Subtype.val ∘
-          (Subtype.val ∘ Structure.funcTuple x z))
-    have ht :
-        toAmbient ∘ Structure.funcTuple x z =
-          Structure.funcTuple (toAmbient ∘ x) y := by
-      have h := Structure.comp_funcTuple toAmbient x z
-      simpa [toAmbient, z, ys] using h
-    change
-      S.rel (.inr F)
-        (toAmbient ∘ Structure.funcTuple x z)
-    exact Eq.mpr
-      (congrArg
-        (fun t => S.rel
-          (show L.graph.Symbol from Sum.inr F) t) ht)
-      hy
-  · rfl
 
 end StructuralRamsey.Partite.RelevantCore
