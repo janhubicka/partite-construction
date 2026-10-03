@@ -234,3 +234,7 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_uniformFinal
 #print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_uniformFinal_all
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.compatible_overlap_kernel_iff
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.no_compatible_overlap_of_kernel_mismatch
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.same_kernel_of_controlled_gluing_data
