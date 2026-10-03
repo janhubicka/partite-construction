@@ -59,11 +59,13 @@ variable {V W : Type v}
 variable {A : RelStructure L V} {B : RelStructure L W}
 
 /-- Finite image support of an embedding. -/
-noncomputable def imageFinset [Fintype V] (e : Embedding A B) : Finset W :=
-  Finset.univ.image e
+noncomputable def imageFinset [Fintype V] (e : Embedding A B) : Finset W := by
+  classical
+  exact Finset.univ.image e
 
 @[simp] theorem mem_imageFinset_iff [Fintype V] (e : Embedding A B) (w : W) :
     w ∈ e.imageFinset ↔ ∃ v : V, e v = w := by
+  classical
   simp [imageFinset]
 
 /-- Inverse embedding from the finite image support. -/
