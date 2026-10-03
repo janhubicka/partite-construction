@@ -39,12 +39,11 @@ theorem Embedding.ContainedInIrreducible.postcomp
     e.comp (inclusion T R)
   refine ⟨Set.range eR, hR.range_embedding eR, ?_⟩
   intro x
-  obtain ⟨r, hr⟩ := hsub x
-  let rr : R := ⟨b x, hr⟩
+  let rr : R := ⟨b x, hsub x⟩
   exact ⟨rr, rfl⟩
 
 /-- Boundary embeddings transport through an embedding of targets. -/
-noncomputable def BoundaryEmbedding.postcomp
+noncomputable def postcompBoundaryEmbedding
     {Z : Type v} {T' : RelStructure L Z}
     (S : Finset W) (f : ↥(↑S : Set W) → Y)
     (α : Embedding A C)
@@ -57,13 +56,13 @@ noncomputable def BoundaryEmbedding.postcomp
     hbd.contained e
 
 /-- A whole boundary system transports through an embedding of targets. -/
-noncomputable def BoundarySystem.postcomp
+noncomputable def postcompBoundarySystem
     {Z : Type v} {T' : RelStructure L Z}
     (S : Finset W) (f : ↥(↑S : Set W) → Y)
     (hbd : BoundarySystem A C T S f)
     (e : Embedding T T') :
     BoundarySystem A C T' S (e ∘ f) where
-  get := fun α => (hbd.get α).postcomp S f α e
+  get := fun α => postcompBoundaryEmbedding S f α (hbd.get α) e
 
 /-- Process a finite list of ambient A-copies while preserving the boundary
 system for every ambient A-copy. -/
@@ -83,7 +82,7 @@ theorem completeControlList_of_boundaries
         ∃ hbd' : BoundarySystem A C T' S f',
           Controls (A := A) (C := C) (T := T') S f' xs := by
   classical
-  induction xs with
+  induction xs generalizing Y with
   | nil =>
       refine ⟨Y, T, hTree, f, hf, hbd, ?_⟩
       intro α hα
@@ -98,7 +97,7 @@ theorem completeControlList_of_boundaries
       have hbd₂ :
           BoundarySystem (A := A) (C := C) (T := T₂) S f₂ := by
         rw [hfEq]
-        exact hbd₁.postcomp S f₁ e
+        exact postcompBoundarySystem S f₁ hbd₁ e
       exact ⟨Z, T₂, hTree₂, f₂, hf₂, hbd₂, hctrl₂⟩
 
 /-- Complete the ordinary ambient-A control clause for all A-copies from a
