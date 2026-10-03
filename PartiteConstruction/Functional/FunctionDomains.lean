@@ -133,7 +133,8 @@ variable {L : Language.{u}} {V : Type v} {W : Type w}
 its root/domain tuple. -/
 def OutputImpliesDomain
     (A : RelStructure L.withFunctionDomains.graph V) : Prop :=
-  ∀ F (x : Fin (L.funcArity F) → V) y,
+  ∀ (F : L.withFunctionDomains.FuncSymbol)
+      (x : Fin (L.withFunctionDomains.funcArity F) → V) y,
     A.rel (.inr F) (funcTuple x y) →
       A.rel (.inl (.inr F)) x
 
@@ -142,7 +143,8 @@ partial-function structures with their canonical domain relations satisfy this
 by definition. -/
 def FunctionDomainTotal
     (A : RelStructure L.withFunctionDomains.graph V) : Prop :=
-  ∀ F (x : Fin (L.funcArity F) → V),
+  ∀ (F : L.withFunctionDomains.FuncSymbol)
+      (x : Fin (L.withFunctionDomains.funcArity F) → V),
     A.rel (.inl (.inr F)) x →
       ∃ y, A.rel (.inr F) (funcTuple x y)
 
@@ -151,7 +153,8 @@ each root has at most one output.  Roots are allowed to have no output. -/
 def FunctionSemiClosed
     (A : RelStructure L.withFunctionDomains.graph V) : Prop :=
   A.OutputImpliesDomain ∧
-  ∀ F (x : Fin (L.funcArity F) → V) y z,
+  ∀ (F : L.withFunctionDomains.FuncSymbol)
+      (x : Fin (L.withFunctionDomains.funcArity F) → V) y z,
     A.rel (.inr F) (funcTuple x y) →
     A.rel (.inr F) (funcTuple x z) →
     y = z
@@ -164,7 +167,8 @@ def LocallySingleValuedOn
     (A : RelStructure L.withFunctionDomains.graph U)
     (B : RelStructure L.withFunctionDomains.graph V)
     (e : Embedding A B) : Prop :=
-  ∀ F (x : Fin (L.funcArity F) → U) y z,
+  ∀ (F : L.withFunctionDomains.FuncSymbol)
+      (x : Fin (L.withFunctionDomains.funcArity F) → U) y z,
     B.rel (.inr F) (funcTuple (e ∘ x) y) →
     B.rel (.inr F) (funcTuple (e ∘ x) z) →
     y = z
