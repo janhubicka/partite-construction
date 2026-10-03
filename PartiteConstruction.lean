@@ -121,3 +121,6 @@ import PartiteConstruction.Ramsey.Ordered
 import PartiteConstruction.Iterated.LabelledIntersectionControl
 
 import PartiteConstruction.Iterated.MixedCommonLabelGlue
+import PartiteConstruction.Iterated.PureCoreProjectedHistory
+import PartiteConstruction.Iterated.PureCopyProjectedHistory
+import PartiteConstruction.Iterated.ProjectedHistoryLocalTreeLike
