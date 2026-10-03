@@ -52,6 +52,7 @@ import PartiteConstruction.Partite.NonInduced
 import PartiteConstruction.Partite.Induced
 import PartiteConstruction.Partite.InducedAttachment
 import PartiteConstruction.Partite.InducedPicture
+import PartiteConstruction.Partite.InducedLinePicture
 import PartiteConstruction.Partite.InducedInitial
 import PartiteConstruction.Partite.InducedInvariant
 import PartiteConstruction.Partite.InducedBased
