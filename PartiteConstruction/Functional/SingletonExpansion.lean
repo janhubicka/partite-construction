@@ -137,9 +137,10 @@ theorem mem_rankedValue_of_mem
   refine ⟨j.isLt, ?_⟩
   have happ : (s.orderIsoOfFin rfl) j = q :=
     (s.orderIsoOfFin rfl).apply_symm_apply q
-  have hval := congrArg Subtype.val happ
+  have hval : ((s.orderIsoOfFin rfl) j).1 = y :=
+    congrArg Subtype.val happ
   change y = s.orderEmbOfFin rfl j
-  simpa [j, q] using hval.symm
+  exact hval.symm.trans (Finset.coe_orderIsoOfFin_apply s rfl j)
 
 /-- A full embedding maps the finite source fibre exactly onto the target
 fibre. -/
@@ -148,13 +149,13 @@ theorem fiberFinset_image
     [Finite V] [Finite W]
     (e : Embedding A B)
     (F : L.FuncSymbol) (x : Fin (L.funcArity F) → V) :
-    Finset.image e (fiberFinset A F x) =
+    Finset.map e.toFunctionEmbedding (fiberFinset A F x) =
       fiberFinset B F (e ∘ x) := by
   classical
   ext y
   constructor
   · intro hy
-    rcases Finset.mem_image.mp hy with ⟨a, ha, rfl⟩
+    rcases Finset.mem_map.mp hy with ⟨a, ha, rfl⟩
     have ha' : a ∈ A.func F x :=
       (mem_fiberFinset A F x a).mp ha
     have himg : e a ∈ imageSet e (A.func F x) :=
@@ -168,7 +169,7 @@ theorem fiberFinset_image
       rw [e.map_func F x]
       exact hy'
     rcases himg with ⟨a, ha, rfl⟩
-    exact Finset.mem_image.mpr
+    exact Finset.mem_map.mpr
       ⟨a, (mem_fiberFinset A F x a).mpr ha, rfl⟩
 
 theorem fiberFinset_card_eq
@@ -180,7 +181,7 @@ theorem fiberFinset_card_eq
       (fiberFinset A F x).card := by
   classical
   rw [← fiberFinset_image e F x]
-  exact Finset.card_image_of_injective _ e.injective
+  exact Finset.card_map _ _
 
 /-- An order-preserving full embedding sends the i-th value of a fibre to the
 i-th value of the target fibre. -/
@@ -196,7 +197,7 @@ theorem map_orderedFiber
   classical
   let sA := fiberFinset A F x
   let sB := fiberFinset B F (e ∘ x)
-  have himage : Finset.image e sA = sB := by
+  have himage : Finset.map e.toFunctionEmbedding sA = sB := by
     simpa [sA, sB] using fiberFinset_image e F x
   have hcard : sB.card = sA.card := by
     simpa [sA, sB] using fiberFinset_card_eq e F x
@@ -205,7 +206,7 @@ theorem map_orderedFiber
         e (sA.orderEmbOfFin rfl j) ∈ sB := by
     intro j
     rw [← himage]
-    exact Finset.mem_image.mpr
+    exact Finset.mem_map.mpr
       ⟨sA.orderEmbOfFin rfl j,
         Finset.orderEmbOfFin_mem sA rfl j, rfl⟩
   have hinc :
@@ -308,7 +309,7 @@ theorem Embedding.rankExpand_unique
     {A : Structure L V} {B : Structure L W}
     [LinearOrder V] [LinearOrder W] [Finite V] [Finite W]
     (e : Embedding A B) (hmono : StrictMono e) (n : ℕ)
-    (g : Embedding (rankExpand A n) (rankExpand B n))
+    (g : Embedding (Structure.rankExpand A n) (Structure.rankExpand B n))
     (hg : ∀ x, g x = e x) :
     g = e.rankExpand hmono n := by
   apply Embedding.ext
@@ -317,14 +318,13 @@ theorem Embedding.rankExpand_unique
 
 /-- Every fibre of a finite structure has size at most its carrier. -/
 theorem fiberFinset_card_le
-    (A : Structure L V) [Finite V]
+    (A : Structure L V) [Fintype V]
     (F : L.FuncSymbol) (x : Fin (L.funcArity F) → V) :
     (fiberFinset A F x).card ≤ Fintype.card V := by
   classical
-  letI : Fintype V := Fintype.ofFinite V
-  exact Finset.card_le_card (by
-    intro y hy
-    exact Finset.mem_univ y)
+  apply Finset.card_le_card
+  intro y hy
+  simp
 
 end Structure
 end StructuralRamsey
