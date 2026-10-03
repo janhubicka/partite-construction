@@ -229,3 +229,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.FiniteTrace.selectIndices_cardBound
 
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.selectAttachmentIndices
+
+#print axioms StructuralRamsey.RelStructure.UniformFinal.CoversSupport.of_embedding
+#print axioms StructuralRamsey.RelStructure.UniformFinal.attachSupportList
+#print axioms StructuralRamsey.RelStructure.UniformFinal.build_all_supports
