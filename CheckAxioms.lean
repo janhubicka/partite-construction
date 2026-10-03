@@ -268,3 +268,9 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.PartialEmbeddedIntersections.toEmbeddedIntersections
 #print axioms StructuralRamsey.RelStructure.PartialCompatibleLocallyTreeLike.pullback_embedding
 #print axioms StructuralRamsey.Partite.Iterated.pureCopy_partialWitness
+
+#print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.pullback_embedding
+#print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.embeddedIntersections
+#print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.toLocallyTreeLike
+#print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.rebase_identity
+#print axioms StructuralRamsey.Partite.Iterated.pureCopy_projectedPartialWitness
