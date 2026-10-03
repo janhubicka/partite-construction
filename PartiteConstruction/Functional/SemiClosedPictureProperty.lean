@@ -147,7 +147,6 @@ theorem halfClosedProperty
         θ (coreLetter e) = χ (lift e) := by
       have hcl := coreLiftable e
       simp only [θ, dif_pos hcl, lift]
-      congr 1
     have hm :=
       hf
         (restrictRelevant A D B α (projected e₁))
