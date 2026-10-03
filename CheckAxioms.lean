@@ -210,3 +210,10 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.RelStructure.Embedding.imageInverseAt
 #print axioms StructuralRamsey.RelStructure.Embedding.imageInverseAt_apply
+
+#print axioms StructuralRamsey.RelStructure.FinalSupport.Root.beta
+#print axioms StructuralRamsey.RelStructure.FinalSupport.Root.toBase
+#print axioms StructuralRamsey.RelStructure.FinalSupport.Root.support
+#print axioms StructuralRamsey.RelStructure.FinalSupport.Root.supportEmbedding
+#print axioms StructuralRamsey.RelStructure.FinalSupport.AtSupport.embedding
+#print axioms StructuralRamsey.RelStructure.FinalSupport.AtSupport.embedding_compat
