@@ -110,3 +110,8 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Structure.Embedding.forgetRanks
 #print axioms StructuralRamsey.Structure.arrow_of_rankExpansion
 #print axioms StructuralRamsey.Structure.arrow_of_singletonExpansion
+
+#print axioms StructuralRamsey.Structure.Embedding.partialGraph
+#print axioms StructuralRamsey.Structure.Embedding.ofPartialGraph
+#print axioms StructuralRamsey.Structure.Embedding.partialGraphEquiv
+#print axioms StructuralRamsey.Structure.embeddingEquivRankedPartialGraph
