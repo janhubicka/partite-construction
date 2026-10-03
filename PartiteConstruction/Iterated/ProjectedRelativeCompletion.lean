@@ -137,5 +137,115 @@ theorem relativeCompletion
   exact ⟨QuotientRelativeTreeCompletion.mkOfBoundary
     hTree f hf bQ hagree hcQ⟩
 
+
+/-- Relative completion over a preselected projected quotient.  This is the
+transport-friendly form used when two sides of a source free amalgam must use
+literally the same quotient overlap. -/
+theorem relativeCompletionOver
+    [Fintype E] [DecidableEq P]
+    (hControl : Control.Irreducible)
+    (hD : ProjectedPartialLocallyTreeLike
+      (A := Control) (D := D) (C := D) Base id m)
+    (s : Embedding Dsrc Esrc)
+    (p : E → P)
+    (hp : Esrc.IsHomomorphismEmbedding D p)
+    (α : Embedding Control D)
+    (q0 : H → P)
+    (hSideQuot : ∀ d : H, p (s d) = q0 d)
+    (hQuotAlpha : ∀ d : H, ∃ a : UA, q0 d = α a)
+    (hcard : ((Finset.univ : Finset E).image p).card ≤ m) :
+    let I : Finset P := (Finset.univ : Finset E).image p
+    let Gset : Set P := Set.range q0
+    let Q : RelStructure L Gset := D.induce Gset
+    let q : H → Gset := fun d => ⟨q0 d, ⟨d, rfl⟩⟩
+    Nonempty (QuotientRelativeTreeCompletion Q q Base s) := by
+  classical
+  let I : Finset P := (Finset.univ : Finset E).image p
+  obtain ⟨Y, T, hTree, g, hg, hPart⟩ := hD I hcard
+
+  let pI : E → ↥(↑I : Set P) :=
+    fun e => ⟨p e, Finset.mem_image.mpr ⟨e, Finset.mem_univ e, rfl⟩⟩
+  have hpI :
+      Esrc.IsHomomorphismEmbedding (D.induce (↑I : Set P)) pI :=
+    hp.codRestrict (↑I : Set P)
+      (fun e => Finset.mem_image.mpr ⟨e, Finset.mem_univ e, rfl⟩)
+  let f : E → Y := g ∘ pI
+  have hf : Esrc.IsHomomorphismEmbedding T f :=
+    hg.comp hpI
+
+  let Gset : Set P := Set.range q0
+  let Q : RelStructure L Gset := D.induce Gset
+  let incQD : Embedding Q D := inclusion D Gset
+
+  have hQrange : ∀ z : Gset, ∃ a : UA, incQD z = α a := by
+    intro z
+    rcases z.2 with ⟨d, hd⟩
+    obtain ⟨a, ha⟩ := hQuotAlpha d
+    exact ⟨a, hd.symm.trans ha⟩
+  let eQA : Embedding Q Control :=
+    incQD.factorThroughRange α hQrange
+  have heQA (z : Gset) : α (eQA z) = z.1 :=
+    (Classical.choose_spec (hQrange z)).symm
+
+  let Hset : Set UA := Set.range eQA
+  let eHA : Embedding (Control.induce Hset) D :=
+    α.comp (inclusion Control Hset)
+  have hHAproj :
+      ∀ x : Hset, id (eHA x) = α x.1 := fun _ => rfl
+  have hHArange : ∀ x : Hset, eHA x ∈ I := by
+    intro x
+    rcases x.2 with ⟨z, hz⟩
+    rcases z.2 with ⟨d, hd⟩
+    have hside : p (s d) = z.1 := (hSideQuot d).trans hd
+    change α x.1 ∈ I
+    rw [← hz, heQA z]
+    apply Finset.mem_image.mpr
+    exact ⟨s d, Finset.mem_univ _, hside⟩
+
+  obtain ⟨bHA, hbHA, hcHA⟩ :=
+    hPart α Hset eHA hHAproj hHArange
+
+  let eQH : Embedding Q (Control.induce Hset) := {
+    toFun := fun z => ⟨eQA z, ⟨z, rfl⟩⟩
+    injective := by
+      intro x y hxy
+      apply eQA.injective
+      exact congrArg Subtype.val hxy
+    map_rel_iff := by
+      intro R x
+      change Control.rel R (eQA ∘ x) ↔ Q.rel R x
+      exact eQA.map_rel_iff R x
+  }
+  let bQ : Embedding Q T := bHA.comp eQH
+  have hbQ (z : Gset) :
+      bQ z = g ⟨z.1, by
+        rcases z.2 with ⟨d, hd⟩
+        apply Finset.mem_image.mpr
+        exact ⟨s d, Finset.mem_univ _,
+          (hSideQuot d).trans hd⟩⟩ := by
+    change bHA (eQH z) = _
+    rw [hbHA (eQH z)]
+    apply congrArg g
+    apply Subtype.ext
+    exact heQA z
+
+  have hcQ : bQ.ContainedInIrreducible := by
+    rcases hcHA with ⟨R, hR, hsub⟩
+    exact ⟨R, hR, fun z => hsub (eQH z)⟩
+
+  let q : H → Gset := fun d => ⟨q0 d, ⟨d, rfl⟩⟩
+  have hagree : ∀ d : H, f (s d) = bQ (q d) := by
+    intro d
+    rw [hbQ (q d)]
+    change g (pI (s d)) =
+      g ⟨q0 d, Finset.mem_image.mpr
+        ⟨s d, Finset.mem_univ _, hSideQuot d⟩⟩
+    apply congrArg g
+    apply Subtype.ext
+    exact hSideQuot d
+
+  exact ⟨QuotientRelativeTreeCompletion.mkOfBoundary
+    hTree f hf bQ hagree hcQ⟩
+
 end ProjectedPartialLocallyTreeLike
 end StructuralRamsey.RelStructure
