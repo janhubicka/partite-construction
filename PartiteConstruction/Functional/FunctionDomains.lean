@@ -137,6 +137,15 @@ def OutputImpliesDomain
     A.rel (.inr F) (funcTuple x y) →
       A.rel (.inl (.inr F)) x
 
+/-- Every declared root/domain tuple has a function output.  Genuine
+partial-function structures with their canonical domain relations satisfy this
+by definition. -/
+def FunctionDomainTotal
+    (A : RelStructure L.withFunctionDomains.graph V) : Prop :=
+  ∀ F (x : Fin (L.funcArity F) → V),
+    A.rel (.inl (.inr F)) x →
+      ∃ y, A.rel (.inr F) (funcTuple x y)
+
 /-- Global semi-closedness for partial functions: output tuples have a root and
 each root has at most one output.  Roots are allowed to have no output. -/
 def FunctionSemiClosed
@@ -171,6 +180,16 @@ theorem withFunctionDomains_graph_outputImpliesDomain
   change ∃ z, z ∈ A.func F x
   exact ⟨y, hy⟩
 
+/-- Canonical domain relations are total: a declared domain tuple has an
+output. -/
+theorem withFunctionDomains_graph_domainTotal
+    (A : Structure L V) :
+    A.withFunctionDomains.graph.FunctionDomainTotal := by
+  intro F x hx
+  change ∃ y, y ∈ A.func F x at hx
+  rcases hx with ⟨y, hy⟩
+  exact ⟨y, hy⟩
+
 /-- A singleton-valued genuine partial-function structure is semi-closed after
 adding domain relations. -/
 theorem withFunctionDomains_graph_semiClosed
@@ -194,10 +213,7 @@ def closedEmbedding_of_localSemiClosed
     (hBroot : B.OutputImpliesDomain)
     (e : Embedding A B)
     (hLocal : LocallySingleValuedOn A B e)
-    (hAtotal :
-      ∀ F (x : Fin (L.funcArity F) → U),
-        A.rel (.inl (.inr F)) x →
-          ∃ z, A.rel (.inr F) (funcTuple x z)) :
+    (hAtotal : A.FunctionDomainTotal) :
     ClosedEmbedding A B := by
   refine ⟨e, ?_⟩
   intro F x y hy
