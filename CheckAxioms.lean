@@ -101,3 +101,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Recursive.recursiveConstruction_of_localPictures
 #print axioms StructuralRamsey.Partite.Recursive.localHalfClosedPicture_of_closed
 #print axioms StructuralRamsey.Partite.HalfClosed.inducedPartiteOver
+#print axioms StructuralRamsey.Partite.RelevantCore.core_isPartiteOver
+#print axioms StructuralRamsey.Partite.RelevantCore.core_uTransversal
+#print axioms StructuralRamsey.Partite.RelevantCore.vertex_covered
