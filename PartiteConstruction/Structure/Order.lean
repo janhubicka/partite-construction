@@ -30,9 +30,10 @@ variable {L : Language.{u}} {V : Type v} {W : Type w} {X : Type z}
 /-- Expand a structure by its given strict order. -/
 def withLinearOrder (A : Structure L V) [LT V] :
     Structure L.withLinearOrder V where
-  rel
-    | .inl R, x => A.rel R x
-    | .inr _, x => x 0 < x 1
+  rel R := by
+    cases R with
+    | inl R => exact A.rel R
+    | inr _ => exact fun (x : Fin 2 → V) => x 0 < x 1
   func := A.func
 
 /-- Forget only the distinguished order symbol. -/
