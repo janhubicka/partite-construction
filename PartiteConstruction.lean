@@ -79,6 +79,7 @@ import PartiteConstruction.Iterated.RangeInverse
 import PartiteConstruction.Iterated.ProjectedRoot
 import PartiteConstruction.Iterated.FinalSupport
 import PartiteConstruction.Iterated.AttachmentLocalization
+import PartiteConstruction.Iterated.FinalSupportStage
 import PartiteConstruction.Iterated.FinalCompletion
 import PartiteConstruction.Iterated.FinalSparsening
 import PartiteConstruction.Iterated.SparseningIteration
