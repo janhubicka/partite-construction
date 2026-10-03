@@ -70,6 +70,7 @@ import PartiteConstruction.Iterated.FinalAttachment
 import PartiteConstruction.Iterated.RootedWitness
 import PartiteConstruction.Iterated.FinalAttachmentBudget
 import PartiteConstruction.Iterated.RootBudgetTrace
+import PartiteConstruction.Iterated.IndexedTarget
 import PartiteConstruction.Iterated.FinalCompletion
 import PartiteConstruction.Iterated.FinalSparsening
 import PartiteConstruction.Iterated.SparseningIteration
