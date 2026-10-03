@@ -49,7 +49,7 @@ noncomputable def postcompBoundaryEmbedding
     (α : Embedding A C)
     (hbd : BoundaryEmbedding (A := A) (C := C) (T := T) S f α)
     (e : Embedding T T') :
-    BoundaryEmbedding (A := A) (C := C) (T := T') S (e ∘ f) where
+    BoundaryEmbedding (A := A) (C := C) (T := T') S (e ∘ f) α where
   boundary := e.comp hbd.boundary
   agrees := fun x => congrArg e (hbd.agrees x)
   contained := hbd.boundary.ContainedInIrreducible.postcomp
