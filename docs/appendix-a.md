@@ -64,6 +64,9 @@ all checked end to end.  The full-language consequence is
 | Functional part-predicate bridge | `Language.withParts`, `Partite.closedArrow_iff_functionalExpanded`, `halfClosedArrow_iff_functionalExpanded` | Exact L_P interface with unary part predicates and unchanged U-closedness |
 | Nested functional flattening | `Partite.Closed.Embedding.toFlattenedFunctional`, `closedArrow_flattened_of_functionalExpanded`, `Nested.flatten_uTransversal_comp` | L_P closed arrows descend to the outer partite target; U-transversality composes directly |
 | Corrected native `lem:rpartite` | `Partite.HalfClosed.inducedPartite` | End-to-end positive-arity partite theorem: apply half-closed construction in L_P, flatten, preserve the closed Ramsey arrow, and obtain a U-transversal witness |
+| Outer recursive iteration | `Partite.Recursive.build`, `recursiveConstruction_of_localPictures` | Processes every ordinary A→D projection, performs backward closed fusion, and carries the ordinary Ramsey arrow on D to a final closed Ramsey arrow |
+| Closed-projection local witness | `Partite.Recursive.localHalfClosedPicture_of_closed` | The required local half-closed U-transversal picture exists whenever the projection α is already U-closed |
+| Remaining local boundary | `Partite.Recursive.LocalHalfClosedPictures` | Exact single unresolved input for `thm:models2`: existence of the local intermediate picture for non-U-closed ordinary projections |
 | Non-closed Picture obstruction | `RelStructure.Attachment.copy_comp_not_functionClosed` | Free attachment over a non-closed support can destroy closedness of a selected composite A-copy |
 | Closed-copy-generated repair | `Partite.ClosedRepair.copyGenerated_uTransversal`, `copyGenerated_arrow` | Pruning to tuples lying in closed B-copies preserves the closed Ramsey arrow and forces U-transversality whenever B is U-transversal |
 | Tuple-coverage criterion | `Partite.ClosedRepair.uTransversal_of_tupleCovered` | The survey's claimed closed-copy coverage is sufficient for U-transversality; the unsupported part is obtaining that coverage before repair |
@@ -169,7 +172,7 @@ The fixed-length bridge combines hypothetical bad colourings at each length
 into one colouring of all finite words and applies that theorem.
 
 `CheckAxioms.lean` prints the transitive axiom dependencies of the main results.
-All 91 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
+All 94 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
 every requested declaration produced a result. In particular, `sorryAx`, a
 custom HJ axiom, and native-evaluation axioms cannot pass this audit.
 
