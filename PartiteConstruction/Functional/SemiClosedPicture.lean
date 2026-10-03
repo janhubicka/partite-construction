@@ -292,4 +292,77 @@ noncomputable def build
     (E.relabel α.toFunctionEmbedding)
     (fun f => (attachingMap A D B α f).1)
 
+
+/-- Extend one closed overlap embedding to the ordinary B-copy and retain
+closedness on a relevant A-subcopy. -/
+noncomputable def selectedLift
+    (A : RelStructure L.withFunctionDomains.graph U)
+    (D : RelStructure L.withFunctionDomains.graph P)
+    (B : Partite.System L.withFunctionDomains.graph P V)
+    (α : RelStructure.Embedding A D)
+    (E : Partite.System L.withFunctionDomains.graph U W)
+    (hAtotal : A.FunctionDomainTotal)
+    (hBroot : B.OutputImpliesDomain)
+    (hBsingle : B.FunctionOutputSingleValued)
+    (f : Partite.Closed.Embedding
+      (restriction A D B α) E)
+    (e : Partite.Closed.ProjectedEmbedding
+      A B (fun a => α a)) :
+    Partite.Closed.Embedding
+      (Partite.Recursive.profile A D α)
+      (build A D B α E) := by
+  let maps :=
+    fun g : Partite.Closed.Embedding
+        (restriction A D B α) E =>
+      attachingMap A D B α g
+  let copy :
+      Partite.Embedding B (build A D B α E) :=
+    Partite.Attachment.copyEmbedding
+      B (coveredSet A D B α)
+      (E.relabel α.toFunctionEmbedding)
+      (fun g => (maps g).1) f
+  let pe : Partite.Embedding
+      (Partite.Recursive.profile A D α)
+      (build A D B α E) := {
+    toEmbedding :=
+      copy.toEmbedding.comp e.1.toEmbedding
+    map_part := by
+      intro a
+      exact (copy.map_part (e.1 a)).trans (e.2 a)
+  }
+  refine ⟨pe, ?_⟩
+  have heCovered :
+      ∀ a : U, e.1 a ∈ coveredSet A D B α :=
+    fun a => ⟨e, a, rfl⟩
+  exact Partite.Attachment.selectedCopy_closed
+    (A := A) (B := B)
+    (S := coveredSet A D B α)
+    (D := E.relabel α.toFunctionEmbedding)
+    (f := maps)
+    hAtotal hBroot hBsingle f e.1 heCovered
+
+@[simp] theorem selectedLift_apply
+    (A : RelStructure L.withFunctionDomains.graph U)
+    (D : RelStructure L.withFunctionDomains.graph P)
+    (B : Partite.System L.withFunctionDomains.graph P V)
+    (α : RelStructure.Embedding A D)
+    (E : Partite.System L.withFunctionDomains.graph U W)
+    (hAtotal : A.FunctionDomainTotal)
+    (hBroot : B.OutputImpliesDomain)
+    (hBsingle : B.FunctionOutputSingleValued)
+    (f : Partite.Closed.Embedding
+      (restriction A D B α) E)
+    (e : Partite.Closed.ProjectedEmbedding
+      A B (fun a => α a))
+    (a : U) :
+    selectedLift A D B α E hAtotal hBroot hBsingle f e a =
+      Partite.Attachment.copyEmbedding
+        B (coveredSet A D B α)
+        (E.relabel α.toFunctionEmbedding)
+        (fun g : Partite.Closed.Embedding
+          (restriction A D B α) E =>
+            (attachingMap A D B α g).1)
+        f (e.1 a) :=
+  rfl
+
 end StructuralRamsey.Partite.SemiClosed.Picture
