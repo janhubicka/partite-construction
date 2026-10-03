@@ -15,6 +15,7 @@ At each ordinary projection alpha:
 
 Thus the outer recursion carries singleton-valuedness, not transversality.
 Singleton-valuedness implies the U-transversality needed in the final witness.
+The final projection is retained for the order-completion step.
 -/
 namespace StructuralRamsey.Partite.SemiClosed.Recursive
 
@@ -155,7 +156,7 @@ theorem build
         exact hold
 
 /-- End-to-end recursive partite construction for the domain-expanded
-partial-function setting. -/
+partial-function setting, retaining its partite projection. -/
 theorem recursiveConstruction
     (A : RelStructure L.withFunctionDomains.graph U)
     (B : RelStructure L.withFunctionDomains.graph V)
@@ -169,6 +170,7 @@ theorem recursiveConstruction
     (hRamsey : StructuralRamsey.Arrow A B D κ) :
     ∃ (X : Type v) (_ : Finite X)
       (C : Partite.System L.withFunctionDomains.graph P X),
+      C.IsPartiteOver D ∧
       C.FunctionOutputSingleValued ∧
       C.FunctionOutputTransversal ∧
       RelStructure.ClosedArrow
@@ -182,7 +184,7 @@ theorem recursiveConstruction
   obtain ⟨T, hCanon⟩ :=
     build A B D hpos hAtotal hDroot κ S₀ xs
   refine
-    ⟨T.Vertex, inferInstance, T.system,
+    ⟨T.Vertex, inferInstance, T.system, T.isPartite,
       T.singleValued, T.singleValued.uTransversal, ?_⟩
   intro χ
   obtain ⟨f, hf⟩ := hCanon χ
@@ -250,11 +252,10 @@ theorem recursiveConstruction
   rw [hp₁, hp₂] at hmono
   exact hmono
 
-
 /-- Starting from an arbitrary ordinary Ramsey witness in the relational
 domain-expanded graph language, first root-prune it and then run the corrected
-recursive construction.  Thus no root-compatibility assumption is needed on
-the witness supplied by the ordinary relational Ramsey theorem. -/
+recursive construction.  No root-compatibility assumption is needed on the
+ordinary witness.  Its root-pruned partite projection is retained. -/
 theorem recursiveConstruction_from_ordinaryWitness
     (A₀ : Structure L U)
     (B₀ : Structure L V)
@@ -271,6 +272,7 @@ theorem recursiveConstruction_from_ordinaryWitness
         D κ) :
     ∃ (X : Type v) (_ : Finite X)
       (C : Partite.System L.withFunctionDomains.graph P X),
+      C.IsPartiteOver (RelStructure.rootPrune D) ∧
       C.FunctionOutputSingleValued ∧
       C.FunctionOutputTransversal ∧
       RelStructure.ClosedArrow
