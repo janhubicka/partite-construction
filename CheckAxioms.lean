@@ -106,3 +106,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Structure.mem_rankedValue_of_mem
 #print axioms StructuralRamsey.Structure.Embedding.rankExpand
 #print axioms StructuralRamsey.Structure.Embedding.rankExpand_unique
+
+#print axioms StructuralRamsey.Structure.Embedding.forgetRanks
+#print axioms StructuralRamsey.Structure.arrow_of_rankExpansion
+#print axioms StructuralRamsey.Structure.arrow_of_singletonExpansion
