@@ -10,6 +10,7 @@ import PartiteConstruction.Functional.ClosedInitial
 import PartiteConstruction.Functional.HalfClosedInitial
 import PartiteConstruction.Functional.HalfClosedConstruction
 import PartiteConstruction.Functional.ClosedPictureRepair
+import PartiteConstruction.Functional.NestedFlatten
 import PartiteConstruction.Functional.ClosedAttachment
 import PartiteConstruction.Functional.ClosedPicture
 import PartiteConstruction.Functional.ClosedConstruction
