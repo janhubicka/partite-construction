@@ -128,8 +128,8 @@ noncomputable def embedding
     (r : AtSupport Orig Base Q pOrig hpOrig hProjected T) :
     Embedding (Base.induce (↑T : Set VB)) Orig :=
   (inclusion Orig (↑r.1.1 : Set O)).comp
-    (Root.toBase Orig Base Q pOrig hpOrig hProjected r.1).imageInverseAt
-      T r.2
+    ((Root.toBase Orig Base Q pOrig hpOrig hProjected r.1).imageInverseAt
+      T r.2)
 
 theorem embedding_compat
     (r : AtSupport Orig Base Q pOrig hpOrig hProjected T)
@@ -144,8 +144,8 @@ theorem embedding_compat
   rw [Root.toBase_compat Orig Base Q pOrig hpOrig hProjected r.1]
   congr
   exact
-    (Root.toBase Orig Base Q pOrig hpOrig hProjected r.1).
-      imageInverseAt_apply T r.2 x
+    Embedding.imageInverseAt_apply
+      (Root.toBase Orig Base Q pOrig hpOrig hProjected r.1) T r.2 x
 
 end AtSupport
 end StructuralRamsey.RelStructure.FinalSupport
