@@ -1,0 +1,35 @@
+name: Assemble root-budget audit
+on:
+  push:
+    branches: [formalize/iterated-root-budget]
+    paths: [.github/workflows/root-budget-audit-source.yml]
+permissions:
+  contents: write
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: formalize/iterated-root-budget
+          fetch-depth: 0
+      - name: Retain all previous checks verbatim
+        run: |
+          python3 - <<'PY'
+          import pathlib, subprocess
+          old = subprocess.check_output(['git', 'show', '05bafc88fd4d0c5be17ef04c0b89e95b8e858b6d:CheckAxioms.lean'], text=True)
+          declarations = [
+            'StructuralRamsey.RelStructure.LocallyTreeLike.rootedWitness_controlled',
+            'StructuralRamsey.RelStructure.LocallyTreeLike.rootedWitness',
+            'StructuralRamsey.RelStructure.LocallyTreeLike.freeAmalgam_rootBudget',
+            'StructuralRamsey.RelStructure.FreeAmalgam.attachOverIrreducible_preservesProjectionAndLocalTree_rootBudget',
+            'StructuralRamsey.RelStructure.RootBudgetTrace.locallyTreeLike',
+          ]
+          pathlib.Path('CheckAxioms.lean').write_text(old + '\n' + ''.join('#print axioms ' + d + '\n' for d in declarations))
+          PY
+          git diff --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add CheckAxioms.lean
+          git commit -m 'Preserve the merged axiom audit verbatim and append root-budget declarations'
+          git push origin HEAD:formalize/iterated-root-budget
