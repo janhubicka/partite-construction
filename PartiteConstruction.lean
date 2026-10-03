@@ -16,6 +16,7 @@ import PartiteConstruction.Functional.PartPredicates
 import PartiteConstruction.Functional.HalfClosedPartite
 import PartiteConstruction.Functional.RecursiveConstruction
 import PartiteConstruction.Functional.RelevantCore
+import PartiteConstruction.Functional.RelevantCorePicture
 import PartiteConstruction.Functional.ClosedAttachment
 import PartiteConstruction.Functional.ClosedPicture
 import PartiteConstruction.Functional.ClosedConstruction
