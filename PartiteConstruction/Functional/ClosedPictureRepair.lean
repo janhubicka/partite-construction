@@ -154,27 +154,45 @@ theorem disjointCopies_uTransversal
     rw [hyEq, hzEq] at hp'
     exact hp'
   have heq : ay = bz := by
-    let args : Fin (L.funcArity F) → V :=
-      fun k => (x k).2
-    have hargsA : args = fun k => a (Fin.castSucc k) := by
+    let argsA : Fin (L.funcArity F) → V :=
+      fun k => a (Fin.castSucc k)
+    let argsB : Fin (L.funcArity F) → V :=
+      fun k => b (Fin.castSucc k)
+    have hargs : argsA = argsB := by
       funext k
-      have hk := congrArg Prod.snd (congrFun heqa (Fin.castSucc k))
-      simpa only [Structure.funcTuple_castSucc, Function.comp_apply] using hk
-    have hargsB : args = fun k => b (Fin.castSucc k) := by
-      funext k
-      have hk := congrArg Prod.snd (congrFun heqb (Fin.castSucc k))
-      simpa only [Structure.funcTuple_castSucc, Function.comp_apply] using hk
-    have ha' : B.rel (.inr F) (Structure.funcTuple args ay) := by
-      have heta : Structure.funcTuple (fun k => a (Fin.castSucc k)) ay = a := by
-        simpa [ay, Language.graph] using (Structure.funcTuple_eta (t := a))
-      rw [hargsA, heta]
+      have hka := congrArg Prod.snd (congrFun heqa (Fin.castSucc k))
+      have hkb := congrArg Prod.snd (congrFun heqb (Fin.castSucc k))
+      have hka' : (x k).2 = a (Fin.castSucc k) := by
+        calc
+          (x k).2 =
+              (Structure.funcTuple x y (Fin.castSucc k)).2 := by
+                rw [Structure.funcTuple_castSucc]
+          _ = (((fun v => (i, v)) ∘ a) (Fin.castSucc k)).2 := hka
+          _ = a (Fin.castSucc k) := by rfl
+      have hkb' : (x k).2 = b (Fin.castSucc k) := by
+        calc
+          (x k).2 =
+              (Structure.funcTuple x z (Fin.castSucc k)).2 := by
+                rw [Structure.funcTuple_castSucc]
+          _ = (((fun v => (i, v)) ∘ b) (Fin.castSucc k)).2 := hkb
+          _ = b (Fin.castSucc k) := by rfl
+      exact hka'.symm.trans hkb'
+    have ha' : B.rel (.inr F) (Structure.funcTuple argsA ay) := by
+      have heta : Structure.funcTuple argsA ay = a := by
+        simpa [argsA, ay, Language.graph] using
+          (Structure.funcTuple_eta (t := a))
+      rw [heta]
       exact ha
-    have hb' : B.rel (.inr F) (Structure.funcTuple args bz) := by
-      have heta : Structure.funcTuple (fun k => b (Fin.castSucc k)) bz = b := by
-        simpa [bz, Language.graph] using (Structure.funcTuple_eta (t := b))
-      rw [hargsB, heta]
+    have hb0 : B.rel (.inr F) (Structure.funcTuple argsB bz) := by
+      have heta : Structure.funcTuple argsB bz = b := by
+        simpa [argsB, bz, Language.graph] using
+          (Structure.funcTuple_eta (t := b))
+      rw [heta]
       exact hb
-    exact hU F args ay bz ha' hb' hpB
+    have hb' : B.rel (.inr F) (Structure.funcTuple argsA bz) := by
+      rw [hargs]
+      exact hb0
+    exact hU F argsA ay bz ha' hb' hpB
   calc
     y = (i, ay) := hyEq
     _ = (i, bz) := congrArg (fun q => (i, q)) heq
