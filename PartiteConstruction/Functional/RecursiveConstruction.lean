@@ -265,36 +265,28 @@ theorem build
             χ (RelStructure.ClosedEmbedding.comp g.toRelClosed e))
       refine ⟨Partite.Closed.Embedding.comp g f, ?_⟩
       intro β hβ e₁ e₂
-      have hassoc₁ :
-          RelStructure.ClosedEmbedding.comp
-              (Partite.Closed.Embedding.comp g f).toRelClosed
-              e₁.toRelClosed =
-            RelStructure.ClosedEmbedding.comp g.toRelClosed
-              (RelStructure.ClosedEmbedding.comp
-                f.toRelClosed e₁.toRelClosed) := by
-        apply RelStructure.ClosedEmbedding.ext
-        intro x
-        rfl
-      have hassoc₂ :
-          RelStructure.ClosedEmbedding.comp
-              (Partite.Closed.Embedding.comp g f).toRelClosed
-              e₂.toRelClosed =
-            RelStructure.ClosedEmbedding.comp g.toRelClosed
-              (RelStructure.ClosedEmbedding.comp
-                f.toRelClosed e₂.toRelClosed) := by
-        apply RelStructure.ClosedEmbedding.ext
-        intro x
-        rfl
       rcases List.mem_cons.mp hβ with rfl | hβ
       · have hlocal :=
           hg
             (Partite.Closed.Embedding.comp f e₁)
             (Partite.Closed.Embedding.comp f e₂)
-        rw [toRelClosed_comp, toRelClosed_comp] at hlocal
-        rw [hassoc₁, hassoc₂]
+        simp only [toRelClosed_comp] at hlocal
+        change
+          χ (RelStructure.ClosedEmbedding.comp g.toRelClosed
+              (RelStructure.ClosedEmbedding.comp
+                f.toRelClosed e₁.toRelClosed)) =
+            χ (RelStructure.ClosedEmbedding.comp g.toRelClosed
+              (RelStructure.ClosedEmbedding.comp
+                f.toRelClosed e₂.toRelClosed))
         exact hlocal
       · have hold := hf β hβ e₁ e₂
-        rw [hassoc₁, hassoc₂]
+        change
+          χ (RelStructure.ClosedEmbedding.comp g.toRelClosed
+              (RelStructure.ClosedEmbedding.comp
+                f.toRelClosed e₁.toRelClosed)) =
+            χ (RelStructure.ClosedEmbedding.comp g.toRelClosed
+              (RelStructure.ClosedEmbedding.comp
+                f.toRelClosed e₂.toRelClosed))
         exact hold
 
 /-- Enumerate every ordinary A-copy in D. -/
