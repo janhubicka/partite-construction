@@ -182,3 +182,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.TreeAmalgam.exists_base_embedding
 #print axioms StructuralRamsey.RelStructure.TreeAmalgam.attachIndexedList
 #print axioms StructuralRamsey.RelStructure.TreeAmalgam.attachIndexed
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.attachmentWitness_of_selected
