@@ -233,3 +233,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.UniformFinal.CoversSupport.of_embedding
 #print axioms StructuralRamsey.RelStructure.UniformFinal.attachSupportList
 #print axioms StructuralRamsey.RelStructure.UniformFinal.build_all_supports
+
+#print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_uniformFinal
+#print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_uniformFinal_all
