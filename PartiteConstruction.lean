@@ -13,7 +13,6 @@ import PartiteConstruction.Functional.NonClosedPictureObstruction
 import PartiteConstruction.Functional.ClosedPictureRepair
 import PartiteConstruction.Functional.NestedFlatten
 import PartiteConstruction.Functional.PartPredicates
-import PartiteConstruction.Functional.HalfClosedPartite
 import PartiteConstruction.Functional.SingletonExpansion
 import PartiteConstruction.Functional.SingletonReduction
 import PartiteConstruction.Functional.PartialDomainEncoding
@@ -67,6 +66,8 @@ import PartiteConstruction.Iterated.Initial
 import PartiteConstruction.Iterated.Ordered
 import PartiteConstruction.Iterated.FreeAmalgam
 import PartiteConstruction.Iterated.FinalAttachment
+import PartiteConstruction.Iterated.RootedWitness
+import PartiteConstruction.Iterated.FinalAttachmentBudget
 import PartiteConstruction.Iterated.FinalCompletion
 import PartiteConstruction.Iterated.FinalSparsening
 import PartiteConstruction.Iterated.SparseningIteration
