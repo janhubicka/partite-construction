@@ -290,3 +290,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.glueControlled_of_commonLabels
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.commonLabels_postcomp
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.sameKernel_of_commonLabels
+
+#print axioms StructuralRamsey.RelStructure.RelativeLabelledLocallyTreeLike.zero_of_embeddings
+#print axioms StructuralRamsey.RelStructure.RelativeLabelledLocallyTreeLike.of_homEmbedding_to_control
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.glueProjectedFull_relativeLabelled
