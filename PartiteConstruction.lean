@@ -117,3 +117,5 @@ import PartiteConstruction.Partite.Invariants
 import PartiteConstruction.Ramsey.Finite
 import PartiteConstruction.Ramsey.FromProjections
 import PartiteConstruction.Ramsey.Ordered
+
+import PartiteConstruction.Iterated.LabelledIntersectionControl
