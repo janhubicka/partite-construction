@@ -149,50 +149,32 @@ noncomputable def liftEmbedding
       let Fmap := liftMap hSrc hTgt q hA hB hcompatA hcompatB
       rcases (hTgt.rel_iff R (Fmap ∘ x)).mp htarget with hleft | hright
       · rcases hleft with ⟨y, hy, hFy⟩
-        let pre : Fin (L.arity R) → E := fun k =>
-          Classical.choose (by
-            rcases hSrc.covers (x k) with hxA | hxB
-            · rcases hxA with ⟨a, hxa⟩
-              exact ⟨a, hxa⟩
-            · rcases hxB with ⟨b, hxb⟩
-              have hEq :
-                  jB (hB b) = jA (y k) := by
-                calc
-                  jB (hB b) =
-                      Fmap (iB b) :=
-                    (liftMap_right hSrc hTgt q hA hB
-                      hcompatA hcompatB b).symm
-                  _ = Fmap (x k) := congrArg Fmap hxb.symm
-                  _ = jA (y k) := congrFun hFy k
-              obtain ⟨g, hyg, hbg⟩ :=
-                (hTgt.overlap (y k) (hB b)).mp hEq.symm
-              obtain ⟨d, hbd, _hqd⟩ := hexB b g hbg
-              have hov : iA (sA d) = iB (sB d) :=
-                (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
-              exact ⟨sA d,
-                hxb.trans ((congrArg iB hbd).trans hov.symm)⟩)
+        have hexistsA (k : Fin (L.arity R)) :
+            ∃ a : E, x k = iA a := by
+          rcases hSrc.covers (x k) with hxA | hxB
+          · rcases hxA with ⟨a, hxa⟩
+            exact ⟨a, hxa⟩
+          · rcases hxB with ⟨b, hxb⟩
+            have hEq :
+                jB (hB b) = jA (y k) := by
+              calc
+                jB (hB b) =
+                    Fmap (iB b) :=
+                  (liftMap_right hSrc hTgt q hA hB
+                    hcompatA hcompatB b).symm
+                _ = Fmap (x k) := congrArg Fmap hxb.symm
+                _ = jA (y k) := congrFun hFy k
+            obtain ⟨g, _hyg, hbg⟩ :=
+              (hTgt.overlap (y k) (hB b)).mp hEq.symm
+            obtain ⟨d, hbd, _hqd⟩ := hexB b g hbg
+            have hov : iA (sA d) = iB (sB d) :=
+              (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
+            exact ⟨sA d,
+              hxb.trans ((congrArg iB hbd).trans hov.symm)⟩
+        let pre : Fin (L.arity R) → E :=
+          fun k => Classical.choose (hexistsA k)
         have hpre (k : Fin (L.arity R)) : x k = iA (pre k) :=
-          Classical.choose_spec (by
-            rcases hSrc.covers (x k) with hxA | hxB
-            · rcases hxA with ⟨a, hxa⟩
-              exact ⟨a, hxa⟩
-            · rcases hxB with ⟨b, hxb⟩
-              have hEq :
-                  jB (hB b) = jA (y k) := by
-                calc
-                  jB (hB b) =
-                      Fmap (iB b) :=
-                    (liftMap_right hSrc hTgt q hA hB
-                      hcompatA hcompatB b).symm
-                  _ = Fmap (x k) := congrArg Fmap hxb.symm
-                  _ = jA (y k) := congrFun hFy k
-              obtain ⟨g, hyg, hbg⟩ :=
-                (hTgt.overlap (y k) (hB b)).mp hEq.symm
-              obtain ⟨d, hbd, _hqd⟩ := hexB b g hbg
-              have hov : iA (sA d) = iB (sB d) :=
-                (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
-              exact ⟨sA d,
-                hxb.trans ((congrArg iB hbd).trans hov.symm)⟩)
+          Classical.choose_spec (hexistsA k)
         have hmap : hA ∘ pre = y := by
           funext k
           apply jA.injective
@@ -213,50 +195,32 @@ noncomputable def liftEmbedding
             funext k
             exact hpre k⟩)
       · rcases hright with ⟨y, hy, hFy⟩
-        let pre : Fin (L.arity R) → F := fun k =>
-          Classical.choose (by
-            rcases hSrc.covers (x k) with hxA | hxB
-            · rcases hxA with ⟨a, hxa⟩
-              have hEq :
-                  jA (hA a) = jB (y k) := by
-                calc
-                  jA (hA a) =
-                      Fmap (iA a) :=
-                    (liftMap_left hSrc hTgt q hA hB
-                      hcompatA hcompatB a).symm
-                  _ = Fmap (x k) := congrArg Fmap hxa.symm
-                  _ = jB (y k) := congrFun hFy k
-              obtain ⟨g, hag, hyg⟩ :=
-                (hTgt.overlap (hA a) (y k)).mp hEq
-              obtain ⟨d, had, _hqd⟩ := hexA a g hag
-              have hov : iA (sA d) = iB (sB d) :=
-                (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
-              exact ⟨sB d,
-                hxa.trans ((congrArg iA had).trans hov)⟩
-            · rcases hxB with ⟨b, hxb⟩
-              exact ⟨b, hxb⟩)
+        have hexistsB (k : Fin (L.arity R)) :
+            ∃ b : F, x k = iB b := by
+          rcases hSrc.covers (x k) with hxA | hxB
+          · rcases hxA with ⟨a, hxa⟩
+            have hEq :
+                jA (hA a) = jB (y k) := by
+              calc
+                jA (hA a) =
+                    Fmap (iA a) :=
+                  (liftMap_left hSrc hTgt q hA hB
+                    hcompatA hcompatB a).symm
+                _ = Fmap (x k) := congrArg Fmap hxa.symm
+                _ = jB (y k) := congrFun hFy k
+            obtain ⟨g, hag, _hyg⟩ :=
+              (hTgt.overlap (hA a) (y k)).mp hEq
+            obtain ⟨d, had, _hqd⟩ := hexA a g hag
+            have hov : iA (sA d) = iB (sB d) :=
+              (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
+            exact ⟨sB d,
+              hxa.trans ((congrArg iA had).trans hov)⟩
+          · rcases hxB with ⟨b, hxb⟩
+            exact ⟨b, hxb⟩
+        let pre : Fin (L.arity R) → F :=
+          fun k => Classical.choose (hexistsB k)
         have hpre (k : Fin (L.arity R)) : x k = iB (pre k) :=
-          Classical.choose_spec (by
-            rcases hSrc.covers (x k) with hxA | hxB
-            · rcases hxA with ⟨a, hxa⟩
-              have hEq :
-                  jA (hA a) = jB (y k) := by
-                calc
-                  jA (hA a) =
-                      Fmap (iA a) :=
-                    (liftMap_left hSrc hTgt q hA hB
-                      hcompatA hcompatB a).symm
-                  _ = Fmap (x k) := congrArg Fmap hxa.symm
-                  _ = jB (y k) := congrFun hFy k
-              obtain ⟨g, hag, hyg⟩ :=
-                (hTgt.overlap (hA a) (y k)).mp hEq
-              obtain ⟨d, had, _hqd⟩ := hexA a g hag
-              have hov : iA (sA d) = iB (sB d) :=
-                (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
-              exact ⟨sB d,
-                hxa.trans ((congrArg iA had).trans hov)⟩
-            · rcases hxB with ⟨b, hxb⟩
-              exact ⟨b, hxb⟩)
+          Classical.choose_spec (hexistsB k)
         have hmap : hB ∘ pre = y := by
           funext k
           apply jB.injective
