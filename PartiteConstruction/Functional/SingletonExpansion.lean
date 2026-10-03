@@ -181,7 +181,9 @@ theorem fiberFinset_card_eq
       (fiberFinset A F x).card := by
   classical
   rw [← fiberFinset_image e F x]
-  exact Finset.card_map _ _
+  simpa using
+    (Finset.card_map e.toFunctionEmbedding
+      (s := fiberFinset A F x))
 
 /-- An order-preserving full embedding sends the i-th value of a fibre to the
 i-th value of the target fibre. -/
