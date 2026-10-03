@@ -21,6 +21,7 @@ import PartiteConstruction.Functional.FunctionDomains
 import PartiteConstruction.Functional.SingletonPartite
 import PartiteConstruction.Functional.SemiClosedPartite
 import PartiteConstruction.Functional.SemiClosedAttachment
+import PartiteConstruction.Functional.SemiClosedPicture
 import PartiteConstruction.Functional.SingletonClosedPicture
 import PartiteConstruction.Functional.SingletonHalfClosedConstruction
 import PartiteConstruction.Functional.SingletonHalfClosedPartite
