@@ -40,6 +40,15 @@ def withParts (L : Language.{u}) (P : Type v) : Language.{max u v} where
     (L : Language.{u}) (P : Type v) (F : L.FuncSymbol) :
     (L.withParts P).funcArity (ULift.up F) = L.funcArity F := rfl
 
+
+/-- Positive function arity is unchanged by adding part predicates. -/
+theorem PositiveFuncArity.withParts
+    {L : Language.{u}} {P : Type v}
+    (h : L.PositiveFuncArity) :
+    (L.withParts P).PositiveFuncArity := by
+  intro F
+  exact h F.down
+
 end Language
 
 namespace Partite
@@ -196,6 +205,79 @@ theorem closedArrow_iff_functionalExpanded
     refine ⟨Partite.Closed.Embedding.ofFunctionalExpanded f, ?_⟩
     intro e₁ e₂
     exact hf e₁.expandFunctional e₂.expandFunctional
+
+
+/-- Native partite form of the half-closed Ramsey hypothesis. -/
+def HalfClosedArrow
+    {A : System L.graph P V}
+    {B : System L.graph P W}
+    {D : System L.graph P X}
+    (κ : Type*) : Prop :=
+  ∀ χ : Partite.Closed.Embedding A D → κ,
+    ∃ β : Partite.Embedding B D,
+      ∃ lift :
+          Partite.Closed.Embedding A B →
+            Partite.Closed.Embedding A D,
+        (∀ e x, lift e x = β (e x)) ∧
+        ∀ e₁ e₂, χ (lift e₁) = χ (lift e₂)
+
+/-- The native partite half-closed arrow is exactly the relational
+half-closed arrow of the unary-predicate expansions. -/
+theorem halfClosedArrow_iff_functionalExpanded
+    {A : System L.graph P V}
+    {B : System L.graph P W}
+    {D : System L.graph P X}
+    {κ : Type*} :
+    Partite.HalfClosedArrow (A := A) (B := B) (D := D) κ ↔
+      RelStructure.HalfClosedArrow
+        A.expandFunctional B.expandFunctional D.expandFunctional κ := by
+  constructor
+  · intro h χ
+    let χ' : Partite.Closed.Embedding A D → κ :=
+      fun e => χ e.expandFunctional
+    obtain ⟨β, lift, hmap, hmono⟩ := h χ'
+    let β' : RelStructure.Embedding
+        B.expandFunctional D.expandFunctional :=
+      β.expandFunctional
+    let lift' :
+        RelStructure.ClosedEmbedding
+            A.expandFunctional B.expandFunctional →
+          RelStructure.ClosedEmbedding
+            A.expandFunctional D.expandFunctional :=
+      fun e =>
+        (lift
+          (Partite.Closed.Embedding.ofFunctionalExpanded e)).expandFunctional
+    refine ⟨β', lift', ?_, ?_⟩
+    · intro e x
+      change
+        lift (Partite.Closed.Embedding.ofFunctionalExpanded e) x =
+          β (Partite.Closed.Embedding.ofFunctionalExpanded e x)
+      exact hmap _ x
+    · intro e₁ e₂
+      exact hmono
+        (Partite.Closed.Embedding.ofFunctionalExpanded e₁)
+        (Partite.Closed.Embedding.ofFunctionalExpanded e₂)
+  · intro h χ
+    let χ' :
+        RelStructure.ClosedEmbedding
+          A.expandFunctional D.expandFunctional → κ :=
+      fun e =>
+        χ (Partite.Closed.Embedding.ofFunctionalExpanded e)
+    obtain ⟨β, lift, hmap, hmono⟩ := h χ'
+    let β' : Partite.Embedding B D :=
+      Partite.Embedding.ofFunctionalExpanded β
+    let lift' :
+        Partite.Closed.Embedding A B →
+          Partite.Closed.Embedding A D :=
+      fun e =>
+        Partite.Closed.Embedding.ofFunctionalExpanded
+          (lift e.expandFunctional)
+    refine ⟨β', lift', ?_, ?_⟩
+    · intro e x
+      change lift e.expandFunctional x = β e.expandFunctional x
+      exact hmap _ x
+    · intro e₁ e₂
+      exact hmono e₁.expandFunctional e₂.expandFunctional
 
 /-- U-transversality is unchanged when forgetting the unary part predicates. -/
 theorem functionOutputTransversal_of_expanded
