@@ -249,4 +249,48 @@ theorem recursiveConstruction
   rw [hp₁, hp₂] at hmono
   exact hmono
 
+
+/-- Starting from an arbitrary ordinary Ramsey witness in the relational
+domain-expanded graph language, first root-prune it and then run the corrected
+recursive construction.  Thus no root-compatibility assumption is needed on
+the witness supplied by the ordinary relational Ramsey theorem. -/
+theorem recursiveConstruction_from_ordinaryWitness
+    (A₀ : Structure L U)
+    (B₀ : Structure L V)
+    (D : RelStructure L.withFunctionDomains.graph P)
+    [Finite U] [Finite V] [Finite P]
+    (hpos : L.PositiveFuncArity)
+    (hAsingle : A₀.SingletonValued)
+    (hBsingle : B₀.SingletonValued)
+    (κ : Type*) [Fintype κ] [Nonempty κ]
+    (hRamsey :
+      StructuralRamsey.Arrow
+        A₀.withFunctionDomains.graph
+        B₀.withFunctionDomains.graph
+        D κ) :
+    ∃ (X : Type v) (_ : Finite X)
+      (C : Partite.System L.withFunctionDomains.graph P X),
+      C.FunctionOutputSingleValued ∧
+      C.FunctionOutputTransversal ∧
+      RelStructure.ClosedArrow
+        A₀.withFunctionDomains.graph
+        B₀.withFunctionDomains.graph
+        C.toRelStructure κ := by
+  let A := A₀.withFunctionDomains.graph
+  let B := B₀.withFunctionDomains.graph
+  let D' := RelStructure.rootPrune D
+  have hAsemi := RelStructure.withFunctionDomains_graph_semiClosed A₀ hAsingle
+  have hBsemi := RelStructure.withFunctionDomains_graph_semiClosed B₀ hBsingle
+  have hAtotal :=
+    RelStructure.withFunctionDomains_graph_domainTotal A₀
+  have hDroot :=
+    RelStructure.rootPrune_outputImpliesDomain D
+  have hRamsey' :
+      StructuralRamsey.Arrow A B D' κ :=
+    RelStructure.arrow_rootPrune
+      A B D hAsemi.1 hBsemi.1 κ hRamsey
+  exact
+    recursiveConstruction
+      A B D' hpos hAtotal hDroot hBsemi.2 κ hRamsey'
+
 end StructuralRamsey.Partite.SemiClosed.Recursive
