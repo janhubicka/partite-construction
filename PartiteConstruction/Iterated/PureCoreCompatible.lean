@@ -108,7 +108,7 @@ theorem pureCore_embeddedWitness
     intro x
     let z : Tset := ⟨γ x.1, x.2⟩
     change eAB (eHA x) = eAB (E.part (eCore z))
-    apply eAB.injective
+    apply congrArg eAB
     apply α.injective
     have hfactor : γDH x = α (eHA x) :=
       Classical.choose_spec (hRange x)
