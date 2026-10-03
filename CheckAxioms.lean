@@ -265,9 +265,6 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.Partite.Induced.embedding_coordinate
 
-#print axioms StructuralRamsey.RelStructure.PartialEmbeddedIntersections.toEmbeddedIntersections
-#print axioms StructuralRamsey.RelStructure.PartialCompatibleLocallyTreeLike.pullback_embedding
-#print axioms StructuralRamsey.Partite.Iterated.pureCopy_partialWitness
 
 #print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.pullback_embedding
 #print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.embeddedIntersections
