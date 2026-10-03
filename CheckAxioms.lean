@@ -110,3 +110,65 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Structure.Embedding.forgetRanks
 #print axioms StructuralRamsey.Structure.arrow_of_rankExpansion
 #print axioms StructuralRamsey.Structure.arrow_of_singletonExpansion
+
+#print axioms StructuralRamsey.Structure.Embedding.partialGraph
+#print axioms StructuralRamsey.Structure.Embedding.ofPartialGraph
+#print axioms StructuralRamsey.Structure.Embedding.partialGraphEquiv
+#print axioms StructuralRamsey.Structure.embeddingEquivRankedPartialGraph
+
+#print axioms StructuralRamsey.Partite.System.FunctionOutputSingleValued.uTransversal
+#print axioms StructuralRamsey.Partite.Closed.Induced.power_singleValued
+#print axioms StructuralRamsey.Partite.HalfClosed.Initial.singleValued
+#print axioms StructuralRamsey.Partite.Closed.Attachment.singleValued
+#print axioms StructuralRamsey.Partite.Nested.flatten_singleValued
+
+#print axioms StructuralRamsey.Partite.Closed.Picture.build_singleValued
+#print axioms StructuralRamsey.Partite.Closed.Picture.pictureLemma_singleValued
+
+#print axioms StructuralRamsey.Partite.HalfClosed.Construction.build_singleValued
+#print axioms StructuralRamsey.Partite.HalfClosed.Construction.inducedConstruction_singleValued
+
+#print axioms StructuralRamsey.Partite.HalfClosed.inducedPartiteOver_singleton
+#print axioms StructuralRamsey.Partite.HalfClosed.inducedPartiteOver_singleton_uTransversal
+
+#print axioms StructuralRamsey.Language.PositiveFuncArity.withFunctionDomains
+#print axioms StructuralRamsey.Structure.Embedding.withFunctionDomains
+#print axioms StructuralRamsey.RelStructure.withFunctionDomains_graph_semiClosed
+#print axioms StructuralRamsey.RelStructure.closedEmbedding_of_localSemiClosed
+
+#print axioms StructuralRamsey.Partite.System.induce_isPartiteOver
+#print axioms StructuralRamsey.Partite.System.induce_outputImpliesDomain
+#print axioms StructuralRamsey.Partite.System.restrict_outputImpliesDomain
+
+#print axioms StructuralRamsey.Partite.Attachment.restrictClosedToInduce
+#print axioms StructuralRamsey.Partite.Attachment.selectedCopy_closed
+
+#print axioms StructuralRamsey.Partite.SemiClosed.Picture.pictureLemma
+
+#print axioms StructuralRamsey.Partite.SemiClosed.Picture.selectedLift_core
+
+#print axioms StructuralRamsey.Partite.SemiClosed.Picture.liftCore_unique
+
+#print axioms StructuralRamsey.Partite.SemiClosed.Picture.build_isPartiteOver
+#print axioms StructuralRamsey.Partite.SemiClosed.Picture.halfClosedProperty
+
+#print axioms StructuralRamsey.Partite.Attachment.selectedCopy_closed_of_projection
+#print axioms StructuralRamsey.Partite.SemiClosed.Recursive.step
+#print axioms StructuralRamsey.Partite.SemiClosed.Recursive.build
+#print axioms StructuralRamsey.Partite.SemiClosed.Recursive.recursiveConstruction
+
+#print axioms StructuralRamsey.RelStructure.rootPrune_outputImpliesDomain
+#print axioms StructuralRamsey.RelStructure.Embedding.toRootPrune
+#print axioms StructuralRamsey.RelStructure.arrow_rootPrune
+
+#print axioms StructuralRamsey.Partite.SemiClosed.Recursive.recursiveConstruction_from_ordinaryWitness
+
+#print axioms StructuralRamsey.Structure.Embedding.strictMono
+#print axioms StructuralRamsey.Structure.Embedding.completeLinearOrder
+#print axioms StructuralRamsey.Structure.arrow_forgetFunctionDomains
+#print axioms StructuralRamsey.Structure.arrow_completeLinearOrder
+#print axioms StructuralRamsey.Structure.exists_linearOrder_extension
+#print axioms StructuralRamsey.RelStructure.ordinaryWitness_namedOrder
+#print axioms StructuralRamsey.Structure.orderedRamsey_singleton
+#print axioms StructuralRamsey.Structure.orderedRamsey
+#print axioms StructuralRamsey.Structure.orderedClosedGraphRamsey
