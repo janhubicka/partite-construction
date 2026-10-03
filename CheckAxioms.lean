@@ -227,3 +227,5 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.FiniteTrace.selectIndices
 #print axioms StructuralRamsey.FiniteTrace.selectIndices_cardBound
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.selectAttachmentIndices
