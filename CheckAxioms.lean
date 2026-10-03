@@ -101,3 +101,12 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Recursive.recursiveConstruction_of_localPictures
 #print axioms StructuralRamsey.Partite.Recursive.localHalfClosedPicture_of_closed
 #print axioms StructuralRamsey.Partite.HalfClosed.inducedPartiteOver
+
+#print axioms StructuralRamsey.Structure.rankExpand_singletonValued
+#print axioms StructuralRamsey.Structure.mem_rankedValue_of_mem
+#print axioms StructuralRamsey.Structure.Embedding.rankExpand
+#print axioms StructuralRamsey.Structure.Embedding.rankExpand_unique
+
+#print axioms StructuralRamsey.Structure.Embedding.forgetRanks
+#print axioms StructuralRamsey.Structure.arrow_of_rankExpansion
+#print axioms StructuralRamsey.Structure.arrow_of_singletonExpansion
