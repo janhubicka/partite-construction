@@ -39,12 +39,19 @@ theorem completeControlList_of_embeddedIntersections_with_embedding
         Controls (A := A) (C := C) (T := T') S (j ∘ f)
           (ys.reverse ++ zs) := by
   classical
-  induction ys generalizing Y with
+  induction ys generalizing Y zs with
   | nil =>
-      refine ⟨Y, T, hTree, Embedding.id T, ?_, ?_, ?_⟩
-      · simpa using hf
-      · simpa using hInt
-      · simpa using hctrl
+      let j : Embedding T T := Embedding.id T
+      have hjf : j ∘ f = f := by
+        funext x
+        rfl
+      refine ⟨Y, T, hTree, j, ?_, ?_, ?_⟩
+      · rw [hjf]
+        exact hf
+      · rw [hjf]
+        exact hInt
+      · rw [hjf]
+        simpa using hctrl
   | cons α ys ih =>
       obtain ⟨Y₁, T₁, hTree₁, j₁, hf₁, hctrl₁⟩ :=
         addControl_of_embeddedIntersection
