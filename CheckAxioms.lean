@@ -238,3 +238,8 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.compatible_overlap_kernel_iff
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.no_compatible_overlap_of_kernel_mismatch
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.same_kernel_of_controlled_gluing_data
+
+#print axioms StructuralRamsey.RelStructure.MixedOverlapExample.A_irreducible
+#print axioms StructuralRamsey.RelStructure.MixedOverlapExample.left_valid
+#print axioms StructuralRamsey.RelStructure.MixedOverlapExample.right_valid
+#print axioms StructuralRamsey.RelStructure.MixedOverlapExample.no_common_embedded_overlap
