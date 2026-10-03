@@ -67,6 +67,29 @@ theorem toBase_compat (r : Root Orig)
 noncomputable def support (r : Root Orig) : Finset VB :=
   (toBase Orig Base Q pOrig hpOrig hProjected r).imageFinset
 
+/-- The image support of an irreducible root is irreducible in Base. -/
+theorem support_irreducible (r : Root Orig) :
+    (Base.induce
+      (↑(support Orig Base Q pOrig hpOrig hProjected r) : Set VB)).Irreducible := by
+  let e := toBase Orig Base Q pOrig hpOrig hProjected r
+  have hRange :
+      (Base.induce (Set.range e)).Irreducible :=
+    r.2.range_embedding e
+  have hSet :
+      (↑(support Orig Base Q pOrig hpOrig hProjected r) : Set VB) =
+        Set.range e := by
+    ext b
+    constructor
+    · intro hb
+      have hb' :
+          b ∈ e.imageFinset := hb
+      rcases (e.mem_imageFinset_iff b).mp hb' with ⟨x, hx⟩
+      exact ⟨x, hx⟩
+    · rintro ⟨x, rfl⟩
+      exact (e.mem_imageFinset_iff (e x)).mpr ⟨x, rfl⟩
+  rw [hSet]
+  exact hRange
+
 /-- Re-read a root as an embedding from its induced support in Base back into
 the original core. -/
 noncomputable def supportEmbedding (r : Root Orig) :
