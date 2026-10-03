@@ -68,13 +68,6 @@ theorem selectedLift_core
             (attachingMap A D B α g).1)
         (f (restrictRelevant A D B α e a)) := by
       congr 1
-      change
-        f (overlapToRestriction A D B α x) =
-          f (restrictRelevant A D B α e a)
-      congr 1
-      apply Subtype.ext
-      apply Subtype.ext
-      rfl
 
 /-- A core A-letter is relevant if it factors through one closed overlap copy
 and one A-copy coming from the previous picture. -/
@@ -171,6 +164,8 @@ theorem liftCore_unique
       liftCore A D B α E hAtotal hBroot hBsingle d h₂ := by
   apply Partite.Closed.Embedding.ext
   intro a
-  rw [liftCore_apply, liftCore_apply]
+  exact
+    (liftCore_apply A D B α E hAtotal hBroot hBsingle d h₁ a).trans
+      (liftCore_apply A D B α E hAtotal hBroot hBsingle d h₂ a).symm
 
 end StructuralRamsey.Partite.SemiClosed.Picture
