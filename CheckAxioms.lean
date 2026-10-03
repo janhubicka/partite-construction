@@ -130,3 +130,8 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.Partite.HalfClosed.inducedPartiteOver_singleton
 #print axioms StructuralRamsey.Partite.HalfClosed.inducedPartiteOver_singleton_uTransversal
+
+#print axioms StructuralRamsey.Language.PositiveFuncArity.withFunctionDomains
+#print axioms StructuralRamsey.Structure.Embedding.withFunctionDomains
+#print axioms StructuralRamsey.RelStructure.withFunctionDomains_graph_semiClosed
+#print axioms StructuralRamsey.RelStructure.closedEmbedding_of_localSemiClosed
