@@ -259,7 +259,7 @@ theorem witness_of_homEmbedding_image
       injective := by
         intro x y hxy
         apply Subtype.ext
-        exact congrArg (fun q : HitC => q.1) hxy
+        exact congrArg (fun q : HitD => q.1) hxy
       map_rel_iff := fun _ _ => Iff.rfl
     }
     let gHit : Embedding (A.induce HitC) T := gHitD.comp incHit
