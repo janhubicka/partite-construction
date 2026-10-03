@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.HalfClosedConstruction
+import PartiteConstruction.Functional.NestedFlatten
 
 /-! # Unary part predicates for languages with functions
 
@@ -341,6 +342,114 @@ theorem functionOutputTransversal_of_expanded
     (C.ofFunctionalExpansion).FunctionOutputTransversal := by
   intro F x y z hy hz hp
   exact h (ULift.up F) x y z hy hz hp
+
+
+/-- A closed embedding of an L_P expansion into a nested system becomes a
+closed partite embedding after forgetting the unary predicates and flattening
+the nested partition back to the outer part set. -/
+def Closed.Embedding.toFlattenedFunctional
+    {U Y : Type v}
+    (A : System L.graph P U)
+    (D : System L.graph P X)
+    (C : System (L.withParts P).graph X Y)
+    (hC : C.IsPartiteOver D.expandFunctional)
+    (e : RelStructure.ClosedEmbedding
+      A.expandFunctional C.toRelStructure) :
+    Partite.Closed.Embedding A
+      (Nested.flatten D C.ofFunctionalExpansion
+        (isPartiteOver_of_functionalExpanded D C hC)) := by
+  let C0 := C.ofFunctionalExpansion
+  let hC0 : C0.IsPartiteOver D.toRelStructure :=
+    isPartiteOver_of_functionalExpanded D C hC
+  let T := Nested.flatten D C0 hC0
+  let pe : Partite.Embedding A T := {
+    toFun := e
+    injective := e.toEmbedding.injective
+    map_rel_iff := by
+      intro R x
+      cases R with
+      | inl R =>
+          exact e.toEmbedding.map_rel_iff
+            (.inl (.inl (ULift.up R))) x
+      | inr F =>
+          exact e.toEmbedding.map_rel_iff
+            (.inr (ULift.up F)) x
+    map_part := by
+      intro a
+      have hsrc :
+          A.expandFunctional.rel
+            (.inl (.inr (A.part a))) (fun _ => a) := rfl
+      have hmid :
+          C.rel (.inl (.inr (A.part a)))
+            (e ∘ (fun _ : Fin 1 => a)) :=
+        (e.toEmbedding.map_rel_iff
+          (.inl (.inr (A.part a))) (fun _ : Fin 1 => a)).mpr hsrc
+      have hout :=
+        hC.1 (.inl (.inr (A.part a)))
+          (e ∘ (fun _ : Fin 1 => a)) hmid
+      change D.part (C.part (e a)) = A.part a
+      simpa [System.expandFunctional, Function.comp_apply] using hout
+  }
+  refine ⟨pe, ?_⟩
+  intro F x y hy
+  exact e.closed (ULift.up F) x y hy
+
+/-- A closed Ramsey arrow in the L_P expansion descends to the flattened
+partite target. -/
+theorem closedArrow_flattened_of_functionalExpanded
+    {U Y : Type v}
+    (A : System L.graph P U)
+    (B : System L.graph P W)
+    (D : System L.graph P X)
+    (C : System (L.withParts P).graph X Y)
+    (hC : C.IsPartiteOver D.expandFunctional)
+    (κ : Type*)
+    (hArrow :
+      RelStructure.ClosedArrow
+        A.expandFunctional B.expandFunctional C.toRelStructure κ) :
+    Partite.Closed.Arrow A B
+      (Nested.flatten D C.ofFunctionalExpansion
+        (isPartiteOver_of_functionalExpanded D C hC)) κ := by
+  intro χ
+  let lowerA :
+      RelStructure.ClosedEmbedding
+        A.expandFunctional C.toRelStructure →
+      Partite.Closed.Embedding A
+        (Nested.flatten D C.ofFunctionalExpansion
+          (isPartiteOver_of_functionalExpanded D C hC)) :=
+    fun e => e.toFlattenedFunctional A D C hC
+  let θ :
+      RelStructure.ClosedEmbedding
+        A.expandFunctional C.toRelStructure → κ :=
+    fun e => χ (lowerA e)
+  obtain ⟨f, hf⟩ := hArrow θ
+  let fg :
+      Partite.Closed.Embedding B
+        (Nested.flatten D C.ofFunctionalExpansion
+          (isPartiteOver_of_functionalExpanded D C hC)) :=
+    f.toFlattenedFunctional B D C hC
+  refine ⟨fg, ?_⟩
+  intro e₁ e₂
+  have hh := hf e₁.expandFunctional e₂.expandFunctional
+  have h₁ :
+      lowerA (RelStructure.ClosedEmbedding.comp
+        f e₁.expandFunctional) =
+      Partite.Closed.Embedding.comp fg e₁ := by
+    apply Partite.Closed.Embedding.ext
+    intro x
+    rfl
+  have h₂ :
+      lowerA (RelStructure.ClosedEmbedding.comp
+        f e₂.expandFunctional) =
+      Partite.Closed.Embedding.comp fg e₂ := by
+    apply Partite.Closed.Embedding.ext
+    intro x
+    rfl
+  change
+    χ (Partite.Closed.Embedding.comp fg e₁) =
+      χ (Partite.Closed.Embedding.comp fg e₂)
+  rw [← h₁, ← h₂]
+  exact hh
 
 end Partite
 end StructuralRamsey
