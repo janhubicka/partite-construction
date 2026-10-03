@@ -278,3 +278,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.liftMap_collision_of_overlap_leakage
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.liftMap_injective_of_reflectsOverlap
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.liftEmbedding
+
+#print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.toProjectedPartial
+#print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.pullback_embedding
+#print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.respectsHistory_of_kernel_refines_projection
