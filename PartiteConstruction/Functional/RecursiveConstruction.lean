@@ -265,17 +265,37 @@ theorem build
             χ (RelStructure.ClosedEmbedding.comp g.toRelClosed e))
       refine ⟨Partite.Closed.Embedding.comp g f, ?_⟩
       intro β hβ e₁ e₂
+      have hassoc₁ :
+          RelStructure.ClosedEmbedding.comp
+              (Partite.Closed.Embedding.comp g f).toRelClosed
+              e₁.toRelClosed =
+            RelStructure.ClosedEmbedding.comp g.toRelClosed
+              (RelStructure.ClosedEmbedding.comp
+                f.toRelClosed e₁.toRelClosed) := by
+        apply RelStructure.ClosedEmbedding.ext
+        intro x
+        rfl
+      have hassoc₂ :
+          RelStructure.ClosedEmbedding.comp
+              (Partite.Closed.Embedding.comp g f).toRelClosed
+              e₂.toRelClosed =
+            RelStructure.ClosedEmbedding.comp g.toRelClosed
+              (RelStructure.ClosedEmbedding.comp
+                f.toRelClosed e₂.toRelClosed) := by
+        apply RelStructure.ClosedEmbedding.ext
+        intro x
+        rfl
       rcases List.mem_cons.mp hβ with rfl | hβ
       · have hlocal :=
           hg
             (Partite.Closed.Embedding.comp f e₁)
             (Partite.Closed.Embedding.comp f e₂)
         rw [toRelClosed_comp, toRelClosed_comp] at hlocal
-        rw [toRelClosed_comp]
-        simpa only [relClosed_comp_assoc] using hlocal
+        rw [hassoc₁, hassoc₂]
+        exact hlocal
       · have hold := hf β hβ e₁ e₂
-        rw [toRelClosed_comp]
-        simpa only [relClosed_comp_assoc] using hold
+        rw [hassoc₁, hassoc₂]
+        exact hold
 
 /-- Enumerate every ordinary A-copy in D. -/
 noncomputable def allEmbeddings
