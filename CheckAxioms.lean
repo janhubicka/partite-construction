@@ -124,3 +124,6 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.Partite.Closed.Picture.build_singleValued
 #print axioms StructuralRamsey.Partite.Closed.Picture.pictureLemma_singleValued
+
+#print axioms StructuralRamsey.Partite.HalfClosed.Construction.build_singleValued
+#print axioms StructuralRamsey.Partite.HalfClosed.Construction.inducedConstruction_singleValued
