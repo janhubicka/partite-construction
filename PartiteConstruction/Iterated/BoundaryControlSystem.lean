@@ -19,13 +19,15 @@ variable {A : RelStructure L U} {B : RelStructure L V}
 variable {C : RelStructure L W} {T : RelStructure L Y}
 
 /-- Boundary data for every ambient A-copy. -/
-def BoundarySystem
-    (S : Finset W) (f : ↥(↑S : Set W) → Y) : Prop :=
-  ∀ α : Embedding A C,
+structure BoundarySystem
+    (A : RelStructure L U) (C : RelStructure L W)
+    (T : RelStructure L Y)
+    (S : Finset W) (f : ↥(↑S : Set W) → Y) where
+  get : ∀ α : Embedding A C,
     BoundaryEmbedding (A := A) (C := C) (T := T) S f α
 
 /-- Boundary embeddings transport through an embedding of targets. -/
-theorem BoundaryEmbedding.postcomp
+noncomputable def BoundaryEmbedding.postcomp
     {Z : Type v} {T' : RelStructure L Z}
     (S : Finset W) (f : ↥(↑S : Set W) → Y)
     (α : Embedding A C)
@@ -50,14 +52,13 @@ theorem BoundaryEmbedding.postcomp
     rfl
 
 /-- A whole boundary system transports through an embedding of targets. -/
-theorem BoundarySystem.postcomp
+noncomputable def BoundarySystem.postcomp
     {Z : Type v} {T' : RelStructure L Z}
     (S : Finset W) (f : ↥(↑S : Set W) → Y)
-    (hbd : BoundarySystem (A := A) (C := C) (T := T) S f)
+    (hbd : BoundarySystem A C T S f)
     (e : Embedding T T') :
-    BoundarySystem (A := A) (C := C) (T := T') S (e ∘ f) := by
-  intro α
-  exact (hbd α).postcomp S f α e
+    BoundarySystem A C T' S (e ∘ f) where
+  get := fun α => (hbd.get α).postcomp S f α e
 
 /-- Process a finite list of ambient A-copies while preserving the boundary
 system for every ambient A-copy. -/
@@ -69,12 +70,12 @@ theorem completeControlList_of_boundaries
     (hTree : TreeAmalgam B Y T)
     (f : ↥(↑S : Set W) → Y)
     (hf : (C.induce (↑S : Set W)).IsHomomorphismEmbedding T f)
-    (hbd : BoundarySystem (A := A) (C := C) (T := T) S f) :
+    (hbd : BoundarySystem A C T S f) :
     ∃ (Z : Type v) (T' : RelStructure L Z),
       TreeAmalgam B Z T' ∧
       ∃ f' : ↥(↑S : Set W) → Z,
         (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' f' ∧
-        BoundarySystem (A := A) (C := C) (T := T') S f' ∧
+        BoundarySystem A C T' S f' ∧
         Controls (A := A) (C := C) (T := T') S f' xs := by
   classical
   induction xs with
@@ -88,7 +89,7 @@ theorem completeControlList_of_boundaries
       obtain ⟨Z, T₂, hTree₂, e, f₂, hfEq, hf₂, hctrl₂⟩ :=
         addControl_of_boundary_with_embedding
           (A := A) (B := B) (C := C)
-          hA eAB S hTree₁ f₁ hf₁ xs hctrl₁ α (hbd₁ α)
+          hA eAB S hTree₁ f₁ hf₁ xs hctrl₁ α (hbd₁.get α)
       have hbd₂ :
           BoundarySystem (A := A) (C := C) (T := T₂) S f₂ := by
         rw [hfEq]
@@ -105,7 +106,7 @@ theorem completeControl_of_boundaries
     (hTree : TreeAmalgam B Y T)
     (f : ↥(↑S : Set W) → Y)
     (hf : (C.induce (↑S : Set W)).IsHomomorphismEmbedding T f)
-    (hbd : BoundarySystem (A := A) (C := C) (T := T) S f) :
+    (hbd : BoundarySystem A C T S f) :
     ∃ (Z : Type v) (T' : RelStructure L Z),
       TreeAmalgam B Z T' ∧
       ∃ f' : ↥(↑S : Set W) → Z,
