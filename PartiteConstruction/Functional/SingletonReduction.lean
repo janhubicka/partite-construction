@@ -72,7 +72,7 @@ noncomputable def Embedding.forgetRanks
     {n : ℕ}
     [LinearOrder V] [Finite V]
     {C : Structure (L.rankFunctions n) X}
-    (e : Embedding (rankExpand A n) C)
+    (e : Embedding (Structure.rankExpand A n) C)
     (hA : RankCovered A n) :
     Embedding A (rankReduct C) where
   toFun := e
@@ -87,13 +87,13 @@ noncomputable def Embedding.forgetRanks
         mem_rankedValue_of_mem A n F x (hA F x) ha
       refine ⟨i, ?_⟩
       have hm :
-          e a ∈ imageSet e ((rankExpand A n).func (F, i) x) :=
+          e a ∈ imageSet e ((Structure.rankExpand A n).func (F, i) x) :=
         ⟨a, hai, rfl⟩
       rw [e.map_func (F, i) x] at hm
       exact hm
     · rintro ⟨i, hy⟩
       have hm :
-          y ∈ imageSet e ((rankExpand A n).func (F, i) x) := by
+          y ∈ imageSet e ((Structure.rankExpand A n).func (F, i) x) := by
         rw [e.map_func (F, i) x]
         exact hy
       rcases hm with ⟨a, ha, hea⟩
@@ -106,7 +106,7 @@ noncomputable def Embedding.forgetRanks
     {n : ℕ}
     [LinearOrder V] [Finite V]
     {C : Structure (L.rankFunctions n) X}
-    (e : Embedding (rankExpand A n) C)
+    (e : Embedding (Structure.rankExpand A n) C)
     (hA : RankCovered A n) (x : V) :
     e.forgetRanks hA x = e x := rfl
 
@@ -118,7 +118,7 @@ theorem Embedding.forgetRanks_comp_rankExpand
     [LinearOrder V] [LinearOrder W] [Finite V] [Finite W]
     {C : Structure (L.rankFunctions n) X}
     (e : Embedding A B) (hmono : StrictMono e)
-    (g : Embedding (rankExpand B n) C)
+    (g : Embedding (Structure.rankExpand B n) C)
     (hA : RankCovered A n) (hB : RankCovered B n) :
     (g.comp (e.rankExpand hmono n)).forgetRanks hA =
       (g.forgetRanks hB).comp e := by
@@ -135,10 +135,10 @@ theorem arrow_of_rankExpansion
     (hmono : ∀ e : Embedding A B, StrictMono e)
     (C : Structure (L.rankFunctions n) X)
     (κ : Type*)
-    (hRamsey : Arrow (rankExpand A n) (rankExpand B n) C κ) :
+    (hRamsey : Arrow (Structure.rankExpand A n) (Structure.rankExpand B n) C κ) :
     Arrow A B (rankReduct C) κ := by
   intro χ
-  let χ' : Embedding (rankExpand A n) C → κ :=
+  let χ' : Embedding (Structure.rankExpand A n) C → κ :=
     fun e => χ (e.forgetRanks hA)
   obtain ⟨f, hf⟩ := hRamsey χ'
   let f0 : Embedding B (rankReduct C) := f.forgetRanks hB
