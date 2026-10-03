@@ -271,4 +271,168 @@ theorem uTransversal_of_tupleCovered
     _ = g j outZ := congrArg (g j) hout
     _ = z := hzImage
 
+
+/-- Keep exactly those relation tuples of C which lie inside some closed
+partite copy of B.  The carrier and part map are unchanged. -/
+noncomputable def copyGenerated
+    {W : Type v}
+    (B : Partite.System L.graph P V)
+    (C : Partite.System L.graph P W) :
+    Partite.System L.graph P W where
+  rel R t :=
+    ∃ e : Partite.Closed.Embedding B C,
+      ∃ q : Fin (L.graph.arity R) → V,
+        B.rel R q ∧ t = e ∘ q
+  part := C.part
+  transversal R t ht k l hp := by
+    rcases ht with ⟨e, q, hq, heq⟩
+    have hC : C.rel R t := by
+      rw [heq]
+      exact (e.1.toEmbedding.map_rel_iff R q).mpr hq
+    exact C.transversal R t hC k l hp
+
+/-- Every closed B-copy of C survives as a closed B-copy of the
+copy-generated reduct. -/
+noncomputable def generatedCopy
+    {W : Type v}
+    (B : Partite.System L.graph P V)
+    (C : Partite.System L.graph P W)
+    (e : Partite.Closed.Embedding B C) :
+    Partite.Closed.Embedding B (copyGenerated B C) := by
+  let pe : Partite.Embedding B (copyGenerated B C) := {
+    toFun := e
+    injective := e.1.toEmbedding.injective
+    map_rel_iff := by
+      intro R q
+      constructor
+      · rintro ⟨d, r, hr, hEq⟩
+        have hC :
+            C.rel R (e ∘ q) := by
+          exact (d.1.toEmbedding.map_rel_iff R r).mpr hr
+            |> fun h => by
+              convert h using 1
+              exact hEq.symm
+        exact (e.1.toEmbedding.map_rel_iff R q).mp hC
+      · intro hq
+        exact ⟨e, q, hq, rfl⟩
+    map_part := e.1.map_part
+  }
+  refine ⟨pe, ?_⟩
+  intro F x y hy
+  have hyC :
+      C.rel (.inr F)
+        (Structure.funcTuple (e ∘ x) y) := by
+    rcases hy with ⟨d, q, hq, hEq⟩
+    have h := (d.1.toEmbedding.map_rel_iff (.inr F) q).mpr hq
+    convert h using 1
+    exact hEq.symm
+  obtain ⟨z, hz, hzy⟩ := e.2 F x y hyC
+  exact ⟨z, hz, hzy⟩
+
+/-- By construction, every tuple in the copy-generated reduct is covered by
+one of its surviving closed B-copies. -/
+theorem copyGenerated_tupleCovered
+    {W : Type v}
+    (B : Partite.System L.graph P V)
+    (C : Partite.System L.graph P W) :
+    TupleCoveredByClosedCopies B (copyGenerated B C)
+      (fun e : Partite.Closed.Embedding B C =>
+        generatedCopy B C e) := by
+  intro R t ht
+  rcases ht with ⟨e, q, hq, hEq⟩
+  exact ⟨e, q, hq, hEq⟩
+
+/-- Copy-generation repairs U-transversality whenever the copied structure B
+is U-transversal, regardless of whether C itself is U-transversal. -/
+theorem copyGenerated_uTransversal
+    {W : Type v}
+    (B : Partite.System L.graph P V)
+    (C : Partite.System L.graph P W)
+    (hB : B.FunctionOutputTransversal) :
+    (copyGenerated B C).FunctionOutputTransversal := by
+  exact uTransversal_of_tupleCovered
+    B (copyGenerated B C)
+    (fun e : Partite.Closed.Embedding B C => generatedCopy B C e)
+    hB (copyGenerated_tupleCovered B C)
+
+/-- Closed A-embeddings into C which are also embeddings into the
+copy-generated reduct. -/
+def LiftableToGenerated
+    {U W : Type v}
+    (A : Partite.System L.graph P U)
+    (B : Partite.System L.graph P V)
+    (C : Partite.System L.graph P W)
+    (e : Partite.Closed.Embedding A C) : Prop :=
+  ∃ d : Partite.Closed.Embedding A (copyGenerated B C),
+    ∀ x, d x = e x
+
+/-- A closed embedding into the generated reduct is uniquely determined by
+its underlying map to C. -/
+theorem liftable_unique
+    {U W : Type v}
+    {A : Partite.System L.graph P U}
+    {B : Partite.System L.graph P V}
+    {C : Partite.System L.graph P W}
+    {e : Partite.Closed.Embedding A C}
+    {d₁ d₂ : Partite.Closed.Embedding A (copyGenerated B C)}
+    (h₁ : ∀ x, d₁ x = e x)
+    (h₂ : ∀ x, d₂ x = e x) :
+    d₁ = d₂ := by
+  apply Partite.Closed.Embedding.ext
+  intro x
+  exact (h₁ x).trans (h₂ x).symm
+
+/-- A closed Ramsey arrow survives copy-generation.  Embeddings which do not
+lift to the generated reduct receive a default colour; the monochromatic
+B-copy returned in C always lifts because its own relations were retained. -/
+theorem copyGenerated_arrow
+    {U W : Type v}
+    (A : Partite.System L.graph P U)
+    (B : Partite.System L.graph P V)
+    (C : Partite.System L.graph P W)
+    (κ : Type*) [Nonempty κ]
+    (h : Partite.Closed.Arrow A B C κ) :
+    Partite.Closed.Arrow A B (copyGenerated B C) κ := by
+  classical
+  intro χ
+  let θ : Partite.Closed.Embedding A C → κ := fun e =>
+    if he : LiftableToGenerated A B C e then
+      χ (Classical.choose he)
+    else Classical.choice (inferInstance : Nonempty κ)
+  obtain ⟨f, hf⟩ := h θ
+  let fg : Partite.Closed.Embedding B (copyGenerated B C) :=
+    generatedCopy B C f
+  refine ⟨fg, ?_⟩
+  intro e₁ e₂
+  let c₁ : Partite.Closed.Embedding A C :=
+    Partite.Closed.Embedding.comp f e₁
+  let c₂ : Partite.Closed.Embedding A C :=
+    Partite.Closed.Embedding.comp f e₂
+  let d₁ : Partite.Closed.Embedding A (copyGenerated B C) :=
+    Partite.Closed.Embedding.comp fg e₁
+  let d₂ : Partite.Closed.Embedding A (copyGenerated B C) :=
+    Partite.Closed.Embedding.comp fg e₂
+  have hd₁ : ∀ x, d₁ x = c₁ x := fun _ => rfl
+  have hd₂ : ∀ x, d₂ x = c₂ x := fun _ => rfl
+  have hl₁ : LiftableToGenerated A B C c₁ := ⟨d₁, hd₁⟩
+  have hl₂ : LiftableToGenerated A B C c₂ := ⟨d₂, hd₂⟩
+  have hθ₁ : θ c₁ = χ d₁ := by
+    simp only [θ, dif_pos hl₁]
+    congr 1
+    exact liftable_unique
+      (e := c₁)
+      (Classical.choose_spec hl₁) hd₁
+  have hθ₂ : θ c₂ = χ d₂ := by
+    simp only [θ, dif_pos hl₂]
+    congr 1
+    exact liftable_unique
+      (e := c₂)
+      (Classical.choose_spec hl₂) hd₂
+  calc
+    χ (Partite.Closed.Embedding.comp fg e₁) = χ d₁ := rfl
+    _ = θ c₁ := hθ₁.symm
+    _ = θ c₂ := hf e₁ e₂
+    _ = χ d₂ := hθ₂
+    _ = χ (Partite.Closed.Embedding.comp fg e₂) := rfl
+
 end StructuralRamsey.Partite.ClosedRepair
