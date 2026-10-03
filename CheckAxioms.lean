@@ -100,3 +100,4 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Recursive.build
 #print axioms StructuralRamsey.Partite.Recursive.recursiveConstruction_of_localPictures
 #print axioms StructuralRamsey.Partite.Recursive.localHalfClosedPicture_of_closed
+#print axioms StructuralRamsey.Partite.HalfClosed.inducedPartiteOver
