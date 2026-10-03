@@ -117,3 +117,7 @@ import PartiteConstruction.Partite.Invariants
 import PartiteConstruction.Ramsey.Finite
 import PartiteConstruction.Ramsey.FromProjections
 import PartiteConstruction.Ramsey.Ordered
+
+import PartiteConstruction.Iterated.ProjectedHistoryLocalTreeLike
+import PartiteConstruction.Iterated.PureCopyProjectedHistory
+import PartiteConstruction.Iterated.PureCoreProjectedHistory
