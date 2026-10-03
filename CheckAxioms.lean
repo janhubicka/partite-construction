@@ -257,3 +257,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.addControl_of_boundary
 
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.addControl_of_boundary_with_embedding
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.BoundaryEmbedding.postcomp
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.completeControlList_of_boundaries
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.completeControl_of_boundaries
