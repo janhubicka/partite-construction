@@ -184,7 +184,6 @@ theorem attachmentWitness_of_selected
       apply Subtype.ext
       exact hzy k
     rw [hsub]
-    simpa [yR] using q_inl (y k) hmem
 
   have hq :
       ((Attachment.attach Base S Core f).induce
@@ -307,9 +306,15 @@ theorem attachmentWitness_of_selected
                 apply Subtype.ext
                 rfl
           _ = q z.1 := by
-                symm
-                rw [hcoreEq]
-                simpa using q_inl r.1 hrTest
+                have hzsub :
+                    z.1 =
+                      (⟨Sum.inl r.1, hrTest⟩ :
+                        ↥(↑Test :
+                          Set (Attachment.Vertex S (W := W) (I := I)))) := by
+                  apply Subtype.ext
+                  exact hcoreEq
+                rw [hzsub]
+                exact (q_inl r.1 hrTest).symm
       · push Not at hAllCore
         obtain ⟨z₀, hz₀⟩ := hAllCore
         cases hzval : z₀.1.1 with
@@ -348,7 +353,7 @@ theorem attachmentWitness_of_selected
                           exact Attachment.copyMap_not_mem i x₀.1 x₀.2
                     _ = z₀.1.1 := hzval.symm
                     _ = Attachment.copyMap Base S Core f j b := hb
-                exact Attachment.index_eq_of_outside x₀.2 hleft
+                exact (Attachment.index_eq_of_outside x₀.2 hleft).symm
               subst j
               have hrange :
                   ∀ z : ↥K, ∃ b : VB,
@@ -363,11 +368,18 @@ theorem attachmentWitness_of_selected
               refine ⟨(copies i).comp eB, ?_⟩
               intro z
               have hz := Classical.choose_spec (hrange z)
+              have hz' :
+                  incK z =
+                    Attachment.copyEmbedding Base S Core f i (eB z) := by
+                change incK z =
+                  Attachment.copyEmbedding Base S Core f i
+                    (Classical.choose (hrange z))
+                exact Classical.choose_spec (hrange z)
               have hmem :
                   Attachment.copyMap Base S Core f i (eB z) ∈ Test := by
                 change
                   (Attachment.copyEmbedding Base S Core f i) (eB z) ∈ Test
-                rw [← hz]
+                rw [← hz']
                 exact z.1.2
               change copies i (eB z) = q z.1
               symm
