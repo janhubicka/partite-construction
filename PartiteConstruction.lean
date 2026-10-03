@@ -15,6 +15,7 @@ import PartiteConstruction.Functional.NestedFlatten
 import PartiteConstruction.Functional.PartPredicates
 import PartiteConstruction.Functional.HalfClosedPartite
 import PartiteConstruction.Functional.SingletonExpansion
+import PartiteConstruction.Functional.SingletonReduction
 import PartiteConstruction.Functional.RecursiveConstruction
 import PartiteConstruction.Functional.ClosedAttachment
 import PartiteConstruction.Functional.ClosedPicture
