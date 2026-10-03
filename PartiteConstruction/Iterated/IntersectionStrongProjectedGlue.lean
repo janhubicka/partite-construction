@@ -64,8 +64,9 @@ theorem glueProjectedFull_intersectionStrong
                   Finset.mem_image.mpr ⟨e, Finset.mem_univ e, rfl⟩⟩) ∧
             (∀ e : F,
               f (iF e) =
-                gF ⟨p (iF e),
-                  Finset.mem_image.mpr ⟨e, Finset.mem_univ e, rfl⟩⟩) := by
+                gF ⟨p (iF e), by
+                  apply Finset.mem_image.mpr
+                  exact ⟨e, Finset.mem_univ e, rfl⟩⟩) := by
   classical
   let pE : E → P := p ∘ iE
   let pF : F → P := p ∘ iF
