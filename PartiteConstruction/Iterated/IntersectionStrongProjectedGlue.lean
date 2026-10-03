@@ -124,7 +124,8 @@ theorem glueProjectedFull_intersectionStrong
       exact hd⟩
     injective := by
       intro x y h
-      exact Subtype.ext (congrArg Subtype.val h)
+      apply Subtype.ext
+      exact congrArg (fun q : ↥(↑Eimg : Set P) => q.1) h
     map_rel_iff := fun _ _ => Iff.rfl
   }
   let incGF : Embedding Gov (D.induce (↑Fimg : Set P)) := {
@@ -137,7 +138,8 @@ theorem glueProjectedFull_intersectionStrong
       exact hd⟩
     injective := by
       intro x y h
-      exact Subtype.ext (congrArg Subtype.val h)
+      apply Subtype.ext
+      exact congrArg (fun q : ↥(↑Fimg : Set P) => q.1) h
     map_rel_iff := fun _ _ => Iff.rfl
   }
 
