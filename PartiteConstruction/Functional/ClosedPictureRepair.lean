@@ -159,13 +159,11 @@ theorem disjointCopies_uTransversal
     have hargsA : args = fun k => a (Fin.castSucc k) := by
       funext k
       have hk := congrArg Prod.snd (congrFun heqa (Fin.castSucc k))
-      change (x k).2 = a (Fin.castSucc k) at hk
-      exact hk
+      simpa only [Structure.funcTuple_castSucc, Function.comp_apply] using hk
     have hargsB : args = fun k => b (Fin.castSucc k) := by
       funext k
       have hk := congrArg Prod.snd (congrFun heqb (Fin.castSucc k))
-      change (x k).2 = b (Fin.castSucc k) at hk
-      exact hk
+      simpa only [Structure.funcTuple_castSucc, Function.comp_apply] using hk
     have ha' : B.rel (.inr F) (Structure.funcTuple args ay) := by
       have heta : Structure.funcTuple (fun k => a (Fin.castSucc k)) ay = a := by
         simpa [ay, Language.graph] using (Structure.funcTuple_eta (t := a))
