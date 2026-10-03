@@ -20,6 +20,7 @@ import PartiteConstruction.Functional.PartialDomainEncoding
 import PartiteConstruction.Functional.FunctionDomains
 import PartiteConstruction.Functional.SingletonPartite
 import PartiteConstruction.Functional.SemiClosedPartite
+import PartiteConstruction.Functional.SemiClosedAttachment
 import PartiteConstruction.Functional.SingletonClosedPicture
 import PartiteConstruction.Functional.SingletonHalfClosedConstruction
 import PartiteConstruction.Functional.SingletonHalfClosedPartite
