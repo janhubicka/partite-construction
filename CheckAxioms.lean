@@ -160,3 +160,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.rootPrune_outputImpliesDomain
 #print axioms StructuralRamsey.RelStructure.Embedding.toRootPrune
 #print axioms StructuralRamsey.RelStructure.arrow_rootPrune
+
+#print axioms StructuralRamsey.Partite.SemiClosed.Recursive.recursiveConstruction_from_ordinaryWitness
