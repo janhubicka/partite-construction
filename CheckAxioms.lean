@@ -162,3 +162,13 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.arrow_rootPrune
 
 #print axioms StructuralRamsey.Partite.SemiClosed.Recursive.recursiveConstruction_from_ordinaryWitness
+
+#print axioms StructuralRamsey.Structure.Embedding.strictMono
+#print axioms StructuralRamsey.Structure.Embedding.completeLinearOrder
+#print axioms StructuralRamsey.Structure.arrow_forgetFunctionDomains
+#print axioms StructuralRamsey.Structure.arrow_completeLinearOrder
+#print axioms StructuralRamsey.Structure.exists_linearOrder_extension
+#print axioms StructuralRamsey.RelStructure.ordinaryWitness_namedOrder
+#print axioms StructuralRamsey.Structure.orderedRamsey_singleton
+#print axioms StructuralRamsey.Structure.orderedRamsey
+#print axioms StructuralRamsey.Structure.orderedClosedGraphRamsey
