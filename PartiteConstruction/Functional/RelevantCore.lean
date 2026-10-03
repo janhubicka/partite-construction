@@ -200,8 +200,8 @@ noncomputable def factorProjected
       change
         (S.restrict α.toFunctionEmbedding).rel R
           (Subtype.val ∘ (f ∘ x)) ↔ A.rel R x
-      have hr := r.1.map_rel_iff R x
-      convert hr using 1 <;> funext i <;> rfl
+      simpa [f, Function.comp_def] using
+        (r.1.map_rel_iff R x)
     map_part := by
       intro a
       exact r.1.map_part a
@@ -217,11 +217,16 @@ noncomputable def factorProjected
           Structure.funcTuple (f ∘ x) y) at hy
     have ht :
         Subtype.val ∘ Structure.funcTuple (f ∘ x) y =
-          Structure.funcTuple (r ∘ x) y.1.1 := by
-      exact Structure.comp_funcTuple
-        Subtype.val (f ∘ x) y
-    rw [ht] at hy
-    exact hy
+          Structure.funcTuple (r ∘ x) y.1 := by
+      have h :=
+        Structure.comp_funcTuple Subtype.val (f ∘ x) y
+      simpa [f, Function.comp_def] using h
+    exact Eq.mp
+      (congrArg
+        (fun t =>
+          (S.restrict α.toFunctionEmbedding).rel
+            (show L.graph.Symbol from Sum.inr F) t) ht)
+      hy
   obtain ⟨a, ha, hay⟩ := r.2 F x y.1 hyR
   refine ⟨a, ha, ?_⟩
   apply Subtype.ext
@@ -242,6 +247,7 @@ theorem vertex_covered
   refine ⟨factorProjected S α e, a, ?_⟩
   apply Subtype.ext
   apply Subtype.ext
+  change e.1 a = x.1.1
   exact hea
 
 
@@ -277,8 +283,10 @@ theorem ambientRelevant_functionClosed_unary
   have hargs : e.1 ∘ xa = x := by
     funext i
     have hi : i = i0 := by
-      rw [hUnary F] at i i0
-      exact Subsingleton.elim _ _
+      apply Fin.ext
+      have hiLt := i.isLt
+      have hi0Lt := i0.isLt
+      omega
     subst i
     exact hea
   have hy' :
@@ -337,15 +345,18 @@ noncomputable def coreInclusionClosed_unary
         (Subtype.val ∘
           (Subtype.val ∘ Structure.funcTuple x z))
     have ht :
-        Subtype.val ∘
-            (Subtype.val ∘ Structure.funcTuple x z) =
+        toAmbient ∘ Structure.funcTuple x z =
           Structure.funcTuple (toAmbient ∘ x) y := by
-      funext i
-      refine Fin.lastCases ?_ (fun j => ?_) i
-      · rfl
-      · rfl
-    rw [ht]
-    exact hy
+      have h := Structure.comp_funcTuple toAmbient x z
+      simpa [toAmbient, z, ys] using h
+    change
+      S.rel (.inr F)
+        (toAmbient ∘ Structure.funcTuple x z)
+    exact Eq.mpr
+      (congrArg
+        (fun t => S.rel
+          (show L.graph.Symbol from Sum.inr F) t) ht)
+      hy
   · rfl
 
 end StructuralRamsey.Partite.RelevantCore
