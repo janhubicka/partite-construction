@@ -98,6 +98,7 @@ import PartiteConstruction.Iterated.AttachmentDecompose
 import PartiteConstruction.Iterated.Glue
 import PartiteConstruction.Iterated.WitnessGlue
 import PartiteConstruction.Iterated.MixedOverlapObstruction
+import PartiteConstruction.Iterated.MixedContainedObstruction
 import PartiteConstruction.Iterated.MixedOverlapExactness
 import PartiteConstruction.Iterated.MixedOverlapExample
 import PartiteConstruction.Iterated.IntersectionStrongLocalTreeLike
