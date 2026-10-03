@@ -153,5 +153,80 @@ theorem respectsHistory_of_kernel_refines_projection
   intro H hH x y hxy
   rw [hkern x y hxy]
 
+
+/-- Pull a history-sensitive witness back along a homomorphism-embedding when
+the projected image of the test fits the available size bound.  The base
+invariant is queried with the same finite history list. -/
+theorem witness_of_homEmbedding_image
+    [DecidableEq P]
+    (hD :
+      ProjectedHistoryLocallyTreeLike
+        (A := A) (D := D) (C := D) (B := B) id m)
+    (p : W → P) (hp : C.IsHomomorphismEmbedding D p)
+    (S : Finset W) (hcard : (S.image p).card ≤ m)
+    (history : List (Set P)) :
+    ∃ (Z : Type v) (Target : RelStructure L Z),
+      TreeAmalgam B Z Target ∧
+      ∃ f : ↥(↑S : Set W) → Z,
+        (C.induce (↑S : Set W)).IsHomomorphismEmbedding Target f ∧
+        ProjectedPartialIntersections
+          (A := A) (D := D) (C := C) (T := Target) p S f ∧
+        RespectsProjectedHistory p S f history := by
+  classical
+  let I : Finset P := S.image p
+  obtain ⟨Z, Target, hTree, g, hg, hPartD, hHistD⟩ :=
+    hD I hcard history
+  let pS : ↥(↑S : Set W) → ↥(↑I : Set P) :=
+    fun x => ⟨p x.1, Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩⟩
+  have hIncl :
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding C Subtype.val :=
+    (inclusion C (↑S : Set W)).isHomomorphismEmbedding
+  have hToD :
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding D
+        (p ∘ Subtype.val) :=
+    hp.comp hIncl
+  have hpS :
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding
+        (D.induce (↑I : Set P)) pS :=
+    hToD.codRestrict (↑I : Set P)
+      (fun x => Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩)
+  let f : ↥(↑S : Set W) → Z := g ∘ pS
+  have hf :
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding Target f :=
+    hg.comp hpS
+
+  have hPart :
+      ProjectedPartialIntersections
+        (A := A) (D := D) (C := C) (T := Target) p S f := by
+    intro β H e heproj heRange
+    let eD : Embedding (A.induce H) D :=
+      β.comp (inclusion A H)
+    have heDproj : ∀ x, (id : P → P) (eD x) = β x.1 := by
+      intro x
+      rfl
+    have heDRange : ∀ x, eD x ∈ I := by
+      intro x
+      apply Finset.mem_image.mpr
+      refine ⟨e x, heRange x, ?_⟩
+      exact (heproj x).symm
+    obtain ⟨eT, heT, hc⟩ :=
+      hPartD β H eD heDproj heDRange
+    refine ⟨eT, ?_, hc⟩
+    intro x
+    change eT x = g (pS ⟨e x, heRange x⟩)
+    rw [heT x]
+    apply congrArg g
+    apply Subtype.ext
+    exact (heproj x).symm
+
+  have hHist :
+      RespectsProjectedHistory p S f history := by
+    intro H hH x y hxy
+    have hbase :=
+      hHistD H hH (pS x) (pS y) hxy
+    simpa using hbase
+
+  exact ⟨Z, Target, hTree, f, hf, hPart, hHist⟩
+
 end ProjectedHistoryLocallyTreeLike
 end StructuralRamsey.RelStructure
