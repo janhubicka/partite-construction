@@ -26,6 +26,8 @@ variable {D : RelStructure L P}
 
 namespace ProjectedPartialLocallyTreeLike
 
+variable {m : ℕ}
+
 /-- One projected side admits a quotient-relative completion over its selected
 source overlap. -/
 theorem relativeCompletion
