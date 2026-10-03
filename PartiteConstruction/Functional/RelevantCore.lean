@@ -42,9 +42,23 @@ theorem induce_uTransversal
     (T : Set X) :
     (S.induce T).FunctionOutputTransversal := by
   intro F x y z hy hz hp
+  have hy' :
+      S.rel (.inr F)
+        (Structure.funcTuple (Subtype.val ∘ x) y.1) := by
+    change
+      S.rel (.inr F)
+        (Subtype.val ∘ Structure.funcTuple x y) at hy
+    simpa only [Structure.comp_funcTuple] using hy
+  have hz' :
+      S.rel (.inr F)
+        (Structure.funcTuple (Subtype.val ∘ x) z.1) := by
+    change
+      S.rel (.inr F)
+        (Subtype.val ∘ Structure.funcTuple x z) at hz
+    simpa only [Structure.comp_funcTuple] using hz
   apply Subtype.ext
   exact hS F
-    (Subtype.val ∘ x) y.1 z.1 hy hz hp
+    (Subtype.val ∘ x) y.1 z.1 hy' hz' hp
 
 /-- A closed projected A-copy restricted to the alpha-parts.  Closedness of
 alpha in D is not needed; closedness of the A-copy itself is enough. -/
@@ -89,8 +103,10 @@ def restrictProjected
           Structure.funcTuple (e.1 ∘ x) y.1 := by
       exact Structure.comp_funcTuple
         Subtype.val (pe ∘ x) y
-    rw [ht] at hy
-    exact hy
+    exact Eq.mp
+      (congrArg
+        (fun t => S.rel (show L.graph.Symbol from Sum.inr F) t) ht)
+      hy
   obtain ⟨a, ha, hay⟩ := e.1.closed F x y.1 hyS
   refine ⟨a, ha, ?_⟩
   apply Subtype.ext
@@ -141,9 +157,23 @@ theorem core_uTransversal
   let R := S.restrict α.toFunctionEmbedding
   have hR : R.FunctionOutputTransversal := by
     intro F x y z hy hz hp
+    have hy' :
+        S.rel (.inr F)
+          (Structure.funcTuple (Subtype.val ∘ x) y.1) := by
+      change
+        S.rel (.inr F)
+          (Subtype.val ∘ Structure.funcTuple x y) at hy
+      simpa only [Structure.comp_funcTuple] using hy
+    have hz' :
+        S.rel (.inr F)
+          (Structure.funcTuple (Subtype.val ∘ x) z.1) := by
+      change
+        S.rel (.inr F)
+          (Subtype.val ∘ Structure.funcTuple x z) at hz
+      simpa only [Structure.comp_funcTuple] using hz
     apply Subtype.ext
     exact hS F
-      (Subtype.val ∘ x) y.1 z.1 hy hz
+      (Subtype.val ∘ x) y.1 z.1 hy' hz'
       (congrArg α.toFunctionEmbedding hp)
   exact induce_uTransversal R hR (RelevantSet S α)
 
@@ -170,9 +200,8 @@ noncomputable def factorProjected
       change
         (S.restrict α.toFunctionEmbedding).rel R
           (Subtype.val ∘ (f ∘ x)) ↔ A.rel R x
-      convert r.1.map_rel_iff R x using 1
-      funext i
-      rfl
+      have hr := r.1.map_rel_iff R x
+      convert hr using 1 <;> funext i <;> rfl
     map_part := by
       intro a
       exact r.1.map_part a
@@ -181,7 +210,7 @@ noncomputable def factorProjected
   intro F x y hy
   have hyR :
       (S.restrict α.toFunctionEmbedding).rel (.inr F)
-        (Structure.funcTuple (r ∘ x) y.1.1) := by
+        (Structure.funcTuple (r ∘ x) y.1) := by
     change
       (S.restrict α.toFunctionEmbedding).rel (.inr F)
         (Subtype.val ∘
@@ -193,7 +222,7 @@ noncomputable def factorProjected
         Subtype.val (f ∘ x) y
     rw [ht] at hy
     exact hy
-  obtain ⟨a, ha, hay⟩ := r.2 F x y.1.1 hyR
+  obtain ⟨a, ha, hay⟩ := r.2 F x y.1 hyR
   refine ⟨a, ha, ?_⟩
   apply Subtype.ext
   apply Subtype.ext
@@ -211,6 +240,7 @@ theorem vertex_covered
       ∃ a : U, e a = x := by
   rcases x.2 with ⟨e, a, hea⟩
   refine ⟨factorProjected S α e, a, ?_⟩
+  apply Subtype.ext
   apply Subtype.ext
   exact hea
 
