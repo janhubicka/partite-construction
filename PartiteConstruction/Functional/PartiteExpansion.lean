@@ -17,25 +17,26 @@ and closed embeddings are exactly closed partite embeddings.
 -/
 namespace StructuralRamsey
 
-universe u v w
+universe u v
 
 namespace Language
 
 /-- Add one unary relation symbol for every named part, leaving functions
 unchanged. -/
 def withParts (L : Language.{u}) (P : Type v) : Language.{max u v} where
-  RelSymbol := L.RelSymbol ⊕ P
-  FuncSymbol := L.FuncSymbol
+  RelSymbol := ULift.{v, u} L.RelSymbol ⊕ ULift.{u, v} P
+  FuncSymbol := ULift.{v, u} L.FuncSymbol
   relArity
-    | .inl R => L.relArity R
+    | .inl R => L.relArity R.down
     | .inr _ => 1
-  funcArity := L.funcArity
+  funcArity F := L.funcArity F.down
 
 theorem withParts_positiveFuncArity
     {L : Language.{u}} {P : Type v}
     (h : L.PositiveFuncArity) :
-    (L.withParts P).PositiveFuncArity :=
-  h
+    (L.withParts P).PositiveFuncArity := by
+  intro F
+  exact h F.down
 
 end Language
 
@@ -43,22 +44,21 @@ namespace Partite.PartExpansion
 
 open RelStructure Structure
 
-variable {L : Language.{u}} {P : Type v}
-variable {V : Type w}
+variable {L : Language.{u}} {P V : Type v}
 
 /-- Expand a graph-partite system by unary relations naming its parts. -/
 def expandGraph (B : Partite.System L.graph P V) :
     RelStructure (L.withParts P).graph V where
   rel
-    | .inl (.inl R), x => B.rel (.inl R) x
-    | .inl (.inr p), x => B.part (x (0 : Fin 1)) = p
-    | .inr F, x => B.rel (.inr F) x
+    | .inl (.inl R), x => B.rel (.inl R.down) x
+    | .inl (.inr p), x => B.part (x (0 : Fin 1)) = p.down
+    | .inr F, x => B.rel (.inr F.down) x
 
 @[simp] theorem expandGraph_rel
     (B : Partite.System L.graph P V)
     (R : L.RelSymbol)
     (x : Fin (L.relArity R) → V) :
-    (expandGraph B).rel (.inl (.inl R)) x ↔
+    (expandGraph B).rel (.inl (.inl (ULift.up R))) x ↔
       B.rel (.inl R) x :=
   Iff.rfl
 
@@ -66,20 +66,20 @@ def expandGraph (B : Partite.System L.graph P V) :
     (B : Partite.System L.graph P V)
     (F : L.FuncSymbol)
     (x : Fin (L.funcArity F + 1) → V) :
-    (expandGraph B).rel (.inr F) x ↔
+    (expandGraph B).rel (.inr (ULift.up F)) x ↔
       B.rel (.inr F) x :=
   Iff.rfl
 
 @[simp] theorem expandGraph_part
     (B : Partite.System L.graph P V)
     (p : P) (x : Fin 1 → V) :
-    (expandGraph B).rel (.inl (.inr p)) x ↔
+    (expandGraph B).rel (.inl (.inr (ULift.up p))) x ↔
       B.part (x 0) = p :=
   Iff.rfl
 
 namespace Embedding
 
-variable {W : Type w}
+variable {W : Type v}
 variable {A : Partite.System L.graph P V}
 variable {B : Partite.System L.graph P W}
 
@@ -97,14 +97,14 @@ def expandGraph (e : Partite.Embedding A B) :
     | inl R =>
         cases R with
         | inl R =>
-            exact e.map_rel_iff (.inl R) x
+            exact e.map_rel_iff (.inl R.down) x
         | inr p =>
             change
-              B.part (e (x (0 : Fin 1))) = p ↔
-                A.part (x (0 : Fin 1)) = p
+              B.part (e (x (0 : Fin 1))) = p.down ↔
+                A.part (x (0 : Fin 1)) = p.down
             rw [e.map_part]
     | inr F =>
-        exact e.map_rel_iff (.inr F) x
+        exact e.map_rel_iff (.inr F.down) x
 
 /-- An embedding after naming the parts automatically preserves the original
 part map. -/
@@ -120,15 +120,15 @@ def ofExpandedGraph
       intro R x
       cases R with
       | inl R =>
-          exact e.map_rel_iff (.inl (.inl R)) x
+          exact e.map_rel_iff (.inl (.inl (ULift.up R))) x
       | inr F =>
-          exact e.map_rel_iff (.inr F) x
+          exact e.map_rel_iff (.inr (ULift.up F)) x
   }
   map_part := by
     intro x
     have h :=
       (e.map_rel_iff
-        (.inl (.inr (A.part x)))
+        (.inl (.inr (ULift.up (A.part x))))
         (fun _ : Fin 1 => x)).mpr rfl
     exact h
 
@@ -155,7 +155,7 @@ end Embedding
 
 namespace ClosedEmbedding
 
-variable {W : Type w}
+variable {W : Type v}
 variable {A : Partite.System L.graph P V}
 variable {B : Partite.System L.graph P W}
 
@@ -167,7 +167,7 @@ def expandGraph (e : Partite.Closed.Embedding A B) :
   toEmbedding := PartExpansion.Embedding.expandGraph e.1
   closed := by
     intro F x y hy
-    exact e.2 F x y hy
+    exact e.2 F.down x y hy
 
 /-- Closedness in the expanded graph language is exactly the original
 function-closedness, so an expanded closed embedding decodes to a closed
@@ -181,7 +181,7 @@ def ofExpandedGraph
     PartExpansion.Embedding.ofExpandedGraph e.toEmbedding
   refine ⟨pe, ?_⟩
   intro F x y hy
-  exact e.closed F x y hy
+  exact e.closed (ULift.up F) x y hy
 
 /-- Closed partite embeddings are equivalent to closed embeddings after naming
 parts by unary relations. -/
