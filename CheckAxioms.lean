@@ -188,3 +188,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.testTrace
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.eq_of_testTrace_eq
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.exists_selected_indices
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.fixedSupportBudget
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.attachment_locallyTreeLike_fixedSupport
