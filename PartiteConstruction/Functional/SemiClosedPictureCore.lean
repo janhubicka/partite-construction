@@ -18,14 +18,15 @@ theorem selectedLift_core
     (α : RelStructure.Embedding A D)
     (E : Partite.System L.withFunctionDomains.graph U W)
     (hAtotal : A.FunctionDomainTotal)
-    (hBroot : B.OutputImpliesDomain)
+    (hDroot : D.OutputImpliesDomain)
+    (hBPartite : B.IsPartiteOver D)
     (hBsingle : B.FunctionOutputSingleValued)
     (f : Partite.Closed.Embedding
       (restriction A D B α) E)
     (e : Partite.Closed.ProjectedEmbedding
       A B (fun a => α a))
     (a : U) :
-    selectedLift A D B α E hAtotal hBroot hBsingle f e a =
+    selectedLift A D B α E hAtotal hDroot hBPartite hBsingle f e a =
       Partite.Attachment.coreEmbedding
         B (coveredSet A D B α)
         (E.relabel α.toFunctionEmbedding)
@@ -95,7 +96,8 @@ noncomputable def liftCore
     (α : RelStructure.Embedding A D)
     (E : Partite.System L.withFunctionDomains.graph U W)
     (hAtotal : A.FunctionDomainTotal)
-    (hBroot : B.OutputImpliesDomain)
+    (hDroot : D.OutputImpliesDomain)
+    (hBPartite : B.IsPartiteOver D)
     (hBsingle : B.FunctionOutputSingleValued)
     (d : Partite.Closed.Embedding
       (Partite.transversal A) E)
@@ -108,7 +110,7 @@ noncomputable def liftCore
   let e := Classical.choose he
   exact
     selectedLift A D B α E
-      hAtotal hBroot hBsingle f e
+      hAtotal hDroot hBPartite hBsingle f e
 
 theorem liftCore_apply
     (A : RelStructure L.withFunctionDomains.graph U)
@@ -117,13 +119,14 @@ theorem liftCore_apply
     (α : RelStructure.Embedding A D)
     (E : Partite.System L.withFunctionDomains.graph U W)
     (hAtotal : A.FunctionDomainTotal)
-    (hBroot : B.OutputImpliesDomain)
+    (hDroot : D.OutputImpliesDomain)
+    (hBPartite : B.IsPartiteOver D)
     (hBsingle : B.FunctionOutputSingleValued)
     (d : Partite.Closed.Embedding
       (Partite.transversal A) E)
     (hd : CoreLiftable A D B α E d)
     (a : U) :
-    liftCore A D B α E hAtotal hBroot hBsingle d hd a =
+    liftCore A D B α E hAtotal hDroot hBPartite hBsingle d hd a =
       Partite.Attachment.coreEmbedding
         B (coveredSet A D B α)
         (E.relabel α.toFunctionEmbedding)
@@ -140,7 +143,7 @@ theorem liftCore_apply
     Classical.choose_spec he
   change
     selectedLift A D B α E
-      hAtotal hBroot hBsingle f e a = _
+      hAtotal hDroot hBPartite hBsingle f e a = _
   rw [selectedLift_core]
   congr 1
   have happ := congrArg
@@ -155,13 +158,14 @@ theorem liftCore_unique
     (α : RelStructure.Embedding A D)
     (E : Partite.System L.withFunctionDomains.graph U W)
     (hAtotal : A.FunctionDomainTotal)
-    (hBroot : B.OutputImpliesDomain)
+    (hDroot : D.OutputImpliesDomain)
+    (hBPartite : B.IsPartiteOver D)
     (hBsingle : B.FunctionOutputSingleValued)
     (d : Partite.Closed.Embedding
       (Partite.transversal A) E)
     (h₁ h₂ : CoreLiftable A D B α E d) :
-    liftCore A D B α E hAtotal hBroot hBsingle d h₁ =
-      liftCore A D B α E hAtotal hBroot hBsingle d h₂ := by
+    liftCore A D B α E hAtotal hDroot hBPartite hBsingle d h₁ =
+      liftCore A D B α E hAtotal hDroot hBPartite hBsingle d h₂ := by
   apply Partite.Closed.Embedding.ext
   intro a
   exact
