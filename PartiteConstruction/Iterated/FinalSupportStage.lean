@@ -99,6 +99,7 @@ theorem attachSupport
   classical
   let I :=
     FinalSupport.AtSupport Orig Base Q pOrig hpOrig hProjected T
+  letI : Fintype (FinalSupport.Root Orig) := Fintype.ofFinite _
   letI : Fintype I := Fintype.ofFinite I
   by_cases hI : Nonempty I
   · let r0 : I := Classical.choice hI
@@ -183,21 +184,25 @@ theorem attachSupport
         exact
           (eRB.mem_imageFinset_iff (eRB z)).mpr ⟨z, rfl⟩
       have hbT : eRB z ∈ T := by
-        rw [← r.2]
-        exact hbSupport
+        exact
+          Eq.mp
+            (congrArg (fun U : Finset VB => eRB z ∈ U) r.2)
+            hbSupport
       let x : ↥(↑T : Set VB) := ⟨eRB z, hbT⟩
       have hinv :
           Embedding.imageInverseAt eRB T r.2 x = z := by
         apply eRB.injective
-        rw [Embedding.imageInverseAt_apply]
-        rfl
+        calc
+          eRB (Embedding.imageInverseAt eRB T r.2 x) = x.1 :=
+            Embedding.imageInverseAt_apply eRB T r.2 x
+          _ = eRB z := rfl
       have hback :
           FinalSupport.AtSupport.embedding
               Orig Base Q pOrig hpOrig hProjected T r x =
             z.1 := by
         change
           (Embedding.imageInverseAt eRB T r.2 x).1 = z.1
-        rw [hinv]
+        exact congrArg Subtype.val hinv
       change core1 z.1 = betar (eRB z)
       calc
         core1 z.1 = e (S0.core z.1) := rfl
