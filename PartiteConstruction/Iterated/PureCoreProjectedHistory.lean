@@ -138,9 +138,8 @@ theorem pureCore_projectedHistoryWitness
   have hHist :
       RelStructure.RespectsProjectedHistory
         C₁.part Test f history :=
-    RelStructure.ProjectedHistoryLocallyTreeLike.
-      respectsHistory_of_kernel_refines_projection
-        (p := C₁.part) hKernel history
+    RelStructure.ProjectedHistoryLocallyTreeLike.respectsHistory_of_kernel_refines_projection
+      (p := C₁.part) hKernel history
 
   exact ⟨f, hf, hPart, hHist⟩
 
