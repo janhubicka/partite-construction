@@ -76,6 +76,83 @@ def CanonicalOn
           χ (RelStructure.ClosedEmbedding.comp
             f.toRelClosed e₂.toRelClosed)
 
+
+/-- Closed embeddings of a profile system are exactly closed embeddings of A
+with that prescribed projection. -/
+def profileEmbeddingToProjected
+    {X : Type v}
+    {A : RelStructure L.graph U}
+    {D : RelStructure L.graph P}
+    {α : RelStructure.Embedding A D}
+    {S : Partite.System L.graph P X}
+    (e : Partite.Closed.Embedding (profile A D α) S) :
+    Partite.Closed.ProjectedEmbedding A S α :=
+  ⟨e.toRelClosed, e.1.map_part⟩
+
+/-- The inverse conversion from a closed projected A-copy to a closed
+embedding of the profile system. -/
+def projectedToProfileEmbedding
+    {X : Type v}
+    {A : RelStructure L.graph U}
+    {D : RelStructure L.graph P}
+    {α : RelStructure.Embedding A D}
+    {S : Partite.System L.graph P X}
+    (e : Partite.Closed.ProjectedEmbedding A S α) :
+    Partite.Closed.Embedding (profile A D α) S := by
+  let pe : Partite.Embedding (profile A D α) S := {
+    toEmbedding := e.1.toEmbedding
+    map_part := e.2
+  }
+  exact ⟨pe, e.1.closed⟩
+
+/-- For an already U-closed projection alpha, the checked closed-alpha Picture
+lemma supplies exactly the local half-closed witness needed by the outer
+recursion.  Hence the unresolved local existence problem concerns only
+non-closed ordinary projections. -/
+theorem localHalfClosedPicture_of_closed
+    (A : RelStructure L.graph U)
+    (D : RelStructure L.graph P)
+    [Finite U]
+    {X : Type v} [Finite X]
+    (S : Partite.System L.graph P X)
+    (hSPartite : S.IsPartiteOver D)
+    (hSU : S.FunctionOutputTransversal)
+    (κ : Type*) [Fintype κ]
+    (α : RelStructure.ClosedEmbedding A D) :
+    ∃ (Y : Type v) (_ : Finite Y)
+      (O : Partite.System L.graph P Y),
+      O.FunctionOutputTransversal ∧
+      Partite.HalfClosedArrow
+        (A := profile A D α.toEmbedding)
+        (B := S) (D := O) κ := by
+  obtain ⟨Y, hY, O, hOPartite, hOU, hPicture⟩ :=
+    Partite.Closed.Picture.pictureLemma
+      (A := A) (D := D) (B := S) (α := α)
+      hSPartite hSU κ
+  refine ⟨Y, hY, O, hOU, ?_⟩
+  intro χ
+  let χ' : Partite.Closed.ProjectedEmbedding A O α → κ :=
+    fun e => χ (projectedToProfileEmbedding
+      (D := D) (α := α.toEmbedding) e)
+  obtain ⟨f, hf⟩ := hPicture χ'
+  let lift :
+      Partite.Closed.Embedding
+          (profile A D α.toEmbedding) S →
+        Partite.Closed.Embedding
+          (profile A D α.toEmbedding) O :=
+    fun e => Partite.Closed.Embedding.comp f e
+  refine ⟨f.1, lift, ?_, ?_⟩
+  · intro e x
+    rfl
+  · intro e₁ e₂
+    have h :=
+      hf
+        (profileEmbeddingToProjected
+          (D := D) (α := α.toEmbedding) e₁)
+        (profileEmbeddingToProjected
+          (D := D) (α := α.toEmbedding) e₂)
+    exact h
+
 /-- The exact local existence statement still required from the
 arbitrary-projection Picture step. -/
 def LocalHalfClosedPictures
