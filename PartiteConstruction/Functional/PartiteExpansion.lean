@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.ClosedPartite
+import PartiteConstruction.Functional.HalfClosedConstruction
 import PartiteConstruction.Partite.Predicates
 
 /-! # Part predicates inside the graph language
@@ -204,6 +205,124 @@ def expandedGraphEquiv :
     rfl
 
 end ClosedEmbedding
+
+
+/-- Half-closed arrow in the category of partite systems: the returned
+B-copy need only be part-preserving, while its composites with all closed
+A-copies are required to be closed and monochromatic. -/
+def HalfClosedArrow
+    {W : Type v}
+    (A : Partite.System L.graph P V)
+    (B : Partite.System L.graph P W)
+    {X : Type v} (C : Partite.System L.graph P X)
+    (κ : Type*) : Prop :=
+  ∀ χ : Partite.Closed.Embedding A C → κ,
+    ∃ β : Partite.Embedding B C,
+      ∃ lift :
+        Partite.Closed.Embedding A B →
+          Partite.Closed.Embedding A C,
+        (∀ e x, lift e x = β (e x)) ∧
+        ∀ e₁ e₂, χ (lift e₁) = χ (lift e₂)
+
+/-- Naming the parts turns the partite half-closed arrow into exactly the
+ordinary half-closed arrow of expanded graph structures. -/
+theorem halfClosedArrow_iff_expanded
+    {W X : Type v}
+    (A : Partite.System L.graph P V)
+    (B : Partite.System L.graph P W)
+    (C : Partite.System L.graph P X)
+    (κ : Type*) :
+    HalfClosedArrow A B C κ ↔
+      RelStructure.HalfClosedArrow
+        (PartExpansion.expandGraph A)
+        (PartExpansion.expandGraph B)
+        (PartExpansion.expandGraph C) κ := by
+  constructor
+  · intro h χ
+    let χp : Partite.Closed.Embedding A C → κ :=
+      fun e => χ (ClosedEmbedding.expandGraph e)
+    obtain ⟨β, lift, hlift, hmono⟩ := h χp
+    let βe := Embedding.expandGraph β
+    let liftE :
+        RelStructure.ClosedEmbedding
+            (PartExpansion.expandGraph A)
+            (PartExpansion.expandGraph B) →
+          RelStructure.ClosedEmbedding
+            (PartExpansion.expandGraph A)
+            (PartExpansion.expandGraph C) :=
+      fun e =>
+        ClosedEmbedding.expandGraph
+          (lift (ClosedEmbedding.ofExpandedGraph e))
+    refine ⟨βe, liftE, ?_, ?_⟩
+    · intro e x
+      change
+        lift (ClosedEmbedding.ofExpandedGraph e) x =
+          β (e x)
+      exact hlift (ClosedEmbedding.ofExpandedGraph e) x
+    · intro e₁ e₂
+      exact hmono
+        (ClosedEmbedding.ofExpandedGraph e₁)
+        (ClosedEmbedding.ofExpandedGraph e₂)
+  · intro h χ
+    let χe :
+        RelStructure.ClosedEmbedding
+            (PartExpansion.expandGraph A)
+            (PartExpansion.expandGraph C) → κ :=
+      fun e => χ (ClosedEmbedding.ofExpandedGraph e)
+    obtain ⟨β, lift, hlift, hmono⟩ := h χe
+    let βp : Partite.Embedding B C :=
+      Embedding.ofExpandedGraph β
+    let liftP :
+        Partite.Closed.Embedding A B →
+          Partite.Closed.Embedding A C :=
+      fun e =>
+        ClosedEmbedding.ofExpandedGraph
+          (lift (ClosedEmbedding.expandGraph e))
+    refine ⟨βp, liftP, ?_, ?_⟩
+    · intro e x
+      change
+        lift (ClosedEmbedding.expandGraph e) x =
+          β (e x)
+      exact hlift (ClosedEmbedding.expandGraph e) x
+    · intro e₁ e₂
+      exact hmono
+        (ClosedEmbedding.expandGraph e₁)
+        (ClosedEmbedding.expandGraph e₂)
+
+/-- Closed Ramsey arrows are likewise unchanged by naming the parts. -/
+theorem closedArrow_iff_expanded
+    {W X : Type v}
+    (A : Partite.System L.graph P V)
+    (B : Partite.System L.graph P W)
+    (C : Partite.System L.graph P X)
+    (κ : Type*) :
+    Partite.Closed.Arrow A B C κ ↔
+      RelStructure.ClosedArrow
+        (PartExpansion.expandGraph A)
+        (PartExpansion.expandGraph B)
+        (PartExpansion.expandGraph C) κ := by
+  constructor
+  · intro h χ
+    let χp : Partite.Closed.Embedding A C → κ :=
+      fun e => χ (ClosedEmbedding.expandGraph e)
+    obtain ⟨f, hf⟩ := h χp
+    refine ⟨ClosedEmbedding.expandGraph f, ?_⟩
+    intro e₁ e₂
+    exact hf
+      (ClosedEmbedding.ofExpandedGraph e₁)
+      (ClosedEmbedding.ofExpandedGraph e₂)
+  · intro h χ
+    let χe :
+        RelStructure.ClosedEmbedding
+            (PartExpansion.expandGraph A)
+            (PartExpansion.expandGraph C) → κ :=
+      fun e => χ (ClosedEmbedding.ofExpandedGraph e)
+    obtain ⟨f, hf⟩ := h χe
+    refine ⟨ClosedEmbedding.ofExpandedGraph f, ?_⟩
+    intro e₁ e₂
+    exact hf
+      (ClosedEmbedding.expandGraph e₁)
+      (ClosedEmbedding.expandGraph e₂)
 
 end Partite.PartExpansion
 end StructuralRamsey
