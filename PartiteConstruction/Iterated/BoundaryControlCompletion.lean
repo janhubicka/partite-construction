@@ -35,6 +35,7 @@ structure BoundaryEmbedding
 /-- Add one controlled A-copy when an induced boundary embedding is supplied
 explicitly.  No hereditary irreducibility assumption on A is used. -/
 theorem addControl_of_boundary
+    (hA : A.Irreducible)
     (eAB : Embedding A B)
     (S : Finset W)
     (hTree : TreeAmalgam B Y T)
@@ -58,13 +59,7 @@ theorem addControl_of_boundary
   have hcT : eHT.ContainedInIrreducible := hbd.contained
   have hcB : eHB.ContainedInIrreducible := by
     apply Embedding.containedInIrreducible_of_range_subset
-      (A := A) (T := B) (D := H)
-      (HereditarilyIrreducible.irreducible
-        (by
-          intro R
-          exact (eAB.comp (inclusion A R)).isHomomorphismEmbedding.irreducible_domain
-            (eAB.comp (inclusion A R))))
-      eAB eHB
+      hA eAB eHB
     intro x
     exact ⟨x.1, rfl⟩
   let T' := FreeAmalgam.amalgam H T B eHT eHB
