@@ -63,9 +63,6 @@ import PartiteConstruction.Iterated.ControlCompletion
 import PartiteConstruction.Iterated.ControlCompletionCompatible
 import PartiteConstruction.Iterated.PureCoreCompatible
 import PartiteConstruction.Iterated.ProjectedPartialLocalTreeLike
-import PartiteConstruction.Iterated.ProjectedHistoryLocalTreeLike
-import PartiteConstruction.Iterated.PureCoreProjectedHistory
-import PartiteConstruction.Iterated.PureCopyProjectedHistory
 import PartiteConstruction.Iterated.PureCopyProjectedCompatible
 import PartiteConstruction.Iterated.PureCoreProjectedCompatible
 import PartiteConstruction.Iterated.PureCopyGeometry
@@ -101,6 +98,7 @@ import PartiteConstruction.Iterated.AttachmentDecompose
 import PartiteConstruction.Iterated.Glue
 import PartiteConstruction.Iterated.WitnessGlue
 import PartiteConstruction.Iterated.MixedOverlapObstruction
+import PartiteConstruction.Iterated.MixedContainedObstruction
 import PartiteConstruction.Iterated.MixedOverlapExactness
 import PartiteConstruction.Iterated.MixedOverlapExample
 import PartiteConstruction.Iterated.IntersectionStrongLocalTreeLike
@@ -119,3 +117,7 @@ import PartiteConstruction.Partite.Invariants
 import PartiteConstruction.Ramsey.Finite
 import PartiteConstruction.Ramsey.FromProjections
 import PartiteConstruction.Ramsey.Ordered
+
+import PartiteConstruction.Iterated.ProjectedHistoryLocalTreeLike
+import PartiteConstruction.Iterated.PureCoreProjectedHistory
+import PartiteConstruction.Iterated.PureCopyProjectedHistory
