@@ -99,7 +99,11 @@ theorem attachSupport
   classical
   let I :=
     FinalSupport.AtSupport Orig Base Q pOrig hpOrig hProjected T
+  letI : Finite (FinalSupport.Root Orig) :=
+    Finite.of_injective Subtype.val Subtype.val_injective
   letI : Fintype (FinalSupport.Root Orig) := Fintype.ofFinite _
+  letI : Finite I :=
+    Finite.of_injective Subtype.val Subtype.val_injective
   letI : Fintype I := Fintype.ofFinite I
   by_cases hI : Nonempty I
   · let r0 : I := Classical.choice hI
