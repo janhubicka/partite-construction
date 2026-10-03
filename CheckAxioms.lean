@@ -224,3 +224,6 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.RelStructure.UniformFinal.initial
 #print axioms StructuralRamsey.RelStructure.UniformFinal.attachSupport
+
+#print axioms StructuralRamsey.FiniteTrace.selectIndices
+#print axioms StructuralRamsey.FiniteTrace.selectIndices_cardBound
