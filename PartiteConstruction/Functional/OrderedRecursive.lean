@@ -22,11 +22,16 @@ actual order of the carrier.  All other relations are left unchanged. -/
 def completeNamedOrder
     (D : RelStructure L.withLinearOrder.withFunctionDomains.graph P)
     [LT P] : RelStructure L.withLinearOrder.withFunctionDomains.graph P where
-  rel
-    | .inl (.inl (.inl R)), x => D.rel (.inl (.inl (.inl R))) x
-    | .inl (.inl (.inr _)), x => x 0 < x 1
-    | .inl (.inr F), x => D.rel (.inl (.inr F)) x
-    | .inr F, x => D.rel (.inr F) x
+  rel R := by
+    cases R with
+    | inr F => exact D.rel (.inr F)
+    | inl R =>
+      cases R with
+      | inr F => exact D.rel (.inl (.inr F))
+      | inl R =>
+        cases R with
+        | inl R => exact D.rel (.inl (.inl (.inl R)))
+        | inr _ => exact fun (x : Fin 2 → P) => x 0 < x 1
 
 namespace Embedding
 
