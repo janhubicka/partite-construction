@@ -273,3 +273,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Iterated.pureCopy_projectedPartialWitness
 
 #print axioms StructuralRamsey.Partite.Iterated.pureCore_projectedPartialWitness
+
+#print axioms StructuralRamsey.RelStructure.RelativeTreeCompletion.hasTreeCompletion
+#print axioms StructuralRamsey.RelStructure.RelativeTreeCompletion.glue
