@@ -314,7 +314,6 @@ theorem attachmentWitness_of_selected
                   apply Subtype.ext
                   exact hcoreEq
                 rw [hzsub]
-                exact (q_inl r.1 hrTest).symm
       · push Not at hAllCore
         obtain ⟨z₀, hz₀⟩ := hAllCore
         cases hzval : z₀.1.1 with
