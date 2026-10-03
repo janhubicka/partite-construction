@@ -38,7 +38,8 @@ theorem rootPrune_outputImpliesDomain
     (D : RelStructure L.withFunctionDomains.graph W) :
     (rootPrune D).OutputImpliesDomain := by
   intro F x y hy
-  exact hy.2
+  change D.rel (.inl (.inr F)) x
+  simpa [Structure.funcTuple] using hy.2
 
 namespace Embedding
 
@@ -68,11 +69,19 @@ def toRootPrune
           have hout :
               D.rel (.inr F) (e ∘ x) :=
             (e.map_rel_iff (.inr F) x).mpr hx
+          let out : U :=
+            x (Fin.last (L.withFunctionDomains.funcArity F))
+          have heta : Structure.funcTuple args out = x := by
+            simpa [args, out, Language.graph] using
+              (Structure.funcTuple_eta (t := x))
+          have hx' :
+              A.rel (.inr F)
+                (Structure.funcTuple args out) := by
+            rw [heta]
+            exact hx
           have hrootA :
               A.rel (.inl (.inr F)) args :=
-            hA F args
-              (x (Fin.last
-                (L.withFunctionDomains.funcArity F))) hx
+            hA F args out hx'
           have hrootD0 :
               D.rel (.inl (.inr F)) (e ∘ args) :=
             (e.map_rel_iff
@@ -84,8 +93,11 @@ def toRootPrune
             funext i
             rfl
           refine ⟨hout, ?_⟩
-          rw [hargs]
-          exact hrootD0
+          exact Eq.mpr
+            (congrArg
+              (fun t => D.rel (.inl (.inr F)) t)
+              hargs)
+            hrootD0
 
 @[simp] theorem toRootPrune_apply
     {A : RelStructure L.withFunctionDomains.graph U}
