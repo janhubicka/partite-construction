@@ -388,7 +388,7 @@ def Closed.Embedding.toFlattenedFunctional
         hC.1 (.inl (.inr (A.part a)))
           (e ∘ (fun _ : Fin 1 => a)) hmid
       change D.part (C.part (e a)) = A.part a
-      simpa [System.expandFunctional, Function.comp_apply] using hout
+      convert hout using 1
   }
   refine ⟨pe, ?_⟩
   intro F x y hy
@@ -417,7 +417,8 @@ theorem closedArrow_flattened_of_functionalExpanded
       Partite.Closed.Embedding A
         (Nested.flatten D C.ofFunctionalExpansion
           (isPartiteOver_of_functionalExpanded D C hC)) :=
-    fun e => e.toFlattenedFunctional A D C hC
+    fun e =>
+      Partite.Closed.Embedding.toFlattenedFunctional A D C hC e
   let θ :
       RelStructure.ClosedEmbedding
         A.expandFunctional C.toRelStructure → κ :=
@@ -427,7 +428,7 @@ theorem closedArrow_flattened_of_functionalExpanded
       Partite.Closed.Embedding B
         (Nested.flatten D C.ofFunctionalExpansion
           (isPartiteOver_of_functionalExpanded D C hC)) :=
-    f.toFlattenedFunctional B D C hC
+    Partite.Closed.Embedding.toFlattenedFunctional B D C hC f
   refine ⟨fg, ?_⟩
   intro e₁ e₂
   have hh := hf e₁.expandFunctional e₂.expandFunctional
@@ -437,6 +438,7 @@ theorem closedArrow_flattened_of_functionalExpanded
       Partite.Closed.Embedding.comp fg e₁ := by
     apply Partite.Closed.Embedding.ext
     intro x
+    change f (e₁ x) = f (e₁ x)
     rfl
   have h₂ :
       lowerA (RelStructure.ClosedEmbedding.comp
@@ -444,12 +446,12 @@ theorem closedArrow_flattened_of_functionalExpanded
       Partite.Closed.Embedding.comp fg e₂ := by
     apply Partite.Closed.Embedding.ext
     intro x
+    change f (e₂ x) = f (e₂ x)
     rfl
   change
     χ (Partite.Closed.Embedding.comp fg e₁) =
       χ (Partite.Closed.Embedding.comp fg e₂)
-  rw [← h₁, ← h₂]
-  exact hh
+  simpa [θ, lowerA] using hh
 
 end Partite
 end StructuralRamsey
