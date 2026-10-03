@@ -61,13 +61,18 @@ theorem any_map_isHomomorphismEmbedding (h : Bool → Fin 3) :
       map_rel_iff := by
         intro R x
         cases R
-        change Function.Injective (fun i : Fin 3 => h (x i).1) ↔ False
+        change Function.Injective (fun i => h (x i).1) ↔ False
         constructor
         · intro hinj
-          have h01 : (0 : Fin 3) ≠ 1 := by decide
-          apply h01
+          let i0 : Fin (L.arity ()) := ⟨0, by simp [L]⟩
+          let i1 : Fin (L.arity ()) := ⟨1, by simp [L]⟩
+          have hi : i0 ≠ i1 := by
+            intro heq
+            have hv := congrArg Fin.val heq
+            simp [i0, i1] at hv
+          apply hi
           apply hinj
-          have hsub : x 0 = x 1 := hall (x 0) (x 1)
+          have hsub : x i0 = x i1 := hall (x i0) (x i1)
           exact congrArg (fun q : S => h q.1) hsub
         · intro hfalse
           exact hfalse.elim
