@@ -210,7 +210,14 @@ theorem selectedCopy_closed
       change
         B.rel (.inl (.inr F))
           (Subtype.val ∘ argsS)
-      simpa [argsS] using hrootB
+      have hval : Subtype.val ∘ argsS = args := by
+        funext k
+        rfl
+      exact Eq.mpr
+        (congrArg
+          (fun t => B.rel (.inl (.inr F)) t)
+          hval)
+        hrootB
     have hfjargs :
         (f j).toRelClosed ∘ argsS = d ∘ x := by
       funext k
@@ -268,8 +275,7 @@ theorem selectedCopy_closed
           Structure.funcTuple
               ((f j).toRelClosed ∘ argsS) (d z) =
             Structure.funcTuple (d ∘ x) (d z) := by
-        congr 1
-        exact hfjargs
+        congr
       exact Eq.mpr
         (congrArg (fun t => D.rel (.inr F) t) ht)
         hdzD
