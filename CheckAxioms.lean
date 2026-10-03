@@ -191,3 +191,7 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.fixedSupportBudget
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.attachment_locallyTreeLike_fixedSupport
+
+#print axioms StructuralRamsey.RelStructure.Attachment.fold
+#print axioms StructuralRamsey.RelStructure.Attachment.fold_copy
+#print axioms StructuralRamsey.RelStructure.Attachment.fold_isHomomorphismEmbedding
