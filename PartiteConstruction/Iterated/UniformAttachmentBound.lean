@@ -15,7 +15,7 @@ namespace StructuralRamsey.RelStructure.LocallyTreeLike
 
 open Attachment
 
-universe u v
+universe u v w z
 variable {L : RelLanguage.{u}}
 variable {UA VB W I : Type v}
 variable {Control : RelStructure L UA}
@@ -30,11 +30,12 @@ one support in the base.  The function-space term is exactly
 unnecessary arithmetic normalization in downstream proofs. -/
 def fixedSupportBudget
     (UA VB : Type v) [Fintype UA] [Fintype VB] (n : ℕ) : ℕ :=
-  n + Fintype.card VB * (n + Fintype.card (UA → Option (Fin n)))
+  n + Fintype.card VB * (n + Nat.card (UA → Option (Fin n)))
 
 /-- An option-valued embedding induced by an embedding of the underlying
 types. -/
-def optionEmbedding {X Y : Type v} (e : X ↪ Y) : Option X ↪ Option Y where
+def optionEmbedding {X : Type v} {Y : Type w}
+    (e : X ↪ Y) : Option X ↪ Option Y where
   toFun
     | none => none
     | some x => some (e x)
@@ -53,7 +54,8 @@ def optionEmbedding {X Y : Type v} (e : X ↪ Y) : Option X ↪ Option Y where
             exact congrArg some (e.injective h)
 
 /-- Pointwise lifting of an embedding to a function space. -/
-def piEmbedding {A X Y : Type v} (e : X ↪ Y) : (A → X) ↪ (A → Y) where
+def piEmbedding {A : Type z} {X : Type v} {Y : Type w}
+    (e : X ↪ Y) : (A → X) ↪ (A → Y) where
   toFun g := fun a => e (g a)
   inj' := by
     intro g h heq
@@ -143,32 +145,35 @@ theorem attachment_locallyTreeLike_fixedSupport
   let eTrace :
       (UA → Option TestType) ↪ (UA → Option (Fin n)) :=
     piEmbedding (optionEmbedding eTest)
+  letI : Fintype (UA → Option TestType) := Fintype.ofFinite _
+  letI : Fintype (UA → Option (Fin n)) := Fintype.ofFinite _
   have hTraceCard :
-      Fintype.card (UA → Option TestType) ≤
-        Fintype.card (UA → Option (Fin n)) := by
+      Nat.card (UA → Option TestType) ≤
+        Nat.card (UA → Option (Fin n)) := by
+    rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]
     exact Fintype.card_le_of_embedding eTrace
 
   have hJuniform :
-      J.card ≤ n + Fintype.card (UA → Option (Fin n)) := by
+      J.card ≤ n + Nat.card (UA → Option (Fin n)) := by
     calc
-      J.card ≤ Test.card + Fintype.card (UA → Option TestType) := by
-        simpa [TestType, Nat.card_eq_fintype_card] using hJcard
-      _ ≤ n + Fintype.card (UA → Option (Fin n)) :=
+      J.card ≤ Test.card + Nat.card (UA → Option TestType) := by
+        simpa [TestType] using hJcard
+      _ ≤ n + Nat.card (UA → Option (Fin n)) :=
         Nat.add_le_add hTest hTraceCard
 
   have hRootsUniform :
       rootPart.card ≤
         Fintype.card VB *
-          (n + Fintype.card (UA → Option (Fin n))) := by
+          (n + Nat.card (UA → Option (Fin n))) := by
     calc
       rootPart.card ≤ J.card * Fintype.card ↥S := hRootPartCard
       _ ≤
-          (n + Fintype.card (UA → Option (Fin n))) *
+          (n + Nat.card (UA → Option (Fin n))) *
             Fintype.card VB :=
         Nat.mul_le_mul hJuniform hSupportCard
       _ =
           Fintype.card VB *
-            (n + Fintype.card (UA → Option (Fin n))) := by
+            (n + Nat.card (UA → Option (Fin n))) := by
         rw [Nat.mul_comm]
 
   have hRcard : R.card ≤ fixedSupportBudget UA VB n := by
@@ -177,11 +182,11 @@ theorem attachment_locallyTreeLike_fixedSupport
         Finset.card_union_le corePart rootPart
       _ ≤ Test.card +
           Fintype.card VB *
-            (n + Fintype.card (UA → Option (Fin n))) :=
+            (n + Nat.card (UA → Option (Fin n))) :=
         Nat.add_le_add hCoreCard hRootsUniform
       _ ≤ n +
           Fintype.card VB *
-            (n + Fintype.card (UA → Option (Fin n))) :=
+            (n + Nat.card (UA → Option (Fin n))) :=
         Nat.add_le_add_right hTest _
       _ = fixedSupportBudget UA VB n := rfl
 
