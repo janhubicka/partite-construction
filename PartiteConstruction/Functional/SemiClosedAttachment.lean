@@ -119,7 +119,10 @@ theorem selectedCopy_closed
       (Partite.Attachment.copyEmbedding
           B S D (fun j => (f j).1) i).toEmbedding (e a) =
         core (d a) := by
-    change cm i (e a) = Sum.inl (d a)
+    change
+      RelStructure.Attachment.copyMap
+        B.toRelStructure S D.toRelStructure g i (e a) =
+        Sum.inl (d a)
     rw [RelStructure.Attachment.copyMap_mem
       (B := B.toRelStructure) (S := S)
       (D := D.toRelStructure) (f := g)
@@ -207,16 +210,20 @@ theorem selectedCopy_closed
       change
         B.rel (.inl (.inr F))
           (Subtype.val ∘ argsS)
-      convert hrootB using 1
-      funext k
-      rfl
+      have hval : Subtype.val ∘ argsS = args := by
+        funext k
+        rfl
+      rw [hval]
+      exact hrootB
     have hfjargs :
         (f j).toRelClosed ∘ argsS = d ∘ x := by
       funext k
       have hk := congrFun hcopy (Fin.castSucc k)
       rw [Structure.funcTuple_castSucc] at hk
       change
-        core (d (x k)) = cm j (args k) at hk
+        core (d (x k)) =
+          RelStructure.Attachment.copyMap
+            B.toRelStructure S D.toRelStructure g j (args k) at hk
       rw [RelStructure.Attachment.copyMap_mem
         (B := B.toRelStructure) (S := S)
         (D := D.toRelStructure) (f := g)
@@ -229,8 +236,11 @@ theorem selectedCopy_closed
         (.inl (.inr F)) argsS).mpr hrootS
     have hrootD :
         D.rel (.inl (.inr F)) (d ∘ x) := by
-      rw [← hfjargs]
-      exact hrootD0
+      exact Eq.mp
+        (congrArg
+          (fun t => D.rel (.inl (.inr F)) t)
+          hfjargs)
+        hrootD0
     have hrootA :
         A.rel (.inl (.inr F)) x :=
       (d.toEmbedding.map_rel_iff
@@ -258,8 +268,15 @@ theorem selectedCopy_closed
         D.rel (.inr F)
           (Structure.funcTuple
             ((f j).toRelClosed ∘ argsS) (d z)) := by
-      rw [hfjargs]
-      exact hdzD
+      have ht :
+          Structure.funcTuple
+              ((f j).toRelClosed ∘ argsS) (d z) =
+            Structure.funcTuple (d ∘ x) (d z) := by
+        congr 1
+        exact hfjargs
+      exact Eq.mpr
+        (congrArg (fun t => D.rel (.inr F) t) ht)
+        hdzD
     obtain ⟨r, hr, hrd⟩ :=
       (f j).toRelClosed.closed F argsS (d z) hdzDj
     have hrB0 :
@@ -288,11 +305,25 @@ theorem selectedCopy_closed
     change
       (Partite.Attachment.copyEmbedding
         B S D (fun j => (f j).1) i).toEmbedding (e z) = y
-    rw [hselected z, hyEq, hout]
-    rw [RelStructure.Attachment.copyMap_mem
-      (B := B.toRelStructure) (S := S)
-      (D := D.toRelStructure) (f := g)
-      j r.1 r.2]
-    exact congrArg core hrd.symm
+    calc
+      (Partite.Attachment.copyEmbedding
+          B S D (fun j => (f j).1) i).toEmbedding (e z) =
+          core (d z) := hselected z
+      _ = core ((f j).toRelClosed r) :=
+          congrArg core hrd.symm
+      _ = RelStructure.Attachment.copyMap
+          B.toRelStructure S D.toRelStructure g j r.1 := by
+          symm
+          exact RelStructure.Attachment.copyMap_mem
+            (B := B.toRelStructure) (S := S)
+            (D := D.toRelStructure) (f := g)
+            j r.1 r.2
+      _ = RelStructure.Attachment.copyMap
+          B.toRelStructure S D.toRelStructure g j out :=
+          congrArg
+            (RelStructure.Attachment.copyMap
+              B.toRelStructure S D.toRelStructure g j)
+            hout.symm
+      _ = y := hyEq.symm
 
 end StructuralRamsey.Partite.Attachment
