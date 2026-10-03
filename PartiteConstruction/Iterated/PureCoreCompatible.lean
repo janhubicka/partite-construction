@@ -70,7 +70,8 @@ theorem pureCore_embeddedWitness
     change Small.IsHomomorphismEmbedding A (E.part ∘ eCore)
     have hCoreToA :
         Core.toRelStructure.IsHomomorphismEmbedding A E.part := by
-      simpa [Core, Partite.System.relabel] using hE
+      change E.toRelStructure.IsHomomorphismEmbedding A E.part
+      exact hE
     exact hCoreToA.comp eCore.isHomomorphismEmbedding
 
   let f : Tset → V := fun z => eAB (toA z)
@@ -105,11 +106,12 @@ theorem pureCore_embeddedWitness
   have heHB :
       ∀ x : Hset, eHB x = f ⟨γ x.1, x.2⟩ := by
     intro x
+    let z : Tset := ⟨γ x.1, x.2⟩
+    change eAB (eHA x) = eAB (E.part (eCore z))
     apply eAB.injective
     apply α.injective
     have hfactor : γDH x = α (eHA x) :=
       Classical.choose_spec (hRange x)
-    let z : Tset := ⟨γ x.1, x.2⟩
     calc
       α (eHA x) = γDH x := hfactor.symm
       _ = γD x.1 := rfl
@@ -118,7 +120,6 @@ theorem pureCore_embeddedWitness
         exact congrArg C₁.part (heCore z)
       _ = Core.part (eCore z) := coreEmb.map_part (eCore z)
       _ = α (E.part (eCore z)) := rfl
-      _ = α (toA z) := rfl
 
   have hcHB : eHB.ContainedInIrreducible := by
     apply RelStructure.Embedding.containedInIrreducible_of_range_subset
