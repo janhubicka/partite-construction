@@ -134,4 +134,43 @@ theorem flatten_uTransversal
     (fun e : OuterClosedEmbedding B O C => e.toFlatten hC)
     hB (flatten_tupleCovered B O C hC hCover)
 
+
+/-- U-transversality composes through a nested partite projection.
+
+This avoids the closed-copy-coverage detour in the survey: if the inner system
+C is U-transversal over the vertex set of O, O is U-transversal over the outer
+parts, and C projects homomorphically to O, then flattening is U-transversal.
+-/
+theorem flatten_uTransversal_comp
+    (O : Partite.System L.graph P W)
+    (C : Partite.System L.graph W X)
+    (hC : C.IsPartiteOver O.toRelStructure)
+    (hO : O.FunctionOutputTransversal)
+    (hInner : C.FunctionOutputTransversal) :
+    (flatten O C hC).FunctionOutputTransversal := by
+  intro F x y z hy hz hp
+  have hyO0 :
+      O.rel (.inr F)
+        (C.part ∘ Structure.funcTuple x y) :=
+    hC.1 (.inr F) (Structure.funcTuple x y) hy
+  have hzO0 :
+      O.rel (.inr F)
+        (C.part ∘ Structure.funcTuple x z) :=
+    hC.1 (.inr F) (Structure.funcTuple x z) hz
+  have hyO :
+      O.rel (.inr F)
+        (Structure.funcTuple (C.part ∘ x) (C.part y)) := by
+    rw [← Structure.comp_funcTuple]
+    exact hyO0
+  have hzO :
+      O.rel (.inr F)
+        (Structure.funcTuple (C.part ∘ x) (C.part z)) := by
+    rw [← Structure.comp_funcTuple]
+    exact hzO0
+  have hInnerPart :
+      C.part y = C.part z := by
+    apply hO F (C.part ∘ x) (C.part y) (C.part z) hyO hzO
+    exact hp
+  exact hInner F x y z hy hz hInnerPart
+
 end StructuralRamsey.Partite.Nested

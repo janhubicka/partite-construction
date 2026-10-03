@@ -12,6 +12,8 @@ import PartiteConstruction.Functional.HalfClosedConstruction
 import PartiteConstruction.Functional.NonClosedPictureObstruction
 import PartiteConstruction.Functional.ClosedPictureRepair
 import PartiteConstruction.Functional.NestedFlatten
+import PartiteConstruction.Functional.PartPredicates
+import PartiteConstruction.Functional.HalfClosedPartite
 import PartiteConstruction.Functional.ClosedAttachment
 import PartiteConstruction.Functional.ClosedPicture
 import PartiteConstruction.Functional.ClosedConstruction
