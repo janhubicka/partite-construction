@@ -249,3 +249,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.IntersectionStrongLocallyTreeLike.of_homEmbedding_to_base
 #print axioms StructuralRamsey.RelStructure.IntersectionStrongLocallyTreeLike.pullback_embedding
 #print axioms StructuralRamsey.RelStructure.IntersectionStrongLocallyTreeLike.witness_of_homEmbedding_image
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.glueControlled_of_contained
