@@ -31,8 +31,8 @@ def ProjectedRelativeLabelledLocallyTreeLike
     ∀ history : List (Set P),
     ∀ (β : Embedding A D) (H : Set U)
       (e : Embedding (A.induce H) C),
-      (∀ x, p (e x) = β x.1) →
-      (∀ x, e x ∈ S) →
+      ∀ hproj : (∀ x, p (e x) = β x.1),
+      ∀ hRange : (∀ x, e x ∈ S),
       ∀ (ell : ↥H → U),
         (A.induce H).IsHomomorphismEmbedding A ell →
         ∃ (Z : Type v) (Target : RelStructure L Z),
@@ -44,7 +44,7 @@ def ProjectedRelativeLabelledLocallyTreeLike
             RespectsProjectedHistory p S f history ∧
             ∃ targetCopy : Embedding A Target,
               ∀ x : ↥H,
-                f ⟨e x, by assumption⟩ = targetCopy (ell x)
+                f ⟨e x, hRange x⟩ = targetCopy (ell x)
 
 namespace ProjectedRelativeLabelledLocallyTreeLike
 
