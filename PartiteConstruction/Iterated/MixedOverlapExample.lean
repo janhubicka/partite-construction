@@ -60,9 +60,10 @@ theorem any_map_isHomomorphismEmbedding (h : Bool → Fin 3) :
         exact hall x y
       map_rel_iff := by
         intro R x
+        cases R
+        change Function.Injective (fun i : Fin 3 => h (x i).1) ↔ False
         constructor
         · intro hinj
-          change Function.Injective (fun i => h (x i).1) at hinj
           have h01 : (0 : Fin 3) ≠ 1 := by decide
           apply h01
           apply hinj
