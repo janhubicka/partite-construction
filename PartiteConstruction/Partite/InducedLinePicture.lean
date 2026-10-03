@@ -46,53 +46,53 @@ abbrev Vertex
 /-- The free attachment using only Hales--Jewett line embeddings. -/
 noncomputable def build
     (hR : (B.restrict α.toFunctionEmbedding).IsPartiteOver A) (N : ℕ) :
-    Partite.System L P (Vertex A B α hR N) :=
+    Partite.System L P (Vertex (A := A) (B := B) (α := α) hR N) :=
   Partite.Attachment.attach
     B (B.support α.toFunctionEmbedding) ((Partite.Induced.power (B.restrict α.toFunctionEmbedding) N).relabel α.toFunctionEmbedding)
-    (attachingMap A B α hR N)
+    (attachingMap (A := A) (B := B) (α := α) hR N)
 
 noncomputable def coreEmbedding
     (hR : (B.restrict α.toFunctionEmbedding).IsPartiteOver A) (N : ℕ) :
     Partite.Embedding ((Partite.Induced.power (B.restrict α.toFunctionEmbedding) N).relabel α.toFunctionEmbedding)
-      (build A B α hR N) :=
+      (build (A := A) (B := B) (α := α) hR N) :=
   Partite.Attachment.coreEmbedding
     B (B.support α.toFunctionEmbedding) ((Partite.Induced.power (B.restrict α.toFunctionEmbedding) N).relabel α.toFunctionEmbedding)
-    (attachingMap A B α hR N)
+    (attachingMap (A := A) (B := B) (α := α) hR N)
 
 noncomputable def copyEmbedding
     (hR : (B.restrict α.toFunctionEmbedding).IsPartiteOver A) (N : ℕ)
     (W : Line (Partite.Induced.Letter A (B.restrict α.toFunctionEmbedding)) N) :
-    Partite.Embedding B (build A B α hR N) :=
+    Partite.Embedding B (build (A := A) (B := B) (α := α) hR N) :=
   Partite.Attachment.copyEmbedding
     B (B.support α.toFunctionEmbedding) ((Partite.Induced.power (B.restrict α.toFunctionEmbedding) N).relabel α.toFunctionEmbedding)
-    (attachingMap A B α hR N) W
+    (attachingMap (A := A) (B := B) (α := α) hR N) W
 
 /-- The retained copy indexed by W agrees with the line embedding on the
 support. -/
 theorem copy_extends
     (hR : (B.restrict α.toFunctionEmbedding).IsPartiteOver A) (N : ℕ)
     (W : Line (Partite.Induced.Letter A (B.restrict α.toFunctionEmbedding)) N) (x : B.support α.toFunctionEmbedding) :
-    copyEmbedding A B α hR N W x.1 =
-      coreEmbedding A B α hR N
-        (attachingMap A B α hR N W x) :=
+    copyEmbedding (A := A) (B := B) (α := α) hR N W x.1 =
+      coreEmbedding (A := A) (B := B) (α := α) hR N
+        (attachingMap (A := A) (B := B) (α := α) hR N W x) :=
   Partite.Attachment.copy_extends
     B (B.support α.toFunctionEmbedding) ((Partite.Induced.power (B.restrict α.toFunctionEmbedding) N).relabel α.toFunctionEmbedding)
-    (attachingMap A B α hR N) W x
+    (attachingMap (A := A) (B := B) (α := α) hR N) W x
 
 /-- Core copy corresponding to one Hales--Jewett word. -/
 def wordCore
     (hR : (B.restrict α.toFunctionEmbedding).IsPartiteOver A) (hN : 0 < N)
     (w : Fin N → Partite.Induced.Letter A (B.restrict α.toFunctionEmbedding)) :
-    Partite.ProjectedEmbedding A (build A B α hR N) α.toFunctionEmbedding :=
-  ⟨(coreEmbedding A B α hR N).toEmbedding.comp
+    Partite.ProjectedEmbedding A (build (A := A) (B := B) (α := α) hR N) α.toFunctionEmbedding :=
+  ⟨(coreEmbedding (A := A) (B := B) (α := α) hR N).toEmbedding.comp
       (Partite.Induced.wordEmbedding hR hN w).toEmbedding,
     fun a => by
       change
-        (build A B α hR N).part
-            (coreEmbedding A B α hR N
+        (build (A := A) (B := B) (α := α) hR N).part
+            (coreEmbedding (A := A) (B := B) (α := α) hR N
               (Partite.Induced.wordEmbedding hR hN w a)) =
           α a
-      rw [(coreEmbedding A B α hR N).map_part]
+      rw [(coreEmbedding (A := A) (B := B) (α := α) hR N).map_part]
       change α ((Partite.Induced.wordEmbedding hR hN w).part _) = α a
       rw [(Partite.Induced.wordEmbedding hR hN w).map_part]⟩
 
@@ -102,31 +102,31 @@ theorem copy_comp_restrict
     (hR : (B.restrict α.toFunctionEmbedding).IsPartiteOver A) (hN : 0 < N)
     (W : Line (Partite.Induced.Letter A (B.restrict α.toFunctionEmbedding)) N)
     (e : Partite.ProjectedEmbedding A B α.toFunctionEmbedding) :
-    e.comp (copyEmbedding A B α hR N W) =
-      wordCore A B α hR hN
+    e.comp (copyEmbedding (A := A) (B := B) (α := α) hR N W) =
+      wordCore (A := A) (B := B) (α := α) hR hN
         (W.eval (Partite.Picture.restrictEmbedding e)) := by
   apply Subtype.ext
   apply RelStructure.Embedding.ext
   intro a
   change
-    copyEmbedding A B α hR N W (e.val a) =
-      coreEmbedding A B α hR N
+    copyEmbedding (A := A) (B := B) (α := α) hR N W (e.val a) =
+      coreEmbedding (A := A) (B := B) (α := α) hR N
         (Partite.Induced.wordEmbedding hR hN
           (W.eval (Partite.Picture.restrictEmbedding e)) a)
   let x : B.support α.toFunctionEmbedding :=
     ⟨e.val a, a, (e.property a).symm⟩
   calc
-    copyEmbedding A B α hR N W (e.val a) =
-        coreEmbedding A B α hR N
-          (attachingMap A B α hR N W x) :=
-      copy_extends A B α hR N W x
-    _ = coreEmbedding A B α hR N
+    copyEmbedding (A := A) (B := B) (α := α) hR N W (e.val a) =
+        coreEmbedding (A := A) (B := B) (α := α) hR N
+          (attachingMap (A := A) (B := B) (α := α) hR N W x) :=
+      copy_extends (A := A) (B := B) (α := α) hR N W x
+    _ = coreEmbedding (A := A) (B := B) (α := α) hR N
           ((Partite.Induced.lineEmbedding hR W)
             (Partite.Picture.restrictEmbedding e a)) := rfl
-    _ = coreEmbedding A B α hR N
+    _ = coreEmbedding (A := A) (B := B) (α := α) hR N
           (Partite.Induced.wordEmbedding hR hN
             (W.eval (Partite.Picture.restrictEmbedding e)) a) := by
-      apply congrArg (coreEmbedding A B α hR N)
+      apply congrArg (coreEmbedding (A := A) (B := B) (α := α) hR N)
       exact congrArg
         (fun q : Partite.Embedding
             (Partite.transversal A) (Partite.Induced.power (B.restrict α.toFunctionEmbedding) N) => q a)
@@ -141,7 +141,7 @@ theorem property
     (κ : Type*) [Fintype κ] :
     ∃ N : ℕ, ∃ hN : 0 < N,
       Partite.PictureProperty A B α.toFunctionEmbedding
-        (build A B α hR N) κ := by
+        (build (A := A) (B := B) (α := α) hR N) κ := by
   classical
   letI : Fintype (Partite.Induced.Letter A (B.restrict α.toFunctionEmbedding)) :=
     Fintype.ofFinite _
@@ -150,11 +150,11 @@ theorem property
       (α := Partite.Induced.Letter A (B.restrict α.toFunctionEmbedding)) (κ := κ)
   refine ⟨N, hN, ?_⟩
   intro χ
-  obtain ⟨W, hW⟩ := hHJ (fun w => χ (wordCore A B α hR hN w))
-  refine ⟨copyEmbedding A B α hR N W, ?_⟩
+  obtain ⟨W, hW⟩ := hHJ (fun w => χ (wordCore (A := A) (B := B) (α := α) hR hN w))
+  refine ⟨copyEmbedding (A := A) (B := B) (α := α) hR N W, ?_⟩
   intro e₁ e₂
-  rw [copy_comp_restrict A B α hR hN W e₁,
-      copy_comp_restrict A B α hR hN W e₂]
+  rw [copy_comp_restrict (A := A) (B := B) (α := α) hR hN W e₁,
+      copy_comp_restrict (A := A) (B := B) (α := α) hR hN W e₂]
   exact hW
     (Partite.Picture.restrictEmbedding e₁)
     (Partite.Picture.restrictEmbedding e₂)
@@ -164,7 +164,7 @@ theorem isPartiteOver
     (hB : B.IsPartiteOver D)
     (hR : (B.restrict α.toFunctionEmbedding).IsPartiteOver A)
     (N : ℕ) (hN : 0 < N) :
-    (build A B α hR N).IsPartiteOver D := by
+    (build (A := A) (B := B) (α := α) hR N).IsPartiteOver D := by
   have hE : (Partite.Induced.power (B.restrict α.toFunctionEmbedding) N).IsPartiteOver A :=
     Partite.Induced.power_isPartiteOver hR hN
   have hCore :
@@ -173,6 +173,6 @@ theorem isPartiteOver
       (A := A) (B := Partite.Induced.power (B.restrict α.toFunctionEmbedding) N) hE α
   exact Partite.Attachment.attach_isPartiteOver
     B (B.support α.toFunctionEmbedding) ((Partite.Induced.power (B.restrict α.toFunctionEmbedding) N).relabel α.toFunctionEmbedding)
-    (attachingMap A B α hR N) hB hCore
+    (attachingMap (A := A) (B := B) (α := α) hR N) hB hCore
 
 end StructuralRamsey.Partite.Induced.LinePicture
