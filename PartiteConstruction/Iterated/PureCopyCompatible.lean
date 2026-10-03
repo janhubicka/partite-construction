@@ -1,4 +1,5 @@
 import PartiteConstruction.Iterated.PartialCompatibleLocalTreeLike
+import PartiteConstruction.Iterated.AttachmentDecompose
 import PartiteConstruction.Partite.InducedPicture
 
 /-! # Partial-A-compatible witnesses in the pure-copy case
