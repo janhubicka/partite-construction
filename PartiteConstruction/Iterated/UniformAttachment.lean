@@ -77,8 +77,7 @@ theorem attachmentWitness_of_selected
     toFun := fun x => ⟨f j x, hRoots j hj x⟩
     injective := by
       intro x y hxy
-      apply f j |>.injective
-      exact congrArg Subtype.val hxy
+      exact (f j).injective (congrArg Subtype.val hxy)
     map_rel_iff := by
       intro Rel x
       exact (f j).map_rel_iff Rel x
