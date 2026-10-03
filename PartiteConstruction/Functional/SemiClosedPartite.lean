@@ -19,6 +19,25 @@ universe u v
 variable {L : Language.{u}}
 variable {P Q V W X : Type v}
 
+/-- Inducing on an arbitrary vertex subset preserves the outer
+homomorphism-embedding projection. -/
+theorem System.induce_isPartiteOver
+    {K : RelLanguage.{u}}
+    {A : Partite.System K P V}
+    {D : RelStructure K P}
+    {S : Set V}
+    (h : A.IsPartiteOver D) :
+    (A.induce S).IsPartiteOver D := by
+  change
+    (A.toRelStructure.induce S).IsHomomorphismEmbedding D
+      (fun x => A.part x.1)
+  have hincl :
+      (A.toRelStructure.induce S).IsHomomorphismEmbedding
+        A.toRelStructure Subtype.val :=
+    (A.toRelStructure.inclusion S).isHomomorphismEmbedding
+  have hc := h.comp hincl
+  simpa [Function.comp_def] using hc
+
 abbrev System.OutputImpliesDomain
     (A : System L.withFunctionDomains.graph P V) : Prop :=
   A.toRelStructure.OutputImpliesDomain
