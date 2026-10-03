@@ -286,3 +286,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.LabelledIntersectionControl.quotient_surjective
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.LabelledIntersectionControl.rootEmbedding_contained
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.labelledIntersections_of_controls
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.glueControlled_of_commonLabels
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.commonLabels_postcomp
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.sameKernel_of_commonLabels

@@ -119,3 +119,5 @@ import PartiteConstruction.Ramsey.FromProjections
 import PartiteConstruction.Ramsey.Ordered
 
 import PartiteConstruction.Iterated.LabelledIntersectionControl
+
+import PartiteConstruction.Iterated.MixedCommonLabelGlue
