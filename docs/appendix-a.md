@@ -66,7 +66,9 @@ all checked end to end.  The full-language consequence is
 | Corrected native `lem:rpartite` | `Partite.HalfClosed.inducedPartite` | End-to-end positive-arity partite theorem: apply half-closed construction in L_P, flatten, preserve the closed Ramsey arrow, and obtain a U-transversal witness |
 | Outer recursive iteration | `Partite.Recursive.build`, `recursiveConstruction_of_localPictures` | Processes every ordinary A→D projection, performs backward closed fusion, and carries the ordinary Ramsey arrow on D to a final closed Ramsey arrow |
 | Closed-projection local witness | `Partite.Recursive.localHalfClosedPicture_of_closed` | The required local half-closed U-transversal picture exists whenever the projection α is already U-closed |
-| Remaining local boundary | `Partite.Recursive.LocalHalfClosedPictures` | Exact single unresolved input for `thm:models2`: existence of the local intermediate picture for non-U-closed ordinary projections |
+| Ordered singleton expansion | `Structure.rankExpand_singletonValued`, `Structure.Embedding.rankExpand` | Canonically split each finite ordered function fibre into ranked empty-or-singleton fibres; order-preserving full embeddings lift uniquely |
+| Singleton Ramsey reduction | `Structure.Embedding.forgetRanks`, `Structure.arrow_of_rankExpansion`, `Structure.arrow_of_singletonExpansion` | With `N=max(|A|,|B|)`, a Ramsey witness for the ranked singleton expansions reduces to a Ramsey witness for the original ordered pair |
+| Remaining local boundary | `Partite.Recursive.LocalHalfClosedPictures` | After the singleton-valued WLOG reduction, the unresolved recursive input can be narrowed to the partial-function case; non-closed free attachment is still not justified |
 | Non-closed Picture obstruction | `RelStructure.Attachment.copy_comp_not_functionClosed` | Free attachment over a non-closed support can destroy closedness of a selected composite A-copy |
 | Closed-copy-generated repair | `Partite.ClosedRepair.copyGenerated_uTransversal`, `copyGenerated_arrow` | Pruning to tuples lying in closed B-copies preserves the closed Ramsey arrow and forces U-transversality whenever B is U-transversal |
 | Tuple-coverage criterion | `Partite.ClosedRepair.uTransversal_of_tupleCovered` | The survey's claimed closed-copy coverage is sufficient for U-transversality; the unsupported part is obtaining that coverage before repair |
@@ -162,6 +164,34 @@ set-valued function symbols.
   proof applies.  This is automatic in the intended ordered applications but
   is stronger than the survey theorem's stated general hypothesis.
 
+
+### Ordered singleton-valued reduction
+
+For a fixed finite ordered pair `A,B`, let
+`N = max(|A|,|B|)`.  `Language.rankFunctions` replaces every set-valued
+function symbol `F` by the ranked symbols `(F,i)`, `i<N`, and
+`Structure.rankExpand` interprets `(F,i)` by the i-th least element of the
+original fibre when it exists, and by the empty set otherwise.
+`Structure.rankExpand_singletonValued` proves that every new function fibre
+has size at most one.  Because a full order-preserving embedding maps each
+finite fibre bijectively and monotonically, `Structure.Embedding.rankExpand`
+provides its canonical ranked lift.
+
+Conversely, `Structure.rankReduct` unions all ranked fibres.
+`Structure.Embedding.forgetRanks` turns an embedding of a ranked expansion
+into an embedding of the original structure once the available ranks cover
+all source fibres.  The bound `N=max(|A|,|B|)` covers both structures, and
+`Structure.arrow_of_singletonExpansion` proves that every Ramsey witness for
+the ranked singleton expansions descends to a Ramsey witness for `A,B`.
+Thus, in the ordered finite setting, it is genuinely without loss of
+generality to reduce the set-valued functions to partial functions.
+
+This reduction does **not** validate the arbitrary-nonclosed-`α` free
+attachment.  Even for partial functions, amalgamating over a non-closed
+support can introduce an output over an input tuple of another copy (or force
+competing outputs).  The remaining `LocalHalfClosedPictures` obligation is
+therefore sharper, but still nontrivial.
+
 ## Trust and dependency
 
 The Hales–Jewett dependency is `janhubicka/lean-successors` at
@@ -172,7 +202,7 @@ The fixed-length bridge combines hypothetical bad colourings at each length
 into one colouring of all finite words and applies that theorem.
 
 `CheckAxioms.lean` prints the transitive axiom dependencies of the main results.
-All 94 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
+All 102 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
 every requested declaration produced a result. In particular, `sorryAx`, a
 custom HJ axiom, and native-evaluation axioms cannot pass this audit.
 
