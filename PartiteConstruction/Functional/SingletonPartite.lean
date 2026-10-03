@@ -55,8 +55,22 @@ theorem System.induce_singleValued
     (h : A.FunctionOutputSingleValued) :
     (A.induce S).FunctionOutputSingleValued := by
   intro F x y z hy hz
+  have hyA :
+      A.rel (.inr F)
+        (Structure.funcTuple (Subtype.val ∘ x) y.1) := by
+    change A.rel (.inr F)
+      (Subtype.val ∘ Structure.funcTuple x y) at hy
+    rw [Structure.comp_funcTuple] at hy
+    exact hy
+  have hzA :
+      A.rel (.inr F)
+        (Structure.funcTuple (Subtype.val ∘ x) z.1) := by
+    change A.rel (.inr F)
+      (Subtype.val ∘ Structure.funcTuple x z) at hz
+    rw [Structure.comp_funcTuple] at hz
+    exact hz
   apply Subtype.ext
-  exact h F (Subtype.val ∘ x) y.1 z.1 hy hz
+  exact h F (Subtype.val ∘ x) y.1 z.1 hyA hzA
 
 /-- Restricting to a set of parts inherits global singleton-valuedness. -/
 theorem System.restrict_singleValued
@@ -160,7 +174,7 @@ theorem singleValued
         congrArg Prod.fst hzb
       _ = j := by rfl
   have hij : j = i := hidxb.symm.trans hidxa
-  rw [hij] at heqb hb
+  rw [hij] at heqb hzb
   let argsA : Fin (L.funcArity F) → V :=
     fun k => a (Fin.castSucc k)
   let argsB : Fin (L.funcArity F) → V :=
@@ -374,7 +388,7 @@ end Nested
 theorem singleValued_expandFunctional
     {A : Partite.System L.graph P V}
     (h : A.FunctionOutputSingleValued) :
-    A.expandFunctional.toRelStructure.FunctionOutputSingleValued := by
+    A.expandFunctional.FunctionOutputSingleValued := by
   intro F x y z hy hz
   exact h F.down x y z hy hz
 
