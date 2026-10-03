@@ -180,4 +180,77 @@ theorem disjointCopies_uTransversal
     _ = (i, bz) := congrArg (fun q => (i, q)) heq
     _ = z := hzEq.symm
 
+
+/-- Every relation tuple of O is carried by one closed partite copy of B.
+This is the precise coverage hypothesis used in the recursive-construction
+paragraph of the survey. -/
+def TupleCoveredByClosedCopies
+    {W : Type v}
+    (B : Partite.System L.graph P V)
+    (O : Partite.System L.graph P W)
+    {J : Type v}
+    (g : J → Partite.Closed.Embedding B O) : Prop :=
+  ∀ (R : L.graph.Symbol) (t : Fin (L.graph.arity R) → W),
+    O.rel R t →
+      ∃ j : J, ∃ q : Fin (L.graph.arity R) → V,
+        B.rel R q ∧ t = g j ∘ q
+
+/-- The manuscript's tuple-coverage condition really does imply
+U-transversality.  The proof uses coverage for one output tuple and closedness
+of the covering copy to pull the competing output into the same copy. -/
+theorem uTransversal_of_tupleCovered
+    {W J : Type v}
+    (B : Partite.System L.graph P V)
+    (O : Partite.System L.graph P W)
+    (g : J → Partite.Closed.Embedding B O)
+    (hB : B.FunctionOutputTransversal)
+    (hCover : TupleCoveredByClosedCopies B O g) :
+    O.FunctionOutputTransversal := by
+  intro F x y z hy hz hp
+  obtain ⟨j, q, hq, heq⟩ :=
+    hCover (.inr F) (Structure.funcTuple x y) hy
+  let args : Fin (L.funcArity F) → V :=
+    fun k => q (Fin.castSucc k)
+  let outY : V := q (Fin.last (L.funcArity F))
+  have hqEta : Structure.funcTuple args outY = q := by
+    simpa [args, outY, Language.graph] using
+      (Structure.funcTuple_eta (t := q))
+  have hBrelY : B.rel (.inr F) (Structure.funcTuple args outY) := by
+    rw [hqEta]
+    exact hq
+  have hinputs : ∀ k, g j (args k) = x k := by
+    intro k
+    have hk := congrFun heq (Fin.castSucc k)
+    rw [Structure.funcTuple_castSucc] at hk
+    change x k = g j (args k) at hk
+    exact hk.symm
+  have hyImage : g j outY = y := by
+    have hk := congrFun heq (Fin.last (L.funcArity F))
+    rw [Structure.funcTuple_last] at hk
+    change y = g j outY at hk
+    exact hk.symm
+  have hzTarget :
+      O.rel (.inr F)
+        (Structure.funcTuple (g j ∘ args) z) := by
+    have hargsEq : g j ∘ args = x := by
+      funext k
+      exact hinputs k
+    rw [hargsEq]
+    exact hz
+  obtain ⟨outZ, hBrelZ, hzImage⟩ :=
+    (g j).2 F args z hzTarget
+  have hpB : B.part outY = B.part outZ := by
+    calc
+      B.part outY = O.part (g j outY) := ((g j).1.map_part outY).symm
+      _ = O.part y := congrArg O.part hyImage
+      _ = O.part z := hp
+      _ = O.part (g j outZ) := congrArg O.part hzImage.symm
+      _ = B.part outZ := (g j).1.map_part outZ
+  have hout : outY = outZ :=
+    hB F args outY outZ hBrelY hBrelZ hpB
+  calc
+    y = g j outY := hyImage.symm
+    _ = g j outZ := congrArg (g j) hout
+    _ = z := hzImage
+
 end StructuralRamsey.Partite.ClosedRepair
