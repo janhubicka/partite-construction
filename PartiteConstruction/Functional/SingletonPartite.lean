@@ -106,7 +106,6 @@ namespace Closed.Induced
 
 /-- Positive coordinate powers preserve global singleton-valuedness. -/
 theorem power_singleValued
-    {A : RelStructure L.graph P}
     {B : System L.graph P V}
     {N : ℕ}
     (hN : 0 < N)
