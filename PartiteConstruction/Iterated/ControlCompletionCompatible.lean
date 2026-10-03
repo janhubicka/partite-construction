@@ -130,5 +130,73 @@ theorem addControl_of_embeddedIntersection
       obtain ⟨a', ha'⟩ := hβ' a ha
       exact ⟨a', congrArg l ha'⟩
 
+
+/-- Complete control for every ambient A-copy from a coherent family of
+embedded intersections.  Hereditary irreducibility of A is not used. -/
+theorem completeControl_of_embeddedIntersections
+    [Finite U] [Finite W]
+    (hA : A.Irreducible)
+    (eAB : Embedding A B)
+    (S : Finset W)
+    (hTree : TreeAmalgam B Y T)
+    (f : ↥(↑S : Set W) → Y)
+    (hf : (C.induce (↑S : Set W)).IsHomomorphismEmbedding T f)
+    (hInt : EmbeddedIntersections (A := A) (C := C) (T := T) S f) :
+    ∃ (Z : Type v) (T' : RelStructure L Z),
+      TreeAmalgam B Z T' ∧
+      ∃ f' : ↥(↑S : Set W) → Z,
+        (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' f' ∧
+        ∀ α : Embedding A C,
+          ∃ α' : Embedding A T',
+            ∀ a : U, ∀ ha : α a ∈ S,
+              ∃ a' : U, f' ⟨α a, ha⟩ = α' a' := by
+  classical
+  letI : Fintype (Embedding A C) := Fintype.ofFinite _
+  let xs : List (Embedding A C) := Finset.univ.toList
+  have aux :
+      ∀ ys : List (Embedding A C),
+      ∀ {Y₀ : Type v} {T₀ : RelStructure L Y₀},
+      TreeAmalgam B Y₀ T₀ →
+      ∀ (f₀ : ↥(↑S : Set W) → Y₀),
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding T₀ f₀ →
+      EmbeddedIntersections (A := A) (C := C) (T := T₀) S f₀ →
+      ∀ zs : List (Embedding A C),
+      Controls (A := A) (C := C) (T := T₀) S f₀ zs →
+      ∃ (Z₀ : Type v) (T₁ : RelStructure L Z₀),
+        TreeAmalgam B Z₀ T₁ ∧
+        ∃ f₁ : ↥(↑S : Set W) → Z₀,
+          (C.induce (↑S : Set W)).IsHomomorphismEmbedding T₁ f₁ ∧
+          EmbeddedIntersections (A := A) (C := C) (T := T₁) S f₁ ∧
+          Controls (A := A) (C := C) (T := T₁) S f₁
+            (ys.reverse ++ zs) := by
+    intro ys
+    induction ys with
+    | nil =>
+        intro Y₀ T₀ hTree₀ f₀ hf₀ hInt₀ zs hctrl₀
+        exact ⟨Y₀, T₀, hTree₀, f₀, hf₀, hInt₀, by simpa using hctrl₀⟩
+    | cons α ys ih =>
+        intro Y₀ T₀ hTree₀ f₀ hf₀ hInt₀ zs hctrl₀
+        obtain ⟨Y₁, T₁, hTree₁, j, hf₁, hctrl₁⟩ :=
+          addControl_of_embeddedIntersection
+            (A := A) (B := B) (C := C)
+            hA eAB S hTree₀ f₀ hf₀ zs hctrl₀ α (hInt₀ α)
+        have hInt₁ :
+            EmbeddedIntersections (A := A) (C := C) (T := T₁)
+              S (j ∘ f₀) :=
+          hInt₀.postcomp S f₀ j
+        obtain ⟨Z₀, T₂, hTree₂, f₂, hf₂, hInt₂, hctrl₂⟩ :=
+          ih hTree₁ (j ∘ f₀) hf₁ hInt₁ (α :: zs) hctrl₁
+        refine ⟨Z₀, T₂, hTree₂, f₂, hf₂, hInt₂, ?_⟩
+        simpa [List.reverse_cons, List.append_assoc] using hctrl₂
+  obtain ⟨Z, T', hTree', f', hf', _hInt', hctrl'⟩ :=
+    aux xs hTree f hf hInt [] (by
+      intro α hmem
+      exact (List.not_mem_nil hmem).elim)
+  refine ⟨Z, T', hTree', f', hf', ?_⟩
+  intro α
+  apply hctrl' α
+  simp [xs]
+
+
 end LocallyTreeLike
 end StructuralRamsey.RelStructure
