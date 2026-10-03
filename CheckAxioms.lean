@@ -273,3 +273,8 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Iterated.pureCopy_projectedPartialWitness
 
 #print axioms StructuralRamsey.Partite.Iterated.pureCore_projectedPartialWitness
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.overlapMap_injective
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.liftMap_collision_of_overlap_leakage
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.liftMap_injective_of_reflectsOverlap
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.liftEmbedding
