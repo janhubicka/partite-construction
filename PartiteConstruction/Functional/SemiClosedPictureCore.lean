@@ -169,7 +169,7 @@ theorem liftCore_unique
   apply Partite.Closed.Embedding.ext
   intro a
   exact
-    (liftCore_apply A D B α E hAtotal hBroot hBsingle d h₁ a).trans
-      (liftCore_apply A D B α E hAtotal hBroot hBsingle d h₂ a).symm
+    (liftCore_apply A D B α E hAtotal hDroot hBPartite hBsingle d h₁ a).trans
+      (liftCore_apply A D B α E hAtotal hDroot hBPartite hBsingle d h₂ a).symm
 
 end StructuralRamsey.Partite.SemiClosed.Picture
