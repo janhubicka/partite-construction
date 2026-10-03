@@ -70,4 +70,61 @@ theorem inducedPartite
       A B D T.system T.isPartite κ hArrowExp
   exact ⟨T.Vertex, inferInstance, C, hU, hArrow⟩
 
+
+/-- The native half-closed construction also preserves any outer
+homomorphism-embedding projection carried by its intermediate target. -/
+theorem inducedPartiteOver
+    (A : Partite.System L.graph P U)
+    (B : Partite.System L.graph P V)
+    (E : Partite.System L.graph P W)
+    {D₀ : RelStructure L.graph P}
+    [Finite U] [Finite V] [Finite W]
+    (hpos : L.PositiveFuncArity)
+    (hE : E.IsPartiteOver D₀)
+    (hEU : E.FunctionOutputTransversal)
+    (κ : Type*) [Fintype κ] [Nonempty κ]
+    (hRamsey : Partite.HalfClosedArrow
+      (A := A) (B := B) (D := E) κ) :
+    ∃ (X : Type v) (_ : Finite X)
+      (C : Partite.System L.graph P X),
+      C.IsPartiteOver D₀ ∧
+      C.FunctionOutputTransversal ∧
+      Partite.Closed.Arrow A B C κ := by
+  classical
+  have hRamseyExp :
+      RelStructure.HalfClosedArrow
+        A.expandFunctional B.expandFunctional E.expandFunctional κ :=
+    (Partite.halfClosedArrow_iff_functionalExpanded
+      (A := A) (B := B) (D := E) (κ := κ)).mp hRamsey
+  letI : Nonempty
+      (RelStructure.Embedding B.expandFunctional E.expandFunctional) :=
+    RelStructure.nonempty_embedding_of_halfClosedArrow
+      A.expandFunctional B.expandFunctional E.expandFunctional κ
+      hRamseyExp
+  obtain ⟨T, hArrowExp⟩ :=
+    Partite.HalfClosed.Construction.inducedConstruction
+      A.expandFunctional B.expandFunctional E.expandFunctional
+      hpos.withParts κ hRamseyExp
+  let C0 : Partite.System L.graph W T.Vertex :=
+    Partite.System.ofFunctionalExpansion
+      (L := L) (P := P) T.system
+  have hC0 : C0.IsPartiteOver E.toRelStructure :=
+    Partite.isPartiteOver_of_functionalExpanded
+      (L := L) (P := P) E T.system T.isPartite
+  let C : Partite.System L.graph P T.Vertex :=
+    Partite.Nested.flatten E C0 hC0
+  have hPartite : C.IsPartiteOver D₀ := by
+    exact Partite.Nested.flatten_isPartiteOver E C0 hE hC0
+  have hInner : C0.FunctionOutputTransversal :=
+    Partite.functionOutputTransversal_of_expanded
+      (L := L) (P := P) T.system T.uTransversal
+  have hU : C.FunctionOutputTransversal := by
+    exact Partite.Nested.flatten_uTransversal_comp
+      E C0 hC0 hEU hInner
+  have hArrow : Partite.Closed.Arrow A B C κ := by
+    exact Partite.closedArrow_flattened_of_functionalExpanded
+      (L := L) (P := P)
+      A B E T.system T.isPartite κ hArrowExp
+  exact ⟨T.Vertex, inferInstance, C, hPartite, hU, hArrow⟩
+
 end StructuralRamsey.Partite.HalfClosed

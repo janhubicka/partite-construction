@@ -97,3 +97,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.closedArrow_flattened_of_functionalExpanded
 #print axioms StructuralRamsey.Partite.Nested.flatten_uTransversal_comp
 #print axioms StructuralRamsey.Partite.HalfClosed.inducedPartite
+#print axioms StructuralRamsey.Partite.Recursive.build
+#print axioms StructuralRamsey.Partite.Recursive.recursiveConstruction_of_localPictures
+#print axioms StructuralRamsey.Partite.Recursive.localHalfClosedPicture_of_closed
+#print axioms StructuralRamsey.Partite.HalfClosed.inducedPartiteOver
