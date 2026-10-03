@@ -3,15 +3,16 @@ import PartiteConstruction.Iterated.RootedWitness
 
 /-! # Final attachment with an explicit root budget
 
-The previous same-level attachment theorem assumes hereditary irreducibility
-of the root.  Here only the root itself is irreducible.  Local tree-likeness
-of the old core at level n + |root| suffices at level n after attachment.
+Only the control structure and the whole gluing root are required to be
+irreducible.  No hereditary irreducibility assumption is made on either of
+them, or on the base structure.  Testing the old-side vertices together with
+the entire root costs at most |root| extra vertices.  The two target witnesses
+are glued over the whole root, not over its possibly reducible intersection
+with the original test set.
 
-The proof includes the whole root in the old-side test set, then glues the
-two target witnesses over that whole root.  The source overlap need not be
-irreducible and need not equal the target overlap.  Control of ambient A-copies
-is restored by the existing completeControl theorem; its hereditary hypothesis
-on A is still explicit and is not discharged here.
+Ambient control is inherited directly from the rooted old-side witness and
+the fresh base copy, using localization of irreducibles in a free amalgam.
+The stronger completeControl lemma is not used.
 -/
 namespace StructuralRamsey.RelStructure.LocallyTreeLike
 
@@ -24,15 +25,12 @@ variable {Control : RelStructure L UA} {Base : RelStructure L VB}
 variable {D : RelStructure L H} {Core : RelStructure L X}
 variable {fCore : Embedding D Core} {fBase : Embedding D Base}
 
-/-- Include the entire irreducible root in the old-side test set before
-forming the target free amalgam.  No hereditary hypothesis on D or Base is
-required. -/
+/-- A final free attachment over an arbitrary irreducible root, with the
+explicit loss of at most |root| in the local-tree size bound. -/
 theorem freeAmalgam_rootBudget
     [Finite UA] [Finite VB] [Finite H] [Finite X]
-    (hControl : HereditarilyIrreducible Control)
-    (eControlBase : Embedding Control Base)
-    (hD : D.Irreducible)
-    (n : ℕ)
+    (hControl : Control.Irreducible)
+    (hD : D.Irreducible) (n : ℕ)
     (hCore : LocallyTreeLike Control Base Core (n + Nat.card H)) :
     LocallyTreeLike Control Base
       (FreeAmalgam.amalgam D Core Base fCore fBase) n := by
@@ -80,10 +78,10 @@ theorem freeAmalgam_rootBudget
     ePieceWhole.factorThroughRange r hPieceRange
   let eRest : Embedding Rest Core :=
     eRestWhole.factorThroughRange l hRestRange
-  have hPieceSpec (z : PieceV) : ePieceWhole z = r (ePiece z) := by
-    exact Classical.choose_spec (hPieceRange z)
-  have hRestSpec (z : RestV) : eRestWhole z = l (eRest z) := by
-    exact Classical.choose_spec (hRestRange z)
+  have hPieceSpec (z : PieceV) : ePieceWhole z = r (ePiece z) :=
+    Classical.choose_spec (hPieceRange z)
+  have hRestSpec (z : RestV) : eRestWhole z = l (eRest z) :=
+    Classical.choose_spec (hRestRange z)
 
   have hOverlapRange : ∀ z : OverlapV, ∃ d : H,
       eRest (sRest z) = fCore d ∧ ePiece (sPiece z) = fBase d := by
@@ -109,23 +107,12 @@ theorem freeAmalgam_rootBudget
         Fintype.card_le_of_injective (fun z : RestV => z.1)
           (by intro a b hab; exact Subtype.ext hab)
       _ ≤ n := by simpa [Tset] using hScard
-  obtain ⟨YR, TR, hTreeR, pRest, hpRest, tRoot, htRoot⟩ :=
-    rootedWitness hD fCore eRest n hRestCard hCore
+  obtain ⟨YR, TR, hTreeR, pRest, hpRest, tRoot, htRoot, ctrlRest⟩ :=
+    rootedWitness_controlled hD fCore eRest n hRestCard hCore
 
   let pPiece : PieceV → VB := ePiece
   have hpPiece : Piece.IsHomomorphismEmbedding Base pPiece :=
     ePiece.isHomomorphismEmbedding
-  have ctrlPiece : ∀ α : Embedding Control Piece,
-      ∃ α' : Embedding Control Base,
-        ∀ a : UA, ∃ a' : UA, pPiece (α a) = α' a' := by
-    intro α
-    exact ⟨ePiece.comp α, fun a => ⟨a, rfl⟩⟩
-  have ctrlRest : ∀ α : Embedding Control Rest,
-      ∃ α' : Embedding Control TR,
-        ∀ a : UA, ∃ a' : UA, pRest (α a) = α' a' := by
-    intro α
-    obtain ⟨α', hα'⟩ := hpRest.after_irreducible_embedding hControl.irreducible α
-    exact ⟨α', fun a => ⟨a, (hα' a).symm⟩⟩
   have hcompatPiece : ∀ z, pPiece (sPiece z) = fBase (q z) := by
     intro z
     exact (Classical.choose_spec (hOverlapRange z)).2
@@ -133,17 +120,84 @@ theorem freeAmalgam_rootBudget
     intro z
     exact htRoot (sRest z) (q z) (Classical.choose_spec (hOverlapRange z)).1
 
-  obtain ⟨Y, T, hTree, pSmall, hpSmall, _⟩ :=
-    glueControlled (tE := fBase) (tF := tRoot)
-      hControl.irreducible hFree hD
-      (TreeAmalgam.copy (Iso.refl Base)) hTreeR
-      q pPiece pRest hcompatPiece hcompatRest
-      hpPiece hpRest ctrlPiece ctrlRest
-  have hpSmall' :
-      (Whole.induce (↑S : Set _)).IsHomomorphismEmbedding T pSmall := by
-    simpa [Small, Tset, Whole, g, Support, FreeAmalgam.amalgam] using hpSmall
-  exact completeControl (A := Control) (B := Base) (C := Whole)
-    hControl eControlBase S hTree pSmall hpSmall'
+  let Target := FreeAmalgam.amalgam D Base TR fBase tRoot
+  let jPiece := FreeAmalgam.leftEmbedding D Base TR fBase tRoot
+  let jRest := FreeAmalgam.rightEmbedding D Base TR fBase tRoot
+  have hcPiece : fBase.ContainedInIrreducible := by
+    exact ⟨Set.range fBase, hD.range_embedding fBase, fun d => ⟨d, rfl⟩⟩
+  have hcRest : tRoot.ContainedInIrreducible := by
+    exact ⟨Set.range tRoot, hD.range_embedding tRoot, fun d => ⟨d, rfl⟩⟩
+  have hTree : TreeAmalgam Base
+      (FreeAmalgam.Vertex D Base TR fBase tRoot) Target :=
+    FreeAmalgam.treeAmalgam D Base TR fBase tRoot Base
+      (TreeAmalgam.copy (Iso.refl Base)) hTreeR hcPiece hcRest
+  have hTgt : IsFreeAmalgam fBase tRoot jPiece jRest :=
+    FreeAmalgam.isFreeAmalgam D Base TR fBase tRoot
+  let pSmall : Tset → FreeAmalgam.Vertex D Base TR fBase tRoot :=
+    IsFreeAmalgam.liftMap hFree hTgt q pPiece pRest hcompatPiece hcompatRest
+  have hpSmall : Small.IsHomomorphismEmbedding Target pSmall :=
+    IsFreeAmalgam.liftMap_isHomomorphismEmbedding
+      hFree hTgt q pPiece pRest hcompatPiece hcompatRest hpPiece hpRest
+  refine ⟨FreeAmalgam.Vertex D Base TR fBase tRoot, Target, hTree,
+    pSmall, hpSmall, ?_⟩
+  intro α
+  have hWholeFree := FreeAmalgam.isFreeAmalgam D Core Base fCore fBase
+  rcases hWholeFree.irreducible_side (Set.range α)
+      (hControl.range_embedding α) with hleft | hright
+  · have hrange : ∀ a : UA, ∃ x : X, α a = l x := by
+      intro a
+      exact hleft ⟨α a, ⟨a, rfl⟩⟩
+    let αCore : Embedding Control Core := α.factorThroughRange l hrange
+    have hαCore (a : UA) : α a = l (αCore a) :=
+      Classical.choose_spec (hrange a)
+    obtain ⟨αT, hαT⟩ := ctrlRest αCore
+    refine ⟨jRest.comp αT, ?_⟩
+    intro a ha
+    let z : Tset := ⟨α a, ha⟩
+    have hzRest : ¬ Attachment.OutsideAt (S := Support) () z.1 := by
+      rintro ⟨b, hb⟩
+      have hbad : (Sum.inl (αCore a) :
+          FreeAmalgam.Vertex D Core Base fCore fBase) = Sum.inr ((), b) :=
+        (hαCore a).symm.trans hb
+      cases hbad
+    let zr : RestV := ⟨z, hzRest⟩
+    have heq : eRest zr = αCore a := by
+      apply l.injective
+      calc
+        l (eRest zr) = eRestWhole zr := (hRestSpec zr).symm
+        _ = α a := rfl
+        _ = l (αCore a) := hαCore a
+    obtain ⟨a', ha'⟩ := hαT zr a heq
+    refine ⟨a', ?_⟩
+    change pSmall z = jRest (αT a')
+    calc
+      pSmall z = jRest (pRest zr) :=
+        IsFreeAmalgam.liftMap_right hFree hTgt q pPiece pRest
+          hcompatPiece hcompatRest zr
+      _ = jRest (αT a') := congrArg jRest ha'
+  · have hrange : ∀ a : UA, ∃ b : VB, α a = r b := by
+      intro a
+      exact hright ⟨α a, ⟨a, rfl⟩⟩
+    let αBase : Embedding Control Base := α.factorThroughRange r hrange
+    have hαBase (a : UA) : α a = r (αBase a) :=
+      Classical.choose_spec (hrange a)
+    refine ⟨jPiece.comp αBase, ?_⟩
+    intro a ha
+    let z : Tset := ⟨α a, ha⟩
+    let zp : PieceV := ⟨z, ⟨αBase a, hαBase a⟩⟩
+    have heq : ePiece zp = αBase a := by
+      apply r.injective
+      calc
+        r (ePiece zp) = ePieceWhole zp := (hPieceSpec zp).symm
+        _ = α a := rfl
+        _ = r (αBase a) := hαBase a
+    refine ⟨a, ?_⟩
+    change pSmall z = jPiece (αBase a)
+    calc
+      pSmall z = jPiece (pPiece zp) :=
+        IsFreeAmalgam.liftMap_left hFree hTgt q pPiece pRest
+          hcompatPiece hcompatRest zp
+      _ = jPiece (αBase a) := congrArg jPiece heq
 
 end StructuralRamsey.RelStructure.LocallyTreeLike
 
@@ -156,12 +210,11 @@ variable {Control : RelStructure L UA} {Base : RelStructure L VB}
 variable {D : RelStructure L H} {Core : RelStructure L X}
 variable {Q : RelStructure L Y} {fCore : Embedding D Core}
 
-/-- Final attachment with both projection and local-tree guarantees, using
-an explicit root-size budget instead of hereditary irreducibility of Base. -/
+/-- Both final-attachment invariants, with an explicit root-size budget and
+no hereditary irreducibility hypothesis or auxiliary Control-to-Base embedding. -/
 theorem attachOverIrreducible_preservesProjectionAndLocalTree_rootBudget
     [Finite UA] [Finite VB] [Finite H] [Finite X]
-    (hControl : HereditarilyIrreducible Control)
-    (eControlBase : Embedding Control Base)
+    (hControl : Control.Irreducible)
     (hD : D.Irreducible) (n : ℕ)
     (hCoreLTL : LocallyTreeLike Control Base Core (n + Nat.card H))
     (pCore : X → Y) (hpCore : Core.IsHomomorphismEmbedding Q pCore)
@@ -179,8 +232,7 @@ theorem attachOverIrreducible_preservesProjectionAndLocalTree_rootBudget
       hD pCore hpCore β hcover
   have hLocal : LocallyTreeLike Control Base
       (amalgam D Core Base fCore fBase) n :=
-    LocallyTreeLike.freeAmalgam_rootBudget
-      hControl eControlBase hD n hCoreLTL
+    LocallyTreeLike.freeAmalgam_rootBudget hControl hD n hCoreLTL
   exact ⟨fBase, p, hp, hLocal, hleft, hright⟩
 
 end StructuralRamsey.RelStructure.FreeAmalgam
