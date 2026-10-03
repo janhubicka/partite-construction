@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.ClosedAttachment
 import PartiteConstruction.Functional.HalfClosedInitial
 import PartiteConstruction.Functional.NestedFlatten
+import PartiteConstruction.Functional.PartPredicates
 
 /-! # Singleton-valued invariants for graph-partite constructions
 
@@ -159,7 +160,7 @@ theorem singleValued
         congrArg Prod.fst hzb
       _ = j := by rfl
   have hij : j = i := hidxb.symm.trans hidxa
-  subst j
+  rw [hij] at heqb hb
   let argsA : Fin (L.funcArity F) → V :=
     fun k => a (Fin.castSucc k)
   let argsB : Fin (L.funcArity F) → V :=
@@ -170,10 +171,20 @@ theorem singleValued
     funext k
     have hka := congrArg Prod.snd (congrFun heqa (Fin.castSucc k))
     have hkb := congrArg Prod.snd (congrFun heqb (Fin.castSucc k))
-    have ha0 : (x k).2 = argsA k := by
-      simpa [argsA, Function.comp_apply] using hka
-    have hb0 : (x k).2 = argsB k := by
-      simpa [argsB, Function.comp_apply] using hkb
+    have ha0 : (x k).2 = a (Fin.castSucc k) := by
+      calc
+        (x k).2 =
+            (Structure.funcTuple x y (Fin.castSucc k)).2 := by
+          rw [Structure.funcTuple_castSucc]
+        _ = (((fun v => (i, v)) ∘ a) (Fin.castSucc k)).2 := hka
+        _ = a (Fin.castSucc k) := by rfl
+    have hb0 : (x k).2 = b (Fin.castSucc k) := by
+      calc
+        (x k).2 =
+            (Structure.funcTuple x z (Fin.castSucc k)).2 := by
+          rw [Structure.funcTuple_castSucc]
+        _ = (((fun v => (i, v)) ∘ b) (Fin.castSucc k)).2 := hkb
+        _ = b (Fin.castSucc k) := by rfl
     exact ha0.symm.trans hb0
   have hrelA : B.rel (.inr F)
       (Structure.funcTuple argsA outA) := by
@@ -195,15 +206,23 @@ theorem singleValued
     exact hrelB0
   have hout : outA = outB := hB F argsA outA outB hrelA hrelB
   have hyEq : y = (i, outA) := by
-    have h := congrFun heqa (Fin.last (L.funcArity F))
-    rw [Structure.funcTuple_last] at h
-    change y = (i, outA) at h
-    exact h
+    have houta := congrFun heqa (Fin.last (L.funcArity F))
+    calc
+      y = Structure.funcTuple x y
+          (Fin.last (L.funcArity F)) := by
+        rw [Structure.funcTuple_last]
+      _ = (((fun v => (i, v)) ∘ a)
+          (Fin.last (L.funcArity F))) := houta
+      _ = (i, outA) := by rfl
   have hzEq : z = (i, outB) := by
-    have h := congrFun heqb (Fin.last (L.funcArity F))
-    rw [Structure.funcTuple_last] at h
-    change z = (i, outB) at h
-    exact h
+    have houtb := congrFun heqb (Fin.last (L.funcArity F))
+    calc
+      z = Structure.funcTuple x z
+          (Fin.last (L.funcArity F)) := by
+        rw [Structure.funcTuple_last]
+      _ = (((fun v => (i, v)) ∘ b)
+          (Fin.last (L.funcArity F))) := houtb
+      _ = (i, outB) := by rfl
   calc
     y = (i, outA) := hyEq
     _ = (i, outB) := congrArg (fun q => (i, q)) hout
@@ -226,7 +245,14 @@ theorem singleValued
     (attach B S D f).FunctionOutputSingleValued := by
   classical
   intro F x y z hy hz
-  let g := relMaps (f := f)
+  let g :
+      I → RelStructure.Embedding
+        (B.toRelStructure.induce S) D.toRelStructure :=
+    fun i => {
+      toFun := (f i).1
+      injective := (f i).1.toEmbedding.injective
+      map_rel_iff := (f i).1.toEmbedding.map_rel_iff
+    }
   by_cases hcore : ∀ k, ∃ a : W, x k = Sum.inl a
   · choose a ha using hcore
     have hargs : x = Sum.inl ∘ a := by
