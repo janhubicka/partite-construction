@@ -61,6 +61,9 @@ all checked end to end.  The full-language consequence is
 | corrected functional induced construction | `Partite.Closed.Construction.inducedConstruction` | Proved end to end for positive-arity function symbols |
 | Half-closed initial picture | `Partite.HalfClosed.Initial.copyEmbedding`, `uTransversal`, `isPartiteOver` | Ordinary B→D projections are allowed; each actual copy is U-closed and the picture is U-transversal for positive function arities |
 | `lem:rpartite`, half-closed induced construction | `RelStructure.HalfClosedArrow`, `Partite.HalfClosed.Construction.inducedConstruction` | Proved for positive-arity function symbols; repairs an ordinary returned B-copy to a genuine closed Ramsey arrow |
+| Non-closed Picture obstruction | `RelStructure.Attachment.copy_comp_not_functionClosed` | Free attachment over a non-closed support can destroy closedness of a selected composite A-copy |
+| Closed-copy-generated repair | `Partite.ClosedRepair.copyGenerated_uTransversal`, `copyGenerated_arrow` | Pruning to tuples lying in closed B-copies preserves the closed Ramsey arrow and forces U-transversality whenever B is U-transversal |
+| Tuple-coverage criterion | `Partite.ClosedRepair.uTransversal_of_tupleCovered` | The survey's claimed closed-copy coverage is sufficient for U-transversality; the unsupported part is obtaining that coverage before repair |
 | full relation/function Ramsey consequence | `Structure.inducedRamsey` | Proved via decoding the final graph structure |
 | Weak substructures for functions | `Structure.weakInduce`, `weakInduce_graph_rel_iff`, `WeakLocallyTreeLike`, `weakLocallyTreeLike_iff` | Proved: weak restriction is exactly induced restriction of the relational graph encoding |
 | Iterated tree invariant, base case | `Partite.Iterated.initial_locallyTreeLike` | Proved for irreducible `A` |
@@ -163,7 +166,7 @@ The fixed-length bridge combines hypothetical bad colourings at each length
 into one colouring of all finite words and applies that theorem.
 
 `CheckAxioms.lean` prints the transitive axiom dependencies of the main results.
-All 73 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
+All 78 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
 every requested declaration produced a result. In particular, `sorryAx`, a
 custom HJ axiom, and native-evaluation axioms cannot pass this audit.
 
