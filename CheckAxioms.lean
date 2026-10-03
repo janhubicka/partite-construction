@@ -142,3 +142,9 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.Partite.Attachment.restrictClosedToInduce
 #print axioms StructuralRamsey.Partite.Attachment.selectedCopy_closed
+
+#print axioms StructuralRamsey.Partite.SemiClosed.Picture.pictureLemma
+
+#print axioms StructuralRamsey.Partite.SemiClosed.Picture.selectedLift_core
+
+#print axioms StructuralRamsey.Partite.SemiClosed.Picture.liftCore_unique
