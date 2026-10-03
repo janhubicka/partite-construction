@@ -154,8 +154,11 @@ theorem pullback_embedding
       refine {
         boundary := bdC.boundary.comp j
         agrees := ?_
-        contained := bdC.boundary.ContainedInIrreducible.postcomp
-          bdC.contained (Embedding.id T)
+        contained := by
+          rcases bdC.contained with ⟨R, hR, hsub⟩
+          refine ⟨R, hR, ?_⟩
+          intro x
+          exact hsub (j x)
       }
       intro x
       change bdC.boundary (j x) = fC (ee ⟨α x.1, x.2⟩)
