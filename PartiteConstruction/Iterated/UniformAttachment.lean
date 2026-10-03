@@ -64,8 +64,7 @@ theorem attachmentWitness_of_selected
       TreeAmalgam Base Y T ∧
       ∃ q : ↥(↑Test : Set (Attachment.Vertex S (W := W) (I := I))) → Y,
         ((Attachment.attach Base S Core f).induce
-          (↑Test : Set (Attachment.Vertex S (W := W) (I := I)))).
-          IsHomomorphismEmbedding T q ∧
+          (↑Test : Set (Attachment.Vertex S (W := W) (I := I)))).IsHomomorphismEmbedding T q ∧
         ∀ α : Embedding Control (Attachment.attach Base S Core f),
           ∃ α' : Embedding Control T,
             ∀ a : UA, ∀ ha : α a ∈ Test,
@@ -82,9 +81,7 @@ theorem attachmentWitness_of_selected
       exact congrArg Subtype.val hxy
     map_rel_iff := by
       intro Rel x
-      change Core.rel Rel (f j ∘ (Subtype.val ∘ x)) ↔
-        Base.rel Rel (Subtype.val ∘ x)
-      exact (f j).map_rel_iff Rel (Subtype.val ∘ x)
+      exact (f j).map_rel_iff Rel x
   }
 
   rcases hTree₀.exists_base_embedding with ⟨base₀⟩
@@ -175,16 +172,23 @@ theorem attachmentWitness_of_selected
     convert hcoreRel using 1
     funext k
     change q (z k) = coreT (g (yR k))
-    rw [hzy k]
-    simpa [yR] using q_inl (y k) (by
+    have hmem :
+        (Sum.inl (y k) :
+          Attachment.Vertex S (W := W) (I := I)) ∈ Test := by
       have hk := (z k).2
       rw [hzy k] at hk
-      exact hk)
+      exact hk
+    have hsub :
+        z k = (⟨Sum.inl (y k), hmem⟩ :
+          ↥(↑Test : Set (Attachment.Vertex S (W := W) (I := I)))) := by
+      apply Subtype.ext
+      exact hzy k
+    rw [hsub]
+    simpa [yR] using q_inl (y k) hmem
 
   have hq :
       ((Attachment.attach Base S Core f).induce
-          (↑Test : Set (Attachment.Vertex S (W := W) (I := I)))).
-        IsHomomorphismEmbedding T q := by
+          (↑Test : Set (Attachment.Vertex S (W := W) (I := I)))).IsHomomorphismEmbedding T q := by
     constructor
     · intro Rel z hz
       change
@@ -399,24 +403,29 @@ theorem attachmentWitness_of_selected
     refine ⟨coreT.comp α₀, ?_⟩
     intro a ha
     have hαcore := Classical.choose_spec (hrange a)
-    have hmemR : αCore a ∈ R := by
-      apply hCoreTest (αCore a)
-      change Sum.inl (αCore a) ∈ Test
-      calc
-        Sum.inl (αCore a) = α a := hαcore.symm
-        _ ∈ Test := ha
-    obtain ⟨a', ha'⟩ := hα₀ a hmemR
-    refine ⟨a', ?_⟩
+    have hαcore' :
+        α a =
+          (Sum.inl (αCore a) :
+            Attachment.Vertex S (W := W) (I := I)) := by
+      exact hαcore
     have htest :
         (Sum.inl (αCore a) :
           Attachment.Vertex S (W := W) (I := I)) ∈ Test := by
-      simpa [hαcore] using ha
+      rw [← hαcore']
+      exact ha
+    have hmemR : αCore a ∈ R :=
+      hCoreTest (αCore a) htest
+    obtain ⟨a', ha'⟩ := hα₀ a hmemR
+    refine ⟨a', ?_⟩
+    have hsub :
+        (⟨α a, ha⟩ :
+          ↥(↑Test : Set (Attachment.Vertex S (W := W) (I := I)))) =
+        ⟨Sum.inl (αCore a), htest⟩ := by
+      apply Subtype.ext
+      exact hαcore'
     calc
       q ⟨α a, ha⟩ =
-          q ⟨Sum.inl (αCore a), htest⟩ := by
-            apply congrArg q
-            apply Subtype.ext
-            exact hαcore
+          q ⟨Sum.inl (αCore a), htest⟩ := congrArg q hsub
       _ = coreT (g ⟨αCore a, hmemR⟩) := q_inl (αCore a) htest
       _ = coreT (α₀ a') := congrArg coreT ha'
   · have hcopyA : ∃ i : I, ∀ a : UA, ∃ b : VB,
