@@ -26,11 +26,11 @@ variable {U V P : Type v}
 
 abbrev profile :=
   Partite.Recursive.profile
-    (L := L.withFunctionDomains)
+    (L := L.withFunctionDomains) (U := U) (P := P)
 
 abbrev CanonicalOn :=
   Partite.Recursive.CanonicalOn
-    (L := L.withFunctionDomains)
+    (L := L.withFunctionDomains) (U := U) (P := P)
 
 /-- A recursive stage for the partial-function/domain encoding. -/
 structure Stage
