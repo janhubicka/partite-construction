@@ -176,7 +176,8 @@ theorem pullback_embedding
       toFun := fun x => ⟨x.1, Finset.mem_image.mpr ⟨α x.1, x.2, rfl⟩⟩
       injective := by
         intro x y hxy
-        exact Subtype.ext (congrArg Subtype.val hxy)
+        apply Subtype.ext
+        exact congrArg (fun q : HitC => q.1) hxy
       map_rel_iff := fun _ _ => Iff.rfl
     }
     let g : Embedding (A.induce HitD) T := gC.comp incHit
@@ -257,7 +258,8 @@ theorem witness_of_homEmbedding_image
         exact (hαD x.1).symm⟩
       injective := by
         intro x y hxy
-        exact Subtype.ext (congrArg Subtype.val hxy)
+        apply Subtype.ext
+        exact congrArg (fun q : HitC => q.1) hxy
       map_rel_iff := fun _ _ => Iff.rfl
     }
     let gHit : Embedding (A.induce HitC) T := gHitD.comp incHit
