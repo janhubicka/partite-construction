@@ -279,11 +279,12 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.liftMap_injective_of_reflectsOverlap
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.liftEmbedding
 
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.not_containedInIrreducible_of_straddles
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.not_containedInIrreducible_of_exclusive_images
+
 #print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.toProjectedPartial
 #print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.pullback_embedding
 #print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.respectsHistory_of_kernel_refines_projection
-
 #print axioms StructuralRamsey.Partite.Iterated.pureCopy_projectedHistoryWitness
 #print axioms StructuralRamsey.Partite.Iterated.pureCore_projectedHistoryWitness
-
 #print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.witness_of_homEmbedding_image
