@@ -93,6 +93,7 @@ import PartiteConstruction.Iterated.WitnessGlue
 import PartiteConstruction.Iterated.MixedOverlapObstruction
 import PartiteConstruction.Iterated.MixedOverlapExample
 import PartiteConstruction.Iterated.IntersectionStrongLocalTreeLike
+import PartiteConstruction.Iterated.WitnessGlueContained
 import PartiteConstruction.Iterated.ProjectedGlue
 import PartiteConstruction.Iterated.ProjectedCover
 import PartiteConstruction.Relational.Attachment
