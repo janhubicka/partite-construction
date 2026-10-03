@@ -281,3 +281,8 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.not_containedInIrreducible_of_straddles
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.not_containedInIrreducible_of_exclusive_images
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.LabelledIntersectionControl.rootEmbedding_quotient
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.LabelledIntersectionControl.quotient_surjective
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.LabelledIntersectionControl.rootEmbedding_contained
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.labelledIntersections_of_controls
