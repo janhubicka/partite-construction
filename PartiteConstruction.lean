@@ -66,6 +66,7 @@ import PartiteConstruction.Iterated.PartialCompatibleLocalTreeLike
 import PartiteConstruction.Iterated.PureCopyCompatible
 import PartiteConstruction.Iterated.ProjectedPartialLocalTreeLike
 import PartiteConstruction.Iterated.PureCopyProjectedCompatible
+import PartiteConstruction.Iterated.PureCoreProjectedCompatible
 import PartiteConstruction.Iterated.PureCopyGeometry
 import PartiteConstruction.Iterated.PowerCoordinateEmbedding
 import PartiteConstruction.Iterated.WeakStep
