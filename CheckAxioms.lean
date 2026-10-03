@@ -141,3 +141,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.HalfClosed.Initial.outputImpliesDomain
 #print axioms StructuralRamsey.Partite.Attachment.outputImpliesDomain
 #print axioms StructuralRamsey.Partite.Nested.flatten_outputImpliesDomain
+
+#print axioms StructuralRamsey.Partite.Attachment.restrictClosedToInduce
+#print axioms StructuralRamsey.Partite.Attachment.selectedCopy_closed
