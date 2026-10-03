@@ -195,3 +195,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.Attachment.fold
 #print axioms StructuralRamsey.RelStructure.Attachment.fold_copy
 #print axioms StructuralRamsey.RelStructure.Attachment.fold_isHomomorphismEmbedding
+
+#print axioms StructuralRamsey.RelStructure.Embedding.rangeInverse
+#print axioms StructuralRamsey.RelStructure.Embedding.rangeInverse_apply
+#print axioms StructuralRamsey.RelStructure.Embedding.rangeInverse_left
