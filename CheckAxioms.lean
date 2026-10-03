@@ -219,3 +219,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.FinalSupport.AtSupport.embedding_compat
 
 #print axioms StructuralRamsey.RelStructure.FinalSupport.Root.support_irreducible
+
+#print axioms StructuralRamsey.RelStructure.FinalCompletion.coreOrBase_attachment
