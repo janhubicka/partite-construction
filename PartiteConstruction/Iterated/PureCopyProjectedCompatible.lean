@@ -71,10 +71,18 @@ theorem pureCopy_projectedPartialWitness
   let pSmall : Tset → P := fun z => C₁.part z.1
   have hpSmall (z : Tset) :
       pSmall z = C₀.part (eCopy z) := by
-    have hz := Classical.choose_spec (hrange z)
+    have hz :
+        smallIncl z =
+          (Partite.Picture.copyEmbedding C₀ αf E i).toEmbedding (eCopy z) :=
+      Classical.choose_spec (hrange z)
     change C₁.part z.1 = C₀.part (eCopy z)
-    rw [hz]
-    exact (Partite.Picture.copyEmbedding C₀ αf E i).map_part (eCopy z)
+    calc
+      C₁.part z.1 =
+          C₁.part
+            ((Partite.Picture.copyEmbedding C₀ αf E i).toEmbedding
+              (eCopy z)) := congrArg C₁.part hz
+      _ = C₀.part (eCopy z) :=
+        (Partite.Picture.copyEmbedding C₀ αf E i).map_part (eCopy z)
 
   have hSmall :
       RelStructure.ProjectedPartialLocallyTreeLike
