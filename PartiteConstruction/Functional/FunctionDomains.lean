@@ -175,10 +175,13 @@ theorem withFunctionDomains_graph_outputImpliesDomain
     (A : Structure L V) :
     A.withFunctionDomains.graph.OutputImpliesDomain := by
   intro F x y hy
-  change
-    y ∈ A.func F x at hy
+  have hy' :
+      y ∈ A.withFunctionDomains.func F x :=
+    (Structure.graph_func_snoc
+      A.withFunctionDomains F x y).1 hy
+  change y ∈ A.func F x at hy'
   change ∃ z, z ∈ A.func F x
-  exact ⟨y, hy⟩
+  exact ⟨y, hy'⟩
 
 /-- Canonical domain relations are total: a declared domain tuple has an
 output. -/
@@ -188,7 +191,10 @@ theorem withFunctionDomains_graph_domainTotal
   intro F x hx
   change ∃ y, y ∈ A.func F x at hx
   rcases hx with ⟨y, hy⟩
-  exact ⟨y, hy⟩
+  refine ⟨y, ?_⟩
+  exact
+    (Structure.graph_func_snoc
+      A.withFunctionDomains F x y).2 hy
 
 /-- A singleton-valued genuine partial-function structure is semi-closed after
 adding domain relations. -/
@@ -199,9 +205,17 @@ theorem withFunctionDomains_graph_semiClosed
   refine
     ⟨withFunctionDomains_graph_outputImpliesDomain A, ?_⟩
   intro F x y z hy hz
-  change y ∈ A.func F x at hy
-  change z ∈ A.func F x at hz
-  exact hA F x y z hy hz
+  have hy' :
+      y ∈ A.withFunctionDomains.func F x :=
+    (Structure.graph_func_snoc
+      A.withFunctionDomains F x y).1 hy
+  have hz' :
+      z ∈ A.withFunctionDomains.func F x :=
+    (Structure.graph_func_snoc
+      A.withFunctionDomains F x z).1 hz
+  change y ∈ A.func F x at hy'
+  change z ∈ A.func F x at hz'
+  exact hA F x y z hy' hz'
 
 /-- Domain reflection plus local output uniqueness upgrades an ordinary
 embedding to a closed embedding.  This is the mechanism used after the
