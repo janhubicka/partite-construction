@@ -61,6 +61,7 @@ def initialStage
 ordinary projections. -/
 def CanonicalOn
     (A : RelStructure L.graph U)
+    (D : RelStructure L.graph P)
     {X Y : Type v}
     (S : Partite.System L.graph P X)
     (T : Partite.System L.graph P Y)
@@ -204,7 +205,7 @@ theorem build
     (S : Stage B D)
     (xs : List (RelStructure.Embedding A D)) :
     ∃ T : Stage B D,
-      CanonicalOn A S.system T.system xs κ := by
+      CanonicalOn A D S.system T.system xs κ := by
   induction xs with
   | nil =>
       refine ⟨S, ?_⟩
