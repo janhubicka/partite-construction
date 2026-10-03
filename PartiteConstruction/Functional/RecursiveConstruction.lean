@@ -24,6 +24,37 @@ universe u v
 variable {L : Language.{u}}
 variable {U V P : Type v}
 
+
+@[simp] theorem toRelClosed_comp
+    {Q : Type v}
+    {A : Partite.System L.graph P U}
+    {B : Partite.System L.graph P V}
+    {C : Partite.System L.graph P Q}
+    (g : Partite.Closed.Embedding B C)
+    (f : Partite.Closed.Embedding A B) :
+    (Partite.Closed.Embedding.comp g f).toRelClosed =
+      RelStructure.ClosedEmbedding.comp g.toRelClosed f.toRelClosed := by
+  apply RelStructure.ClosedEmbedding.ext
+  intro x
+  rfl
+
+theorem relClosed_comp_assoc
+    {Q : Type v}
+    {A : RelStructure L.graph U}
+    {B : RelStructure L.graph V}
+    {C : RelStructure L.graph P}
+    {E : RelStructure L.graph Q}
+    (h : RelStructure.ClosedEmbedding C E)
+    (g : RelStructure.ClosedEmbedding B C)
+    (f : RelStructure.ClosedEmbedding A B) :
+    RelStructure.ClosedEmbedding.comp
+        (RelStructure.ClosedEmbedding.comp h g) f =
+      RelStructure.ClosedEmbedding.comp h
+        (RelStructure.ClosedEmbedding.comp g f) := by
+  apply RelStructure.ClosedEmbedding.ext
+  intro x
+  rfl
+
 /-- The D-partite source system corresponding to one ordinary projection. -/
 def profile
     (A : RelStructure L.graph U)
@@ -239,11 +270,12 @@ theorem build
           hg
             (Partite.Closed.Embedding.comp f e₁)
             (Partite.Closed.Embedding.comp f e₂)
-        simpa only [Partite.Closed.Embedding.comp,
-          RelStructure.ClosedEmbedding.comp] using hlocal
+        rw [toRelClosed_comp, toRelClosed_comp] at hlocal
+        rw [toRelClosed_comp]
+        simpa only [relClosed_comp_assoc] using hlocal
       · have hold := hf β hβ e₁ e₂
-        simpa only [Partite.Closed.Embedding.comp,
-          RelStructure.ClosedEmbedding.comp] using hold
+        rw [toRelClosed_comp]
+        simpa only [relClosed_comp_assoc] using hold
 
 /-- Enumerate every ordinary A-copy in D. -/
 noncomputable def allEmbeddings
