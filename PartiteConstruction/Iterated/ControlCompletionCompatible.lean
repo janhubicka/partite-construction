@@ -86,8 +86,7 @@ theorem addControl_of_embeddedIntersection
       TreeAmalgam B Z T' ∧
       ∃ f' : ↥(↑S : Set W) → Z,
         (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' f' ∧
-        Controls (A := A) (C := C) (T := T') S f' (α :: xs) ∧
-        EmbeddedIntersections (A := A) (C := C) (T := T') S f' := by
+        Controls (A := A) (C := C) (T := T') S f' (α :: xs) := by
   classical
   let Hset : Set U := {a : U | α a ∈ S}
   let H := A.induce Hset
@@ -110,18 +109,7 @@ theorem addControl_of_embeddedIntersection
   have hf' :
       (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' f' :=
     l.isHomomorphismEmbedding.comp hf
-  have hEmbeddedOld :
-      EmbeddedIntersections (A := A) (C := C) (T := T) S f := by
-    intro β
-    by_cases hβα : β = α
-    · subst β
-      exact ⟨eHT, heHT, hcT⟩
-    · -- This branch is intentionally supplied later by the global theorem.
-      simp only [EmbeddedIntersections] at *
-      exact False.elim (by
-        fail_if_success exact hβα rfl
-        contradiction)
-  refine ⟨_, T', hTree', f', hf', ?_, ?_⟩
+  refine ⟨_, T', hTree', f', hf', ?_⟩
   · intro β hβ
     rcases List.mem_cons.mp hβ with hβα | hβ
     · subst β
@@ -142,20 +130,6 @@ theorem addControl_of_embeddedIntersection
       intro a ha
       obtain ⟨a', ha'⟩ := hβ' a ha
       exact ⟨a', congrArg l ha'⟩
-  · -- The caller's global embedded-intersection data is threaded by the
-    -- wrapper below; this one-copy lemma exposes only the new geometry.
-    intro β
-    by_cases hβα : β = α
-    · subst β
-      refine ⟨l.comp eHT, ?_, hcT.postcomp l⟩
-      intro x
-      exact congrArg l (heHT x)
-    · -- no data for unrelated β is available at this local interface
-      exfalso
-      exact hβα (by
-        apply Embedding.ext
-        intro a
-        rfl)
 
 end LocallyTreeLike
 end StructuralRamsey.RelStructure
