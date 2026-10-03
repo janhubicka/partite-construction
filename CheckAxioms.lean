@@ -93,3 +93,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.irreducible_expandFunctional_of_reduct
 #print axioms StructuralRamsey.Partite.isPartiteOver_of_functionalExpanded
 #print axioms StructuralRamsey.Partite.functionOutputTransversal_of_expanded
+#print axioms StructuralRamsey.Partite.Closed.Embedding.toFlattenedFunctional
+#print axioms StructuralRamsey.Partite.closedArrow_flattened_of_functionalExpanded
