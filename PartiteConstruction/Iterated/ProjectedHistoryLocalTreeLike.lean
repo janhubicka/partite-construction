@@ -208,7 +208,7 @@ theorem witness_of_homEmbedding_image
       intro x
       apply Finset.mem_image.mpr
       refine ⟨e x, heRange x, ?_⟩
-      exact (heproj x).symm
+      exact heproj x
     obtain ⟨eT, heT, hc⟩ :=
       hPartD β H eD heDproj heDRange
     refine ⟨eT, ?_, hc⟩
