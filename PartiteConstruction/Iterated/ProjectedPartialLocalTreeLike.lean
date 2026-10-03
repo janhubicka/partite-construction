@@ -102,6 +102,7 @@ theorem pullback_embedding
   let qC : Embedding (A.induce H) C := e.comp q
   have hqprojC : ∀ x, p (qC x) = β x.1 := by
     intro x
+    change p (e (q x)) = β x.1
     rw [← hproj (q x)]
     exact hqproj x
   have hqRangeC : ∀ x, qC x ∈ I := by
