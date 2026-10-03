@@ -74,15 +74,63 @@ theorem zero_of_embeddings
       (A := A) (B := B) (D := D) 0 := by
   refine ⟨LocallyTreeLike.zero_of_embeddings eAB jBD, ?_⟩
   intro I hI β H hH
-  obtain ⟨Y, T, hTree, f, hf, hctrl⟩ :=
-    LocallyTreeLike.zero_of_embeddings eAB jBD I hI
-  refine ⟨Y, T, hTree, f, hf, hctrl, eAB, ?_⟩
-  intro a
   have hEmpty : I = ∅ :=
     Finset.card_eq_zero.mp (Nat.eq_zero_of_le_zero hI)
-  have ha := hH a
-  rw [hEmpty] at ha
-  exact (Finset.notMem_empty _ ha).elim
+  subst I
+  have hempty (x : ↥(↑(∅ : Finset P) : Set P)) : False :=
+    Finset.notMem_empty x.1 x.2
+  let f : ↥(↑(∅ : Finset P) : Set P) → V :=
+    fun x => (hempty x).elim
+  have hf :
+      (D.induce (↑(∅ : Finset P) : Set P)).IsHomomorphismEmbedding B f := by
+    constructor
+    · intro R x hx
+      change D.rel R (Subtype.val ∘ x) at hx
+      have heq :
+          jBD ∘ (f ∘ x) = Subtype.val ∘ x := by
+        funext i
+        exact (hempty (x i)).elim
+      have htarget : D.rel R (jBD ∘ (f ∘ x)) := by
+        rw [heq]
+        exact hx
+      exact (jBD.map_rel_iff R (f ∘ x)).mp htarget
+    · intro T hT
+      let e : Embedding
+          ((D.induce (↑(∅ : Finset P) : Set P)).induce T) B := {
+        toFun := fun x => (hempty x.1).elim
+        injective := by
+          intro x y _
+          exact (hempty x.1).elim
+        map_rel_iff := by
+          intro R x
+          let q : Fin (L.arity R) → V :=
+            fun i => (hempty (x i).1).elim
+          have heq :
+              jBD ∘ q =
+                Subtype.val ∘ (Subtype.val ∘ x) := by
+            funext i
+            exact (hempty (x i).1).elim
+          calc
+            B.rel R q ↔ D.rel R (jBD ∘ q) :=
+              (jBD.map_rel_iff R q).symm
+            _ ↔ D.rel R (Subtype.val ∘ (Subtype.val ∘ x)) := by rw [heq]
+            _ ↔ ((D.induce (↑(∅ : Finset P) : Set P)).induce T).rel R x :=
+              Iff.rfl
+      }
+      exact ⟨e, fun x => (hempty x.1).elim⟩
+  have hctrl :
+      ∀ γ : Embedding A D,
+        ∃ γ' : Embedding A B,
+          ∀ a : U, ∀ ha : γ a ∈ (∅ : Finset P),
+            ∃ a' : U, f ⟨γ a, ha⟩ = γ' a' := by
+    intro γ
+    refine ⟨eAB, ?_⟩
+    intro a ha
+    exact (Finset.notMem_empty _ ha).elim
+  refine ⟨V, B, TreeAmalgam.copy (Iso.refl B),
+    f, hf, hctrl, eAB, ?_⟩
+  intro a
+  exact (Finset.notMem_empty _ (hH a)).elim
 
 /-- If D homomorphism-embeds into irreducible A and A embeds into B, one
 copy of B supplies the relative labelled property at every scale. -/
