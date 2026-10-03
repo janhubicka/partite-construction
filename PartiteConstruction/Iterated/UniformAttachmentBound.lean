@@ -28,7 +28,7 @@ variable {f : I → Embedding (Base.induce S) Core}
 one support in the base.  The function-space term is exactly
 `(n+1)^|Control|`, but retaining it as a finite-cardinal expression avoids
 unnecessary arithmetic normalization in downstream proofs. -/
-def fixedSupportBudget
+noncomputable def fixedSupportBudget
     (UA VB : Type v) [Fintype UA] [Fintype VB] (n : ℕ) : ℕ :=
   n + Fintype.card VB * (n + Nat.card (UA → Option (Fin n)))
 
