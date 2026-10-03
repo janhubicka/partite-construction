@@ -48,13 +48,16 @@ theorem glueProjectedFull_intersectionStrong
       TreeAmalgam Base T Target ∧
       ∃ f : C → T,
         Csrc.IsHomomorphismEmbedding Target f ∧
-        ∃ Eimg : Finset P, ∃ Fimg : Finset P,
-          ∃ gE : ↥(↑Eimg : Set P) → T,
-          ∃ gF : ↥(↑Fimg : Set P) → T,
+        ∃ gE :
+            ↥(↑((Finset.univ : Finset E).image (p ∘ iE)) : Set P) → T,
+          ∃ gF :
+            ↥(↑((Finset.univ : Finset F).image (p ∘ iF)) : Set P) → T,
             ProjectedIntersectionControl
-                (Control := Control) (D := D) Eimg Target gE ∧
+                (Control := Control) (D := D)
+                ((Finset.univ : Finset E).image (p ∘ iE)) Target gE ∧
             ProjectedIntersectionControl
-                (Control := Control) (D := D) Fimg Target gF ∧
+                (Control := Control) (D := D)
+                ((Finset.univ : Finset F).image (p ∘ iF)) Target gF ∧
             (∀ e : E,
               f (iE e) =
                 gE ⟨p (iE e),
@@ -265,8 +268,10 @@ theorem glueProjectedFull_intersectionStrong
     · refine ⟨jF.comp βhit, ?_⟩
       intro x
       exact congrArg jF (hβhit x)
-  refine ⟨_, Target, hTree, fOut, hfOut, Eimg, Fimg,
-    gEout, gFout, ctrlEout, ctrlFout, ?_, ?_⟩
+  refine ⟨_, Target, hTree, fOut, hfOut,
+    gEout, gFout, ?_, ?_, ?_, ?_⟩
+  · simpa [Eimg, pE] using ctrlEout
+  · simpa [Fimg, pF] using ctrlFout
   · intro e
     change fOut (iE e) = jE (gE0 (pEsub e))
     exact IsFreeAmalgam.liftMap_left
