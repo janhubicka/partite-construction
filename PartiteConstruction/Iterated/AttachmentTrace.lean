@@ -81,7 +81,7 @@ theorem exists_selected_indices
             ∀ a : UA, α a ∈ Test →
               α a = Attachment.copyMap Base S Core f j (β a)) ∧
       J.card ≤ Test.card +
-        Fintype.card
+        Nat.card
           (UA → Option ↥(↑Test :
             Set (Attachment.Vertex S (W := W) (I := I)))) := by
   classical
@@ -195,9 +195,12 @@ theorem exists_selected_indices
         _ = traces.card := by simp
     have htracesCard : traces.card ≤ Fintype.card Trace := by
       simpa using (Finset.card_le_card (Finset.subset_univ traces))
+    have htracesCardNat : traces.card ≤ Nat.card Trace := by
+      rw [Nat.card_eq_fintype_card]
+      exact htracesCard
     calc
       J.card ≤ active.card + reps.card := Finset.card_union_le active reps
-      _ ≤ Test.card + Fintype.card Trace :=
-        Nat.add_le_add hactiveCard (hrepsCard.trans htracesCard)
+      _ ≤ Test.card + Nat.card Trace :=
+        Nat.add_le_add hactiveCard (hrepsCard.trans htracesCardNat)
 
 end StructuralRamsey.RelStructure.LocallyTreeLike
