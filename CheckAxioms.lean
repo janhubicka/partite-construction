@@ -258,3 +258,9 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.EmbeddedIntersections.postcomp
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.addControl_of_embeddedIntersection
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.completeControl_of_embeddedIntersections
+
+#print axioms StructuralRamsey.Partite.Iterated.pureCore_embeddedWitness
+
+#print axioms StructuralRamsey.RelStructure.Attachment.irreducible_copy_or_intersection_in_support
+
+#print axioms StructuralRamsey.Partite.Induced.embedding_coordinate
