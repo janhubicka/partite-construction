@@ -81,3 +81,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.HalfClosed.Construction.inducedConstruction
 #print axioms StructuralRamsey.Partite.HalfClosed.Construction.relevant_iff_image_contained
 #print axioms StructuralRamsey.RelStructure.Attachment.copy_comp_not_functionClosed
+#print axioms StructuralRamsey.Partite.PartExpansion.Embedding.expandedGraphEquiv
+#print axioms StructuralRamsey.Partite.PartExpansion.ClosedEmbedding.expandedGraphEquiv
