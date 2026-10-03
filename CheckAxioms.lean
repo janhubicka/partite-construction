@@ -148,3 +148,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.SemiClosed.Picture.selectedLift_core
 
 #print axioms StructuralRamsey.Partite.SemiClosed.Picture.liftCore_unique
+
+#print axioms StructuralRamsey.Partite.SemiClosed.Picture.build_isPartiteOver
+#print axioms StructuralRamsey.Partite.SemiClosed.Picture.halfClosedProperty
