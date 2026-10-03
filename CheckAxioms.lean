@@ -156,3 +156,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.SemiClosed.Recursive.step
 #print axioms StructuralRamsey.Partite.SemiClosed.Recursive.build
 #print axioms StructuralRamsey.Partite.SemiClosed.Recursive.recursiveConstruction
+
+#print axioms StructuralRamsey.RelStructure.rootPrune_outputImpliesDomain
+#print axioms StructuralRamsey.RelStructure.Embedding.toRootPrune
+#print axioms StructuralRamsey.RelStructure.arrow_rootPrune
