@@ -119,6 +119,7 @@ structure Stage
   Vertex : Type v
   finiteVertex : Finite Vertex
   system : Partite.System L.graph P Vertex
+  isPartite : system.IsPartiteOver D
   uTransversal : system.FunctionOutputTransversal
 
 attribute [instance] Stage.finiteVertex
@@ -135,6 +136,7 @@ def initialStage
   Vertex := Partite.HalfClosed.Initial.Index B D × V
   finiteVertex := inferInstance
   system := Partite.HalfClosed.Initial.picture B D
+  isPartite := Partite.HalfClosed.Initial.isPartiteOver B D
   uTransversal := Partite.HalfClosed.Initial.uTransversal B D hpos
 
 /-- Canonicality of one embedded copy of an earlier stage for a finite list of
@@ -202,6 +204,7 @@ theorem localHalfClosedPicture_of_closed
     (α : RelStructure.ClosedEmbedding A D) :
     ∃ (Y : Type v) (_ : Finite Y)
       (O : Partite.System L.graph P Y),
+      O.IsPartiteOver D ∧
       O.FunctionOutputTransversal ∧
       Partite.HalfClosedArrow
         (A := profile A D α.toEmbedding)
@@ -210,7 +213,7 @@ theorem localHalfClosedPicture_of_closed
     Partite.Closed.Picture.pictureLemma
       (A := A) (D := D) (B := S) (α := α)
       hSPartite hSU κ
-  refine ⟨Y, hY, O, hOU, ?_⟩
+  refine ⟨Y, hY, O, hOPartite, hOU, ?_⟩
   intro χ
   let χ' : Partite.Closed.ProjectedEmbedding A O α → κ :=
     fun e => χ (projectedToProfileEmbedding
@@ -242,10 +245,12 @@ def LocalHalfClosedPictures
     (κ : Type*) : Prop :=
   ∀ {X : Type v} (_ : Finite X)
     (S : Partite.System L.graph P X),
+    S.IsPartiteOver D →
     S.FunctionOutputTransversal →
     ∀ α : RelStructure.Embedding A D,
       ∃ (Y : Type v) (_ : Finite Y)
         (O : Partite.System L.graph P Y),
+        O.IsPartiteOver D ∧
         O.FunctionOutputTransversal ∧
         Partite.HalfClosedArrow
           (A := profile A D α) (B := S) (D := O) κ
@@ -261,17 +266,19 @@ theorem step_of_localPictures
     (hLocal : LocalHalfClosedPictures A D κ)
     {X : Type v} [Finite X]
     (S : Partite.System L.graph P X)
+    (hSPartite : S.IsPartiteOver D)
     (hS : S.FunctionOutputTransversal)
     (α : RelStructure.Embedding A D) :
     ∃ (Y : Type v) (_ : Finite Y)
       (C : Partite.System L.graph P Y),
+      C.IsPartiteOver D ∧
       C.FunctionOutputTransversal ∧
       Partite.Closed.Arrow (profile A D α) S C κ := by
-  obtain ⟨Y, hY, O, hOU, hHalf⟩ :=
-    hLocal (inferInstance : Finite X) S hS α
+  obtain ⟨Y, hY, O, hOPartite, hOU, hHalf⟩ :=
+    hLocal (inferInstance : Finite X) S hSPartite hS α
   letI : Finite Y := hY
-  exact Partite.HalfClosed.inducedPartite
-    (profile A D α) S O hpos hOU κ hHalf
+  exact Partite.HalfClosed.inducedPartiteOver
+    (profile A D α) S O hpos hOPartite hOU κ hHalf
 
 /-- Process a finite list of ordinary projections. -/
 theorem build
@@ -295,13 +302,14 @@ theorem build
       exact (List.not_mem_nil hmem).elim
   | cons α xs ih =>
       obtain ⟨T, hCanon⟩ := ih
-      obtain ⟨Y, hY, C, hCU, hStep⟩ :=
+      obtain ⟨Y, hY, C, hCPartite, hCU, hStep⟩ :=
         step_of_localPictures
-          A D hpos κ hLocal T.system T.uTransversal α
+          A D hpos κ hLocal T.system T.isPartite T.uTransversal α
       let R : Stage B D := {
         Vertex := Y
         finiteVertex := hY
         system := C
+        isPartite := hCPartite
         uTransversal := hCU
       }
       refine ⟨R, ?_⟩
