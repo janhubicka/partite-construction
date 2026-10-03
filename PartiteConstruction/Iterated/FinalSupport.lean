@@ -138,8 +138,9 @@ theorem embedding_compat
       Root.beta Orig Base Q pOrig hProjected r.1 x.1 := by
   change
     pOrig
-      ((Root.toBase Orig Base Q pOrig hpOrig hProjected r.1).
-        imageInverseAt T r.2 x).1 =
+      (Embedding.imageInverseAt
+        (Root.toBase Orig Base Q pOrig hpOrig hProjected r.1)
+        T r.2 x).1 =
       Root.beta Orig Base Q pOrig hProjected r.1 x.1
   rw [Root.toBase_compat Orig Base Q pOrig hpOrig hProjected r.1]
   congr
