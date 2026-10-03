@@ -106,3 +106,28 @@ theorem imageInverse_left [Fintype V] (e : Embedding A B) (x : V) :
     ⟨e x, (e.mem_imageFinset_iff (e x)).mpr ⟨x, rfl⟩⟩
 
 end StructuralRamsey.RelStructure.Embedding
+
+
+namespace StructuralRamsey.RelStructure.Embedding
+
+universe u v
+variable {L : RelLanguage.{u}}
+variable {V W : Type v}
+variable {A : RelStructure L V} {B : RelStructure L W}
+
+/-- Inverse embedding at a specified finite support known to be exactly the
+image of e. -/
+noncomputable def imageInverseAt [Fintype V]
+    (e : Embedding A B) (T : Finset W) (hT : e.imageFinset = T) :
+    Embedding (B.induce (↑T : Set W)) A := by
+  subst T
+  exact e.imageInverse
+
+@[simp] theorem imageInverseAt_apply [Fintype V]
+    (e : Embedding A B) (T : Finset W) (hT : e.imageFinset = T)
+    (z : ↥(↑T : Set W)) :
+    e (e.imageInverseAt T hT z) = z.1 := by
+  subst T
+  exact e.imageInverse_apply z
+
+end StructuralRamsey.RelStructure.Embedding
