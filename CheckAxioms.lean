@@ -199,3 +199,9 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.Embedding.rangeInverse
 #print axioms StructuralRamsey.RelStructure.Embedding.rangeInverse_apply
 #print axioms StructuralRamsey.RelStructure.Embedding.rangeInverse_left
+
+#print axioms StructuralRamsey.RelStructure.Embedding.imageFinset
+#print axioms StructuralRamsey.RelStructure.Embedding.mem_imageFinset_iff
+#print axioms StructuralRamsey.RelStructure.Embedding.imageInverse
+#print axioms StructuralRamsey.RelStructure.Embedding.imageInverse_apply
+#print axioms StructuralRamsey.RelStructure.Embedding.imageInverse_left
