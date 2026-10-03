@@ -131,25 +131,45 @@ def partialGraph
           (x (Fin.last (L.funcArity F)) ∈
             A.func F
               (fun i => x (Fin.castSucc i)))
-        let args : Fin (L.funcArity F) → V :=
-          fun i => x (Fin.castSucc i)
-        let out : V := x (Fin.last (L.funcArity F))
-        have hmap := e.map_func F args
         constructor
         · intro hy
-          have hy' : e out ∈ B.func F (e ∘ args) := by
-            simpa [args, out, Function.comp_apply] using hy
-          rw [← hmap] at hy'
+          have hfun :
+              (e ∘ (fun i : Fin (L.funcArity F) =>
+                x (Fin.castSucc i))) =
+                (fun i => e (x (Fin.castSucc i))) := by
+            funext i
+            rfl
+          have hy' :
+              e (x (Fin.last (L.funcArity F))) ∈
+                B.func F
+                  (e ∘ (fun i : Fin (L.funcArity F) =>
+                    x (Fin.castSucc i))) := by
+            rw [hfun]
+            exact hy
+          rw [← e.map_func F
+            (fun i : Fin (L.funcArity F) =>
+              x (Fin.castSucc i))] at hy'
           rcases hy' with ⟨z, hz, heq⟩
-          have hzo : z = out := e.injective heq
-          simpa [out, hzo] using hz
+          exact e.injective heq ▸ hz
         · intro hy
-          have hz : out ∈ A.func F args := by
-            simpa [args, out] using hy
-          have hz' : e out ∈ imageSet e (A.func F args) :=
-            ⟨out, hz, rfl⟩
-          rw [hmap] at hz'
-          simpa [args, out, Function.comp_apply] using hz'
+          have himg :
+              e (x (Fin.last (L.funcArity F))) ∈
+                imageSet e
+                  (A.func F
+                    (fun i : Fin (L.funcArity F) =>
+                      x (Fin.castSucc i))) :=
+            ⟨_, hy, rfl⟩
+          rw [e.map_func F
+            (fun i : Fin (L.funcArity F) =>
+              x (Fin.castSucc i))] at himg
+          have hfun :
+              (e ∘ (fun i : Fin (L.funcArity F) =>
+                x (Fin.castSucc i))) =
+                (fun i => e (x (Fin.castSucc i))) := by
+            funext i
+            rfl
+          rw [hfun] at himg
+          exact himg
 
 @[simp] theorem partialGraph_apply
     {A : Structure L V} {B : Structure L W}
@@ -177,14 +197,22 @@ def ofPartialGraph
           A.partialGraph.rel (.inr (.inr F))
             (funcTuple x z) := by
         exact (Structure.partialGraph_func A F x z).2 hz
-      have hgraphB :=
+      have hgraphB0 :=
         (e.map_rel_iff (.inr (.inr F)) (funcTuple x z)).2 hgraphA
       have hcomp :
           e ∘ funcTuple x z =
             funcTuple (e ∘ x) (e z) :=
         Structure.comp_funcTuple e x z
-      rw [hcomp] at hgraphB
-      exact (Structure.partialGraph_func B F (e ∘ x) (e z)).1 hgraphB
+      have hgraphB :
+          B.partialGraph.rel (.inr (.inr F))
+            (funcTuple (e ∘ x) (e z)) := by
+        exact Eq.mp
+          (congrArg
+            (fun t => B.partialGraph.rel (.inr (.inr F)) t)
+            hcomp)
+          hgraphB0
+      exact
+        (Structure.partialGraph_func B F (e ∘ x) (e z)).1 hgraphB
     · intro hy
       have hdomB : B.InFunctionDomain F (e ∘ x) := ⟨y, hy⟩
       have hdomRelB :
@@ -197,13 +225,20 @@ def ofPartialGraph
           A.partialGraph.rel (.inr (.inr F))
             (funcTuple x z) :=
         (Structure.partialGraph_func A F x z).2 hz
-      have hgraphB :=
+      have hgraphB0 :=
         (e.map_rel_iff (.inr (.inr F)) (funcTuple x z)).2 hgraphA
       have hcomp :
           e ∘ funcTuple x z =
             funcTuple (e ∘ x) (e z) :=
         Structure.comp_funcTuple e x z
-      rw [hcomp] at hgraphB
+      have hgraphB :
+          B.partialGraph.rel (.inr (.inr F))
+            (funcTuple (e ∘ x) (e z)) := by
+        exact Eq.mp
+          (congrArg
+            (fun t => B.partialGraph.rel (.inr (.inr F)) t)
+            hcomp)
+          hgraphB0
       have hez : e z ∈ B.func F (e ∘ x) :=
         (Structure.partialGraph_func B F (e ∘ x) (e z)).1 hgraphB
       have hyz : y = e z := hB F (e ∘ x) y (e z) hy hez
@@ -214,7 +249,7 @@ def ofPartialGraph
     (hB : SingletonValued B)
     (e : RelStructure.Embedding A.partialGraph B.partialGraph)
     (x : V) :
-    e.ofPartialGraph hB x = e x := rfl
+    (Embedding.ofPartialGraph hB e) x = e x := rfl
 
 /-- For singleton-valued targets, full embeddings are exactly ordinary
 embeddings of the explicit-domain relational encoding. -/
