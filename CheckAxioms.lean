@@ -386,3 +386,6 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.FunctionalPartite.Induced.coordinateHom
 #print axioms StructuralRamsey.FunctionalPartite.Induced.power_isPartiteOver
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.part_copyMap
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.copy_extends
