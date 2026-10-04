@@ -21,7 +21,7 @@ Historical TODOs in that log are not current obligations.
 | Functional Partite Lemma | `FunctionalPartite.Induced.weak_partiteLemma_withInvariant` | Weak projection globally; full embeddings on closed irreducibles; full Ramsey embeddings |
 | Functional class-preserving refinement | `FunctionalPartite.EHN.inducedConstruction` | One pass; finite A,B in K; arbitrary full Ramsey witness D; positive input arity |
 | Functional EHN | `Structure.FreeAmalgamationClass.orderedRamsey` | Hereditary full free-amalgamation class; arbitrary positive-arity set-valued functions; A,B need not be irreducible |
-| Exact ordered forbidden-pattern theorem, `thm:HN` | `Structure.orderedRamsey_forbidden_expansions` | Forbidden structures may specify orders; only their reducts must be irreducible; positive input arity |
+| Exact ordered forbidden-pattern theorem, `thm:HN` | `Structure.orderedRamsey_forbidden_expansions` + fixed-root reduction | The Lean endpoint is positive-arity; the manuscript removes constants by deleting the canonical finite root and relationally encoding incidences with it |
 | Strict relational sparsening | `Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all` | B irreducible; A arbitrary; independent of the unresolved stronger synchronized invariant |
 
 The functional endpoints are in `Ramsey/FreeAmalgamationFunctions.lean` and
@@ -71,12 +71,24 @@ existential Picture statement.
 2. **Functional iterated sparsening.** The new functional EHN theorem supplies
    the one-pass class transfer, but not the local tree-amalgam bounds of the
    iterated theorem. Arbitrary weak substructures still belong in that proof.
-3. **Constants globally.** The global Ramsey endpoints and initial disjoint
-   attachment use positive input arity. Local closure and weak-image lemmas
-   allow constants; do not transfer the global restriction to those lemmas.
+3. **Rooted coding formalization.** Constants are not a mathematical
+   obstruction: every full embedding maps the canonical root
+   (\langle\varnothing\rangle) onto the target root, as verified by
+   `Structure.Embedding.image_nullaryRoot`. Deleting this finite fixed part
+   and naming all incidences with it relationally leaves only positive-arity
+   moving functions. The survey may use this reduction. What remains optional
+   is packaging the entire rooted-language translation as one Lean equivalence
+   theorem so that the public endpoint itself has no `PositiveFuncArity`
+   parameter.
 4. **Arbitrary-alpha Picture statement.** Replace the printed argument by the
    domain-aware version or prove the stronger assertion separately. Do not
    retain the invalid attachment proof as a justification.
+
+The fixed-root observation also explains why the positive-arity assumption
+belongs to the chosen implementation of the initial picture, not to the final
+Ramsey theorem. A nullary set-valued function contributes only to the fixed
+root; mixed incidences with that root are part of the relational expansion on
+the moving vertices.
 
 The original full-projection functional induced formulation is not silently
 proved by the EHN weak-projection theorem. Its relevant TODO must specify this
