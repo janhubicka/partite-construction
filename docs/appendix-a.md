@@ -65,34 +65,31 @@ For the exact survey theorem, particular ordered forbidden structures are not
 replaced by all orderings of their reducts.  `OrderTotalOnIrreducibles`
 ensures that final order completion creates no new forbidden embedding.
 
-## Remaining manuscript obligations
+## Appendix A manuscript status
 
-1. **Arbitrary-alpha Picture statement.** Replace the printed argument by the
-   checked domain-aware semi-closed statement used by the recursive proof, or
-   prove the stronger existential assertion separately.
+There are no remaining proof obligations for the current Appendix A
+statements.
 
-There is **no remaining functional iterated-sparsening obligation**.  The
-survey's sparsening theorem has been restored to its source-faithful
-relational scope, exactly matching
-`Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all`.
-The direct set-valued-function reading with the survey's fibre-surjective
-homomorphism is not merely unproved: the checked
+The ordinary induced construction and strict sparsening theorem are explicitly
+relational, matching the checked Lean development and the source construction.
+The direct set-valued-function reading of sparsening with fibre-surjective
+homomorphisms is false; the checked
 `FullFunctionalSparseningObstruction.direct_functional_sparsening_false`
-gives an explicit Ramsey/irreducibility counterexample.  The separate
-`FibreSurjectivityObstruction` and `WeakTreePropertyObstruction` regressions
-pinpoint the two local failures behind that counterexample.
+records this scope boundary.
 
-The function-closed tree interface remains useful auxiliary infrastructure,
-but is not a prerequisite for the relational sparsening theorem.
+The formerly problematic arbitrary-projection Picture claim has also been
+removed.  The manuscript now states the exact checked closed-alpha Picture
+Lemma (`Closed.Picture.pictureLemma`).  Arbitrary projections in the
+recursive theorem use
+`Partite.SemiClosed.Picture.pictureLemma`, whose intermediate little picture
+is D-partite but is not required to be U-transversal.
 
-The former synchronized ambient-A tree condition is no longer an Appendix
-proof obligation: the manuscript now states the exact local-tree-completability
-invariant used by the sparsening proof.  It may still be studied as an optional
-stronger theorem.
+The former synchronized ambient-A tree condition is not a claim of the
+current Appendix; the checked local-tree-completability statement is the
+invariant actually used by sparsening.
 
-The original globally fibre-surjective functional induced formulation is not
-silently proved by the EHN weak-projection theorem; keep the interfaces
-explicitly distinct.
+Optional stronger variants and diagnostic modules remain useful research
+infrastructure, but they are not manuscript validation obligations.
 
 ## Validation discipline
 
