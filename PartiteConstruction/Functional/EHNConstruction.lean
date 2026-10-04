@@ -1,6 +1,8 @@
 import PartiteConstruction.Functional.EHNInitial
 import PartiteConstruction.Functional.EHNPicture
 
+set_option autoImplicit false
+
 /-! # One functional induced partite pass inside a free-amalgamation class
 
 The input D is an arbitrary full Ramsey witness, not necessarily in the class.

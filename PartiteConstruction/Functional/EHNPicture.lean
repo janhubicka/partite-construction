@@ -1,5 +1,7 @@
 import PartiteConstruction.Functional.EHNStage
 
+set_option autoImplicit false
+
 /-! # One class-preserving functional Picture step
 
 The power belongs to the class because every full irreducible embeds into A.
@@ -33,9 +35,9 @@ theorem pictureLemma
     (κ : Type*) [Fintype κ] :
     ∃ C : Stage K D, PictureProperty A B C α κ := by
   classical
-  let R := B.system.weakRestrict D B.over.1 A α
+  let R := B.system.weakRestrict D B.isPartite.1 A α
   have hR : R.WeaklyPartiteOver A :=
-    B.system.weakRestrict_invariant D B.over.1 A α B.over
+    B.system.weakRestrict_invariant D B.isPartite.1 A α B.isPartite
   obtain ⟨N, hN, hPower, hArrow⟩ :=
     Induced.weak_partiteLemma_withInvariant hR κ
   let E := Induced.power R N
@@ -47,19 +49,19 @@ theorem pictureLemma
     Carrier := Induced.Vertex R N
     finiteCarrier := inferInstance
     system := ER
-    over := hER
+    isPartite := hER
     mem := hmE
   }
   let S := B.system.support α.toFunctionEmbedding
   have hS : B.system.toStructure.IsClosed S :=
-    B.system.weak_support_closed D B.over.1 A α
+    B.system.weak_support_closed D B.isPartite.1 A α
   let maps : FunctionalPartite.Embedding R E →
       FunctionalPartite.Embedding (B.system.induce S hS) T.system := fun g => {
     toEmbedding := g.toEmbedding
     map_part := fun x => (congrArg α (g.map_part x)).trans
       (B.system.restrictedPart_spec α.toFunctionEmbedding x)
   }
-  obtain ⟨C, core, hcopies⟩ := attachAll hK B.system B.over B.mem S hS T maps
+  obtain ⟨C, core, hcopies⟩ := attachAll hK B.system B.isPartite B.mem S hS T maps
   refine ⟨C, ?_⟩
   intro χ
   obtain ⟨g, hg⟩ := hArrow
@@ -67,12 +69,12 @@ theorem pictureLemma
   obtain ⟨f, hf⟩ := hcopies g
   refine ⟨f, ?_⟩
   intro e₁ e₂ he₁ he₂
-  let r₁ := weakRestrictCopy B.system D B.over.1 A α e₁ he₁
-  let r₂ := weakRestrictCopy B.system D B.over.1 A α e₂ he₂
+  let r₁ := weakRestrictCopy B.system D B.isPartite.1 A α e₁ he₁
+  let r₂ := weakRestrictCopy B.system D B.isPartite.1 A α e₂ he₂
   have hcomp (e : Structure.Embedding A B.system.toStructure)
       (he : ∀ x, B.system.part (e x) = α x) :
       f.toEmbedding.comp e = core.toEmbedding.comp
-        (g.comp (weakRestrictCopy B.system D B.over.1 A α e he)).toEmbedding := by
+        (g.comp (weakRestrictCopy B.system D B.isPartite.1 A α e he)).toEmbedding := by
     apply Structure.Embedding.ext
     intro x
     exact hf ⟨e x, x, (he x).symm⟩

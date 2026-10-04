@@ -1,6 +1,8 @@
 import PartiteConstruction.Functional.WeakInduced
 import PartiteConstruction.Structure.GeneratedWeakHomImage
 
+set_option autoImplicit false
+
 /-! # Weak projections that are full embeddings on irreducibles
 
 The coordinate range of a closed irreducible in a power need not be closed.

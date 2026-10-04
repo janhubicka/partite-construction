@@ -152,3 +152,11 @@ import PartiteConstruction.Iterated.HistoryStrength
 import PartiteConstruction.Iterated.ProjectedRelativeLabelledLocalTreeLike
 
 import PartiteConstruction.Iterated.ProjectedHistoryMixedGlue
+
+import PartiteConstruction.Functional.FreeAmalgamClosed
+
+import PartiteConstruction.Functional.HalfClosedTheorem
+
+import PartiteConstruction.Functional.QuotientFibreObstruction
+
+import PartiteConstruction.Ramsey.ForbiddenFunctions

@@ -1,6 +1,8 @@
 import PartiteConstruction.Functional.Induced
 import PartiteConstruction.Structure.WeakHomomorphism
 
+set_option autoImplicit false
+
 /-! # The functional Partite Lemma needs only a weak projection
 
 The Hales--Jewett line embeddings are full embeddings although the partition

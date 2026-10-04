@@ -1,5 +1,7 @@
 import PartiteConstruction.Functional.WeakAttachment
 
+set_option autoImplicit false
+
 /-! # Finite class-preserving functional stages
 
 Finite star attachment is iterated binary free amalgamation. This is the
@@ -16,7 +18,7 @@ structure Stage (K : Structure.StructureClass (L := L)) (D : Structure L P) wher
   Carrier : Type v
   finiteCarrier : Finite Carrier
   system : System L P Carrier
-  over : system.WeaklyPartiteOver D
+  isPartite : system.WeaklyPartiteOver D
   mem : K system.toStructure
 
 attribute [instance] Stage.finiteCarrier
@@ -32,7 +34,7 @@ noncomputable def Stage.attach
   Carrier := Structure.Attachment.Vertex S (W := T.Carrier) (I := PUnit.{v+1})
   finiteCarrier := inferInstance
   system := FunctionalPartite.Attachment.attach B S hS T.system (fun _ : PUnit.{v+1} => f)
-  over := FunctionalPartite.Attachment.unit_weaklyPartiteOver B S hS T.system f D hB T.over
+  isPartite := FunctionalPartite.Attachment.unit_weaklyPartiteOver B S hS T.system f D hB T.isPartite
   mem := FunctionalPartite.Attachment.unit_mem B S hS T.system f hK hmB T.mem
 
 /-- Attach a finite list of prescribed maps, retaining every earlier copy. -/

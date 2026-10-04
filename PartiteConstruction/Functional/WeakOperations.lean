@@ -1,6 +1,8 @@
 import PartiteConstruction.Functional.WeakInvariant
 import PartiteConstruction.Functional.Operations
 
+set_option autoImplicit false
+
 /-! # Closed restrictions of weak partite systems
 
 Full embeddings can be cancelled on the target side. This packages the

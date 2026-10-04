@@ -1,5 +1,7 @@
 import PartiteConstruction.Ramsey.FreeAmalgamationFunctions
 
+set_option autoImplicit false
+
 /-! # Ordered forbidden structures with irreducible functional reducts
 
 The survey forbids ordered structures, not necessarily every ordering of a
@@ -169,7 +171,7 @@ theorem orderedRamsey_forbidden_expansions
   have hpart : ∀ x y, T.system.rel (.inr ()) ![x, y] →
       T.system.part x < T.system.part y := by
     intro x y hxy
-    have h := T.over.1.1 (.inr ()) ![x, y] hxy
+    have h := T.isPartite.1.1 (.inr ()) ![x, y] hxy
     have ht : T.system.part ∘ ![x, y] = ![T.system.part x, T.system.part y] := by
       funext i
       fin_cases i <;> rfl

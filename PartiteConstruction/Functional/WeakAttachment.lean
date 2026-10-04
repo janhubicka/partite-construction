@@ -1,6 +1,8 @@
 import PartiteConstruction.Functional.WeakOperations
 import PartiteConstruction.Functional.Attachment
 
+set_option autoImplicit false
+
 /-! # Binary functional attachment and weak projection invariants
 
 One-copy attachment is an actual full free-amalgam diagram. A finite family

@@ -1,6 +1,8 @@
 import PartiteConstruction.Functional.EHNStage
 import PartiteConstruction.Functional.Closed
 
+set_option autoImplicit false
+
 /-! # Initial pictures for the functional EHN refinement
 
 The empty overlap is closed for positive-arity functions. Starting with one
@@ -46,7 +48,7 @@ theorem initialList
         Carrier := V
         finiteCarrier := inferInstance
         system := placed B β₀
-        over := placed_over B β₀
+        isPartite := placed_over B β₀
         mem := hmB
       }
       exact ⟨T, Structure.Embedding.id B, fun _ h => (List.not_mem_nil h).elim⟩

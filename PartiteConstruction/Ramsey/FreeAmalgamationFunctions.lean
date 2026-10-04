@@ -1,6 +1,8 @@
 import PartiteConstruction.Functional.EHNConstruction
 import PartiteConstruction.Functional.OrderedRecursive
 
+set_option autoImplicit false
+
 /-! # EHN Ramsey theorem for relations and set-valued functions
 
 The unrestricted ordered recursive theorem supplies the initial full Ramsey
@@ -76,7 +78,7 @@ theorem orderedRamsey
   have hpart : ∀ x y, T.system.rel (.inr ()) ![x, y] →
       T.system.part x < T.system.part y := by
     intro x y hxy
-    have h := T.over.1.1 (.inr ()) ![x, y] hxy
+    have h := T.isPartite.1.1 (.inr ()) ![x, y] hxy
     have ht : T.system.part ∘ ![x, y] = ![T.system.part x, T.system.part y] := by
       funext i
       fin_cases i <;> rfl

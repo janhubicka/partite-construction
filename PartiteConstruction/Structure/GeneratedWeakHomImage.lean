@@ -1,5 +1,7 @@
 import PartiteConstruction.Structure.WeakHomomorphism
 
+set_option autoImplicit false
+
 /-! # Irreducible weak images and their closed hulls
 
 EHN projections preserve function incidences, not whole fibres. Pulling back
