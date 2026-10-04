@@ -16,6 +16,8 @@ This rules out the shortcut “strictify every loose tree”.
 -/
 namespace StructuralRamsey.RelStructure.LooseNotStrictifiable
 
+noncomputable section
+
 universe u
 
 /-- One binary relation, regarded as an undirected graph edge relation. -/
@@ -52,30 +54,45 @@ theorem color_injective_on_irreducible
   by_contra hxy
   obtain ⟨R, z, i, j, hz, hzi, hzj⟩ := hS hxy
   cases R
-  have hrel : C.rel () (Subtype.val ∘ z) := hz
-  have hneq := hc (Subtype.val ∘ z) hrel
-  have hij : i ≠ j := by
+  have harity : L.arity () = 2 := by rfl
+  let z2 : Fin 2 → S := fun k => z (Fin.cast harity.symm k)
+  let i2 : Fin 2 := Fin.cast harity i
+  let j2 : Fin 2 := Fin.cast harity j
+  have hz2 : C.rel () (Subtype.val ∘ z2) := by
+    change C.rel () (Subtype.val ∘ z) at hz
+    convert hz using 1
+    funext k
+    apply congrArg Subtype.val
+    rfl
+  have hzi2 : z2 i2 = x := by
+    simpa [z2, i2, harity] using hzi
+  have hzj2 : z2 j2 = y := by
+    simpa [z2, j2, harity] using hzj
+  have hij : i2 ≠ j2 := by
     intro hij
     apply hxy
     calc
-      x = z i := hzi.symm
-      _ = z j := congrArg z hij
-      _ = y := hzj
-  fin_cases i <;> fin_cases j
+      x = z2 i2 := hzi2.symm
+      _ = z2 j2 := congrArg z2 hij
+      _ = y := hzj2
+  have hneq := hc (Subtype.val ∘ z2) hz2
+  fin_cases i2 <;> fin_cases j2
   · exact hij rfl
   · apply hneq
     calc
-      c ((Subtype.val ∘ z) 0) = c x.1 := congrArg c (congrArg Subtype.val hzi)
+      c ((Subtype.val ∘ z2) 0) = c x.1 :=
+        congrArg c (congrArg Subtype.val hzi2)
       _ = c y.1 := hcol
-      _ = c ((Subtype.val ∘ z) 1) :=
-        (congrArg c (congrArg Subtype.val hzj)).symm
+      _ = c ((Subtype.val ∘ z2) 1) :=
+        (congrArg c (congrArg Subtype.val hzj2)).symm
   · apply hneq
     symm
     calc
-      c ((Subtype.val ∘ z) 1) = c x.1 := congrArg c (congrArg Subtype.val hzi)
+      c ((Subtype.val ∘ z2) 1) = c x.1 :=
+        congrArg c (congrArg Subtype.val hzi2)
       _ = c y.1 := hcol
-      _ = c ((Subtype.val ∘ z) 0) :=
-        (congrArg c (congrArg Subtype.val hzj)).symm
+      _ = c ((Subtype.val ∘ z2) 0) :=
+        (congrArg c (congrArg Subtype.val hzj2)).symm
   · exact hij rfl
 
 /-- If an embedded root is contained in an irreducible set, any proper
@@ -167,25 +184,40 @@ theorem IsFreeAmalgam.twoColorable
     have h : ∃ a' : V, iA a = iA a' := ⟨a, rfl⟩
     simp only [c, dif_pos h]
     have hs := Classical.choose_spec h
-    exact congrArg cA (iA.injective hs)
+    exact congrArg cA (iA.injective hs).symm
   have c_right (b : W) : c (iB b) = cB b := by
     by_cases hleft : ∃ a : V, iB b = iA a
     · rcases hleft with ⟨a, hab⟩
       have hov : ∃ d : D, a = fA d ∧ b = fB d :=
         (hfree.overlap a b).mp hab.symm
       rcases hov with ⟨d, rfl, rfl⟩
-      rw [← hcompat d]
-      exact c_left (fA d)
+      have hover : iA (fA d) = iB (fB d) :=
+        (hfree.overlap (fA d) (fB d)).mpr ⟨d, rfl, rfl⟩
+      calc
+        c (iB (fB d)) = c (iA (fA d)) := congrArg c hover.symm
+        _ = cA (fA d) := c_left (fA d)
+        _ = cB (fB d) := hcompat d
     · simp only [c, dif_neg hleft]
-      have hs := Classical.choose_spec ((hfree.covers (iB b)).resolve_left hleft)
-      exact congrArg cB (iB.injective hs)
+      have hs := Classical.choose_spec
+        ((hfree.covers (iB b)).resolve_left hleft)
+      exact congrArg cB (iB.injective hs).symm
   refine ⟨c, ?_⟩
   intro x hx
   rcases (hfree.rel_iff () x).mp hx with hside | hside
   · rcases hside with ⟨y, hy, rfl⟩
-    simpa [Function.comp_apply, c_left] using hA y hy
+    intro heq
+    apply hA y hy
+    calc
+      cA (y 0) = c (iA (y 0)) := (c_left (y 0)).symm
+      _ = c (iA (y 1)) := heq
+      _ = cA (y 1) := c_left (y 1)
   · rcases hside with ⟨y, hy, rfl⟩
-    simpa [Function.comp_apply, c_right] using hB y hy
+    intro heq
+    apply hB y hy
+    calc
+      cB (y 0) = c (iB (y 0)) := (c_right (y 0)).symm
+      _ = c (iB (y 1)) := heq
+      _ = cB (y 1) := c_right (y 1)
 
 /-- Strict tree amalgams of copies of a two-colourable binary base remain
 two-colourable. -/
@@ -200,11 +232,12 @@ theorem TreeAmalgam.twoColorable
       let cT : _ → Bool := fun x => c (hIso.toEquiv.symm x)
       refine ⟨cT, ?_⟩
       intro x hx
-      have hs : Base.rel () (hIso.toEquiv.symm ∘ x) := by
-        exact (hIso.map_rel_iff () (hIso.toEquiv.symm ∘ x)).mp (by
-          convert hx using 1
-          funext i
-          simp)
+      have hx' :
+          T✝.rel ()
+            (hIso.toEquiv ∘ (hIso.toEquiv.symm ∘ x)) := by
+        simpa [Function.comp_def] using hx
+      have hs : Base.rel () (hIso.toEquiv.symm ∘ x) :=
+        (hIso.map_rel_iff () (hIso.toEquiv.symm ∘ x)).mp hx'
       exact hc (hIso.toEquiv.symm ∘ x) hs
   | @glue W₁ W₂ Z W T₁ T₂ D T
       h₁ h₂ f₁ f₂ hc₁ hc₂ i₁ i₂ hfree ih₁ ih₂ =>
@@ -221,15 +254,18 @@ theorem TreeAmalgam.twoColorable
             c₂' (x 0) ≠ c₂' (x 1) := by
         intro x hx
         exact hσ.ne (hcol₂ x hx)
-      apply hfree.twoColorable c₁ c₂' hcol₁ hcol₂'
+      apply IsFreeAmalgam.twoColorable hfree c₁ c₂' hcol₁ hcol₂'
       intro d
       exact halign d
 
 /-- The four-vertex path. -/
 def P4 : RelStructure L (Fin 4) where
-  rel := fun _ x =>
-    ((x 0).val + 1 = (x 1).val) ∨
-    ((x 1).val + 1 = (x 0).val)
+  rel := by
+    intro R
+    cases R
+    exact fun (x : Fin 2 → Fin 4) =>
+      ((x 0).val + 1 = (x 1).val) ∨
+      ((x 1).val + 1 = (x 0).val)
 
 def p4Color : Fin 4 → Bool
   | ⟨0, _⟩ => false
@@ -240,17 +276,22 @@ def p4Color : Fin 4 → Bool
 theorem P4_twoColorable : TwoColorable P4 := by
   refine ⟨p4Color, ?_⟩
   intro x hx
-  change ((x 0).val + 1 = (x 1).val) ∨
-    ((x 1).val + 1 = (x 0).val) at hx
+  have hEdge :
+      ((x 0).val + 1 = (x 1).val) ∨
+      ((x 1).val + 1 = (x 0).val) := by
+    simpa [P4] using hx
   have h0 : (x 0).val < 4 := (x 0).isLt
   have h1 : (x 1).val < 4 := (x 1).isLt
   interval_cases h0v : (x 0).val <;>
     interval_cases h1v : (x 1).val <;>
-    simp [p4Color, h0v, h1v] at hx ⊢
+    simp [p4Color, h0v, h1v] at hEdge ⊢
 
 /-- Empty two-point root. -/
 def Root : RelStructure L Bool where
-  rel := fun _ _ => False
+  rel := by
+    intro R
+    cases R
+    exact fun (_ : Fin 2 → Bool) => False
 
 def leftRoot : Embedding Root P4 where
   toFun
@@ -262,13 +303,15 @@ def leftRoot : Embedding Root P4 where
     cases R
     constructor
     · intro h
-      change
-        ((((leftRoot.toFun (x 0) : Fin 4).val + 1 =
-          (leftRoot.toFun (x 1) : Fin 4).val) ∨
-         ((leftRoot.toFun (x 1) : Fin 4).val + 1 =
-          (leftRoot.toFun (x 0) : Fin 4).val))) at h
-      cases h0 : x 0 <;> cases h1 : x 1 <;>
-        simp [leftRoot, h0, h1] at h
+      have h' :
+          (((leftRoot.toFun (x (Fin.cast (by rfl) (0 : Fin 2))) : Fin 4).val + 1 =
+              (leftRoot.toFun (x (Fin.cast (by rfl) (1 : Fin 2))) : Fin 4).val) ∨
+           ((leftRoot.toFun (x (Fin.cast (by rfl) (1 : Fin 2))) : Fin 4).val + 1 =
+              (leftRoot.toFun (x (Fin.cast (by rfl) (0 : Fin 2))) : Fin 4).val)) := by
+        simpa [P4, L] using h
+      let x2 : Fin 2 → Bool := fun k => x (Fin.cast (by rfl) k)
+      cases h0 : x2 0 <;> cases h1 : x2 1 <;>
+        simp [x2, leftRoot, h0, h1] at h'
     · intro h
       exact h.elim
 
@@ -282,17 +325,19 @@ def rightRoot : Embedding Root P4 where
     cases R
     constructor
     · intro h
-      change
-        ((((rightRoot.toFun (x 0) : Fin 4).val + 1 =
-          (rightRoot.toFun (x 1) : Fin 4).val) ∨
-         ((rightRoot.toFun (x 1) : Fin 4).val + 1 =
-          (rightRoot.toFun (x 0) : Fin 4).val))) at h
-      cases h0 : x 0 <;> cases h1 : x 1 <;>
-        simp [rightRoot, h0, h1] at h
+      have h' :
+          (((rightRoot.toFun (x (Fin.cast (by rfl) (0 : Fin 2))) : Fin 4).val + 1 =
+              (rightRoot.toFun (x (Fin.cast (by rfl) (1 : Fin 2))) : Fin 4).val) ∨
+           ((rightRoot.toFun (x (Fin.cast (by rfl) (1 : Fin 2))) : Fin 4).val + 1 =
+              (rightRoot.toFun (x (Fin.cast (by rfl) (0 : Fin 2))) : Fin 4).val)) := by
+        simpa [P4, L] using h
+      let x2 : Fin 2 → Bool := fun k => x (Fin.cast (by rfl) k)
+      cases h0 : x2 0 <;> cases h1 : x2 1 <;>
+        simp [x2, rightRoot, h0, h1] at h'
     · intro h
       exact h.elim
 
-abbrev OddLoose :=
+noncomputable abbrev OddLoose :=
   FreeAmalgam.amalgam Root P4 P4 leftRoot rightRoot
 
 /-- The odd loose amalgam is indeed a loose P4-tree. -/
@@ -315,27 +360,27 @@ theorem OddLoose_not_twoColorable : ¬ TwoColorable OddLoose := by
   let r := FreeAmalgam.rightEmbedding Root P4 P4 leftRoot rightRoot
   have edgeP4 (a b : Fin 4)
       (h : a.val + 1 = b.val ∨ b.val + 1 = a.val) :
-      P4.rel () ![a, b] := h
+      P4.rel () ![a, b] := by simpa [P4] using h
   have h01 : c (l 0) ≠ c (l 1) := by
-    apply hc ![l 0, l 1]
-    exact (l.map_rel_iff () ![(0 : Fin 4), (1 : Fin 4)]).mpr
+    have hrel := (l.map_rel_iff () ![(0 : Fin 4), (1 : Fin 4)]).mpr
       (edgeP4 0 1 (by omega))
+    exact hc (l ∘ ![(0 : Fin 4), (1 : Fin 4)]) hrel
   have h12 : c (l 1) ≠ c (l 2) := by
-    apply hc ![l 1, l 2]
-    exact (l.map_rel_iff () ![(1 : Fin 4), (2 : Fin 4)]).mpr
+    have hrel := (l.map_rel_iff () ![(1 : Fin 4), (2 : Fin 4)]).mpr
       (edgeP4 1 2 (by omega))
+    exact hc (l ∘ ![(1 : Fin 4), (2 : Fin 4)]) hrel
   have h23 : c (l 2) ≠ c (l 3) := by
-    apply hc ![l 2, l 3]
-    exact (l.map_rel_iff () ![(2 : Fin 4), (3 : Fin 4)]).mpr
+    have hrel := (l.map_rel_iff () ![(2 : Fin 4), (3 : Fin 4)]).mpr
       (edgeP4 2 3 (by omega))
+    exact hc (l ∘ ![(2 : Fin 4), (3 : Fin 4)]) hrel
   have hr21 : c (r 2) ≠ c (r 1) := by
-    apply hc ![r 2, r 1]
-    exact (r.map_rel_iff () ![(2 : Fin 4), (1 : Fin 4)]).mpr
+    have hrel := (r.map_rel_iff () ![(2 : Fin 4), (1 : Fin 4)]).mpr
       (edgeP4 2 1 (by omega))
+    exact hc (r ∘ ![(2 : Fin 4), (1 : Fin 4)]) hrel
   have hr10 : c (r 1) ≠ c (r 0) := by
-    apply hc ![r 1, r 0]
-    exact (r.map_rel_iff () ![(1 : Fin 4), (0 : Fin 4)]).mpr
+    have hrel := (r.map_rel_iff () ![(1 : Fin 4), (0 : Fin 4)]).mpr
       (edgeP4 1 0 (by omega))
+    exact hc (r ∘ ![(1 : Fin 4), (0 : Fin 4)]) hrel
   have hroot0 : l 0 = r 0 := by
     exact FreeAmalgam.left_right_overlap Root P4 P4 leftRoot rightRoot false
   have hroot3 : l 3 = r 2 := by
@@ -355,14 +400,16 @@ theorem OddLoose_not_twoColorable : ¬ TwoColorable OddLoose := by
 /-- No homomorphism-embedding from the odd loose P4-tree can land in any
 strict P4-tree. -/
 theorem OddLoose_no_strictification :
-    ¬ ∃ (W : Type u) (T : RelStructure L W),
+    ¬ ∃ (W : Type) (T : RelStructure L W),
       TreeAmalgam P4 W T ∧
-      ∃ f : OddLoose.Carrier → W,
+      ∃ f : FreeAmalgam.Vertex Root P4 P4 leftRoot rightRoot → W,
         OddLoose.IsHomomorphismEmbedding T f := by
   rintro ⟨W, T, hT, f, hf⟩
   have hTC : TwoColorable T :=
     hT.twoColorable P4_twoColorable
   exact OddLoose_not_twoColorable
     (hTC.pullback f hf.1)
+
+end
 
 end StructuralRamsey.RelStructure.LooseNotStrictifiable
