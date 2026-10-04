@@ -119,6 +119,73 @@ theorem pad_eq_dummy {V : Type w} (t : Fin n → Sum R V)
     pad t h i = dummy t h := by
   simp [pad, hi]
 
+/-- Canonicalize a tuple by replacing fixed-root coordinates by the
+value at the first moving coordinate. -/
+noncomputable def normalize {V : Type w}
+    (p : Pattern n R) (h : p.HasMoving) (x : Fin n → V) :
+    Fin n → V :=
+  fun i => if hi : p.fixed i = none then x i else x (p.firstMoving h)
+
+theorem normalize_eq_self_of_comp
+    {V W : Type w} (p : Pattern n R) (h : p.HasMoving)
+    (e : V → W) (he : Function.Injective e)
+    (y x : Fin n → V)
+    (hy : normalize p h y = e ∘ x) :
+    normalize p h x = x := by
+  funext i
+  by_cases hi : p.fixed i = none
+  · simp [normalize, hi]
+  · have hj : p.fixed (p.firstMoving h) = none := p.firstMoving_spec h
+    have hiEq := congrFun hy i
+    have hjEq := congrFun hy (p.firstMoving h)
+    have hex : e (x i) = e (x (p.firstMoving h)) := by
+      rw [← hiEq, ← hjEq]
+      simp [normalize, hi, hj]
+    have hxi : x i = x (p.firstMoving h) := he hex
+    simp [normalize, hi, hxi]
+
+/-- Padding a tuple reconstructed from a pattern is exactly normalization. -/
+theorem pad_sumFill {V : Type w}
+    (p : Pattern n R) (h : p.HasMoving) (x : Fin n → V) :
+    let t := sumFill p x
+    let ht : (ofTuple t).HasMoving := by
+      rw [ofTuple_sumFill]
+      exact h
+    pad t ht = normalize p h x := by
+  dsimp only
+  funext i
+  by_cases hi : p.fixed i = none
+  · have hfix : (ofTuple (sumFill p x)).fixed i = none := by
+      rw [ofTuple_sumFill]
+      exact hi
+    rw [pad_eq_moveAt _ _ i hfix]
+    have hs := moveAt_spec (sumFill p x) i hfix
+    simp only [sumFill, hi] at hs
+    exact (Sum.inr.inj hs).symm
+  · have hfix : (ofTuple (sumFill p x)).fixed i ≠ none := by
+      rw [ofTuple_sumFill]
+      exact hi
+    rw [pad_eq_dummy _ _ i hfix]
+    have hp : ofTuple (sumFill p x) = p := ofTuple_sumFill p x
+    have hm :
+        (ofTuple (sumFill p x)).firstMoving
+            (by rw [hp]; exact h) =
+          p.firstMoving h :=
+      firstMoving_congr hp (by rw [hp]; exact h) h
+    unfold dummy
+    rw [hm]
+    have hj := p.firstMoving_spec h
+    have hj' : (ofTuple (sumFill p x)).fixed (p.firstMoving h) = none := by
+      rw [hp]
+      exact hj
+    have hs := moveAt_spec (sumFill p x) (p.firstMoving h) hj'
+    simp only [sumFill, hj] at hs
+    have hmove :
+        moveAt (sumFill p x) (p.firstMoving h) hj' =
+          x (p.firstMoving h) :=
+      (Sum.inr.inj hs).symm
+    simpa [normalize, hi] using hmove
+
 /-- Fill a rooted pattern in an original structure.  Values of x at fixed
 coordinates are ignored. -/
 def fill
