@@ -24,6 +24,7 @@ noncomputable def split
     {Root : Structure L R} {A : Structure L U}
     (ρ : Structure.Embedding Root A) (a : U) :
     Sum R (Outside ρ) :=
+  letI : Decidable (a ∈ Set.range ρ) := Classical.propDecidable _
   if h : a ∈ Set.range ρ then
     Sum.inl (Classical.choose h)
   else
