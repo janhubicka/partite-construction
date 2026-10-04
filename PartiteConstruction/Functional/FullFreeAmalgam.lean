@@ -132,24 +132,40 @@ theorem isFreeAmalgam :
           fun k => q k.castSucc
         let b : V := q (Fin.last (L.funcArity F))
         refine Or.inl ⟨a, b, ?_, ?_, ?_⟩
-        · exact (Structure.graph_func_snoc A F a b).mp (by
-            simpa [a, b] using hq)
+        · change q (Fin.last (L.funcArity F)) ∈
+            A.func F (fun k => q k.castSucc)
+          exact hq
         · funext k
           have hk := congrFun heq k.castSucc
-          simpa [a, Structure.funcTuple] using hk
+          change x k =
+            (RelStructure.FreeAmalgam.leftEmbedding
+              D.graph A.graph B.graph fA.graph fB.graph) (q k.castSucc)
+          exact hk
         · have hk := congrFun heq (Fin.last (L.funcArity F))
-          simpa [b, Structure.funcTuple] using hk
+          change y =
+            (RelStructure.FreeAmalgam.leftEmbedding
+              D.graph A.graph B.graph fA.graph fB.graph)
+              (q (Fin.last (L.funcArity F)))
+          exact hk
       · let a : Fin (L.funcArity F) → W :=
           fun k => q k.castSucc
         let b : W := q (Fin.last (L.funcArity F))
         refine Or.inr ⟨a, b, ?_, ?_, ?_⟩
-        · exact (Structure.graph_func_snoc B F a b).mp (by
-            simpa [a, b] using hq)
+        · change q (Fin.last (L.funcArity F)) ∈
+            B.func F (fun k => q k.castSucc)
+          exact hq
         · funext k
           have hk := congrFun heq k.castSucc
-          simpa [a, Structure.funcTuple] using hk
+          change x k =
+            (RelStructure.FreeAmalgam.rightEmbedding
+              D.graph A.graph B.graph fA.graph fB.graph) (q k.castSucc)
+          exact hk
         · have hk := congrFun heq (Fin.last (L.funcArity F))
-          simpa [b, Structure.funcTuple] using hk
+          change y =
+            (RelStructure.FreeAmalgam.rightEmbedding
+              D.graph A.graph B.graph fA.graph fB.graph)
+              (q (Fin.last (L.funcArity F)))
+          exact hk
     · rintro (⟨a, b, hb, hx, hy⟩ | ⟨a, b, hb, hx, hy⟩)
       · apply (hrel.rel_iff (.inr F)
           (Structure.funcTuple x y)).mpr
