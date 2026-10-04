@@ -73,6 +73,7 @@ noncomputable def splitEmbedding
   toFun := split ρ
   injective := (splitEquiv ρ).injective
   map_rel_iff := by
+    classical
     intro S x
     by_cases h : (Pattern.ofTuple (split ρ ∘ x)).HasMoving
     · have hfill := fill_pad_split ρ x h
@@ -102,6 +103,7 @@ noncomputable def splitEmbedding
           (ρ.map_rel_iff S _).symm
         _ ↔ A.rel S x := by rw [hroot]
   map_func := by
+    classical
     intro F x
     by_cases h : (Pattern.ofTuple (split ρ ∘ x)).HasMoving
     · have hfill := fill_pad_split ρ x h
