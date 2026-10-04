@@ -99,4 +99,54 @@ theorem inducedConstruction
   intro e₁ e₂
   exact (hcolour e₁).symm.trans ((hβ e₁ e₂).trans (hcolour e₂))
 
+/-- Class-preserving induced construction for arbitrary function arities.
+The only change from `inducedConstruction` is the rooted initial picture:
+all B-copies share their canonical nullary root. -/
+theorem inducedConstruction_allArity
+    (hK : Structure.FreeAmalgamationClass K)
+    (A : Structure L U) (B : Structure L V) (D : Structure L P)
+    [Finite U] [Finite V] [Finite P]
+    (hA : K A) (hB : K B)
+    (κ : Type*) [Fintype κ] [Nonempty κ]
+    (hRamsey : Structure.Arrow A B D κ) :
+    ∃ T : Stage K D, Structure.Arrow A B T.system.toStructure κ := by
+  classical
+  obtain ⟨β₀, _⟩ :=
+    hRamsey (fun _ => Classical.choice (inferInstance : Nonempty κ))
+  obtain ⟨S, hS⟩ := initial_allArity hK B hB β₀
+  letI : Fintype (Structure.Embedding A D) := Fintype.ofFinite _
+  let xs : List (Structure.Embedding A D) := Finset.univ.toList
+  obtain ⟨T, hT⟩ := canonicalize hK A hA S xs κ
+  refine ⟨T, ?_⟩
+  intro χ
+  obtain ⟨f, hf⟩ := hT χ
+  let HasCopy (α : Structure.Embedding A D) : Prop :=
+    ∃ e : Structure.Embedding A S.system.toStructure,
+      ∀ x, S.system.part (e x) = α x
+  let rep (α : Structure.Embedding A D) (h : HasCopy α) :
+      Structure.Embedding A S.system.toStructure := Classical.choose h
+  have hrep (α : Structure.Embedding A D) (h : HasCopy α) :
+      ∀ x, S.system.part (rep α h x) = α x :=
+    Classical.choose_spec h
+  let θ : Structure.Embedding A D → κ := fun α =>
+    if h : HasCopy α then χ (f.toEmbedding.comp (rep α h))
+    else Classical.choice (inferInstance : Nonempty κ)
+  obtain ⟨β, hβ⟩ := hRamsey θ
+  obtain ⟨j, hj⟩ := hS β
+  refine ⟨f.toEmbedding.comp j, ?_⟩
+  have hcolour (e : Structure.Embedding A B) :
+      θ (β.comp e) = χ ((f.toEmbedding.comp j).comp e) := by
+    have hp : ∀ x, S.system.part ((j.comp e) x) = (β.comp e) x :=
+      fun x => hj (e x)
+    have hc : HasCopy (β.comp e) := ⟨j.comp e, hp⟩
+    have hm : β.comp e ∈ xs := by simp [xs]
+    have hcanon := hf (β.comp e) hm (rep (β.comp e) hc) (j.comp e)
+      (hrep (β.comp e) hc) hp
+    have ht :
+        θ (β.comp e) = χ (f.toEmbedding.comp (rep (β.comp e) hc)) := by
+      simp only [θ, dite_eq_left hc]
+    exact ht.trans hcanon
+  intro e₁ e₂
+  exact (hcolour e₁).symm.trans ((hβ e₁ e₂).trans (hcolour e₂))
+
 end StructuralRamsey.FunctionalPartite.EHN

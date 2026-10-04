@@ -1,4 +1,15 @@
+import PartiteConstruction.Ramsey.FreeAmalgamationFunctionsAllArity
+import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 import PartiteConstruction.Ramsey.ForbiddenFunctions
+import PartiteConstruction.Structure.RootedReduction
+import PartiteConstruction.Structure.RootedFunctor
+import PartiteConstruction.Structure.RootedSplit
+import PartiteConstruction.Structure.RootedCorrectness
+import PartiteConstruction.Structure.RootedFreeAmalgam
+import PartiteConstruction.Structure.RootedClass
+import PartiteConstruction.Structure.RootedEmbedding
+import PartiteConstruction.Structure.RootedOrder
+import PartiteConstruction.Structure.RootedCanonical
 import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.generates_of_surjective
@@ -73,3 +84,59 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.Embedding.image_nullaryRoot
 #print axioms StructuralRamsey.Structure.Embedding.nullaryRoot_surjective
 #print axioms StructuralRamsey.Structure.mem_nullaryRoot_iff
+
+#print axioms StructuralRamsey.Rooted.language_positive
+
+#print axioms StructuralRamsey.Rooted.rootEmbedding
+#print axioms StructuralRamsey.Rooted.decodeEmbedding
+
+#print axioms StructuralRamsey.Rooted.splitEquiv
+#print axioms StructuralRamsey.Rooted.splitEmbedding
+#print axioms StructuralRamsey.Rooted.splitEmbedding_surjective
+
+#print axioms StructuralRamsey.Rooted.Pattern.normalize_eq_self_of_comp
+#print axioms StructuralRamsey.Rooted.Pattern.pad_sumFill
+
+#print axioms StructuralRamsey.Rooted.Pattern.normalize_pad
+#print axioms StructuralRamsey.Rooted.Pattern.dummy_sumFill
+#print axioms StructuralRamsey.Rooted.Pattern.funcTuple_preimage_canonical
+#print axioms StructuralRamsey.Rooted.Pattern.sumMap_sumFill_of_pad_eq
+
+#print axioms StructuralRamsey.Rooted.Pattern.side_pad_eq
+#print axioms StructuralRamsey.Rooted.decode_isFreeAmalgam
+
+#print axioms StructuralRamsey.Rooted.decodedClass_free
+#print axioms StructuralRamsey.Rooted.unsplitEmbedding
+#print axioms StructuralRamsey.Rooted.encode_mem_decodedClass
+#print axioms StructuralRamsey.Rooted.outsideMap_injective
+#print axioms StructuralRamsey.Rooted.fill_map
+#print axioms StructuralRamsey.Rooted.root_func_iff
+#print axioms StructuralRamsey.Rooted.outside_func_image
+#print axioms StructuralRamsey.Rooted.encodeEmbedding
+
+#print axioms StructuralRamsey.Rooted.orderRank_strictMono
+#print axioms StructuralRamsey.Rooted.cutRank_embedding
+#print axioms StructuralRamsey.Rooted.cutRank_encode
+#print axioms StructuralRamsey.Rooted.reconstructedOrder
+#print axioms StructuralRamsey.Rooted.liftOrderedEmbedding
+
+#print axioms StructuralRamsey.Rooted.canonicalRootEmbedding_range
+#print axioms StructuralRamsey.Rooted.canonicalRoot_image_range
+#print axioms StructuralRamsey.Rooted.orderedEmbedding_agrees_on_root
+
+#print axioms StructuralRamsey.Rooted.split_embedding
+
+#print axioms StructuralRamsey.Rooted.encodeOrderedEmbedding
+
+#print axioms StructuralRamsey.Rooted.liftOrderedEmbedding_comp
+
+#print axioms StructuralRamsey.Rooted.Structure.FreeAmalgamationClass.orderedRamsey_allArity
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.rootTransport
+#print axioms StructuralRamsey.FunctionalPartite.EHN.rootTransport_spec
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initialList_allArity
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initial_allArity
+#print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_allArity
+
+#print axioms StructuralRamsey.Structure.allStructures_free
+#print axioms StructuralRamsey.Structure.orderedRamsey_forbidden_expansions_allArity
