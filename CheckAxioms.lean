@@ -365,3 +365,9 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.TreeAmalgam.cliqueReduct_strict
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.cliqueReduct_strict
 #print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all
+
+#print axioms StructuralRamsey.RelStructure.CliqueSafeTreeAmalgam.copy
+#print axioms StructuralRamsey.RelStructure.CliqueSafeTreeAmalgam.glue
+#print axioms StructuralRamsey.RelStructure.CliqueSafeLocallyTreeLike.toLocallyTreeLike
+#print axioms StructuralRamsey.RelStructure.CliqueSafeLocallyTreeLike.reduct_locallyTreeCompletable
+#print axioms StructuralRamsey.RelStructure.PartiteInitial.cliqueSafe
