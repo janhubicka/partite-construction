@@ -21,9 +21,11 @@ and half-closed repair. `Structure.orderedClosedGraphRamsey` proves the survey's
 embeddings; arbitrary full homomorphisms are not identified with weak graph
 homomorphisms.
 
-The **strict relational sparsening theorem with A and B irreducible** is
-proved through a complete binary-relation expansion and the checked iterated
-construction. This bypasses, rather than proves, the stronger synchronized
+The **strict relational sparsening theorem with B irreducible and arbitrary A**
+is proved through a complete binary-relation expansion and the checked
+iterated construction. The exact endpoint is
+`Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all`.
+This bypasses, rather than proves, the stronger synchronized
 `thm:tree_invariant` under mere irreducibility of A.
 
 `Functional/FreeAmalgamClosed.lean` unifies both local closure observations,

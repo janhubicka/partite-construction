@@ -12,9 +12,12 @@ The positive-arity recursive construction is also assembled: the domain-aware
 semi-closed step, singleton reduction, half-closed repair, and ordered graph
 Ramsey theorem are not outstanding tasks.
 
-Strict relational sparsening with A and B irreducible is checked through the
-complete binary-relation expansion. It no longer relies on the stronger
-synchronized tree invariant under mere irreducibility of A.
+Strict relational sparsening with B irreducible and arbitrary A is checked
+through the complete binary-relation expansion. It no longer relies on the
+stronger synchronized tree invariant under mere irreducibility of A. The
+printed sparsening theorem may therefore drop irreducibility of A in its
+relational specialization; retain a manuscript TODO for that strengthening
+rather than confusing it with the separate functional transfer.
 
 The two local closure observations now follow from one free-amalgam closure
 criterion. The half-closed theorem has an unpacked witness interface without

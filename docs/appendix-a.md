@@ -19,7 +19,7 @@ Old entries in that log are not current proof obligations.
 | Recursive construction, `thm:models2` | `Functional/OrderedRecursive.lean`, `Structure.orderedClosedGraphRamsey` | Positive function arity, equivalently distinguished graph-relation arity at least two |
 | Closure of amalgam sides, `obs:disaster2` | `Functional/FreeAmalgamClosed.lean`, `RelStructure.IsFreeAmalgam.sides_closed_iff` | Both directions; arbitrary free-amalgam diagram; constants allowed |
 | Closure of a common substructure, `obs:solution` | Same module, `RelStructure.IsFreeAmalgam.common_image_closed_iff` | Both directions; neither the whole overlap nor either side is assumed closed |
-| Strict relational sparsening | `Iterated/SparseningStrictBaseIrreducible.lean` | A and B irreducible; complete binary-relation expansion, checked iteration, and final support; does not depend on the unresolved strong `thm:tree_invariant` |
+| Strict relational sparsening | `Iterated/SparseningStrictBaseIrreducible.lean`, `Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all` | B irreducible; A arbitrary; complete binary-relation expansion, checked iteration, and final support; does not depend on the unresolved strong `thm:tree_invariant` |
 
 All namespaces in the table lie under `StructuralRamsey`. For applications,
 import the indicated endpoint module rather than reproducing construction
@@ -45,6 +45,14 @@ The final recursive route is the domain-aware semi-closed route. The old
 arbitrary-alpha free-attachment argument is not a dependency of
 `orderedClosedGraphRamsey`. Its counterexample refutes that argument, **not**
 the existence of every conceivable witness for the stronger standalone claim.
+
+The complete-relation expansion also removes irreducibility of A from the
+relational strict sparsening endpoint. The expansion supplies hereditary
+irreducibility automatically, and only irreducibility of the base reduct B
+is needed when transferring strict gluing-root containment back to the
+original language. This strengthening is already in the checked theorem;
+it is not a new assumption or an unproved optimization. It does not settle
+the separate function-language transfer or the stronger synchronized invariant.
 
 ## Remaining manuscript obligations
 
