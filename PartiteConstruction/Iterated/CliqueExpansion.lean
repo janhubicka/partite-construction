@@ -1,4 +1,5 @@
 import PartiteConstruction.Iterated.LooseTreeAmalgam
+import PartiteConstruction.Iterated.FinalAttachment
 import PartiteConstruction.Ramsey.Basic
 
 /-! # Canonical complete-graph expansion
@@ -13,7 +14,7 @@ the extra irreducible-containment certificates need not survive the reduct.
 -/
 namespace StructuralRamsey
 
-universe u v w z
+universe u v
 
 /-- Add one fresh binary relation symbol. -/
 def RelLanguage.withClique (L : RelLanguage.{u}) : RelLanguage.{u} where
@@ -22,7 +23,7 @@ def RelLanguage.withClique (L : RelLanguage.{u}) : RelLanguage.{u} where
 
 namespace RelStructure
 
-variable {L : RelLanguage.{u}} {V : Type v} {W : Type w} {X : Type z}
+variable {L : RelLanguage.{u}} {V W X Y : Type v}
 
 /-- Canonical expansion by the complete irreflexive binary relation. -/
 def withClique (A : RelStructure L V) : RelStructure L.withClique V where
@@ -51,8 +52,10 @@ def withClique
     intro R x
     cases R with
     | inl R => exact e.map_rel_iff R x
-    | inr _ =>
-        change e (x 0) ≠ e (x 1) ↔ x 0 ≠ x 1
+    | inr h =>
+        cases h
+        change e (x (0 : Fin 2)) ≠ e (x (1 : Fin 2)) ↔
+          x (0 : Fin 2) ≠ x (1 : Fin 2)
         constructor
         · intro h hxy
           exact h (congrArg e hxy)
@@ -91,7 +94,8 @@ theorem withClique_hereditarilyIrreducible
     intro h
     exact hxy (Subtype.ext h)
   let q : Fin 2 → S := ![x, y]
-  refine ⟨(.inr () : L.withClique.Symbol), q, 0, 1, ?_, rfl, rfl⟩
+  refine ⟨(.inr () : L.withClique.Symbol), q,
+    (0 : Fin 2), (1 : Fin 2), ?_, rfl, rfl⟩
   change x.1 ≠ y.1
   exact hval
 
@@ -138,7 +142,7 @@ theorem cliqueReduct
     {D : RelStructure L.withClique V}
     {A : RelStructure L.withClique W}
     {B : RelStructure L.withClique X}
-    {Y : Type v} {C : RelStructure L.withClique Y}
+    {C : RelStructure L.withClique Y}
     {fA : Embedding D A} {fB : Embedding D B}
     {iA : Embedding A C} {iB : Embedding B C}
     (h : IsFreeAmalgam fA fB iA iB) :
@@ -205,7 +209,7 @@ end RelStructure
 /-- Ramsey arrows lift to the canonical complete-graph expansion. -/
 theorem arrow_withClique
     {L : RelLanguage.{u}}
-    {U : Type v} {V : Type w} {W : Type z}
+    {U V W : Type v}
     (A : RelStructure L U) (B : RelStructure L V)
     (C : RelStructure L W) (κ : Type*)
     (h : Arrow A B C κ) :
@@ -222,7 +226,7 @@ theorem arrow_withClique
 for the canonical source and target expansions. -/
 theorem arrow_cliqueReduct
     {L : RelLanguage.{u}}
-    {U : Type v} {V : Type w} {W : Type z}
+    {U V W : Type v}
     (A : RelStructure L U) (B : RelStructure L V)
     (C : RelStructure L.withClique W) (κ : Type*)
     (h : Arrow A.withClique B.withClique C κ) :
