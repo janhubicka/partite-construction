@@ -6,6 +6,7 @@ import PartiteConstruction.Structure.RootedCorrectness
 import PartiteConstruction.Structure.RootedFreeAmalgam
 import PartiteConstruction.Structure.RootedClass
 import PartiteConstruction.Structure.RootedEmbedding
+import PartiteConstruction.Structure.RootedOrder
 import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.generates_of_surjective
@@ -109,3 +110,9 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Rooted.root_func_iff
 #print axioms StructuralRamsey.Rooted.outside_func_image
 #print axioms StructuralRamsey.Rooted.encodeEmbedding
+
+#print axioms StructuralRamsey.Rooted.orderRank_strictMono
+#print axioms StructuralRamsey.Rooted.cutRank_embedding
+#print axioms StructuralRamsey.Rooted.cutRank_encode
+#print axioms StructuralRamsey.Rooted.reconstructedOrder
+#print axioms StructuralRamsey.Rooted.liftOrderedEmbedding
