@@ -33,23 +33,24 @@ stronger synchronized tree invariant.
 
 ## Remaining proof obligations
 
-1. Complete the separate **functional iterated sparsening** theorem.  Weak
-   substructures are already exactly induced graph restrictions, and the
-   failure of naive relational tree transfer is isolated by the checked
-   `FunctionalTreeTransferObstruction`.  The required positive target
-   interface is now formalized as `FunctionClosedTreeAmalgam`: closed gluing
-   roots force closed side embeddings and full decoded constituent copies.
-   The remaining work is propagation of this invariant through the
-   Picture/trace iteration and the final support-group sparsening phase.
-2. Resolve the editorial status of the stronger arbitrary-alpha
-   `lem:indpicutreU`: replace its printed argument by the checked domain-aware
-   semi-closed version or prove the stronger assertion independently.
+There are no remaining proof obligations for the statements currently printed
+in Appendix A.
 
-The former synchronized ambient-A invariant has been replaced in the survey by
-the exact checked local-tree-completability statement.  It is optional stronger
-work, not a prerequisite for the sparsening theorem.
+The arbitrary-alpha Picture issue was resolved by correcting the manuscript:
+the ordinary Picture-with-closures lemma assumes a closed projection and is
+covered by `Closed.Picture.pictureLemma`; the recursive arbitrary-projection
+step is the separately checked semi-closed
+`Partite.SemiClosed.Picture.pictureLemma`.
 
-Constants are **not** a remaining EHN or survey-`thm:HN` obligation.
+Strict sparsening is a completed relational theorem.  A direct
+set-valued-function version with the survey's full fibre-surjective
+homomorphism is false, as checked by
+`FullFunctionalSparseningObstruction.direct_functional_sparsening_false`,
+and is therefore not a pending task.
+
+The stronger synchronized ambient-A invariant and other diagnostic variants
+are optional research directions, not prerequisites for any current survey
+statement.
 
 ## Editorial follow-through
 

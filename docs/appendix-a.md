@@ -65,30 +65,31 @@ For the exact survey theorem, particular ordered forbidden structures are not
 replaced by all orderings of their reducts.  `OrderTotalOnIrreducibles`
 ensures that final order completion creates no new forbidden embedding.
 
-## Remaining manuscript obligations
+## Appendix A manuscript status
 
-1. **Functional iterated sparsening.** Weak restriction itself is already
-   exact under graph encoding (`weakInduce_graph_rel_iff`).  The naive
-   relational transfer fails by
-   `Structure.FunctionalTreeTransferObstruction.target_not_singletonValued`:
-   a non-closed gluing root can create extra function outputs.  The positive
-   target interface is now checked as `FunctionClosedTreeAmalgam`.  Its
-   gluing roots are closed; `glue_sides_closed` proves every side embedding
-   remains closed, and `irreducible_contained_in_full_copy` shows constituent
-   copies decode to full function embeddings.  What remains is to propagate
-   this closed-tree invariant through the Picture/trace iteration and final
-   sparsening construction.
-2. **Arbitrary-alpha Picture statement.** Replace the printed argument by the
-   checked domain-aware version or prove the stronger assertion separately.
+There are no remaining proof obligations for the current Appendix A
+statements.
 
-The former synchronized ambient-A tree condition is no longer an Appendix
-proof obligation: the manuscript now states the exact local-tree-completability
-invariant used by the sparsening proof.  It may still be studied as an optional
-stronger theorem.
+The ordinary induced construction and strict sparsening theorem are explicitly
+relational, matching the checked Lean development and the source construction.
+The direct set-valued-function reading of sparsening with fibre-surjective
+homomorphisms is false; the checked
+`FullFunctionalSparseningObstruction.direct_functional_sparsening_false`
+records this scope boundary.
 
-The original globally fibre-surjective functional induced formulation is not
-silently proved by the EHN weak-projection theorem; keep the interfaces
-explicitly distinct.
+The formerly problematic arbitrary-projection Picture claim has also been
+removed.  The manuscript now states the exact checked closed-alpha Picture
+Lemma (`Closed.Picture.pictureLemma`).  Arbitrary projections in the
+recursive theorem use
+`Partite.SemiClosed.Picture.pictureLemma`, whose intermediate little picture
+is D-partite but is not required to be U-transversal.
+
+The former synchronized ambient-A tree condition is not a claim of the
+current Appendix; the checked local-tree-completability statement is the
+invariant actually used by sparsening.
+
+Optional stronger variants and diagnostic modules remain useful research
+infrastructure, but they are not manuscript validation obligations.
 
 ## Validation discipline
 
