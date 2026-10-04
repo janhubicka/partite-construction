@@ -36,14 +36,22 @@ jobs:
       - name: Download Mathlib cache
         run: lake exe cache get Mathlib.Tactic Mathlib.Data.Fintype.Pi Mathlib.Data.Fintype.Basic Mathlib.Data.Finset.Dedup
       - name: Build all project modules
-        run: >-
-          lake build PartiteConstruction
-          PartiteConstruction.Functional.FreeAmalgamClosed
-          PartiteConstruction.Functional.HalfClosedTheorem
-          PartiteConstruction.Functional.QuotientFibreObstruction
+        run: |
+          set -euo pipefail
+          mapfile -t targets < <(sed -n 's/^import //p' CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean | sort -u)
+          if ! lake build PartiteConstruction "${targets[@]}" > build.log 2>&1; then
+            sed -n '/error:/,$p' build.log
+            exit 1
+          fi
+          tail -1 build.log
       - name: Check theorem axioms
         run: |
           set -euo pipefail
-          lake env lean CheckAxioms.lean | tee axioms.log
-          lake env lean CheckClosureAxioms.lean | tee -a axioms.log
-          python3 scripts/check_axioms.py axioms.log CheckAxioms.lean CheckClosureAxioms.lean
+          : > axioms.log
+          for source in CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean; do
+            if ! lake env lean "$source" >> axioms.log 2>&1; then
+              tail -100 axioms.log
+              exit 1
+            fi
+          done
+          python3 scripts/check_axioms.py axioms.log CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean
