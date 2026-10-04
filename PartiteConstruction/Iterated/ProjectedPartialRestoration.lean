@@ -65,6 +65,10 @@ theorem toProjectedPartial_identity
   let added : Finset W := pairs.image (fun z => z.1 z.2)
   let R : Finset W := S ∪ added
 
+  have hJcard' :
+      J.card ≤ (S.card + 1) ^ Fintype.card U := by
+    simpa [Test] using hJcard
+
   have hAddedCard :
       added.card ≤ J.card * Fintype.card U := by
     calc
@@ -81,7 +85,7 @@ theorem toProjectedPartial_identity
         Nat.add_le_add_left hAddedCard S.card
       _ ≤ n + ((S.card + 1) ^ Fintype.card U) * Fintype.card U := by
         apply Nat.add_le_add hS
-        exact Nat.mul_le_mul_right _ hJcard
+        exact Nat.mul_le_mul_right _ hJcard'
       _ ≤ n + ((n + 1) ^ Fintype.card U) * Fintype.card U := by
         apply Nat.add_le_add_left
         apply Nat.mul_le_mul_right
@@ -98,7 +102,9 @@ theorem toProjectedPartial_identity
     toFun := fun x => ⟨x.1, hSsubR x.1 x.2⟩
     injective := by
       intro x y hxy
-      exact Subtype.ext (congrArg Subtype.val hxy)
+      apply Subtype.ext
+      exact congrArg
+        (fun q : ↥(↑R : Set W) => q.1) hxy
     map_rel_iff := fun _ _ => Iff.rfl
   }
   let f : Test → Y := g ∘ eSR
@@ -147,6 +153,7 @@ theorem toProjectedPartial_identity
       have hs := Option.some.inj ht
       exact congrArg Subtype.val hs
     · simp only [trace, dif_neg hrepS, dif_pos hbetaS] at ht
+      cases ht
 
   let eHT : Embedding (A.induce H) T :=
     betaT.comp (inclusion A H)
