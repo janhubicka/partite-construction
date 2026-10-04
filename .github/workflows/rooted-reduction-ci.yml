@@ -43,3 +43,5 @@ jobs:
           python3 scripts/check_axioms.py axioms.log CheckEHNFunctions.lean
 
 # tuple canonicalization pass
+
+# free-amalgam orientation pass
