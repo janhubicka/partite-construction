@@ -333,8 +333,7 @@ theorem canonicalStep_locallyTreeLike_projectedHistory
                 hA eAB hFree pSmall hpSmall α hOverlapRange
                 (n - 1) hD hPieceCard hRestCard
             have hf' :
-                (C₁.toRelStructure.induce (↑S : Set _)).
-                    IsHomomorphismEmbedding T f := by
+                (C₁.toRelStructure.induce (↑S : Set _)).IsHomomorphismEmbedding T f := by
               simpa [RelStructure.Attachment.Small, Tset, Brel, Ssupp,
                 Dcore, C₁, Core, E, R, αf, Partite.Picture.build,
                 Partite.Attachment.attach] using hf
