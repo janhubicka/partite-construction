@@ -131,3 +131,5 @@ import PartiteConstruction.Iterated.ProjectedHistoryLocalTreeLike
 import PartiteConstruction.Iterated.ProjectedRelativeLabelledLocalTreeLike
 
 import PartiteConstruction.Iterated.ProjectedHistoryMixedGlue
+
+import PartiteConstruction.Iterated.WeakStepProjectedHistory
