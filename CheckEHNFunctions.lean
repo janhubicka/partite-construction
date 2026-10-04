@@ -130,3 +130,9 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Rooted.liftOrderedEmbedding_comp
 
 #print axioms StructuralRamsey.Rooted.Structure.FreeAmalgamationClass.orderedRamsey_allArity
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.rootTransport
+#print axioms StructuralRamsey.FunctionalPartite.EHN.rootTransport_spec
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initialList_allArity
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initial_allArity
+#print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_allArity
