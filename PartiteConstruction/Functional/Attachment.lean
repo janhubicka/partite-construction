@@ -55,7 +55,9 @@ noncomputable def attach :
   funcTransversal := by
     classical
     intro F x y z hy hz hp
-    let maps := fun i => (f i).toEmbedding
+    let maps :
+        I → Structure.Embedding (B.toStructure.induce S hS) D.toStructure :=
+      fun i => (f i).toEmbedding
     by_cases hcore : ∀ k, ∃ a : W, x k = Sum.inl a
     · choose a ha using hcore
       have hargs : x = Sum.inl ∘ a := by
