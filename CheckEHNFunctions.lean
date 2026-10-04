@@ -89,3 +89,8 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Rooted.Pattern.normalize_eq_self_of_comp
 #print axioms StructuralRamsey.Rooted.Pattern.pad_sumFill
+
+#print axioms StructuralRamsey.Rooted.Pattern.normalize_pad
+#print axioms StructuralRamsey.Rooted.Pattern.dummy_sumFill
+#print axioms StructuralRamsey.Rooted.Pattern.funcTuple_preimage_canonical
+#print axioms StructuralRamsey.Rooted.Pattern.sumMap_sumFill_of_pad_eq
