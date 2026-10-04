@@ -49,9 +49,8 @@ theorem orderedRamsey_of_mem_target
   have hBirr : B.ordered.Irreducible :=
     (RelStructure.ordered_hereditarilyIrreducible B).irreducible
   obtain ⟨W, hW, Cplus, hArrow, p, hp, _hLocal, hExtend⟩ :=
-    StructuralRamsey.Partite.IteratedSparsening.
-      sparseningRamsey_strict_baseIrreducible_all
-        A.ordered B.ordered C₀.ordered κ hRamsey hBirr 1
+    StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all
+      A.ordered B.ordered C₀.ordered κ hRamsey hBirr 1
   letI : Finite W := hW
   have hpart :
       ∀ x y, Cplus.rel (.inr ()) ![x, y] → p x < p y := by
