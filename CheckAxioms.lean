@@ -316,3 +316,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.ProjectedRelativeLabelledLocallyTreeLike.toRelativeLabelled_identity
 #print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.toRelativeLabelled_identity
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.glueProjectedFull_projectedHistory
+
+#print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.toIntersectionStrong
