@@ -1,4 +1,5 @@
 import PartiteConstruction.Structure.GeneratedWeakHomImage
+import PartiteConstruction.Functional.WeakInvariant
 
 #print axioms StructuralRamsey.Structure.generates_of_surjective
 #print axioms StructuralRamsey.Structure.IsWeakHomomorphism.preimage_isClosed
@@ -11,3 +12,18 @@ import PartiteConstruction.Structure.GeneratedWeakHomImage
 #print axioms StructuralRamsey.Structure.IsWeakHomomorphism.closureLift
 #print axioms StructuralRamsey.Structure.closureLift_generates
 #print axioms StructuralRamsey.Structure.Irreducible.functionClosure_weakImage
+#print axioms StructuralRamsey.FunctionalPartite.Induced.letter_func_member
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weak_lineMap_rel_iff
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weak_lineMap_func_mem
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weak_lineMap_func
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weak_lineEmbedding
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weak_wordEmbedding
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weak_wordEmbedding_apply
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weak_lineEmbedding_comp_letter
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weak_partiteLemma
+#print axioms StructuralRamsey.Structure.IsWeakHomomorphismEmbedding.comp
+#print axioms StructuralRamsey.Structure.Embedding.isWeakHomomorphismEmbedding
+#print axioms StructuralRamsey.FunctionalPartite.Induced.coordinateWeak
+#print axioms StructuralRamsey.FunctionalPartite.Induced.power_projectionWeak
+#print axioms StructuralRamsey.FunctionalPartite.Induced.power_weaklyPartiteOver
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weak_partiteLemma_withInvariant
