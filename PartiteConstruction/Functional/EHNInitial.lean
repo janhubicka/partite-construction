@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.EHNStage
 import PartiteConstruction.Functional.Closed
+import PartiteConstruction.Structure.NullaryRoot
 
 set_option autoImplicit false
 
