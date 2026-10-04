@@ -341,7 +341,8 @@ noncomputable def liftOrderedEmbedding
       by_contra hnot
       have hba : b ≤ a := le_of_not_gt hnot
       rcases hba.eq_or_lt with rfl | hba
-      · exact (lt_irrefl _ hab)
+      · exact (@lt_irrefl (Sum R W)
+          (reconstructedOrder Root C).toPreorder (g b)) hab
       · have h₁ :=
           (reconstructed_lt_iff_key Root C (g a) (g b)).1 hab
         have h₂ :=
