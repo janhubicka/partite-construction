@@ -2,7 +2,7 @@
 
 The previous chronological inventory is preserved in
 [the historical coverage log](archive/appendix-a-before-closure-audit.md).
-Historical TODOs in that log are not current obligations.
+Historical TODOs in that log are not current proof obligations.
 
 ## Construction routes
 
@@ -19,87 +19,71 @@ Historical TODOs in that log are not current obligations.
 | Closure observations | `RelStructure.IsFreeAmalgam.sides_closed_iff` / `common_image_closed_iff` | Both directions; arbitrary full diagram; local statements allow constants |
 | Closed hull of a weak image | `Structure.Irreducible.functionClosure_weakImage` | Full irreducible source; target is the closed hull, not the raw coordinate range; constants allowed |
 | Functional Partite Lemma | `FunctionalPartite.Induced.weak_partiteLemma_withInvariant` | Weak projection globally; full embeddings on closed irreducibles; full Ramsey embeddings |
-| Functional class-preserving refinement | `FunctionalPartite.EHN.inducedConstruction` | One pass; finite A,B in K; arbitrary full Ramsey witness D; positive input arity |
-| Functional EHN | `Structure.FreeAmalgamationClass.orderedRamsey` | Hereditary full free-amalgamation class; arbitrary positive-arity set-valued functions; A,B need not be irreducible |
-| Exact ordered forbidden-pattern theorem, `thm:HN` | `Structure.orderedRamsey_forbidden_expansions` + fixed-root reduction | The Lean endpoint is positive-arity; the manuscript removes constants by deleting the canonical finite root and relationally encoding incidences with it |
+| All-arity initial EHN picture | `FunctionalPartite.EHN.initial_allArity` | Initial B-copies are amalgamated over the canonical nullary root |
+| Functional class-preserving refinement | `FunctionalPartite.EHN.inducedConstruction_allArity` | One pass; arbitrary function arities; arbitrary full Ramsey witness D; A,B in K |
+| Rooted unrestricted functional EHN | `Rooted.Structure.FreeAmalgamationClass.orderedRamsey_allArity` | Hereditary full free-amalgamation class; arbitrary set-valued function arities; constants included |
+| Exact ordered forbidden-pattern theorem, `thm:HN` | `Structure.orderedRamsey_forbidden_expansions_allArity` | Arbitrary function arities; forbidden structures may specify orders; only their reducts must be irreducible |
 | Strict relational sparsening | `Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all` | B irreducible; A arbitrary; independent of the unresolved stronger synchronized invariant |
 
-The functional endpoints are in `Ramsey/FreeAmalgamationFunctions.lean` and
-`Ramsey/ForbiddenFunctions.lean`. The full derivation is explained in
-[the functional EHN guide](ehn-functions.md). The umbrella import exposes
-all endpoints; compiler and axiom validation remain the gate for any claim
-about a particular immutable commit.
+The all-arity endpoints are in
+`Ramsey/FreeAmalgamationFunctionsAllArity.lean` and
+`Ramsey/ForbiddenFunctionsAllArity.lean`; the class-preserving pass is in
+`Functional/EHNConstruction.lean`.  The umbrella import exposes them all.
+
+## Constants and the fixed-root reduction
+
+For a finite structure A, the canonical root
+`A.nullaryRoot = A.functionClosure ∅` is contained in every closed
+substructure and is carried **onto** the target root by every full embedding.
+
+The rooted formalization then:
+1. separates each tuple into fixed-root and moving coordinates;
+2. encodes all root incidences in a positive-arity moving language;
+3. proves encode/decode correctness and full embedding transport;
+4. transports concrete free amalgams and hereditary free-amalgamation classes;
+5. reconstructs the full linear order from root cuts and the moving order.
+
+This proves the unrestricted all-arity Ramsey theorem.  Independently, the EHN
+initial picture now handles constants directly by gluing placements of B over
+their common canonical root.  Therefore constants are no longer either a
+mathematical or a formalization restriction on `thm:HN`.
 
 ## Simplifications and precise distinctions
 
 The two local closure observations follow from one statement: a subset is
-closed in a free amalgam iff its inverse images in both sides are closed.
-This is not a transversality theorem and does not require positive arity.
+closed in a free amalgam iff its inverse images in both sides are closed.  This
+does not require positive arity.
 
-The Hales–Jewett line-map exactness proof now uses one parameter coordinate
-and output transversality of the whole power, rather than repeating the
-coordinate analysis to prove uniqueness. The simplification is also applied
-to the existing full-projection proof without changing its interface.
+The Hales--Jewett line-map exactness proof uses one parameter coordinate and
+output transversality of the whole power.  The EHN projection is weak globally
+and full on full irreducibles; this is
+`Structure.IsEHNHomomorphismEmbedding`.  The existing graph-encoding
+`Structure.IsWeakHomomorphismEmbedding` remains a different notion.
 
-The essential functional invariant uses the **closed hull** of each coordinate
-image. A generating weak homomorphic image of an irreducible structure is
-irreducible. Pulling back a proper free decomposition needs only forward
-preservation, not fibre surjectivity. This repairs the functional power
-invariant without pretending a noninjective quotient is a full homomorphism.
-
-`Structure.IsEHNHomomorphismEmbedding` is the new invariant: weak globally,
-full on full irreducibles. The existing `Structure.IsWeakHomomorphismEmbedding`
-means a homomorphism-embedding of graph encodings and remains separate.
-
-For the exact survey theorem, forbidding particular ordered structures is not
-replaced by forbidding every ordering of their reducts. The auxiliary class
-also keeps `OrderTotalOnIrreducibles`, which prevents order completion from
-creating a new forbidden embedding. The same one-pass construction proves the
-general free-amalgamation class theorem with no need for this extra invariant.
-
-The unrestricted recursive route still uses domain-aware semi-closed pictures.
-The old arbitrary-alpha free-attachment argument is not a dependency of it.
-A counterexample to that argument is not a counterexample to the entire
-existential Picture statement.
+For the exact survey theorem, particular ordered forbidden structures are not
+replaced by all orderings of their reducts.  `OrderTotalOnIrreducibles`
+ensures that final order completion creates no new forbidden embedding.
 
 ## Remaining manuscript obligations
 
 1. **Strong synchronized tree invariant.** Full-copy localization does not
    settle simultaneous control of every ambient-A intersection with a partial
-   boundary. The hereditary-irreducibility/projected-history variants are not
-   the literal `thm:tree_invariant` under mere irreducibility of A.
-2. **Functional iterated sparsening.** The new functional EHN theorem supplies
-   the one-pass class transfer, but not the local tree-amalgam bounds of the
-   iterated theorem. Arbitrary weak substructures still belong in that proof.
-3. **Rooted coding formalization.** Constants are not a mathematical
-   obstruction: every full embedding maps the canonical root
-   (\langle\varnothing\rangle) onto the target root, as verified by
-   `Structure.Embedding.image_nullaryRoot`. Deleting this finite fixed part
-   and naming all incidences with it relationally leaves only positive-arity
-   moving functions. The survey may use this reduction. What remains optional
-   is packaging the entire rooted-language translation as one Lean equivalence
-   theorem so that the public endpoint itself has no `PositiveFuncArity`
-   parameter.
-4. **Arbitrary-alpha Picture statement.** Replace the printed argument by the
-   domain-aware version or prove the stronger assertion separately. Do not
-   retain the invalid attachment proof as a justification.
+   boundary.
+2. **Functional iterated sparsening.** The all-arity EHN theorem supplies the
+   one-pass class transfer but not the local tree-amalgam bounds of the
+   iterated theorem.
+3. **Arbitrary-alpha Picture statement.** Replace the printed argument by the
+   checked domain-aware version or prove the stronger assertion separately.
 
-The fixed-root observation also explains why the positive-arity assumption
-belongs to the chosen implementation of the initial picture, not to the final
-Ramsey theorem. A nullary set-valued function contributes only to the fixed
-root; mixed incidences with that root are part of the relational expansion on
-the moving vertices.
-
-The original full-projection functional induced formulation is not silently
-proved by the EHN weak-projection theorem. Its relevant TODO must specify this
-remaining wording/interface change, not say that the functional EHN result
-itself is still missing.
+The original globally fibre-surjective functional induced formulation is not
+silently proved by the EHN weak-projection theorem; keep the interfaces
+explicitly distinct.
 
 ## Validation discipline
 
-CI builds the umbrella and all audit imports, then checks every declaration
-in `CheckAxioms.lean`, `CheckClosureAxioms.lean`, and `CheckEHNFunctions.lean`.
-Only `propext`, `Classical.choice`, and `Quot.sound` are accepted. Missing audit
-results, `sorryAx`, and custom unproved axioms fail. All new EHN modules disable
-automatic implicit declarations. Survey markers must be pinned to a successful
-immutable proof commit, not a moving branch.
+CI builds the umbrella and all audit imports, then checks every declaration in
+`CheckAxioms.lean`, `CheckClosureAxioms.lean`, and
+`CheckEHNFunctions.lean`. Only `propext`, `Classical.choice`, and
+`Quot.sound` are accepted. Missing audit results, `sorryAx`, and custom
+unproved axioms fail. Survey markers must be pinned to a successful immutable
+proof commit.
