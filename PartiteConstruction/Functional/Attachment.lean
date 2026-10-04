@@ -127,7 +127,13 @@ noncomputable def attach :
                       Structure.Attachment.copyMap
                         B.toStructure S hS D.toStructure
                         (fun q => (f q).toEmbedding) j (args k) := by
-                  simpa [maps, Function.comp_apply] using hk0
+                  have hk0' :
+                      x k =
+                        Structure.Attachment.copyMap
+                          B.toStructure S hS D.toStructure
+                          (fun q => (f q).toEmbedding) j (args k) := by
+                    simpa [maps, Function.comp_apply] using hk0
+                  exact hxk.symm.trans hk0'
                 rw [Structure.Attachment.copyMap_mem
                     (B := B.toStructure) (S := S) (hS := hS)
                     (D := D.toStructure)
@@ -141,7 +147,13 @@ noncomputable def attach :
                       Structure.Attachment.copyMap
                         B.toStructure S hS D.toStructure
                         (fun q => (f q).toEmbedding) j (args k) := by
-                  simpa [maps, Function.comp_apply] using hk0
+                  have hk0' :
+                      x k =
+                        Structure.Attachment.copyMap
+                          B.toStructure S hS D.toStructure
+                          (fun q => (f q).toEmbedding) j (args k) := by
+                    simpa [maps, Function.comp_apply] using hk0
+                  exact hxk.symm.trans hk0'
                 rw [Structure.Attachment.copyMap_not_mem
                     (B := B.toStructure) (S := S) (hS := hS)
                     (D := D.toStructure)
