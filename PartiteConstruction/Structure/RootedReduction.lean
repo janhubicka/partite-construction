@@ -224,7 +224,7 @@ structure FuncSymbol (L : Language.{u}) (R : Type v) : Type (max u v) where
   F : L.FuncSymbol
   p : Pattern (L.funcArity F) R
 
-def language (L : Language.{u}) (R : Type v) :
+abbrev language (L : Language.{u}) (R : Type v) :
     Language.{max u v} where
   RelSymbol := RelSymbol L R
   FuncSymbol := FuncSymbol L R
