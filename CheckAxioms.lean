@@ -389,3 +389,8 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.FunctionalPartite.Attachment.part_copyMap
 #print axioms StructuralRamsey.FunctionalPartite.Attachment.copy_extends
+
+#print axioms StructuralRamsey.Structure.Embedding.isWeakHomomorphism
+#print axioms StructuralRamsey.Structure.weakImage.quotientMap_hom
+#print axioms StructuralRamsey.Structure.weakImage.inclusion_weak
+#print axioms StructuralRamsey.Structure.Irreducible.weakImage
