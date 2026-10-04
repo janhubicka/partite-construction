@@ -334,7 +334,7 @@ theorem canonicalStep_locallyTreeLike_projectedHistory
                 (n - 1) hD hPieceCard hRestCard
             have hf' :
                 (C₁.toRelStructure.induce (↑S : Set _)).
-                  IsHomomorphismEmbedding T f := by
+                    IsHomomorphismEmbedding T f := by
               simpa [RelStructure.Attachment.Small, Tset, Brel, Ssupp,
                 Dcore, C₁, Core, E, R, αf, Partite.Picture.build,
                 Partite.Attachment.attach] using hf
