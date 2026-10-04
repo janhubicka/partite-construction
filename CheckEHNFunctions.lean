@@ -1,6 +1,4 @@
-import PartiteConstruction.Structure.GeneratedWeakHomImage
-import PartiteConstruction.Functional.EHNInitial
-import PartiteConstruction.Functional.EHNPicture
+import PartiteConstruction.Ramsey.FreeAmalgamationFunctions
 
 #print axioms StructuralRamsey.Structure.generates_of_surjective
 #print axioms StructuralRamsey.Structure.IsWeakHomomorphism.preimage_isClosed
@@ -48,3 +46,12 @@ import PartiteConstruction.Functional.EHNPicture
 #print axioms StructuralRamsey.FunctionalPartite.EHN.initialList
 #print axioms StructuralRamsey.FunctionalPartite.EHN.initial
 #print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma
+#print axioms StructuralRamsey.FunctionalPartite.EHN.canonicalize
+#print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction
+#print axioms StructuralRamsey.Structure.Embedding.linearOrderReduct
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.linearOrderReduct
+#print axioms StructuralRamsey.Structure.FreeAmalgamationClass.orderLift
+#print axioms StructuralRamsey.Structure.FreeAmalgamationClass.orderedRamsey
+#print axioms StructuralRamsey.Structure.FreeAmalgamationClass.orderedRamsey_of_mem_target
+#print axioms StructuralRamsey.Structure.avoidsEmbeddings_freeAmalgamationClass
+#print axioms StructuralRamsey.Structure.orderedRamsey_avoiding
