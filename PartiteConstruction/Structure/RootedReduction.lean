@@ -77,7 +77,7 @@ theorem exists_moveAt {V : Type w} (t : Fin n → Sum R V)
         simp [ofTuple, hti]
       rw [this] at hi
       contradiction
-  | inr x => exact ⟨x, hti⟩
+  | inr x => exact ⟨x, rfl⟩
 
 /-- A moving coordinate known from its rooted pattern. -/
 noncomputable def moveAt {V : Type w} (t : Fin n → Sum R V)
@@ -164,15 +164,17 @@ def sumFill {V : Type w} (p : Pattern n R)
       simp only [sumFill, hfix]
       have hs := moveAt_spec t i hfix
       rw [hi] at hs
-      exact congrArg Sum.inr (Sum.inr.inj hs).symm.trans
-        (pad_eq_moveAt t h i hfix).symm
+      apply congrArg Sum.inr
+      calc
+        pad t h i = moveAt t i hfix := pad_eq_moveAt t h i hfix
+        _ = x := (Sum.inr.inj hs).symm
 
 /-- A tuple with no moving coordinates consists entirely of root vertices. -/
 theorem exists_rootAt {V : Type w} (t : Fin n → Sum R V)
     (h : ¬(ofTuple t).HasMoving) (i : Fin n) :
     ∃ r : R, t i = Sum.inl r := by
   cases hi : t i with
-  | inl r => exact ⟨r, hi⟩
+  | inl r => exact ⟨r, rfl⟩
   | inr v =>
       exact False.elim (h ((ofTuple_hasMoving_iff t).2 ⟨i, v, hi⟩))
 
@@ -252,7 +254,8 @@ theorem sumMap_injective {R : Type v} {V W : Type w}
       cases y with
       | inl s =>
           change Sum.inl r = Sum.inl s at h
-          exact h
+          exact congrArg (fun z : R => (Sum.inl z : Sum R V))
+            (Sum.inl.inj h)
       | inr y =>
           change Sum.inl r = Sum.inr (f y) at h
           cases h
@@ -311,7 +314,7 @@ theorem Pattern.dummy_sumMap
     rw [hs]
     rfl
   rw [hmap] at ht
-  exact Sum.inr.inj ht
+  exact (Sum.inr.inj ht).symm
 
 theorem Pattern.moveAt_sumMap
     {R : Type v} {V W : Type w} (f : V → W)
@@ -328,7 +331,7 @@ theorem Pattern.moveAt_sumMap
     rw [hs]
     rfl
   rw [hmap] at ht
-  exact Sum.inr.inj ht
+  exact (Sum.inr.inj ht).symm
 
 theorem Pattern.pad_sumMap
     {R : Type v} {V W : Type w} (f : V → W)
@@ -343,12 +346,14 @@ theorem Pattern.pad_sumMap
   · have hi' : (Pattern.ofTuple (sumMap f ∘ t)).fixed i = none := by
       rw [hp]
       exact hi
+    change Pattern.pad (sumMap f ∘ t) h' i = f (Pattern.pad t h i)
     rw [Pattern.pad_eq_moveAt _ h' i hi',
       Pattern.pad_eq_moveAt _ h i hi]
     exact Pattern.moveAt_sumMap f t i hi hi'
   · have hi' : (Pattern.ofTuple (sumMap f ∘ t)).fixed i ≠ none := by
       rw [hp]
       exact hi
+    change Pattern.pad (sumMap f ∘ t) h' i = f (Pattern.pad t h i)
     rw [Pattern.pad_eq_dummy _ h' i hi',
       Pattern.pad_eq_dummy _ h i hi]
     exact Pattern.dummy_sumMap f t h h'
@@ -370,7 +375,7 @@ theorem Pattern.rootTuple_sumMap
     rw [hs]
     rfl
   rw [hmap] at ht
-  exact Sum.inl.inj ht
+  exact (Sum.inl.inj ht).symm
 
 /-- Reconstruct an original-language structure by adjoining the fixed root. -/
 noncomputable def decode
