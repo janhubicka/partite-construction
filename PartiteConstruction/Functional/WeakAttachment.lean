@@ -82,10 +82,11 @@ theorem unit_isFreeAmalgam :
   · intro a b
     constructor
     · intro hab
-      have hb : b ∈ S := mem_of_copyMap_eq_inl hab.symm
+      change Sum.inl a = copyMap B S hS D maps PUnit.unit b at hab
+      have hb : b ∈ S := mem_of_copyMap_eq_inl
+        (B := B) (S := S) (hS := hS) (D := D) (f := maps) hab.symm
       refine ⟨⟨b, hb⟩, ?_, rfl⟩
       have h := hab
-      change Sum.inl a = copyMap B S hS D maps PUnit.unit b at h
       rw [copyMap_mem PUnit.unit b hb] at h
       exact Sum.inl.inj h
     · rintro ⟨b, rfl, rfl⟩
