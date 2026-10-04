@@ -37,6 +37,59 @@ def LocallyClosedTreeCompletable
     ∀ hS : C.IsClosed (↑S : Set W),
       HasTreeCompletion Base (C.induce (↑S : Set W) hS)
 
+
+/-- An injective local completion.  This is the strengthened invariant used
+internally by the functional mixed-step argument; forgetting injectivity gives
+`LocallyClosedTreeCompletable`. -/
+def HasInjectiveTreeCompletion
+    (Base : Structure L V) (C : Structure L W) : Prop :=
+  ∃ (Y : Type v) (T : Structure L Y),
+    TreeAmalgam Base Y T ∧
+      ∃ f : W → Y,
+        C.IsHomomorphismEmbedding T f ∧ Function.Injective f
+
+def LocallyClosedTreeEmbeddable
+    (Base : Structure L V) (C : Structure L W) (n : ℕ) : Prop :=
+  ∀ S : Finset W, S.card ≤ n →
+    ∀ hS : C.IsClosed (↑S : Set W),
+      HasInjectiveTreeCompletion Base (C.induce (↑S : Set W) hS)
+
+namespace LocallyClosedTreeEmbeddable
+
+variable {Base : Structure L V} {C : Structure L W}
+variable {m n : ℕ}
+
+theorem toLocallyClosedTreeCompletable
+    (h : LocallyClosedTreeEmbeddable Base C n) :
+    LocallyClosedTreeCompletable Base C n := by
+  intro S hS hclosed
+  obtain ⟨Y, T, hTree, f, hf, _⟩ := h S hS hclosed
+  exact ⟨Y, T, hTree, f, hf⟩
+
+theorem mono
+    (h : LocallyClosedTreeEmbeddable Base C n) (hmn : m ≤ n) :
+    LocallyClosedTreeEmbeddable Base C m := by
+  intro S hS hclosed
+  exact h S (hS.trans hmn) hclosed
+
+theorem of_treeAmalgam
+    (hTree : TreeAmalgam Base W C) (n : ℕ) :
+    LocallyClosedTreeEmbeddable Base C n := by
+  intro S _ hS
+  let e : Embedding (C.induce (↑S : Set W) hS) C :=
+    inclusion C (↑S : Set W) hS
+  exact ⟨W, C, hTree, e, e.isHomomorphismEmbedding, e.injective⟩
+
+theorem base (Base : Structure L V) (n : ℕ) :
+    LocallyClosedTreeEmbeddable Base Base n := by
+  have hTree : TreeAmalgam Base V Base :=
+    TreeAmalgam.copy (Embedding.id Base) (by
+      intro x
+      exact ⟨x, rfl⟩)
+  exact of_treeAmalgam hTree n
+
+end LocallyClosedTreeEmbeddable
+
 namespace LocallyClosedTreeCompletable
 
 variable {Base : Structure L V} {C : Structure L W}
