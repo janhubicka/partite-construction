@@ -33,17 +33,17 @@ stronger synchronized tree invariant.
 
 ## Remaining proof obligations
 
-1. Complete the separate **functional iterated sparsening** theorem.  Weak
-   substructures are already exactly induced graph restrictions, and the
-   failure of naive relational tree transfer is isolated by the checked
-   `FunctionalTreeTransferObstruction`.  The required positive target
-   interface is now formalized as `FunctionClosedTreeAmalgam`: closed gluing
-   roots force closed side embeddings and full decoded constituent copies.
-   The remaining work is propagation of this invariant through the
-   Picture/trace iteration and the final support-group sparsening phase.
-2. Resolve the editorial status of the stronger arbitrary-alpha
+1. Resolve the editorial status of the stronger arbitrary-alpha
    `lem:indpicutreU`: replace its printed argument by the checked domain-aware
-   semi-closed version or prove the stronger assertion independently.
+   semi-closed version used by the recursive theorem, or prove the stronger
+   assertion independently.
+
+Strict sparsening is now a **completed relational theorem**.  A direct
+set-valued-function version with the survey's full fibre-surjective
+homomorphism is false, as checked by
+`FullFunctionalSparseningObstruction.direct_functional_sparsening_false`;
+it is therefore not a missing formalization task.  The functional Ramsey
+results are supplied by the separate encoding/recursive developments.
 
 The former synchronized ambient-A invariant has been replaced in the survey by
 the exact checked local-tree-completability statement.  It is optional stronger
