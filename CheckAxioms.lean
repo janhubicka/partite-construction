@@ -344,3 +344,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Iterated.basedStep_locallyTreeCompletable_projectedPartial
 #print axioms StructuralRamsey.Partite.Induced.Trace.locallyTreeCompletable_projectedPartial
 #print axioms StructuralRamsey.Partite.Induced.inducedConstruction_locallyTreeCompletable_projectedPartial
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.toProjectedPartial_identity
