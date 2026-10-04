@@ -366,4 +366,16 @@ noncomputable def liftOrderedEmbedding
             hg_iff (x (0 : Fin 2)) (x (1 : Fin 2))
   }
 
+@[simp] theorem liftOrderedEmbedding_apply
+    {Root : Structure L R} {A : Structure L V}
+    [Fintype R] [LinearOrder R] [Fintype V] [LinearOrder V]
+    (ρ : Structure.Embedding Root A) (hρ : StrictMono ρ)
+    {C : Structure (language L R) W}
+    [Fintype W] [LinearOrder W]
+    (e : Structure.Embedding
+      (encode ρ).withLinearOrder C.withLinearOrder) (x : V) :
+    liftOrderedEmbedding ρ hρ e x =
+      sumMap e.linearOrderReduct (split ρ x) :=
+  rfl
+
 end StructuralRamsey.Rooted
