@@ -83,9 +83,20 @@ theorem coordinateHom
         by_cases hj : j = i
         · subst j
           simp only [y, coord, dite_eq_left]
-          convert hb using 1
+          have hargsEq :
+              (fun k => (x k).coord i) =
+                ((fun z : Vertex B N => z.coord i) ∘ x) := by
+            funext k
+            rfl
+          rw [hargsEq]
+          exact hb
         · simp only [y, coord, dite_eq_right hj]
-          convert hc j using 1
+          have hargsEq :
+              (fun k => (x k).coord j) = args j := by
+            funext k
+            rfl
+          rw [hargsEq]
+          exact hc j
       · simp [y, coord]
 
 /-- The direct functional coordinate power preserves the full
@@ -127,7 +138,7 @@ theorem power_isPartiteOver
     let target : X → P := fun x => C.part (e x)
     have htarget_coord (i : Fin N) (x : X) :
         target x = B.part (q i x) := by
-      exact (e x).belongs i
+      exact ((e x).belongs i).symm
     have htargetHom : E.IsHomomorphism A target := by
       change E.IsHomomorphism A (C.part ∘ e)
       exact hProj.comp e.isHomomorphism
@@ -164,8 +175,10 @@ theorem power_isPartiteOver
                 A.rel R (g i ∘ zs) := by
               convert hArel using 1
               funext k
-              rw [hg i (zs k)]
-              exact (htarget_coord i (z k)).symm
+              calc
+                (g i ∘ zs) k = B.part (q i (z k)) := hg i (zs k)
+                _ = target (z k) := (htarget_coord i (z k)).symm
+                _ = (target ∘ z) k := rfl
             have hsourceRange :=
               ((g i).map_rel_iff R zs).mp htargetRange
             exact hsourceRange
