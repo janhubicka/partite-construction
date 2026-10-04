@@ -333,3 +333,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Iterated.basedStep_locallyTreeCompletable
 #print axioms StructuralRamsey.Partite.Induced.Trace.locallyTreeCompletable
 #print axioms StructuralRamsey.Partite.Induced.inducedConstruction_locallyTreeCompletable
+
+#print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.injectiveWitness_identity
+#print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.injectiveCompletion_identity
