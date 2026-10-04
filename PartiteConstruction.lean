@@ -184,3 +184,5 @@ import PartiteConstruction.Functional.ClosedLocalTreeCompletion
 import PartiteConstruction.Functional.FullFreeAmalgam
 
 import PartiteConstruction.Functional.WitnessGlue
+
+import PartiteConstruction.Functional.InitialTreeCompletion
