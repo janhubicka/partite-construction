@@ -1,5 +1,6 @@
 import PartiteConstruction.Iterated.FreeAmalgam
 import PartiteConstruction.Functional.SingletonExpansion
+import PartiteConstruction.Structure.Relationalize
 
 /-! # Functional obstruction to naive relational tree transfer
 
