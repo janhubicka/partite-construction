@@ -112,13 +112,14 @@ theorem orderedRamsey_of_mem_target
 end FreeAmalgamationClass
 
 /-- No member of the forbidden family has a full embedding into A. -/
-def AvoidsEmbeddings (F : StructureClass (L := L)) : StructureClass (L := L) :=
+def AvoidsEmbeddings (F : StructureClass.{u,v} (L := L)) :
+    StructureClass.{u,v} (L := L) :=
   fun A => ∀ {Y : Type v} (E : Structure L Y), F E → Embedding E A → False
 
 /-- Forbidding full irreducible structures gives a hereditary free-amalgamation
 class also in the presence of set-valued functions. -/
 theorem avoidsEmbeddings_freeAmalgamationClass
-    (F : StructureClass (L := L))
+    (F : StructureClass.{u,v} (L := L))
     (hF : ∀ {Y : Type v} (E : Structure L Y), F E → E.Irreducible) :
     FreeAmalgamationClass (AvoidsEmbeddings F) := by
   constructor
@@ -129,10 +130,11 @@ theorem avoidsEmbeddings_freeAmalgamationClass
     · exact hA J hJ (e.factorThroughClosedRange iA hleft)
     · exact hB J hJ (e.factorThroughClosedRange iB hright)
 
-/-- The survey's forbidden-irreducible functional Ramsey theorem, obtained as
-a direct specialization of the class theorem rather than a separate proof. -/
+/-- Forbid a family of unordered irreducible structures, then add arbitrary
+orders. For forbidden patterns with specified orderings, use the separate
+`orderedRamsey_forbidden_expansions` theorem. -/
 theorem orderedRamsey_avoiding
-    (F : StructureClass (L := L))
+    (F : StructureClass.{u,v} (L := L))
     (hF : ∀ {Y : Type v} (E : Structure L Y), F E → E.Irreducible)
     (A : Structure L U) (B : Structure L V)
     [LinearOrder U] [LinearOrder V] [Finite U] [Finite V]
