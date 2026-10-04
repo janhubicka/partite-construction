@@ -284,9 +284,9 @@ theorem Irreducible.range_homomorphism
     refine ⟨a, ?_⟩
     apply Subtype.ext
     exact ha
-  exact Irreducible.of_surjective_homomorphism
-    (A := A)
-    (B := B.induce (Set.range f) hf.range_isClosed)
-    hA hg hsurj
+  rw [irreducible_iff_noProperFreeDecomposition]
+  rintro ⟨d⟩
+  exact hA.noProperFreeDecomposition
+    (d.pullback_surjective hg hsurj)
 
 end StructuralRamsey.Structure
