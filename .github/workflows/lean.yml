@@ -36,7 +36,11 @@ jobs:
       - name: Download Mathlib cache
         run: lake exe cache get Mathlib.Tactic Mathlib.Data.Fintype.Pi Mathlib.Data.Fintype.Basic Mathlib.Data.Finset.Dedup
       - name: Build all project modules
-        run: lake build PartiteConstruction PartiteConstruction.Functional.FreeAmalgamClosed
+        run: >-
+          lake build PartiteConstruction
+          PartiteConstruction.Functional.FreeAmalgamClosed
+          PartiteConstruction.Functional.HalfClosedTheorem
+          PartiteConstruction.Functional.QuotientFibreObstruction
       - name: Check theorem axioms
         run: |
           set -euo pipefail

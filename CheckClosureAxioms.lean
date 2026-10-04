@@ -1,4 +1,6 @@
 import PartiteConstruction.Functional.FreeAmalgamClosed
+import PartiteConstruction.Functional.HalfClosedTheorem
+import PartiteConstruction.Functional.QuotientFibreObstruction
 
 #print axioms StructuralRamsey.RelStructure.Embedding.functionClosedSet_preimage
 #print axioms StructuralRamsey.RelStructure.Embedding.functionClosed_iff_range
@@ -9,3 +11,8 @@ import PartiteConstruction.Functional.FreeAmalgamClosed
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.right_closed_iff
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.sides_closed_iff
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.common_image_closed_iff
+#print axioms StructuralRamsey.Partite.HalfClosed.ramseyPartiteWitness
+#print axioms StructuralRamsey.Structure.QuotientFibreObstruction.collapse_surjective
+#print axioms StructuralRamsey.Structure.QuotientFibreObstruction.generated_image_exact
+#print axioms StructuralRamsey.Structure.QuotientFibreObstruction.collapse_graph_hom
+#print axioms StructuralRamsey.Structure.QuotientFibreObstruction.collapse_not_full_hom
