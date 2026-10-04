@@ -351,3 +351,13 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.toLoose
 
 #print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.toProjectedPartial_identity
+
+#print axioms StructuralRamsey.RelStructure.withClique_hereditarilyIrreducible
+#print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.cliqueReduct
+#print axioms StructuralRamsey.RelStructure.TreeAmalgam.cliqueReduct_loose
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.cliqueReduct_loose
+#print axioms StructuralRamsey.RelStructure.IrreduciblesExtendTo.cliqueReduct
+#print axioms StructuralRamsey.arrow_withClique
+#print axioms StructuralRamsey.arrow_cliqueReduct
+
+#print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_loose_all

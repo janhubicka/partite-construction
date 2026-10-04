@@ -59,6 +59,7 @@ import PartiteConstruction.Partite.InducedStep
 import PartiteConstruction.Partite.InducedConstruction
 import PartiteConstruction.Iterated.LocalTreeLike
 import PartiteConstruction.Iterated.LooseTreeAmalgam
+import PartiteConstruction.Iterated.CliqueExpansion
 import PartiteConstruction.Iterated.TreeCompletion
 import PartiteConstruction.Iterated.WeakLocalTreeLike
 import PartiteConstruction.Iterated.ControlCompletion
@@ -100,6 +101,7 @@ import PartiteConstruction.Iterated.AttachmentLocalization
 import PartiteConstruction.Iterated.FinalSupportStage
 import PartiteConstruction.Iterated.FinalSupportIteration
 import PartiteConstruction.Iterated.SparseningUniformFinal
+import PartiteConstruction.Iterated.SparseningLoose
 import PartiteConstruction.Iterated.FinalCompletion
 import PartiteConstruction.Iterated.FinalSparsening
 import PartiteConstruction.Iterated.SparseningIteration
