@@ -82,7 +82,11 @@ theorem Embedding.image_nullaryRoot
     {A : Structure L U} {B : Structure L V}
     (e : Embedding A B) :
     imageSet e A.nullaryRoot = B.nullaryRoot := by
-  simpa [nullaryRoot] using e.image_functionClosure (∅ : Set U)
+  rw [nullaryRoot, nullaryRoot, e.image_functionClosure]
+  have hEmpty : imageSet e (∅ : Set U) = (∅ : Set V) := by
+    ext y
+    simp [imageSet]
+  rw [hEmpty]
 
 /-- Pointwise form of surjectivity on the canonical root. -/
 theorem Embedding.nullaryRoot_surjective
