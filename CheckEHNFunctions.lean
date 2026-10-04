@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.FreeAmalgamationFunctionsAllArity
 import PartiteConstruction.Ramsey.ForbiddenFunctions
 import PartiteConstruction.Structure.RootedReduction
 import PartiteConstruction.Structure.RootedFunctor
@@ -125,3 +126,7 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Rooted.split_embedding
 
 #print axioms StructuralRamsey.Rooted.encodeOrderedEmbedding
+
+#print axioms StructuralRamsey.Rooted.liftOrderedEmbedding_comp
+
+#print axioms StructuralRamsey.Rooted.Structure.FreeAmalgamationClass.orderedRamsey_allArity
