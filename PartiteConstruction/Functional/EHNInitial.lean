@@ -89,6 +89,21 @@ theorem initial
   obtain ⟨T, _, hc⟩ := initialList hK B hmB hpos β₀ Finset.univ.toList
   exact ⟨T, fun β => hc β (by simp)⟩
 
+/-- The image of a root vertex under one placement has a unique
+preimage in the canonical root for every other placement. -/
+theorem rootTransport_exists
+    (B : Structure L V) (β₀ β : Structure.Embedding B D)
+    (x : B.nullaryRoot) :
+    ∃ y : B.nullaryRoot, β x.1 = β₀ y.1 := by
+  have hxD : β x.1 ∈ D.nullaryRoot := by
+    have hximg : β x.1 ∈ Structure.imageSet β B.nullaryRoot :=
+      ⟨x.1, x.2, rfl⟩
+    rw [β.image_nullaryRoot] at hximg
+    exact hximg
+  obtain ⟨y, hyroot, hy⟩ :=
+    β₀.nullaryRoot_surjective (β x.1) hxD
+  exact ⟨⟨y, hyroot⟩, hy.symm⟩
+
 /-- Transport the canonical nullary root between two full placements of B in
 the same target. Full embeddings map the canonical root onto the target root,
 so the two placements differ there only by a full root automorphism. -/
@@ -102,27 +117,16 @@ noncomputable def rootTransport
     Structure.inclusion B B.nullaryRoot B.nullaryRoot_isClosed
   let e : Structure.Embedding R D := β.comp inc
   let j : Structure.Embedding R D := β₀.comp inc
-  apply e.factorThroughClosedRange j
-  intro x
-  have hxD : β x.1 ∈ D.nullaryRoot := by
-    have hximg : β x.1 ∈ Structure.imageSet β B.nullaryRoot :=
-      ⟨x.1, x.2, rfl⟩
-    rw [β.image_nullaryRoot] at hximg
-    exact hximg
-  obtain ⟨y, hyroot, hy⟩ := β₀.nullaryRoot_surjective (β x.1) hxD
-  exact ⟨⟨y, hyroot⟩, hy.symm⟩
+  exact e.factorThroughClosedRange j
+    (fun x => rootTransport_exists B β₀ β x)
 
 theorem rootTransport_spec
     (B : Structure L V) (β₀ β : Structure.Embedding B D)
     (x : B.nullaryRoot) :
     β₀ ((rootTransport B β₀ β x).1) = β x.1 := by
-  let R := B.induce B.nullaryRoot B.nullaryRoot_isClosed
-  let inc : Structure.Embedding R B :=
-    Structure.inclusion B B.nullaryRoot B.nullaryRoot_isClosed
-  let e : Structure.Embedding R D := β.comp inc
-  let j : Structure.Embedding R D := β₀.comp inc
-  change j (rootTransport B β₀ β x) = e x
-  rfl
+  have h :=
+    Classical.choose_spec (rootTransport_exists B β₀ β x)
+  exact h.symm
 
 /-- Initial picture for arbitrary function arities. Copies are amalgamated
 over the canonical nullary root instead of over the empty structure. -/
@@ -153,7 +157,11 @@ theorem initialList_allArity
       have hS : Q.toStructure.IsClosed S := B.nullaryRoot_isClosed
       let φ := rootTransport B β₀ β
       let f : FunctionalPartite.Embedding (Q.induce S hS) T.system := {
-        toEmbedding := root.comp φ
+        toEmbedding := by
+          change Structure.Embedding
+            (B.induce B.nullaryRoot B.nullaryRoot_isClosed)
+            T.system.toStructure
+          exact root.comp φ
         map_part := by
           intro x
           calc
