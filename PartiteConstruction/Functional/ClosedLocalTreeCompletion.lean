@@ -198,4 +198,41 @@ theorem closed_preimage
     exact himg
   exact hS F (e ∘ x) hx hey
 
+
+namespace IsFreeAmalgam
+
+/-- A closed test inside a full free amalgam restricts to closed tests on
+both sides, and the two induced root tests agree.  This is the closure
+bookkeeping used in the functional mixed-step induction. -/
+theorem closedPieces
+    {H E F C : Type v}
+    {D : Structure L H} {A : Structure L E}
+    {B : Structure L F} {T : Structure L C}
+    {sA : Embedding D A} {sB : Embedding D B}
+    {iA : Embedding A T} {iB : Embedding B T}
+    (hfree : IsFreeAmalgam sA sB iA iB)
+    (S : Set C) (hS : T.IsClosed S) :
+    let ES : Set E := iA ⁻¹' S
+    let FS : Set F := iB ⁻¹' S
+    let HS : Set H := sA ⁻¹' ES
+    A.IsClosed ES ∧
+      B.IsClosed FS ∧
+      D.IsClosed HS ∧
+      HS = sB ⁻¹' FS := by
+  dsimp
+  have hEA : A.IsClosed (iA ⁻¹' S) :=
+    closed_preimage iA S hS
+  have hFB : B.IsClosed (iB ⁻¹' S) :=
+    closed_preimage iB S hS
+  have hHD : D.IsClosed (sA ⁻¹' (iA ⁻¹' S)) :=
+    closed_preimage sA (iA ⁻¹' S) hEA
+  refine ⟨hEA, hFB, hHD, ?_⟩
+  ext d
+  change iA (sA d) ∈ S ↔ iB (sB d) ∈ S
+  have hcomm : iA (sA d) = iB (sB d) :=
+    (hfree.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
+  rw [hcomm]
+
+end IsFreeAmalgam
+
 end StructuralRamsey.Structure
