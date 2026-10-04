@@ -394,3 +394,8 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Structure.weakImage.quotientMap_hom
 #print axioms StructuralRamsey.Structure.weakImage.inclusion_weak
 #print axioms StructuralRamsey.Structure.Irreducible.weakImage
+
+#print axioms StructuralRamsey.RelStructure.properFreeDecomposition_of_not_irreducible
+#print axioms StructuralRamsey.RelStructure.FreeAmalgamationClass.mem_of_irreducibles
+#print axioms StructuralRamsey.RelStructure.FreeAmalgamationClass.orderedRamsey_of_mem_target
+#print axioms StructuralRamsey.RelStructure.FreeAmalgamationClass.orderedRamsey
