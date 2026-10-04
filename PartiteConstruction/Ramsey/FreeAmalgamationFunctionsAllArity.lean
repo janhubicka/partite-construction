@@ -39,7 +39,11 @@ theorem liftOrderedEmbedding_comp
   intro a
   rw [liftOrderedEmbedding_apply, Structure.Embedding.comp_apply,
     liftOrderedEmbedding_apply]
-  have hs := split_embedding e.linearOrderReduct hroot a
+  have hs : split ρB (e a) =
+      sumMap (outsideMap e.linearOrderReduct hroot) (split ρA a) := by
+    change split ρB (e.linearOrderReduct a) =
+      sumMap (outsideMap e.linearOrderReduct hroot) (split ρA a)
+    exact split_embedding e.linearOrderReduct hroot a
   rw [hs]
   cases h : split ρA a with
   | inl r =>
@@ -98,11 +102,19 @@ theorem Structure.FreeAmalgamationClass.orderedRamsey_allArity
     have hroot₁ : ∀ r,
         e₁.linearOrderReduct (ρA r) = ρB r := by
       intro r
-      simpa [ρB, ρA] using orderedEmbedding_agrees_on_root e₀ e₁ r
+      change
+        e₁.linearOrderReduct (canonicalRootEmbedding A r) =
+          (e₀.linearOrderReduct.comp (canonicalRootEmbedding A)) r
+      rw [Structure.Embedding.comp_apply]
+      exact orderedEmbedding_agrees_on_root e₀ e₁ r
     have hroot₂ : ∀ r,
         e₂.linearOrderReduct (ρA r) = ρB r := by
       intro r
-      simpa [ρB, ρA] using orderedEmbedding_agrees_on_root e₀ e₂ r
+      change
+        e₂.linearOrderReduct (canonicalRootEmbedding A r) =
+          (e₀.linearOrderReduct.comp (canonicalRootEmbedding A)) r
+      rw [Structure.Embedding.comp_apply]
+      exact orderedEmbedding_agrees_on_root e₀ e₂ r
     have hm := hf
       (encodeOrderedEmbedding e₁ hroot₁)
       (encodeOrderedEmbedding e₂ hroot₂)
