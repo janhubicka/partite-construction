@@ -367,4 +367,36 @@ theorem decode_isFreeAmalgam
         rw [e.map_func G a] at himg
         exact himg
 
+
+/-- If adjoining the fixed root is irreducible, then so is the moving
+structure. A moving copy localized in one decoded amalgam side cannot hide in
+the common root. -/
+theorem irreducible_of_decode_irreducible
+    (Root : Structure L R)
+    {A : Structure (language L R) E}
+    (hA : (decode Root A).Irreducible) :
+    A.Irreducible := by
+  intro H E' F' C' Dsrc Esrc Fsrc Csrc sE sF iE iF hfree e
+  have hdfree := decode_isFreeAmalgam Root hfree
+  let de := decodeEmbedding Root e
+  rcases hA hdfree de with hleft | hright
+  · left
+    intro a
+    obtain ⟨z, hz⟩ := hleft (Sum.inr a)
+    cases z with
+    | inl r =>
+        change Sum.inr (e a) = Sum.inl r at hz
+        cases hz
+    | inr x =>
+        exact ⟨x, Sum.inr.inj hz⟩
+  · right
+    intro a
+    obtain ⟨z, hz⟩ := hright (Sum.inr a)
+    cases z with
+    | inl r =>
+        change Sum.inr (e a) = Sum.inl r at hz
+        cases hz
+    | inr x =>
+        exact ⟨x, Sum.inr.inj hz⟩
+
 end StructuralRamsey.Rooted
