@@ -49,8 +49,7 @@ theorem liftOrderedEmbedding_comp
   | inl r =>
       simp [sumMap, Structure.Embedding.comp_apply]
   | inr x =>
-      simp [sumMap, Structure.Embedding.comp_apply,
-        encodeOrderedEmbedding_apply, outsideMap]
+      rfl
 
 /-- Functional EHN for arbitrary arities, including constants. -/
 theorem Structure.FreeAmalgamationClass.orderedRamsey_allArity
@@ -102,19 +101,19 @@ theorem Structure.FreeAmalgamationClass.orderedRamsey_allArity
     have hroot₁ : ∀ r,
         e₁.linearOrderReduct (ρA r) = ρB r := by
       intro r
-      change
-        e₁.linearOrderReduct (canonicalRootEmbedding A r) =
-          (e₀.linearOrderReduct.comp (canonicalRootEmbedding A)) r
-      rw [Structure.Embedding.comp_apply]
-      exact orderedEmbedding_agrees_on_root e₀ e₁ r
+      calc
+        e₁.linearOrderReduct (ρA r) =
+            e₀.linearOrderReduct (ρA r) := by
+          simpa only [ρA] using orderedEmbedding_agrees_on_root e₀ e₁ r
+        _ = ρB r := rfl
     have hroot₂ : ∀ r,
         e₂.linearOrderReduct (ρA r) = ρB r := by
       intro r
-      change
-        e₂.linearOrderReduct (canonicalRootEmbedding A r) =
-          (e₀.linearOrderReduct.comp (canonicalRootEmbedding A)) r
-      rw [Structure.Embedding.comp_apply]
-      exact orderedEmbedding_agrees_on_root e₀ e₂ r
+      calc
+        e₂.linearOrderReduct (ρA r) =
+            e₀.linearOrderReduct (ρA r) := by
+          simpa only [ρA] using orderedEmbedding_agrees_on_root e₀ e₂ r
+        _ = ρB r := rfl
     have hm := hf
       (encodeOrderedEmbedding e₁ hroot₁)
       (encodeOrderedEmbedding e₂ hroot₂)
