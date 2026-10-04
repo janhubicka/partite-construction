@@ -22,14 +22,12 @@ def unsplit
 otherwise into the moving complement. -/
 noncomputable def split
     {Root : Structure L R} {A : Structure L U}
-    (ρ : Structure.Embedding Root A) :
-    U → Sum R (Outside ρ) := by
-  classical
-  exact fun a =>
-    if h : a ∈ Set.range ρ then
-      Sum.inl (Classical.choose h)
-    else
-      Sum.inr ⟨a, h⟩
+    (ρ : Structure.Embedding Root A) (a : U) :
+    Sum R (Outside ρ) :=
+  if h : a ∈ Set.range ρ then
+    Sum.inl (Classical.choose h)
+  else
+    Sum.inr ⟨a, h⟩
 
 @[simp] theorem unsplit_split
     {Root : Structure L R} {A : Structure L U}
@@ -51,10 +49,14 @@ noncomputable def split
       have h : ρ r ∈ Set.range ρ := ⟨r, rfl⟩
       simp only [unsplit, split, dif_pos h]
       apply congrArg Sum.inl
-      exact ρ.injective (Classical.choose_spec h)
+      apply ρ.injective
+      exact Classical.choose_spec h
   | inr x =>
       have h : x.1 ∉ Set.range ρ := x.2
-      simp [unsplit, split, h]
+      simp only [unsplit, split, dif_neg h]
+      apply congrArg Sum.inr
+      apply Subtype.ext
+      rfl
 
 noncomputable def splitEquiv
     {Root : Structure L R} {A : Structure L U}
@@ -111,6 +113,9 @@ theorem rootTuple_split
   funext i
   have hi := congrFun hs i
   have hu := congrArg (unsplit ρ) hi
-  simpa [Function.comp_apply, unsplit] using hu
+  change ρ (Pattern.rootTuple (split ρ ∘ x) h i) =
+    unsplit ρ (split ρ (x i)) at hu
+  rw [unsplit_split] at hu
+  exact hu
 
 end StructuralRamsey.Rooted
