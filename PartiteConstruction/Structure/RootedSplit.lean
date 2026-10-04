@@ -51,11 +51,9 @@ noncomputable def split
   classical
   by_cases h : a ∈ Set.range ρ
   · unfold split
-    dsimp only
     rw [dite_eq_left h]
     exact rootPreimage_spec ρ h
   · unfold split
-    dsimp only
     rw [dite_eq_right h]
     rfl
 
@@ -72,7 +70,7 @@ theorem unsplit_injective
           exact ρ.injective hxy
       | inr y =>
           change ρ r = y.1 at hxy
-          exact False.elim (y.2 ⟨r, hxy.symm⟩)
+          exact False.elim (y.2 ⟨r, hxy⟩)
   | inr x =>
       cases y with
       | inl s =>
