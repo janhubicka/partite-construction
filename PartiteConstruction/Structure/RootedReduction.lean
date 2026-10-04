@@ -126,8 +126,17 @@ def sumFill {V : Type w} (p : Pattern n R)
     sumFill (ofTuple t) (pad t h) = t := by
   funext i
   cases hi : t i with
-  | inl r => simp [sumFill, ofTuple, pad, hi]
-  | inr x => simp [sumFill, ofTuple, pad, hi]
+  | inl r =>
+      have hfix : (ofTuple t).fixed i = some r := by
+        simp [ofTuple, hi]
+      simp only [sumFill, hfix]
+  | inr x =>
+      have hfix : (ofTuple t).fixed i = none := by
+        simp [ofTuple, hi]
+      simp only [sumFill, hfix]
+      apply congrArg Sum.inr
+      unfold pad
+      rw [hi]
 
 /-- When there is no moving coordinate, read the tuple in the root. -/
 noncomputable def rootTuple {V : Type w} (t : Fin n → Sum R V)
@@ -143,7 +152,11 @@ noncomputable def rootTuple {V : Type w} (t : Fin n → Sum R V)
     Sum.inl ∘ rootTuple t h = t := by
   funext i
   cases hi : t i with
-  | inl r => simp [rootTuple, hi]
+  | inl r =>
+      change Sum.inl (rootTuple t h i) = Sum.inl r
+      apply congrArg Sum.inl
+      unfold rootTuple
+      rw [hi]
   | inr v =>
       exact False.elim (h ((ofTuple_hasMoving_iff t).2 ⟨i, v, hi⟩))
 
@@ -205,14 +218,20 @@ theorem sumMap_injective {R : Type v} {V W : Type w}
   cases x with
   | inl r =>
       cases y with
-      | inl s => exact Sum.inl.inj h
-      | inr y => cases h
+      | inl s =>
+          change Sum.inl r = Sum.inl s at h
+          exact congrArg Sum.inl (Sum.inl.inj h)
+      | inr y =>
+          change Sum.inl r = Sum.inr (f y) at h
+          cases h
   | inr x =>
       cases y with
-      | inl s => cases h
+      | inl s =>
+          change Sum.inr (f x) = Sum.inl s at h
+          cases h
       | inr y =>
-          apply congrArg Sum.inr
-          exact hf (Sum.inr.inj h)
+          change Sum.inr (f x) = Sum.inr (f y) at h
+          exact congrArg Sum.inr (hf (Sum.inr.inj h))
 
 theorem Pattern.ofTuple_sumMap
     {R : Type v} {V W : Type w} (f : V → W)
@@ -229,21 +248,44 @@ theorem Pattern.hasMoving_sumMap
       (Pattern.ofTuple t).HasMoving := by
   rw [Pattern.ofTuple_sumMap]
 
+theorem Pattern.firstMoving_congr
+    {R : Type v} {p q : Pattern n R}
+    (hp : p = q) (h : p.HasMoving) (h' : q.HasMoving) :
+    p.firstMoving h = q.firstMoving h' := by
+  subst q
+  have hh : h = h' := Subsingleton.elim _ _
+  subst hh
+  rfl
+
 theorem Pattern.dummy_sumMap
     {R : Type v} {V W : Type w} (f : V → W)
     (t : Fin n → Sum R V)
     (h : (Pattern.ofTuple t).HasMoving)
     (h' : (Pattern.ofTuple (sumMap f ∘ t)).HasMoving) :
     Pattern.dummy (sumMap f ∘ t) h' = f (Pattern.dummy t h) := by
-  have hp := Pattern.ofTuple_sumMap f t
-  cases hp
-  unfold Pattern.dummy Pattern.moveAt
-  simp only [Function.comp_apply, sumMap]
-  split
-  · rename_i r hr
-    have hs := (Pattern.ofTuple t).firstMoving_spec h
-    simp [Pattern.ofTuple, hr] at hs
-  · rfl
+  let p := Pattern.ofTuple t
+  let q := Pattern.ofTuple (sumMap f ∘ t)
+  have hpq : q = p := Pattern.ofTuple_sumMap f t
+  have hi : q.firstMoving h' = p.firstMoving h :=
+    Pattern.firstMoving_congr hpq h' h
+  unfold Pattern.dummy
+  rw [hi]
+  unfold Pattern.moveAt
+  let i := p.firstMoving h
+  have hs : p.fixed i = none := p.firstMoving_spec h
+  have ht : ∃ x, t i = Sum.inr x := by
+    cases hti : t i with
+    | inl r =>
+        have : p.fixed i = some r := by
+          simp [p, Pattern.ofTuple, hti]
+        rw [this] at hs
+        contradiction
+    | inr x => exact ⟨x, hti⟩
+  obtain ⟨x, htx⟩ := ht
+  have hmap : (sumMap f ∘ t) i = Sum.inr (f x) := by
+    simp [sumMap, htx]
+  simp only [Function.comp_apply]
+  rw [hmap, htx]
 
 theorem Pattern.pad_sumMap
     {R : Type v} {V W : Type w} (f : V → W)
@@ -255,10 +297,17 @@ theorem Pattern.pad_sumMap
   funext i
   cases hi : t i with
   | inl r =>
-      simp [Pattern.pad, hi, sumMap,
-        Pattern.dummy_sumMap f t h h']
+      have hmap : (sumMap f ∘ t) i = Sum.inl r := by
+        simp [sumMap, hi]
+      unfold Pattern.pad
+      rw [hmap, hi]
+      exact Pattern.dummy_sumMap f t h h'
   | inr x =>
-      simp [Pattern.pad, hi, sumMap]
+      have hmap : (sumMap f ∘ t) i = Sum.inr (f x) := by
+        simp [sumMap, hi]
+      unfold Pattern.pad
+      rw [hmap, hi]
+      rfl
 
 theorem Pattern.rootTuple_sumMap
     {R : Type v} {V W : Type w} (f : V → W)
@@ -269,7 +318,11 @@ theorem Pattern.rootTuple_sumMap
       Pattern.rootTuple t h := by
   funext i
   cases hi : t i with
-  | inl r => simp [Pattern.rootTuple, sumMap, hi]
+  | inl r =>
+      have hmap : (sumMap f ∘ t) i = Sum.inl r := by
+        simp [sumMap, hi]
+      unfold Pattern.rootTuple
+      rw [hmap, hi]
   | inr x =>
       exact False.elim
         (h ((Pattern.ofTuple_hasMoving_iff t).2 ⟨i, x, hi⟩))
@@ -311,7 +364,7 @@ def encode
     match Q with
     | .base S p => A.rel S (p.fill ρ x)
     | .output F p r => ρ r ∈ A.func F (p.fill ρ x)
-    | .cut r => ρ r < (x 0).1
+    | .cut r => ρ r < (x ⟨0, by simp [language]⟩).1
   func Q x :=
     {y |
       y.1 ∈ A.func Q.F
