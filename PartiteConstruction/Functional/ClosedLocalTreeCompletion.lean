@@ -134,7 +134,8 @@ noncomputable def Embedding.factorThroughRange
         exact hea
       rw [← i.map_func F (q ∘ x)] at hiqa
       rcases hiqa with ⟨c, hc, hic⟩
-      exact i.injective hic ▸ hc
+      have hcq : c = q a := i.injective hic
+      simpa [hcq] using hc
     · intro hb
       have hib :
           i b ∈ C.func F (i ∘ (q ∘ x)) := by
@@ -189,7 +190,12 @@ amalgam. -/
 theorem closed_preimage
     {A : Structure L V} {C : Structure L W}
     (e : Embedding A C) (S : Set W) (hS : C.IsClosed S) :
-    A.IsClosed (e ⁻¹' S) :=
-  e.preimage_isClosed S hS
+    A.IsClosed (e ⁻¹' S) := by
+  intro F x hx y hy
+  have hey : e y ∈ C.func F (e ∘ x) := by
+    have himg : e y ∈ imageSet e (A.func F x) := ⟨y, hy, rfl⟩
+    rw [e.map_func F x] at himg
+    exact himg
+  exact hS F (e ∘ x) hx hey
 
 end StructuralRamsey.Structure
