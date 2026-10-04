@@ -174,3 +174,5 @@ import PartiteConstruction.Functional.ClosedTreeAmalgam
 import PartiteConstruction.Functional.FunctionalTreeAmalgam
 
 import PartiteConstruction.Functional.FibreSurjectivityObstruction
+
+import PartiteConstruction.Functional.WeakTreePropertyObstruction
