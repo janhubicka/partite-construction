@@ -274,6 +274,7 @@ theorem Irreducible.range_homomorphism
     let S : Set V := Set.range f
     let hS : B.IsClosed S := hf.range_isClosed
     (B.induce S hS).Irreducible := by
+  dsimp
   let S : Set V := Set.range f
   let hS : B.IsClosed S := hf.range_isClosed
   let g : U → S := fun a => ⟨f a, ⟨a, rfl⟩⟩
