@@ -80,7 +80,7 @@ def quotientMap : U → Set.range f :=
   fun x => ⟨f x, ⟨x, rfl⟩⟩
 
 theorem quotientMap_surjective :
-    Function.Surjective (quotientMap (A := A) (B := B) (f := f)) := by
+    Function.Surjective (quotientMap (f := f)) := by
   intro z
   rcases z.2 with ⟨x, hx⟩
   refine ⟨x, ?_⟩
@@ -90,7 +90,7 @@ theorem quotientMap_surjective :
 /-- The quotient onto the source-generated image is a strong homomorphism. -/
 theorem quotientMap_hom :
     A.IsHomomorphism (weakImage A B f)
-      (quotientMap (A := A) (B := B) (f := f)) := by
+      (quotientMap (f := f)) := by
   constructor
   · intro R x hx
     exact ⟨x, hx, fun _ => rfl⟩
@@ -139,7 +139,9 @@ theorem Irreducible.weakImage
     (hA : A.Irreducible) {f : U → V} :
     (weakImage A B f).Irreducible := by
   exact hA.of_surjective_homomorphism
-    (weakImage.quotientMap_hom (A := A) (B := B) (f := f))
-    (weakImage.quotientMap_surjective (A := A) (B := B) (f := f))
+    (StructuralRamsey.Structure.weakImage.quotientMap_hom
+      (A := A) (B := B) (f := f))
+    (StructuralRamsey.Structure.weakImage.quotientMap_surjective
+      (f := f))
 
 end StructuralRamsey.Structure
