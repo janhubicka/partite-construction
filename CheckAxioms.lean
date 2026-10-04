@@ -391,9 +391,8 @@ import PartiteConstruction
 #print axioms StructuralRamsey.FunctionalPartite.Attachment.copy_extends
 
 #print axioms StructuralRamsey.Structure.Embedding.isWeakHomomorphism
-#print axioms StructuralRamsey.Structure.weakImage.quotientMap_hom
+#print axioms StructuralRamsey.Structure.weakImage.quotientMap_weak
 #print axioms StructuralRamsey.Structure.weakImage.inclusion_weak
-#print axioms StructuralRamsey.Structure.Irreducible.weakImage
 
 #print axioms StructuralRamsey.RelStructure.properFreeDecomposition_of_not_irreducible
 #print axioms StructuralRamsey.RelStructure.FreeAmalgamationClass.mem_of_irreducibles
