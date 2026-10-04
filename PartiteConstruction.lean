@@ -129,3 +129,5 @@ import PartiteConstruction.Iterated.PureCopyProjectedHistory
 import PartiteConstruction.Iterated.ProjectedHistoryLocalTreeLike
 
 import PartiteConstruction.Iterated.ProjectedRelativeLabelledLocalTreeLike
+
+import PartiteConstruction.Iterated.ProjectedHistoryMixedGlue
