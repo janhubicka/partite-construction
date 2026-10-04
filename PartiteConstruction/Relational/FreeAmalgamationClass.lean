@@ -84,7 +84,7 @@ theorem properFreeDecomposition_of_not_irreducible
     injective := by
       intro x y hxy
       apply Subtype.ext
-      exact congrArg Subtype.val hxy
+      exact congrArg (fun z : Lset => z.1) hxy
     map_rel_iff := fun _ _ => Iff.rfl
   }
   let mR : Embedding AM AR := {
@@ -92,7 +92,7 @@ theorem properFreeDecomposition_of_not_irreducible
     injective := by
       intro x y hxy
       apply Subtype.ext
-      exact congrArg Subtype.val hxy
+      exact congrArg (fun z : Rset => z.1) hxy
     map_rel_iff := fun _ _ => Iff.rfl
   }
   let iL : Embedding AL A := inclusion A Lset
@@ -100,34 +100,36 @@ theorem properFreeDecomposition_of_not_irreducible
   have hLproper : ¬ Function.Surjective iL := by
     intro hsurj
     obtain ⟨x, hx⟩ := hsurj b
-    have hxval : x.1 = b := by
-      simpa [iL] using hx
-    exact x.2 hxval
+    apply x.2
+    change x.1 = b
+    exact hx
   have hRproper : ¬ Function.Surjective iR := by
     intro hsurj
     obtain ⟨x, hx⟩ := hsurj a
-    have hxval : x.1 = a := by
-      simpa [iR] using hx
-    exact x.2 hxval
+    apply x.2
+    change x.1 = a
+    exact hx
   have hfree : IsFreeAmalgam mL mR iL iR := by
     constructor
     · intro x
       by_cases hxb : x = b
       · refine Or.inr ⟨⟨x, ?_⟩, ?_⟩
-        · simpa [hxb] using hab.symm
+        · change x ≠ a
+          simpa [hxb] using hab.symm
         · rfl
       · exact Or.inl ⟨⟨x, hxb⟩, rfl⟩
     · intro x y
       constructor
       · intro hxy
         have hval : x.1 = y.1 := by
-          simpa [iL, iR] using hxy
+          change x.1 = y.1 at hxy
+          exact hxy
         let z : Mset := ⟨x.1, ⟨x.2, by simpa [hval] using y.2⟩⟩
         refine ⟨z, ?_, ?_⟩
         · apply Subtype.ext
           rfl
         · apply Subtype.ext
-          exact hval
+          exact hval.symm
       · rintro ⟨z, rfl, rfl⟩
         rfl
     · intro R z
