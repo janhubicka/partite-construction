@@ -31,6 +31,24 @@ theorem IsHomomorphism.preimage_isClosed
     exact h
   exact hS F (f ∘ x) hx hfy
 
+/-- The range of a full homomorphism is function-closed. -/
+theorem IsHomomorphism.range_isClosed
+    {A : Structure L U} {B : Structure L V}
+    {f : U → V} (hf : A.IsHomomorphism B f) :
+    B.IsClosed (Set.range f) := by
+  intro F x hx y hy
+  have hargs : ∀ i, ∃ a : U, f a = x i := fun i => hx i
+  choose a ha using hargs
+  have hxeq : f ∘ a = x := by
+    funext i
+    exact ha i
+  have hy' : y ∈ B.func F (f ∘ a) := by
+    rw [hxeq]
+    exact hy
+  rw [← hf.2 F a] at hy'
+  rcases hy' with ⟨b, hb, hby⟩
+  exact ⟨b, hby⟩
+
 /-- Restrict a homomorphism to a closed substructure containing its range. -/
 theorem IsHomomorphism.codRestrict
     {A : Structure L U} {B : Structure L V}
