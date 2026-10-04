@@ -61,6 +61,8 @@ theorem Structure.FreeAmalgamationClass.orderedRamsey_allArity
       K C ∧ Structure.Arrow A.withLinearOrder B.withLinearOrder
         (@Structure.withLinearOrder L W C o.toLT) κ := by
   classical
+  letI : Fintype U := Fintype.ofFinite U
+  letI : Fintype V := Fintype.ofFinite V
   by_cases hcopy :
       Nonempty (Structure.Embedding A.withLinearOrder B.withLinearOrder)
   · obtain ⟨e₀⟩ := hcopy
