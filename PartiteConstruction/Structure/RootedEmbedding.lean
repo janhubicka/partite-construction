@@ -256,4 +256,15 @@ noncomputable def encodeOrderedEmbedding
           exact hfmono.lt_iff_lt
   }
 
+@[simp] theorem encodeOrderedEmbedding_apply
+    {Root : Structure L R} {A : Structure L U} {B : Structure L V}
+    [LinearOrder U] [LinearOrder V]
+    {ρA : Structure.Embedding Root A}
+    {ρB : Structure.Embedding Root B}
+    (e : Structure.Embedding A.withLinearOrder B.withLinearOrder)
+    (hroot : ∀ r, e.linearOrderReduct (ρA r) = ρB r)
+    (x : Outside ρA) :
+    encodeOrderedEmbedding e hroot x = outsideMap e.linearOrderReduct hroot x :=
+  rfl
+
 end StructuralRamsey.Rooted
