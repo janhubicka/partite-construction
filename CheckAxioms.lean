@@ -370,3 +370,31 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.OddLoose_loose
 #print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.OddLoose_not_twoColorable
 #print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.OddLoose_no_strictification
+
+#print axioms StructuralRamsey.Structure.Embedding.range_isClosed
+#print axioms StructuralRamsey.Structure.Embedding.preimage_isClosed
+#print axioms StructuralRamsey.Structure.Irreducible.noProperFreeDecomposition
+#print axioms StructuralRamsey.Structure.properFreeDecomposition_of_crossing
+#print axioms StructuralRamsey.Structure.irreducible_iff_noProperFreeDecomposition
+#print axioms StructuralRamsey.Structure.FreeAmalgamationClass.mem_of_irreducibles
+
+#print axioms StructuralRamsey.Structure.IsHomomorphism.preimage_isClosed
+#print axioms StructuralRamsey.Structure.IsHomomorphism.codRestrict
+#print axioms StructuralRamsey.Structure.ProperFreeDecomposition.pullback_surjective
+#print axioms StructuralRamsey.Structure.Irreducible.of_surjective_homomorphism
+#print axioms StructuralRamsey.Structure.Irreducible.range_homomorphism
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.coordinateHom
+#print axioms StructuralRamsey.FunctionalPartite.Induced.power_isPartiteOver
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.part_copyMap
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.copy_extends
+
+#print axioms StructuralRamsey.Structure.Embedding.isWeakHomomorphism
+#print axioms StructuralRamsey.Structure.weakImage.quotientMap_weak
+#print axioms StructuralRamsey.Structure.weakImage.inclusion_weak
+
+#print axioms StructuralRamsey.RelStructure.properFreeDecomposition_of_not_irreducible
+#print axioms StructuralRamsey.RelStructure.FreeAmalgamationClass.mem_of_irreducibles
+#print axioms StructuralRamsey.RelStructure.FreeAmalgamationClass.orderedRamsey_of_mem_target
+#print axioms StructuralRamsey.RelStructure.FreeAmalgamationClass.orderedRamsey
