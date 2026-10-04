@@ -274,7 +274,7 @@ theorem sumMap_injective {R : Type v} {V W : Type w}
   cases x with
   | inl r =>
       cases y with
-      | inl s => exact congrArg Sum.getLeft h
+      | inl s => exact Sum.inl.inj h
       | inr y => cases h
   | inr x =>
       cases y with
