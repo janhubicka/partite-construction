@@ -411,3 +411,7 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.toFull
 #print axioms StructuralRamsey.RelStructure.FunctionClosedTreeAmalgam.toFunctional
+
+#print axioms StructuralRamsey.Structure.FibreSurjectivityObstruction.inject_graph_homEmbedding
+#print axioms StructuralRamsey.Structure.FibreSurjectivityObstruction.inject_not_full_homomorphism
+#print axioms StructuralRamsey.Structure.FibreSurjectivityObstruction.inject_not_full_homEmbedding
