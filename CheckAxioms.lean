@@ -398,3 +398,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.FreeAmalgamationClass.mem_of_irreducibles
 #print axioms StructuralRamsey.RelStructure.FreeAmalgamationClass.orderedRamsey_of_mem_target
 #print axioms StructuralRamsey.RelStructure.FreeAmalgamationClass.orderedRamsey
+
+#print axioms StructuralRamsey.Structure.FunctionalTreeTransferObstruction.base_singletonValued
+#print axioms StructuralRamsey.Structure.FunctionalTreeTransferObstruction.target_tree
+#print axioms StructuralRamsey.Structure.FunctionalTreeTransferObstruction.target_not_singletonValued
