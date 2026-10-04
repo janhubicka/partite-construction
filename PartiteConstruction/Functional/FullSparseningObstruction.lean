@@ -38,7 +38,9 @@ def language : Language where
 /-- Binary first projection on an arbitrary carrier. -/
 def projStructure (X : Type) : Structure language X where
   rel R := Empty.elim R
-  func _ x := {y | y = x 0}
+  func F x := by
+    cases F
+    exact {y | y = x (0 : Fin 2)}
 
 abbrev A0 := projStructure (Fin 1)
 abbrev B0 := projStructure (Fin 2)
@@ -67,6 +69,7 @@ def orderedEmbedding
     | inr _ => exact hf.lt_iff_lt
   map_func := by
     intro F x
+    cases F
     ext y
     constructor
     · rintro ⟨z, hz, rfl⟩
@@ -94,7 +97,12 @@ def pairMap (i j : Fin 3) : Fin 2 → Fin 3 :=
 theorem pairMap_strict {i j : Fin 3} (hij : i < j) :
     StrictMono (pairMap i j) := by
   intro a b hab
-  fin_cases a <;> fin_cases b <;> simp_all [pairMap]
+  have ha : a = 0 := by omega
+  have hb : b = 1 := by omega
+  subst a
+  subst b
+  change i < j
+  exact hij
 
 def pairEmbedding (i j : Fin 3) (hij : i < j) : Embedding B C0 :=
   orderedEmbedding (pairMap i j) (pairMap_strict hij)
@@ -122,14 +130,16 @@ theorem pair_monochromatic
         χ ((pairEmbedding i j hij).comp e₂) := by
   intro e₁ e₂
   rw [singleton_comp_pair, singleton_comp_pair]
+  have hp0 : (pairEmbedding i j hij) (0 : Fin 2) = i := rfl
+  have hp1 : (pairEmbedding i j hij) (1 : Fin 2) = j := rfl
   rcases fin2_cases (e₁ 0) with h10 | h11
   <;> rcases fin2_cases (e₂ 0) with h20 | h21
-  · rw [h10, h20]
-  · rw [h10, h21]
-    simpa [pairEmbedding, pairMap] using hχ
-  · rw [h11, h20]
-    simpa [pairEmbedding, pairMap] using hχ.symm
-  · rw [h11, h21]
+  · rw [h10, h20, hp0]
+  · rw [h10, h21, hp0, hp1]
+    exact hχ
+  · rw [h11, h20, hp0, hp1]
+    exact hχ.symm
+  · rw [h11, h21, hp1]
 
 /-- The explicit three-point target is Ramsey for one-point A and two-point B. -/
 theorem target_ramsey : Arrow A B C0 Bool := by
@@ -174,12 +184,14 @@ theorem irreducible_of_total_binary
   rcases (hfree.func_iff () (e ∘ args) (e y)).mp hey with
     hleft | hright
   · rcases hleft with ⟨q, z, hz, hargs, hout⟩
-    apply ha (q 0)
-    have h := congrFun hargs 0
+    change Fin 2 → E at q
+    apply ha (q (0 : Fin 2))
+    have h := congrFun hargs (0 : Fin 2)
     simpa [args, Function.comp_apply] using h
   · rcases hright with ⟨q, z, hz, hargs, hout⟩
-    apply hb (q 1)
-    have h := congrFun hargs 1
+    change Fin 2 → F at q
+    apply hb (q (1 : Fin 2))
+    have h := congrFun hargs (1 : Fin 2)
     simpa [args, Function.comp_apply] using h
 
 theorem A_irreducible : A.Irreducible := by
@@ -199,7 +211,8 @@ theorem A_irreducible : A.Irreducible := by
 theorem B_total :
     ∀ x : Fin 2 → Fin 2, ∃ y, y ∈ B.func () x := by
   intro x
-  exact ⟨x 0, rfl⟩
+  refine ⟨x 0, ?_⟩
+  simp [B, B0, projStructure, Structure.withLinearOrder]
 
 theorem B_irreducible : B.Irreducible :=
   irreducible_of_total_binary B B_total
@@ -207,7 +220,8 @@ theorem B_irreducible : B.Irreducible :=
 /-- B itself is not Ramsey for A and two colours. -/
 theorem B_not_ramsey : ¬ Arrow A B B Bool := by
   intro h
-  let χ : Embedding A B → Bool := fun e => (e 0).val = 1
+  let χ : Embedding A B → Bool :=
+    fun e => decide ((e 0).val = 1)
   obtain ⟨f, hf⟩ := h χ
   let e0 : Embedding A B :=
     orderedEmbedding (fun _ : Fin 1 => (0 : Fin 2))
@@ -216,9 +230,10 @@ theorem B_not_ramsey : ¬ Arrow A B B Bool := by
     orderedEmbedding (fun _ : Fin 1 => (1 : Fin 2))
       (by intro a b hab; omega)
   have hmono := hf e0 e1
-  change ((f 0).val = 1) = ((f 1).val = 1) at hmono
   have hne : f 0 ≠ f 1 := f.injective (by decide)
-  fin_cases h0 : f 0 <;> fin_cases h1 : f 1 <;> simp_all
+  rcases fin2_cases (f 0) with h00 | h01
+  <;> rcases fin2_cases (f 1) with h10 | h11
+  <;> simp_all [χ, e0, e1, orderedEmbedding]
 
 /-- If C maps by a full homomorphism to the total projection target C0, then C
 itself has a nonempty binary fibre at every input. -/
@@ -230,8 +245,8 @@ theorem total_of_full_projection
   intro x
   have ht :
       p (x 0) ∈ C0.func () (p ∘ x) := by
-    change p (x 0) = (p ∘ x) 0
-    rfl
+    simp [C0, C00, projStructure, Structure.withLinearOrder,
+      Function.comp_apply]
   have himg :
       p (x 0) ∈ imageSet p (C.func () x) := by
     rw [hp.2 () x]
@@ -254,7 +269,16 @@ theorem arrow_descends_surjective
   obtain ⟨f, hf⟩ := hC (fun e => χ (r.comp e))
   refine ⟨r.comp f, ?_⟩
   intro e₁ e₂
-  simpa only [Embedding.comp] using hf e₁ e₂
+  have h1 : (r.comp f).comp e₁ = r.comp (f.comp e₁) := by
+    apply Embedding.ext
+    intro x
+    rfl
+  have h2 : (r.comp f).comp e₂ = r.comp (f.comp e₂) := by
+    apply Embedding.ext
+    intro x
+    rfl
+  rw [h1, h2]
+  exact hf e₁ e₂
 
 /-- No structure can simultaneously have the Ramsey arrow, a full
 homomorphism-embedding to the explicit target C0, and the whole-structure
