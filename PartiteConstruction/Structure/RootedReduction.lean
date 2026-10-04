@@ -242,19 +242,15 @@ theorem dummy_sumFill {V : Type w}
       (ofTuple t).firstMoving ht = p.firstMoving h :=
     firstMoving_congr hp ht h
   have hs := dummy_spec t ht
-  have hfix :
-      p.fixed ((ofTuple t).firstMoving ht) = none := by
-    rw [← hp]
-    exact (ofTuple t).firstMoving_spec ht
+  have hs' :
+      t (p.firstMoving h) = Sum.inr (dummy t ht) := by
+    simpa [hi] using hs
+  have hj : p.fixed (p.firstMoving h) = none := p.firstMoving_spec h
   have htuple :
-      t ((ofTuple t).firstMoving ht) =
-        Sum.inr (x ((ofTuple t).firstMoving ht)) := by
-    simp [t, sumFill, hfix]
-  rw [htuple] at hs
-  have hd :
-      dummy t ht = x ((ofTuple t).firstMoving ht) :=
-    (Sum.inr.inj hs).symm
-  exact hd.trans (congrArg x hi)
+      t (p.firstMoving h) = Sum.inr (x (p.firstMoving h)) := by
+    simp [t, sumFill, hj]
+  rw [htuple] at hs'
+  exact (Sum.inr.inj hs').symm
 
 /-- Padding a tuple reconstructed from a pattern is exactly normalization. -/
 theorem pad_sumFill {V : Type w}
@@ -329,8 +325,9 @@ theorem funcTuple_preimage_canonical
     dsimp [j]
     exact (ofTuple t).firstMoving_spec h
   have hpadj : pad t h j = dummy t h := by
-    have hnot : ¬ (ofTuple t).fixed j = none → False := fun hn => hn hj
-    simp [pad, hj]
+    dsimp [j]
+    rw [pad_eq_moveAt _ h _ ((ofTuple t).firstMoving_spec h)]
+    rfl
   have hargj : pad t h j = e (x j) := by
     simpa [Function.comp_apply] using congrFun hargs j
   have hxlast : x j = q (Fin.last n) := by
