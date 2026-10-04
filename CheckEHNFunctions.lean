@@ -1,5 +1,5 @@
 import PartiteConstruction.Structure.GeneratedWeakHomImage
-import PartiteConstruction.Functional.WeakInvariant
+import PartiteConstruction.Functional.WeakAttachment
 
 #print axioms StructuralRamsey.Structure.generates_of_surjective
 #print axioms StructuralRamsey.Structure.IsWeakHomomorphism.preimage_isClosed
@@ -27,3 +27,14 @@ import PartiteConstruction.Functional.WeakInvariant
 #print axioms StructuralRamsey.FunctionalPartite.Induced.power_projectionWeak
 #print axioms StructuralRamsey.FunctionalPartite.Induced.power_weaklyPartiteOver
 #print axioms StructuralRamsey.FunctionalPartite.Induced.weak_partiteLemma_withInvariant
+#print axioms StructuralRamsey.Structure.Embedding.factorWithMap
+#print axioms StructuralRamsey.Structure.Embedding.factorThroughClosedRange
+#print axioms StructuralRamsey.Structure.Embedding.cancel_weak
+#print axioms StructuralRamsey.FunctionalPartite.System.weak_support_closed
+#print axioms StructuralRamsey.FunctionalPartite.System.weakRestrict_projection
+#print axioms StructuralRamsey.FunctionalPartite.System.weakRestrict_invariant
+#print axioms StructuralRamsey.FunctionalPartite.weakRestrictCopy
+#print axioms StructuralRamsey.Structure.IsWeakHomomorphismEmbedding.of_freeAmalgam
+#print axioms StructuralRamsey.Structure.Attachment.unit_isFreeAmalgam
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_weaklyPartiteOver
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_mem
