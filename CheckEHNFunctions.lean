@@ -76,7 +76,6 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.Embedding.nullaryRoot_surjective
 #print axioms StructuralRamsey.Structure.mem_nullaryRoot_iff
 
-#print axioms StructuralRamsey.Rooted.Pattern.arity_pos_of_moving
 #print axioms StructuralRamsey.Rooted.language_positive
 
 #print axioms StructuralRamsey.Rooted.rootEmbedding
