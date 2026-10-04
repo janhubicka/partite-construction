@@ -182,3 +182,5 @@ import PartiteConstruction.Functional.FullSparseningObstruction
 import PartiteConstruction.Functional.ClosedLocalTreeCompletion
 
 import PartiteConstruction.Functional.FullFreeAmalgam
+
+import PartiteConstruction.Functional.WitnessGlue
