@@ -1,4 +1,5 @@
 import PartiteConstruction.Ramsey.FreeAmalgamationFunctionsAllArity
+import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 import PartiteConstruction.Ramsey.ForbiddenFunctions
 import PartiteConstruction.Structure.RootedReduction
 import PartiteConstruction.Structure.RootedFunctor
@@ -136,3 +137,6 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.FunctionalPartite.EHN.initialList_allArity
 #print axioms StructuralRamsey.FunctionalPartite.EHN.initial_allArity
 #print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_allArity
+
+#print axioms StructuralRamsey.Structure.allStructures_free
+#print axioms StructuralRamsey.Structure.orderedRamsey_forbidden_expansions_allArity
