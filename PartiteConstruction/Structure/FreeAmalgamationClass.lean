@@ -3,13 +3,14 @@ import Mathlib.Data.Fintype.Card
 
 /-! # Finite free decompositions and free-amalgamation classes
 
-For finite full structures, the universal side-localization definition of
-irreducibility is equivalent to not being a free amalgam of two proper closed
-substructures.  This is the finite decomposition fact used in the
-Evans--Hubicka--Nesetril one-pass partite proof.
+For finite full relation/function structures, the universal side-localization
+definition of irreducibility is equivalent to saying that the structure is not
+a free amalgam of two proper substructures.
 
-Consequently, a hereditary class closed under free amalgams is determined by
-its irreducible members.
+This yields the standard finite closure principle used by the
+Evans--Hubicka--Nesetril partite proof: in a hereditary class closed under free
+amalgamation, a finite structure belongs to the class whenever all of its
+irreducible substructures do.
 -/
 namespace StructuralRamsey.Structure
 
@@ -17,27 +18,22 @@ universe u v
 variable {L : Language.{u}}
 variable {U V W X : Type v}
 
-/-- The range of a full embedding is function-closed. -/
+/-- The range of a full embedding is closed under all function values. -/
 theorem Embedding.range_isClosed
     {A : Structure L U} {B : Structure L V}
     (e : Embedding A B) :
     B.IsClosed (Set.range e) := by
   intro F x hx y hy
-  have hargs : ∀ i, ∃ a : U, e a = x i := by
-    intro i
-    exact hx i
-  choose a ha using hargs
-  have hxeq : e ∘ a = x := by
+  choose a ha using hx
+  have hxeq : x = e ∘ a := by
     funext i
-    exact ha i
-  have hy' : y ∈ B.func F (e ∘ a) := by
-    rw [hxeq]
-    exact hy
-  rw [← e.map_func F a] at hy'
-  rcases hy' with ⟨b, hb, hby⟩
-  exact ⟨b, hby⟩
+    exact (ha i).symm
+  subst x
+  rw [← e.map_func F a] at hy
+  rcases hy with ⟨b, hb, rfl⟩
+  exact ⟨b, rfl⟩
 
-/-- Preimages of function-closed sets under full embeddings are closed. -/
+/-- The inverse image of a closed set under a full embedding is closed. -/
 theorem Embedding.preimage_isClosed
     {A : Structure L U} {B : Structure L V}
     (e : Embedding A B) (S : Set V)
@@ -45,62 +41,44 @@ theorem Embedding.preimage_isClosed
     A.IsClosed {a | e a ∈ S} := by
   intro F x hx y hy
   have hey : e y ∈ B.func F (e ∘ x) := by
-    have h :
-        e y ∈ Structure.imageSet e (A.func F x) :=
-      ⟨y, hy, rfl⟩
+    have h : e y ∈ imageSet e (A.func F x) := ⟨y, hy, rfl⟩
     rw [e.map_func F x] at h
     exact h
   exact hS F (e ∘ x) hx hey
 
-/-- A concrete internal free decomposition into two proper closed
-substructures. -/
+/-- A free decomposition of A into two proper embedded sides. -/
 structure ProperFreeDecomposition (A : Structure L U) where
-  left : Set U
-  right : Set U
-  leftClosed : A.IsClosed left
-  rightClosed : A.IsClosed right
-  leftProper : left ≠ Set.univ
-  rightProper : right ≠ Set.univ
-  free :
-    ∃ (H : Type v) (D : Structure L H)
-      (sL : Embedding D (A.induce left leftClosed))
-      (sR : Embedding D (A.induce right rightClosed)),
-      IsFreeAmalgam sL sR
-        (inclusion A left leftClosed)
-        (inclusion A right rightClosed)
+  Common : Type v
+  Left : Type v
+  Right : Type v
+  common : Structure L Common
+  left : Structure L Left
+  right : Structure L Right
+  toLeft : Embedding common left
+  toRight : Embedding common right
+  leftIn : Embedding left A
+  rightIn : Embedding right A
+  free : IsFreeAmalgam toLeft toRight leftIn rightIn
+  leftProper : ¬ Function.Surjective leftIn
+  rightProper : ¬ Function.Surjective rightIn
 
-/-- Irreducibility rules out a proper internal free decomposition. -/
+/-- An irreducible structure has no proper free decomposition. -/
 theorem Irreducible.noProperFreeDecomposition
     {A : Structure L U} (hA : A.Irreducible) :
     ¬ Nonempty (ProperFreeDecomposition A) := by
   rintro ⟨d⟩
-  rcases d.free with ⟨H, D, sL, sR, hfree⟩
-  have hside :=
-    hA hfree (Embedding.id A)
-  rcases hside with hleft | hright
+  rcases hA d.free (Embedding.id A) with hleft | hright
   · apply d.leftProper
-    ext a
-    constructor
-    · intro _
-      exact Set.mem_univ a
-    · intro _
-      obtain ⟨x, hx⟩ := hleft a
-      change a = x.1 at hx
-      rw [hx]
-      exact x.2
+    intro a
+    obtain ⟨x, hx⟩ := hleft a
+    exact ⟨x, hx.symm⟩
   · apply d.rightProper
-    ext a
-    constructor
-    · intro _
-      exact Set.mem_univ a
-    · intro _
-      obtain ⟨x, hx⟩ := hright a
-      change a = x.1 at hx
-      rw [hx]
-      exact x.2
+    intro a
+    obtain ⟨x, hx⟩ := hright a
+    exact ⟨x, hx.symm⟩
 
-/-- Pull a crossing copy back through a free amalgam.  Its two side-preimages
-give a proper internal free decomposition. -/
+/-- If an embedded copy crosses both sides of a free amalgam, pulling the two
+side ranges back along the embedding gives a proper free decomposition. -/
 theorem properFreeDecomposition_of_crossing
     {A : Structure L U}
     {H E F C : Type v}
@@ -120,30 +98,35 @@ theorem properFreeDecomposition_of_crossing
   have hRF : Csrc.IsClosed RF := iF.range_isClosed
   let Lset : Set U := {a | e a ∈ LE}
   let Rset : Set U := {a | e a ∈ RF}
-  have hLclosed : A.IsClosed Lset :=
-    e.preimage_isClosed LE hLE
-  have hRclosed : A.IsClosed Rset :=
-    e.preimage_isClosed RF hRF
-  have hLproper : Lset ≠ Set.univ := by
-    intro h
+  have hLclosed : A.IsClosed Lset := e.preimage_isClosed LE hLE
+  have hRclosed : A.IsClosed Rset := e.preimage_isClosed RF hRF
+  have hLproper : ¬ Function.Surjective (inclusion A Lset hLclosed) := by
+    intro hsurj
     apply hnotE
     intro a
-    have ha : a ∈ Lset := by rw [h]; exact Set.mem_univ a
-    change e a ∈ Set.range iE at ha
-    rcases ha with ⟨x, hx⟩
-    exact ⟨x, hx.symm⟩
-  have hRproper : Rset ≠ Set.univ := by
-    intro h
+    obtain ⟨x, hx⟩ := hsurj a
+    have ha : e a ∈ LE := by
+      change e a ∈ Set.range iE
+      rw [← hx]
+      exact x.2
+    rcases ha with ⟨z, hz⟩
+    exact ⟨z, hz.symm⟩
+  have hRproper : ¬ Function.Surjective (inclusion A Rset hRclosed) := by
+    intro hsurj
     apply hnotF
     intro a
-    have ha : a ∈ Rset := by rw [h]; exact Set.mem_univ a
-    change e a ∈ Set.range iF at ha
-    rcases ha with ⟨x, hx⟩
-    exact ⟨x, hx.symm⟩
+    obtain ⟨x, hx⟩ := hsurj a
+    have ha : e a ∈ RF := by
+      change e a ∈ Set.range iF
+      rw [← hx]
+      exact x.2
+    rcases ha with ⟨z, hz⟩
+    exact ⟨z, hz.symm⟩
   let Mset : Set U := Lset ∩ Rset
   have hMclosed : A.IsClosed Mset := by
     intro F0 x hx y hy
-    exact ⟨hLclosed F0 x (fun i => (hx i).1) hy,
+    exact ⟨
+      hLclosed F0 x (fun i => (hx i).1) hy,
       hRclosed F0 x (fun i => (hx i).2) hy⟩
   let AL := A.induce Lset hLclosed
   let AR := A.induce Rset hRclosed
@@ -153,7 +136,7 @@ theorem properFreeDecomposition_of_crossing
     injective := by
       intro x y h
       apply Subtype.ext
-      exact congrArg (fun q : Lset => q.1) h
+      exact congrArg (fun z : Lset => z.1) h
     map_rel_iff := fun _ _ => Iff.rfl
     map_func := by
       intro F0 x
@@ -162,8 +145,8 @@ theorem properFreeDecomposition_of_crossing
       · rintro ⟨z, hz, rfl⟩
         exact hz
       · intro hy
-        have hyr : y.1 ∈ Rset := by
-          exact hRclosed F0 (Subtype.val ∘ x)
+        have hyr : y.1 ∈ Rset :=
+          hRclosed F0 (Subtype.val ∘ x)
             (fun i => (x i).2.2) hy
         exact ⟨⟨y.1, ⟨y.2, hyr⟩⟩, hy, rfl⟩
   }
@@ -172,7 +155,7 @@ theorem properFreeDecomposition_of_crossing
     injective := by
       intro x y h
       apply Subtype.ext
-      exact congrArg (fun q : Rset => q.1) h
+      exact congrArg (fun z : Rset => z.1) h
     map_rel_iff := fun _ _ => Iff.rfl
     map_func := by
       intro F0 x
@@ -181,8 +164,8 @@ theorem properFreeDecomposition_of_crossing
       · rintro ⟨z, hz, rfl⟩
         exact hz
       · intro hy
-        have hyl : y.1 ∈ Lset := by
-          exact hLclosed F0 (Subtype.val ∘ x)
+        have hyl : y.1 ∈ Lset :=
+          hLclosed F0 (Subtype.val ∘ x)
             (fun i => (x i).2.1) hy
         exact ⟨⟨y.1, ⟨hyl, y.2⟩⟩, hy, rfl⟩
   }
@@ -197,14 +180,11 @@ theorem properFreeDecomposition_of_crossing
     · intro a b
       constructor
       · intro hab
-        have huv : a.1 = b.1 := hab
-        let z : Mset := ⟨a.1, ⟨a.2, by
-          rw [huv]
-          exact b.2⟩⟩
-        refine ⟨z, ?_, ?_⟩
-        · rfl
-        · apply Subtype.ext
-          exact huv.symm
+        have huv : a.1 = b.1 := congrArg Subtype.val hab
+        let z : Mset := ⟨a.1, ⟨a.2, by simpa [huv] using b.2⟩⟩
+        refine ⟨z, rfl, ?_⟩
+        apply Subtype.ext
+        exact huv.symm
       · rintro ⟨z, rfl, rfl⟩
         rfl
     · intro R z
@@ -231,9 +211,7 @@ theorem properFreeDecomposition_of_crossing
       constructor
       · intro hy
         have hey : e y ∈ Csrc.func F0 (e ∘ x) := by
-          have h :
-              e y ∈ Structure.imageSet e (A.func F0 x) :=
-            ⟨y, hy, rfl⟩
+          have h : e y ∈ imageSet e (A.func F0 x) := ⟨y, hy, rfl⟩
           rw [e.map_func F0 x] at h
           exact h
         rcases (hfree.func_iff F0 (e ∘ x) (e y)).mp hey with
@@ -261,14 +239,20 @@ theorem properFreeDecomposition_of_crossing
         · subst x
           subst y
           exact hb
-  refine ⟨{
-    left := Lset
-    right := Rset
-    leftClosed := hLclosed
-    rightClosed := hRclosed
+  exact ⟨{
+    Common := Mset
+    Left := Lset
+    Right := Rset
+    common := AM
+    left := AL
+    right := AR
+    toLeft := mL
+    toRight := mR
+    leftIn := iL
+    rightIn := iR
+    free := hInternal
     leftProper := hLproper
     rightProper := hRproper
-    free := ⟨Mset, AM, mL, mR, hInternal⟩
   }⟩
 
 /-- For finite structures the universal side-localization notion is equivalent
@@ -281,44 +265,27 @@ theorem irreducible_iff_noProperFreeDecomposition
   · exact Irreducible.noProperFreeDecomposition
   · intro hnodecomp
     intro H E F C Dsrc Esrc Fsrc Csrc sE sF iE iF hfree e
-    by_cases hE : ∀ a : U, ∃ x : E, e a = iE x
-    · exact Or.inl hE
-    · by_cases hF : ∀ a : U, ∃ x : F, e a = iF x
-      · exact Or.inr hF
-      · exact (hnodecomp
-          (properFreeDecomposition_of_crossing hfree e hE hF)).elim
+    by_contra hside
+    simp only [not_or, not_forall] at hside
+    rcases hside with ⟨⟨aE, hE⟩, ⟨aF, hF⟩⟩
+    have hnotE : ¬ ∀ a : U, ∃ x : E, e a = iE x := by
+      intro h
+      rcases h aE with ⟨x, hx⟩
+      exact hE x hx
+    have hnotF : ¬ ∀ a : U, ∃ x : F, e a = iF x := by
+      intro h
+      rcases h aF with ⟨x, hx⟩
+      exact hF x hx
+    exact hnodecomp
+      (properFreeDecomposition_of_crossing hfree e hnotE hnotF)
 
-/-- Subsingletons are irreducible in the free-amalgamation sense. -/
-theorem irreducible_of_subsingleton
-    (A : Structure L U) [Subsingleton U] :
-    A.Irreducible := by
-  intro H E F C Dsrc Esrc Fsrc Csrc sE sF iE iF hfree e
-  cases isEmpty_or_nonempty U with
-  | inl hEmpty =>
-      left
-      intro a
-      exact isEmptyElim a
-  | inr hNonempty =>
-      letI : Nonempty U := hNonempty
-      let a0 : U := Classical.choice hNonempty
-      rcases hfree.covers (e a0) with ⟨x, hx⟩ | ⟨x, hx⟩
-      · left
-        intro a
-        refine ⟨x, ?_⟩
-        rw [Subsingleton.elim a a0]
-        exact hx
-      · right
-        intro a
-        refine ⟨x, ?_⟩
-        rw [Subsingleton.elim a a0]
-        exact hx
-
-/-- A carrier-polymorphic class of finite structures. -/
+/-- A carrier-polymorphic class of finite L-structures. -/
 abbrev StructureClass (L : Language.{u}) :=
   ∀ {V : Type v}, Structure L V → Prop
 
-/-- Heredity and closure under concrete free amalgams.  JEP is not needed for
-the fixed-pair Ramsey theorem once A and B are members. -/
+/-- Hereditary closure and closure under concrete free amalgams.  This is the
+part of the usual free-amalgamation-class axioms used by the Ramsey proof;
+JEP is not needed once A and B are fixed members. -/
 structure FreeAmalgamationClass
     (K : StructureClass (L := L)) : Prop where
   hereditary :
@@ -334,84 +301,60 @@ structure FreeAmalgamationClass
 
 namespace FreeAmalgamationClass
 
-/-- Fintype version of the finite member test. -/
-theorem mem_of_irreducibles_fintype
-    {K : StructureClass (L := L)}
-    (hK : FreeAmalgamationClass K)
-    {A : Structure L U} [Fintype U]
-    (hlocal :
-      ∀ {X : Type v} (E : Structure L X), [Finite X] →
-        E.Irreducible → Embedding E A → K E) :
-    K A := by
-  classical
-  let P : (α : Type v) → [Fintype α] → Prop :=
-    fun α _ =>
-      ∀ (M : Structure L α),
-        (∀ {X : Type v} (E : Structure L X), [Finite X] →
-          E.Irreducible → Embedding E M → K E) →
-        K M
-  have hPU : P U := by
-    apply Fintype.induction_subsingleton_or_nontrivial (P := P) U
-    · intro α inst hsub M hloc
-      exact hloc M (irreducible_of_subsingleton M) (Embedding.id M)
-    · intro α inst hnontr ih M hloc
-      by_cases hIrr : M.Irreducible
-      · exact hloc M hIrr (Embedding.id M)
-      · have hdec : Nonempty (ProperFreeDecomposition M) := by
-          by_contra hn
-          exact hIrr
-            ((irreducible_iff_noProperFreeDecomposition M).mpr hn)
-        rcases hdec with ⟨d⟩
-        let ML := M.induce d.left d.leftClosed
-        let MR := M.induce d.right d.rightClosed
-        letI : Fintype d.left := Fintype.ofFinite d.left
-        letI : Fintype d.right := Fintype.ofFinite d.right
-        have hleftOutside : ∃ x : α, x ∉ d.left := by
-          by_contra hn
-          push Not at hn
-          apply d.leftProper
-          ext x
-          simp [hn x]
-        obtain ⟨xl, hxl⟩ := hleftOutside
-        have hrightOutside : ∃ x : α, x ∉ d.right := by
-          by_contra hn
-          push Not at hn
-          apply d.rightProper
-          ext x
-          simp [hn x]
-        obtain ⟨xr, hxr⟩ := hrightOutside
-        have hleftCard :
-            Fintype.card d.left < Fintype.card α :=
-          Fintype.card_subtype_lt hxl
-        have hrightCard :
-            Fintype.card d.right < Fintype.card α :=
-          Fintype.card_subtype_lt hxr
-        have hML : K ML := by
-          apply (ih d.left hleftCard) ML
-          intro X E hX hE e
-          let inc : Embedding ML M := inclusion M d.left d.leftClosed
-          exact @hloc X E hX hE (inc.comp e)
-        have hMR : K MR := by
-          apply (ih d.right hrightCard) MR
-          intro X E hX hE e
-          let inc : Embedding MR M := inclusion M d.right d.rightClosed
-          exact @hloc X E hX hE (inc.comp e)
-        rcases d.free with ⟨H, D, sL, sR, hfree⟩
-        exact hK.free hML hMR hfree
-  exact hPU A hlocal
-
-/-- A finite structure belongs to a hereditary free-amalgamation class as soon
-as all its irreducible substructures do. -/
+/-- A finite member test: hereditary free-amalgamation classes are determined
+by their irreducible substructures. -/
 theorem mem_of_irreducibles
     {K : StructureClass (L := L)}
     (hK : FreeAmalgamationClass K)
     {A : Structure L U} [Finite U]
     (hlocal :
-      ∀ {X : Type v} (E : Structure L X), [Finite X] →
+      ∀ {X : Type v} [Finite X], ∀ E : Structure L X,
         E.Irreducible → Embedding E A → K E) :
     K A := by
+  classical
+  let aux :
+      ∀ n : ℕ, ∀ {X : Type v} [Fintype X] (E : Structure L X),
+        Fintype.card X = n →
+        (∀ {Y : Type v} [Finite Y], ∀ F : Structure L Y,
+          F.Irreducible → Embedding F E → K F) →
+        K E := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | h n ih =>
+        intro X instX E hcard hloc
+        by_cases hIrr : E.Irreducible
+        · exact hloc E hIrr (Embedding.id E)
+        · have hdec : Nonempty (ProperFreeDecomposition E) := by
+            by_contra hn
+            exact hIrr ((irreducible_iff_noProperFreeDecomposition E).mpr hn)
+          rcases hdec with ⟨d⟩
+          letI : Finite d.Left :=
+            Finite.of_injective d.leftIn d.leftIn.injective
+          letI : Finite d.Right :=
+            Finite.of_injective d.rightIn d.rightIn.injective
+          letI : Fintype d.Left := Fintype.ofFinite d.Left
+          letI : Fintype d.Right := Fintype.ofFinite d.Right
+          have hleftCard : Fintype.card d.Left < n := by
+            rw [← hcard]
+            exact Fintype.card_lt_of_injective_not_surjective
+              d.leftIn d.leftIn.injective d.leftProper
+          have hrightCard : Fintype.card d.Right < n := by
+            rw [← hcard]
+            exact Fintype.card_lt_of_injective_not_surjective
+              d.rightIn d.rightIn.injective d.rightProper
+          have hLeft : K d.left := by
+            apply ih (Fintype.card d.Left) hleftCard
+              d.left rfl
+            intro Y _ F hF eF
+            exact hloc F hF (d.leftIn.comp eF)
+          have hRight : K d.right := by
+            apply ih (Fintype.card d.Right) hrightCard
+              d.right rfl
+            intro Y _ F hF eF
+            exact hloc F hF (d.rightIn.comp eF)
+          exact hK.free hLeft hRight d.free
   letI : Fintype U := Fintype.ofFinite U
-  exact hK.mem_of_irreducibles_fintype hlocal
+  exact aux (Fintype.card U) A rfl hlocal
 
 end FreeAmalgamationClass
 
