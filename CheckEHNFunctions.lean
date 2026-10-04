@@ -1,4 +1,5 @@
 import PartiteConstruction.Ramsey.ForbiddenFunctions
+import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.generates_of_surjective
 #print axioms StructuralRamsey.Structure.IsWeakHomomorphism.preimage_isClosed
@@ -64,3 +65,11 @@ import PartiteConstruction.Ramsey.ForbiddenFunctions
 #print axioms StructuralRamsey.Structure.Embedding.beforeOrderCompletion
 #print axioms StructuralRamsey.Structure.orderedForbiddenClass_free
 #print axioms StructuralRamsey.Structure.orderedRamsey_forbidden_expansions
+
+#print axioms StructuralRamsey.Structure.nullaryRoot_isClosed
+#print axioms StructuralRamsey.Structure.nullaryRoot_subset_closed
+#print axioms StructuralRamsey.Structure.Embedding.image_isClosed
+#print axioms StructuralRamsey.Structure.Embedding.image_functionClosure
+#print axioms StructuralRamsey.Structure.Embedding.image_nullaryRoot
+#print axioms StructuralRamsey.Structure.Embedding.nullaryRoot_surjective
+#print axioms StructuralRamsey.Structure.mem_nullaryRoot_iff
