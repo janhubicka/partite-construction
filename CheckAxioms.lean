@@ -329,3 +329,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Iterated.canonicalStep_locallyTreeCompletable_projectedHistory
 
 #print axioms StructuralRamsey.Partite.Iterated.WeakTrace.locallyTreeCompletable
+
+#print axioms StructuralRamsey.Partite.Iterated.basedStep_locallyTreeCompletable
+#print axioms StructuralRamsey.Partite.Induced.Trace.locallyTreeCompletable
+#print axioms StructuralRamsey.Partite.Induced.inducedConstruction_locallyTreeCompletable
