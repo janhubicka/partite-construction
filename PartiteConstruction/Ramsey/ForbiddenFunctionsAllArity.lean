@@ -18,8 +18,11 @@ variable {L : Language.{u}} {U V : Type v}
 def allStructures : StructureClass.{u,v} (L := L) := fun _ => True
 
 theorem allStructures_free :
-    FreeAmalgamationClass (allStructures (L := L) (v := v)) := by
-  constructor
+    FreeAmalgamationClass (allStructures (L := L)) := by
+  refine {
+    hereditary := ?_
+    free := ?_
+  }
   · intro Y Z A B hB e
     trivial
   · intro H E G C D A B Cstr sA sB iA iB hA hB hfree
@@ -43,8 +46,8 @@ theorem orderedRamsey_forbidden_expansions_allArity
         (@Structure.withLinearOrder L W C o.toLT) κ := by
   classical
   have hAll :
-      FreeAmalgamationClass (allStructures (L := L) (v := v)) :=
-    allStructures_free (L := L) (v := v)
+      FreeAmalgamationClass (allStructures (L := L)) :=
+    allStructures_free (L := L)
   obtain ⟨P, hP, oP, C₀, _, hRamsey⟩ :=
     StructuralRamsey.Rooted.Structure.FreeAmalgamationClass.orderedRamsey_allArity
       hAll A B (by trivial) (by trivial) κ
