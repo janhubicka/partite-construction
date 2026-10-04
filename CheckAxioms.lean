@@ -327,3 +327,5 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.fullWitness
 #print axioms StructuralRamsey.Partite.Iterated.canonicalStep_locallyTreeCompletable_projectedHistory
+
+#print axioms StructuralRamsey.Partite.Iterated.WeakTrace.locallyTreeCompletable
