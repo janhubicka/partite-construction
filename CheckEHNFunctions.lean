@@ -1,0 +1,13 @@
+import PartiteConstruction.Structure.GeneratedWeakHomImage
+
+#print axioms StructuralRamsey.Structure.generates_of_surjective
+#print axioms StructuralRamsey.Structure.IsWeakHomomorphism.preimage_isClosed
+#print axioms StructuralRamsey.Structure.ProperFreeDecomposition.pullback_generated_weak
+#print axioms StructuralRamsey.Structure.Irreducible.of_generated_weakHomomorphism
+#print axioms StructuralRamsey.Structure.Irreducible.of_surjective_weakHomomorphism
+#print axioms StructuralRamsey.Structure.Irreducible.weakImage
+#print axioms StructuralRamsey.Structure.subset_functionClosure
+#print axioms StructuralRamsey.Structure.functionClosure_isClosed
+#print axioms StructuralRamsey.Structure.IsWeakHomomorphism.closureLift
+#print axioms StructuralRamsey.Structure.closureLift_generates
+#print axioms StructuralRamsey.Structure.Irreducible.functionClosure_weakImage
