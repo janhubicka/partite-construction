@@ -160,3 +160,5 @@ import PartiteConstruction.Functional.HalfClosedTheorem
 import PartiteConstruction.Functional.QuotientFibreObstruction
 
 import PartiteConstruction.Ramsey.ForbiddenFunctions
+
+import PartiteConstruction.Structure.NullaryRoot
