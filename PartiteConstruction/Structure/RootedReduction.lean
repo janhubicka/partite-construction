@@ -201,6 +201,84 @@ theorem pad_sumFill {V : Type w}
       (Sum.inr.inj hs).symm
     simpa [normalize, hi] using hmove
 
+theorem dummy_sumFill {V : Type w}
+    (p : Pattern n R) (h : p.HasMoving) (x : Fin n → V) :
+    let t := sumFill p x
+    let ht : (ofTuple t).HasMoving := by
+      rw [ofTuple_sumFill]
+      exact h
+    dummy t ht = x (p.firstMoving h) := by
+  dsimp only
+  have hp : ofTuple (sumFill p x) = p := ofTuple_sumFill p x
+  have hm :
+      (ofTuple (sumFill p x)).firstMoving
+          (by rw [hp]; exact h) =
+        p.firstMoving h :=
+    firstMoving_congr hp (by rw [hp]; exact h) h
+  unfold dummy
+  rw [hm]
+  have hj := p.firstMoving_spec h
+  have hj' : (ofTuple (sumFill p x)).fixed (p.firstMoving h) = none := by
+    rw [hp]
+    exact hj
+  have hs := moveAt_spec (sumFill p x) (p.firstMoving h) hj'
+  simp only [sumFill, hj] at hs
+  exact (Sum.inr.inj hs).symm
+
+theorem funcTuple_preimage_canonical
+    {V W : Type w} (e : V → W) (he : Function.Injective e)
+    (t : Fin n → Sum R W) (h : (ofTuple t).HasMoving)
+    (q : Fin (n + 1) → V)
+    (heq :
+      Structure.funcTuple (pad t h) (dummy t h) = e ∘ q) :
+    let x : Fin n → V := fun i => q i.castSucc
+    let a := sumFill (ofTuple t) x
+    let ha : (ofTuple a).HasMoving := by
+      rw [ofTuple_sumFill]
+      exact h
+    Structure.funcTuple (pad a ha) (dummy a ha) = q := by
+  dsimp only
+  let x : Fin n → V := fun i => q i.castSucc
+  let a := sumFill (ofTuple t) x
+  let ha : (ofTuple a).HasMoving := by
+    rw [ofTuple_sumFill]
+    exact h
+  have hargs : pad t h = e ∘ x := by
+    funext i
+    have hi := congrFun heq i.castSucc
+    simpa [x, Structure.funcTuple_castSucc] using hi
+  have hnormTarget := normalize_pad t h
+  have hnormX :
+      normalize (ofTuple t) h x = x :=
+    normalize_eq_self_of_comp (ofTuple t) h e he (pad t h) x
+      (hnormTarget.trans hargs)
+  have hpad : pad a ha = x := by
+    have hp := pad_sumFill (ofTuple t) h x
+    dsimp only at hp
+    exact hp.trans hnormX
+  have hlast := congrFun heq (Fin.last n)
+  have htargetLast :
+      dummy t h = e (q (Fin.last n)) := by
+    simpa [Structure.funcTuple_last] using hlast
+  have j := (ofTuple t).firstMoving h
+  have hj := (ofTuple t).firstMoving_spec h
+  have hpadj : pad t h j = dummy t h := by
+    rw [pad_eq_moveAt _ h j hj]
+    rfl
+  have hargj := congrFun hargs j
+  have hxlast : x j = q (Fin.last n) := by
+    apply he
+    rw [← hargj, hpadj, htargetLast]
+  have hdummy : dummy a ha = q (Fin.last n) := by
+    have hd := dummy_sumFill (ofTuple t) h x
+    dsimp only at hd
+    exact hd.trans hxlast
+  apply Structure.funcTuple_eta q ▸ ?_
+  funext i
+  refine Fin.lastCases ?_ (fun j => ?_) i
+  · simpa [hpad, hdummy, Structure.funcTuple_last]
+  · simp [hpad, x, Structure.funcTuple_castSucc]
+
 /-- Fill a rooted pattern in an original structure.  Values of x at fixed
 coordinates are ignored. -/
 def fill
