@@ -98,9 +98,20 @@ noncomputable def sumFill {V : Type w} (p : Pattern n R)
   funext i
   cases h : t i with
   | inl r =>
-      simp [sumFill, ofTuple, h]
+      have hfix : (ofTuple t).fixed i = some r := by
+        simp [ofTuple, h]
+      rw [sumFill, hfix]
   | inr x =>
-      simp [sumFill, ofTuple, movingTuple, moveValue, h]
+      have hfix : (ofTuple t).fixed i = none := by
+        simp [ofTuple, h]
+      rw [sumFill, hfix]
+      apply congrArg Sum.inr
+      change
+        moveValue t
+            ((ofTuple t).moveEquiv.symm
+              ((ofTuple t).moveEquiv ⟨i, hfix⟩)) = x
+      rw [Equiv.symm_apply_apply]
+      simp [moveValue, h]
 
 def HasMoving {V : Type w} (t : Fin n → Sum R V) : Prop :=
   ∃ i v, t i = Sum.inr v
@@ -124,7 +135,11 @@ noncomputable def rootTuple {V : Type w} (t : Fin n → Sum R V)
     Sum.inl ∘ rootTuple t h = t := by
   funext i
   cases hi : t i with
-  | inl r => simp [rootTuple, hi]
+  | inl r =>
+      change Sum.inl (match hj : t i with
+        | .inl s => s
+        | .inr v => False.elim (h ⟨i, v, hj⟩)) = Sum.inl r
+      rw [hi]
   | inr v => exact False.elim (h ⟨i, v, hi⟩)
 
 end Pattern
