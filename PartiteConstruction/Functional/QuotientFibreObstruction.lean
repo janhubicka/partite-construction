@@ -21,7 +21,7 @@ def language : Language where
 
 def source : Structure language Bool where
   rel R := Empty.elim R
-  func _ x := {y | x 0 = false ∧ y = false}
+  func _ x := {y | x (0 : Fin 1) = false ∧ y = false}
 
 def target : Structure language Unit where
   rel R := Empty.elim R

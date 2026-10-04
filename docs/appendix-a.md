@@ -1,249 +1,88 @@
-# Appendix A coverage
+# Appendix A: current coverage and exact scope
 
-The non-induced construction is checked end to end, with the unconditional
-ordered theorem assembled as `Partite.orderedRamsey`. The **relational induced
-partite construction** is checked end to end as well: homomorphism-embeddings,
-positive coordinatewise powers, the induced Partite and Picture Lemmas, initial
-pictures, based stages, the irreducible-image invariant, finite iteration, and
-the final Ramsey extraction are all formalized.
+This map replaces the chronological status accumulation. The previous detailed
+inventory is preserved verbatim in
+[the historical coverage log](archive/appendix-a-before-closure-audit.md).
+Old entries in that log are not current proof obligations.
 
-The survey's genuinely set-valued function language is also formalized, but the
-formalization shows that the ordinary induced `D`-partite invariant is not
-stable under free attachment.  The corrected construction therefore uses the
-survey's relational graph encoding, `U`-closed embeddings, and
-`U`-transversality.  Full embeddings of the original function structures are
-proved equivalent to closed graph embeddings.  For **positive-arity**
-functions, the closed Partite Lemma, closed initial picture, closed attachment,
-closed-`α` Picture Lemma, finite iteration, and final Ramsey extraction are
-all checked end to end.  The full-language consequence is
-`Structure.inducedRamsey`.
+## Checked construction routes
 
-| Survey location | Lean declaration | Status |
+| Survey component | Public Lean endpoint or module | Exact scope |
 | --- | --- | --- |
-| Relational structures and induced embeddings | `RelLanguage`, `RelStructure`, `RelStructure.Embedding` | Relational-language interface |
-| Structural partition arrow | `StructuralRamsey.Arrow`, `Monochromatic` | Definition; embedding formulation |
-| Partite System definition | `Partite.System`, `Partite.System.expand` | Partition-map presentation; unary-predicate equivalence checked |
-| Transversal system | `Partite.transversal` | Exactly one named vertex per part |
-| Fixed-length Hales–Jewett statement | `HalesJewett.finite` | Proved from the pinned `lean-successors` theorem |
-| `lem:partite` | `Partite.NonInduced.partiteLemma`, `partiteLemma_expanded` | Proved for every finite colour type |
-| Power vertex set and finiteness | `Partite.NonInduced.Vertex`, its `Finite` instance | Proved; tagged powers of the parts |
-| `clm1` | `Partite.NonInduced.lineEmbedding`, `lineMap_rel_iff` | Proved, including relation reflection |
-| `clm3` | `Partite.NonInduced.lineEmbedding_comp_letter`, `wordEmbedding` | Proved |
-| Projected copies before `lem:picture` | `Partite.ProjectedEmbedding`, `projectedEquiv` | Bijection proved |
-| Restriction to selected parts | `Partite.System.restrict`, `Picture.restrictEmbedding` | Proved; empty parts allowed |
-| Free attachment in the proof of `lem:picture` | `RelStructure.Attachment.core_rel_iff`, `copy_rel_iff`; `Partite.Attachment.copy_extends` | Core and all attached copies are induced; every specified embedding extends |
-| `lem:picture` | `Partite.pictureLemma` | Proved, with a finite witness for every finite colour type |
-| Initial picture in the proof of `thm:unNR` | `Partite.Initial.picture`, `copyEmbedding` | Proved for any family of injective placements |
-| Repeated application of the Picture Lemma | `Partite.nonInducedConstruction`, `allProjections` | Proved; all local existence hypotheses discharged |
-| Backward-induction paragraph | `Partite.backwardFusion` | Proved; its required local properties are now supplied by `pictureLemma` |
-| Projected-relation invariant (including increasing order) | `Partite.Picture.respects`, `nonInducedConstruction_preserving` | Proved for every constraint on projected relation tuples |
-| Finite Ramsey input | `FiniteRamsey.strictMono` | Proved for strictly increasing tuples and every finite colour type |
-| Increasing placements | `Partite.increasingProjectionRamsey` | Proved; finite Ramsey supplies the abstract `ProjectionRamsey` input |
-| Monochromatic extraction from the final picture | `Partite.ramseyFromProjections` | Proved, including default colours for unrealized projections |
-| Final order completion | `RelStructure.exists_order_extension`, `arrow_completeOrder` | Proved; induced copies and the Ramsey arrow survive |
-| `thm:unNR`, assembled ordered conclusion | `Partite.orderedRamsey` | Proved unconditionally for finite ordered relational structures and finite nonempty colour types |
-| Relational irreducibility / homomorphism-embedding | `RelStructure.Irreducible`, `IsHomomorphismEmbedding`, `IsHomomorphismEmbedding.comp` | Proved; matches the relational specialization of the survey definition |
-| `A`-partite-system projection invariant | `Partite.System.IsPartiteOver` | Proved using a partition map whose projection is a homomorphism-embedding |
-| `def:power`, coordinatewise relational power | `Partite.Induced.power`, `power_isPartiteOver` | Proved for positive exponents; positivity is essential |
-| `lem:indpartite` | `Partite.Induced.partiteLemma` | Proved for relational languages and every finite colour type |
-| Irreducibles under free attachment | `RelStructure.Attachment.irreducible_core_or_copy`, `Partite.Attachment.attach_isPartiteOver` | Proved: every irreducible lies in the core or one attached copy, and the projection invariant survives |
-| `def:based` | `Partite.Induced.BasedOn`, `canonical_based` | Formalized as isomorphism to the canonical positive-power free attachment |
-| `lem:indpicutre` | `Partite.Induced.pictureLemma` | Proved for relational languages, with a finite based witness |
-| Relevant embeddings in the proof of `thm:inducedpartite` | `Partite.Induced.Relevant`, `relevant_iff_image_contained` | Factorization through a `B`-copy is proved equivalent to the manuscript's image-containment formulation |
-| Initial picture and invariant (3) | `Partite.Induced.Initial.picture_isPartiteOver`, `picture_covers` | Proved for the disjoint union of all `B`-copies in `D` |
-| Preservation of invariant (3) | `Partite.Induced.Attachment.attach_covers`, `pictureStep` | Proved simultaneously with the based-stage Picture property |
-| `thm:inducedpartite`, finite construction | `Partite.Induced.Stage`, `Trace`, `inducedConstruction` | Proved end to end for finite relational structures; the trace certifies every intermediate stage and the default-colour extraction is explicit |
-| Function graph encoding / closed embeddings | `Structure.embeddingEquivClosedGraph`, `arrow_ofGraph_iff_closed` | Proved: full embeddings and Ramsey arrows are equivalent to `U`-closed graph embeddings |
-| `lem:indpartiteU` | `Partite.Closed.Induced.partiteLemma` | Proved; coordinate powers preserve `U`-transversality and Hales--Jewett line/word maps are closed |
-| `obs:disaster1` | `Partite.Closed.support_functionClosed` | Proved |
-| Closed free attachment | `Closed.Attachment.core_closed`, `copy_closed`, `uTransversal` | Proved when the overlap is `U`-closed and attaching maps are closed |
-| closed-`α` part of `lem:indpicutreU` | `Partite.Closed.Picture.pictureLemma` | Proved; the arbitrary non-closed-`α` transversality claim is false and is marked in the survey |
-| corrected functional induced construction | `Partite.Closed.Construction.inducedConstruction` | Proved end to end for positive-arity function symbols |
-| Half-closed initial picture | `Partite.HalfClosed.Initial.copyEmbedding`, `uTransversal`, `isPartiteOver` | Ordinary B→D projections are allowed; each actual copy is U-closed and the picture is U-transversal for positive function arities |
-| `lem:rpartite`, half-closed induced construction | `RelStructure.HalfClosedArrow`, `Partite.HalfClosed.Construction.inducedConstruction` | Proved for positive-arity function symbols; repairs an ordinary returned B-copy to a genuine closed Ramsey arrow |
-| Functional part-predicate bridge | `Language.withParts`, `Partite.closedArrow_iff_functionalExpanded`, `halfClosedArrow_iff_functionalExpanded` | Exact L_P interface with unary part predicates and unchanged U-closedness |
-| Nested functional flattening | `Partite.Closed.Embedding.toFlattenedFunctional`, `closedArrow_flattened_of_functionalExpanded`, `Nested.flatten_uTransversal_comp` | L_P closed arrows descend to the outer partite target; U-transversality composes directly |
-| Corrected native `lem:rpartite` | `Partite.HalfClosed.inducedPartite` | End-to-end positive-arity partite theorem: apply half-closed construction in L_P, flatten, preserve the closed Ramsey arrow, and obtain a U-transversal witness |
-| Outer recursive iteration | `Partite.Recursive.build`, `recursiveConstruction_of_localPictures` | Processes every ordinary A→D projection, performs backward closed fusion, and carries the ordinary Ramsey arrow on D to a final closed Ramsey arrow |
-| Closed-projection local witness | `Partite.Recursive.localHalfClosedPicture_of_closed` | The required local half-closed U-transversal picture exists whenever the projection α is already U-closed |
-| Ordered singleton expansion | `Structure.rankExpand_singletonValued`, `Structure.Embedding.rankExpand` | Canonically split each finite ordered function fibre into ranked empty-or-singleton fibres; order-preserving full embeddings lift uniquely |
-| Singleton Ramsey reduction | `Structure.Embedding.forgetRanks`, `Structure.arrow_of_rankExpansion`, `Structure.arrow_of_singletonExpansion` | With `N=max(|A|,|B|)`, a Ramsey witness for the ranked singleton expansions reduces to a Ramsey witness for the original ordered pair |
-| Remaining local boundary | `Partite.Recursive.LocalHalfClosedPictures` | After the singleton-valued WLOG reduction, the unresolved recursive input can be narrowed to the partial-function case; non-closed free attachment is still not justified |
-| Non-closed Picture obstruction | `RelStructure.Attachment.copy_comp_not_functionClosed` | Free attachment over a non-closed support can destroy closedness of a selected composite A-copy |
-| Closed-copy-generated repair | `Partite.ClosedRepair.copyGenerated_uTransversal`, `copyGenerated_arrow` | Pruning to tuples lying in closed B-copies preserves the closed Ramsey arrow and forces U-transversality whenever B is U-transversal |
-| Tuple-coverage criterion | `Partite.ClosedRepair.uTransversal_of_tupleCovered` | The survey's claimed closed-copy coverage is sufficient for U-transversality; the unsupported part is obtaining that coverage before repair |
-| full relation/function Ramsey consequence | `Structure.inducedRamsey` | Proved via decoding the final graph structure |
-| Weak substructures for functions | `Structure.weakInduce`, `weakInduce_graph_rel_iff`, `WeakLocallyTreeLike`, `weakLocallyTreeLike_iff` | Proved: weak restriction is exactly induced restriction of the relational graph encoding |
-| Iterated tree invariant, base case | `Partite.Iterated.initial_locallyTreeLike` | Proved for irreducible `A` |
-| Iterated tree invariant, canonical step | `Partite.Iterated.canonicalStep_locallyTreeLike` | Proved for weak/graph-induced substructures under the recorded stronger hereditary-irreducibility hypothesis |
-| Ambient A-copy control completion | `RelStructure.LocallyTreeLike.completeControl` | Proved by successive free attachments |
-| Iterated construction | `Partite.Iterated.WeakTrace`, `WeakTrace.locallyTreeLike`; `Partite.Induced.Trace.locallyTreeLike`, `inducedConstruction_locallyTreeLike` | Abstract weak trace and the actual induced-construction trace both verified under hereditary irreducibility of A |
-| Repeated sparsening iteration | `RelStructure.ProjectsIrreduciblesInto.precomp`, `Partite.IteratedSparsening.build` | Ramsey arrow, composite projection, local tree-likeness, and projected irreducible coverage propagated through all positive levels |
-| Final sparsening attachment | `RelStructure.FreeAmalgam.attachOverIrreducible_preservesProjection`, `LocallyTreeLike.freeAmalgam`, `attachOverIrreducible_preservesProjectionAndLocalTree` | Projection preservation needs only irreducibility of the overlap; local-tree preservation is verified when the overlap is hereditarily irreducible |
-| Final irreducible completion | `RelStructure.FinalSparsening.build_all`, `FinalCompletion.exists_completion` | Finite attachment phase gives actual B-copies covering all irreducibles while preserving the checked invariants under hereditary irreducibility of B |
-| Strengthened sparsening theorem | `Partite.IteratedSparsening.sparseningRamsey_hereditarilyIrreducible_all` | End-to-end relational theorem for every n, assuming A and B hereditarily irreducible; no separate A↪B hypothesis is needed |
+| Non-induced construction and ordered relational Ramsey theorem | `Ramsey/Ordered.lean`, `Partite.orderedRamsey` | Finite relational structures; induced embeddings; all local pictures constructed |
+| Induced construction | `Partite/InducedConstruction.lean`, `Partite.Induced.inducedConstruction` | Relational language; finite trace and irreducible-image invariant |
+| Functions as graph relations | `Functional/Closed.lean`, `Structure.embeddingEquivClosedGraph`, `Structure.arrow_ofGraph_iff_closed` | Full functional embeddings correspond to closed graph embeddings; not an equivalence of arbitrary homomorphisms |
+| Closed Partite Lemma | `Functional/ClosedPartite.lean`, `Partite.Closed.Induced.partiteLemma` | U-transversal partite input |
+| Closed-alpha Picture Lemma | `Functional/ClosedPicture.lean`, `Partite.Closed.Picture.pictureLemma` | The projection alpha is closed; this is the valid moreover clause of `lem:indpicutreU` |
+| Domain-aware semi-closed Picture Lemma | `Functional/SemiClosedPictureProperty.lean`, `Partite.SemiClosed.Picture.pictureLemma` | The intermediate little picture is semi-closed, not required to be U-transversal |
+| Half-closed construction, `lem:rpartite` | `Functional/HalfClosedTheorem.lean`, `Partite.HalfClosed.ramseyPartiteWitness` | Positive function arity; arbitrary finite nonempty colour type; no U-transversality assumption on input D |
+| Recursive construction, `thm:models2` | `Functional/OrderedRecursive.lean`, `Structure.orderedClosedGraphRamsey` | Positive function arity, equivalently distinguished graph-relation arity at least two |
+| Closure of amalgam sides, `obs:disaster2` | `Functional/FreeAmalgamClosed.lean`, `RelStructure.IsFreeAmalgam.sides_closed_iff` | Both directions; arbitrary free-amalgam diagram; constants allowed |
+| Closure of a common substructure, `obs:solution` | Same module, `RelStructure.IsFreeAmalgam.common_image_closed_iff` | Both directions; neither the whole overlap nor either side is assumed closed |
+| Strict relational sparsening | `Iterated/SparseningStrictBaseIrreducible.lean` | A and B irreducible; complete binary-relation expansion, checked iteration, and final support; does not depend on the unresolved strong `thm:tree_invariant` |
 
-All names above are in the `StructuralRamsey` namespace. In the survey,
-green markers identify statements proved in the formalized relational setting,
-blue markers identify representation interfaces, and orange markers identify
-manuscript statements whose stated scope is broader than the theorem checked
-in Lean. The non-induced construction is fully green. The induced construction
-is complete for relational languages; its theorem-level markers remain orange
-where the survey presently quantifies over the general language with genuinely
-set-valued function symbols.
+All namespaces in the table lie under `StructuralRamsey`. For applications,
+import the indicated endpoint module rather than reproducing construction
+stages or changing their assumptions.
 
-## Mathematical scope
+## The simplifications
 
-* Languages need not be finite. Every relation has finite arity.
-* Embeddings preserve **and reflect** relations. “Non-induced” names the
-  construction, not a weakening of embeddings.
-* Relation tuples may repeat a vertex. Transversality says that two entries
-  with equal partition labels must be the same vertex.
-* Nullary relations are allowed, though they are not needed in the survey.
-* Parts and vertex sets may be empty. The Hales–Jewett bound is positive,
-  including for an empty alphabet, and constancy is formulated pairwise.
-* `Vertex B N` is finite whenever the partition type and B are finite.
-  The witness is the explicit system `power A B N` on that finite type.
-* Unary predicates are not merely described in prose: `expandedEquiv` and
-  `arrow_iff_expanded` check both directions of the interface.
-* The Picture Lemma does not require the full partition type to be finite;
-  only the source and initial picture are required to be finite. Finite
-  iteration works for an arbitrary finite list of injective projections.
-* The Ramsey reduction assumes a finite nonempty colour type. Its default
-  colour for unrealized projections is explicit. The Partite and Picture
-  Lemmas themselves also handle empty colour types.
-* Order is represented by a fresh binary symbol, via `RelLanguage.withOrder`
-  and `RelStructure.ordered`. Completion orders the finite carrier by its
-  partition label and a numbering within each part. Every induced embedding
-  from a linearly ordered source remains induced after completion.
-* Low-level attachments, restrictions, and the Picture Lemma are universe
-  polymorphic. Iteration and the assembled theorem use a common carrier
-  universe, which includes the usual `Type` presentation of finite structures.
-* The induced construction is formalized for relational languages. Its
-  coordinatewise power requires `N > 0`; at exponent zero relation conditions
-  are vacuous and the projection need not remain a homomorphism.
-* `Relevant` embeddings are those `A → D` maps factoring through a copy
-  `B → D`; Lean proves this is equivalent to the survey's statement that the
-  image of the `A`-copy is contained in the image of a `B`-copy.
-* The final induced extraction assigns a fixed default colour to embeddings
-  `A → D` not contained in any `B`-copy before applying the Ramsey arrow on
-  `D`. This is the same bookkeeping issue that appears in the non-induced
-  projection argument.
-* For set-valued functions, the direct coordinatewise power requires
-  function-output transversality.  More importantly, ordinary free attachment
-  does not preserve the full function-homomorphic partition projection on
-  mixed tuples, so the functional theorem is carried out in the relational
-  graph encoding with `U`-closed embeddings.
-* The closed Picture theorem is proved for `U`-closed `α : A → D`.
-  The survey's claim that the same free attachment remains
-  `U`-transversal for arbitrary non-closed `α` is false; a unary
-  counterexample is recorded in the manuscript.
-* The closed and half-closed initial disjoint unions assume every original
-  function has positive arity. Nullary functions/constants need a separate
-  initial object: the empty input does not determine a copy index, so different
-  copies can contribute distinct outputs in one part.  The half-closed initial
-  picture is indexed by ordinary B→D embeddings; nevertheless each copy inside
-  the picture is U-closed because a positive-arity input fixes its copy index.
-* `Structure.embeddingEquivClosedGraph`, `arrow_ofGraph_iff_closed`, and
-  `Structure.inducedRamsey` connect the corrected graph construction back to
-  genuine embeddings and Ramsey arrows in the original relation/function
-  language.
-* For the sparsening/tree-invariant induction, arbitrary vertex subsets are
-  treated as **weak substructures**: relations are restricted and function
-  outputs outside the subset are discarded.  Lean proves that the graph of
-  `A.weakInduce S` is exactly the ordinary induced substructure
-  `A.graph.induce S`, so induction on the size of a weak substructure becomes
-  the existing relational induction on arbitrary finite vertex sets.
-* The verified one-step tree invariant assumes every weak/graph-induced
-  substructure of `A` is irreducible.  The final free-attachment preservation
-  step additionally uses hereditary irreducibility of `B`: an arbitrary
-  small test set may meet the irreducible gluing overlap in a reducible proper
-  subset, and a homomorphism-embedding need not restrict to an embedding on
-  that subset.  Under hereditary irreducibility the overlap embeds into `B`
-  and all its induced substructures are irreducible, so the checked tree-gluing
-  proof applies.  This is automatic in the intended ordered applications but
-  is stronger than the survey theorem's stated general hypothesis.
+The local closure calculus has one master statement:
 
+`C.FunctionClosedSet S` iff the inverse images of S in both sides of a free
+amalgam are closed. Each side is closed iff the overlap is closed in the
+opposite side. This proves the two survey observations uniformly and separates
+local closure (which permits constants) from the positive-arity initial
+construction. It is not a transversality theorem.
 
-### Ordered singleton-valued reduction
+The half-closed witness endpoint hides `Stage` and the initial `Nonempty`
+bookkeeping. It preserves the exact difference between an ordinary B-copy in
+D and a closed B-copy in the output. The native nested-flattening theorems have
+an additional outer-transversality hypothesis for a different reason; that
+hypothesis must not be imported into the standalone half-closed statement.
 
-For a fixed finite ordered pair `A,B`, let
-`N = max(|A|,|B|)`.  `Language.rankFunctions` replaces every set-valued
-function symbol `F` by the ranked symbols `(F,i)`, `i<N`, and
-`Structure.rankExpand` interprets `(F,i)` by the i-th least element of the
-original fibre when it exists, and by the empty set otherwise.
-`Structure.rankExpand_singletonValued` proves that every new function fibre
-has size at most one.  Because a full order-preserving embedding maps each
-finite fibre bijectively and monotonically, `Structure.Embedding.rankExpand`
-provides its canonical ranked lift.
+The final recursive route is the domain-aware semi-closed route. The old
+arbitrary-alpha free-attachment argument is not a dependency of
+`orderedClosedGraphRamsey`. Its counterexample refutes that argument, **not**
+the existence of every conceivable witness for the stronger standalone claim.
 
-Conversely, `Structure.rankReduct` unions all ranked fibres.
-`Structure.Embedding.forgetRanks` turns an embedding of a ranked expansion
-into an embedding of the original structure once the available ranks cover
-all source fibres.  The bound `N=max(|A|,|B|)` covers both structures, and
-`Structure.arrow_of_singletonExpansion` proves that every Ramsey witness for
-the ranked singleton expansions descends to a Ramsey witness for `A,B`.
-Thus, in the ordered finite setting, it is genuinely without loss of
-generality to reduce the set-valued functions to partial functions.
+## Remaining manuscript obligations
 
-This reduction does **not** validate the arbitrary-nonclosed-`α` free
-attachment.  Even for partial functions, amalgamating over a non-closed
-support can introduce an output over an input tuple of another copy (or force
-competing outputs).  The remaining `LocalHalfClosedPictures` obligation is
-therefore sharper, but still nontrivial.
+1. **Strong synchronized tree invariant.** Under mere irreducibility of A,
+   localizing whole irreducible copies does not settle simultaneous control of
+   all intersections of ambient A-copies with an arbitrary partial boundary.
+   Hereditary irreducibility and several projected-history variants are
+   checked, but are not substitutes for the literal `thm:tree_invariant`.
+   The strict sparsening endpoint above avoids this stronger invariant.
+2. **Full functional induced invariant / EHN class transfer.** The active EHN
+   branch is independent work. Unrestricted functional Ramsey plus a
+   graph-embedding equivalence does not by itself prove the free-amalgamation
+   class membership conclusion. Check the functional irreducible-image
+   invariant and the exact homomorphism convention before upgrading the
+   survey's transfer paragraph.
+3. **Constants in the initial construction.** Local closure observations allow
+   nullary functions; the disjoint-copy recursive construction currently uses
+   positive arity. Do not transfer the latter restriction to the former.
+4. **Editorial disposition of arbitrary-alpha `lem:indpicutreU`.** Keep the
+   stronger statement separate or replace it by the checked domain-aware
+   statement. Do not silently retain the invalid displayed attachment proof.
 
-## Trust and dependency
+## EHN quotient regression
 
-The Hales–Jewett dependency is `janhubicka/lean-successors` at
-`ce5ce187ef88e28d84a4a465517b3f9c87a0640a`, imported through
-`SuccessorTree.HalesJewett.AlphabetInduction`. It proves
-`SuccessorTree.HalesJewett.starHJ_finite`; this project does not postulate HJ.
-The fixed-length bridge combines hypothetical bad colourings at each length
-into one colouring of all finite words and applies that theorem.
+`Functional/QuotientFibreObstruction.lean` gives a finite, exact generated-image
+example. On two points, F(false)={false} and F(true)=empty. Collapse the points
+to one; the incidence-generated target has F(*)={*}. The collapse is a
+surjective graph homomorphism but not a full set-valued-function homomorphism.
+It proves that an arbitrary noninjective generated-image quotient cannot be
+used as a full homomorphism without a fibre-congruence condition. This is not a
+counterexample to EHN; it identifies the correct weak-map interface needed
+in the proof.
 
-`CheckAxioms.lean` prints the transitive axiom dependencies of the main results.
-All 102 audited declarations pass. CI accepts only `propext`, `Classical.choice`, and `Quot.sound`, and checks that
-every requested declaration produced a result. In particular, `sorryAx`, a
-custom HJ axiom, and native-evaluation axioms cannot pass this audit.
+## Validation discipline
 
-## Survey corrections recorded as inline notes
-
-The formalization has identified the following proposed manuscript corrections.
-They are recorded in `\todo[inline]{Řehořek: ...}` notes rather than silently
-changing the circulation text.
-
-### Non-induced construction
-
-1. A linearly ordered partite system need not be transversal as defined:
-   projection is injective, but some named parts may be empty. Delete unused
-   parts and relabel to obtain the defined transversal presentation.
-2. The definition of a word should use the bound `i < N`, not `i < n`.
-   The Partite Lemma proof also needs a positive Hales--Jewett length for the
-   assertion that every word lies on a parameter line.
-3. In the Picture Lemma's pullback colouring, the quantified embedding has
-   codomain C′, not B′.
-4. In the unrestricted construction, the set of new predicates is
-   `L_P \\ L`, not `L \\ L_P`.
-5. Embeddings of the L-structure A into a picture have codomain its L-reduct.
-   Projections not realized by an A-copy need an arbitrary default colour in
-   the induced colouring of all increasing injections.
-
-### Induced construction
-
-6. The coordinatewise power must use `N > 0` (or separately define the zero
-   power). At `N = 0`, relational conditions are vacuous, so the projection
-   need not be a homomorphism and the power need not be A-partite.
-7. The sentence assuming without loss that every vertex of B lies in an A-copy
-   is unnecessary and is not an evident reduction; deleting such vertices
-   changes the target B. The checked proof works for arbitrary B.
-8. The Hales--Jewett alphabet must consist of part-preserving copies
-   `Emb(A′,B)` (equivalently projected A-copies), not arbitrary embeddings of
-   the L-reduct A into B. Correspondingly the displayed arrow has source A′.
-9. The sentence saying function symbols are analogous is not valid for the
-   survey's genuinely set-valued functions without additional hypotheses.
-   The relational induced theorem is checked; the set-valued case belongs to
-   the later transversality/recursive machinery.
-10. In the final induced Ramsey extraction, backward fusion colours only the
-    relevant embeddings A→D lying inside B-copies. Assign a fixed default
-    colour to the remaining embeddings before applying D→(B)^A.
-
+CI builds every new module and audits all declarations listed in
+`CheckAxioms.lean` and `CheckClosureAxioms.lean`. Only `propext`,
+`Classical.choice`, and `Quot.sound` are accepted. Compilation errors,
+`sorryAx`, missing audit results, and unexpected extra axioms are failures.
+Pin the survey's `validation.tex` only to an immutable commit whose complete
+build and axiom audit succeeded.
