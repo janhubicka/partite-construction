@@ -1,6 +1,7 @@
 import PartiteConstruction.Iterated.ProjectedRelativeLabelledLocalTreeLike
 import PartiteConstruction.Iterated.MixedRelativeLabelledGlue
 import PartiteConstruction.Iterated.ControlCompletionEmbedding
+import PartiteConstruction.Iterated.IntersectionStrongLocalTreeLike
 
 /-! # Mixed gluing directly from projected histories
 
@@ -78,11 +79,8 @@ theorem toRelativeLabelled_identity
     refine ⟨Z, T', hTree', j ∘ f, hf', hctrl, target', ?_⟩
     intro x
     have hx := htarget x
-    change
-      j (f ⟨β x.1, hH x⟩) =
-        j (target x.1)
-    apply congrArg j
-    simpa [eH] using hx
+    change f ⟨β x.1, hH x⟩ = target x.1 at hx
+    exact congrArg j hx
 
 end ProjectedRelativeLabelledLocallyTreeLike
 
