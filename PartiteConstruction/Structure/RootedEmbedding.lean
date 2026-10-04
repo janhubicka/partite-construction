@@ -8,7 +8,7 @@ namespace StructuralRamsey.Rooted
 open StructuralRamsey Structure
 
 universe u v
-variable {L : Language.{u}} {R U V : Type v}
+variable {L : Language.{u}} {R U V : Type v} {n : ℕ}
 
 /-- A full embedding which agrees with the chosen root maps moving vertices to
 moving vertices. -/
@@ -80,7 +80,7 @@ theorem root_func_iff
     rcases hr with ⟨z, hz, hez⟩
     have hzroot : z = ρA r := by
       apply e.injective
-      exact hez.trans (hroot r)
+      exact hez.trans (hroot r).symm
     simpa [hzroot] using hz
   · intro hr
     have himg : e (ρA r) ∈ Structure.imageSet e (A.func F x) :=
@@ -88,7 +88,46 @@ theorem root_func_iff
     rw [hm] at himg
     rwa [hroot r] at himg
 
-/-- Full function-fibre preservation restricts to the moving complements. -/
+/-- Full function-fibre preservation restricts to outside outputs for
+arbitrary (possibly mixed root/moving) argument tuples. -/
+theorem outside_func_image_args
+    {Root : Structure L R} {A : Structure L U} {B : Structure L V}
+    {ρA : Structure.Embedding Root A}
+    {ρB : Structure.Embedding Root B}
+    (e : Structure.Embedding A B)
+    (hroot : ∀ r, e (ρA r) = ρB r)
+    (F : L.FuncSymbol)
+    (a : Fin (L.funcArity F) → U)
+    (b : Fin (L.funcArity F) → V)
+    (hab : e ∘ a = b) :
+    Structure.imageSet (outsideMap e hroot)
+      {y : Outside ρA | y.1 ∈ A.func F a} =
+      {z : Outside ρB | z.1 ∈ B.func F b} := by
+  ext z
+  constructor
+  · rintro ⟨y, hy, rfl⟩
+    have himg : e y.1 ∈ Structure.imageSet e (A.func F a) :=
+      ⟨y.1, hy, rfl⟩
+    rw [e.map_func F a, hab] at himg
+    exact himg
+  · intro hz
+    have hz' : z.1 ∈ B.func F (e ∘ a) := by
+      rw [hab]
+      exact hz
+    rw [← e.map_func F a] at hz'
+    rcases hz' with ⟨y, hy, hey⟩
+    have hyout : y ∉ Set.range ρA := by
+      rintro ⟨r, hyr⟩
+      subst y
+      apply z.2
+      refine ⟨r, ?_⟩
+      exact (hroot r).symm.trans hey
+    let yout : Outside ρA := ⟨y, hyout⟩
+    refine ⟨yout, hy, ?_⟩
+    apply Subtype.ext
+    exact hey
+
+/-- Special case for an all-moving input tuple. -/
 theorem outside_func_image
     {Root : Structure L R} {A : Structure L U} {B : Structure L V}
     {ρA : Structure.Embedding Root A}
@@ -101,33 +140,11 @@ theorem outside_func_image
       {y : Outside ρA | y.1 ∈ A.func F (Subtype.val ∘ x)} =
       {z : Outside ρB |
         z.1 ∈ B.func F (Subtype.val ∘ (outsideMap e hroot ∘ x))} := by
-  ext z
-  constructor
-  · rintro ⟨y, hy, rfl⟩
-    change e y.1 ∈
-      B.func F (fun i => e (x i).1)
-    have himg : e y.1 ∈
-        Structure.imageSet e (A.func F (Subtype.val ∘ x)) :=
-      ⟨y.1, hy, rfl⟩
-    simpa [Function.comp_apply] using
-      (show e y.1 ∈ B.func F (e ∘ (Subtype.val ∘ x)) by
-        rw [← e.map_func F (Subtype.val ∘ x)]
-        exact himg)
-  · intro hz
-    have hz' : z.1 ∈ B.func F (e ∘ (Subtype.val ∘ x)) := by
-      simpa [Function.comp_apply] using hz
-    rw [← e.map_func F (Subtype.val ∘ x)] at hz'
-    rcases hz' with ⟨y, hy, hey⟩
-    have hyout : y ∉ Set.range ρA := by
-      rintro ⟨r, hyr⟩
-      subst y
-      apply z.2
-      refine ⟨r, ?_⟩
-      exact (hroot r).symm.trans hey
-    let yout : Outside ρA := ⟨y, hyout⟩
-    refine ⟨yout, hy, ?_⟩
-    apply Subtype.ext
-    exact hey
+  apply outside_func_image_args e hroot F
+    (Subtype.val ∘ x)
+    (Subtype.val ∘ (outsideMap e hroot ∘ x))
+  funext i
+  rfl
 
 /-- A root-compatible strictly monotone full embedding induces a full
 embedding of rooted moving encodings. -/
@@ -181,8 +198,8 @@ noncomputable def encodeEmbedding
           y.1 ∈ A.func Q.F (Pattern.fill ρA Q.p argsA)} =
         {z : Outside ρB |
           z.1 ∈ B.func Q.F (Pattern.fill ρB Q.p argsB)}
-    rw [← hfill']
-    have hm := outside_func_image e hroot Q.F argsA
-    simpa [argsA, argsB, Function.comp_apply] using hm
+    exact outside_func_image_args e hroot Q.F
+      (Pattern.fill ρA Q.p argsA)
+      (Pattern.fill ρB Q.p argsB) hfill'
 
 end StructuralRamsey.Rooted
