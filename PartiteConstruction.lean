@@ -178,3 +178,5 @@ import PartiteConstruction.Functional.FibreSurjectivityObstruction
 import PartiteConstruction.Functional.WeakTreePropertyObstruction
 
 import PartiteConstruction.Functional.FullSparseningObstruction
+
+import PartiteConstruction.Functional.ClosedLocalTreeCompletion
