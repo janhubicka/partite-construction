@@ -15,7 +15,8 @@ theorem Pattern.not_hasMoving_inl {n : ℕ} (x : Fin n → R) :
     ¬(Pattern.ofTuple (Sum.inl ∘ x : Fin n → Sum R V)).HasMoving := by
   rw [Pattern.ofTuple_hasMoving_iff]
   rintro ⟨i, y, h⟩
-  exact Sum.noConfusion h
+  change Sum.inl (x i) = Sum.inr y at h
+  cases h
 
 /-- The fixed root is a full substructure of every decoded structure. -/
 noncomputable def rootEmbedding
