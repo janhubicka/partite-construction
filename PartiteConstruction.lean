@@ -72,6 +72,7 @@ import PartiteConstruction.Iterated.PowerCoordinateEmbedding
 import PartiteConstruction.Iterated.WeakStep
 import PartiteConstruction.Iterated.WeakStepTreeCompletion
 import PartiteConstruction.Iterated.WeakTrace
+import PartiteConstruction.Iterated.WeakTraceTreeCompletion
 import PartiteConstruction.Iterated.InducedTraceLocal
 import PartiteConstruction.Iterated.Initial
 import PartiteConstruction.Iterated.Ordered
