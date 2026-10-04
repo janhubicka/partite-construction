@@ -16,7 +16,7 @@ namespace StructuralRamsey.Rooted
 open StructuralRamsey Structure
 
 universe u v
-variable {L : Language.{u}} {U V : Type v}
+variable {L : Language.{u}} {R U V : Type v}
 
 /-- Reattaching the root commutes with composition with a root-compatible
 ordered embedding. -/
