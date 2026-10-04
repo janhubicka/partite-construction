@@ -371,75 +371,95 @@ theorem functionalLiftMap_injective
   classical
   let Fmap :=
     functionalLiftMap hSrc hTgt q hA hB hcompatA hcompatB
-  intro x y hxy
-  rcases hSrc.covers x with ⟨a, hxa⟩ | ⟨b, hxb⟩
-  · rcases hSrc.covers y with ⟨a', hya⟩ | ⟨b, hyb⟩
-    · apply hxa.trans
-      apply congrArg iA
-      apply hinjA
-      apply jA.injective
+  have cross
+      (a : E) (b : F)
+      (hab : Fmap (iA a) = Fmap (iB b)) :
+      iA a = iB b := by
+    have hcross : jA (hA a) = jB (hB b) := by
       calc
         jA (hA a) = Fmap (iA a) :=
           (functionalLiftMap_left hSrc hTgt q hA hB
             hcompatA hcompatB a).symm
-        _ = Fmap x := congrArg Fmap hxa.symm
-        _ = Fmap y := hxy
-        _ = Fmap (iA a') := congrArg Fmap hya
-        _ = jA (hA a') :=
-          functionalLiftMap_left hSrc hTgt q hA hB
-            hcompatA hcompatB a'
-    · have hcross : jA (hA a) = jB (hB b) := by
+        _ = Fmap (iB b) := hab
+        _ = jB (hB b) :=
+          functionalLiftMap_right hSrc hTgt q hA hB
+            hcompatA hcompatB b
+    obtain ⟨g, hag, hbg⟩ :=
+      (hTgt.overlap (hA a) (hB b)).mp hcross
+    obtain ⟨d, hqd⟩ := hq g
+    have ha : a = sA d := by
+      apply hinjA
+      calc
+        hA a = tA g := hag
+        _ = tA (q d) := congrArg tA hqd.symm
+        _ = hA (sA d) := (hcompatA d).symm
+    have hb : b = sB d := by
+      apply hinjB
+      calc
+        hB b = tB g := hbg
+        _ = tB (q d) := congrArg tB hqd.symm
+        _ = hB (sB d) := (hcompatB d).symm
+    calc
+      iA a = iA (sA d) := congrArg iA ha
+      _ = iB (sB d) :=
+        (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
+      _ = iB b := congrArg iB hb.symm
+  intro x y hxy
+  rcases hSrc.covers x with ⟨a, hxa⟩ | ⟨b, hxb⟩
+  · rcases hSrc.covers y with ⟨a', hya⟩ | ⟨b, hyb⟩
+    · have haa : a = a' := by
+        apply hinjA
+        apply jA.injective
         calc
           jA (hA a) = Fmap (iA a) :=
             (functionalLiftMap_left hSrc hTgt q hA hB
               hcompatA hcompatB a).symm
           _ = Fmap x := congrArg Fmap hxa.symm
           _ = Fmap y := hxy
-          _ = Fmap (iB b) := congrArg Fmap hyb
-          _ = jB (hB b) :=
-            functionalLiftMap_right hSrc hTgt q hA hB
-              hcompatA hcompatB b
-      obtain ⟨g, hag, hbg⟩ :=
-        (hTgt.overlap (hA a) (hB b)).mp hcross
-      obtain ⟨d, hqd⟩ := hq g
-      have ha : a = sA d := by
-        apply hinjA
-        calc
-          hA a = tA g := hag
-          _ = tA (q d) := congrArg tA hqd.symm
-          _ = hA (sA d) := (hcompatA d).symm
-      have hb : b = sB d := by
-        apply hinjB
-        calc
-          hB b = tB g := hbg
-          _ = tB (q d) := congrArg tB hqd.symm
-          _ = hB (sB d) := (hcompatB d).symm
+          _ = Fmap (iA a') := congrArg Fmap hya
+          _ = jA (hA a') :=
+            functionalLiftMap_left hSrc hTgt q hA hB
+              hcompatA hcompatB a'
       calc
         x = iA a := hxa
-        _ = iA (sA d) := congrArg iA ha
-        _ = iB (sB d) :=
-          (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
-        _ = iB b := congrArg iB hb.symm
+        _ = iA a' := congrArg iA haa
+        _ = y := hya.symm
+    · have hab : Fmap (iA a) = Fmap (iB b) := by
+        calc
+          Fmap (iA a) = Fmap x := congrArg Fmap hxa.symm
+          _ = Fmap y := hxy
+          _ = Fmap (iB b) := congrArg Fmap hyb
+      calc
+        x = iA a := hxa
+        _ = iB b := cross a b hab
         _ = y := hyb.symm
   · rcases hSrc.covers y with ⟨a, hya⟩ | ⟨b', hyb⟩
-    · symm
-      apply functionalLiftMap_injective hSrc hTgt q hq hA hB
-        hcompatA hcompatB hinjA hinjB
-      exact hxy.symm
-    · apply hxb.trans
-      apply congrArg iB
-      apply hinjB
-      apply jB.injective
+    · have hab : Fmap (iA a) = Fmap (iB b) := by
+        calc
+          Fmap (iA a) = Fmap y := congrArg Fmap hya.symm
+          _ = Fmap x := hxy.symm
+          _ = Fmap (iB b) := congrArg Fmap hxb
       calc
-        jB (hB b) = Fmap (iB b) :=
-          (functionalLiftMap_right hSrc hTgt q hA hB
-            hcompatA hcompatB b).symm
-        _ = Fmap x := congrArg Fmap hxb.symm
-        _ = Fmap y := hxy
-        _ = Fmap (iB b') := congrArg Fmap hyb
-        _ = jB (hB b') :=
-          functionalLiftMap_right hSrc hTgt q hA hB
-            hcompatA hcompatB b'
+        x = iB b := hxb
+        _ = iA a := (cross a b hab).symm
+        _ = y := hya.symm
+    · have hbb : b = b' := by
+        apply hinjB
+        apply jB.injective
+        calc
+          jB (hB b) = Fmap (iB b) :=
+            (functionalLiftMap_right hSrc hTgt q hA hB
+              hcompatA hcompatB b).symm
+          _ = Fmap x := congrArg Fmap hxb.symm
+          _ = Fmap y := hxy
+          _ = Fmap (iB b') := congrArg Fmap hyb
+          _ = jB (hB b') :=
+            functionalLiftMap_right hSrc hTgt q hA hB
+              hcompatA hcompatB b'
+      calc
+        x = iB b := hxb
+        _ = iB b' := congrArg iB hbb
+        _ = y := hyb.symm
 
 end StructuralRamsey.Structure.IsFreeAmalgam
 
