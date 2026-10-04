@@ -159,6 +159,56 @@ theorem normalize_pad {V : Type w}
     simp only [hi, ↓reduceDIte]
     rw [hfirst, pad_eq_dummy _ h i hi]
 
+/-- Fill a rooted pattern in an original structure.  Values of x at fixed
+coordinates are ignored. -/
+def fill
+    {L : Language.{u}} {U : Type w}
+    {Root : Structure L R} {A : Structure L U}
+    (ρ : Structure.Embedding Root A) (p : Pattern n R)
+    (x : Fin n → {a : U // a ∉ Set.range ρ}) :
+    Fin n → U :=
+  fun i =>
+    match p.fixed i with
+    | some r => ρ r
+    | none => (x i).1
+
+/-- Fill a rooted pattern in a disjoint union. -/
+def sumFill {V : Type w} (p : Pattern n R)
+    (x : Fin n → V) : Fin n → Sum R V :=
+  fun i =>
+    match p.fixed i with
+    | some r => Sum.inl r
+    | none => Sum.inr (x i)
+
+@[simp] theorem ofTuple_sumFill {V : Type w}
+    (p : Pattern n R) (x : Fin n → V) :
+    ofTuple (sumFill p x) = p := by
+  apply Pattern.ext
+  funext i
+  cases h : p.fixed i with
+  | some r => simp [ofTuple, sumFill, h]
+  | none => simp [ofTuple, sumFill, h]
+
+@[simp] theorem sumFill_ofTuple_pad {V : Type w}
+    (t : Fin n → Sum R V) (h : (ofTuple t).HasMoving) :
+    sumFill (ofTuple t) (pad t h) = t := by
+  funext i
+  cases hi : t i with
+  | inl r =>
+      have hfix : (ofTuple t).fixed i = some r := by
+        simp [ofTuple, hi]
+      simp only [sumFill, hfix]
+  | inr x =>
+      have hfix : (ofTuple t).fixed i = none := by
+        simp [ofTuple, hi]
+      simp only [sumFill, hfix]
+      have hs := moveAt_spec t i hfix
+      rw [hi] at hs
+      apply congrArg Sum.inr
+      calc
+        pad t h i = moveAt t i hfix := pad_eq_moveAt t h i hfix
+        _ = x := (Sum.inr.inj hs).symm
+
 /-- Padding a tuple reconstructed from a pattern is exactly normalization. -/
 theorem pad_sumFill {V : Type w}
     (p : Pattern n R) (h : p.HasMoving) (x : Fin n → V) :
@@ -278,56 +328,6 @@ theorem funcTuple_preimage_canonical
   refine Fin.lastCases ?_ (fun j => ?_) i
   · simpa [hpad, hdummy, Structure.funcTuple_last]
   · simp [hpad, x, Structure.funcTuple_castSucc]
-
-/-- Fill a rooted pattern in an original structure.  Values of x at fixed
-coordinates are ignored. -/
-def fill
-    {L : Language.{u}} {U : Type w}
-    {Root : Structure L R} {A : Structure L U}
-    (ρ : Structure.Embedding Root A) (p : Pattern n R)
-    (x : Fin n → {a : U // a ∉ Set.range ρ}) :
-    Fin n → U :=
-  fun i =>
-    match p.fixed i with
-    | some r => ρ r
-    | none => (x i).1
-
-/-- Fill a rooted pattern in a disjoint union. -/
-def sumFill {V : Type w} (p : Pattern n R)
-    (x : Fin n → V) : Fin n → Sum R V :=
-  fun i =>
-    match p.fixed i with
-    | some r => Sum.inl r
-    | none => Sum.inr (x i)
-
-@[simp] theorem ofTuple_sumFill {V : Type w}
-    (p : Pattern n R) (x : Fin n → V) :
-    ofTuple (sumFill p x) = p := by
-  apply Pattern.ext
-  funext i
-  cases h : p.fixed i with
-  | some r => simp [ofTuple, sumFill, h]
-  | none => simp [ofTuple, sumFill, h]
-
-@[simp] theorem sumFill_ofTuple_pad {V : Type w}
-    (t : Fin n → Sum R V) (h : (ofTuple t).HasMoving) :
-    sumFill (ofTuple t) (pad t h) = t := by
-  funext i
-  cases hi : t i with
-  | inl r =>
-      have hfix : (ofTuple t).fixed i = some r := by
-        simp [ofTuple, hi]
-      simp only [sumFill, hfix]
-  | inr x =>
-      have hfix : (ofTuple t).fixed i = none := by
-        simp [ofTuple, hi]
-      simp only [sumFill, hfix]
-      have hs := moveAt_spec t i hfix
-      rw [hi] at hs
-      apply congrArg Sum.inr
-      calc
-        pad t h i = moveAt t i hfix := pad_eq_moveAt t h i hfix
-        _ = x := (Sum.inr.inj hs).symm
 
 /-- A tuple with no moving coordinates consists entirely of root vertices. -/
 theorem exists_rootAt {V : Type w} (t : Fin n → Sum R V)
