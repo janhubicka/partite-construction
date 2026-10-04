@@ -408,3 +408,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.FunctionClosedTreeAmalgam.irreducible_contained_in_closed_copy
 #print axioms StructuralRamsey.RelStructure.FunctionClosedTreeAmalgam.root_contained_in_closed_copy
 #print axioms StructuralRamsey.RelStructure.FunctionClosedTreeAmalgam.irreducible_contained_in_full_copy
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.toFull
+#print axioms StructuralRamsey.RelStructure.FunctionClosedTreeAmalgam.toFunctional
