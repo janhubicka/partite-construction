@@ -39,6 +39,10 @@ def cliqueReduct (C : RelStructure L.withClique V) : RelStructure L V where
 @[simp] theorem withClique_reduct (A : RelStructure L V) :
     A.withClique.cliqueReduct = A := rfl
 
+@[simp] theorem cliqueReduct_induce
+    (C : RelStructure L.withClique V) (S : Set V) :
+    (C.induce S).cliqueReduct = C.cliqueReduct.induce S := rfl
+
 namespace Embedding
 
 /-- Every induced embedding lifts canonically to the complete-graph expansion. -/
@@ -67,6 +71,26 @@ def cliqueReduct
     {A : RelStructure L.withClique V} {B : RelStructure L.withClique W}
     (e : Embedding A B) :
     Embedding A.cliqueReduct B.cliqueReduct where
+  toFun := e
+  injective := e.injective
+  map_rel_iff R x := e.map_rel_iff (.inl R) x
+
+/-- Forget the clique relation when both source and target are canonical
+expansions. -/
+def forgetClique
+    {A : RelStructure L V} {B : RelStructure L W}
+    (e : Embedding A.withClique B.withClique) :
+    Embedding A B where
+  toFun := e
+  injective := e.injective
+  map_rel_iff R x := e.map_rel_iff (.inl R) x
+
+/-- Forget the clique relation from a canonical source embedding into an
+arbitrary expanded target. -/
+def forgetCliqueTarget
+    {A : RelStructure L V} {B : RelStructure L.withClique W}
+    (e : Embedding A.withClique B) :
+    Embedding A B.cliqueReduct where
   toFun := e
   injective := e.injective
   map_rel_iff R x := e.map_rel_iff (.inl R) x
@@ -186,10 +210,15 @@ theorem LocallyTreeLike.cliqueReduct_loose
     LooseLocallyTreeCompletable B.cliqueReduct C.cliqueReduct n := by
   intro S hS
   obtain ⟨Y, T, hTree, f, hf, _⟩ := h S hS
+  have hfr0 :
+      (C.induce (↑S : Set X)).cliqueReduct.IsHomomorphismEmbedding
+        T.cliqueReduct f :=
+    hf.cliqueReduct
   have hfr :
       (C.cliqueReduct.induce (↑S : Set X)).IsHomomorphismEmbedding
         T.cliqueReduct f := by
-    simpa [cliqueReduct] using hf.cliqueReduct
+    rw [← cliqueReduct_induce C (↑S : Set X)]
+    exact hfr0
   exact ⟨Y, T.cliqueReduct, hTree.cliqueReduct_loose, f, hfr⟩
 
 /-- Property (3) descends through the complete-relation reduct. -/
@@ -218,15 +247,17 @@ theorem arrow_withClique
   obtain ⟨f, hf⟩ := h (fun e => χ e.withClique)
   refine ⟨f.withClique, ?_⟩
   intro e₁ e₂
-  have hh := hf e₁.cliqueReduct e₂.cliqueReduct
+  let r₁ : RelStructure.Embedding A B := e₁.forgetClique
+  let r₂ : RelStructure.Embedding A B := e₂.forgetClique
+  have hh := hf r₁ r₂
   have he₁ :
-      (f.comp e₁.cliqueReduct).withClique =
+      (f.comp r₁).withClique =
         f.withClique.comp e₁ := by
     apply RelStructure.Embedding.ext
     intro a
     rfl
   have he₂ :
-      (f.comp e₂.cliqueReduct).withClique =
+      (f.comp r₂).withClique =
         f.withClique.comp e₂ := by
     apply RelStructure.Embedding.ext
     intro a
@@ -244,19 +275,21 @@ theorem arrow_cliqueReduct
     (h : Arrow A.withClique B.withClique C κ) :
     Arrow A B C.cliqueReduct κ := by
   intro χ
-  obtain ⟨f, hf⟩ := h (fun e => χ e.cliqueReduct)
-  refine ⟨f.cliqueReduct, ?_⟩
+  obtain ⟨f, hf⟩ := h (fun e => χ e.forgetCliqueTarget)
+  let fr : RelStructure.Embedding B C.cliqueReduct :=
+    f.forgetCliqueTarget
+  refine ⟨fr, ?_⟩
   intro e₁ e₂
   have hh := hf e₁.withClique e₂.withClique
   have he₁ :
-      (f.comp e₁.withClique).cliqueReduct =
-        f.cliqueReduct.comp e₁ := by
+      (f.comp e₁.withClique).forgetCliqueTarget =
+        fr.comp e₁ := by
     apply RelStructure.Embedding.ext
     intro a
     rfl
   have he₂ :
-      (f.comp e₂.withClique).cliqueReduct =
-        f.cliqueReduct.comp e₂ := by
+      (f.comp e₂.withClique).forgetCliqueTarget =
+        fr.comp e₂ := by
     apply RelStructure.Embedding.ext
     intro a
     rfl
