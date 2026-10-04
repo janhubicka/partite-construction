@@ -236,7 +236,7 @@ theorem Pattern.dummy_sumMap
     (h' : (Pattern.ofTuple (sumMap f ∘ t)).HasMoving) :
     Pattern.dummy (sumMap f ∘ t) h' = f (Pattern.dummy t h) := by
   have hp := Pattern.ofTuple_sumMap f t
-  subst hp
+  cases hp
   unfold Pattern.dummy Pattern.moveAt
   simp only [Function.comp_apply, sumMap]
   split
