@@ -355,11 +355,8 @@ theorem OddLoose_not_twoColorable : ¬ TwoColorable OddLoose := by
   have edgeP4 (a b : Fin 4)
       (h : a.val + 1 = b.val ∨ b.val + 1 = a.val) :
       P4.rel () (fun k => if k = i0 then a else b) := by
-    simp only [P4]
-    rw [if_pos rfl]
     have hi10 : i1 ≠ i0 := Ne.symm i0_ne_i1
-    rw [if_neg hi10]
-    exact h
+    simpa [P4, hi10] using h
   have edge_image_left (a b : Fin 4)
       (h : a.val + 1 = b.val ∨ b.val + 1 = a.val) :
       OddLoose.rel () (fun k => if k = i0 then l a else l b) := by
@@ -368,7 +365,7 @@ theorem OddLoose_not_twoColorable : ¬ TwoColorable OddLoose := by
     have hm := (l.map_rel_iff () q).mpr hP
     convert hm using 1
     funext k
-    simp [q, Function.comp_apply]
+    by_cases hk : k = i0 <;> simp [q, hk, Function.comp_apply]
   have edge_image_right (a b : Fin 4)
       (h : a.val + 1 = b.val ∨ b.val + 1 = a.val) :
       OddLoose.rel () (fun k => if k = i0 then r a else r b) := by
@@ -382,7 +379,8 @@ theorem OddLoose_not_twoColorable : ¬ TwoColorable OddLoose := by
       (fun k => if k = i0 then a else b)) :
       c a ≠ c b := by
     have h := hc _ hrel
-    simpa [i0_ne_i1] using h
+    have hi10 : i1 ≠ i0 := Ne.symm i0_ne_i1
+    simpa [hi10] using h
   have h01 : c (l 0) ≠ c (l 1) :=
     neq_of_edge _ _ (edge_image_left 0 1 (by omega))
   have h12 : c (l 1) ≠ c (l 2) :=
