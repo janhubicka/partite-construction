@@ -82,10 +82,8 @@ theorem coordinateHom
       · intro j
         by_cases hj : j = i
         · subst j
-          change b ∈ B.func F (fun k => (x k).coord i)
-          simpa [args] using hb
-        · change c j ∈ B.func F (fun k => (x k).coord j)
-          simpa [args] using hc j
+          simpa only [y, coord, dif_pos rfl, args, Function.comp_apply] using hb
+        · simpa only [y, coord, dif_neg hj, args, Function.comp_apply] using hc j
       · simp [y, coord]
 
 /-- The direct functional coordinate power preserves the full
@@ -96,7 +94,7 @@ theorem power_isPartiteOver
   classical
   let C := power B N
   have hProj : C.ProjectionHom A :=
-    power_projectionHom hB.projectionHom hN
+    power_projectionHom FunctionalPartite.System.projectionHom hB hN
   constructor
   · exact hProj
   · intro X E hE e
@@ -104,7 +102,7 @@ theorem power_isPartiteOver
       fun x => (e x).coord i
     have hq (i : Fin N) :
         E.IsHomomorphism B.toStructure (q i) := by
-      exact (coordinateHom hB.projectionHom i).comp e.isHomomorphism
+      exact (coordinateHom FunctionalPartite.System.projectionHom hB i).comp e.isHomomorphism
     let S (i : Fin N) : Set V := Set.range (q i)
     have hSclosed (i : Fin N) :
         B.toStructure.IsClosed (S i) :=
@@ -113,11 +111,11 @@ theorem power_isPartiteOver
         (B.toStructure.induce (S i) (hSclosed i)).Irreducible := by
       exact hE.range_homomorphism (hq i)
     let incl (i : Fin N) :
-        Embedding (B.toStructure.induce (S i) (hSclosed i))
+        Structure.Embedding (B.toStructure.induce (S i) (hSclosed i))
           B.toStructure :=
       inclusion B.toStructure (S i) (hSclosed i)
     have hex (i : Fin N) :
-        ∃ g : Embedding
+        ∃ g : Structure.Embedding
             (B.toStructure.induce (S i) (hSclosed i)) A,
           ∀ z, g z = B.part z.1 := by
       exact hB.2
@@ -146,7 +144,7 @@ theorem power_isPartiteOver
             (hxy.trans (htarget_coord i y))
         have hs : sx = sy := (g i).injective hgi
         exact congrArg Subtype.val hs
-    let ge : Embedding E A := {
+    let ge : Structure.Embedding E A := {
       toFun := target
       injective := hinj
       map_rel_iff := by
