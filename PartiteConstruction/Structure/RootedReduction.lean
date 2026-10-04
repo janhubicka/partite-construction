@@ -60,6 +60,73 @@ noncomputable def fill
     | some r => ρ r
     | none => (x (p.moveEquiv ⟨i, h⟩)).1
 
+
+/-- Pattern induced by a tuple in a disjoint union of the fixed root and the
+moving carrier. -/
+def ofTuple {V : Type w} (t : Fin n → Sum R V) : Pattern n R where
+  fixed i :=
+    match t i with
+    | .inl r => some r
+    | .inr _ => none
+
+/-- Value of a moving coordinate of a tuple. -/
+noncomputable def moveValue {V : Type w} (t : Fin n → Sum R V)
+    (i : (ofTuple t).Move) : V :=
+  match h : t i.1 with
+  | .inl r =>
+      False.elim (by
+        have hi := i.2
+        simp [ofTuple, h] at hi)
+  | .inr x => x
+
+/-- Canonical moving tuple, indexed by the arity of the induced pattern. -/
+noncomputable def movingTuple {V : Type w} (t : Fin n → Sum R V) :
+    Fin (ofTuple t).arity → V :=
+  fun j => moveValue t ((ofTuple t).moveEquiv.symm j)
+
+/-- Reassemble a sum tuple from a root pattern and its moving coordinates. -/
+noncomputable def sumFill {V : Type w} (p : Pattern n R)
+    (x : Fin p.arity → V) : Fin n → Sum R V :=
+  fun i =>
+    match h : p.fixed i with
+    | some r => Sum.inl r
+    | none => Sum.inr (x (p.moveEquiv ⟨i, h⟩))
+
+@[simp] theorem sumFill_ofTuple_movingTuple {V : Type w}
+    (t : Fin n → Sum R V) :
+    sumFill (ofTuple t) (movingTuple t) = t := by
+  funext i
+  cases h : t i with
+  | inl r =>
+      simp [sumFill, ofTuple, h]
+  | inr x =>
+      simp [sumFill, ofTuple, movingTuple, moveValue, h]
+
+def HasMoving {V : Type w} (t : Fin n → Sum R V) : Prop :=
+  ∃ i v, t i = Sum.inr v
+
+theorem arity_pos_of_hasMoving {V : Type w} (t : Fin n → Sum R V)
+    (h : HasMoving t) : 0 < (ofTuple t).arity := by
+  obtain ⟨i, v, hi⟩ := h
+  apply arity_pos_of_moving (ofTuple t) (i := i)
+  simp [ofTuple, hi]
+
+/-- When a tuple has no moving coordinate, read it as a root tuple. -/
+noncomputable def rootTuple {V : Type w} (t : Fin n → Sum R V)
+    (h : ¬ HasMoving t) : Fin n → R :=
+  fun i =>
+    match hi : t i with
+    | .inl r => r
+    | .inr v => False.elim (h ⟨i, v, hi⟩)
+
+@[simp] theorem inl_rootTuple {V : Type w} (t : Fin n → Sum R V)
+    (h : ¬ HasMoving t) :
+    Sum.inl ∘ rootTuple t h = t := by
+  funext i
+  cases hi : t i with
+  | inl r => simp [rootTuple, hi]
+  | inr v => exact False.elim (h ⟨i, v, hi⟩)
+
 end Pattern
 
 /-- Vertices outside a fixed embedded root. -/
