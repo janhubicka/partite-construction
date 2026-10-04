@@ -90,12 +90,18 @@ theorem initialList_tree
       let b : FunctionalPartite.Embedding Q R.system :=
         FunctionalPartite.Attachment.copyEmbedding
           Q ∅ hS T.system (fun _ : PUnit.{v+1} => f) PUnit.unit
+      let rawCore :=
+        Structure.Attachment.coreEmbedding
+          Q.toStructure ∅ hS T.system.toStructure
+          (fun _ : PUnit.{v+1} => f.toEmbedding)
+      let rawCopy :=
+        Structure.Attachment.copyEmbedding
+          Q.toStructure ∅ hS T.system.toStructure
+          (fun _ : PUnit.{v+1} => f.toEmbedding) PUnit.unit
       have hfree :
-          Structure.IsFreeAmalgam f.toEmbedding inc
-            j.toEmbedding b.toEmbedding := by
-        simpa [j, b] using
-          (Structure.Attachment.unit_isFreeAmalgam
-            Q.toStructure ∅ hS T.system.toStructure f.toEmbedding)
+          Structure.IsFreeAmalgam f.toEmbedding inc rawCore rawCopy := by
+        exact Structure.Attachment.unit_isFreeAmalgam
+          Q.toStructure ∅ hS T.system.toStructure f.toEmbedding
       obtain ⟨baseInT⟩ := hTreeT.exists_base_embedding
       have hcT : f.toEmbedding.ContainedInIrreducible := by
         refine ⟨V, B, hBirr, baseInT, ?_⟩
@@ -105,16 +111,24 @@ theorem initialList_tree
         refine ⟨V, B, hBirr, Structure.Embedding.id B, ?_⟩
         intro x
         exact x.2.elim
-      have hTreeR :
-          Structure.TreeAmalgam B R.Carrier R.system.toStructure := by
+      have hTreeRaw :
+          Structure.TreeAmalgam B
+            (Structure.Attachment.Vertex ∅
+              (W := T.Carrier) (I := PUnit.{v+1}))
+            (Structure.Attachment.attach
+              Q.toStructure ∅ hS T.system.toStructure
+              (fun _ : PUnit.{v+1} => f.toEmbedding)) := by
         exact Structure.TreeAmalgam.glue
           hTreeT
           (Structure.TreeAmalgam.copy
             (Structure.Embedding.id B) (by
               intro x
               exact ⟨x, rfl⟩))
-          f.toEmbedding inc hcT hcB
-          j.toEmbedding b.toEmbedding hfree
+          f.toEmbedding inc hcT hcB rawCore rawCopy hfree
+      have hTreeR :
+          Structure.TreeAmalgam B R.Carrier R.system.toStructure := by
+        simpa [R, Stage.attach, FunctionalPartite.Attachment.attach,
+          rawCore, rawCopy] using hTreeRaw
       refine ⟨R, hTreeR, j.toEmbedding.comp root, ?_⟩
       intro γ hγ
       rcases List.mem_cons.mp hγ with rfl | hγ
