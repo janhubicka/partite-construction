@@ -187,8 +187,8 @@ theorem LocallyTreeLike.cliqueReduct_loose
   intro S hS
   obtain ⟨Y, T, hTree, f, hf, _⟩ := h S hS
   have hfr :
-      (C.cliqueReduct.induce (↑S : Set X)).
-        IsHomomorphismEmbedding T.cliqueReduct f := by
+      (C.cliqueReduct.induce (↑S : Set X)).IsHomomorphismEmbedding
+        T.cliqueReduct f := by
     simpa [cliqueReduct] using hf.cliqueReduct
   exact ⟨Y, T.cliqueReduct, hTree.cliqueReduct_loose, f, hfr⟩
 
@@ -219,8 +219,20 @@ theorem arrow_withClique
   refine ⟨f.withClique, ?_⟩
   intro e₁ e₂
   have hh := hf e₁.cliqueReduct e₂.cliqueReduct
-  simpa [RelStructure.Embedding.withClique,
-    RelStructure.Embedding.cliqueReduct] using hh
+  have he₁ :
+      (f.comp e₁.cliqueReduct).withClique =
+        f.withClique.comp e₁ := by
+    apply RelStructure.Embedding.ext
+    intro a
+    rfl
+  have he₂ :
+      (f.comp e₂.cliqueReduct).withClique =
+        f.withClique.comp e₂ := by
+    apply RelStructure.Embedding.ext
+    intro a
+    rfl
+  rw [← he₁, ← he₂]
+  exact hh
 
 /-- Forgetting the complete relation from a Ramsey witness preserves the arrow
 for the canonical source and target expansions. -/
@@ -236,7 +248,19 @@ theorem arrow_cliqueReduct
   refine ⟨f.cliqueReduct, ?_⟩
   intro e₁ e₂
   have hh := hf e₁.withClique e₂.withClique
-  simpa [RelStructure.Embedding.withClique,
-    RelStructure.Embedding.cliqueReduct] using hh
+  have he₁ :
+      (f.comp e₁.withClique).cliqueReduct =
+        f.cliqueReduct.comp e₁ := by
+    apply RelStructure.Embedding.ext
+    intro a
+    rfl
+  have he₂ :
+      (f.comp e₂.withClique).cliqueReduct =
+        f.cliqueReduct.comp e₂ := by
+    apply RelStructure.Embedding.ext
+    intro a
+    rfl
+  rw [← he₁, ← he₂]
+  exact hh
 
 end StructuralRamsey
