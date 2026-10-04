@@ -271,10 +271,7 @@ theorem Irreducible.range_homomorphism
     {A : Structure L U} {B : Structure L V}
     (hA : A.Irreducible)
     {f : U → V} (hf : A.IsHomomorphism B f) :
-    let S : Set V := Set.range f
-    let hS : B.IsClosed S := hf.range_isClosed
-    (B.induce S hS).Irreducible := by
-  dsimp
+    (B.induce (Set.range f) hf.range_isClosed).Irreducible := by
   let S : Set V := Set.range f
   let hS : B.IsClosed S := hf.range_isClosed
   let g : U → S := fun a => ⟨f a, ⟨a, rfl⟩⟩
@@ -286,6 +283,9 @@ theorem Irreducible.range_homomorphism
     refine ⟨a, ?_⟩
     apply Subtype.ext
     exact ha
-  exact hA.of_surjective_homomorphism hg hsurj
+  have hIrr : (B.induce S hS).Irreducible :=
+    Irreducible.of_surjective_homomorphism
+      (A := A) (B := B.induce S hS) hA hg hsurj
+  simpa [S, hS] using hIrr
 
 end StructuralRamsey.Structure
