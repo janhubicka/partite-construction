@@ -146,6 +146,31 @@ theorem outside_func_image
   funext i
   rfl
 
+/-- Splitting commutes with a root-compatible full embedding. -/
+theorem split_embedding
+    {Root : Structure L R} {A : Structure L U} {B : Structure L V}
+    {ρA : Structure.Embedding Root A}
+    {ρB : Structure.Embedding Root B}
+    (e : Structure.Embedding A B)
+    (hroot : ∀ r, e (ρA r) = ρB r)
+    (a : U) :
+    split ρB (e a) =
+      sumMap (outsideMap e hroot) (split ρA a) := by
+  apply unsplit_injective ρB
+  rw [unsplit_split]
+  cases hs : split ρA a with
+  | inl r =>
+      have hu := unsplit_split ρA a
+      rw [hs] at hu
+      change e a = ρB r
+      rw [← hu]
+      exact hroot r
+  | inr x =>
+      have hu := unsplit_split ρA a
+      rw [hs] at hu
+      change e a = e x.1
+      exact congrArg e hu.symm
+
 /-- A root-compatible strictly monotone full embedding induces a full
 embedding of rooted moving encodings. -/
 noncomputable def encodeEmbedding
