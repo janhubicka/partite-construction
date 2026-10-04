@@ -349,3 +349,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LooseTreeAmalgam.irreducible_contained_in_copy
 #print axioms StructuralRamsey.RelStructure.LooseTreeAmalgam.attach
 #print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.toLoose
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.toProjectedPartial_identity
