@@ -61,11 +61,11 @@ theorem canonicalStep_locallyTreeCompletable_projectedPartial
   let p : Partite.Picture.Vertex C₀ αf E → P := C₁.part
   let I : Finset P := S.image p
   by_cases hsmall : I.card < n
-  · obtain ⟨Y, T, hTree, f, hf, _hPart, _hHist⟩ :=
+  · obtain ⟨Y, T, hTree, f, hf, _hPart⟩ :=
       RelStructure.ProjectedPartialLocallyTreeLike.witness_of_homEmbedding_image
         hD p hC₁Partite S (by
           change I.card ≤ n - 1
-          omega) []
+          omega)
     exact ⟨Y, T, hTree, f, hf⟩
   · have hIle : I.card ≤ n := by
       calc
