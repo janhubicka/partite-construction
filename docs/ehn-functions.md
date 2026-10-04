@@ -2,170 +2,101 @@
 
 ## Public conclusions
 
-The functional development has two related, but different, endpoints:
+The fully general endpoints are:
 
-- `Structure.FreeAmalgamationClass.orderedRamsey` in
-  `Ramsey/FreeAmalgamationFunctions.lean`: add arbitrary linear orders to a
-  hereditary free-amalgamation class in a relation/function language.
-- `Structure.orderedRamsey_forbidden_expansions` in
-  `Ramsey/ForbiddenFunctions.lean`: forbid particular **ordered** structures
-  whose order reducts are irreducible. This is the precise forbidden-pattern
-  formulation used by the survey's `thm:HN`.
+- `Rooted.Structure.FreeAmalgamationClass.orderedRamsey_allArity` in
+  `Ramsey/FreeAmalgamationFunctionsAllArity.lean`;
+- `Structure.orderedRamsey_forbidden_expansions_allArity` in
+  `Ramsey/ForbiddenFunctionsAllArity.lean`, the exact survey `thm:HN`.
 
-Both use genuinely set-valued functions, of arbitrary positive input arity.
-The colour type is any finite nonempty type. All embeddings in the Ramsey
-arrows preserve complete function fibres, equivalently they are closed
-embeddings of the relational graph encodings. No irreducibility hypothesis
-on the colouring structure A or target B is imposed by the class theorem.
+Both allow genuinely set-valued functions of **arbitrary input arity,
+including nullary functions/constants**.  Colour types are finite nonempty
+types, and all embeddings in Ramsey arrows preserve complete function fibres.
+No irreducibility assumption on A or B is needed for the general class
+theorem.
 
-The fixed-target endpoint `orderedRamsey_of_mem_target` needs only B in the
-class: either an ordered A-copy embeds into B, so heredity puts A in the
-class, or B itself is a vacuous witness.
+The older positive-arity endpoints remain useful implementation layers:
+`Structure.FreeAmalgamationClass.orderedRamsey` and
+`Structure.orderedRamsey_forbidden_expansions`.
 
-The compiler and complete axiom audit, including these endpoints, are the
-validation gate. A manuscript marker must be pinned to an immutable commit
-whose full build and audit passed; adding an endpoint to this note is not a
-substitute for that check.
+## Weak projections versus full embeddings
 
-## The essential distinction between maps
+A full homomorphism has equality
+`f[F_A(x)] = F_B(f(x))`.  An EHN weak projection only preserves incidences
+forward globally, but its restriction to every full irreducible is a full
+embedding.  This is `Structure.IsEHNHomomorphismEmbedding`.
 
-A full homomorphism satisfies
+This is deliberately different from the graph-encoding
+`Structure.IsWeakHomomorphismEmbedding` used in weak-substructure iteration.
+Ramsey arrows themselves always use full embeddings.
 
-    f[F_A(x)] = F_B(f(x)).
+## Closed hulls and the power invariant
 
-A weak homomorphism requires only the inclusion from left to right, together
-with preservation of relation tuples. The existing `Structure.IsHomomorphism`
-convention is unchanged. The new projection predicate
-`IsEHNHomomorphismEmbedding` is weak globally but agrees with a full embedding
-on every full embedded irreducible substructure.
+`Irreducible.of_generated_weakHomomorphism` proves that the target generated
+by a weak image of an irreducible source is irreducible.  Hence the closed
+hull of every coordinate image in the Hales--Jewett power is irreducible even
+when the raw coordinate range is not closed.
 
-A generated quotient may merge input tuples and gain outputs from another
-source fibre. It is therefore not a full homomorphism in general. The earlier
-`QuotientFibreObstruction` example remains valid. This does **not** prevent
-irreducibility from passing to a weak image.
+This supplies the coordinate embeddings required to prove that the power
+retains the EHN projection invariant.  Function exactness then follows by
+lifting an output coordinatewise and using output transversality.
 
-## One reusable closed-hull lemma
+The line-map proof is correspondingly short: one parameter coordinate supplies
+a preimage; output transversality of the whole power gives uniqueness.
 
-`Irreducible.of_generated_weakHomomorphism` proves that if a weak image of an
-irreducible structure generates its target under the functions, that target
-is irreducible. Suppose the target were a free amalgam of two proper closed
-sides. Their inverse images are closed; they cover the source and every
-source relation or function incidence lies in one of them. Neither inverse
-image is the whole source: otherwise the generating image would lie in one
-proper closed side. This would be a proper free decomposition of the source.
+## Constants: two formalized mechanisms
 
-Consequently, `Irreducible.functionClosure_weakImage` applies to the **closed
-hull** of a coordinate image, even when the raw coordinate range is not
-closed. This is the object on which the previous-stage irreducibility
-invariant can legitimately be used. These local facts do not need finiteness
-or positive arity and also apply to constants.
+### 1. Rooted unrestricted Ramsey reduction
 
-## The same power and a shorter line-map proof
+`Structure/NullaryRoot.lean` defines the canonical root
+`A.nullaryRoot = <empty>`.  Every closed substructure contains it and every
+full embedding maps it onto the target root.
 
-`Functional/WeakInduced.lean` reuses the existing coordinate power, words,
-lines, and Hales--Jewett theorem. Only weak projection preservation is needed
-for a line map to be a full embedding. For the reverse inclusion on function
-fibres, a parameter coordinate gives a source output. Its line image and the
-original power output have the same part, so **output transversality of the
-power itself** makes them equal. There is no need to repeat a variable-versus-
-constant coordinate argument for uniqueness.
+The modules
+`RootedReduction`, `RootedFunctor`, `RootedSplit`,
+`RootedCorrectness`, `RootedFreeAmalgam`, `RootedClass`,
+`RootedEmbedding`, `RootedOrder`, and `RootedCanonical`
+formalize the whole fixed-root translation:
 
-This simplification is also applied to the existing full-projection
-`Induced.lineMap_func` proof, preserving its old interface and universe
-polymorphism.
+- encode/decode on the moving complement;
+- full embedding equivalence on rooted structures;
+- transport of concrete free amalgams and free-amalgamation classes;
+- rigidity of the finite ordered canonical root;
+- reconstruction of the global order from cut predicates and the witness order.
 
-`Functional/WeakInvariant.lean` then proves that the power retains a weak
-homomorphism-embedding projection. For a full irreducible E inside the power,
-take the closed hull of each coordinate image. Each hull is irreducible by
-the preceding lemma and embeds fully into A by the old invariant. These
-coordinate embeddings give injectivity and relation reflection on E. For
-function exactness, an output in A lifts in every coordinate hull; the lifts
-have one common part and therefore form a power output. Closedness of E in
-the power lifts that output back to E.
+This yields
+`Rooted.Structure.FreeAmalgamationClass.orderedRamsey_allArity`.
 
-## Exactly one induced refinement pass
+### 2. Root-shared EHN initial picture
 
-`FunctionalPartite.EHN.inducedConstruction` starts with an arbitrary full
-Ramsey witness D. It does not assume D belongs to the desired class K.
-Initial pictures contain the B-copies prescribed by every full B-embedding
-into D. At each full A-placement alpha:
+The class-preserving induced pass does not need to translate the class to the
+rooted language.  Its only positive-arity dependency was the initial disjoint
+picture.  `FunctionalPartite.EHN.initial_allArity` instead takes one B-copy
+as the core and attaches every other placement over B's canonical nullary
+root.  Two full placements of B in D map that root onto the same target root,
+so a full root transport identifies the overlap.
 
-1. Restrict the old picture to the inverse image of alpha[A]. This support
-   is closed because alpha is a full embedding and the projection is weak.
-2. Apply the functional Partite Lemma to that restriction. Every full
-   irreducible of its power embeds into A, so the finite irreducible member
-   test puts the power in K.
-3. Attach the prescribed old-picture copies over closed supports. These are
-   full free amalgams, preserving both membership in K and the weak
-   irreducible projection invariant.
+The rest of the Picture/Hales--Jewett construction is unchanged, giving
+`FunctionalPartite.EHN.inducedConstruction_allArity`.
 
-There is one finite colour-canonicalization pass over the A-placements, then
-the usual backward Ramsey extraction. The implementation's finite list of
-binary free attachments realizes the star-shaped attachment of a **single
-Picture step**; it is not another Ramsey iteration.
+## Exact forbidden ordered patterns
 
-The initial disjoint attachment uses positive function arity. Starting with
-one B-copy, rather than an arbitrary empty structure, also preserves nullary
-relation data. No extra class-membership assumption about an empty structure
-is introduced.
+For particular forbidden orderings, the auxiliary class keeps both
+F-freeness and `OrderTotalOnIrreducibles`.  This class is hereditary and
+closed under full free amalgamation.  Final order completion cannot create a
+new forbidden copy because every comparison on an embedded irreducible reduct
+was already present before completion.
 
-## Why the exact survey corollary needs an order invariant
+Using the unrestricted all-arity witness followed by
+`inducedConstruction_allArity` gives
+`Structure.orderedRamsey_forbidden_expansions_allArity` directly in the
+original language.  There is no remaining constants reduction outside Lean.
 
-Forbidding an unordered reduct would also forbid every one of its orderings,
-which is stronger than the survey assumes. Instead run the same refinement
-inside the auxiliary class consisting of structures that avoid the specified
-ordered forbidden patterns and whose partial order already compares every
-distinct pair on each full irreducible reduct.
+## What remains separate
 
-`OrderTotalOnIrreducibles` is hereditary and preserved by full free
-amalgamation: any embedded irreducible reduct lies in one side. Every fully
-ordered source and target has this property. The final partial order maps
-into the ordered initial witness, so it has a linear extension.
+This work does **not** prove a globally fibre-surjective partite projection.
+The checked EHN projection is weak globally/full on irreducibles.
 
-Completing the order cannot create a new forbidden embedding. On its
-irreducible reduct, all comparisons were already present, and any linear
-extension preserves them. `Embedding.beforeOrderCompletion` makes this
-argument explicit. This gives `orderedRamsey_forbidden_expansions` without
-changing the forbidden family or silently assuming that it contains all
-orderings of its reducts.
-
-## What this does not claim
-
-The functional EHN route is not a proof of a globally fibre-surjective
-partite projection. The survey's direct induced theorem needs the weak-map
-formulation when functions are present. Its relational form is unchanged.
-
-The function-language **iterated sparsening** theorem and the stronger
-synchronized ambient-A tree invariant remain separate obligations. The
-class-preserving one-pass argument neither needs nor establishes them.
-
-The Lean endpoints above still expose a positive-input-arity hypothesis, but
-this is no mathematical restriction for the survey theorem. Let
-(R(A)=\langle\varnothing\rangle_A) be the substructure generated by all
-nullary values. `Structure.Embedding.image_nullaryRoot` proves that every full
-embedding maps (R(A)) onto (R(B)). For a fixed Ramsey pair with an
-(A\)-copy in (B), these finite roots therefore have the same ordered
-isomorphism type and can be treated as one fixed root.
-
-Delete that root from the moving carrier. For each original relation and each
-choice of some arguments in the fixed root, add a relation symbol on the
-remaining moving arguments. For a positive-arity function do the same for
-outputs in the root (recorded relationally), while outputs outside the root
-remain a set-valued function on the remaining moving arguments. If all inputs
-are fixed, closedness of the root forces every output back into the root, so no
-nullary function symbol remains. Full embeddings, free amalgams, irreducibility,
-forbidden-pattern avoidance, and Ramsey arrows are recovered by adjoining the
-fixed root again. Thus the positive-arity theorem gives the general finite
-ordered result. The complete rooted-language coding is not yet packaged as a
-single Lean equivalence theorem; its canonical-root ingredient is checked.
-
-
-## Compatibility with weak-substructure iteration
-
-The new predicate is `Structure.IsEHNHomomorphismEmbedding`.
-The existing `Structure.IsWeakHomomorphismEmbedding` remains the
-graph-encoding notion used for weak-substructure iteration. They are
-deliberately not aliases: the new predicate uses full closed
-irreducibles and full embeddings, whereas the old one uses graph
-irreducibility and relational graph embeddings. Their names and
-definitions coexist in the umbrella import.
+It also does not settle functional iterated sparsening or the stronger
+synchronized ambient-A tree invariant.  Those are separate Appendix A
+obligations.
