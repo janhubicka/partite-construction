@@ -20,8 +20,6 @@ homomorphism-embedding notion, or else the test substructures must be closed.
 
 namespace StructuralRamsey.Structure.WeakTreePropertyObstruction
 
-universe v
-
 def language : Language where
   RelSymbol := Empty
   FuncSymbol := Unit
@@ -59,7 +57,10 @@ theorem base_irreducible : base.Irreducible := by
     | false =>
         refine ⟨a (0 : Fin 1), ?_⟩
         have h := congrFun hargs (0 : Fin 1)
-        simpa [inputFalse, Function.comp_apply] using h
+        calc
+          e false = (e ∘ inputFalse) (0 : Fin 1) := rfl
+          _ = (iE ∘ a) (0 : Fin 1) := h
+          _ = iE (a (0 : Fin 1)) := rfl
     | true =>
         exact ⟨b, hout⟩
   · rcases hright with ⟨a, b, hb, hargs, hout⟩
@@ -69,12 +70,15 @@ theorem base_irreducible : base.Irreducible := by
     | false =>
         refine ⟨a (0 : Fin 1), ?_⟩
         have h := congrFun hargs (0 : Fin 1)
-        simpa [inputFalse, Function.comp_apply] using h
+        calc
+          e false = (e ∘ inputFalse) (0 : Fin 1) := rfl
+          _ = (iF ∘ a) (0 : Fin 1) := h
+          _ = iF (a (0 : Fin 1)) := rfl
     | true =>
         exact ⟨b, hout⟩
 
 /-- Every input has at least one output. -/
-def HasOutput {X : Type v} (A : Structure language X) : Prop :=
+def HasOutput {X : Type} (A : Structure language X) : Prop :=
   ∀ x : X, ∃ y : X, y ∈ A.func () (fun _ : Fin 1 => x)
 
 theorem base_hasOutput : HasOutput base := by
@@ -91,7 +95,7 @@ theorem base_hasOutput : HasOutput base := by
 
 /-- Full embeddings preserve existence of an output over image inputs. -/
 theorem HasOutput.at_embedding
-    {X Y : Type v} {A : Structure language X} {B : Structure language Y}
+    {X Y : Type} {A : Structure language X} {B : Structure language Y}
     (hA : HasOutput A) (e : Embedding A B) (x : X) :
     ∃ y : Y, y ∈ B.func () (fun _ : Fin 1 => e x) := by
   obtain ⟨z, hz⟩ := hA x
@@ -100,11 +104,17 @@ theorem HasOutput.at_embedding
       e z ∈ imageSet e (A.func () (fun _ : Fin 1 => x)) :=
     ⟨z, hz, rfl⟩
   rw [e.map_func () (fun _ : Fin 1 => x)] at himg
-  simpa [Function.comp_apply] using himg
+  have hargs :
+      e ∘ (fun _ : Fin 1 => x) =
+        (fun _ : Fin 1 => e x) := by
+    funext i
+    rfl
+  rw [hargs] at himg
+  exact himg
 
 /-- Every vertex of a tree amalgam of copies of the base still has an output. -/
 theorem TreeAmalgam.hasOutput
-    {X : Type v} {T : Structure language X}
+    {X : Type} {T : Structure language X}
     (hT : TreeAmalgam base X T) :
     HasOutput T := by
   induction hT with
@@ -119,7 +129,7 @@ theorem TreeAmalgam.hasOutput
       · exact ih₁.at_embedding i₁ a
       · exact ih₂.at_embedding i₂ b
 
-variable {X : Type v} {C : Structure language X}
+variable {X : Type} {C : Structure language X}
 
 /-- The singleton consisting of the false vertex of an embedded base copy. -/
 def badSet (e : Embedding base C) : Set X :=
@@ -136,17 +146,32 @@ theorem bad_fibre_empty
   ext y
   constructor
   · intro hy
-    change y.1 ∈ C.func () (fun _ : Fin 1 => e false) at hy
+    have hyC :
+        y.1 ∈ C.func (show language.FuncSymbol from ())
+          (fun _ : Fin 1 => e false) := hy
     have hargs :
         (fun _ : Fin 1 => e false) = e ∘ inputFalse := by
       funext i
       rfl
-    rw [hargs, ← e.map_func () inputFalse] at hy
-    rcases hy with ⟨b, hb, heq⟩
+    have hyC' :
+        y.1 ∈ C.func (show language.FuncSymbol from ())
+          (e ∘ inputFalse) :=
+      Eq.mp
+        (congrArg
+          (fun args =>
+            y.1 ∈ C.func (show language.FuncSymbol from ()) args)
+          hargs)
+        hyC
+    have hyImg :
+        y.1 ∈ imageSet e (base.func () inputFalse) := by
+      rw [e.map_func () inputFalse]
+      exact hyC'
+    rcases hyImg with ⟨b, hb, heq⟩
+    change b ≠ false at hb
     have hyFalse : y.1 = e false := y.2
     have heb : e b = e false := heq.trans hyFalse
     have hbFalse : b = false := e.injective heb
-    exact (hb hbFalse)
+    exact hb hbFalse
   · intro hy
     change False at hy
     exact hy.elim
@@ -155,7 +180,7 @@ theorem bad_fibre_empty
 tree amalgam of copies of the base. -/
 theorem no_homomorphism_to_tree
     (e : Embedding base C)
-    {Y : Type v} {T : Structure language Y}
+    {Y : Type} {T : Structure language Y}
     (hT : TreeAmalgam base Y T) :
     ¬ ∃ f : badSet e → Y,
         (C.weakInduce (badSet e)).IsHomomorphism T f := by
@@ -164,7 +189,13 @@ theorem no_homomorphism_to_tree
   have hfun := hf.2 () (fun _ : Fin 1 => badPoint e)
   have hy' :
       y ∈ T.func () (f ∘ (fun _ : Fin 1 => badPoint e)) := by
-    simpa [Function.comp_apply] using hy
+    have hargs :
+        f ∘ (fun _ : Fin 1 => badPoint e) =
+          (fun _ : Fin 1 => f (badPoint e)) := by
+      funext i
+      rfl
+    rw [hargs]
+    exact hy
   have himg :
       y ∈ imageSet f
         ((C.weakInduce (badSet e)).func ()
@@ -179,7 +210,7 @@ theorem no_homomorphism_to_tree
 /-- A fortiori, no survey full homomorphism-embedding exists. -/
 theorem no_homomorphismEmbedding_to_tree
     (e : Embedding base C)
-    {Y : Type v} {T : Structure language Y}
+    {Y : Type} {T : Structure language Y}
     (hT : TreeAmalgam base Y T) :
     ¬ ∃ f : badSet e → Y,
         (C.weakInduce (badSet e)).IsHomomorphismEmbedding T f := by
