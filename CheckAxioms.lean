@@ -318,3 +318,9 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.glueProjectedFull_projectedHistory
 
 #print axioms StructuralRamsey.RelStructure.ProjectedHistoryLocallyTreeLike.toIntersectionStrong
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.of_locallyTreeLike
+#print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.pullback_embedding
+#print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.witness_of_homEmbedding_image
+#print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.of_homEmbedding_to_base
+#print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.initial
