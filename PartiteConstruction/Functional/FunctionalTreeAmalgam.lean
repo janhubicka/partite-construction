@@ -142,11 +142,19 @@ theorem toFull
           exact hq
         · funext k
           have hk := congrFun heq k.castSucc
-          change x k = (iA.toFun ∘ q) k.castSucc
-          exact hk
+          calc
+            x k = funcTuple x y k.castSucc :=
+              (funcTuple_castSucc x y k).symm
+            _ = (iA.toFun ∘ q) k.castSucc := hk
+            _ = iA (q k.castSucc) := rfl
+            _ = iA (a k) := rfl
         · have hk := congrFun heq (Fin.last (L.funcArity F))
-          change y = (iA.toFun ∘ q) (Fin.last (L.funcArity F))
-          exact hk
+          calc
+            y = funcTuple x y (Fin.last (L.funcArity F)) :=
+              (funcTuple_last x y).symm
+            _ = (iA.toFun ∘ q) (Fin.last (L.funcArity F)) := hk
+            _ = iA (q (Fin.last (L.funcArity F))) := rfl
+            _ = iA b := rfl
       · let a : Fin (L.funcArity F) → W := fun k => q k.castSucc
         let b : W := q (Fin.last (L.funcArity F))
         refine Or.inr ⟨a, b, ?_, ?_, ?_⟩
@@ -156,11 +164,19 @@ theorem toFull
           exact hq
         · funext k
           have hk := congrFun heq k.castSucc
-          change x k = (iB.toFun ∘ q) k.castSucc
-          exact hk
+          calc
+            x k = funcTuple x y k.castSucc :=
+              (funcTuple_castSucc x y k).symm
+            _ = (iB.toFun ∘ q) k.castSucc := hk
+            _ = iB (q k.castSucc) := rfl
+            _ = iB (a k) := rfl
         · have hk := congrFun heq (Fin.last (L.funcArity F))
-          change y = (iB.toFun ∘ q) (Fin.last (L.funcArity F))
-          exact hk
+          calc
+            y = funcTuple x y (Fin.last (L.funcArity F)) :=
+              (funcTuple_last x y).symm
+            _ = (iB.toFun ∘ q) (Fin.last (L.funcArity F)) := hk
+            _ = iB (q (Fin.last (L.funcArity F))) := rfl
+            _ = iB b := rfl
     · rintro (⟨a, b, hb, hx, hy⟩ | ⟨a, b, hb, hx, hy⟩)
       · apply (hfree.rel_iff (.inr F) (funcTuple x y)).mpr
         refine Or.inl ⟨funcTuple a b, hb, ?_⟩
