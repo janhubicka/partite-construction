@@ -56,7 +56,12 @@ theorem orderedRamsey_of_mem_target
       ∀ x y, Cplus.rel (.inr ()) ![x, y] → p x < p y := by
     intro x y hxy
     have hmap := hp.1 (.inr ()) ![x, y] hxy
-    simpa [RelStructure.ordered, Function.comp_apply] using hmap
+    have heq : p ∘ ![x, y] = ![p x, p y] := by
+      funext i
+      fin_cases i <;> rfl
+    change C₀.ordered.rel (.inr ()) (p ∘ ![x, y]) at hmap
+    rw [heq] at hmap
+    exact hmap
   obtain ⟨oW, horder⟩ :=
     RelStructure.exists_order_extension Cplus p hpart
   letI : LinearOrder W := oW
