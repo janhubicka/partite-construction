@@ -24,6 +24,7 @@ Historical TODOs in that log are not current proof obligations.
 | Rooted unrestricted functional EHN | `Rooted.Structure.FreeAmalgamationClass.orderedRamsey_allArity` | Hereditary full free-amalgamation class; arbitrary set-valued function arities; constants included |
 | Exact ordered forbidden-pattern theorem, `thm:HN` | `Structure.orderedRamsey_forbidden_expansions_allArity` | Arbitrary function arities; forbidden structures may specify orders; only their reducts must be irreducible |
 | Strict relational sparsening | `Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all` | B irreducible; A arbitrary; independent of the unresolved stronger synchronized invariant |
+| Function-closed tree amalgam interface | `RelStructure.FunctionClosedTreeAmalgam.irreducible_contained_in_full_copy` | Strict relational tree geometry plus closed gluing roots; side embeddings stay closed and constituent copies decode to full function embeddings |
 
 The all-arity endpoints are in
 `Ramsey/FreeAmalgamationFunctionsAllArity.lean` and
@@ -67,16 +68,16 @@ ensures that final order completion creates no new forbidden embedding.
 ## Remaining manuscript obligations
 
 1. **Functional iterated sparsening.** Weak restriction itself is already
-   exact under graph encoding (`weakInduce_graph_rel_iff`).  The remaining
-   issue is closure of the tree-amalgam interfaces.  The regression theorem
-   `Structure.FunctionalTreeTransferObstruction.target_tree` constructs a
-   strict relational tree amalgam of graph-encoded copies of a
-   singleton-valued unary partial-function structure by gluing over a
-   non-closed input root; after decoding,
-   `target_not_singletonValued` exhibits two distinct outputs over that
-   input.  Thus the relational sparsening theorem cannot be transferred
-   verbatim.  The functional iteration must keep tree roots and constituent
-   copies closed (or carry equivalent domain/closure data).
+   exact under graph encoding (`weakInduce_graph_rel_iff`).  The naive
+   relational transfer fails by
+   `Structure.FunctionalTreeTransferObstruction.target_not_singletonValued`:
+   a non-closed gluing root can create extra function outputs.  The positive
+   target interface is now checked as `FunctionClosedTreeAmalgam`.  Its
+   gluing roots are closed; `glue_sides_closed` proves every side embedding
+   remains closed, and `irreducible_contained_in_full_copy` shows constituent
+   copies decode to full function embeddings.  What remains is to propagate
+   this closed-tree invariant through the Picture/trace iteration and final
+   sparsening construction.
 2. **Arbitrary-alpha Picture statement.** Replace the printed argument by the
    checked domain-aware version or prove the stronger assertion separately.
 
