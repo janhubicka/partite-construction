@@ -17,6 +17,7 @@ namespace StructuralRamsey.Rooted
 open StructuralRamsey Structure
 
 universe u v w
+variable {n : ℕ}
 
 /-- A pattern says which input coordinates are occupied by fixed root
 vertices.  Coordinates carrying `none` remain moving variables. -/
@@ -25,10 +26,14 @@ structure Pattern (n : ℕ) (R : Type v) where
 
 namespace Pattern
 
-universe u
 variable {n : ℕ} {R : Type v}
 
-def Move (p : Pattern n R) := {i : Fin n // p.fixed i = none}
+abbrev Move (p : Pattern n R) := {i : Fin n // p.fixed i = none}
+
+@[ext] theorem ext {p q : Pattern n R} (h : p.fixed = q.fixed) : p = q := by
+  cases p
+  cases q
+  simp_all
 
 noncomputable def moveFintype (p : Pattern n R) : Fintype p.Move := by
   letI : Finite p.Move :=
@@ -100,11 +105,11 @@ noncomputable def sumFill {V : Type w} (p : Pattern n R)
   | inl r =>
       have hfix : (ofTuple t).fixed i = some r := by
         simp [ofTuple, h]
-      rw [sumFill, hfix]
+      simp only [sumFill, hfix]
   | inr x =>
       have hfix : (ofTuple t).fixed i = none := by
         simp [ofTuple, h]
-      rw [sumFill, hfix]
+      simp only [sumFill, hfix]
       apply congrArg Sum.inr
       change
         moveValue t
@@ -141,7 +146,7 @@ theorem hasMoving_sumFill {V : Type w}
   let i : p.Move := p.moveEquiv.symm j
   refine ⟨i.1, x j, ?_⟩
   have hi : p.fixed i.1 = none := i.2
-  rw [sumFill, hi]
+  simp only [sumFill, hi]
   change Sum.inr (x (p.moveEquiv i)) = Sum.inr (x j)
   rw [Equiv.apply_symm_apply]
 
@@ -165,10 +170,7 @@ noncomputable def rootTuple {V : Type w} (t : Fin n → Sum R V)
   funext i
   cases hi : t i with
   | inl r =>
-      change Sum.inl (match hj : t i with
-        | .inl s => s
-        | .inr v => False.elim (h ⟨i, v, hj⟩)) = Sum.inl r
-      rw [hi]
+      simp [rootTuple, hi]
   | inr v => exact False.elim (h ⟨i, v, hi⟩)
 
 theorem rootTuple_inl {V : Type w} (x : Fin n → R)
@@ -228,7 +230,9 @@ are read from the rooted language. -/
 noncomputable def decode
     {L : Language.{u}} {R : Type v} {V : Type w}
     (Root : Structure L R) (C : Structure (language L R) V) :
-    Structure L (Sum R V) where
+    Structure L (Sum R V) := by
+  classical
+  exact {
   rel S t :=
     if h : Pattern.HasMoving t then
       C.rel
@@ -255,6 +259,7 @@ noncomputable def decode
         match y with
         | .inl r => r ∈ Root.func F (Pattern.rootTuple t h)
         | .inr _ => False}
+  }
 
 /-- Extend a map of moving carriers by the identity on the fixed root. -/
 def sumMap {R : Type v} {V W : Type w} (f : V → W) :
@@ -266,8 +271,17 @@ theorem sumMap_injective {R : Type v} {V W : Type w}
     {f : V → W} (hf : Function.Injective f) :
     Function.Injective (sumMap (R := R) f) := by
   intro x y h
-  cases x <;> cases y <;> simp [sumMap] at h ⊢
-  exact hf h
+  cases x with
+  | inl r =>
+      cases y with
+      | inl s => exact congrArg Sum.getLeft h
+      | inr y => cases h
+  | inr x =>
+      cases y with
+      | inl s => cases h
+      | inr y =>
+          apply congrArg Sum.inr
+          exact hf (Sum.inr.inj h)
 
 theorem Pattern.hasMoving_sumMap
     {R : Type v} {V W : Type w} (f : V → W)
