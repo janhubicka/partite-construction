@@ -22,25 +22,24 @@ variable {L : Language.{u}} {R V W : Type v}
 
 /-- Intrinsic rank in a finite linear order. -/
 noncomputable def orderRank (α : Type v) [Fintype α] [LinearOrder α]
-    (x : α) : ℕ :=
-  @Fintype.card (Set.Iio x) (Fintype.ofFinite (Set.Iio x))
+    (x : α) : ℕ := by
+  classical
+  exact (Finset.univ.filter (fun y => y < x)).card
 
 theorem orderRank_strictMono (α : Type v) [Fintype α] [LinearOrder α] :
     StrictMono (orderRank α) := by
   intro a b hab
-  letI : Fintype (Set.Iio a) := Fintype.ofFinite _
-  letI : Fintype (Set.Iio b) := Fintype.ofFinite _
-  apply Set.card_lt_card
-  apply Set.ssubset_iff_subset_ne.mpr
-  constructor
+  unfold orderRank
+  apply Finset.card_lt_card
+  apply Finset.ssubset_iff.mpr
+  refine ⟨a, ?_, ?_⟩
+  · simp
   · intro x hx
-    exact lt_trans hx hab
-  · intro hEq
-    have ha : a ∈ Set.Iio b := hab
-    have haa : a ∈ Set.Iio a := by
-      rw [hEq]
-      exact ha
-    exact (lt_irrefl a haa)
+    simp only [Finset.mem_insert, Finset.mem_filter, Finset.mem_univ,
+      true_and] at hx ⊢
+    rcases hx with rfl | hxa
+    · exact hab
+    · exact lt_trans hxa hab
 
 theorem orderRank_injective (α : Type v) [Fintype α] [LinearOrder α] :
     Function.Injective (orderRank α) :=
@@ -105,14 +104,9 @@ theorem rootBelowRoot_card
     (Finset.univ.filter (fun s => ρ s < ρ r)).card = orderRank R r := by
   classical
   unfold orderRank
-  letI : Fintype (Set.Iio r) := Fintype.ofFinite _
-  have hset :
-      (Finset.univ.filter (fun s => ρ s < ρ r) : Finset R) =
-        Finset.univ.filter (fun s => s < r) := by
-    ext s
-    simp [hρ.lt_iff_lt]
-  rw [hset]
-  rfl
+  apply congrArg Finset.card
+  ext s
+  simp [hρ.lt_iff_lt]
 
 /-- If r lies below x, the rank of r is strictly smaller than the number of
 root points below x. -/
@@ -123,20 +117,17 @@ theorem orderRank_lt_rootBelow_card
     (r : R) (x : Outside ρ) (hrx : ρ r < x.1) :
     orderRank R r < (rootBelow ρ x).card := by
   classical
-  let S : Set R := {s | s < r}
-  let T : Set R := {s | ρ s < x.1}
-  letI : Fintype S := Fintype.ofFinite _
-  letI : Fintype T := Fintype.ofFinite _
-  have hST : S ⊂ T := by
-    constructor
-    · intro s hs
-      exact lt_trans (hρ hs) hrx
-    · intro heq
-      have hrT : r ∈ T := hrx
-      have hrS : r ∈ S := by rw [heq]; exact hrT
-      exact (lt_irrefl r hrS)
-  have hc := Set.card_lt_card hST
-  simpa [orderRank, rootBelow, S, T] using hc
+  unfold orderRank rootBelow
+  apply Finset.card_lt_card
+  apply Finset.ssubset_iff.mpr
+  refine ⟨r, ?_, ?_⟩
+  · simp
+  · intro s hs
+    simp only [Finset.mem_insert, Finset.mem_filter, Finset.mem_univ,
+      true_and] at hs ⊢
+    rcases hs with rfl | hsr
+    · exact hrx
+    · exact lt_trans (hρ hsr) hrx
 
 /-- If r is not below x, the number of root points below x is at most the
 rank of r. -/
@@ -147,18 +138,13 @@ theorem rootBelow_card_le_orderRank
     (r : R) (x : Outside ρ) (hrx : ¬ ρ r < x.1) :
     (rootBelow ρ x).card ≤ orderRank R r := by
   classical
-  let S : Set R := {s | ρ s < x.1}
-  let T : Set R := {s | s < r}
-  letI : Fintype S := Fintype.ofFinite _
-  letI : Fintype T := Fintype.ofFinite _
-  have hST : S ⊆ T := by
-    intro s hs
-    by_contra hsr
-    have hrs : r ≤ s := le_of_not_gt hsr
-    have hρrs : ρ r ≤ ρ s := hρ.monotone hrs
-    exact hrx (lt_of_le_of_lt hρrs hs)
-  have hc := Set.card_le_card hST
-  simpa [orderRank, rootBelow, S, T] using hc
+  unfold orderRank rootBelow
+  apply Finset.card_le_card
+  intro s hs
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hs ⊢
+  by_contra hsr
+  have hrs : r ≤ s := le_of_not_gt hsr
+  exact hrx (lt_of_le_of_lt (hρ.monotone hrs) hs)
 
 /-- Root-below sets are monotone along the ambient order. -/
 theorem rootBelow_card_mono
@@ -168,9 +154,10 @@ theorem rootBelow_card_mono
     (x y : Outside ρ) (hxy : x.1 < y.1) :
     (rootBelow ρ x).card ≤ (rootBelow ρ y).card := by
   classical
+  unfold rootBelow
   apply Finset.card_le_card
   intro r hr
-  simp [rootBelow] at hr ⊢
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hr ⊢
   exact lt_trans hr hxy
 
 /-- Lexicographic code for the reconstructed ordered carrier.  A moving
