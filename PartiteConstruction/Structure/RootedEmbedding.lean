@@ -227,4 +227,33 @@ noncomputable def encodeEmbedding
       (Pattern.fill ρA Q.p argsA)
       (Pattern.fill ρB Q.p argsB) hfill'
 
+/-- Ordered version of `encodeEmbedding`. -/
+noncomputable def encodeOrderedEmbedding
+    {Root : Structure L R} {A : Structure L U} {B : Structure L V}
+    [LinearOrder U] [LinearOrder V]
+    {ρA : Structure.Embedding Root A}
+    {ρB : Structure.Embedding Root B}
+    (e : Structure.Embedding A.withLinearOrder B.withLinearOrder)
+    (hroot : ∀ r, e.linearOrderReduct (ρA r) = ρB r) :
+    Structure.Embedding (encode ρA).withLinearOrder
+      (encode ρB).withLinearOrder := by
+  let f : Structure.Embedding (encode ρA) (encode ρB) :=
+    encodeEmbedding e.linearOrderReduct hroot e.strictMono
+  have hfmono : StrictMono f := by
+    intro x y hxy
+    exact e.strictMono hxy
+  exact {
+    toFun := f
+    injective := f.injective
+    map_func := f.map_func
+    map_rel_iff := fun S x => by
+      cases S with
+      | inl S => exact f.map_rel_iff S x
+      | inr r =>
+          cases r
+          change f (x (0 : Fin 2)) < f (x (1 : Fin 2)) ↔
+            x (0 : Fin 2) < x (1 : Fin 2)
+          exact hfmono.lt_iff_lt
+  }
+
 end StructuralRamsey.Rooted
