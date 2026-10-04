@@ -12,8 +12,8 @@ namespace StructuralRamsey.FunctionalPartite.Induced
 
 open Structure HalesJewett SuccessorTree
 
-universe u v w
-variable {L : Language.{u}} {P : Type v} {V : Type w}
+universe u v
+variable {L : Language.{u}} {P V : Type v}
 variable {A : Structure L P} {B : System L P V} {N : ℕ}
 
 /-- A letter sends every function value in B to the corresponding value in
