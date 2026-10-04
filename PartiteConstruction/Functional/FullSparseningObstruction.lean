@@ -70,17 +70,18 @@ def orderedEmbedding
   map_func := by
     intro F x
     cases F
+    change
+      imageSet f {z | z = x (0 : Fin 2)} =
+        {z | z = (f ∘ x) (0 : Fin 2)}
     ext y
     constructor
     · rintro ⟨z, hz, rfl⟩
-      change z = x 0 at hz
       subst z
-      change f (x 0) = f (x 0)
       rfl
     · intro hy
-      change y = f (x 0) at hy
+      change y = f (x (0 : Fin 2)) at hy
       subst y
-      exact ⟨x 0, rfl, rfl⟩
+      exact ⟨x (0 : Fin 2), rfl, rfl⟩
 
 def singletonMap (i : Fin 3) : Fin 1 → Fin 3 := fun _ => i
 
@@ -175,6 +176,7 @@ theorem irreducible_of_total_binary
   push Not at hE hF
   obtain ⟨a, ha⟩ := hE
   obtain ⟨b, hb⟩ := hF
+  exfalso
   let args : Fin 2 → X := ![a, b]
   obtain ⟨y, hy⟩ := htotal args
   have hey : e y ∈ Csrc.func () (e ∘ args) := by
@@ -230,7 +232,10 @@ theorem B_not_ramsey : ¬ Arrow A B B Bool := by
     orderedEmbedding (fun _ : Fin 1 => (1 : Fin 2))
       (by intro a b hab; omega)
   have hmono := hf e0 e1
-  have hne : f 0 ≠ f 1 := f.injective (by decide)
+  have hne : f (0 : Fin 2) ≠ f (1 : Fin 2) := by
+    intro heq
+    have h01 : (0 : Fin 2) = 1 := f.injective heq
+    omega
   rcases fin2_cases (f 0) with h00 | h01
   <;> rcases fin2_cases (f 1) with h10 | h11
   <;> simp_all [χ, e0, e1, orderedEmbedding]
@@ -245,8 +250,8 @@ theorem total_of_full_projection
   intro x
   have ht :
       p (x 0) ∈ C0.func () (p ∘ x) := by
-    simp [C0, C00, projStructure, Structure.withLinearOrder,
-      Function.comp_apply]
+    simp [C0, C00, projStructure, Structure.withLinearOrder]
+    rfl
   have himg :
       p (x 0) ∈ imageSet p (C.func () x) := by
     rw [hp.2 () x]
