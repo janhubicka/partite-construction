@@ -33,15 +33,20 @@ stronger synchronized tree invariant.
 
 ## Remaining proof obligations
 
-1. Settle the literal strong `thm:tree_invariant` under mere irreducibility of
-   A, or adopt an exact weaker statement.  Whole-copy localization does not by
-   itself provide synchronized control of all partial-boundary intersections.
-2. Complete the separate **functional iterated sparsening** theorem.  The
-   all-arity EHN theorem is a one-pass class transfer and does not supply the
-   local tree-amalgam bounds required there.
-3. Resolve the editorial status of the stronger arbitrary-alpha
+1. Complete the separate **functional iterated sparsening** theorem.  Weak
+   substructures are already exactly induced graph restrictions, but the
+   relational tree-amalgam output is not automatically functional: a
+   non-closed gluing root can introduce additional function outputs into a
+   constituent copy.  The checked
+   `FunctionalTreeTransferObstruction` regression isolates this failure.
+   The next invariant is therefore a closed-root/closed-copy tree amalgam.
+2. Resolve the editorial status of the stronger arbitrary-alpha
    `lem:indpicutreU`: replace its printed argument by the checked domain-aware
    semi-closed version or prove the stronger assertion independently.
+
+The former synchronized ambient-A invariant has been replaced in the survey by
+the exact checked local-tree-completability statement.  It is optional stronger
+work, not a prerequisite for the sparsening theorem.
 
 Constants are **not** a remaining EHN or survey-`thm:HN` obligation.
 
