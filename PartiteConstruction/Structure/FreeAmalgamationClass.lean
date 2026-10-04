@@ -180,7 +180,7 @@ theorem properFreeDecomposition_of_crossing
     · intro a b
       constructor
       · intro hab
-        have huv : a.1 = b.1 := congrArg Subtype.val hab
+        have huv : a.1 = b.1 := hab
         let z : Mset := ⟨a.1, ⟨a.2, by simpa [huv] using b.2⟩⟩
         refine ⟨z, rfl, ?_⟩
         apply Subtype.ext
@@ -266,16 +266,12 @@ theorem irreducible_iff_noProperFreeDecomposition
   · intro hnodecomp
     intro H E F C Dsrc Esrc Fsrc Csrc sE sF iE iF hfree e
     by_contra hside
-    simp only [not_or, not_forall] at hside
-    rcases hside with ⟨⟨aE, hE⟩, ⟨aF, hF⟩⟩
     have hnotE : ¬ ∀ a : U, ∃ x : E, e a = iE x := by
       intro h
-      rcases h aE with ⟨x, hx⟩
-      exact hE x hx
+      exact hside (Or.inl h)
     have hnotF : ¬ ∀ a : U, ∃ x : F, e a = iF x := by
       intro h
-      rcases h aF with ⟨x, hx⟩
-      exact hF x hx
+      exact hside (Or.inr h)
     exact hnodecomp
       (properFreeDecomposition_of_crossing hfree e hnotE hnotF)
 
