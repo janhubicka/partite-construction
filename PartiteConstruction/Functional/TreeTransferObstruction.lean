@@ -150,8 +150,12 @@ theorem left_output :
   have htuple :=
     Structure.comp_funcTuple
       (fun b : Bool => left b) (fun _ : Fin 1 => false) true
-  rw [htuple] at h
-  exact h
+  have hrel :
+      target.rel (.inr ())
+        (Structure.funcTuple (fun _ : Fin 1 => left false) (left true)) := by
+    simpa only [Function.comp_apply] using
+      Eq.mp (congrArg (fun t => target.rel (.inr ()) t) htuple) h
+  exact hrel
 
 theorem right_output :
     right true ∈
@@ -166,13 +170,17 @@ theorem right_output :
   have htuple :=
     Structure.comp_funcTuple
       (fun b : Bool => right b) (fun _ : Fin 1 => false) true
-  rw [htuple] at h
+  have hrel :
+      target.rel (.inr ())
+        (Structure.funcTuple (fun _ : Fin 1 => right false) (right true)) := by
+    simpa only [Function.comp_apply] using
+      Eq.mp (congrArg (fun t => target.rel (.inr ()) t) htuple) h
   have hinput :
       (fun _ : Fin 1 => right false) =
         (fun _ : Fin 1 => left false) := by
     funext i
     exact common_input.symm
-  simpa [hinput] using h
+  simpa only [hinput] using hrel
 
 theorem outputs_distinct : left true ≠ right true := by
   intro h
