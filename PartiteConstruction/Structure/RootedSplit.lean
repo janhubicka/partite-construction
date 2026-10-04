@@ -36,28 +36,44 @@ noncomputable def split
     unsplit ρ (split ρ a) = a := by
   classical
   by_cases h : a ∈ Set.range ρ
-  · simp only [split, dif_pos h, unsplit]
+  · unfold split
+    dsimp only
+    rw [dite_eq_left h]
     exact Classical.choose_spec h
-  · simp [split, h, unsplit]
+  · unfold split
+    dsimp only
+    rw [dite_eq_right h]
+    rfl
+
+theorem unsplit_injective
+    {Root : Structure L R} {A : Structure L U}
+    (ρ : Structure.Embedding Root A) :
+    Function.Injective (unsplit ρ) := by
+  intro x y hxy
+  cases x with
+  | inl r =>
+      cases y with
+      | inl s =>
+          apply congrArg Sum.inl
+          exact ρ.injective hxy
+      | inr y =>
+          exact False.elim (y.2 ⟨r, hxy.symm⟩)
+  | inr x =>
+      cases y with
+      | inl s =>
+          exact False.elim (x.2 ⟨s, hxy⟩)
+      | inr y =>
+          apply congrArg Sum.inr
+          apply Subtype.ext
+          exact hxy
 
 @[simp] theorem split_unsplit
     {Root : Structure L R} {A : Structure L U}
     (ρ : Structure.Embedding Root A) (x : Sum R (Outside ρ)) :
     split ρ (unsplit ρ x) = x := by
-  classical
-  cases x with
-  | inl r =>
-      have h : ρ r ∈ Set.range ρ := ⟨r, rfl⟩
-      simp only [unsplit, split, dif_pos h]
-      apply congrArg Sum.inl
-      apply ρ.injective
-      exact Classical.choose_spec h
-  | inr x =>
-      have h : x.1 ∉ Set.range ρ := x.2
-      simp only [unsplit, split, dif_neg h]
-      apply congrArg Sum.inr
-      apply Subtype.ext
-      rfl
+  apply unsplit_injective ρ
+  rw [unsplit_split]
+
 
 noncomputable def splitEquiv
     {Root : Structure L R} {A : Structure L U}
