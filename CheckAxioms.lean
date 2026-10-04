@@ -344,3 +344,8 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Iterated.basedStep_locallyTreeCompletable_projectedPartial
 #print axioms StructuralRamsey.Partite.Induced.Trace.locallyTreeCompletable_projectedPartial
 #print axioms StructuralRamsey.Partite.Induced.inducedConstruction_locallyTreeCompletable_projectedPartial
+
+#print axioms StructuralRamsey.RelStructure.LooseTreeAmalgam.ofTree
+#print axioms StructuralRamsey.RelStructure.LooseTreeAmalgam.irreducible_contained_in_copy
+#print axioms StructuralRamsey.RelStructure.LooseTreeAmalgam.attach
+#print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.toLoose

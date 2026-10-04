@@ -58,6 +58,7 @@ import PartiteConstruction.Partite.InducedBased
 import PartiteConstruction.Partite.InducedStep
 import PartiteConstruction.Partite.InducedConstruction
 import PartiteConstruction.Iterated.LocalTreeLike
+import PartiteConstruction.Iterated.LooseTreeAmalgam
 import PartiteConstruction.Iterated.TreeCompletion
 import PartiteConstruction.Iterated.WeakLocalTreeLike
 import PartiteConstruction.Iterated.ControlCompletion
