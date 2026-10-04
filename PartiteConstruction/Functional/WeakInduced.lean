@@ -42,8 +42,11 @@ theorem weak_lineMap_rel_iff
     | parameter =>
         simpa only [lineMap, hi, Function.comp_apply] using hx
     | const e =>
-        have he := (e.toEmbedding.map_rel_iff R (B.part ∘ x)).mpr (hB.1 R x hx)
-        simpa only [lineMap, hi, Function.comp_apply] using he
+        have he0 := (e.toEmbedding.map_rel_iff R (B.part ∘ x)).mpr (hB.1 R x hx)
+        let args : Fin (L.relArity R) → V := fun j => e (B.part (x j))
+        have hargs : e ∘ (B.part ∘ x) = args := by funext j; rfl
+        have he : B.rel R args := by rw [← hargs]; exact he0
+        simpa only [args, lineMap, hi, Function.comp_apply] using he
 
 theorem weak_lineMap_func_mem
     (hB : B.toStructure.IsWeakHomomorphism A B.part)
@@ -55,8 +58,12 @@ theorem weak_lineMap_func_mem
   | parameter =>
       simpa only [lineMap, hi, Function.comp_apply] using hy
   | const e =>
-      simpa only [lineMap, hi, Function.comp_apply] using
-        letter_func_member hB e F x hy
+      let args : Fin (L.funcArity F) → V := fun j => e (B.part (x j))
+      have hargs : e ∘ (B.part ∘ x) = args := by funext j; rfl
+      have he : e (B.part y) ∈ B.func F args := by
+        rw [← hargs]
+        exact letter_func_member hB e F x hy
+      simpa only [args, lineMap, hi, Function.comp_apply] using he
 
 /-- A single parameter coordinate supplies a preimage. Output transversality
 of the power itself then proves equality, without a second coordinate chase. -/
