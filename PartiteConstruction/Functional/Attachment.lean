@@ -120,20 +120,32 @@ noncomputable def attach :
             · have hnot : args k ∉ S := by
                 intro hmem
                 have hk0 := congrFun hxargs k
-                rw [hxk,
-                  Structure.Attachment.copyMap_mem
+                have hk1 :
+                    Sum.inr p =
+                      Structure.Attachment.copyMap
+                        B.toStructure S hS D.toStructure
+                        (fun q => (f q).toEmbedding) j (args k) := by
+                  simpa [maps, Function.comp_apply] using hk0
+                rw [Structure.Attachment.copyMap_mem
                     (B := B.toStructure) (S := S) (hS := hS)
-                    (D := D.toStructure) (f := maps)
-                    j (args k) hmem] at hk0
-                simp at hk0
+                    (D := D.toStructure)
+                    (f := fun q => (f q).toEmbedding)
+                    j (args k) hmem] at hk1
+                simp at hk1
               have hji : j = i := by
                 have hk0 := congrFun hxargs k
-                rw [hxk,
-                  Structure.Attachment.copyMap_not_mem
+                have hk1 :
+                    Sum.inr p =
+                      Structure.Attachment.copyMap
+                        B.toStructure S hS D.toStructure
+                        (fun q => (f q).toEmbedding) j (args k) := by
+                  simpa [maps, Function.comp_apply] using hk0
+                rw [Structure.Attachment.copyMap_not_mem
                     (B := B.toStructure) (S := S) (hS := hS)
-                    (D := D.toStructure) (f := maps)
-                    j (args k) hnot] at hk0
-                exact congrArg Prod.fst (Sum.inr.inj hk0.symm)
+                    (D := D.toStructure)
+                    (f := fun q => (f q).toEmbedding)
+                    j (args k) hnot] at hk1
+                exact congrArg Prod.fst (Sum.inr.inj hk1.symm)
               subst j
               exact ⟨args, out, hout, hxargs, htout⟩
           obtain ⟨ay, byv, hry, hargsY, houtY⟩ := getCopy hy
@@ -149,7 +161,19 @@ noncomputable def attach :
           have hpB : B.part byv = B.part bz := by
             have hp' := hp
             rw [houtY, houtZ] at hp'
-            simpa only [part_copyMap] using hp'
+            have hp'' :
+                part B S D
+                    (Structure.Attachment.copyMap
+                      B.toStructure S hS D.toStructure
+                      (fun q => (f q).toEmbedding) i byv) =
+                  part B S D
+                    (Structure.Attachment.copyMap
+                      B.toStructure S hS D.toStructure
+                      (fun q => (f q).toEmbedding) i bz) := by
+              simpa [maps] using hp'
+            exact
+              (part_copyMap B S hS D f i byv).symm.trans
+                (hp''.trans (part_copyMap B S hS D f i bz))
           have houtEq := B.funcTransversal F ay byv bz hry hrz hpB
           calc
             y =
