@@ -417,5 +417,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Structure.FibreSurjectivityObstruction.inject_not_full_homEmbedding
 
 #print axioms StructuralRamsey.Structure.WeakTreePropertyObstruction.base_irreducible
-#print axioms StructuralRamsey.Structure.WeakTreePropertyObstruction.TreeAmalgam.hasOutput
+#print axioms StructuralRamsey.Structure.WeakTreePropertyObstruction.tree_hasOutput
 #print axioms StructuralRamsey.Structure.WeakTreePropertyObstruction.no_homomorphismEmbedding_to_tree
