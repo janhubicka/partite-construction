@@ -144,6 +144,21 @@ theorem normalize_eq_self_of_comp
     have hxi : x i = x (p.firstMoving h) := he hex
     simp [normalize, hi, hxi]
 
+theorem normalize_pad {V : Type w}
+    (t : Fin n → Sum R V) (h : (ofTuple t).HasMoving) :
+    normalize (ofTuple t) h (pad t h) = pad t h := by
+  funext i
+  by_cases hi : (ofTuple t).fixed i = none
+  · simp [normalize, hi]
+  · have hj := (ofTuple t).firstMoving_spec h
+    have hfirst :
+        pad t h ((ofTuple t).firstMoving h) = dummy t h := by
+      rw [pad_eq_moveAt _ h _ hj]
+      rfl
+    rw [normalize]
+    simp only [hi, ↓reduceDIte]
+    rw [hfirst, pad_eq_dummy _ h i hi]
+
 /-- Padding a tuple reconstructed from a pattern is exactly normalization. -/
 theorem pad_sumFill {V : Type w}
     (p : Pattern n R) (h : p.HasMoving) (x : Fin n → V) :
@@ -311,6 +326,31 @@ def sumMap {R : Type v} {V W : Type w} (f : V → W) :
     Sum R V → Sum R W
   | .inl r => .inl r
   | .inr x => .inr (f x)
+
+theorem Pattern.sumMap_sumFill_of_pad_eq
+    {R : Type v} {V W : Type w} (e : V → W)
+    (t : Fin n → Sum R W) (h : (Pattern.ofTuple t).HasMoving)
+    (x : Fin n → V)
+    (heq : Pattern.pad t h = e ∘ x) :
+    sumMap e ∘ Pattern.sumFill (Pattern.ofTuple t) x = t := by
+  funext i
+  cases ht : t i with
+  | inl r =>
+      have hp : (Pattern.ofTuple t).fixed i = some r := by
+        simp [Pattern.ofTuple, ht]
+      simp [Pattern.sumFill, sumMap, hp, ht]
+  | inr y =>
+      have hp : (Pattern.ofTuple t).fixed i = none := by
+        simp [Pattern.ofTuple, ht]
+      have hm := Pattern.moveAt_spec t i hp
+      rw [ht] at hm
+      have hpad : Pattern.pad t h i = y := by
+        rw [Pattern.pad_eq_moveAt _ h i hp]
+        exact (Sum.inr.inj hm).symm
+      have hei := congrFun heq i
+      have exy : e (x i) = y := by
+        rw [← hei, hpad]
+      simp [Pattern.sumFill, sumMap, hp, ht, exy]
 
 theorem sumMap_injective {R : Type v} {V W : Type w}
     {f : V → W} (hf : Function.Injective f) :
