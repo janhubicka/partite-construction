@@ -8,7 +8,7 @@ namespace StructuralRamsey.Rooted
 open StructuralRamsey Structure
 
 universe u v
-variable {L : Language.{u}} {R U : Type v}
+variable {L : Language.{u}} {R U : Type v} {n : ℕ}
 
 /-- Reattach the root at the level of carriers. -/
 def unsplit
@@ -23,8 +23,9 @@ otherwise into the moving complement. -/
 noncomputable def split
     {Root : Structure L R} {A : Structure L U}
     (ρ : Structure.Embedding Root A) :
-    U → Sum R (Outside ρ) :=
-  fun a =>
+    U → Sum R (Outside ρ) := by
+  classical
+  exact fun a =>
     if h : a ∈ Set.range ρ then
       Sum.inl (Classical.choose h)
     else
