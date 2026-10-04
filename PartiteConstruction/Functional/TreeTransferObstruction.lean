@@ -150,12 +150,13 @@ theorem left_output :
   have htuple :=
     Structure.comp_funcTuple
       (fun b : Bool => left b) (fun _ : Fin 1 => false) true
-  have hrel :
-      target.rel (.inr ())
-        (Structure.funcTuple (fun _ : Fin 1 => left false) (left true)) := by
-    simpa only [Function.comp_apply] using
-      Eq.mp (congrArg (fun t => target.rel (.inr ()) t) htuple) h
-  exact hrel
+  have hin :
+      ((fun b : Bool => left b) ∘ (fun _ : Fin 1 => false)) =
+        (fun _ : Fin 1 => left false) := by
+    funext i
+    rfl
+  rw [hin] at htuple
+  exact Eq.mp (congrArg (fun t => target.rel (.inr ()) t) htuple) h
 
 theorem right_output :
     right true ∈
@@ -170,11 +171,16 @@ theorem right_output :
   have htuple :=
     Structure.comp_funcTuple
       (fun b : Bool => right b) (fun _ : Fin 1 => false) true
+  have hin :
+      ((fun b : Bool => right b) ∘ (fun _ : Fin 1 => false)) =
+        (fun _ : Fin 1 => right false) := by
+    funext i
+    rfl
+  rw [hin] at htuple
   have hrel :
       target.rel (.inr ())
-        (Structure.funcTuple (fun _ : Fin 1 => right false) (right true)) := by
-    simpa only [Function.comp_apply] using
-      Eq.mp (congrArg (fun t => target.rel (.inr ()) t) htuple) h
+        (Structure.funcTuple (fun _ : Fin 1 => right false) (right true)) :=
+    Eq.mp (congrArg (fun t => target.rel (.inr ()) t) htuple) h
   have hinput :
       (fun _ : Fin 1 => right false) =
         (fun _ : Fin 1 => left false) := by
