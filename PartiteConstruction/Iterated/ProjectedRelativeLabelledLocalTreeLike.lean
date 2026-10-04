@@ -33,8 +33,7 @@ def ProjectedRelativeLabelledLocallyTreeLike
       (e : Embedding (A.induce H) C),
       ∀ hproj : (∀ x, p (e x) = β x.1),
       ∀ hRange : (∀ x, e x ∈ S),
-      ∀ (ell : ↥H → U),
-        (A.induce H).IsHomomorphismEmbedding A ell →
+      ∀ (ell : Embedding (A.induce H) A),
         ∃ (Z : Type v) (Target : RelStructure L Z),
           TreeAmalgam B Z Target ∧
           ∃ f : ↥(↑S : Set W) → Z,
@@ -67,16 +66,15 @@ theorem mono
     ProjectedRelativeLabelledLocallyTreeLike
       (A := A) (D := D) (C := C) (B := B) p m := by
   refine ⟨h.1.mono hmn, ?_⟩
-  intro S hS history β H e hproj hRange ell hell
+  intro S hS history β H e hproj hRange ell
   exact h.2 S (hS.trans hmn) history β H e
-    hproj hRange ell hell
+    hproj hRange ell
 
-/-- The inclusion of an induced partial A-substructure is a valid identity
+/-- The inclusion of an induced partial A-substructure is the identity
 labelling request. -/
-theorem identityLabel_isHomomorphismEmbedding
-    (H : Set U) :
-    (A.induce H).IsHomomorphismEmbedding A Subtype.val :=
-  (inclusion A H).isHomomorphismEmbedding
+def identityLabelEmbedding
+    (H : Set U) : Embedding (A.induce H) A :=
+  inclusion A H
 
 /-- Specialize the relative request to identity labels. -/
 theorem witness_identityLabels
@@ -97,8 +95,101 @@ theorem witness_identityLabels
         RespectsProjectedHistory p S f history ∧
         ∃ targetCopy : Embedding A Target,
           ∀ x : ↥H, f ⟨e x, hRange x⟩ = targetCopy x.1 := by
-  exact h.2 S hS history β H e hproj hRange Subtype.val
-    (identityLabel_isHomomorphismEmbedding (A := A) H)
+  exact h.2 S hS history β H e hproj hRange
+    (identityLabelEmbedding (A := A) H)
+
+
+/-- Projected partial-intersection data survives postcomposition of the target
+by an induced embedding. -/
+theorem ProjectedPartialIntersections.postcomp
+    {Y Z : Type v} {T : RelStructure L Y} {T' : RelStructure L Z}
+    {S : Finset W} {f : ↥(↑S : Set W) → Y}
+    (hPart : ProjectedPartialIntersections
+      (A := A) (D := D) (C := C) (T := T) p S f)
+    (j : Embedding T T') :
+    ProjectedPartialIntersections
+      (A := A) (D := D) (C := C) (T := T') p S (j ∘ f) := by
+  intro β H e hproj hRange
+  obtain ⟨eHT, heHT, hc⟩ := hPart β H e hproj hRange
+  refine ⟨j.comp eHT, ?_, hc.postcomp j⟩
+  intro x
+  exact congrArg j (heHT x)
+
+/-- Finite projected histories survive postcomposition by an embedding of the
+target. -/
+theorem RespectsProjectedHistory.postcomp
+    {Y Z : Type v} {S : Finset W}
+    {f : ↥(↑S : Set W) → Y}
+    (hHist : RespectsProjectedHistory p S f
+      ([] : List (Set P)))
+    (j : Y → Z) (hj : Function.Injective j) :
+    RespectsProjectedHistory p S (j ∘ f)
+      ([] : List (Set P)) := by
+  intro H hH
+  simp at hH
+
+/-- A single relative embedding request is automatic from the projected
+history invariant: first take an ordinary projected-history witness, then
+attach one fresh B-copy over the already embedded requested boundary.
+
+The requested relabelling must be an induced embedding.  Allowing a
+noninjective homomorphism-embedding would contradict the projected-partial
+condition, which already makes the boundary map injective. -/
+theorem ofProjectedHistory
+    (hA : A.Irreducible)
+    (eAB : Embedding A B)
+    (h : ProjectedHistoryLocallyTreeLike
+      (A := A) (D := D) (C := C) (B := B) p n) :
+    ProjectedRelativeLabelledLocallyTreeLike
+      (A := A) (D := D) (C := C) (B := B) p n := by
+  classical
+  refine ⟨h, ?_⟩
+  intro S hS history β H e hproj hRange ell
+  obtain ⟨Y, T, hTree, f, hf, hPart, hHist⟩ :=
+    h S hS history
+  obtain ⟨eHT, heHT, hcT⟩ :=
+    hPart β H e hproj hRange
+  let eHB : Embedding (A.induce H) B := eAB.comp ell
+  have hcB : eHB.ContainedInIrreducible := by
+    apply Embedding.containedInIrreducible_of_range_subset
+      hA eAB eHB
+    intro x
+    exact ⟨ell x, rfl⟩
+  let T' := FreeAmalgam.amalgam (A.induce H) T B eHT eHB
+  let l : Embedding T T' :=
+    FreeAmalgam.leftEmbedding (A.induce H) T B eHT eHB
+  let r : Embedding B T' :=
+    FreeAmalgam.rightEmbedding (A.induce H) T B eHT eHB
+  have hTree' : TreeAmalgam B _ T' :=
+    FreeAmalgam.treeAmalgam (A.induce H) T B eHT eHB B
+      hTree (TreeAmalgam.copy (Iso.refl B)) hcT hcB
+  let f' : ↥(↑S : Set W) → _ := l ∘ f
+  have hf' :
+      (C.induce (↑S : Set W)).IsHomomorphismEmbedding T' f' :=
+    l.isHomomorphismEmbedding.comp hf
+  have hPart' :
+      ProjectedPartialIntersections
+        (A := A) (D := D) (C := C) (T := T') p S f' :=
+    hPart.postcomp l
+  have hHist' :
+      RespectsProjectedHistory p S f' history := by
+    intro K hK x y hxy
+    apply hHist K hK x y
+    apply l.injective
+    exact hxy
+  let targetCopy : Embedding A T' := r.comp eAB
+  refine ⟨_, T', hTree', f', hf', hPart', hHist',
+    targetCopy, ?_⟩
+  intro x
+  change l (f ⟨e x, hRange x⟩) =
+    r (eAB (ell x))
+  calc
+    l (f ⟨e x, hRange x⟩) = l (eHT x) :=
+      congrArg l (heHT x).symm
+    _ = r (eHB x) :=
+      FreeAmalgam.left_right_overlap
+        (A.induce H) T B eHT eHB x
+    _ = r (eAB (ell x)) := rfl
 
 end ProjectedRelativeLabelledLocallyTreeLike
 end StructuralRamsey.RelStructure
