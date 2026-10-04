@@ -137,16 +137,24 @@ theorem isFreeAmalgam :
           exact hq
         · funext k
           have hk := congrFun heq k.castSucc
-          change x k =
-            (RelStructure.FreeAmalgam.leftEmbedding
-              D.graph A.graph B.graph fA.graph fB.graph) (q k.castSucc)
-          exact hk
+          calc
+            x k = Structure.funcTuple x y k.castSucc :=
+              (Structure.funcTuple_castSucc x y k).symm
+            _ = ((RelStructure.FreeAmalgam.leftEmbedding
+                D.graph A.graph B.graph fA.graph fB.graph).toFun ∘ q)
+                  k.castSucc := hk
+            _ = (RelStructure.FreeAmalgam.leftEmbedding
+                D.graph A.graph B.graph fA.graph fB.graph) (q k.castSucc) := rfl
         · have hk := congrFun heq (Fin.last (L.funcArity F))
-          change y =
-            (RelStructure.FreeAmalgam.leftEmbedding
-              D.graph A.graph B.graph fA.graph fB.graph)
-              (q (Fin.last (L.funcArity F)))
-          exact hk
+          calc
+            y = Structure.funcTuple x y (Fin.last (L.funcArity F)) :=
+              (Structure.funcTuple_last x y).symm
+            _ = ((RelStructure.FreeAmalgam.leftEmbedding
+                D.graph A.graph B.graph fA.graph fB.graph).toFun ∘ q)
+                  (Fin.last (L.funcArity F)) := hk
+            _ = (RelStructure.FreeAmalgam.leftEmbedding
+                D.graph A.graph B.graph fA.graph fB.graph)
+                  (q (Fin.last (L.funcArity F))) := rfl
       · let a : Fin (L.funcArity F) → W :=
           fun k => q k.castSucc
         let b : W := q (Fin.last (L.funcArity F))
@@ -156,16 +164,24 @@ theorem isFreeAmalgam :
           exact hq
         · funext k
           have hk := congrFun heq k.castSucc
-          change x k =
-            (RelStructure.FreeAmalgam.rightEmbedding
-              D.graph A.graph B.graph fA.graph fB.graph) (q k.castSucc)
-          exact hk
+          calc
+            x k = Structure.funcTuple x y k.castSucc :=
+              (Structure.funcTuple_castSucc x y k).symm
+            _ = ((RelStructure.FreeAmalgam.rightEmbedding
+                D.graph A.graph B.graph fA.graph fB.graph).toFun ∘ q)
+                  k.castSucc := hk
+            _ = (RelStructure.FreeAmalgam.rightEmbedding
+                D.graph A.graph B.graph fA.graph fB.graph) (q k.castSucc) := rfl
         · have hk := congrFun heq (Fin.last (L.funcArity F))
-          change y =
-            (RelStructure.FreeAmalgam.rightEmbedding
-              D.graph A.graph B.graph fA.graph fB.graph)
-              (q (Fin.last (L.funcArity F)))
-          exact hk
+          calc
+            y = Structure.funcTuple x y (Fin.last (L.funcArity F)) :=
+              (Structure.funcTuple_last x y).symm
+            _ = ((RelStructure.FreeAmalgam.rightEmbedding
+                D.graph A.graph B.graph fA.graph fB.graph).toFun ∘ q)
+                  (Fin.last (L.funcArity F)) := hk
+            _ = (RelStructure.FreeAmalgam.rightEmbedding
+                D.graph A.graph B.graph fA.graph fB.graph)
+                  (q (Fin.last (L.funcArity F))) := rfl
     · rintro (⟨a, b, hb, hx, hy⟩ | ⟨a, b, hb, hx, hy⟩)
       · apply (hrel.rel_iff (.inr F)
           (Structure.funcTuple x y)).mpr
