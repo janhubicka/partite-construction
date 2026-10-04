@@ -85,6 +85,74 @@ theorem isClosed_iff_graph_functionClosedSet
     · exact (graph_func_snoc A F x y).2 hy
     · exact hx
 
+/-- Factor a full embedding through another full embedding whose range
+contains it.  This is the function-language analogue of the relational helper
+used by the tree-gluing proofs. -/
+noncomputable def Embedding.factorThroughRange
+    {A : Structure L V} {B : Structure L W} {C : Structure L X}
+    (e : Embedding A C) (i : Embedding B C)
+    (h : ∀ x : V, ∃ b : W, e x = i b) :
+    Embedding A B where
+  toFun x := Classical.choose (h x)
+  injective := by
+    intro x y hxy
+    apply e.injective
+    calc
+      e x = i (Classical.choose (h x)) := Classical.choose_spec (h x)
+      _ = i (Classical.choose (h y)) := congrArg i hxy
+      _ = e y := (Classical.choose_spec (h y)).symm
+  map_rel_iff := by
+    intro R x
+    let q : V → W := fun a => Classical.choose (h a)
+    have heq : i ∘ (q ∘ x) = e ∘ x := by
+      funext k
+      exact (Classical.choose_spec (h (x k))).symm
+    calc
+      B.rel R (q ∘ x) ↔ C.rel R (i ∘ (q ∘ x)) :=
+        (i.map_rel_iff R (q ∘ x)).symm
+      _ ↔ C.rel R (e ∘ x) := by rw [heq]
+      _ ↔ A.rel R x := e.map_rel_iff R x
+  map_func := by
+    intro F x
+    let q : V → W := fun a => Classical.choose (h a)
+    have heq (a : V) : i (q a) = e a :=
+      (Classical.choose_spec (h a)).symm
+    ext b
+    constructor
+    · rintro ⟨a, ha, rfl⟩
+      have hea :
+          e a ∈ C.func F (e ∘ x) := by
+        have hm : e a ∈ imageSet e (A.func F x) := ⟨a, ha, rfl⟩
+        rw [e.map_func F x] at hm
+        exact hm
+      have hargs : i ∘ (q ∘ x) = e ∘ x := by
+        funext k
+        exact heq (x k)
+      have hiqa :
+          i (q a) ∈ C.func F (i ∘ (q ∘ x)) := by
+        rw [heq a, hargs]
+        exact hea
+      rw [← i.map_func F (q ∘ x)] at hiqa
+      rcases hiqa with ⟨c, hc, hic⟩
+      exact i.injective hic ▸ hc
+    · intro hb
+      have hib :
+          i b ∈ C.func F (i ∘ (q ∘ x)) := by
+        have hm : i b ∈ imageSet i (B.func F (q ∘ x)) :=
+          ⟨b, hb, rfl⟩
+        rw [i.map_func F (q ∘ x)] at hm
+        exact hm
+      have hargs : i ∘ (q ∘ x) = e ∘ x := by
+        funext k
+        exact heq (x k)
+      rw [hargs, ← e.map_func F x] at hib
+      rcases hib with ⟨a, ha, hia⟩
+      refine ⟨a, ha, ?_⟩
+      apply i.injective
+      calc
+        i (q a) = e a := heq a
+        _ = i b := hia
+
 end StructuralRamsey.Structure
 
 namespace StructuralRamsey.Structure
