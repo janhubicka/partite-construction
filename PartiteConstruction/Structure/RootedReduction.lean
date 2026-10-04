@@ -46,6 +46,15 @@ theorem firstMoving_spec (p : Pattern n R) (h : p.HasMoving) :
     p.fixed (p.firstMoving h) = none :=
   Classical.choose_spec h
 
+theorem firstMoving_congr
+    {p q : Pattern n R}
+    (hp : p = q) (h : p.HasMoving) (h' : q.HasMoving) :
+    p.firstMoving h = q.firstMoving h' := by
+  subst q
+  have hh : h = h' := Subsingleton.elim _ _
+  subst hh
+  rfl
+
 /-- Pattern induced by a tuple in the disjoint union of root and moving
 vertices. -/
 def ofTuple {V : Type w} (t : Fin n → Sum R V) : Pattern n R where
@@ -136,11 +145,18 @@ theorem normalize_eq_self_of_comp
   by_cases hi : p.fixed i = none
   · simp [normalize, hi]
   · have hj : p.fixed (p.firstMoving h) = none := p.firstMoving_spec h
-    have hiEq := congrFun hy i
-    have hjEq := congrFun hy (p.firstMoving h)
-    have hex : e (x i) = e (x (p.firstMoving h)) := by
-      rw [← hiEq, ← hjEq]
+    have hiEq : normalize p h y i = e (x i) := by
+      simpa [Function.comp_apply] using congrFun hy i
+    have hjEq :
+        normalize p h y (p.firstMoving h) =
+          e (x (p.firstMoving h)) := by
+      simpa [Function.comp_apply] using congrFun hy (p.firstMoving h)
+    have hyy :
+        normalize p h y i =
+          normalize p h y (p.firstMoving h) := by
       simp [normalize, hi, hj]
+    have hex : e (x i) = e (x (p.firstMoving h)) :=
+      hiEq.symm.trans (hyy.trans hjEq)
     have hxi : x i = x (p.firstMoving h) := he hex
     simp [normalize, hi, hxi]
 
@@ -209,6 +225,37 @@ def sumFill {V : Type w} (p : Pattern n R)
         pad t h i = moveAt t i hfix := pad_eq_moveAt t h i hfix
         _ = x := (Sum.inr.inj hs).symm
 
+theorem dummy_sumFill {V : Type w}
+    (p : Pattern n R) (h : p.HasMoving) (x : Fin n → V) :
+    let t := sumFill p x
+    let ht : (ofTuple t).HasMoving := by
+      rw [ofTuple_sumFill]
+      exact h
+    dummy t ht = x (p.firstMoving h) := by
+  dsimp only
+  let t := sumFill p x
+  let ht : (ofTuple t).HasMoving := by
+    rw [ofTuple_sumFill]
+    exact h
+  have hp : ofTuple t = p := ofTuple_sumFill p x
+  have hi :
+      (ofTuple t).firstMoving ht = p.firstMoving h :=
+    firstMoving_congr hp ht h
+  have hs := dummy_spec t ht
+  have hfix :
+      p.fixed ((ofTuple t).firstMoving ht) = none := by
+    rw [← hp]
+    exact (ofTuple t).firstMoving_spec ht
+  have htuple :
+      t ((ofTuple t).firstMoving ht) =
+        Sum.inr (x ((ofTuple t).firstMoving ht)) := by
+    simp [t, sumFill, hfix]
+  rw [htuple] at hs
+  have hd :
+      dummy t ht = x ((ofTuple t).firstMoving ht) :=
+    (Sum.inr.inj hs).symm
+  exact hd.trans (congrArg x hi)
+
 /-- Padding a tuple reconstructed from a pattern is exactly normalization. -/
 theorem pad_sumFill {V : Type w}
     (p : Pattern n R) (h : p.HasMoving) (x : Fin n → V) :
@@ -218,62 +265,29 @@ theorem pad_sumFill {V : Type w}
       exact h
     pad t ht = normalize p h x := by
   dsimp only
+  let t := sumFill p x
+  let ht : (ofTuple t).HasMoving := by
+    rw [ofTuple_sumFill]
+    exact h
   funext i
   by_cases hi : p.fixed i = none
-  · have hfix : (ofTuple (sumFill p x)).fixed i = none := by
+  · have hfix : (ofTuple t).fixed i = none := by
       rw [ofTuple_sumFill]
       exact hi
-    rw [pad_eq_moveAt _ _ i hfix]
-    have hs := moveAt_spec (sumFill p x) i hfix
-    simp only [sumFill, hi] at hs
-    exact (Sum.inr.inj hs).symm
-  · have hfix : (ofTuple (sumFill p x)).fixed i ≠ none := by
+    rw [pad_eq_moveAt _ ht i hfix]
+    have hs := moveAt_spec t i hfix
+    have htuple : t i = Sum.inr (x i) := by
+      simp [t, sumFill, hi]
+    rw [htuple] at hs
+    have hm : moveAt t i hfix = x i := (Sum.inr.inj hs).symm
+    simpa [normalize, hi] using hm
+  · have hfix : (ofTuple t).fixed i ≠ none := by
       rw [ofTuple_sumFill]
       exact hi
-    rw [pad_eq_dummy _ _ i hfix]
-    have hp : ofTuple (sumFill p x) = p := ofTuple_sumFill p x
-    have hm :
-        (ofTuple (sumFill p x)).firstMoving
-            (by rw [hp]; exact h) =
-          p.firstMoving h :=
-      firstMoving_congr hp (by rw [hp]; exact h) h
-    unfold dummy
-    rw [hm]
-    have hj := p.firstMoving_spec h
-    have hj' : (ofTuple (sumFill p x)).fixed (p.firstMoving h) = none := by
-      rw [hp]
-      exact hj
-    have hs := moveAt_spec (sumFill p x) (p.firstMoving h) hj'
-    simp only [sumFill, hj] at hs
-    have hmove :
-        moveAt (sumFill p x) (p.firstMoving h) hj' =
-          x (p.firstMoving h) :=
-      (Sum.inr.inj hs).symm
-    simpa [normalize, hi] using hmove
-
-theorem dummy_sumFill {V : Type w}
-    (p : Pattern n R) (h : p.HasMoving) (x : Fin n → V) :
-    let t := sumFill p x
-    let ht : (ofTuple t).HasMoving := by
-      rw [ofTuple_sumFill]
-      exact h
-    dummy t ht = x (p.firstMoving h) := by
-  dsimp only
-  have hp : ofTuple (sumFill p x) = p := ofTuple_sumFill p x
-  have hm :
-      (ofTuple (sumFill p x)).firstMoving
-          (by rw [hp]; exact h) =
-        p.firstMoving h :=
-    firstMoving_congr hp (by rw [hp]; exact h) h
-  unfold dummy
-  rw [hm]
-  have hj := p.firstMoving_spec h
-  have hj' : (ofTuple (sumFill p x)).fixed (p.firstMoving h) = none := by
-    rw [hp]
-    exact hj
-  have hs := moveAt_spec (sumFill p x) (p.firstMoving h) hj'
-  simp only [sumFill, hj] at hs
-  exact (Sum.inr.inj hs).symm
+    rw [pad_eq_dummy _ ht i hfix]
+    have hd := dummy_sumFill p h x
+    dsimp only at hd
+    simpa [normalize, hi] using hd
 
 theorem funcTuple_preimage_canonical
     {V W : Type w} (e : V → W) (he : Function.Injective e)
@@ -296,7 +310,7 @@ theorem funcTuple_preimage_canonical
   have hargs : pad t h = e ∘ x := by
     funext i
     have hi := congrFun heq i.castSucc
-    simpa [x, Structure.funcTuple_castSucc] using hi
+    simpa [x, Function.comp_apply, Structure.funcTuple_castSucc] using hi
   have hnormTarget := normalize_pad t h
   have hnormX :
       normalize (ofTuple t) h x = x :=
@@ -309,25 +323,32 @@ theorem funcTuple_preimage_canonical
   have hlast := congrFun heq (Fin.last n)
   have htargetLast :
       dummy t h = e (q (Fin.last n)) := by
-    simpa [Structure.funcTuple_last] using hlast
-  have j := (ofTuple t).firstMoving h
-  have hj := (ofTuple t).firstMoving_spec h
+    simpa [Function.comp_apply, Structure.funcTuple_last] using hlast
+  let j : Fin n := (ofTuple t).firstMoving h
+  have hj : (ofTuple t).fixed j = none := by
+    dsimp [j]
+    exact (ofTuple t).firstMoving_spec h
   have hpadj : pad t h j = dummy t h := by
-    rw [pad_eq_moveAt _ h j hj]
-    rfl
-  have hargj := congrFun hargs j
+    have hnot : ¬ (ofTuple t).fixed j = none → False := fun hn => hn hj
+    simp [pad, hj]
+  have hargj : pad t h j = e (x j) := by
+    simpa [Function.comp_apply] using congrFun hargs j
   have hxlast : x j = q (Fin.last n) := by
     apply he
-    rw [← hargj, hpadj, htargetLast]
+    exact hargj.symm.trans (hpadj.trans htargetLast)
   have hdummy : dummy a ha = q (Fin.last n) := by
     have hd := dummy_sumFill (ofTuple t) h x
     dsimp only at hd
-    exact hd.trans hxlast
-  apply Structure.funcTuple_eta q ▸ ?_
+    have hij :
+        x ((ofTuple t).firstMoving h) = x j := by
+      rfl
+    exact hd.trans (hij.trans hxlast)
   funext i
-  refine Fin.lastCases ?_ (fun j => ?_) i
-  · simpa [hpad, hdummy, Structure.funcTuple_last]
-  · simp [hpad, x, Structure.funcTuple_castSucc]
+  refine Fin.lastCases ?_ (fun k => ?_) i
+  · rw [Structure.funcTuple_last, hdummy]
+  · rw [Structure.funcTuple_castSucc]
+    have hk := congrFun hpad k
+    simpa [x] using hk
 
 /-- A tuple with no moving coordinates consists entirely of root vertices. -/
 theorem exists_rootAt {V : Type w} (t : Fin n → Sum R V)
@@ -466,15 +487,6 @@ theorem Pattern.hasMoving_sumMap
     (Pattern.ofTuple (sumMap f ∘ t)).HasMoving ↔
       (Pattern.ofTuple t).HasMoving := by
   rw [Pattern.ofTuple_sumMap]
-
-theorem Pattern.firstMoving_congr
-    {R : Type v} {p q : Pattern n R}
-    (hp : p = q) (h : p.HasMoving) (h' : q.HasMoving) :
-    p.firstMoving h = q.firstMoving h' := by
-  subst q
-  have hh : h = h' := Subsingleton.elim _ _
-  subst hh
-  rfl
 
 theorem Pattern.dummy_sumMap
     {R : Type v} {V W : Type w} (f : V → W)
