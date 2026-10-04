@@ -4,6 +4,8 @@ import PartiteConstruction.Structure.RootedFunctor
 import PartiteConstruction.Structure.RootedSplit
 import PartiteConstruction.Structure.RootedCorrectness
 import PartiteConstruction.Structure.RootedFreeAmalgam
+import PartiteConstruction.Structure.RootedClass
+import PartiteConstruction.Structure.RootedEmbedding
 import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.generates_of_surjective
@@ -98,3 +100,12 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Rooted.Pattern.side_pad_eq
 #print axioms StructuralRamsey.Rooted.decode_isFreeAmalgam
+
+#print axioms StructuralRamsey.Rooted.decodedClass_free
+#print axioms StructuralRamsey.Rooted.unsplitEmbedding
+#print axioms StructuralRamsey.Rooted.encode_mem_decodedClass
+#print axioms StructuralRamsey.Rooted.outsideMap_injective
+#print axioms StructuralRamsey.Rooted.fill_map
+#print axioms StructuralRamsey.Rooted.root_func_iff
+#print axioms StructuralRamsey.Rooted.outside_func_image
+#print axioms StructuralRamsey.Rooted.encodeEmbedding
