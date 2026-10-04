@@ -166,3 +166,5 @@ import PartiteConstruction.Structure.NullaryRoot
 import PartiteConstruction.Ramsey.FreeAmalgamationFunctionsAllArity
 
 import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
+
+import PartiteConstruction.Functional.TreeTransferObstruction
