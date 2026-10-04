@@ -129,7 +129,7 @@ noncomputable def normalize {V : Type w}
 theorem normalize_eq_self_of_comp
     {V W : Type w} (p : Pattern n R) (h : p.HasMoving)
     (e : V → W) (he : Function.Injective e)
-    (y x : Fin n → V)
+    (y : Fin n → W) (x : Fin n → V)
     (hy : normalize p h y = e ∘ x) :
     normalize p h x = x := by
   funext i
@@ -426,8 +426,7 @@ theorem Pattern.sumMap_sumFill_of_pad_eq
         rw [Pattern.pad_eq_moveAt _ h i hp]
         exact (Sum.inr.inj hm).symm
       have hei := congrFun heq i
-      have exy : e (x i) = y := by
-        rw [← hei, hpad]
+      have exy : e (x i) = y := hei.symm.trans hpad
       simp [Pattern.sumFill, sumMap, hp, ht, exy]
 
 theorem sumMap_injective {R : Type v} {V W : Type w}
