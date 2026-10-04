@@ -102,6 +102,7 @@ import PartiteConstruction.Iterated.FinalSupportStage
 import PartiteConstruction.Iterated.FinalSupportIteration
 import PartiteConstruction.Iterated.SparseningUniformFinal
 import PartiteConstruction.Iterated.SparseningLoose
+import PartiteConstruction.Iterated.SparseningStrictBaseIrreducible
 import PartiteConstruction.Iterated.FinalCompletion
 import PartiteConstruction.Iterated.FinalSparsening
 import PartiteConstruction.Iterated.SparseningIteration

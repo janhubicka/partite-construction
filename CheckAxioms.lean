@@ -361,3 +361,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.arrow_cliqueReduct
 
 #print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_loose_all
+
+#print axioms StructuralRamsey.RelStructure.TreeAmalgam.cliqueReduct_strict
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.cliqueReduct_strict
+#print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all
