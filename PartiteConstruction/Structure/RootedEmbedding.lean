@@ -1,4 +1,5 @@
 import PartiteConstruction.Structure.RootedClass
+import PartiteConstruction.Ramsey.FreeAmalgamationFunctions
 
 set_option autoImplicit false
 
