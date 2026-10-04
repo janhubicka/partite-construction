@@ -16,18 +16,18 @@ variable {L : Language.{u}} {U V W X P : Type v}
 
 /-- Weak homomorphism-embeddings glue over a full free amalgam when their
 underlying maps agree with the prescribed map on the amalgam. -/
-theorem IsWeakHomomorphismEmbedding.of_freeAmalgam
+theorem IsEHNHomomorphismEmbedding.of_freeAmalgam
     {Root : Structure L U} {A : Structure L V} {B : Structure L W}
     {C : Structure L X} {D : Structure L P}
     {sA : Embedding Root A} {sB : Embedding Root B}
     {iA : Embedding A C} {iB : Embedding B C}
     (hfree : IsFreeAmalgam sA sB iA iB)
     {qA : V → P} {qB : W → P} {p : X → P}
-    (hA : A.IsWeakHomomorphismEmbedding D qA)
-    (hB : B.IsWeakHomomorphismEmbedding D qB)
+    (hA : A.IsEHNHomomorphismEmbedding D qA)
+    (hB : B.IsEHNHomomorphismEmbedding D qB)
     (hpA : ∀ x, p (iA x) = qA x)
     (hpB : ∀ x, p (iB x) = qB x) :
-    C.IsWeakHomomorphismEmbedding D p := by
+    C.IsEHNHomomorphismEmbedding D p := by
   constructor
   · constructor
     · intro R z hz
@@ -128,7 +128,7 @@ theorem unit_weaklyPartiteOver
     (D : Structure L P) (hB : B.WeaklyPartiteOver D)
     (hE : E.WeaklyPartiteOver D) :
     (attach B S hS E (fun _ : PUnit.{v+1} => f)).WeaklyPartiteOver D := by
-  apply Structure.IsWeakHomomorphismEmbedding.of_freeAmalgam
+  apply Structure.IsEHNHomomorphismEmbedding.of_freeAmalgam
     (Structure.Attachment.unit_isFreeAmalgam B.toStructure S hS E.toStructure f.toEmbedding)
     hE hB
   · intro x

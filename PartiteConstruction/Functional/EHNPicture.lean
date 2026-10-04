@@ -44,7 +44,7 @@ theorem pictureLemma
   have hmE : K E.toStructure := mem_of_weaklyPartiteOver hK E hPower hA
   let ER := E.relabel α.toFunctionEmbedding
   have hER : ER.WeaklyPartiteOver D :=
-    α.isWeakHomomorphismEmbedding.comp hPower
+    α.isEHNHomomorphismEmbedding.comp hPower
   let T : Stage K D := {
     Carrier := Induced.Vertex R N
     finiteCarrier := inferInstance

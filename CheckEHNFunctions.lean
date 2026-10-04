@@ -20,8 +20,8 @@ import PartiteConstruction.Ramsey.ForbiddenFunctions
 #print axioms StructuralRamsey.FunctionalPartite.Induced.weak_wordEmbedding_apply
 #print axioms StructuralRamsey.FunctionalPartite.Induced.weak_lineEmbedding_comp_letter
 #print axioms StructuralRamsey.FunctionalPartite.Induced.weak_partiteLemma
-#print axioms StructuralRamsey.Structure.IsWeakHomomorphismEmbedding.comp
-#print axioms StructuralRamsey.Structure.Embedding.isWeakHomomorphismEmbedding
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.comp
+#print axioms StructuralRamsey.Structure.Embedding.isEHNHomomorphismEmbedding
 #print axioms StructuralRamsey.FunctionalPartite.Induced.coordinateWeak
 #print axioms StructuralRamsey.FunctionalPartite.Induced.power_projectionWeak
 #print axioms StructuralRamsey.FunctionalPartite.Induced.power_weaklyPartiteOver
@@ -33,7 +33,7 @@ import PartiteConstruction.Ramsey.ForbiddenFunctions
 #print axioms StructuralRamsey.FunctionalPartite.System.weakRestrict_projection
 #print axioms StructuralRamsey.FunctionalPartite.System.weakRestrict_invariant
 #print axioms StructuralRamsey.FunctionalPartite.weakRestrictCopy
-#print axioms StructuralRamsey.Structure.IsWeakHomomorphismEmbedding.of_freeAmalgam
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.of_freeAmalgam
 #print axioms StructuralRamsey.Structure.Attachment.unit_isFreeAmalgam
 #print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_weaklyPartiteOver
 #print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_mem

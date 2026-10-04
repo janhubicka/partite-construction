@@ -36,7 +36,7 @@ A full homomorphism satisfies
 A weak homomorphism requires only the inclusion from left to right, together
 with preservation of relation tuples. The existing `Structure.IsHomomorphism`
 convention is unchanged. The new projection predicate
-`IsWeakHomomorphismEmbedding` is weak globally but agrees with a full embedding
+`IsEHNHomomorphismEmbedding` is weak globally but agrees with a full embedding
 on every full embedded irreducible substructure.
 
 A generated quotient may merge input tuples and gain outputs from another
@@ -143,3 +143,14 @@ The global Ramsey theorems here have a positive-input-arity hypothesis.
 The local closure and weak-image lemmas allow constants, but this does not
 supply the missing unrestricted Ramsey/initial-construction treatment for
 nullary functions.
+
+
+## Compatibility with weak-substructure iteration
+
+The new predicate is `Structure.IsEHNHomomorphismEmbedding`.
+The existing `Structure.IsWeakHomomorphismEmbedding` remains the
+graph-encoding notion used for weak-substructure iteration. They are
+deliberately not aliases: the new predicate uses full closed
+irreducibles and full embeddings, whereas the old one uses graph
+irreducibility and relational graph embeddings. Their names and
+definitions coexist in the umbrella import.

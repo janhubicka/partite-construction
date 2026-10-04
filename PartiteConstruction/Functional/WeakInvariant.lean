@@ -15,19 +15,23 @@ namespace StructuralRamsey.Structure
 universe u v
 variable {L : Language.{u}} {U V W : Type v}
 
-def IsWeakHomomorphismEmbedding (A : Structure L U) (B : Structure L V)
+/-- EHN projection: weak preservation globally, full embeddings on closed
+irreducibles. This is distinct from `IsWeakHomomorphismEmbedding` in
+`WeakSubstructure.lean`, which uses irreducibility in the relational
+graph encoding and does not assert closedness of the restricted maps. -/
+def IsEHNHomomorphismEmbedding (A : Structure L U) (B : Structure L V)
     (f : U → V) : Prop :=
   A.IsWeakHomomorphism B f ∧
   ∀ {X : Type v} (E : Structure L X), E.Irreducible →
     ∀ e : Embedding E A,
       ∃ g : Embedding E B, ∀ x, g x = f (e x)
 
-theorem IsWeakHomomorphismEmbedding.comp
+theorem IsEHNHomomorphismEmbedding.comp
     {A : Structure L U} {B : Structure L V} {C : Structure L W}
     {f : U → V} {g : V → W}
-    (hg : B.IsWeakHomomorphismEmbedding C g)
-    (hf : A.IsWeakHomomorphismEmbedding B f) :
-    A.IsWeakHomomorphismEmbedding C (g ∘ f) := by
+    (hg : B.IsEHNHomomorphismEmbedding C g)
+    (hf : A.IsEHNHomomorphismEmbedding B f) :
+    A.IsEHNHomomorphismEmbedding C (g ∘ f) := by
   constructor
   · exact hg.1.comp hf.1
   · intro X E hE e
@@ -35,9 +39,9 @@ theorem IsWeakHomomorphismEmbedding.comp
     obtain ⟨eC, heC⟩ := hg.2 E hE eB
     exact ⟨eC, fun x => (heC x).trans (congrArg g (heB x))⟩
 
-theorem Embedding.isWeakHomomorphismEmbedding
+theorem Embedding.isEHNHomomorphismEmbedding
     {A : Structure L U} {B : Structure L V} (e : Embedding A B) :
-    A.IsWeakHomomorphismEmbedding B e := by
+    A.IsEHNHomomorphismEmbedding B e := by
   refine ⟨e.isWeakHomomorphism, ?_⟩
   intro X E _ f
   exact ⟨e.comp f, fun _ => rfl⟩
@@ -52,7 +56,7 @@ universe u v
 variable {L : Language.{u}} {P V : Type v}
 
 def System.WeaklyPartiteOver (B : System L P V) (A : Structure L P) : Prop :=
-  B.toStructure.IsWeakHomomorphismEmbedding A B.part
+  B.toStructure.IsEHNHomomorphismEmbedding A B.part
 
 namespace Induced
 

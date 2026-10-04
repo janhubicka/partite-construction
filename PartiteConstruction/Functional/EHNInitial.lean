@@ -25,7 +25,7 @@ def placed (B : Structure L V) (β : Structure.Embedding B D) : System L P V whe
   funcTransversal := fun _ _ _ _ _ _ h => β.injective h
 
 theorem placed_over (B : Structure L V) (β : Structure.Embedding B D) :
-    (placed B β).WeaklyPartiteOver D := β.isWeakHomomorphismEmbedding
+    (placed B β).WeaklyPartiteOver D := β.isEHNHomomorphismEmbedding
 
 theorem empty_closed (B : Structure L V) (hpos : L.PositiveFuncArity) :
     B.IsClosed ∅ := by
