@@ -164,103 +164,50 @@ theorem lineMap_rel_iff
           exact he0
         simpa only [args, lineMap, hi, Function.comp_apply] using he
 
-/-- Exact preservation of set-valued function images by a Hales--Jewett line
-map.  The reverse inclusion uses a parameter coordinate and output
-transversality to rule out mixed coordinate choices. -/
+/-- Exact preservation of set-valued function images by a Hales--Jewett line.
+A parameter coordinate supplies a preimage; output transversality of the
+whole power supplies uniqueness, without repeating the coordinate analysis. -/
 theorem lineMap_func
     (hB : B.ProjectionHom A)
     (W : Line (Letter A B) N) (F : L.FuncSymbol)
     (x : Fin (L.funcArity F) → V) :
     Structure.imageSet (lineMap W) (B.func F x) =
       (power B N).func F (lineMap W ∘ x) := by
-  classical
-  ext z
-  constructor
-  · rintro ⟨y, hy, rfl⟩
+  have hmem {y : V} (hy : y ∈ B.func F x) :
+      lineMap W y ∈ (power B N).func F (lineMap W ∘ x) := by
     intro i
     cases hi : W.symbol i with
     | parameter =>
         simpa only [lineMap, hi, Function.comp_apply] using hy
     | const e =>
         have hpartValue : B.part y ∈ A.func F (B.part ∘ x) := by
-          have himg :
-              B.part y ∈ Structure.imageSet B.part (B.func F x) :=
+          have himg : B.part y ∈ Structure.imageSet B.part (B.func F x) :=
             ⟨y, hy, rfl⟩
           rw [hB.2 F x] at himg
           exact himg
-        let args : Fin (L.funcArity F) → V :=
-          fun j => e (B.part (x j))
-        have hargs : (e ∘ (B.part ∘ x)) = args := by
-          funext j
-          rfl
-        have heValue :
-            e (B.part y) ∈ B.func F args := by
-          have himg :
-              e (B.part y) ∈
-                Structure.imageSet e (A.func F (B.part ∘ x)) :=
+        let args : Fin (L.funcArity F) → V := fun j => e (B.part (x j))
+        have hargs : e ∘ (B.part ∘ x) = args := by funext j; rfl
+        have heValue : e (B.part y) ∈ B.func F args := by
+          have himg : e (B.part y) ∈ Structure.imageSet e (A.func F (B.part ∘ x)) :=
             ⟨B.part y, hpartValue, rfl⟩
           have hm := e.toEmbedding.map_func F (B.part ∘ x)
-          change
-            Structure.imageSet e (A.func F (B.part ∘ x)) =
+          change Structure.imageSet e (A.func F (B.part ∘ x)) =
               B.func F (e ∘ (B.part ∘ x)) at hm
           rw [hm, hargs] at himg
           exact himg
         simpa only [args, lineMap, hi, Function.comp_apply] using heValue
+  ext z
+  constructor
+  · rintro ⟨y, hy, rfl⟩
+    exact hmem hy
   · intro hz
-    obtain ⟨i0, hi0⟩ := W.hasParameter
-    let y : V := z.coord i0
-    have hy : y ∈ B.func F x := by
-      have := hz i0
-      simpa only [lineMap, hi0, Function.comp_apply, y] using this
-    refine ⟨y, hy, ?_⟩
-    apply Vertex.ext B
-    · simpa [y, lineMap] using z.belongs i0
-    · intro i
-      cases hi : W.symbol i with
-      | parameter =>
-          have hzi : z.coord i ∈ B.func F x := by
-            have := hz i
-            simpa only [lineMap, hi, Function.comp_apply] using this
-          have hparts : B.part y = B.part (z.coord i) := by
-            exact (z.belongs i0).trans (z.belongs i).symm
-          simpa only [lineMap, hi] using
-            B.funcTransversal F x y (z.coord i) hy hzi hparts
-      | const e =>
-          have hpartValue : B.part y ∈ A.func F (B.part ∘ x) := by
-            have himg :
-                B.part y ∈ Structure.imageSet B.part (B.func F x) :=
-              ⟨y, hy, rfl⟩
-            rw [hB.2 F x] at himg
-            exact himg
-          let args : Fin (L.funcArity F) → V :=
-            fun j => e (B.part (x j))
-          have hargs : (e ∘ (B.part ∘ x)) = args := by
-            funext j
-            rfl
-          have heValue :
-              e (B.part y) ∈ B.func F args := by
-            have himg :
-                e (B.part y) ∈
-                  Structure.imageSet e (A.func F (B.part ∘ x)) :=
-              ⟨B.part y, hpartValue, rfl⟩
-            have hm := e.toEmbedding.map_func F (B.part ∘ x)
-            change
-              Structure.imageSet e (A.func F (B.part ∘ x)) =
-                B.func F (e ∘ (B.part ∘ x)) at hm
-            rw [hm, hargs] at himg
-            exact himg
-          have hzi : z.coord i ∈ B.func F args := by
-            have hzi0 := hz i
-            simpa only [args, lineMap, hi, Function.comp_apply] using hzi0
-          have hparts :
-              B.part (e (B.part y)) = B.part (z.coord i) := by
-            calc
-              B.part (e (B.part y)) = B.part y := e.map_part (B.part y)
-              _ = z.part := z.belongs i0
-              _ = B.part (z.coord i) := (z.belongs i).symm
-          simpa only [lineMap, hi] using
-            B.funcTransversal F args
-              (e (B.part y)) (z.coord i) heValue hzi hparts
+    obtain ⟨i, hi⟩ := W.hasParameter
+    have hy : z.coord i ∈ B.func F x := by
+      simpa only [lineMap, hi, Function.comp_apply] using hz i
+    refine ⟨z.coord i, hy, ?_⟩
+    apply (power B N).funcTransversal F (lineMap W ∘ x)
+      (lineMap W (z.coord i)) z (hmem hy) hz
+    exact z.belongs i
 
 def lineEmbedding
     (hB : B.ProjectionHom A) (W : Line (Letter A B) N) :
