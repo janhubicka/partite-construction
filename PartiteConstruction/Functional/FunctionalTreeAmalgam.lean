@@ -142,9 +142,11 @@ theorem toFull
           exact hq
         · funext k
           have hk := congrFun heq k.castSucc
-          simpa [a, Function.comp_apply] using hk
+          change x k = (iA.toFun ∘ q) k.castSucc
+          exact hk
         · have hk := congrFun heq (Fin.last (L.funcArity F))
-          simpa [b, Function.comp_apply] using hk
+          change y = (iA.toFun ∘ q) (Fin.last (L.funcArity F))
+          exact hk
       · let a : Fin (L.funcArity F) → W := fun k => q k.castSucc
         let b : W := q (Fin.last (L.funcArity F))
         refine Or.inr ⟨a, b, ?_, ?_, ?_⟩
@@ -154,9 +156,11 @@ theorem toFull
           exact hq
         · funext k
           have hk := congrFun heq k.castSucc
-          simpa [a, Function.comp_apply] using hk
+          change x k = (iB.toFun ∘ q) k.castSucc
+          exact hk
         · have hk := congrFun heq (Fin.last (L.funcArity F))
-          simpa [b, Function.comp_apply] using hk
+          change y = (iB.toFun ∘ q) (Fin.last (L.funcArity F))
+          exact hk
     · rintro (⟨a, b, hb, hx, hy⟩ | ⟨a, b, hb, hx, hy⟩)
       · apply (hfree.rel_iff (.inr F) (funcTuple x y)).mpr
         refine Or.inl ⟨funcTuple a b, hb, ?_⟩
