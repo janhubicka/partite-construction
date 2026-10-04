@@ -86,3 +86,6 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Rooted.splitEquiv
 #print axioms StructuralRamsey.Rooted.splitEmbedding
 #print axioms StructuralRamsey.Rooted.splitEmbedding_surjective
+
+#print axioms StructuralRamsey.Rooted.Pattern.normalize_eq_self_of_comp
+#print axioms StructuralRamsey.Rooted.Pattern.pad_sumFill
