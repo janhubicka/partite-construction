@@ -223,6 +223,7 @@ noncomputable def liftOrderedEmbedding
     Structure.Embedding A.withLinearOrder
       (@Structure.withLinearOrder L (Sum R W) (decode Root C)
         (reconstructedOrder Root C).toLT) := by
+  letI : LinearOrder (Sum R W) := reconstructedOrder Root C
   let e0 : Structure.Embedding (encode ρ) C := e.linearOrderReduct
   let g : Structure.Embedding A (decode Root C) :=
     (decodeEmbedding Root e0).comp (splitEmbedding ρ)
@@ -239,9 +240,9 @@ noncomputable def liftOrderedEmbedding
             have hub := unsplit_split ρ b
             rw [hsa] at hua
             rw [hsb] at hub
-            have hrs : r < s := by
-              apply (hρ.lt_iff_lt).mp
-              simpa [hua, hub] using hab
+            have hab' := hab
+            rw [← hua, ← hub] at hab'
+            have hrs : r < s := (hρ.lt_iff_lt).mp hab'
             rw [hg_apply a, hg_apply b, hsa, hsb]
             apply (reconstructed_lt_iff_key Root C _ _).2
             exact Prod.Lex.toLex_lt_toLex.mpr
@@ -251,8 +252,8 @@ noncomputable def liftOrderedEmbedding
             have hub := unsplit_split ρ b
             rw [hsa] at hua
             rw [hsb] at hub
-            have hrx : ρ r < y.1 := by
-              simpa [hua, hub] using hab
+            have hrx := hab
+            rw [← hua, ← hub] at hrx
             have hk :
                 orderRank R r < cutRank C (e0 y) := by
               rw [cutRank_embedding e0, cutRank_encode]
@@ -267,8 +268,8 @@ noncomputable def liftOrderedEmbedding
             have hub := unsplit_split ρ b
             rw [hsa] at hua
             rw [hsb] at hub
-            have hxr : x.1 < ρ r := by
-              simpa [hua, hub] using hab
+            have hxr := hab
+            rw [← hua, ← hub] at hxr
             have hnot : ¬ ρ r < x.1 :=
               not_lt_of_ge (le_of_lt hxr)
             have hk :
@@ -290,8 +291,8 @@ noncomputable def liftOrderedEmbedding
             have hub := unsplit_split ρ b
             rw [hsa] at hua
             rw [hsb] at hub
-            have hxy : x.1 < y.1 := by
-              simpa [hua, hub] using hab
+            have hxy := hab
+            rw [← hua, ← hub] at hxy
             have hk :
                 cutRank C (e0 x) ≤ cutRank C (e0 y) := by
               rw [cutRank_embedding e0, cutRank_embedding e0,
