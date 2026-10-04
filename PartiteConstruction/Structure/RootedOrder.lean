@@ -202,6 +202,14 @@ noncomputable def reconstructedOrder
     LinearOrder (Sum R V) :=
   LinearOrder.lift' (orderKey Root C) (orderKey_injective Root C)
 
+theorem reconstructed_lt_iff_key
+    (Root : Structure L R) (C : Structure (language L R) V)
+    [Fintype R] [LinearOrder R] [Fintype V] [LinearOrder V]
+    (x y : Sum R V) :
+    @LT.lt (Sum R V) (reconstructedOrder Root C).toLT x y ↔
+      orderKey Root C x < orderKey Root C y :=
+  Iff.rfl
+
 /-- A reduced full ordered embedding lifts to a full ordered embedding after
 reattaching the root, provided the source root embedding preserves order. -/
 noncomputable def liftOrderedEmbedding
@@ -215,94 +223,82 @@ noncomputable def liftOrderedEmbedding
     Structure.Embedding A.withLinearOrder
       (@Structure.withLinearOrder L (Sum R W) (decode Root C)
         (reconstructedOrder Root C).toLT) := by
-  let e0 := e.linearOrderReduct
+  let e0 : Structure.Embedding (encode ρ) C := e.linearOrderReduct
   let g : Structure.Embedding A (decode Root C) :=
     (decodeEmbedding Root e0).comp (splitEmbedding ρ)
   have hemono : StrictMono e0 := e.strictMono
+  have hg_apply (z : V) :
+      g z = sumMap e0 (split ρ z) := rfl
   have hgmono : StrictMono g := by
     intro a b hab
-    let sa := split ρ a
-    let sb := split ρ b
-    have hua : unsplit ρ sa = a := unsplit_split ρ a
-    have hub : unsplit ρ sb = b := unsplit_split ρ b
-    cases hsa : sa with
+    cases hsa : split ρ a with
     | inl r =>
-        cases hsb : sb with
+        cases hsb : split ρ b with
         | inl s =>
-            have har : a = ρ r := by
-              rw [← hua, hsa]
-              rfl
-            have hbs : b = ρ s := by
-              rw [← hub, hsb]
-              rfl
+            have hua := unsplit_split ρ a
+            have hub := unsplit_split ρ b
+            rw [hsa] at hua
+            rw [hsb] at hub
             have hrs : r < s := by
               apply (hρ.lt_iff_lt).mp
-              simpa [har, hbs] using hab
-            change
-              @LT.lt (Sum R W) (reconstructedOrder Root C).toLT
-                (Sum.inl r) (Sum.inl s)
-            change orderKey Root C (Sum.inl r) <
-              orderKey Root C (Sum.inl s)
+              simpa [hua, hub] using hab
+            rw [hg_apply a, hg_apply b, hsa, hsb]
+            apply (reconstructed_lt_iff_key Root C _ _).2
             exact Prod.Lex.toLex_lt_toLex.mpr
               (Or.inl ((orderRank_lt_iff R r s).2 hrs))
         | inr y =>
-            have har : a = ρ r := by
-              rw [← hua, hsa]
-              rfl
-            let x : Outside ρ := by
-              have : Sum.inr x = sb := hsb.symm
-              exact x
-            have hbx : b = x.1 := by
-              rw [← hub, hsb]
-              rfl
-            have hrx : ρ r < x.1 := by simpa [har, hbx] using hab
+            have hua := unsplit_split ρ a
+            have hub := unsplit_split ρ b
+            rw [hsa] at hua
+            rw [hsb] at hub
+            have hrx : ρ r < y.1 := by
+              simpa [hua, hub] using hab
             have hk :
-                orderRank R r < cutRank C (e0 x) := by
+                orderRank R r < cutRank C (e0 y) := by
               rw [cutRank_embedding e0, cutRank_encode]
-              exact orderRank_lt_rootBelow_card ρ hρ r x hrx
-            change orderKey Root C (Sum.inl r) <
-              orderKey Root C (Sum.inr (e0 x))
+              exact orderRank_lt_rootBelow_card ρ hρ r y hrx
+            rw [hg_apply a, hg_apply b, hsa, hsb]
+            apply (reconstructed_lt_iff_key Root C _ _).2
             exact Prod.Lex.toLex_lt_toLex.mpr (Or.inl hk)
     | inr x =>
-        cases hsb : sb with
+        cases hsb : split ρ b with
         | inl r =>
-            have hax : a = x.1 := by
-              rw [← hua, hsa]
-              rfl
-            have hbr : b = ρ r := by
-              rw [← hub, hsb]
-              rfl
-            have hnot : ¬ ρ r < x.1 := by
-              exact not_lt_of_ge (le_of_lt (by simpa [hax, hbr] using hab))
+            have hua := unsplit_split ρ a
+            have hub := unsplit_split ρ b
+            rw [hsa] at hua
+            rw [hsb] at hub
+            have hxr : x.1 < ρ r := by
+              simpa [hua, hub] using hab
+            have hnot : ¬ ρ r < x.1 :=
+              not_lt_of_ge (le_of_lt hxr)
             have hk :
                 cutRank C (e0 x) ≤ orderRank R r := by
               rw [cutRank_embedding e0, cutRank_encode]
               exact rootBelow_card_le_orderRank ρ hρ r x hnot
-            change orderKey Root C (Sum.inr (e0 x)) <
-              orderKey Root C (Sum.inl r)
+            rw [hg_apply a, hg_apply b, hsa, hsb]
+            apply (reconstructed_lt_iff_key Root C _ _).2
             by_cases hstrict : cutRank C (e0 x) < orderRank R r
             · exact Prod.Lex.toLex_lt_toLex.mpr (Or.inl hstrict)
             · have heq : cutRank C (e0 x) = orderRank R r :=
                 le_antisymm hk (le_of_not_gt hstrict)
               apply Prod.Lex.toLex_lt_toLex.mpr
-              exact Or.inr ⟨heq, by
-                apply Prod.Lex.toLex_lt_toLex.mpr
-                exact Or.inl (by simp)⟩
+              refine Or.inr ⟨heq, ?_⟩
+              apply Prod.Lex.toLex_lt_toLex.mpr
+              exact Or.inl (by simp)
         | inr y =>
-            have hax : a = x.1 := by
-              rw [← hua, hsa]
-              rfl
-            have hby : b = y.1 := by
-              rw [← hub, hsb]
-              rfl
-            have hxy : x.1 < y.1 := by simpa [hax, hby] using hab
+            have hua := unsplit_split ρ a
+            have hub := unsplit_split ρ b
+            rw [hsa] at hua
+            rw [hsb] at hub
+            have hxy : x.1 < y.1 := by
+              simpa [hua, hub] using hab
             have hk :
                 cutRank C (e0 x) ≤ cutRank C (e0 y) := by
               rw [cutRank_embedding e0, cutRank_embedding e0,
                 cutRank_encode, cutRank_encode]
               exact rootBelow_card_mono ρ x y hxy
-            change orderKey Root C (Sum.inr (e0 x)) <
-              orderKey Root C (Sum.inr (e0 y))
+            rw [hg_apply a, hg_apply b, hsa, hsb]
+            apply (reconstructed_lt_iff_key Root C _ _).2
             by_cases hstrict : cutRank C (e0 x) < cutRank C (e0 y)
             · exact Prod.Lex.toLex_lt_toLex.mpr (Or.inl hstrict)
             · have heq : cutRank C (e0 x) = cutRank C (e0 y) :=
@@ -320,7 +316,11 @@ noncomputable def liftOrderedEmbedding
     map_rel_iff := fun S x => by
       cases S with
       | inl S => exact g.map_rel_iff S x
-      | inr _ => exact hgmono.lt_iff_lt
+      | inr r =>
+          cases r
+          change g (x (0 : Fin 2)) < g (x (1 : Fin 2)) ↔
+            x (0 : Fin 2) < x (1 : Fin 2)
+          exact hgmono.lt_iff_lt
   }
 
 end StructuralRamsey.Rooted
