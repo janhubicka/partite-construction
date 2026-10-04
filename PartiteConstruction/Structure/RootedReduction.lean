@@ -113,8 +113,37 @@ noncomputable def sumFill {V : Type w} (p : Pattern n R)
       rw [Equiv.symm_apply_apply]
       simp [moveValue, h]
 
+@[simp] theorem ofTuple_sumFill {V : Type w}
+    (p : Pattern n R) (x : Fin p.arity → V) :
+    ofTuple (sumFill p x) = p := by
+  apply Pattern.ext
+  funext i
+  cases h : p.fixed i with
+  | some r =>
+      simp [ofTuple, sumFill, h]
+  | none =>
+      simp [ofTuple, sumFill, h]
+
+@[simp] theorem movingTuple_sumFill {V : Type w}
+    (p : Pattern n R) (x : Fin p.arity → V) :
+    movingTuple (sumFill p x) = x := by
+  apply sumFill_injective p
+  rw [← ofTuple_sumFill p x]
+  exact sumFill_ofTuple_movingTuple (sumFill p x)
+
 def HasMoving {V : Type w} (t : Fin n → Sum R V) : Prop :=
   ∃ i v, t i = Sum.inr v
+
+theorem hasMoving_sumFill {V : Type w}
+    (p : Pattern n R) (x : Fin p.arity → V) (hp : 0 < p.arity) :
+    HasMoving (sumFill p x) := by
+  let j : Fin p.arity := ⟨0, hp⟩
+  let i : p.Move := p.moveEquiv.symm j
+  refine ⟨i.1, x j, ?_⟩
+  have hi : p.fixed i.1 = none := i.2
+  rw [sumFill, hi]
+  change Sum.inr (x (p.moveEquiv i)) = Sum.inr (x j)
+  rw [Equiv.apply_symm_apply]
 
 theorem arity_pos_of_hasMoving {V : Type w} (t : Fin n → Sum R V)
     (h : HasMoving t) : 0 < (ofTuple t).arity := by
@@ -141,6 +170,14 @@ noncomputable def rootTuple {V : Type w} (t : Fin n → Sum R V)
         | .inr v => False.elim (h ⟨i, v, hj⟩)) = Sum.inl r
       rw [hi]
   | inr v => exact False.elim (h ⟨i, v, hi⟩)
+
+theorem rootTuple_inl {V : Type w} (x : Fin n → R)
+    (h : ¬ HasMoving (Sum.inl ∘ x : Fin n → Sum R V)) :
+    rootTuple (Sum.inl ∘ x : Fin n → Sum R V) h = x := by
+  funext i
+  have hi := congrFun
+    (inl_rootTuple (Sum.inl ∘ x : Fin n → Sum R V) h) i
+  exact Sum.inl.inj hi
 
 end Pattern
 
