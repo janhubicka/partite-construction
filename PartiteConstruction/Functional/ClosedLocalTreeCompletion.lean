@@ -86,3 +86,53 @@ theorem isClosed_iff_graph_functionClosedSet
     · exact hx
 
 end StructuralRamsey.Structure
+
+
+namespace IsClosed
+
+variable {A : Structure L W} {S T : Set W}
+
+/-- Closed subsets are closed under intersection. -/
+theorem inter (hS : A.IsClosed S) (hT : A.IsClosed T) :
+    A.IsClosed (S ∩ T) := by
+  intro F x hx y hy
+  exact ⟨
+    hS F x (fun i => (hx i).1) hy,
+    hT F x (fun i => (hx i).2) hy⟩
+
+end IsClosed
+
+/-- On a closed set, genuine functional induction and relational graph
+induction are canonically identical. -/
+def induceGraphIso
+    (A : Structure L W) (S : Set W) (hS : A.IsClosed S) :
+    RelStructure.Iso
+      (A.induce S hS).graph
+      (A.graph.induce S) where
+  toEquiv := Equiv.refl S
+  map_rel_iff := by
+    intro R x
+    cases R with
+    | inl R =>
+        rfl
+    | inr F =>
+        change
+          A.graph.rel (.inr F) (Subtype.val ∘ x) ↔
+            (x (Fin.last (L.funcArity F))).1 ∈
+              A.func F
+                (fun i =>
+                  (x (Fin.castSucc i)).1)
+        change
+          (Subtype.val ∘ x) (Fin.last (L.funcArity F)) ∈
+              A.func F
+                (fun i => (Subtype.val ∘ x) (Fin.castSucc i)) ↔ _
+        rfl
+
+/-- A closed test set pulls back to closed test sets on both sides of any
+full embedding; in particular this applies to the side embeddings of a free
+amalgam. -/
+theorem closed_preimage
+    {A : Structure L V} {C : Structure L W}
+    (e : Embedding A C) (S : Set W) (hS : C.IsClosed S) :
+    A.IsClosed (e ⁻¹' S) :=
+  e.preimage_isClosed S hS
