@@ -109,11 +109,16 @@ theorem HasOutput.at_embedding
         (fun _ : Fin 1 => e x) := by
     funext i
     rfl
-  rw [hargs] at himg
-  exact himg
+  exact
+    Eq.mp
+      (congrArg
+        (fun args =>
+          e z ∈ B.func (show language.FuncSymbol from ()) args)
+        hargs)
+      himg
 
 /-- Every vertex of a tree amalgam of copies of the base still has an output. -/
-theorem TreeAmalgam.hasOutput
+theorem tree_hasOutput
     {X : Type} {T : Structure language X}
     (hT : TreeAmalgam base X T) :
     HasOutput T := by
@@ -185,7 +190,7 @@ theorem no_homomorphism_to_tree
     ¬ ∃ f : badSet e → Y,
         (C.weakInduce (badSet e)).IsHomomorphism T f := by
   rintro ⟨f, hf⟩
-  obtain ⟨y, hy⟩ := hT.hasOutput (f (badPoint e))
+  obtain ⟨y, hy⟩ := tree_hasOutput hT (f (badPoint e))
   have hfun := hf.2 () (fun _ : Fin 1 => badPoint e)
   have hy' :
       y ∈ T.func () (f ∘ (fun _ : Fin 1 => badPoint e)) := by
