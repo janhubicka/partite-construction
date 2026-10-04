@@ -13,7 +13,7 @@ namespace StructuralRamsey.Rooted
 open StructuralRamsey Structure
 
 universe u v
-variable {L : Language.{u}} {R H E F C : Type v}
+variable {L : Language.{u}} {R H E F C : Type v} {n : ℕ}
 
 /-- A side tuple pulled back from a canonical padded target tuple is itself
 canonical. -/
