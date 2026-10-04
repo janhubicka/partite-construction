@@ -374,7 +374,7 @@ theorem OddLoose_not_twoColorable : ¬ TwoColorable OddLoose := by
     have hm := (r.map_rel_iff () q).mpr hP
     convert hm using 1
     funext k
-    simp [q, Function.comp_apply]
+    by_cases hk : k = i0 <;> simp [q, hk, Function.comp_apply]
   have neq_of_edge (a b : _) (hrel : OddLoose.rel ()
       (fun k => if k = i0 then a else b)) :
       c a ≠ c b := by
