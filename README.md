@@ -3,40 +3,57 @@
 Reusable Lean formalization of structural Ramsey theory from Appendix A of
 *Twenty years of Nešetřil's classification programme of Ramsey classes*.
 
-## Checked endpoints
+## Main endpoints
 
-The **non-induced relational construction** is checked end to end: the finite
-Partite and Picture Lemmas, initial pictures, finite iteration, increasing
-placements, and order completion. `Partite.orderedRamsey` is the unconditional
-ordered Nešetřil–Rödl conclusion.
+The relational non-induced and induced constructions are end-to-end proved.
+`Partite.orderedRamsey` gives the unrestricted ordered relational theorem;
+`Partite.Induced.inducedConstruction` returns a witness and a finite trace
+of the irreducible-image invariant.
 
-The **relational induced construction** is also checked end to end.
-`Partite.Induced.inducedConstruction` returns the witness with a finite trace
-certifying the irreducible-image invariant at every stage.
+The positive-arity recursive construction with genuinely set-valued functions
+is assembled through domain-aware semi-closed pictures, singleton reduction,
+and half-closed repair. `Structure.orderedClosedGraphRamsey` gives the survey's
+`thm:models2`.
 
-The **positive-arity recursive construction with set-valued functions** is
-assembled through domain-aware semi-closed pictures, singleton reduction,
-and half-closed repair. `Structure.orderedClosedGraphRamsey` proves the survey's
-`thm:models2`. Full functional embeddings are equivalent to closed graph
-embeddings; arbitrary full homomorphisms are not identified with weak graph
-homomorphisms.
+The **functional EHN theorem** is exported as
+`Structure.FreeAmalgamationClass.orderedRamsey` in
+`Ramsey/FreeAmalgamationFunctions.lean`. It applies to hereditary classes
+closed under full free amalgamation, with arbitrary positive-arity set-valued
+functions and finite nonempty colour types. Neither A nor B needs to be
+irreducible. Every embedding in the Ramsey arrow is full/closed. Its
+fixed-target variant needs membership only of B.
 
-The **strict relational sparsening theorem with B irreducible and arbitrary A**
-is proved through a complete binary-relation expansion and the checked
-iterated construction. The exact endpoint is
-`Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all`.
-This bypasses, rather than proves, the stronger synchronized
-`thm:tree_invariant` under mere irreducibility of A.
+`Structure.orderedRamsey_forbidden_expansions` in
+`Ramsey/ForbiddenFunctions.lean` gives the exact survey forbidden-pattern
+form: forbidden structures may specify particular orders, and their order
+reducts are irreducible. An explicit comparability invariant ensures that
+order completion does not create new forbidden embeddings. This is not the
+stronger assumption of forbidding all orderings of each forbidden reduct.
 
-`Functional/FreeAmalgamClosed.lean` unifies both local closure observations,
-including their converses and constants. `Partite.HalfClosed.ramseyPartiteWitness`
-exposes the exact finite half-closed witness without requiring its input D to
-be U-transversal.
+Both functional endpoints use the unrestricted recursive theorem followed by
+**one class-preserving induced pass**. Their reusable geometric input is
+irreducibility of the closed hull of a weak image. See the
+[functional EHN proof guide](docs/ehn-functions.md) for the implementation and
+its correspondence with the survey.
 
-The functional induced invariant / EHN class transfer and the strong
-synchronized tree invariant have separate outstanding obligations. See the
-[current coverage map](docs/appendix-a.md) and [roadmap](ROADMAP.md), not the
-historical progress logs, for the exact boundary.
+Strict **relational** sparsening with B irreducible and arbitrary A is proved
+by `Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all`.
+It bypasses the stronger synchronized `thm:tree_invariant` under mere
+irreducibility of A. Functional iterated sparsening, that stronger invariant,
+and constants in the global Ramsey construction remain separate obligations.
+
+`Functional/FreeAmalgamClosed.lean` unifies the local closure observations,
+including their converses and constants. The exact half-closed witness is
+`Partite.HalfClosed.ramseyPartiteWitness`, with no input-D transversality
+assumption.
+
+## Map conventions
+
+`Structure.IsHomomorphism` retains equality of function-value images.
+`Structure.IsEHNHomomorphismEmbedding` uses weak preservation globally and
+full embeddings on full irreducibles. The older
+`Structure.IsWeakHomomorphismEmbedding` is the graph-encoding notion used by
+weak-substructure iteration; it is not an alias for the EHN predicate.
 
 Hales–Jewett is imported from a pinned commit of
 [lean-successors](https://github.com/janhubicka/lean-successors) and converted
@@ -47,23 +64,21 @@ to the finite fixed-length form.
 Install [elan](https://github.com/leanprover/elan), then run:
 
 ```sh
+set -e
 lake exe cache get Mathlib.Tactic Mathlib.Data.Fintype.Pi Mathlib.Data.Fintype.Basic Mathlib.Data.Finset.Dedup
-lake build PartiteConstruction PartiteConstruction.Functional.FreeAmalgamClosed PartiteConstruction.Functional.HalfClosedTheorem PartiteConstruction.Functional.QuotientFibreObstruction
+lake build
 lake env lean CheckAxioms.lean > axioms.log
 lake env lean CheckClosureAxioms.lean >> axioms.log
-python3 scripts/check_axioms.py axioms.log CheckAxioms.lean CheckClosureAxioms.lean
+lake env lean CheckEHNFunctions.lean >> axioms.log
+python3 scripts/check_axioms.py axioms.log CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean
 ```
 
-The toolchain and dependencies are pinned by `lean-toolchain` and
-`lake-manifest.json`. CI caches both the compiler and Lake workspace. Every
-audited declaration must use only the standard logical axioms; missing audit
-results, `sorryAx`, and unproved custom axioms are rejected.
+The toolchain and dependencies are pinned. CI checks the umbrella import,
+all audit imports, and theorem dependencies. Only `propext`, `Classical.choice`,
+and `Quot.sound` are allowed; missing audit output, `sorryAx`, and custom
+unproved axioms fail. New functional EHN modules disable automatic implicit
+declarations. Survey markers must reference a successfully checked immutable
+commit, not merely the presence of a theorem name.
 
-## Library layout
-
-`Relational/` and `Structure/` contain the reusable structural definitions;
-`Partite/` contains the relational constructions; `Functional/` contains
-closure, graph encoding, semi-closed recursion, and functional interfaces;
-`Iterated/` contains weak-substructure iteration, tree witnesses, sparsening,
-and separately named obstruction/history diagnostics. `Ramsey/` and
-`HalesJewett/` provide the finite combinatorial inputs and ordered endpoints.
+See the [coverage map](docs/appendix-a.md) and [roadmap](ROADMAP.md) for exact
+scope. Historical progress logs are retained under `docs/archive/`.

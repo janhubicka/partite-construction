@@ -5,42 +5,53 @@ markers pinned to checked immutable commits. The authoritative status is the
 [current coverage map](docs/appendix-a.md); the previous roadmap is retained
 as [historical context](docs/archive/roadmap-before-closure-audit.md).
 
-## Completed routes
+## Assembled proof routes
 
-The relational non-induced and induced constructions are end-to-end checked.
-The positive-arity recursive construction is also assembled: the domain-aware
-semi-closed step, singleton reduction, half-closed repair, and ordered graph
-Ramsey theorem are not outstanding tasks.
+The relational non-induced and induced constructions, the positive-arity
+recursive theorem for set-valued functions, and the local closure calculus
+are complete proof routes.
 
-Strict relational sparsening with B irreducible and arbitrary A is checked
-through the complete binary-relation expansion. It no longer relies on the
-stronger synchronized tree invariant under mere irreducibility of A. The
-printed sparsening theorem may therefore drop irreducibility of A in its
-relational specialization; retain a manuscript TODO for that strengthening
-rather than confusing it with the separate functional transfer.
+The positive-arity **functional EHN extension** now supplies the weak
+irreducible projection invariant and the free-amalgamation class transfer.
+`FunctionalPartite.EHN.inducedConstruction` performs one class-preserving
+induced pass. It uses the closed-hull weak-image lemma, the existing coordinate
+power, full line embeddings, and full free attachments. The global projection
+is not asserted to be fibre-surjective.
 
-The two local closure observations now follow from one free-amalgam closure
-criterion. The half-closed theorem has an unpacked witness interface without
-an input-D transversality assumption.
+Both `Structure.FreeAmalgamationClass.orderedRamsey` and the exact survey
+`Structure.orderedRamsey_forbidden_expansions` are exported. The latter
+preserves particular forbidden orderings through an explicit invariant for
+order completion. See [the functional EHN guide](docs/ehn-functions.md).
 
-## Next proof obligations
+Strict relational sparsening with B irreducible and arbitrary A is proved
+through the complete binary-relation expansion. It does not need the stronger
+synchronized tree invariant under mere irreducibility of A.
 
-1. Finish the functional irreducible-image invariant and EHN class-membership
-   transfer. Preserve the distinction between full functional homomorphisms,
-   weak graph homomorphisms, and closed embeddings. The generated-image
-   quotient regression prevents cancelling a noninjective map on input tuples.
-2. Settle the literal strong `thm:tree_invariant` under mere irreducibility of A,
-   or record the author's decision to use a weaker exact statement. Whole-copy
-   localization alone does not repair partial-boundary synchronization.
-3. Complete the separate function-language transfer for sparsening. Keep weak
-   substructures (including dropped values leaving the subset) explicit.
-4. Treat constants separately if expanding beyond the current positive-arity
-   initial construction. The local closure calculus already handles them.
+## Remaining proof obligations
+
+1. Settle the literal strong `thm:tree_invariant` under mere irreducibility of A,
+   or record the authors' choice of an exact weaker statement. Whole-copy
+   localization alone does not repair synchronized partial-boundary control.
+2. Complete the separate **functional iterated sparsening** theorem. The
+   functional EHN one-pass theorem does not itself supply local tree bounds.
+   Keep arbitrary weak substructures explicit in the cardinality induction.
+3. Treat constants in the global Ramsey/initial construction if allowing
+   nullary functions. The local closed-hull and closure lemmas already allow
+   them, but the global endpoints currently assume positive input arity.
+4. Resolve the editorial disposition of the stronger arbitrary-alpha
+   `lem:indpicutreU`: replace it by the checked domain-aware semi-closed version
+   or prove it independently. Its incorrect free-attachment argument is not a
+   dependency of the final recursive theorem.
 
 ## Editorial follow-through
 
-Keep the arbitrary-alpha Picture statement separate from the final recursive
-proof until its text is replaced or independently justified. Remove TODOs
-only when their exact missing assumption or argument has been supplied.
-Representation choices alone are not manuscript errors. Never replace
-irreducibility by hereditary irreducibility silently.
+Replace the old verbatim relational-to-functional transfer paragraph by the
+class-preserving refinement and order-completion proof. Remove the resolved
+functional EHN TODO while retaining the actual nullary-function scope issue.
+Do not upgrade the original globally full-projection induced statement: the
+new EHN projection is weak globally and full on closed irreducibles.
+
+Use `IsEHNHomomorphismEmbedding` for this new invariant; preserve the separate
+graph-encoding `IsWeakHomomorphismEmbedding` used in the iterative machinery.
+Keep nontrivial presentation decisions in explicit TODO notes and never
+silently substitute hereditary irreducibility for irreducibility.
