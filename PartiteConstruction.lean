@@ -48,6 +48,7 @@ import PartiteConstruction.Structure.WeakHomomorphism
 import PartiteConstruction.Structure.IrreducibleHomImage
 import PartiteConstruction.Structure.Attachment
 import PartiteConstruction.Relational.Homomorphism
+import PartiteConstruction.Relational.FreeAmalgamationClass
 import PartiteConstruction.Ramsey.Basic
 import PartiteConstruction.Partite.Predicates
 import PartiteConstruction.Partite.Projection
@@ -136,6 +137,7 @@ import PartiteConstruction.Partite.Invariants
 import PartiteConstruction.Ramsey.Finite
 import PartiteConstruction.Ramsey.FromProjections
 import PartiteConstruction.Ramsey.Ordered
+import PartiteConstruction.Ramsey.FreeAmalgamation
 
 import PartiteConstruction.Iterated.LabelledIntersectionControl
 
