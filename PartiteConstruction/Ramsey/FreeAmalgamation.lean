@@ -59,8 +59,10 @@ theorem orderedRamsey_of_mem_target
     have heq : p ∘ ![x, y] = ![p x, p y] := by
       funext i
       fin_cases i <;> rfl
-    rw [heq] at hmap
-    exact hmap
+    exact Eq.mp
+      (congrArg
+        (C₀.ordered.rel (show L.withOrder.Symbol from .inr ())) heq)
+      hmap
   obtain ⟨oW, horder⟩ :=
     RelStructure.exists_order_extension Cplus p hpart
   letI : LinearOrder W := oW
