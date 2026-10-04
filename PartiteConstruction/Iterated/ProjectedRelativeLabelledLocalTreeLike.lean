@@ -169,8 +169,13 @@ theorem ofProjectedHistory
     l.isHomomorphismEmbedding.comp hf
   have hPart' :
       ProjectedPartialIntersections
-        (A := A) (D := D) (C := C) (T := T') p S f' :=
-    hPart.postcomp l
+        (A := A) (D := D) (C := C) (T := T') p S f' := by
+    intro β' H' e' hproj' hRange'
+    obtain ⟨eHT', heHT', hcHT'⟩ :=
+      hPart β' H' e' hproj' hRange'
+    refine ⟨l.comp eHT', ?_, hcHT'.postcomp l⟩
+    intro x
+    exact congrArg l (heHT' x)
   have hHist' :
       RespectsProjectedHistory p S f' history := by
     intro K hK x y hxy
