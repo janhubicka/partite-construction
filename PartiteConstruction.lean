@@ -44,6 +44,7 @@ import PartiteConstruction.Structure.UClosed
 import PartiteConstruction.Structure.Basic
 import PartiteConstruction.Structure.FreeAmalgam
 import PartiteConstruction.Structure.FreeAmalgamationClass
+import PartiteConstruction.Structure.WeakHomomorphism
 import PartiteConstruction.Structure.IrreducibleHomImage
 import PartiteConstruction.Structure.Attachment
 import PartiteConstruction.Relational.Homomorphism
