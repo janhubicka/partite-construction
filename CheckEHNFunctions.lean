@@ -1,4 +1,4 @@
-import PartiteConstruction.Ramsey.FreeAmalgamationFunctions
+import PartiteConstruction.Ramsey.ForbiddenFunctions
 
 #print axioms StructuralRamsey.Structure.generates_of_surjective
 #print axioms StructuralRamsey.Structure.IsWeakHomomorphism.preimage_isClosed
@@ -55,3 +55,12 @@ import PartiteConstruction.Ramsey.FreeAmalgamationFunctions
 #print axioms StructuralRamsey.Structure.FreeAmalgamationClass.orderedRamsey_of_mem_target
 #print axioms StructuralRamsey.Structure.avoidsEmbeddings_freeAmalgamationClass
 #print axioms StructuralRamsey.Structure.orderedRamsey_avoiding
+#print axioms StructuralRamsey.Structure.irreducible_of_linearOrderReduct
+#print axioms StructuralRamsey.Structure.Embedding.orderPair_iff
+#print axioms StructuralRamsey.Structure.OrderTotalOnIrreducibles.hereditary
+#print axioms StructuralRamsey.Structure.OrderTotalOnIrreducibles.free
+#print axioms StructuralRamsey.Structure.withLinearOrder_orderTotal
+#print axioms StructuralRamsey.Structure.OrderTotalOnIrreducibles.orderPair_complete_iff
+#print axioms StructuralRamsey.Structure.Embedding.beforeOrderCompletion
+#print axioms StructuralRamsey.Structure.orderedForbiddenClass_free
+#print axioms StructuralRamsey.Structure.orderedRamsey_forbidden_expansions
