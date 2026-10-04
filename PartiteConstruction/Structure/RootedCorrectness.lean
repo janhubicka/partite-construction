@@ -34,7 +34,9 @@ theorem mem_image_split_inl
   constructor
   · rintro ⟨a, ha, hsplit⟩
     have hu := congrArg (unsplit ρ) hsplit
-    simpa using hu ▸ ha
+    rw [unsplit_split] at hu
+    change a = ρ r at hu
+    exact hu ▸ ha
   · intro hr
     exact ⟨ρ r, hr, split_root ρ r⟩
 
@@ -45,7 +47,9 @@ theorem mem_image_split_inr
   constructor
   · rintro ⟨a, ha, hsplit⟩
     have hu := congrArg (unsplit ρ) hsplit
-    simpa using hu ▸ ha
+    rw [unsplit_split] at hu
+    change a = x.1 at hu
+    exact hu ▸ ha
   · intro hx
     exact ⟨x.1, hx, split_outside ρ x⟩
 
@@ -60,7 +64,7 @@ theorem mem_image_embedding_iff
     exact ⟨r, hr, rfl⟩
 
 /-- The original rooted structure is fully embedded into decode(encode(A)) by
-the canonical carrier split.  Since the split is bijective, this is the
+the canonical carrier split. Since the split is bijective, this is the
 structural isomorphism underlying the elimination of constants. -/
 noncomputable def splitEmbedding
     {Root : Structure L R} {A : Structure L U}
@@ -70,33 +74,70 @@ noncomputable def splitEmbedding
   injective := (splitEquiv ρ).injective
   map_rel_iff := by
     intro S x
-    let t := split ρ ∘ x
-    by_cases h : (Pattern.ofTuple t).HasMoving
+    by_cases h : (Pattern.ofTuple (split ρ ∘ x)).HasMoving
     · have hfill := fill_pad_split ρ x h
-      simp only [decode, dif_pos h, encode]
-      rw [hfill]
+      change
+        (if h' : (Pattern.ofTuple (split ρ ∘ x)).HasMoving then
+          A.rel S
+            (Pattern.fill ρ (Pattern.ofTuple (split ρ ∘ x))
+              (Pattern.pad (split ρ ∘ x) h'))
+        else
+          Root.rel S (Pattern.rootTuple (split ρ ∘ x) h')) ↔
+        A.rel S x
+      rw [dite_eq_left h, hfill]
     · have hroot := rootTuple_split ρ x h
-      simp only [decode, dif_neg h]
-      rw [← ρ.map_rel_iff S (Pattern.rootTuple t h), hroot]
+      change
+        (if h' : (Pattern.ofTuple (split ρ ∘ x)).HasMoving then
+          A.rel S
+            (Pattern.fill ρ (Pattern.ofTuple (split ρ ∘ x))
+              (Pattern.pad (split ρ ∘ x) h'))
+        else
+          Root.rel S (Pattern.rootTuple (split ρ ∘ x) h')) ↔
+        A.rel S x
+      rw [dite_eq_right h]
+      calc
+        Root.rel S (Pattern.rootTuple (split ρ ∘ x) h)
+            ↔ A.rel S
+              (ρ ∘ Pattern.rootTuple (split ρ ∘ x) h) :=
+          (ρ.map_rel_iff S _).symm
+        _ ↔ A.rel S x := by rw [hroot]
   map_func := by
     intro F x
-    let t := split ρ ∘ x
-    by_cases h : (Pattern.ofTuple t).HasMoving
+    by_cases h : (Pattern.ofTuple (split ρ ∘ x)).HasMoving
     · have hfill := fill_pad_split ρ x h
       ext z
       cases z with
       | inl r =>
           rw [mem_image_split_inl ρ]
-          simp only [decode, dif_pos h, encode]
-          rw [hfill]
+          change
+            ρ r ∈ A.func F x ↔
+              (if h' : (Pattern.ofTuple (split ρ ∘ x)).HasMoving then
+                ρ r ∈ A.func F
+                  (Pattern.fill ρ (Pattern.ofTuple (split ρ ∘ x))
+                    (Pattern.pad (split ρ ∘ x) h'))
+              else
+                r ∈ Root.func F
+                  (Pattern.rootTuple (split ρ ∘ x) h'))
+          rw [dite_eq_left h, hfill]
       | inr y =>
           rw [mem_image_split_inr ρ]
-          simp only [decode, dif_pos h, encode]
+          change
+            y.1 ∈ A.func F x ↔
+              (if h' : (Pattern.ofTuple (split ρ ∘ x)).HasMoving then
+                y.1 ∈ A.func F
+                  (Pattern.fill ρ (Pattern.ofTuple (split ρ ∘ x))
+                    (fun i =>
+                      (Structure.funcTuple
+                        (Pattern.pad (split ρ ∘ x) h')
+                        (Pattern.dummy (split ρ ∘ x) h')) i.castSucc))
+              else False)
+          rw [dite_eq_left h]
           have hargs :
               (fun i =>
-                (Structure.funcTuple (Pattern.pad t h)
-                  (Pattern.dummy t h)) i.castSucc) =
-                Pattern.pad t h := by
+                (Structure.funcTuple
+                  (Pattern.pad (split ρ ∘ x) h)
+                  (Pattern.dummy (split ρ ∘ x) h)) i.castSucc) =
+                Pattern.pad (split ρ ∘ x) h := by
             funext i
             rw [Structure.funcTuple_castSucc]
           rw [hargs, hfill]
@@ -105,20 +146,38 @@ noncomputable def splitEmbedding
       cases z with
       | inl r =>
           rw [mem_image_split_inl ρ]
-          simp only [decode, dif_neg h]
-          have hm := ρ.map_func F (Pattern.rootTuple t h)
+          change
+            ρ r ∈ A.func F x ↔
+              (if h' : (Pattern.ofTuple (split ρ ∘ x)).HasMoving then
+                ρ r ∈ A.func F
+                  (Pattern.fill ρ (Pattern.ofTuple (split ρ ∘ x))
+                    (Pattern.pad (split ρ ∘ x) h'))
+              else
+                r ∈ Root.func F
+                  (Pattern.rootTuple (split ρ ∘ x) h'))
+          rw [dite_eq_right h]
+          have hm := ρ.map_func F (Pattern.rootTuple (split ρ ∘ x) h)
           rw [hroot] at hm
           rw [← hm, mem_image_embedding_iff ρ]
       | inr y =>
           rw [mem_image_split_inr ρ]
-          simp only [decode, dif_neg h]
+          change
+            y.1 ∈ A.func F x ↔
+              (if h' : (Pattern.ofTuple (split ρ ∘ x)).HasMoving then
+                y.1 ∈ A.func F
+                  (Pattern.fill ρ (Pattern.ofTuple (split ρ ∘ x))
+                    (fun i =>
+                      (Structure.funcTuple
+                        (Pattern.pad (split ρ ∘ x) h')
+                        (Pattern.dummy (split ρ ∘ x) h')) i.castSucc))
+              else False)
+          rw [dite_eq_right h]
           constructor
           · intro hy
-            have hm := ρ.map_func F (Pattern.rootTuple t h)
+            have hm := ρ.map_func F (Pattern.rootTuple (split ρ ∘ x) h)
             rw [hroot] at hm
-            have hy' := hy
-            rw [← hm] at hy'
-            rcases hy' with ⟨r, hr, hyr⟩
+            rw [← hm] at hy
+            rcases hy with ⟨r, hr, hyr⟩
             exact False.elim (y.2 ⟨r, hyr⟩)
           · intro hf
             exact False.elim hf
