@@ -193,14 +193,20 @@ theorem no_homomorphism_to_tree
   obtain ⟨y, hy⟩ := tree_hasOutput hT (f (badPoint e))
   have hfun := hf.2 () (fun _ : Fin 1 => badPoint e)
   have hy' :
-      y ∈ T.func () (f ∘ (fun _ : Fin 1 => badPoint e)) := by
+      y ∈ T.func (show language.FuncSymbol from ())
+        (f ∘ (fun _ : Fin 1 => badPoint e)) := by
     have hargs :
         f ∘ (fun _ : Fin 1 => badPoint e) =
           (fun _ : Fin 1 => f (badPoint e)) := by
       funext i
       rfl
-    rw [hargs]
-    exact hy
+    exact
+      Eq.mpr
+        (congrArg
+          (fun args =>
+            y ∈ T.func (show language.FuncSymbol from ()) args)
+          hargs)
+        hy
   have himg :
       y ∈ imageSet f
         ((C.weakInduce (badSet e)).func ()
