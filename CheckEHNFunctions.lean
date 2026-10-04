@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.GraphIrreducibleBridge
 import PartiteConstruction.Ramsey.FreeAmalgamationFunctionsAllArity
 import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 import PartiteConstruction.Ramsey.ForbiddenFunctions
@@ -140,3 +141,11 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.allStructures_free
 #print axioms StructuralRamsey.Structure.orderedRamsey_forbidden_expansions_allArity
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.graph
+#print axioms StructuralRamsey.Structure.Irreducible.of_graph
+#print axioms StructuralRamsey.Structure.weakInduce_irreducible_of_graph
+#print axioms StructuralRamsey.Structure.weakInduce_isWeakHomomorphism
+#print axioms StructuralRamsey.Structure.graphIrreducible_functionClosure
+#print axioms StructuralRamsey.Structure.IsWeakHomomorphism.graph
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.graph
