@@ -132,8 +132,16 @@ theorem sparseningRamsey_strict_baseIrreducible_all
     StructuralRamsey.arrow_cliqueReduct A B Cplus κ hArrowPlus
   have hp : C.IsHomomorphismEmbedding C₀ p := by
     simpa [C] using hpPlus.cliqueReduct
+  have hBred : B.withClique.cliqueReduct.Irreducible := by
+    simpa using hB
+  have hLocal0 :
+      RelStructure.LocallyTreeCompletable
+        B.withClique.cliqueReduct Cplus.cliqueReduct n :=
+    RelStructure.LocallyTreeLike.cliqueReduct_strict
+      (A := A.withClique) (B := B.withClique) (C := Cplus)
+      hBred hLocalPlus
   have hLocal : RelStructure.LocallyTreeCompletable B C n := by
-    simpa [C] using hLocalPlus.cliqueReduct_strict hB
+    simpa [C] using hLocal0
   have hExt : RelStructure.IrreduciblesExtendTo B C := by
     simpa [C] using hExtPlus.cliqueReduct
   exact ⟨Z, hZ, C, hArrow, p, hp, hLocal, hExt⟩
