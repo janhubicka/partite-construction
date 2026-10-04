@@ -162,3 +162,7 @@ import PartiteConstruction.Functional.QuotientFibreObstruction
 import PartiteConstruction.Ramsey.ForbiddenFunctions
 
 import PartiteConstruction.Structure.NullaryRoot
+
+import PartiteConstruction.Ramsey.FreeAmalgamationFunctionsAllArity
+
+import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
