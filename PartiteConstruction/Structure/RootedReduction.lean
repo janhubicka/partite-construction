@@ -170,6 +170,53 @@ theorem language_positive
   intro q
   exact q.moving
 
+/-- Reconstruct an original-language structure by adjoining the fixed root.
+Root-only facts come from `Root`; all incidences meeting the moving carrier
+are read from the rooted language. -/
+noncomputable def decode
+    {L : Language.{u}} {R : Type v} {V : Type w}
+    (Root : Structure L R) (C : Structure (language L R) V) :
+    Structure L (Sum R V) where
+  rel S t :=
+    if h : Pattern.HasMoving t then
+      C.rel
+        (.base S (Pattern.ofTuple t)
+          (Pattern.arity_pos_of_hasMoving t h))
+        (Pattern.movingTuple t)
+    else
+      Root.rel S (Pattern.rootTuple t h)
+  func F t :=
+    {y |
+      if h : Pattern.HasMoving t then
+        match y with
+        | .inl r =>
+            C.rel
+              (.output F (Pattern.ofTuple t)
+                (Pattern.arity_pos_of_hasMoving t h) r)
+              (Pattern.movingTuple t)
+        | .inr z =>
+            z ∈ C.func
+              ⟨F, Pattern.ofTuple t,
+                Pattern.arity_pos_of_hasMoving t h⟩
+              (Pattern.movingTuple t)
+      else
+        match y with
+        | .inl r => r ∈ Root.func F (Pattern.rootTuple t h)
+        | .inr _ => False}
+
+/-- Extend a map of moving carriers by the identity on the fixed root. -/
+def sumMap {R : Type v} {V W : Type w} (f : V → W) :
+    Sum R V → Sum R W
+  | .inl r => .inl r
+  | .inr x => .inr (f x)
+
+theorem sumMap_injective {R : Type v} {V W : Type w}
+    {f : V → W} (hf : Function.Injective f) :
+    Function.Injective (sumMap (R := R) f) := by
+  intro x y h
+  cases x <;> cases y <;> simp [sumMap] at h ⊢
+  exact hf h
+
 /-- Encode a rooted ordered structure on the complement of the root. -/
 noncomputable def encode
     {L : Language.{u}} {R : Type v} {U : Type w}
