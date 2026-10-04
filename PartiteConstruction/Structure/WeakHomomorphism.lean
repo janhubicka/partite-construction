@@ -87,26 +87,17 @@ theorem quotientMap_surjective :
   apply Subtype.ext
   exact hx
 
-/-- The quotient onto the source-generated image is a strong homomorphism. -/
-theorem quotientMap_hom :
-    A.IsHomomorphism (weakImage A B f)
+/-- The quotient onto the source-generated image is an EHN weak homomorphism.
+It is generally not a full homomorphism: identifying input tuples may create
+extra target function values, so fibre surjectivity would be false. -/
+theorem quotientMap_weak :
+    A.IsWeakHomomorphism (weakImage A B f)
       (quotientMap (f := f)) := by
   constructor
   · intro R x hx
     exact ⟨x, hx, fun _ => rfl⟩
-  · intro F x
-    ext z
-    constructor
-    · rintro ⟨w, hw, rfl⟩
-      exact ⟨x, w, hw, fun _ => rfl, rfl⟩
-    · rintro ⟨y, w, hw, hxy, hz⟩
-      have hyx : y = x := by
-        funext i
-        have h := congrArg Subtype.val (hxy i)
-        exact h
-      subst y
-      refine ⟨w, hw, ?_⟩
-      exact Subtype.ext (congrArg Subtype.val hz)
+  · intro F x y hy
+    exact ⟨x, y, hy, fun _ => rfl, rfl⟩
 
 /-- The inclusion of the generated image into the ambient target is weak. -/
 theorem inclusion_weak
@@ -132,16 +123,9 @@ theorem inclusion_weak
 
 end weakImage
 
-/-- Weak homomorphic images of irreducible structures, with the source
-incidence structure retained on the image, are irreducible. -/
-theorem Irreducible.weakImage
-    {A : Structure L U} {B : Structure L V}
-    (hA : A.Irreducible) {f : U → V} :
-    (weakImage A B f).Irreducible := by
-  exact hA.of_surjective_homomorphism
-    (StructuralRamsey.Structure.weakImage.quotientMap_hom
-      (A := A) (B := B) (f := f))
-    (StructuralRamsey.Structure.weakImage.quotientMap_surjective
-      (f := f))
+/-! The stronger claim that an arbitrary weak quotient preserves the
+free-amalgamation irreducibility predicate is intentionally not asserted here:
+the ordinary full-homomorphism proof uses fibre surjectivity, which weak
+homomorphisms do not provide. -/
 
 end StructuralRamsey.Structure
