@@ -1,4 +1,5 @@
 import PartiteConstruction.Structure.RootedEmbedding
+import PartiteConstruction.Ramsey.FreeAmalgamationFunctions
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Order.Prod.Lex.Basic
@@ -20,38 +21,39 @@ universe u v
 variable {L : Language.{u}} {R V W : Type v}
 
 /-- Intrinsic rank in a finite linear order. -/
-noncomputable def orderRank (α : Type v) [Finite α] [LinearOrder α]
+noncomputable def orderRank (α : Type v) [Fintype α] [LinearOrder α]
     (x : α) : ℕ :=
   @Fintype.card (Set.Iio x) (Fintype.ofFinite (Set.Iio x))
 
-theorem orderRank_strictMono (α : Type v) [Finite α] [LinearOrder α] :
+theorem orderRank_strictMono (α : Type v) [Fintype α] [LinearOrder α] :
     StrictMono (orderRank α) := by
   intro a b hab
   letI : Fintype (Set.Iio a) := Fintype.ofFinite _
   letI : Fintype (Set.Iio b) := Fintype.ofFinite _
   apply Set.card_lt_card
+  apply Set.ssubset_iff_subset_ne.mpr
   constructor
   · intro x hx
     exact lt_trans hx hab
   · intro hEq
     have ha : a ∈ Set.Iio b := hab
     have haa : a ∈ Set.Iio a := by
-      rw [hEq] at ha
+      rw [hEq]
       exact ha
     exact (lt_irrefl a haa)
 
-theorem orderRank_injective (α : Type v) [Finite α] [LinearOrder α] :
+theorem orderRank_injective (α : Type v) [Fintype α] [LinearOrder α] :
     Function.Injective (orderRank α) :=
   (orderRank_strictMono α).injective
 
-theorem orderRank_lt_iff (α : Type v) [Finite α] [LinearOrder α]
+theorem orderRank_lt_iff (α : Type v) [Fintype α] [LinearOrder α]
     (x y : α) :
     orderRank α x < orderRank α y ↔ x < y :=
   (orderRank_strictMono α).lt_iff_lt
 
 /-- Number of fixed-root vertices whose cut predicate holds at x. -/
 noncomputable def cutRank
-    (C : Structure (language L R) V) [Finite R] (x : V) : ℕ := by
+    (C : Structure (language L R) V) [Fintype R] (x : V) : ℕ := by
   classical
   exact (Finset.univ.filter (fun r => C.rel (.cut r) ![x])).card
 
@@ -59,49 +61,38 @@ noncomputable def cutRank
 theorem cutRank_embedding
     {C : Structure (language L R) V}
     {D : Structure (language L R) W}
-    [Finite R] (e : Structure.Embedding C D) (x : V) :
+    [Fintype R] (e : Structure.Embedding C D) (x : V) :
     cutRank D (e x) = cutRank C x := by
   classical
   unfold cutRank
-  apply Finset.card_congr (f := fun r _ => r)
-  · intro r hr
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hr ⊢
-    have hm := e.map_rel_iff (.cut r) ![x]
-    have ht : e ∘ ![x] = ![e x] := by
-      funext i
-      fin_cases i
-      rfl
-    rw [ht] at hm
-    exact hm.mpr hr
-  · intro a ha b hb h
-    exact h
-  · intro r hr
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hr ⊢
-    have hm := e.map_rel_iff (.cut r) ![x]
-    have ht : e ∘ ![x] = ![e x] := by
-      funext i
-      fin_cases i
-      rfl
-    rw [ht] at hm
-    exact hm.mp hr
+  apply congrArg Finset.card
+  ext r
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  have hm := e.map_rel_iff (.cut r) ![x]
+  have ht : e ∘ ![x] = ![e x] := by
+    funext i
+    fin_cases i
+    rfl
+  rw [ht] at hm
+  exact hm
 
 /-- Root vertices lying below an outside vertex in an encoded ordered
 structure. -/
 noncomputable def rootBelow
     {Root : Structure L R} {A : Structure L V}
-    [Finite R] [LinearOrder V]
+    [Fintype R] [LinearOrder V]
     (ρ : Structure.Embedding Root A) (x : Outside ρ) : Finset R := by
   classical
   exact Finset.univ.filter (fun r => ρ r < x.1)
 
 theorem cutRank_encode
     {Root : Structure L R} {A : Structure L V}
-    [Finite R] [LinearOrder V]
+    [Fintype R] [LinearOrder V]
     (ρ : Structure.Embedding Root A) (x : Outside ρ) :
     cutRank (encode ρ) x = (rootBelow ρ x).card := by
   classical
   unfold cutRank rootBelow
-  congr 1
+  apply congrArg Finset.card
   ext r
   simp [encode]
 
@@ -109,7 +100,7 @@ theorem cutRank_encode
 of root points below its image. -/
 theorem rootBelowRoot_card
     {Root : Structure L R} {A : Structure L V}
-    [Finite R] [LinearOrder R] [LinearOrder V]
+    [Fintype R] [LinearOrder R] [LinearOrder V]
     (ρ : Structure.Embedding Root A) (hρ : StrictMono ρ) (r : R) :
     (Finset.univ.filter (fun s => ρ s < ρ r)).card = orderRank R r := by
   classical
@@ -127,7 +118,7 @@ theorem rootBelowRoot_card
 root points below x. -/
 theorem orderRank_lt_rootBelow_card
     {Root : Structure L R} {A : Structure L V}
-    [Finite R] [LinearOrder R] [LinearOrder V]
+    [Fintype R] [LinearOrder R] [LinearOrder V]
     (ρ : Structure.Embedding Root A) (hρ : StrictMono ρ)
     (r : R) (x : Outside ρ) (hrx : ρ r < x.1) :
     orderRank R r < (rootBelow ρ x).card := by
@@ -151,7 +142,7 @@ theorem orderRank_lt_rootBelow_card
 rank of r. -/
 theorem rootBelow_card_le_orderRank
     {Root : Structure L R} {A : Structure L V}
-    [Finite R] [LinearOrder R] [LinearOrder V]
+    [Fintype R] [LinearOrder R] [LinearOrder V]
     (ρ : Structure.Embedding Root A) (hρ : StrictMono ρ)
     (r : R) (x : Outside ρ) (hrx : ¬ ρ r < x.1) :
     (rootBelow ρ x).card ≤ orderRank R r := by
@@ -172,7 +163,7 @@ theorem rootBelow_card_le_orderRank
 /-- Root-below sets are monotone along the ambient order. -/
 theorem rootBelow_card_mono
     {Root : Structure L R} {A : Structure L V}
-    [Finite R] [LinearOrder V]
+    [Fintype R] [LinearOrder V]
     (ρ : Structure.Embedding Root A)
     (x y : Outside ρ) (hxy : x.1 < y.1) :
     (rootBelow ρ x).card ≤ (rootBelow ρ y).card := by
@@ -187,14 +178,14 @@ vertex of cut rank k is placed immediately before the k-th root vertex; moving
 vertices in the same cut retain the witness order. -/
 noncomputable def orderKey
     (Root : Structure L R) (C : Structure (language L R) V)
-    [Finite R] [LinearOrder R] [Finite V] [LinearOrder V] :
+    [Fintype R] [LinearOrder R] [Fintype V] [LinearOrder V] :
     Sum R V → Nat ×ₗ (Bool ×ₗ Nat)
   | .inl r => toLex (orderRank R r, toLex (true, orderRank R r))
   | .inr x => toLex (cutRank C x, toLex (false, orderRank V x))
 
 theorem orderKey_injective
     (Root : Structure L R) (C : Structure (language L R) V)
-    [Finite R] [LinearOrder R] [Finite V] [LinearOrder V] :
+    [Fintype R] [LinearOrder R] [Fintype V] [LinearOrder V] :
     Function.Injective (orderKey Root C) := by
   intro x y h
   cases x with
@@ -220,7 +211,7 @@ theorem orderKey_injective
 /-- Canonical reconstructed order on root plus moving vertices. -/
 noncomputable def reconstructedOrder
     (Root : Structure L R) (C : Structure (language L R) V)
-    [Finite R] [LinearOrder R] [Finite V] [LinearOrder V] :
+    [Fintype R] [LinearOrder R] [Fintype V] [LinearOrder V] :
     LinearOrder (Sum R V) :=
   LinearOrder.lift' (orderKey Root C) (orderKey_injective Root C)
 
@@ -228,10 +219,10 @@ noncomputable def reconstructedOrder
 reattaching the root, provided the source root embedding preserves order. -/
 noncomputable def liftOrderedEmbedding
     {Root : Structure L R} {A : Structure L V}
-    [Finite R] [LinearOrder R] [Finite V] [LinearOrder V]
+    [Fintype R] [LinearOrder R] [Fintype V] [LinearOrder V]
     (ρ : Structure.Embedding Root A) (hρ : StrictMono ρ)
     {C : Structure (language L R) W}
-    [Finite W] [LinearOrder W]
+    [Fintype W] [LinearOrder W]
     (e : Structure.Embedding
       (encode ρ).withLinearOrder C.withLinearOrder) :
     Structure.Embedding A.withLinearOrder
