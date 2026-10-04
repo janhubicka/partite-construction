@@ -1,6 +1,8 @@
 import PartiteConstruction.Ramsey.ForbiddenFunctions
 import PartiteConstruction.Structure.RootedReduction
 import PartiteConstruction.Structure.RootedFunctor
+import PartiteConstruction.Structure.RootedSplit
+import PartiteConstruction.Structure.RootedCorrectness
 import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.generates_of_surjective
@@ -80,3 +82,7 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Rooted.rootEmbedding
 #print axioms StructuralRamsey.Rooted.decodeEmbedding
+
+#print axioms StructuralRamsey.Rooted.splitEquiv
+#print axioms StructuralRamsey.Rooted.splitEmbedding
+#print axioms StructuralRamsey.Rooted.splitEmbedding_surjective
