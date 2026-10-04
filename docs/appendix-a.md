@@ -67,19 +67,23 @@ ensures that final order completion creates no new forbidden embedding.
 
 ## Remaining manuscript obligations
 
-1. **Functional iterated sparsening.** Weak restriction itself is already
-   exact under graph encoding (`weakInduce_graph_rel_iff`).  The naive
-   relational transfer fails by
-   `Structure.FunctionalTreeTransferObstruction.target_not_singletonValued`:
-   a non-closed gluing root can create extra function outputs.  The positive
-   target interface is now checked as `FunctionClosedTreeAmalgam`.  Its
-   gluing roots are closed; `glue_sides_closed` proves every side embedding
-   remains closed, and `irreducible_contained_in_full_copy` shows constituent
-   copies decode to full function embeddings.  What remains is to propagate
-   this closed-tree invariant through the Picture/trace iteration and final
-   sparsening construction.
-2. **Arbitrary-alpha Picture statement.** Replace the printed argument by the
-   checked domain-aware version or prove the stronger assertion separately.
+1. **Arbitrary-alpha Picture statement.** Replace the printed argument by the
+   checked domain-aware semi-closed statement used by the recursive proof, or
+   prove the stronger existential assertion separately.
+
+There is **no remaining functional iterated-sparsening obligation**.  The
+survey's sparsening theorem has been restored to its source-faithful
+relational scope, exactly matching
+`Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all`.
+The direct set-valued-function reading with the survey's fibre-surjective
+homomorphism is not merely unproved: the checked
+`FullFunctionalSparseningObstruction.direct_functional_sparsening_false`
+gives an explicit Ramsey/irreducibility counterexample.  The separate
+`FibreSurjectivityObstruction` and `WeakTreePropertyObstruction` regressions
+pinpoint the two local failures behind that counterexample.
+
+The function-closed tree interface remains useful auxiliary infrastructure,
+but is not a prerequisite for the relational sparsening theorem.
 
 The former synchronized ambient-A tree condition is no longer an Appendix
 proof obligation: the manuscript now states the exact local-tree-completability
