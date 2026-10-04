@@ -123,3 +123,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Rooted.orderedEmbedding_agrees_on_root
 
 #print axioms StructuralRamsey.Rooted.split_embedding
+
+#print axioms StructuralRamsey.Rooted.encodeOrderedEmbedding
