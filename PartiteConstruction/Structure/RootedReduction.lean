@@ -25,12 +25,15 @@ structure Pattern (n : ℕ) (R : Type v) where
 
 namespace Pattern
 
+universe u
 variable {n : ℕ} {R : Type v}
 
 def Move (p : Pattern n R) := {i : Fin n // p.fixed i = none}
 
-noncomputable def moveFintype (p : Pattern n R) : Fintype p.Move :=
-  Fintype.ofFinite p.Move
+noncomputable def moveFintype (p : Pattern n R) : Fintype p.Move := by
+  letI : Finite p.Move :=
+    Finite.of_injective Subtype.val Subtype.val_injective
+  exact Fintype.ofFinite p.Move
 
 noncomputable def arity (p : Pattern n R) : ℕ :=
   @Fintype.card p.Move p.moveFintype
@@ -47,7 +50,8 @@ theorem arity_pos_of_moving (p : Pattern n R) {i : Fin n}
 
 /-- Fill a rooted pattern by a tuple of moving vertices. -/
 noncomputable def fill
-    {U : Type w} {Root : Structure L R} {A : Structure L U}
+    {L : Language.{u}} {U : Type w}
+    {Root : Structure L R} {A : Structure L U}
     (ρ : Structure.Embedding Root A) (p : Pattern n R)
     (x : Fin p.arity → {a : U // a ∉ Set.range ρ}) :
     Fin n → U :=
@@ -109,7 +113,7 @@ noncomputable def encode
     match Q with
     | .base S p _ => A.rel S (p.fill ρ x)
     | .output F p _ r => ρ r ∈ A.func F (p.fill ρ x)
-    | .cut r => ρ r < (x 0).1
+    | .cut r => ρ r < (x ⟨0, by simp [language]⟩).1
   func Q x := {y | y.1 ∈ A.func Q.F (Q.p.fill ρ x)}
 
 end StructuralRamsey.Rooted
