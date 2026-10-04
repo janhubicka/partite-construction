@@ -1,0 +1,107 @@
+name: EHN final integration
+
+on:
+  push:
+    branches: [formalize/ehn-functions]
+    paths: [.github/workflows/ehn-final-integration.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ehn-final-integration
+  cancel-in-progress: false
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: formalize/ehn-functions
+      - name: Distinguish the two weak-map interfaces
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          paths = [
+              'PartiteConstruction/Functional/WeakInvariant.lean',
+              'PartiteConstruction/Functional/WeakOperations.lean',
+              'PartiteConstruction/Functional/WeakAttachment.lean',
+              'PartiteConstruction/Functional/EHNStage.lean',
+              'PartiteConstruction/Functional/EHNInitial.lean',
+              'PartiteConstruction/Functional/EHNPicture.lean',
+              'PartiteConstruction/Functional/EHNConstruction.lean',
+              'CheckEHNFunctions.lean', 'docs/ehn-functions.md',
+          ]
+          for name in paths:
+              p = Path(name)
+              text = p.read_text()
+              text = text.replace('IsWeakHomomorphismEmbedding', 'IsEHNHomomorphismEmbedding')
+              text = text.replace('isWeakHomomorphismEmbedding', 'isEHNHomomorphismEmbedding')
+              p.write_text(text)
+          p = Path('PartiteConstruction/Functional/WeakInvariant.lean')
+          text = p.read_text()
+          anchor = 'def IsEHNHomomorphismEmbedding'
+          assert text.count(anchor) == 1
+          text = text.replace(anchor, '''/-- EHN projection: weak preservation globally, full embeddings on closed
+          irreducibles. This is distinct from `IsWeakHomomorphismEmbedding` in
+          `WeakSubstructure.lean`, which uses irreducibility in the relational
+          graph encoding and does not assert closedness of the restricted maps. -/
+          ''' + anchor, 1)
+          p.write_text(text)
+          p = Path('docs/ehn-functions.md')
+          text = p.read_text()
+          text += '''
+
+          ## Compatibility with weak-substructure iteration
+
+          The new predicate is `Structure.IsEHNHomomorphismEmbedding`.
+          The existing `Structure.IsWeakHomomorphismEmbedding` remains the
+          graph-encoding notion used for weak-substructure iteration. They are
+          deliberately not aliases: the new predicate uses full closed
+          irreducibles and full embeddings, whereas the old one uses graph
+          irreducibility and relational graph embeddings. Their names and
+          definitions coexist in the umbrella import.
+          '''
+          p.write_text(text)
+          PY
+          git diff --check
+          git add PartiteConstruction/Functional CheckEHNFunctions.lean docs/ehn-functions.md
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Disambiguate EHN full-irreducible projections from weak graph homomorphism-embeddings'
+            git push origin HEAD:formalize/ehn-functions
+          fi
+          echo "PROOF_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Cache Lean toolchain
+        uses: actions/cache@v5
+        with:
+          path: ~/.elan/toolchains
+          key: lean-toolchain-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}
+      - name: Cache Lake workspace
+        uses: actions/cache@v5
+        with:
+          path: .lake
+          key: lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lakefile.toml', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lakefile.toml', 'lake-manifest.json') }}-
+      - name: Install elan and restore Mathlib
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.elan/bin:$PATH"
+          lake exe cache get Mathlib.Tactic Mathlib.Data.Fintype.Pi Mathlib.Data.Fintype.Basic Mathlib.Data.Finset.Dedup > cache.log 2>&1 || { tail -80 cache.log; exit 1; }
+      - name: Build and audit the exact committed source
+        run: |
+          set -euo pipefail
+          echo "Checking committed source $PROOF_SHA"
+          mapfile -t targets < <(sed -n 's/^import //p' CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean | sort -u)
+          if ! lake build PartiteConstruction "${targets[@]}" > build.log 2>&1; then
+            sed -n '/error:/,$p' build.log
+            exit 1
+          fi
+          tail -1 build.log
+          : > axioms.log
+          for source in CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean; do
+            lake env lean "$source" >> axioms.log 2>&1 || { tail -100 axioms.log; exit 1; }
+          done
+          python3 scripts/check_axioms.py axioms.log CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean
