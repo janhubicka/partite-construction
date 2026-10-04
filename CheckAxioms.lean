@@ -324,3 +324,12 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.witness_of_homEmbedding_image
 #print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.of_homEmbedding_to_base
 #print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.initial
+
+#print axioms StructuralRamsey.RelStructure.LocallyTreeCompletable.fullWitness
+#print axioms StructuralRamsey.Partite.Iterated.canonicalStep_locallyTreeCompletable_projectedHistory
+
+#print axioms StructuralRamsey.Partite.Iterated.WeakTrace.locallyTreeCompletable
+
+#print axioms StructuralRamsey.Partite.Iterated.basedStep_locallyTreeCompletable
+#print axioms StructuralRamsey.Partite.Induced.Trace.locallyTreeCompletable
+#print axioms StructuralRamsey.Partite.Induced.inducedConstruction_locallyTreeCompletable
