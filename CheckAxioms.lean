@@ -365,3 +365,8 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.TreeAmalgam.cliqueReduct_strict
 #print axioms StructuralRamsey.RelStructure.LocallyTreeLike.cliqueReduct_strict
 #print axioms StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all
+
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.P4_twoColorable
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.OddLoose_loose
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.OddLoose_not_twoColorable
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.OddLoose_no_strictification
