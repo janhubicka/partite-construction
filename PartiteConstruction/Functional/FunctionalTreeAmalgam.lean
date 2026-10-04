@@ -96,9 +96,22 @@ theorem toFull
     func_iff := ?_
   }
   · intro z
-    simpa [ciA, ciB] using hfree.covers z
+    rcases hfree.covers z with ⟨a, ha⟩ | ⟨b, hb⟩
+    · refine Or.inl ⟨a, ?_⟩
+      change z = iA a
+      exact ha
+    · refine Or.inr ⟨b, ?_⟩
+      change z = iB b
+      exact hb
   · intro a b
-    simpa [cfA, cfB, ciA, ciB] using hfree.overlap a b
+    constructor
+    · intro h
+      apply (hfree.overlap a b).mp
+      change iA a = iB b at h
+      exact h
+    · intro h
+      change iA a = iB b
+      exact (hfree.overlap a b).mpr h
   · intro R z
     change
       C.rel (.inl R) z ↔
@@ -129,9 +142,9 @@ theorem toFull
           exact hq
         · funext k
           have hk := congrFun heq k.castSucc
-          simpa [a] using hk
+          simpa [a, Function.comp_apply] using hk
         · have hk := congrFun heq (Fin.last (L.funcArity F))
-          simpa [b] using hk
+          simpa [b, Function.comp_apply] using hk
       · let a : Fin (L.funcArity F) → W := fun k => q k.castSucc
         let b : W := q (Fin.last (L.funcArity F))
         refine Or.inr ⟨a, b, ?_, ?_, ?_⟩
@@ -141,9 +154,9 @@ theorem toFull
           exact hq
         · funext k
           have hk := congrFun heq k.castSucc
-          simpa [a] using hk
+          simpa [a, Function.comp_apply] using hk
         · have hk := congrFun heq (Fin.last (L.funcArity F))
-          simpa [b] using hk
+          simpa [b, Function.comp_apply] using hk
     · rintro (⟨a, b, hb, hx, hy⟩ | ⟨a, b, hb, hx, hy⟩)
       · apply (hfree.rel_iff (.inr F) (funcTuple x y)).mpr
         refine Or.inl ⟨funcTuple a b, hb, ?_⟩
@@ -174,8 +187,7 @@ theorem toFunctional
     Structure.TreeAmalgam Base W (Structure.ofGraph T) := by
   induction hT with
   | copy h =>
-      let e : Structure.Embedding Base (Structure.ofGraph T) :=
-        Structure.Embedding.ofClosedGraphTarget h.toClosedEmbedding
+      let e := Structure.Embedding.ofClosedGraphTarget h.toClosedEmbedding
       refine .copy e ?_
       intro y
       refine ⟨h.toEquiv.symm y, ?_⟩
