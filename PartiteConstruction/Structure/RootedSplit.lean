@@ -18,6 +18,20 @@ def unsplit
   | .inl r => ρ r
   | .inr x => x.1
 
+/-- Chosen root preimage of a vertex known to lie in the root range. -/
+noncomputable def rootPreimage
+    {Root : Structure L R} {A : Structure L U}
+    (ρ : Structure.Embedding Root A) {a : U}
+    (h : a ∈ Set.range ρ) : R :=
+  Classical.choose (show ∃ r, ρ r = a from h)
+
+theorem rootPreimage_spec
+    {Root : Structure L R} {A : Structure L U}
+    (ρ : Structure.Embedding Root A) {a : U}
+    (h : a ∈ Set.range ρ) :
+    ρ (rootPreimage ρ h) = a :=
+  Classical.choose_spec (show ∃ r, ρ r = a from h)
+
 /-- Split a vertex into its root coordinate when it lies in the root, and
 otherwise into the moving complement. -/
 noncomputable def split
@@ -26,7 +40,7 @@ noncomputable def split
     Sum R (Outside ρ) :=
   letI : Decidable (a ∈ Set.range ρ) := Classical.propDecidable _
   if h : a ∈ Set.range ρ then
-    Sum.inl (Classical.choose h)
+    Sum.inl (rootPreimage ρ h)
   else
     Sum.inr ⟨a, h⟩
 
@@ -39,7 +53,7 @@ noncomputable def split
   · unfold split
     dsimp only
     rw [dite_eq_left h]
-    exact Classical.choose_spec h
+    exact rootPreimage_spec ρ h
   · unfold split
     dsimp only
     rw [dite_eq_right h]
@@ -57,11 +71,13 @@ theorem unsplit_injective
           apply congrArg Sum.inl
           exact ρ.injective hxy
       | inr y =>
+          change ρ r = y.1 at hxy
           exact False.elim (y.2 ⟨r, hxy.symm⟩)
   | inr x =>
       cases y with
       | inl s =>
-          exact False.elim (x.2 ⟨s, hxy⟩)
+          change x.1 = ρ s at hxy
+          exact False.elim (x.2 ⟨s, hxy.symm⟩)
       | inr y =>
           apply congrArg Sum.inr
           apply Subtype.ext
