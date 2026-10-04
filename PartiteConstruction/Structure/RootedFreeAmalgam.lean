@@ -121,11 +121,9 @@ theorem decode_isFreeAmalgam
                   simp [dsA, dsB, decodeEmbedding_apply, sumMap] at ha
               | inr d =>
                   have ha' : a = sA d := by
-                    exact Sum.inr.inj (by
-                      simpa [dsA, decodeEmbedding_apply, sumMap] using ha)
+                    simpa [dsA, decodeEmbedding_apply, sumMap] using ha
                   have hb' : b = sB d := by
-                    exact Sum.inr.inj (by
-                      simpa [dsB, decodeEmbedding_apply, sumMap] using hb)
+                    simpa [dsB, decodeEmbedding_apply, sumMap] using hb
                   apply congrArg Sum.inr
                   exact (hfree.overlap a b).mpr ⟨d, ha', hb'⟩
   · intro S z
@@ -189,7 +187,7 @@ theorem decode_isFreeAmalgam
         refine Or.inl ⟨a, hrel, ?_⟩
         funext j
         have hzj := Pattern.rootTuple_spec z h j
-        simpa [a, diA, decodeEmbedding_apply, sumMap] using hzj.symm
+        simpa [a, diA, decodeEmbedding_apply, sumMap] using hzj
     · rintro (⟨a, ha, rfl⟩ | ⟨b, hb, rfl⟩)
       · exact ((decodeEmbedding Root iA).map_rel_iff S a).mpr ha
       · exact ((decodeEmbedding Root iB).map_rel_iff S b).mpr hb
@@ -345,7 +343,7 @@ theorem decode_isFreeAmalgam
             refine Or.inl ⟨a, Sum.inl r, hb, ?_, rfl⟩
             funext j
             have hxj := Pattern.rootTuple_spec x h j
-            simpa [a, diA, decodeEmbedding_apply, sumMap] using hxj.symm
+            simpa [a, diA, decodeEmbedding_apply, sumMap] using hxj
         | inr z =>
             change
               (if h' : (Pattern.ofTuple x).HasMoving then
