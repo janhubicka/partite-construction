@@ -122,17 +122,23 @@ def Embedding.beforeOrderCompletion
         funext i
         fin_cases i <;> rfl
       change C.rel (.inr ()) (e ∘ x) ↔ A.rel (.inr ()) x
-      rw [ht, hC.orderPair_complete_iff hExt hA e.linearOrderReduct]
-      exact e.map_rel_iff (.inr ()) x
+      calc
+        C.rel (.inr ()) (e ∘ x)
+            ↔ C.rel (.inr ()) ![e (x (0 : Fin 2)), e (x (1 : Fin 2))] :=
+          Iff.of_eq (congrArg (fun t => C.rel (.inr ()) t) ht)
+        _ ↔ e (x (0 : Fin 2)) < e (x (1 : Fin 2)) :=
+          OrderTotalOnIrreducibles.orderPair_complete_iff hC hExt hA
+            e.linearOrderReduct (x (0 : Fin 2)) (x (1 : Fin 2))
+        _ ↔ A.rel (.inr ()) x := e.map_rel_iff (.inr ()) x
 
 /-- The auxiliary class keeps both the forbidden ordered patterns and the
 comparability needed when completing the order. -/
-def orderedForbiddenClass (F : StructureClass (L := L.withLinearOrder)) :
-    StructureClass (L := L.withLinearOrder) :=
+def orderedForbiddenClass (F : StructureClass.{u,v} (L := L.withLinearOrder)) :
+    StructureClass.{u,v} (L := L.withLinearOrder) :=
   fun C => AvoidsEmbeddings F C ∧ C.OrderTotalOnIrreducibles
 
 theorem orderedForbiddenClass_free
-    (F : StructureClass (L := L.withLinearOrder))
+    (F : StructureClass.{u,v} (L := L.withLinearOrder))
     (hF : ∀ {Y : Type v} (E : Structure L.withLinearOrder Y),
       F E → E.linearOrderReduct.Irreducible) :
     FreeAmalgamationClass (orderedForbiddenClass F) := by
@@ -140,14 +146,16 @@ theorem orderedForbiddenClass_free
     (fun E h => irreducible_of_linearOrderReduct E (hF E h))
   constructor
   · intro Y Z A B hB e
-    exact ⟨hAvoid.hereditary hB.1 e, hB.2.hereditary e⟩
+    exact ⟨hAvoid.hereditary hB.1 e,
+      OrderTotalOnIrreducibles.hereditary hB.2 e⟩
   · intro H E G C D A B Cstr sA sB iA iB hA hB hfree
-    exact ⟨hAvoid.free hA.1 hB.1 hfree, hA.2.free hB.2 hfree⟩
+    exact ⟨hAvoid.free hA.1 hB.1 hfree,
+      OrderTotalOnIrreducibles.free hA.2 hB.2 hfree⟩
 
 /-- Exact positive-arity version of the survey's thm:HN. Forbidden patterns
 may specify an order; only their function/relation reducts must be irreducible. -/
 theorem orderedRamsey_forbidden_expansions
-    (F : StructureClass (L := L.withLinearOrder))
+    (F : StructureClass.{u,v} (L := L.withLinearOrder))
     (hF : ∀ {Y : Type v} (E : Structure L.withLinearOrder Y),
       F E → E.linearOrderReduct.Irreducible)
     (A : Structure L U) (B : Structure L V)
