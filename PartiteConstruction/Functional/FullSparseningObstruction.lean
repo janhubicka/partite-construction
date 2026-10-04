@@ -189,12 +189,18 @@ theorem irreducible_of_total_binary
     change Fin 2 → E at q
     apply ha (q (0 : Fin 2))
     have h := congrFun hargs (0 : Fin 2)
-    simpa [args, Function.comp_apply] using h
+    calc
+      e a = (e ∘ args) (0 : Fin 2) := rfl
+      _ = (iE ∘ q) (0 : Fin 2) := h
+      _ = iE (q (0 : Fin 2)) := rfl
   · rcases hright with ⟨q, z, hz, hargs, hout⟩
     change Fin 2 → F at q
     apply hb (q (1 : Fin 2))
     have h := congrFun hargs (1 : Fin 2)
-    simpa [args, Function.comp_apply] using h
+    calc
+      e b = (e ∘ args) (1 : Fin 2) := rfl
+      _ = (iF ∘ q) (1 : Fin 2) := h
+      _ = iF (q (1 : Fin 2)) := rfl
 
 theorem A_irreducible : A.Irreducible := by
   intro H E F Z Dsrc Esrc Fsrc Csrc sE sF iE iF hfree e
