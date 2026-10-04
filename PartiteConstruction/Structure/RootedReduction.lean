@@ -66,15 +66,28 @@ theorem ofTuple_hasMoving_iff {V : Type w} (t : Fin n → Sum R V) :
   · rintro ⟨i, v, hi⟩
     exact ⟨i, by simp [ofTuple, hi]⟩
 
+/-- A coordinate declared moving by the pattern really is a moving
+vertex. -/
+theorem exists_moveAt {V : Type w} (t : Fin n → Sum R V)
+    (i : Fin n) (hi : (ofTuple t).fixed i = none) :
+    ∃ x : V, t i = Sum.inr x := by
+  cases hti : t i with
+  | inl r =>
+      have : (ofTuple t).fixed i = some r := by
+        simp [ofTuple, hti]
+      rw [this] at hi
+      contradiction
+  | inr x => exact ⟨x, hti⟩
+
 /-- A moving coordinate known from its rooted pattern. -/
 noncomputable def moveAt {V : Type w} (t : Fin n → Sum R V)
     (i : Fin n) (hi : (ofTuple t).fixed i = none) : V :=
-  match h : t i with
-  | .inl r =>
-      False.elim (by
-        have := hi
-        simp [ofTuple, h] at this)
-  | .inr x => x
+  Classical.choose (exists_moveAt t i hi)
+
+theorem moveAt_spec {V : Type w} (t : Fin n → Sum R V)
+    (i : Fin n) (hi : (ofTuple t).fixed i = none) :
+    t i = Sum.inr (moveAt t i hi) :=
+  Classical.choose_spec (exists_moveAt t i hi)
 
 /-- Canonical dummy moving vertex: the value at the first moving input. -/
 noncomputable def dummy {V : Type w} (t : Fin n → Sum R V)
@@ -82,14 +95,29 @@ noncomputable def dummy {V : Type w} (t : Fin n → Sum R V)
   moveAt t ((ofTuple t).firstMoving h)
     ((ofTuple t).firstMoving_spec h)
 
+theorem dummy_spec {V : Type w} (t : Fin n → Sum R V)
+    (h : (ofTuple t).HasMoving) :
+    t ((ofTuple t).firstMoving h) = Sum.inr (dummy t h) :=
+  moveAt_spec t _ _
+
 /-- Replace every fixed-root position by the canonical dummy, leaving moving
 coordinates unchanged. -/
 noncomputable def pad {V : Type w} (t : Fin n → Sum R V)
     (h : (ofTuple t).HasMoving) : Fin n → V :=
   fun i =>
-    match hi : t i with
-    | .inl _ => dummy t h
-    | .inr x => x
+    if hi : (ofTuple t).fixed i = none then moveAt t i hi else dummy t h
+
+theorem pad_eq_moveAt {V : Type w} (t : Fin n → Sum R V)
+    (h : (ofTuple t).HasMoving) (i : Fin n)
+    (hi : (ofTuple t).fixed i = none) :
+    pad t h i = moveAt t i hi := by
+  simp [pad, hi]
+
+theorem pad_eq_dummy {V : Type w} (t : Fin n → Sum R V)
+    (h : (ofTuple t).HasMoving) (i : Fin n)
+    (hi : (ofTuple t).fixed i ≠ none) :
+    pad t h i = dummy t h := by
+  simp [pad, hi]
 
 /-- Fill a rooted pattern in an original structure.  Values of x at fixed
 coordinates are ignored. -/
@@ -134,31 +162,35 @@ def sumFill {V : Type w} (p : Pattern n R)
       have hfix : (ofTuple t).fixed i = none := by
         simp [ofTuple, hi]
       simp only [sumFill, hfix]
-      apply congrArg Sum.inr
-      unfold pad
-      rw [hi]
+      have hs := moveAt_spec t i hfix
+      rw [hi] at hs
+      exact congrArg Sum.inr (Sum.inr.inj hs).symm.trans
+        (pad_eq_moveAt t h i hfix).symm
+
+/-- A tuple with no moving coordinates consists entirely of root vertices. -/
+theorem exists_rootAt {V : Type w} (t : Fin n → Sum R V)
+    (h : ¬(ofTuple t).HasMoving) (i : Fin n) :
+    ∃ r : R, t i = Sum.inl r := by
+  cases hi : t i with
+  | inl r => exact ⟨r, hi⟩
+  | inr v =>
+      exact False.elim (h ((ofTuple_hasMoving_iff t).2 ⟨i, v, hi⟩))
 
 /-- When there is no moving coordinate, read the tuple in the root. -/
 noncomputable def rootTuple {V : Type w} (t : Fin n → Sum R V)
     (h : ¬(ofTuple t).HasMoving) : Fin n → R :=
-  fun i =>
-    match hi : t i with
-    | .inl r => r
-    | .inr v =>
-        False.elim (h ((ofTuple_hasMoving_iff t).2 ⟨i, v, hi⟩))
+  fun i => Classical.choose (exists_rootAt t h i)
+
+theorem rootTuple_spec {V : Type w} (t : Fin n → Sum R V)
+    (h : ¬(ofTuple t).HasMoving) (i : Fin n) :
+    t i = Sum.inl (rootTuple t h i) :=
+  Classical.choose_spec (exists_rootAt t h i)
 
 @[simp] theorem inl_rootTuple {V : Type w} (t : Fin n → Sum R V)
     (h : ¬(ofTuple t).HasMoving) :
     Sum.inl ∘ rootTuple t h = t := by
   funext i
-  cases hi : t i with
-  | inl r =>
-      change Sum.inl (rootTuple t h i) = Sum.inl r
-      apply congrArg Sum.inl
-      unfold rootTuple
-      rw [hi]
-  | inr v =>
-      exact False.elim (h ((ofTuple_hasMoving_iff t).2 ⟨i, v, hi⟩))
+  exact (rootTuple_spec t h i).symm
 
 theorem rootTuple_inl {V : Type w} (x : Fin n → R)
     (h : ¬(ofTuple (Sum.inl ∘ x : Fin n → Sum R V)).HasMoving) :
@@ -220,7 +252,7 @@ theorem sumMap_injective {R : Type v} {V W : Type w}
       cases y with
       | inl s =>
           change Sum.inl r = Sum.inl s at h
-          exact congrArg Sum.inl (Sum.inl.inj h)
+          exact h
       | inr y =>
           change Sum.inl r = Sum.inr (f y) at h
           cases h
@@ -268,24 +300,35 @@ theorem Pattern.dummy_sumMap
   have hpq : q = p := Pattern.ofTuple_sumMap f t
   have hi : q.firstMoving h' = p.firstMoving h :=
     Pattern.firstMoving_congr hpq h' h
-  unfold Pattern.dummy
-  rw [hi]
-  unfold Pattern.moveAt
-  let i := p.firstMoving h
-  have hs : p.fixed i = none := p.firstMoving_spec h
-  have ht : ∃ x, t i = Sum.inr x := by
-    cases hti : t i with
-    | inl r =>
-        have : p.fixed i = some r := by
-          simp [p, Pattern.ofTuple, hti]
-        rw [this] at hs
-        contradiction
-    | inr x => exact ⟨x, hti⟩
-  obtain ⟨x, htx⟩ := ht
-  have hmap : (sumMap f ∘ t) i = Sum.inr (f x) := by
-    simp [sumMap, htx]
-  simp only [Function.comp_apply]
-  rw [hmap, htx]
+  have hs := Pattern.dummy_spec t h
+  have ht := Pattern.dummy_spec (sumMap f ∘ t) h'
+  rw [hi] at ht
+  have hmap :
+      (sumMap f ∘ t) (p.firstMoving h) =
+        Sum.inr (f (Pattern.dummy t h)) := by
+    change sumMap f (t (p.firstMoving h)) =
+      Sum.inr (f (Pattern.dummy t h))
+    rw [hs]
+    rfl
+  rw [hmap] at ht
+  exact Sum.inr.inj ht
+
+theorem Pattern.moveAt_sumMap
+    {R : Type v} {V W : Type w} (f : V → W)
+    (t : Fin n → Sum R V) (i : Fin n)
+    (hi : (Pattern.ofTuple t).fixed i = none)
+    (hi' : (Pattern.ofTuple (sumMap f ∘ t)).fixed i = none) :
+    Pattern.moveAt (sumMap f ∘ t) i hi' =
+      f (Pattern.moveAt t i hi) := by
+  have hs := Pattern.moveAt_spec t i hi
+  have ht := Pattern.moveAt_spec (sumMap f ∘ t) i hi'
+  have hmap :
+      (sumMap f ∘ t) i = Sum.inr (f (Pattern.moveAt t i hi)) := by
+    change sumMap f (t i) = _
+    rw [hs]
+    rfl
+  rw [hmap] at ht
+  exact Sum.inr.inj ht
 
 theorem Pattern.pad_sumMap
     {R : Type v} {V W : Type w} (f : V → W)
@@ -295,19 +338,20 @@ theorem Pattern.pad_sumMap
     Pattern.pad (sumMap f ∘ t) h' =
       f ∘ Pattern.pad t h := by
   funext i
-  cases hi : t i with
-  | inl r =>
-      have hmap : (sumMap f ∘ t) i = Sum.inl r := by
-        simp [sumMap, hi]
-      unfold Pattern.pad
-      rw [hmap, hi]
-      exact Pattern.dummy_sumMap f t h h'
-  | inr x =>
-      have hmap : (sumMap f ∘ t) i = Sum.inr (f x) := by
-        simp [sumMap, hi]
-      unfold Pattern.pad
-      rw [hmap, hi]
-      rfl
+  have hp := Pattern.ofTuple_sumMap f t
+  by_cases hi : (Pattern.ofTuple t).fixed i = none
+  · have hi' : (Pattern.ofTuple (sumMap f ∘ t)).fixed i = none := by
+      rw [hp]
+      exact hi
+    rw [Pattern.pad_eq_moveAt _ h' i hi',
+      Pattern.pad_eq_moveAt _ h i hi]
+    exact Pattern.moveAt_sumMap f t i hi hi'
+  · have hi' : (Pattern.ofTuple (sumMap f ∘ t)).fixed i ≠ none := by
+      rw [hp]
+      exact hi
+    rw [Pattern.pad_eq_dummy _ h' i hi',
+      Pattern.pad_eq_dummy _ h i hi]
+    exact Pattern.dummy_sumMap f t h h'
 
 theorem Pattern.rootTuple_sumMap
     {R : Type v} {V W : Type w} (f : V → W)
@@ -317,15 +361,16 @@ theorem Pattern.rootTuple_sumMap
     Pattern.rootTuple (sumMap f ∘ t) h' =
       Pattern.rootTuple t h := by
   funext i
-  cases hi : t i with
-  | inl r =>
-      have hmap : (sumMap f ∘ t) i = Sum.inl r := by
-        simp [sumMap, hi]
-      unfold Pattern.rootTuple
-      rw [hmap, hi]
-  | inr x =>
-      exact False.elim
-        (h ((Pattern.ofTuple_hasMoving_iff t).2 ⟨i, x, hi⟩))
+  have hs := Pattern.rootTuple_spec t h i
+  have ht := Pattern.rootTuple_spec (sumMap f ∘ t) h' i
+  have hmap :
+      (sumMap f ∘ t) i =
+        Sum.inl (Pattern.rootTuple t h i) := by
+    change sumMap f (t i) = _
+    rw [hs]
+    rfl
+  rw [hmap] at ht
+  exact Sum.inl.inj ht
 
 /-- Reconstruct an original-language structure by adjoining the fixed root. -/
 noncomputable def decode
