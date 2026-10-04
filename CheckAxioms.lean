@@ -383,3 +383,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Structure.ProperFreeDecomposition.pullback_surjective
 #print axioms StructuralRamsey.Structure.Irreducible.of_surjective_homomorphism
 #print axioms StructuralRamsey.Structure.Irreducible.range_homomorphism
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.coordinateHom
+#print axioms StructuralRamsey.FunctionalPartite.Induced.power_isPartiteOver
