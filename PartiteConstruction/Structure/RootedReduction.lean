@@ -205,7 +205,7 @@ theorem rootTuple_inl {V : Type w} (x : Fin n → R)
 end Pattern
 
 /-- Vertices outside a fixed embedded root. -/
-def Outside
+abbrev Outside
     {L : Language.{u}} {R : Type v} {U : Type w}
     {Root : Structure L R} {A : Structure L U}
     (ρ : Structure.Embedding Root A) :=
