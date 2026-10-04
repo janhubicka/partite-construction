@@ -82,8 +82,10 @@ theorem coordinateHom
       · intro j
         by_cases hj : j = i
         · subst j
-          simpa only [y, coord, dif_pos rfl, args, Function.comp_apply] using hb
-        · simpa only [y, coord, dif_neg hj, args, Function.comp_apply] using hc j
+          simp only [y, coord, dite_eq_left]
+          convert hb using 1
+        · simp only [y, coord, dite_eq_right hj]
+          convert hc j using 1
       · simp [y, coord]
 
 /-- The direct functional coordinate power preserves the full
@@ -94,7 +96,7 @@ theorem power_isPartiteOver
   classical
   let C := power B N
   have hProj : C.ProjectionHom A :=
-    power_projectionHom FunctionalPartite.System.projectionHom hB hN
+    power_projectionHom (FunctionalPartite.System.projectionHom hB) hN
   constructor
   · exact hProj
   · intro X E hE e
@@ -102,7 +104,7 @@ theorem power_isPartiteOver
       fun x => (e x).coord i
     have hq (i : Fin N) :
         E.IsHomomorphism B.toStructure (q i) := by
-      exact (coordinateHom FunctionalPartite.System.projectionHom hB i).comp e.isHomomorphism
+      exact (coordinateHom (FunctionalPartite.System.projectionHom hB) i).comp e.isHomomorphism
     let S (i : Fin N) : Set V := Set.range (q i)
     have hSclosed (i : Fin N) :
         B.toStructure.IsClosed (S i) :=
