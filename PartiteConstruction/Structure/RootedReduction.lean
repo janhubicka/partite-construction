@@ -217,6 +217,81 @@ theorem sumMap_injective {R : Type v} {V W : Type w}
   cases x <;> cases y <;> simp [sumMap] at h ⊢
   exact hf h
 
+theorem Pattern.hasMoving_sumMap
+    {R : Type v} {V W : Type w} (f : V → W)
+    (t : Fin n → Sum R V) :
+    Pattern.HasMoving (sumMap f ∘ t) ↔ Pattern.HasMoving t := by
+  constructor
+  · rintro ⟨i, z, hz⟩
+    cases hti : t i with
+    | inl r =>
+        simp [sumMap, hti] at hz
+    | inr x =>
+        exact ⟨i, x, hti⟩
+  · rintro ⟨i, x, hx⟩
+    exact ⟨i, f x, by simp [sumMap, hx]⟩
+
+theorem Pattern.ofTuple_sumMap
+    {R : Type v} {V W : Type w} (f : V → W)
+    (t : Fin n → Sum R V) :
+    Pattern.ofTuple (sumMap f ∘ t) = Pattern.ofTuple t := by
+  apply Pattern.ext
+  funext i
+  cases h : t i <;> simp [Pattern.ofTuple, sumMap, h]
+
+theorem Pattern.sumFill_injective
+    {R : Type v} {V : Type w} (p : Pattern n R) :
+    Function.Injective (Pattern.sumFill (V := V) p) := by
+  intro x y hxy
+  funext j
+  let i : p.Move := p.moveEquiv.symm j
+  have h := congrFun hxy i.1
+  have hi : p.fixed i.1 = none := i.2
+  simp [Pattern.sumFill, hi] at h
+  exact h
+
+theorem Pattern.sumFill_map
+    {R : Type v} {V W : Type w} (f : V → W)
+    (p : Pattern n R) (x : Fin p.arity → V) :
+    sumMap f ∘ Pattern.sumFill p x =
+      Pattern.sumFill p (f ∘ x) := by
+  funext i
+  cases h : p.fixed i with
+  | some r => simp [Pattern.sumFill, sumMap, h]
+  | none => simp [Pattern.sumFill, sumMap, h]
+
+theorem Pattern.movingTuple_sumMap
+    {R : Type v} {V W : Type w} (f : V → W)
+    (t : Fin n → Sum R V) :
+    Pattern.movingTuple (sumMap f ∘ t) =
+      f ∘ Pattern.movingTuple t := by
+  have hp := Pattern.ofTuple_sumMap f t
+  apply Pattern.sumFill_injective (p := Pattern.ofTuple t)
+  calc
+    Pattern.sumFill (Pattern.ofTuple t)
+        (Pattern.movingTuple (sumMap f ∘ t)) =
+        Pattern.sumFill (Pattern.ofTuple (sumMap f ∘ t))
+          (Pattern.movingTuple (sumMap f ∘ t)) := by rw [hp]
+    _ = sumMap f ∘ t := Pattern.sumFill_ofTuple_movingTuple _
+    _ = sumMap f ∘
+        Pattern.sumFill (Pattern.ofTuple t) (Pattern.movingTuple t) := by
+          rw [Pattern.sumFill_ofTuple_movingTuple]
+    _ = Pattern.sumFill (Pattern.ofTuple t)
+        (f ∘ Pattern.movingTuple t) :=
+      Pattern.sumFill_map f _ _
+
+theorem Pattern.rootTuple_sumMap
+    {R : Type v} {V W : Type w} (f : V → W)
+    (t : Fin n → Sum R V)
+    (h : ¬ Pattern.HasMoving t)
+    (h' : ¬ Pattern.HasMoving (sumMap f ∘ t)) :
+    Pattern.rootTuple (sumMap f ∘ t) h' =
+      Pattern.rootTuple t h := by
+  funext i
+  cases hi : t i with
+  | inl r => simp [Pattern.rootTuple, sumMap, hi]
+  | inr x => exact False.elim (h ⟨i, x, hi⟩)
+
 /-- Encode a rooted ordered structure on the complement of the root. -/
 noncomputable def encode
     {L : Language.{u}} {R : Type v} {U : Type w}
