@@ -66,14 +66,24 @@ ensures that final order completion creates no new forbidden embedding.
 
 ## Remaining manuscript obligations
 
-1. **Strong synchronized tree invariant.** Full-copy localization does not
-   settle simultaneous control of every ambient-A intersection with a partial
-   boundary.
-2. **Functional iterated sparsening.** The all-arity EHN theorem supplies the
-   one-pass class transfer but not the local tree-amalgam bounds of the
-   iterated theorem.
-3. **Arbitrary-alpha Picture statement.** Replace the printed argument by the
+1. **Functional iterated sparsening.** Weak restriction itself is already
+   exact under graph encoding (`weakInduce_graph_rel_iff`).  The remaining
+   issue is closure of the tree-amalgam interfaces.  The regression theorem
+   `Structure.FunctionalTreeTransferObstruction.target_tree` constructs a
+   strict relational tree amalgam of graph-encoded copies of a
+   singleton-valued unary partial-function structure by gluing over a
+   non-closed input root; after decoding,
+   `target_not_singletonValued` exhibits two distinct outputs over that
+   input.  Thus the relational sparsening theorem cannot be transferred
+   verbatim.  The functional iteration must keep tree roots and constituent
+   copies closed (or carry equivalent domain/closure data).
+2. **Arbitrary-alpha Picture statement.** Replace the printed argument by the
    checked domain-aware version or prove the stronger assertion separately.
+
+The former synchronized ambient-A tree condition is no longer an Appendix
+proof obligation: the manuscript now states the exact local-tree-completability
+invariant used by the sparsening proof.  It may still be studied as an optional
+stronger theorem.
 
 The original globally fibre-surjective functional induced formulation is not
 silently proved by the EHN weak-projection theorem; keep the interfaces
