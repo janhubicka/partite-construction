@@ -1,43 +1,46 @@
 # Roadmap
 
-The target is all of Appendix A. Each step should export reusable statements
-and update the survey's validation markers at an immutable proof commit.
+The target remains all of Appendix A, with reusable endpoints and survey
+markers pinned to checked immutable commits. The authoritative status is the
+[current coverage map](docs/appendix-a.md); the previous roadmap is retained
+as [historical context](docs/archive/roadmap-before-closure-audit.md).
 
-1. **Complete:** relational structures and induced embeddings; structural
-   arrows; partite systems and unary-predicate equivalence; fixed-length HJ;
-   the finite non-induced Partite Lemma; projected copies and backward fusion.
-2. **Complete:** reusable finite free attachment; the Picture Lemma; initial
-   pictures; finite iteration; preservation of projected relation constraints;
-   extraction from a Ramsey family of placements; order completion preserving
-   induced embeddings and the arrow.
-3. **Complete:** ordinary finite Ramsey for strictly increasing tuples;
-   translation of a homogeneous subset to increasing placements and
-   `ProjectionRamsey`; the unconditional unrestricted ordered
-   Nešetřil–Rödl theorem.
-4. **Complete for relational languages — induced construction:**
-   homomorphism-embeddings, positive coordinatewise powers, the induced
-   Partite and Picture Lemmas, disjoint-union initial pictures, formally based
-   stages, the irreducible-image invariant, finite iteration, and the final
-   Ramsey extraction with a trace certifying every stage.
-5. **Checked under hereditary irreducibility — applications and iteration:**
-   weak substructures for function languages, tree amalgams, weak local
-   tree-likeness, the actual induced-construction trace, repeated sparsening
-   iteration, projected irreducible coverage, the final finite attachment
-   phase, and an end-to-end strengthened sparsening theorem are formalized.
-   The checked theorem assumes hereditary irreducibility of both A and B.
-   Remaining: resolve the gap from the survey's stated hypothesis that only A
-   is irreducible (and the corresponding function-language/graph-encoding
-   presentation issue).
-6. **Recursive construction / functions — in progress:** set-valued functions,
-   closed embeddings, U-transversality, the ordinary-indexed half-closed
-   construction, unary part-predicate expansion, and nested flattening are
-   formalized.  The native theorem `Partite.HalfClosed.inducedPartite`
-   verifies the corrected positive-arity half-closed step exactly in partite
-   language, with U-transversality composed through the nested projection.
-   The non-closed arbitrary-alpha Picture obstruction remains the missing
-   outer step before assembling `thm:models2`.
+## Completed routes
 
-Keep hypotheses visible. An abstract fusion lemma is not a proof of existence
-of its input pictures. A library representation change is not a manuscript
-error. Mathematical errors or missing arguments in the text should be marked
-with `\todo[inline]{Řehořek: ...}`.
+The relational non-induced and induced constructions are end-to-end checked.
+The positive-arity recursive construction is also assembled: the domain-aware
+semi-closed step, singleton reduction, half-closed repair, and ordered graph
+Ramsey theorem are not outstanding tasks.
+
+Strict relational sparsening with B irreducible and arbitrary A is checked
+through the complete binary-relation expansion. It no longer relies on the
+stronger synchronized tree invariant under mere irreducibility of A. The
+printed sparsening theorem may therefore drop irreducibility of A in its
+relational specialization; retain a manuscript TODO for that strengthening
+rather than confusing it with the separate functional transfer.
+
+The two local closure observations now follow from one free-amalgam closure
+criterion. The half-closed theorem has an unpacked witness interface without
+an input-D transversality assumption.
+
+## Next proof obligations
+
+1. Finish the functional irreducible-image invariant and EHN class-membership
+   transfer. Preserve the distinction between full functional homomorphisms,
+   weak graph homomorphisms, and closed embeddings. The generated-image
+   quotient regression prevents cancelling a noninjective map on input tuples.
+2. Settle the literal strong `thm:tree_invariant` under mere irreducibility of A,
+   or record the author's decision to use a weaker exact statement. Whole-copy
+   localization alone does not repair partial-boundary synchronization.
+3. Complete the separate function-language transfer for sparsening. Keep weak
+   substructures (including dropped values leaving the subset) explicit.
+4. Treat constants separately if expanding beyond the current positive-arity
+   initial construction. The local closure calculus already handles them.
+
+## Editorial follow-through
+
+Keep the arbitrary-alpha Picture statement separate from the final recursive
+proof until its text is replaced or independently justified. Remove TODOs
+only when their exact missing assumption or argument has been supplied.
+Representation choices alone are not manuscript errors. Never replace
+irreducibility by hereditary irreducibility silently.

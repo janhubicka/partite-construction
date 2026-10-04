@@ -1,82 +1,69 @@
 # Partite construction
 
-Reusable Lean formalization of structural Ramsey theory, starting with the
-non-induced partite construction in Appendix A of the survey *Twenty years of
-Nešetřil's classification programme of Ramsey classes*.
+Reusable Lean formalization of structural Ramsey theory from Appendix A of
+*Twenty years of Nešetřil's classification programme of Ramsey classes*.
 
-The finite non-induced **Partite Lemma**, **Picture Lemma**, **finite
-iteration**, and final ordered theorem are proved with induced embeddings. The
-library also constructs initial pictures, preserves constraints on projected
-relations, proves finite Ramsey for increasing tuples, extracts the required
-increasing placements, and completes the order without losing the Ramsey
-arrow.
+## Checked endpoints
 
-`orderedRamseyFromProjections` exposes the structural argument with an
-explicit `ProjectionRamsey` input. The theorem `increasingProjectionRamsey`
-discharges that input from finite Ramsey, and `orderedRamsey` is the
-unconditional ordered Nešetřil–Rödl conclusion used by the survey.
+The **non-induced relational construction** is checked end to end: the finite
+Partite and Picture Lemmas, initial pictures, finite iteration, increasing
+placements, and order completion. `Partite.orderedRamsey` is the unconditional
+ordered Nešetřil–Rödl conclusion.
 
-The **relational induced partite construction** is now verified end to end as
-well: irreducibility and homomorphism-embeddings, positive coordinatewise
-powers, the induced Partite and Picture Lemmas, the disjoint-union initial
-picture, formally based stages, preservation of the irreducible-image
-invariant, and the final Ramsey extraction. `Induced.inducedConstruction`
-returns the final witness together with a typed trace certifying every
-intermediate stage.
+The **relational induced construction** is also checked end to end.
+`Partite.Induced.inducedConstruction` returns the witness with a finite trace
+certifying the irreducible-image invariant at every stage.
 
-This milestone is deliberately relational. The survey's general notion of
-set-valued functions is not silently treated as coordinatewise: independent
-coordinate choices can create extra function values. Function/closure handling
-remains a separate recursive-construction milestone (the survey's
-`U`-transversal machinery).
+The **positive-arity recursive construction with set-valued functions** is
+assembled through domain-aware semi-closed pictures, singleton reduction,
+and half-closed repair. `Structure.orderedClosedGraphRamsey` proves the survey's
+`thm:models2`. Full functional embeddings are equivalent to closed graph
+embeddings; arbitrary full homomorphisms are not identified with weak graph
+homomorphisms.
+
+The **strict relational sparsening theorem with B irreducible and arbitrary A**
+is proved through a complete binary-relation expansion and the checked
+iterated construction. The exact endpoint is
+`Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all`.
+This bypasses, rather than proves, the stronger synchronized
+`thm:tree_invariant` under mere irreducibility of A.
+
+`Functional/FreeAmalgamClosed.lean` unifies both local closure observations,
+including their converses and constants. `Partite.HalfClosed.ramseyPartiteWitness`
+exposes the exact finite half-closed witness without requiring its input D to
+be U-transversal.
+
+The functional induced invariant / EHN class transfer and the strong
+synchronized tree invariant have separate outstanding obligations. See the
+[current coverage map](docs/appendix-a.md) and [roadmap](ROADMAP.md), not the
+historical progress logs, for the exact boundary.
 
 Hales–Jewett is imported from a pinned commit of
-[lean-successors](https://github.com/janhubicka/lean-successors), then converted
-to the fixed-length statement needed for a finite witness.
+[lean-successors](https://github.com/janhubicka/lean-successors) and converted
+to the finite fixed-length form.
 
-## Build
+## Build and audit
 
 Install [elan](https://github.com/leanprover/elan), then run:
 
 ```sh
 lake exe cache get Mathlib.Tactic Mathlib.Data.Fintype.Pi Mathlib.Data.Fintype.Basic Mathlib.Data.Finset.Dedup
-lake build
+lake build PartiteConstruction PartiteConstruction.Functional.FreeAmalgamClosed PartiteConstruction.Functional.HalfClosedTheorem PartiteConstruction.Functional.QuotientFibreObstruction
 lake env lean CheckAxioms.lean > axioms.log
-python3 scripts/check_axioms.py axioms.log
+lake env lean CheckClosureAxioms.lean >> axioms.log
+python3 scripts/check_axioms.py axioms.log CheckAxioms.lean CheckClosureAxioms.lean
 ```
 
-`lean-toolchain` and `lake-manifest.json` pin the compiler and all dependencies.
-CI caches the Lean toolchain and Lake workspace and checks the main theorem
-axioms against the standard logical axioms only.
+The toolchain and dependencies are pinned by `lean-toolchain` and
+`lake-manifest.json`. CI caches both the compiler and Lake workspace. Every
+audited declaration must use only the standard logical axioms; missing audit
+results, `sorryAx`, and unproved custom axioms are rejected.
 
-## Library organization
+## Library layout
 
-* `Relational/Basic`: relational languages, structures, induced embeddings,
-  composition, induced substructures, and finite embedding sets.
-* `Relational/Homomorphism`: relational irreducibility, homomorphisms, and
-  homomorphism-embeddings, including composition and reflection on irreducibles.
-* `Relational/Attachment`, `Partite/Attachment`: free attachment along an induced
-  substructure, reflection of relations, extension of prescribed copies, and
-  localization of irreducible substructures.
-* `Relational/Order`: ordered expansions and order completion preserving arrows.
-* `Ramsey/Basic`: structural arrows and monotonicity under target embeddings.
-* `HalesJewett/Finite`: the fixed-length finite theorem, including empty types.
-* `Partite/Basic`, `Predicates`, `Projection`: partite systems and their interfaces.
-* `Partite/NonInduced`: the concrete power, line embeddings, substitution, and
-  finite Partite Lemma.
-* `Partite/Fusion`: backward induction from explicit local picture properties.
-* `Partite/Operations`, `Picture`: restriction, relabelling, and the Picture Lemma.
-* `Partite/Initial`, `Construction`: initial pictures and finite iteration, with
-  all local existence hypotheses discharged.
-* `Partite/Invariants`: preservation of constraints on projected relation tuples.
-* `Partite/Induced`, `InducedAttachment`, `InducedPicture`: coordinatewise
-  powers, the induced Partite/Picture Lemmas, and the projection invariant.
-* `Partite/InducedInitial`, `InducedInvariant`, `InducedBased`, `InducedStep`,
-  `InducedConstruction`: initial pictures, based stages, irreducible-image
-  preservation, the finite trace, and the end-to-end relational theorem.
-* `Ramsey/Finite`: finite Ramsey for strictly increasing tuples.
-* `Ramsey/FromProjections`, `Ordered`: the final reduction, increasing-placement
-  interface, and unconditional ordered conclusion.
-
-See [the coverage map](docs/appendix-a.md) and [the roadmap](ROADMAP.md) for the
-exact correspondence with the survey and the remaining obligations.
+`Relational/` and `Structure/` contain the reusable structural definitions;
+`Partite/` contains the relational constructions; `Functional/` contains
+closure, graph encoding, semi-closed recursion, and functional interfaces;
+`Iterated/` contains weak-substructure iteration, tree witnesses, sparsening,
+and separately named obstruction/history diagnostics. `Ramsey/` and
+`HalesJewett/` provide the finite combinatorial inputs and ordered endpoints.
