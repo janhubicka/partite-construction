@@ -76,24 +76,34 @@ theorem color_injective_on_irreducible
       _ = z2 j2 := congrArg z2 hij
       _ = y := hzj2
   have hneq := hc (Subtype.val ∘ z2) hz2
-  fin_cases i2 <;> fin_cases j2
-  · exact hij rfl
+  have hi : i2 = (0 : Fin 2) ∨ i2 = (1 : Fin 2) := by
+    have hi' := i2.isLt
+    omega
+  have hj : j2 = (0 : Fin 2) ∨ j2 = (1 : Fin 2) := by
+    have hj' := j2.isLt
+    omega
+  rcases hi with hi | hi <;> rcases hj with hj | hj
+  · exact hij (hi.trans hj.symm)
   · apply hneq
     calc
-      c ((Subtype.val ∘ z2) 0) = c x.1 :=
-        congrArg c (congrArg Subtype.val hzi2)
+      c ((Subtype.val ∘ z2) 0) = c x.1 := by
+        rw [← hi]
+        exact congrArg c (congrArg Subtype.val hzi2)
       _ = c y.1 := hcol
-      _ = c ((Subtype.val ∘ z2) 1) :=
-        (congrArg c (congrArg Subtype.val hzj2)).symm
+      _ = c ((Subtype.val ∘ z2) 1) := by
+        rw [← hj]
+        exact (congrArg c (congrArg Subtype.val hzj2)).symm
   · apply hneq
     symm
     calc
-      c ((Subtype.val ∘ z2) 1) = c x.1 :=
-        congrArg c (congrArg Subtype.val hzi2)
+      c ((Subtype.val ∘ z2) 1) = c x.1 := by
+        rw [← hi]
+        exact congrArg c (congrArg Subtype.val hzi2)
       _ = c y.1 := hcol
-      _ = c ((Subtype.val ∘ z2) 0) :=
-        (congrArg c (congrArg Subtype.val hzj2)).symm
-  · exact hij rfl
+      _ = c ((Subtype.val ∘ z2) 0) := by
+        rw [← hj]
+        exact (congrArg c (congrArg Subtype.val hzj2)).symm
+  · exact hij (hi.trans hj.symm)
 
 /-- If an embedded root is contained in an irreducible set, any proper
 two-colouring is injective on the root. -/
@@ -204,20 +214,46 @@ theorem IsFreeAmalgam.twoColorable
   refine ⟨c, ?_⟩
   intro x hx
   rcases (hfree.rel_iff () x).mp hx with hside | hside
-  · rcases hside with ⟨y, hy, rfl⟩
+  · rcases hside with ⟨y, hy, hxy⟩
+    let y2 : Fin 2 → V := fun k => y (Fin.cast (by rfl) k)
+    have hy2 : A.rel () y2 := by
+      convert hy using 1
+      funext k
+      rfl
+    have hx0 : x 0 = iA (y2 0) := by
+      have h := congrFun hxy (Fin.cast (by rfl) (0 : Fin 2))
+      simpa [y2, Function.comp_apply] using h
+    have hx1 : x 1 = iA (y2 1) := by
+      have h := congrFun hxy (Fin.cast (by rfl) (1 : Fin 2))
+      simpa [y2, Function.comp_apply] using h
     intro heq
-    apply hA y hy
+    apply hA y2 hy2
     calc
-      cA (y 0) = c (iA (y 0)) := (c_left (y 0)).symm
-      _ = c (iA (y 1)) := heq
-      _ = cA (y 1) := c_left (y 1)
-  · rcases hside with ⟨y, hy, rfl⟩
+      cA (y2 0) = c (iA (y2 0)) := (c_left (y2 0)).symm
+      _ = c (x 0) := congrArg c hx0.symm
+      _ = c (x 1) := heq
+      _ = c (iA (y2 1)) := congrArg c hx1
+      _ = cA (y2 1) := c_left (y2 1)
+  · rcases hside with ⟨y, hy, hxy⟩
+    let y2 : Fin 2 → W := fun k => y (Fin.cast (by rfl) k)
+    have hy2 : B.rel () y2 := by
+      convert hy using 1
+      funext k
+      rfl
+    have hx0 : x 0 = iB (y2 0) := by
+      have h := congrFun hxy (Fin.cast (by rfl) (0 : Fin 2))
+      simpa [y2, Function.comp_apply] using h
+    have hx1 : x 1 = iB (y2 1) := by
+      have h := congrFun hxy (Fin.cast (by rfl) (1 : Fin 2))
+      simpa [y2, Function.comp_apply] using h
     intro heq
-    apply hB y hy
+    apply hB y2 hy2
     calc
-      cB (y 0) = c (iB (y 0)) := (c_right (y 0)).symm
-      _ = c (iB (y 1)) := heq
-      _ = cB (y 1) := c_right (y 1)
+      cB (y2 0) = c (iB (y2 0)) := (c_right (y2 0)).symm
+      _ = c (x 0) := congrArg c hx0.symm
+      _ = c (x 1) := heq
+      _ = c (iB (y2 1)) := congrArg c hx1
+      _ = cB (y2 1) := c_right (y2 1)
 
 /-- Strict tree amalgams of copies of a two-colourable binary base remain
 two-colourable. -/
@@ -232,12 +268,14 @@ theorem TreeAmalgam.twoColorable
       let cT : _ → Bool := fun x => c (hIso.toEquiv.symm x)
       refine ⟨cT, ?_⟩
       intro x hx
-      have hx' :
-          T✝.rel ()
-            (hIso.toEquiv ∘ (hIso.toEquiv.symm ∘ x)) := by
-        simpa [Function.comp_def] using hx
-      have hs : Base.rel () (hIso.toEquiv.symm ∘ x) :=
-        (hIso.map_rel_iff () (hIso.toEquiv.symm ∘ x)).mp hx'
+      have hs : Base.rel () (hIso.toEquiv.symm ∘ x) := by
+        apply (hIso.map_rel_iff () (hIso.toEquiv.symm ∘ x)).mp
+        have heq :
+            hIso.toEquiv ∘ (hIso.toEquiv.symm ∘ x) = x := by
+          funext k
+          simp [Function.comp_apply]
+        rw [heq]
+        exact hx
       exact hc (hIso.toEquiv.symm ∘ x) hs
   | @glue W₁ W₂ Z W T₁ T₂ D T
       h₁ h₂ f₁ f₂ hc₁ hc₂ i₁ i₂ hfree ih₁ ih₂ =>
@@ -267,11 +305,8 @@ def P4 : RelStructure L (Fin 4) where
       ((x 0).val + 1 = (x 1).val) ∨
       ((x 1).val + 1 = (x 0).val)
 
-def p4Color : Fin 4 → Bool
-  | ⟨0, _⟩ => false
-  | ⟨1, _⟩ => true
-  | ⟨2, _⟩ => false
-  | ⟨3, _⟩ => true
+def p4Color (x : Fin 4) : Bool :=
+  x.val % 2 == 1
 
 theorem P4_twoColorable : TwoColorable P4 := by
   refine ⟨p4Color, ?_⟩
@@ -293,49 +328,59 @@ def Root : RelStructure L Bool where
     cases R
     exact fun (_ : Fin 2 → Bool) => False
 
+def leftRootMap : Bool → Fin 4
+  | false => 0
+  | true => 3
+
+def rightRootMap : Bool → Fin 4
+  | false => 0
+  | true => 2
+
+theorem leftRootMap_nonedge (x : Fin 2 → Bool) :
+    ¬ P4.rel () (leftRootMap ∘ x) := by
+  intro h
+  have hEdge :
+      (((leftRootMap (x 0)).val + 1 = (leftRootMap (x 1)).val) ∨
+       ((leftRootMap (x 1)).val + 1 = (leftRootMap (x 0)).val)) := by
+    simpa [P4, Function.comp_apply] using h
+  cases h0 : x 0 <;> cases h1 : x 1 <;>
+    simp [leftRootMap, h0, h1] at hEdge
+
+theorem rightRootMap_nonedge (x : Fin 2 → Bool) :
+    ¬ P4.rel () (rightRootMap ∘ x) := by
+  intro h
+  have hEdge :
+      (((rightRootMap (x 0)).val + 1 = (rightRootMap (x 1)).val) ∨
+       ((rightRootMap (x 1)).val + 1 = (rightRootMap (x 0)).val)) := by
+    simpa [P4, Function.comp_apply] using h
+  cases h0 : x 0 <;> cases h1 : x 1 <;>
+    simp [rightRootMap, h0, h1] at hEdge
+
 def leftRoot : Embedding Root P4 where
-  toFun
-    | false => 0
-    | true => 3
-  injective := by decide
+  toFun := leftRootMap
+  injective := by
+    intro x y h
+    cases x <;> cases y <;> simp_all [leftRootMap]
   map_rel_iff := by
-    intro R x
+    intro R
     cases R
-    constructor
-    · intro h
-      have h' :
-          (((leftRoot.toFun (x (Fin.cast (by rfl) (0 : Fin 2))) : Fin 4).val + 1 =
-              (leftRoot.toFun (x (Fin.cast (by rfl) (1 : Fin 2))) : Fin 4).val) ∨
-           ((leftRoot.toFun (x (Fin.cast (by rfl) (1 : Fin 2))) : Fin 4).val + 1 =
-              (leftRoot.toFun (x (Fin.cast (by rfl) (0 : Fin 2))) : Fin 4).val)) := by
-        simpa [P4, L] using h
-      let x2 : Fin 2 → Bool := fun k => x (Fin.cast (by rfl) k)
-      cases h0 : x2 0 <;> cases h1 : x2 1 <;>
-        simp [x2, leftRoot, h0, h1] at h'
-    · intro h
-      exact h.elim
+    change ∀ x : Fin 2 → Bool,
+      P4.rel () (leftRootMap ∘ x) ↔ False
+    intro x
+    exact iff_false_intro (leftRootMap_nonedge x)
 
 def rightRoot : Embedding Root P4 where
-  toFun
-    | false => 0
-    | true => 2
-  injective := by decide
+  toFun := rightRootMap
+  injective := by
+    intro x y h
+    cases x <;> cases y <;> simp_all [rightRootMap]
   map_rel_iff := by
-    intro R x
+    intro R
     cases R
-    constructor
-    · intro h
-      have h' :
-          (((rightRoot.toFun (x (Fin.cast (by rfl) (0 : Fin 2))) : Fin 4).val + 1 =
-              (rightRoot.toFun (x (Fin.cast (by rfl) (1 : Fin 2))) : Fin 4).val) ∨
-           ((rightRoot.toFun (x (Fin.cast (by rfl) (1 : Fin 2))) : Fin 4).val + 1 =
-              (rightRoot.toFun (x (Fin.cast (by rfl) (0 : Fin 2))) : Fin 4).val)) := by
-        simpa [P4, L] using h
-      let x2 : Fin 2 → Bool := fun k => x (Fin.cast (by rfl) k)
-      cases h0 : x2 0 <;> cases h1 : x2 1 <;>
-        simp [x2, rightRoot, h0, h1] at h'
-    · intro h
-      exact h.elim
+    change ∀ x : Fin 2 → Bool,
+      P4.rel () (rightRootMap ∘ x) ↔ False
+    intro x
+    exact iff_false_intro (rightRootMap_nonedge x)
 
 noncomputable abbrev OddLoose :=
   FreeAmalgam.amalgam Root P4 P4 leftRoot rightRoot
@@ -406,7 +451,7 @@ theorem OddLoose_no_strictification :
         OddLoose.IsHomomorphismEmbedding T f := by
   rintro ⟨W, T, hT, f, hf⟩
   have hTC : TwoColorable T :=
-    hT.twoColorable P4_twoColorable
+    TreeAmalgam.twoColorable P4_twoColorable hT
   exact OddLoose_not_twoColorable
     (hTC.pullback f hf.1)
 
