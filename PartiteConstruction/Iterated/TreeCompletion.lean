@@ -110,6 +110,26 @@ theorem witness_of_homEmbedding_image
       (fun x => Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩)
   exact ⟨Y, T, hTree, g ∘ pS, hg.comp hpS⟩
 
+/-- Extract a completion witness for the whole of a finite structure. -/
+theorem fullWitness
+    [Fintype W]
+    (hC : LocallyTreeCompletable Base C n)
+    (hcard : Fintype.card W ≤ n) :
+    HasTreeCompletion Base C := by
+  classical
+  obtain ⟨Y, T, hTree, f, hf⟩ :=
+    hC (Finset.univ : Finset W) (by simpa using hcard)
+  let allEmb : Embedding C
+      (C.induce (↑(Finset.univ : Finset W) : Set W)) := {
+    toFun := fun x => ⟨x, Finset.mem_univ x⟩
+    injective := by
+      intro x y hxy
+      exact congrArg Subtype.val hxy
+    map_rel_iff := fun _ _ => Iff.rfl
+  }
+  exact ⟨Y, T, hTree, f ∘ allEmb,
+    hf.comp allEmb.isHomomorphismEmbedding⟩
+
 /-- If C homomorphism-embeds into Base, every finite part of C has the
 one-copy tree completion Base. -/
 theorem of_homEmbedding_to_base
