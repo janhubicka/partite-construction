@@ -180,3 +180,5 @@ import PartiteConstruction.Functional.WeakTreePropertyObstruction
 import PartiteConstruction.Functional.FullSparseningObstruction
 
 import PartiteConstruction.Functional.ClosedLocalTreeCompletion
+
+import PartiteConstruction.Functional.FullFreeAmalgam
