@@ -108,6 +108,52 @@ theorem toRelativeLabelled_identity
 
 end ProjectedHistoryLocallyTreeLike
 
+namespace ProjectedHistoryLocallyTreeLike
+
+/-- Projected-history witnesses on the base also give the stronger
+intersection-embedding control used by the reducible-overlap gluing theorem.
+Compatible control completion supplies the full ambient A-copy control, while
+the projected-partial certificate for each A-intersection is simply
+postcomposed into the completed target. -/
+theorem toIntersectionStrong
+    [Finite U] [Finite P]
+    (hA : A.Irreducible)
+    (eAB : Embedding A B)
+    {n : ℕ}
+    (h : ProjectedHistoryLocallyTreeLike
+      (A := A) (D := D) (C := D) (B := B) id n) :
+    IntersectionStrongLocallyTreeLike A B D n := by
+  classical
+  intro S hS
+  obtain ⟨Y, T, hTree, f, hf, hPart, _hHist⟩ :=
+    h S hS []
+  have hInt :
+      LocallyTreeLike.EmbeddedIntersections
+        (A := A) (C := D) (T := T) S f :=
+    ProjectedPartialLocallyTreeLike.embeddedIntersections
+      hA (Embedding.id D).isHomomorphismEmbedding hPart
+  obtain ⟨Z, T', hTree', j, hf', hctrl⟩ :=
+    LocallyTreeLike.completeControl_of_embeddedIntersections_with_embedding
+      (A := A) (B := B) (C := D)
+      hA eAB S hTree f hf hInt
+  refine ⟨Z, T', hTree', j ∘ f, hf', ?_⟩
+  intro α
+  obtain ⟨α', hα'⟩ := hctrl α
+  let H : Set U := {a : U | α a ∈ S}
+  let eH : Embedding (A.induce H) D :=
+    α.comp (inclusion A H)
+  have hproj : ∀ x : H, (id : P → P) (eH x) = α x.1 := by
+    intro x
+    rfl
+  have hRange : ∀ x : H, eH x ∈ S := fun x => x.2
+  obtain ⟨eHT, heHT, _hcHT⟩ :=
+    hPart α H eH hproj hRange
+  refine ⟨α', hα', j.comp eHT, ?_⟩
+  intro x
+  exact congrArg j (heHT x)
+
+end ProjectedHistoryLocallyTreeLike
+
 namespace LocallyTreeLike
 
 variable {H E F C : Type v}
