@@ -59,7 +59,6 @@ theorem orderedRamsey_of_mem_target
     have heq : p ∘ ![x, y] = ![p x, p y] := by
       funext i
       fin_cases i <;> rfl
-    change C₀.ordered.rel (.inr ()) (p ∘ ![x, y]) at hmap
     rw [heq] at hmap
     exact hmap
   obtain ⟨oW, horder⟩ :=
