@@ -1,4 +1,5 @@
 import PartiteConstruction.Ramsey.ForbiddenFunctions
+import PartiteConstruction.Structure.RootedReduction
 import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.generates_of_surjective
@@ -73,3 +74,6 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.Embedding.image_nullaryRoot
 #print axioms StructuralRamsey.Structure.Embedding.nullaryRoot_surjective
 #print axioms StructuralRamsey.Structure.mem_nullaryRoot_iff
+
+#print axioms StructuralRamsey.Rooted.Pattern.arity_pos_of_moving
+#print axioms StructuralRamsey.Rooted.language_positive
