@@ -121,3 +121,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Rooted.canonicalRootEmbedding_range
 #print axioms StructuralRamsey.Rooted.canonicalRoot_image_range
 #print axioms StructuralRamsey.Rooted.orderedEmbedding_agrees_on_root
+
+#print axioms StructuralRamsey.Rooted.split_embedding
