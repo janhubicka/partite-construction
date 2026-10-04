@@ -113,7 +113,7 @@ theorem attach
     (FreeAmalgam.isFreeAmalgam D T Base eT eB)
 
 /-- The old target embedding after unrestricted attachment. -/
-def attachOldEmbedding
+noncomputable def attachOldEmbedding
     {Base : RelStructure L V}
     {T : RelStructure L W}
     {H : Type v} (D : RelStructure L H)
@@ -122,7 +122,7 @@ def attachOldEmbedding
   FreeAmalgam.leftEmbedding D T Base eT eB
 
 /-- The fresh base-copy embedding after unrestricted attachment. -/
-def attachFreshEmbedding
+noncomputable def attachFreshEmbedding
     {Base : RelStructure L V}
     {T : RelStructure L W}
     {H : Type v} (D : RelStructure L H)
@@ -150,7 +150,7 @@ theorem toLoose
     LooseLocallyTreeCompletable Base C n := by
   intro S hS
   obtain ⟨Y, T, hTree, f, hf⟩ := h S hS
-  exact ⟨Y, T, hTree.ofTree, f, hf⟩
+  exact ⟨Y, T, LooseTreeAmalgam.ofTree hTree, f, hf⟩
 
 end LocallyTreeCompletable
 
