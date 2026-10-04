@@ -3,6 +3,7 @@ import PartiteConstruction.Structure.RootedReduction
 import PartiteConstruction.Structure.RootedFunctor
 import PartiteConstruction.Structure.RootedSplit
 import PartiteConstruction.Structure.RootedCorrectness
+import PartiteConstruction.Structure.RootedFreeAmalgam
 import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.generates_of_surjective
@@ -94,3 +95,6 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Rooted.Pattern.dummy_sumFill
 #print axioms StructuralRamsey.Rooted.Pattern.funcTuple_preimage_canonical
 #print axioms StructuralRamsey.Rooted.Pattern.sumMap_sumFill_of_pad_eq
+
+#print axioms StructuralRamsey.Rooted.Pattern.side_pad_eq
+#print axioms StructuralRamsey.Rooted.decode_isFreeAmalgam
