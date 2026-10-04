@@ -41,6 +41,7 @@ import PartiteConstruction.Structure.WeakSubstructure
 import PartiteConstruction.Structure.UClosed
 import PartiteConstruction.Structure.Basic
 import PartiteConstruction.Structure.FreeAmalgam
+import PartiteConstruction.Structure.FreeAmalgamationClass
 import PartiteConstruction.Structure.Attachment
 import PartiteConstruction.Relational.Homomorphism
 import PartiteConstruction.Ramsey.Basic
