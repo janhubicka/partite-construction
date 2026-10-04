@@ -29,9 +29,9 @@ noncomputable def Stage.attach
     (hB : B.WeaklyPartiteOver D) (hmB : K B.toStructure)
     (S : Set V) (hS : B.toStructure.IsClosed S)
     (f : FunctionalPartite.Embedding (B.induce S hS) T.system) : Stage K D where
-  Carrier := Structure.Attachment.Vertex S (W := T.Carrier) (I := Unit)
+  Carrier := Structure.Attachment.Vertex S (W := T.Carrier) (I := PUnit.{v+1})
   finiteCarrier := inferInstance
-  system := FunctionalPartite.Attachment.attach B S hS T.system (fun _ : Unit => f)
+  system := FunctionalPartite.Attachment.attach B S hS T.system (fun _ : PUnit.{v+1} => f)
   over := FunctionalPartite.Attachment.unit_weaklyPartiteOver B S hS T.system f D hB T.over
   mem := FunctionalPartite.Attachment.unit_mem B S hS T.system f hK hmB T.mem
 
@@ -56,16 +56,16 @@ theorem attachList
       let f := core.comp (maps i)
       let R := T.attach hK B hB hmB S hS f
       let j : FunctionalPartite.Embedding T.system R.system :=
-        FunctionalPartite.Attachment.coreEmbedding B S hS T.system (fun _ : Unit => f)
+        FunctionalPartite.Attachment.coreEmbedding B S hS T.system (fun _ : PUnit.{v+1} => f)
       let b : FunctionalPartite.Embedding B R.system :=
-        FunctionalPartite.Attachment.copyEmbedding B S hS T.system (fun _ : Unit => f) ()
+        FunctionalPartite.Attachment.copyEmbedding B S hS T.system (fun _ : PUnit.{v+1} => f) PUnit.unit
       refine ⟨R, j.comp core, ?_⟩
       intro k hk
       rcases List.mem_cons.mp hk with rfl | hk
       · refine ⟨b, ?_⟩
         intro x
         exact FunctionalPartite.Attachment.copy_extends B S hS T.system
-          (fun _ : Unit => f) () x
+          (fun _ : PUnit.{v+1} => f) PUnit.unit x
       · obtain ⟨copy, hc⟩ := hcopies k hk
         exact ⟨j.comp copy, fun x => congrArg j (hc x)⟩
 

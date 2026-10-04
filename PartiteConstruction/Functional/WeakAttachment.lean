@@ -67,10 +67,10 @@ variable (D : Structure L W) (f : Embedding (B.induce S hS) D)
 and attached copy over the closed support. -/
 theorem unit_isFreeAmalgam :
     IsFreeAmalgam f (inclusion B S hS)
-      (coreEmbedding B S hS D (fun _ : Unit => f))
-      (copyEmbedding B S hS D (fun _ : Unit => f) ()) := by
+      (coreEmbedding B S hS D (fun _ : PUnit.{v+1} => f))
+      (copyEmbedding B S hS D (fun _ : PUnit.{v+1} => f) PUnit.unit) := by
   classical
-  let maps := fun _ : Unit => f
+  let maps := fun _ : PUnit.{v+1} => f
   constructor
   · intro z
     cases z with
@@ -78,18 +78,18 @@ theorem unit_isFreeAmalgam :
     | inr b =>
       rcases b with ⟨i, b⟩
       cases i
-      exact Or.inr ⟨b.1, (copyMap_not_mem (f := maps) () b.1 b.2).symm⟩
+      exact Or.inr ⟨b.1, (copyMap_not_mem (f := maps) PUnit.unit b.1 b.2).symm⟩
   · intro a b
     constructor
     · intro hab
       have hb : b ∈ S := mem_of_copyMap_eq_inl hab.symm
       refine ⟨⟨b, hb⟩, ?_, rfl⟩
       have h := hab
-      change Sum.inl a = copyMap B S hS D maps () b at h
-      rw [copyMap_mem () b hb] at h
+      change Sum.inl a = copyMap B S hS D maps PUnit.unit b at h
+      rw [copyMap_mem PUnit.unit b hb] at h
       exact Sum.inl.inj h
     · rintro ⟨b, rfl, rfl⟩
-      exact (copy_extends B S hS D maps () b).symm
+      exact (copy_extends B S hS D maps PUnit.unit b).symm
   · intro R z
     constructor
     · rintro (⟨x, hx, heq⟩ | ⟨i, x, hx, heq⟩)
@@ -98,7 +98,7 @@ theorem unit_isFreeAmalgam :
         exact Or.inr ⟨x, hx, heq⟩
     · rintro (⟨x, hx, heq⟩ | ⟨x, hx, heq⟩)
       · exact Or.inl ⟨x, hx, heq⟩
-      · exact Or.inr ⟨(), x, hx, heq⟩
+      · exact Or.inr ⟨PUnit.unit, x, hx, heq⟩
   · intro F x y
     constructor
     · rintro (⟨a, b, hb, hx, hy⟩ | ⟨i, a, b, hb, hx, hy⟩)
@@ -107,7 +107,7 @@ theorem unit_isFreeAmalgam :
         exact Or.inr ⟨a, b, hb, hx, hy⟩
     · rintro (⟨a, b, hb, hx, hy⟩ | ⟨a, b, hb, hx, hy⟩)
       · exact Or.inl ⟨a, b, hb, hx, hy⟩
-      · exact Or.inr ⟨(), a, b, hb, hx, hy⟩
+      · exact Or.inr ⟨PUnit.unit, a, b, hb, hx, hy⟩
 
 end Attachment
 end StructuralRamsey.Structure
@@ -124,19 +124,19 @@ variable (E : System L P W) (f : FunctionalPartite.Embedding (B.induce S hS) E)
 theorem unit_weaklyPartiteOver
     (D : Structure L P) (hB : B.WeaklyPartiteOver D)
     (hE : E.WeaklyPartiteOver D) :
-    (attach B S hS E (fun _ : Unit => f)).WeaklyPartiteOver D := by
+    (attach B S hS E (fun _ : PUnit.{v+1} => f)).WeaklyPartiteOver D := by
   apply Structure.IsWeakHomomorphismEmbedding.of_freeAmalgam
     (Structure.Attachment.unit_isFreeAmalgam B.toStructure S hS E.toStructure f.toEmbedding)
     hE hB
   · intro x
     rfl
   · intro x
-    exact part_copyMap B S hS E (fun _ : Unit => f) () x
+    exact part_copyMap B S hS E (fun _ : PUnit.{v+1} => f) PUnit.unit x
 
 theorem unit_mem
     {K : Structure.StructureClass (L := L)} (hK : Structure.FreeAmalgamationClass K)
     (hB : K B.toStructure) (hE : K E.toStructure) :
-    K (attach B S hS E (fun _ : Unit => f)).toStructure :=
+    K (attach B S hS E (fun _ : PUnit.{v+1} => f)).toStructure :=
   hK.free hE hB
     (Structure.Attachment.unit_isFreeAmalgam B.toStructure S hS E.toStructure f.toEmbedding)
 

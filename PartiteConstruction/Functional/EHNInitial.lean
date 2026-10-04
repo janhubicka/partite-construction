@@ -60,9 +60,9 @@ theorem initialList
       }
       let R := T.attach hK Q (placed_over B β) hmB ∅ hS f
       let j : FunctionalPartite.Embedding T.system R.system :=
-        FunctionalPartite.Attachment.coreEmbedding Q ∅ hS T.system (fun _ : Unit => f)
+        FunctionalPartite.Attachment.coreEmbedding Q ∅ hS T.system (fun _ : PUnit.{v+1} => f)
       let b : FunctionalPartite.Embedding Q R.system :=
-        FunctionalPartite.Attachment.copyEmbedding Q ∅ hS T.system (fun _ : Unit => f) ()
+        FunctionalPartite.Attachment.copyEmbedding Q ∅ hS T.system (fun _ : PUnit.{v+1} => f) PUnit.unit
       refine ⟨R, j.toEmbedding.comp root, ?_⟩
       intro γ hγ
       rcases List.mem_cons.mp hγ with rfl | hγ
