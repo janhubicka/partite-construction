@@ -156,16 +156,20 @@ theorem initialList_allArity
       let S : Set V := B.nullaryRoot
       have hS : Q.toStructure.IsClosed S := B.nullaryRoot_isClosed
       let φ := rootTransport B β₀ β
+      let incRoot : Structure.Embedding
+          (B.induce B.nullaryRoot B.nullaryRoot_isClosed) B :=
+        Structure.inclusion B B.nullaryRoot B.nullaryRoot_isClosed
       let f : FunctionalPartite.Embedding (Q.induce S hS) T.system := {
         toEmbedding := by
           change Structure.Embedding
             (B.induce B.nullaryRoot B.nullaryRoot_isClosed)
             T.system.toStructure
-          exact root.comp φ
+          exact root.comp (incRoot.comp φ)
         map_part := by
           intro x
           calc
-            T.system.part (root (φ x)) = β₀ (φ x).1 := hroot _
+            T.system.part (root (incRoot (φ x))) =
+                β₀ (φ x).1 := hroot _
             _ = β x.1 := rootTransport_spec B β₀ β x
       }
       let R := T.attach hK Q (placed_over B β) hmB S hS f
