@@ -64,6 +64,7 @@ theorem Embedding.cancel_weak
     exact (j.map_rel_iff R (f ∘ x)).mp (hf.1 R x hx)
   · intro F x y hy
     have h := hf.2 F x y hy
+    change j (f y) ∈ C.func F (j ∘ (f ∘ x)) at h
     rw [← j.map_func F (f ∘ x)] at h
     obtain ⟨b, hb, heq⟩ := h
     exact j.injective heq ▸ hb
@@ -83,9 +84,10 @@ variable (B : System L P V) (D : Structure L P)
 variable (hB : B.toStructure.IsWeakHomomorphism D B.part)
 variable (A : Structure L U) (α : Structure.Embedding A D)
 
+include hB in
 theorem weak_support_closed :
     B.toStructure.IsClosed (B.support α.toFunctionEmbedding) :=
-  hB.preimage_isClosed (Set.range α) α.range_isClosed
+  Structure.IsWeakHomomorphism.preimage_isClosed hB (Set.range α) α.range_isClosed
 
 noncomputable def weakRestrict :
     System L U (B.support α.toFunctionEmbedding) where
