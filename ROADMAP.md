@@ -34,12 +34,13 @@ stronger synchronized tree invariant.
 ## Remaining proof obligations
 
 1. Complete the separate **functional iterated sparsening** theorem.  Weak
-   substructures are already exactly induced graph restrictions, but the
-   relational tree-amalgam output is not automatically functional: a
-   non-closed gluing root can introduce additional function outputs into a
-   constituent copy.  The checked
-   `FunctionalTreeTransferObstruction` regression isolates this failure.
-   The next invariant is therefore a closed-root/closed-copy tree amalgam.
+   substructures are already exactly induced graph restrictions, and the
+   failure of naive relational tree transfer is isolated by the checked
+   `FunctionalTreeTransferObstruction`.  The required positive target
+   interface is now formalized as `FunctionClosedTreeAmalgam`: closed gluing
+   roots force closed side embeddings and full decoded constituent copies.
+   The remaining work is propagation of this invariant through the
+   Picture/trace iteration and the final support-group sparsening phase.
 2. Resolve the editorial status of the stronger arbitrary-alpha
    `lem:indpicutreU`: replace its printed argument by the checked domain-aware
    semi-closed version or prove the stronger assertion independently.
