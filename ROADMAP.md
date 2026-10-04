@@ -33,23 +33,24 @@ stronger synchronized tree invariant.
 
 ## Remaining proof obligations
 
-1. Resolve the editorial status of the stronger arbitrary-alpha
-   `lem:indpicutreU`: replace its printed argument by the checked domain-aware
-   semi-closed version used by the recursive theorem, or prove the stronger
-   assertion independently.
+There are no remaining proof obligations for the statements currently printed
+in Appendix A.
 
-Strict sparsening is now a **completed relational theorem**.  A direct
+The arbitrary-alpha Picture issue was resolved by correcting the manuscript:
+the ordinary Picture-with-closures lemma assumes a closed projection and is
+covered by `Closed.Picture.pictureLemma`; the recursive arbitrary-projection
+step is the separately checked semi-closed
+`Partite.SemiClosed.Picture.pictureLemma`.
+
+Strict sparsening is a completed relational theorem.  A direct
 set-valued-function version with the survey's full fibre-surjective
 homomorphism is false, as checked by
-`FullFunctionalSparseningObstruction.direct_functional_sparsening_false`;
-it is therefore not a missing formalization task.  The functional Ramsey
-results are supplied by the separate encoding/recursive developments.
+`FullFunctionalSparseningObstruction.direct_functional_sparsening_false`,
+and is therefore not a pending task.
 
-The former synchronized ambient-A invariant has been replaced in the survey by
-the exact checked local-tree-completability statement.  It is optional stronger
-work, not a prerequisite for the sparsening theorem.
-
-Constants are **not** a remaining EHN or survey-`thm:HN` obligation.
+The stronger synchronized ambient-A invariant and other diagnostic variants
+are optional research directions, not prerequisites for any current survey
+statement.
 
 ## Editorial follow-through
 
