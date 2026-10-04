@@ -341,8 +341,13 @@ noncomputable def liftOrderedEmbedding
       by_contra hnot
       have hba : b ≤ a := le_of_not_gt hnot
       rcases hba.eq_or_lt with rfl | hba
-      · exact (lt_irrefl (g a) hab)
-      · exact (lt_asymm hab (hg_forward b a hba))
+      · exact (lt_irrefl _ hab)
+      · have h₁ :=
+          (reconstructed_lt_iff_key Root C (g a) (g b)).1 hab
+        have h₂ :=
+          (reconstructed_lt_iff_key Root C (g b) (g a)).1
+            (hg_forward b a hba)
+        exact (lt_asymm h₁ h₂)
     · exact hg_forward a b
   exact {
     toFun := g
@@ -362,8 +367,9 @@ noncomputable def liftOrderedEmbedding
             @LT.lt (Sum R W) (reconstructedOrder Root C).toLT
                 ((g ∘ x) (0 : Fin 2)) ((g ∘ x) (1 : Fin 2)) ↔
               x (0 : Fin 2) < x (1 : Fin 2)
-          simpa only [Function.comp_apply] using
+          have h :=
             hg_iff (x (0 : Fin 2)) (x (1 : Fin 2))
+          exact h
   }
 
 @[simp] theorem liftOrderedEmbedding_apply
