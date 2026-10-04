@@ -350,53 +350,55 @@ theorem mem_of_irreducibles_fintype
         (∀ {X : Type v} (E : Structure L X), [Finite X] →
           E.Irreducible → Embedding E M → K E) →
         K M
-  apply Fintype.induction_subsingleton_or_nontrivial (P := P) U
-  · intro α inst hsub M hloc
-    exact hloc M (irreducible_of_subsingleton M) (Embedding.id M)
-  · intro α inst hnontr ih M hloc
-    by_cases hIrr : M.Irreducible
-    · exact hloc M hIrr (Embedding.id M)
-    · have hdec : Nonempty (ProperFreeDecomposition M) := by
-        by_contra hn
-        exact hIrr
-          ((irreducible_iff_noProperFreeDecomposition M).mpr hn)
-      rcases hdec with ⟨d⟩
-      let ML := M.induce d.left d.leftClosed
-      let MR := M.induce d.right d.rightClosed
-      letI : Fintype d.left := Fintype.ofFinite d.left
-      letI : Fintype d.right := Fintype.ofFinite d.right
-      have hleftOutside : ∃ x : α, x ∉ d.left := by
-        by_contra hn
-        push Not at hn
-        apply d.leftProper
-        ext x
-        simp [hn x]
-      obtain ⟨xl, hxl⟩ := hleftOutside
-      have hrightOutside : ∃ x : α, x ∉ d.right := by
-        by_contra hn
-        push Not at hn
-        apply d.rightProper
-        ext x
-        simp [hn x]
-      obtain ⟨xr, hxr⟩ := hrightOutside
-      have hleftCard :
-          Fintype.card d.left < Fintype.card α :=
-        Fintype.card_subtype_lt hxl
-      have hrightCard :
-          Fintype.card d.right < Fintype.card α :=
-        Fintype.card_subtype_lt hxr
-      have hML : K ML := by
-        apply ih d.left hleftCard ML
-        intro X E hX hE e
-        let inc : Embedding ML M := inclusion M d.left d.leftClosed
-        exact hloc E hX hE (inc.comp e)
-      have hMR : K MR := by
-        apply ih d.right hrightCard MR
-        intro X E hX hE e
-        let inc : Embedding MR M := inclusion M d.right d.rightClosed
-        exact hloc E hX hE (inc.comp e)
-      rcases d.free with ⟨H, D, sL, sR, hfree⟩
-      exact hK.free hML hMR hfree
+  have hPU : P U := by
+    apply Fintype.induction_subsingleton_or_nontrivial (P := P) U
+    · intro α inst hsub M hloc
+      exact hloc M (irreducible_of_subsingleton M) (Embedding.id M)
+    · intro α inst hnontr ih M hloc
+      by_cases hIrr : M.Irreducible
+      · exact hloc M hIrr (Embedding.id M)
+      · have hdec : Nonempty (ProperFreeDecomposition M) := by
+          by_contra hn
+          exact hIrr
+            ((irreducible_iff_noProperFreeDecomposition M).mpr hn)
+        rcases hdec with ⟨d⟩
+        let ML := M.induce d.left d.leftClosed
+        let MR := M.induce d.right d.rightClosed
+        letI : Fintype d.left := Fintype.ofFinite d.left
+        letI : Fintype d.right := Fintype.ofFinite d.right
+        have hleftOutside : ∃ x : α, x ∉ d.left := by
+          by_contra hn
+          push Not at hn
+          apply d.leftProper
+          ext x
+          simp [hn x]
+        obtain ⟨xl, hxl⟩ := hleftOutside
+        have hrightOutside : ∃ x : α, x ∉ d.right := by
+          by_contra hn
+          push Not at hn
+          apply d.rightProper
+          ext x
+          simp [hn x]
+        obtain ⟨xr, hxr⟩ := hrightOutside
+        have hleftCard :
+            Fintype.card d.left < Fintype.card α :=
+          Fintype.card_subtype_lt hxl
+        have hrightCard :
+            Fintype.card d.right < Fintype.card α :=
+          Fintype.card_subtype_lt hxr
+        have hML : K ML := by
+          apply (ih d.left hleftCard) ML
+          intro X E hX hE e
+          let inc : Embedding ML M := inclusion M d.left d.leftClosed
+          exact @hloc X E hX hE (inc.comp e)
+        have hMR : K MR := by
+          apply (ih d.right hrightCard) MR
+          intro X E hX hE e
+          let inc : Embedding MR M := inclusion M d.right d.rightClosed
+          exact @hloc X E hX hE (inc.comp e)
+        rcases d.free with ⟨H, D, sL, sR, hfree⟩
+        exact hK.free hML hMR hfree
+  exact hPU A hlocal
 
 /-- A finite structure belongs to a hereditary free-amalgamation class as soon
 as all its irreducible substructures do. -/
