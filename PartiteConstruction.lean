@@ -63,6 +63,7 @@ import PartiteConstruction.Iterated.ControlCompletion
 import PartiteConstruction.Iterated.ControlCompletionCompatible
 import PartiteConstruction.Iterated.PureCoreCompatible
 import PartiteConstruction.Iterated.ProjectedPartialLocalTreeLike
+import PartiteConstruction.Iterated.ProjectedPartialMixedGlue
 import PartiteConstruction.Iterated.PureCopyProjectedCompatible
 import PartiteConstruction.Iterated.PureCoreProjectedCompatible
 import PartiteConstruction.Iterated.PureCopyGeometry
