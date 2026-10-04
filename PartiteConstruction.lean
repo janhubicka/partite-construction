@@ -74,6 +74,7 @@ import PartiteConstruction.Iterated.WeakStepTreeCompletion
 import PartiteConstruction.Iterated.WeakTrace
 import PartiteConstruction.Iterated.WeakTraceTreeCompletion
 import PartiteConstruction.Iterated.InducedTraceLocal
+import PartiteConstruction.Iterated.InducedTraceTreeCompletion
 import PartiteConstruction.Iterated.Initial
 import PartiteConstruction.Iterated.Ordered
 import PartiteConstruction.Iterated.FreeAmalgam
