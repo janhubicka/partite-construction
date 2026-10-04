@@ -1,5 +1,6 @@
 import PartiteConstruction.Structure.GeneratedWeakHomImage
-import PartiteConstruction.Functional.WeakAttachment
+import PartiteConstruction.Functional.EHNInitial
+import PartiteConstruction.Functional.EHNPicture
 
 #print axioms StructuralRamsey.Structure.generates_of_surjective
 #print axioms StructuralRamsey.Structure.IsWeakHomomorphism.preimage_isClosed
@@ -38,3 +39,12 @@ import PartiteConstruction.Functional.WeakAttachment
 #print axioms StructuralRamsey.Structure.Attachment.unit_isFreeAmalgam
 #print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_weaklyPartiteOver
 #print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_mem
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.attach
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachList
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachAll
+#print axioms StructuralRamsey.FunctionalPartite.EHN.mem_of_weaklyPartiteOver
+#print axioms StructuralRamsey.FunctionalPartite.EHN.placed_over
+#print axioms StructuralRamsey.FunctionalPartite.EHN.empty_closed
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initialList
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initial
+#print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma
