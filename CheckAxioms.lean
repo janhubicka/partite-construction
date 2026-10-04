@@ -273,3 +273,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Iterated.pureCopy_projectedPartialWitness
 
 #print axioms StructuralRamsey.Partite.Iterated.pureCore_projectedPartialWitness
+
+#print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.witness_of_homEmbedding_image
+#print axioms StructuralRamsey.RelStructure.ProjectedPartialLocallyTreeLike.toRelativeLabelled_identity
+#print axioms StructuralRamsey.RelStructure.LocallyTreeLike.glueProjectedFull_projectedPartial
