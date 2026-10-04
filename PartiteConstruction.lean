@@ -70,6 +70,7 @@ import PartiteConstruction.Iterated.PureCoreProjectedCompatible
 import PartiteConstruction.Iterated.PureCopyGeometry
 import PartiteConstruction.Iterated.PowerCoordinateEmbedding
 import PartiteConstruction.Iterated.WeakStep
+import PartiteConstruction.Iterated.WeakStepTreeCompletion
 import PartiteConstruction.Iterated.WeakTrace
 import PartiteConstruction.Iterated.InducedTraceLocal
 import PartiteConstruction.Iterated.Initial
