@@ -1,96 +1,93 @@
 # Appendix A: current coverage and exact scope
 
-This map replaces the chronological status accumulation. The previous detailed
-inventory is preserved verbatim in
+The previous chronological inventory is preserved in
 [the historical coverage log](archive/appendix-a-before-closure-audit.md).
-Old entries in that log are not current proof obligations.
+Historical TODOs in that log are not current obligations.
 
-## Checked construction routes
+## Construction routes
 
-| Survey component | Public Lean endpoint or module | Exact scope |
+| Survey component | Lean endpoint (under `StructuralRamsey`) | Exact scope |
 | --- | --- | --- |
-| Non-induced construction and ordered relational Ramsey theorem | `Ramsey/Ordered.lean`, `Partite.orderedRamsey` | Finite relational structures; induced embeddings; all local pictures constructed |
-| Induced construction | `Partite/InducedConstruction.lean`, `Partite.Induced.inducedConstruction` | Relational language; finite trace and irreducible-image invariant |
-| Functions as graph relations | `Functional/Closed.lean`, `Structure.embeddingEquivClosedGraph`, `Structure.arrow_ofGraph_iff_closed` | Full functional embeddings correspond to closed graph embeddings; not an equivalence of arbitrary homomorphisms |
-| Closed Partite Lemma | `Functional/ClosedPartite.lean`, `Partite.Closed.Induced.partiteLemma` | U-transversal partite input |
-| Closed-alpha Picture Lemma | `Functional/ClosedPicture.lean`, `Partite.Closed.Picture.pictureLemma` | The projection alpha is closed; this is the valid moreover clause of `lem:indpicutreU` |
-| Domain-aware semi-closed Picture Lemma | `Functional/SemiClosedPictureProperty.lean`, `Partite.SemiClosed.Picture.pictureLemma` | The intermediate little picture is semi-closed, not required to be U-transversal |
-| Half-closed construction, `lem:rpartite` | `Functional/HalfClosedTheorem.lean`, `Partite.HalfClosed.ramseyPartiteWitness` | Positive function arity; arbitrary finite nonempty colour type; no U-transversality assumption on input D |
-| Recursive construction, `thm:models2` | `Functional/OrderedRecursive.lean`, `Structure.orderedClosedGraphRamsey` | Positive function arity, equivalently distinguished graph-relation arity at least two |
-| Closure of amalgam sides, `obs:disaster2` | `Functional/FreeAmalgamClosed.lean`, `RelStructure.IsFreeAmalgam.sides_closed_iff` | Both directions; arbitrary free-amalgam diagram; constants allowed |
-| Closure of a common substructure, `obs:solution` | Same module, `RelStructure.IsFreeAmalgam.common_image_closed_iff` | Both directions; neither the whole overlap nor either side is assumed closed |
-| Strict relational sparsening | `Iterated/SparseningStrictBaseIrreducible.lean`, `Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all` | B irreducible; A arbitrary; complete binary-relation expansion, checked iteration, and final support; does not depend on the unresolved strong `thm:tree_invariant` |
+| Non-induced construction / ordered relational theorem | `Partite.orderedRamsey` | Finite relational structures; all pictures constructed |
+| Induced construction | `Partite.Induced.inducedConstruction` | Relational projection invariant and finite trace |
+| Functions as graph relations | `Structure.embeddingEquivClosedGraph` | Full functional embeddings correspond to closed graph embeddings, not arbitrary homomorphisms |
+| Closed Partite Lemma | `Partite.Closed.Induced.partiteLemma` | U-transversal input |
+| Closed-alpha Picture Lemma | `Partite.Closed.Picture.pictureLemma` | The prescribed alpha is closed |
+| Domain-aware semi-closed Picture | `Partite.SemiClosed.Picture.pictureLemma` | The intermediate little picture need not be U-transversal |
+| Half-closed construction, `lem:rpartite` | `Partite.HalfClosed.ramseyPartiteWitness` | Positive arity; no input-D transversality assumption |
+| Recursive theorem, `thm:models2` | `Structure.orderedClosedGraphRamsey` | Positive-arity set-valued functions |
+| Closure observations | `RelStructure.IsFreeAmalgam.sides_closed_iff` / `common_image_closed_iff` | Both directions; arbitrary full diagram; local statements allow constants |
+| Closed hull of a weak image | `Structure.Irreducible.functionClosure_weakImage` | Full irreducible source; target is the closed hull, not the raw coordinate range; constants allowed |
+| Functional Partite Lemma | `FunctionalPartite.Induced.weak_partiteLemma_withInvariant` | Weak projection globally; full embeddings on closed irreducibles; full Ramsey embeddings |
+| Functional class-preserving refinement | `FunctionalPartite.EHN.inducedConstruction` | One pass; finite A,B in K; arbitrary full Ramsey witness D; positive input arity |
+| Functional EHN | `Structure.FreeAmalgamationClass.orderedRamsey` | Hereditary full free-amalgamation class; arbitrary positive-arity set-valued functions; A,B need not be irreducible |
+| Exact ordered forbidden-pattern theorem, `thm:HN` | `Structure.orderedRamsey_forbidden_expansions` | Forbidden structures may specify orders; only their reducts must be irreducible; positive input arity |
+| Strict relational sparsening | `Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all` | B irreducible; A arbitrary; independent of the unresolved stronger synchronized invariant |
 
-All namespaces in the table lie under `StructuralRamsey`. For applications,
-import the indicated endpoint module rather than reproducing construction
-stages or changing their assumptions.
+The functional endpoints are in `Ramsey/FreeAmalgamationFunctions.lean` and
+`Ramsey/ForbiddenFunctions.lean`. The full derivation is explained in
+[the functional EHN guide](ehn-functions.md). The umbrella import exposes
+all endpoints; compiler and axiom validation remain the gate for any claim
+about a particular immutable commit.
 
-## The simplifications
+## Simplifications and precise distinctions
 
-The local closure calculus has one master statement:
+The two local closure observations follow from one statement: a subset is
+closed in a free amalgam iff its inverse images in both sides are closed.
+This is not a transversality theorem and does not require positive arity.
 
-`C.FunctionClosedSet S` iff the inverse images of S in both sides of a free
-amalgam are closed. Each side is closed iff the overlap is closed in the
-opposite side. This proves the two survey observations uniformly and separates
-local closure (which permits constants) from the positive-arity initial
-construction. It is not a transversality theorem.
+The Hales–Jewett line-map exactness proof now uses one parameter coordinate
+and output transversality of the whole power, rather than repeating the
+coordinate analysis to prove uniqueness. The simplification is also applied
+to the existing full-projection proof without changing its interface.
 
-The half-closed witness endpoint hides `Stage` and the initial `Nonempty`
-bookkeeping. It preserves the exact difference between an ordinary B-copy in
-D and a closed B-copy in the output. The native nested-flattening theorems have
-an additional outer-transversality hypothesis for a different reason; that
-hypothesis must not be imported into the standalone half-closed statement.
+The essential functional invariant uses the **closed hull** of each coordinate
+image. A generating weak homomorphic image of an irreducible structure is
+irreducible. Pulling back a proper free decomposition needs only forward
+preservation, not fibre surjectivity. This repairs the functional power
+invariant without pretending a noninjective quotient is a full homomorphism.
 
-The final recursive route is the domain-aware semi-closed route. The old
-arbitrary-alpha free-attachment argument is not a dependency of
-`orderedClosedGraphRamsey`. Its counterexample refutes that argument, **not**
-the existence of every conceivable witness for the stronger standalone claim.
+`Structure.IsEHNHomomorphismEmbedding` is the new invariant: weak globally,
+full on full irreducibles. The existing `Structure.IsWeakHomomorphismEmbedding`
+means a homomorphism-embedding of graph encodings and remains separate.
 
-The complete-relation expansion also removes irreducibility of A from the
-relational strict sparsening endpoint. The expansion supplies hereditary
-irreducibility automatically, and only irreducibility of the base reduct B
-is needed when transferring strict gluing-root containment back to the
-original language. This strengthening is already in the checked theorem;
-it is not a new assumption or an unproved optimization. It does not settle
-the separate function-language transfer or the stronger synchronized invariant.
+For the exact survey theorem, forbidding particular ordered structures is not
+replaced by forbidding every ordering of their reducts. The auxiliary class
+also keeps `OrderTotalOnIrreducibles`, which prevents order completion from
+creating a new forbidden embedding. The same one-pass construction proves the
+general free-amalgamation class theorem with no need for this extra invariant.
+
+The unrestricted recursive route still uses domain-aware semi-closed pictures.
+The old arbitrary-alpha free-attachment argument is not a dependency of it.
+A counterexample to that argument is not a counterexample to the entire
+existential Picture statement.
 
 ## Remaining manuscript obligations
 
-1. **Strong synchronized tree invariant.** Under mere irreducibility of A,
-   localizing whole irreducible copies does not settle simultaneous control of
-   all intersections of ambient A-copies with an arbitrary partial boundary.
-   Hereditary irreducibility and several projected-history variants are
-   checked, but are not substitutes for the literal `thm:tree_invariant`.
-   The strict sparsening endpoint above avoids this stronger invariant.
-2. **Full functional induced invariant / EHN class transfer.** The active EHN
-   branch is independent work. Unrestricted functional Ramsey plus a
-   graph-embedding equivalence does not by itself prove the free-amalgamation
-   class membership conclusion. Check the functional irreducible-image
-   invariant and the exact homomorphism convention before upgrading the
-   survey's transfer paragraph.
-3. **Constants in the initial construction.** Local closure observations allow
-   nullary functions; the disjoint-copy recursive construction currently uses
-   positive arity. Do not transfer the latter restriction to the former.
-4. **Editorial disposition of arbitrary-alpha `lem:indpicutreU`.** Keep the
-   stronger statement separate or replace it by the checked domain-aware
-   statement. Do not silently retain the invalid displayed attachment proof.
+1. **Strong synchronized tree invariant.** Full-copy localization does not
+   settle simultaneous control of every ambient-A intersection with a partial
+   boundary. The hereditary-irreducibility/projected-history variants are not
+   the literal `thm:tree_invariant` under mere irreducibility of A.
+2. **Functional iterated sparsening.** The new functional EHN theorem supplies
+   the one-pass class transfer, but not the local tree-amalgam bounds of the
+   iterated theorem. Arbitrary weak substructures still belong in that proof.
+3. **Constants globally.** The global Ramsey endpoints and initial disjoint
+   attachment use positive input arity. Local closure and weak-image lemmas
+   allow constants; do not transfer the global restriction to those lemmas.
+4. **Arbitrary-alpha Picture statement.** Replace the printed argument by the
+   domain-aware version or prove the stronger assertion separately. Do not
+   retain the invalid attachment proof as a justification.
 
-## EHN quotient regression
-
-`Functional/QuotientFibreObstruction.lean` gives a finite, exact generated-image
-example. On two points, F(false)={false} and F(true)=empty. Collapse the points
-to one; the incidence-generated target has F(*)={*}. The collapse is a
-surjective graph homomorphism but not a full set-valued-function homomorphism.
-It proves that an arbitrary noninjective generated-image quotient cannot be
-used as a full homomorphism without a fibre-congruence condition. This is not a
-counterexample to EHN; it identifies the correct weak-map interface needed
-in the proof.
+The original full-projection functional induced formulation is not silently
+proved by the EHN weak-projection theorem. Its relevant TODO must specify this
+remaining wording/interface change, not say that the functional EHN result
+itself is still missing.
 
 ## Validation discipline
 
-CI builds every new module and audits all declarations listed in
-`CheckAxioms.lean` and `CheckClosureAxioms.lean`. Only `propext`,
-`Classical.choice`, and `Quot.sound` are accepted. Compilation errors,
-`sorryAx`, missing audit results, and unexpected extra axioms are failures.
-Pin the survey's `validation.tex` only to an immutable commit whose complete
-build and axiom audit succeeded.
+CI builds the umbrella and all audit imports, then checks every declaration
+in `CheckAxioms.lean`, `CheckClosureAxioms.lean`, and `CheckEHNFunctions.lean`.
+Only `propext`, `Classical.choice`, and `Quot.sound` are accepted. Missing audit
+results, `sorryAx`, and custom unproved axioms fail. All new EHN modules disable
+automatic implicit declarations. Survey markers must be pinned to a successful
+immutable proof commit, not a moving branch.

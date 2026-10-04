@@ -123,9 +123,10 @@ theorem inclusion_weak
 
 end weakImage
 
-/-! The stronger claim that an arbitrary weak quotient preserves the
-free-amalgamation irreducibility predicate is intentionally not asserted here:
-the ordinary full-homomorphism proof uses fibre surjectivity, which weak
-homomorphisms do not provide. -/
+/-! Weak quotients need not preserve exact function fibres. Nevertheless,
+irreducibility is preserved by generating weak maps: see
+`GeneratedWeakHomImage.lean`. That proof pulls back closed decomposition
+sides and only uses forward incidence preservation. In particular it also
+applies to the closed hull of a coordinate image. -/
 
 end StructuralRamsey.Structure
