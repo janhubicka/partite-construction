@@ -19,8 +19,8 @@ namespace StructuralRamsey.FunctionalPartite.Induced
 
 open Structure
 
-universe u v w
-variable {L : Language.{u}} {P : Type v} {V : Type w}
+universe u v
+variable {L : Language.{u}} {P V : Type v}
 variable {A : Structure L P} {B : System L P V}
 variable {N : ℕ}
 
@@ -82,8 +82,10 @@ theorem coordinateHom
       · intro j
         by_cases hj : j = i
         · subst j
-          simpa [y, coord, args] using hb
-        · simpa [y, coord, args, hj] using hc j
+          change b ∈ B.func F (fun k => (x k).coord i)
+          simpa [args] using hb
+        · change c j ∈ B.func F (fun k => (x k).coord j)
+          simpa [args] using hc j
       · simp [y, coord]
 
 /-- The direct functional coordinate power preserves the full
