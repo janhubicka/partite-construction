@@ -107,7 +107,7 @@ theorem irreducible_contained_in_closed_copy
       ∀ a : U, ∃ b : V, e a = j b := by
   induction hT with
   | copy h =>
-      let j : ClosedEmbedding Base T := h.toClosedEmbedding
+      let j := h.toClosedEmbedding
       refine ⟨j, ?_⟩
       intro a
       refine ⟨h.toEquiv.symm (e a), ?_⟩
