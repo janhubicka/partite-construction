@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.HistoryMixedGlue
+import PartiteConstruction.Functional.BoundaryDiary
 
 /-! # Mixed history gluing for closed functional attachments
 
@@ -26,6 +27,33 @@ variable (maps0 : I0 → Partite.Closed.Embedding (Bsys.induce Supp) Dsys)
 variable (Test : Set
   (Partite.Attachment.Vertex Supp (W := W0) (I := I0)))
 variable (idx : I0)
+
+/-- The current overlap, viewed as a projected boundary request on the rest
+side.  This is the diary entry passed to the recursive call after peeling off
+the selected attached copy. -/
+noncomputable def restProjectedBoundaryRequest
+    (hSupp : RelStructure.FunctionClosedSet Bsys.toRelStructure Supp)
+    (pSmall : ↥Test → P)
+    (β : Structure.Embedding A Dbase)
+    (ell :
+      Structure.Embedding
+        (FullOverlap Bsys Supp Dsys maps0 Test idx) A)
+    (hprojRest :
+      ∀ d,
+        pSmall
+            (fullRestInclusion Bsys Supp Dsys maps0 Test idx hSupp
+              (fullOverlapToRest
+                Bsys Supp Dsys maps0 Test idx hSupp d)) =
+          β (ell d)) :
+    _root_.StructuralRamsey.Structure.ProjectedBoundaryRequest
+      A Dbase
+      (FullRest Bsys Supp Dsys maps0 Test idx)
+      (pSmall ∘
+        fullRestInclusion Bsys Supp Dsys maps0 Test idx hSupp) :=
+  _root_.StructuralRamsey.Structure.ProjectedBoundaryRequest.ofEmbeddedLabels
+    ell β
+    (fullOverlapToRest Bsys Supp Dsys maps0 Test idx hSupp)
+    hprojRest
 
 /-- Glue relative-history witnesses for the two closed sides of one chosen
 attached copy. -/
