@@ -92,7 +92,7 @@ theorem glueRelativeHistory
     full_decompose_named
       Bsys Supp Dsys maps0 Test idx hSupp
   exact
-    _root_.StructuralRamsey._root_.StructuralRamsey.Structure.FunctionalRelativeHistoryTreeLike.glueWholeWitnesses
+    _root_.StructuralRamsey.Structure.FunctionalRelativeHistoryTreeLike.glueWholeWitnesses
       (A := A) (D := Dbase) (Base := Base)
       hA hfree pSmall β ell hprojPiece hprojRest
       hPiece hRest hgenPiece hgenRest projectedHistory sourceHistory
