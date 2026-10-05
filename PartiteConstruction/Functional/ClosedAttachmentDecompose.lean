@@ -343,6 +343,63 @@ theorem overlapToRest_functionClosed
       hcomp)
     hy'
 
+/-- In a genuinely mixed test, a vertex outside the selected copy witnesses
+that the chosen-copy piece is a strict smaller finite test. -/
+theorem piece_card_lt_of_not_inCopy
+    [Fintype T]
+    [Fintype
+      (RelStructure.Attachment.PieceV
+        B.toRelStructure S D.toRelStructure (maps B S D f) T i)]
+    (z : T)
+    (hz :
+      ¬ RelStructure.Attachment.InCopy
+        B.toRelStructure S D.toRelStructure (maps B S D f) i z.1) :
+    Fintype.card
+        (RelStructure.Attachment.PieceV
+          B.toRelStructure S D.toRelStructure (maps B S D f) T i) <
+      Fintype.card T := by
+  let inc :
+      RelStructure.Attachment.PieceV
+          B.toRelStructure S D.toRelStructure (maps B S D f) T i →
+        T :=
+    fun x => x.1
+  apply Fintype.card_lt_of_injective_not_surjective
+    inc (fun _ _ h => Subtype.ext (congrArg Subtype.val h))
+  intro hsurj
+  obtain ⟨x, hx⟩ := hsurj z
+  apply hz
+  have hval : x.1.1 = z.1 := congrArg Subtype.val hx
+  rw [← hval]
+  exact x.2
+
+/-- A vertex exclusive to the selected copy witnesses that the complementary
+rest is a strict smaller finite test. -/
+theorem rest_card_lt_of_outside
+    [Fintype T]
+    [Fintype
+      (RelStructure.Attachment.RestV
+        (W := W) (I := I) S T i)]
+    (z : T)
+    (hz : RelStructure.Attachment.OutsideAt
+      (W := W) (I := I) (S := S) i z.1) :
+    Fintype.card
+        (RelStructure.Attachment.RestV
+          (W := W) (I := I) S T i) <
+      Fintype.card T := by
+  let inc :
+      RelStructure.Attachment.RestV
+          (W := W) (I := I) S T i →
+        T :=
+    fun x => x.1
+  apply Fintype.card_lt_of_injective_not_surjective
+    inc (fun _ _ h => Subtype.ext (congrArg Subtype.val h))
+  intro hsurj
+  obtain ⟨x, hx⟩ := hsurj z
+  apply x.2
+  have hval : x.1.1 = z.1 := congrArg Subtype.val hx
+  rw [hval]
+  exact hz
+
 /-- The relational decomposition of a closed test decodes to a genuine full
 function-language free amalgam.  This is the structural decomposition used in
 the mixed functional Picture step. -/
