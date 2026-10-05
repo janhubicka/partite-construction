@@ -71,7 +71,7 @@ irreducible.  The EHN invariant supplies the full projected A-copy used by the
 certificate. -/
 theorem toEmbeddedIntersections
     {P : Type v} {D : Structure L P}
-    {Base : Structure L V} {Target : Structure L Y}
+    {Target : Structure L Y}
     {p : W → P}
     {S : Finset W} {hS : C.IsClosed (↑S : Set W)}
     {f : ↥(↑S : Set W) → Y}
