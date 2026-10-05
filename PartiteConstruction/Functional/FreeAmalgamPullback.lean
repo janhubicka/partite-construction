@@ -250,7 +250,7 @@ noncomputable def embeddingPullback
           ((hfree.overlap (sE d) (sF d)).mpr
             ⟨d, rfl, rfl⟩).symm
         _ = iE (mapLeft a) := congrArg iE had.symm
-        _ = e (iL a) := hLeftFactor a
+        _ = e (iL a) := (hLeftFactor a).symm
         _ = e a.1 := rfl
     let z : Mset := ⟨a.1, ⟨a.2, hRightMem⟩⟩
     have haz : a = mL z := by
@@ -275,7 +275,7 @@ noncomputable def embeddingPullback
           (hfree.overlap (sE d) (sF d)).mpr
             ⟨d, rfl, rfl⟩
         _ = iF (mapRight b) := congrArg iF hbd.symm
-        _ = e (iR b) := hRightFactor b
+        _ = e (iR b) := (hRightFactor b).symm
         _ = e b.1 := rfl
     let z : Mset := ⟨b.1, ⟨hLeftMem, b.2⟩⟩
     have hbz : b = mR z := by
