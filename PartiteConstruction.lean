@@ -214,3 +214,5 @@ import PartiteConstruction.Functional.HistoryMixedGlue
 import PartiteConstruction.Functional.ClosedAttachmentHistoryGlue
 
 import PartiteConstruction.Functional.BoundaryDiary
+
+import PartiteConstruction.Functional.BoundaryDiaryCompletion
