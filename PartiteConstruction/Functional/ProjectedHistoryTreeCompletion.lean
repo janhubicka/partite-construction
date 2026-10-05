@@ -259,6 +259,72 @@ theorem closedAmbientIntersection
   closed_preimage α S hS
 
 
+namespace FunctionalSourceHistoryGlue
+
+variable {H E F Z₁ Z₂ C₀ : Type v}
+variable {Root : Structure L H}
+variable {Left : Structure L E} {Right : Structure L F}
+variable {Whole : Structure L C₀}
+variable {TL : Structure L Z₁} {TR : Structure L Z₂}
+variable {sL : Embedding Root Left} {sR : Embedding Root Right}
+variable {iL : Embedding Left Whole} {iR : Embedding Right Whole}
+
+/-- Mixed full-function gluing from source-side history.
+
+The only extra information beyond the relational proof is that equality in
+each side witness remembers the source overlap itself.  This gives the
+root-isolation condition needed for exact preservation of set-valued function
+fibres. -/
+theorem glue_recorded_source_boundary
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (hTreeL : TreeAmalgam Base Z₁ TL)
+    (hTreeR : TreeAmalgam Base Z₂ TR)
+    (fL : E → Z₁) (fR : F → Z₂)
+    (hfL : Left.IsHomomorphismEmbedding TL fL)
+    (hfR : Right.IsHomomorphismEmbedding TR fR)
+    (tL : Embedding Root TL) (tR : Embedding Root TR)
+    (hcL : tL.ContainedInIrreducible)
+    (hcR : tR.ContainedInIrreducible)
+    (q : H → H) (hq : Function.Surjective q)
+    (hcompatL : ∀ d, fL (sL d) = tL (q d))
+    (hcompatR : ∀ d, fR (sR d) = tR (q d))
+    (BoundaryL : Set E) (BoundaryR : Set F)
+    (histL : List (Set E)) (histR : List (Set F))
+    (hBoundaryL : BoundaryL ∈ histL)
+    (hBoundaryR : BoundaryR ∈ histR)
+    (hHistL :
+      ∀ Hset ∈ histL, ∀ x y : E,
+        fL x = fL y → (x ∈ Hset ↔ y ∈ Hset))
+    (hHistR :
+      ∀ Hset ∈ histR, ∀ x y : F,
+        fR x = fR y → (x ∈ Hset ↔ y ∈ Hset))
+    (hcharL : ∀ x : E, x ∈ BoundaryL ↔
+      ∃ d : H, x = sL d)
+    (hcharR : ∀ x : F, x ∈ BoundaryR ↔
+      ∃ d : H, x = sR d) :
+    ∃ (Z : Type v) (Target : Structure L Z),
+      TreeAmalgam Base Z Target ∧
+      ∃ f : C₀ → Z, Whole.IsHomomorphismEmbedding Target f := by
+  have hrootL :
+      IsFreeAmalgam.RootIsolated sL tL q fL := by
+    intro x d hxd
+    exact rootIsolation_of_source_boundary
+      BoundaryL histL hBoundaryL fL hHistL
+      sL tL q hq hcompatL hcharL x d hxd
+  have hrootR :
+      IsFreeAmalgam.RootIsolated sR tR q fR := by
+    intro x d hxd
+    exact rootIsolation_of_source_boundary
+      BoundaryR histR hBoundaryR fR hHistR
+      sR tR q hq hcompatR hcharR x d hxd
+  exact
+    LocallyClosedTreeCompletable.glueIsolatedRoot
+      (Base := Base) hSrc hTreeL hTreeR hcL hcR
+      q fL fR hcompatL hcompatR
+      hfL hfR hrootL hrootR
+
+end FunctionalSourceHistoryGlue
+
 namespace FunctionalProjectedHistoryTreeLike
 
 variable {H E F Z₁ Z₂ C₀ : Type v}
