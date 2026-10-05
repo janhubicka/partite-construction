@@ -255,36 +255,25 @@ theorem toEmbeddedLabels
       IsFreeAmalgam.RootIsolated e targetCopy ell f := by
   classical
   obtain ⟨targetCopy, hcompat0, hiso0⟩ := h
-  have hfrom (x : X) :
-      BoundaryRequest.embeddedFromRange ell
-        (⟨ell x, ⟨x, rfl⟩⟩ : Set.range ell) = x := by
-    apply ell.injective
-    calc
-      ell
-          (BoundaryRequest.embeddedFromRange ell
-            (⟨ell x, ⟨x, rfl⟩⟩ : Set.range ell)) =
-          ell x :=
-        BoundaryRequest.embeddedFromRange_spec ell
-          (⟨ell x, ⟨x, rfl⟩⟩ : Set.range ell)
   have hcompat :
       ∀ x : X, f (e x) = targetCopy (ell x) := by
     intro x
     let z : Set.range ell := ⟨ell x, ⟨x, rfl⟩⟩
     have hz := hcompat0 z
+    have hback :
+        BoundaryRequest.embeddedFromRange ell z = x := by
+      apply ell.injective
+      exact BoundaryRequest.embeddedFromRange_spec ell z
     change
       f (e (BoundaryRequest.embeddedFromRange ell z)) =
         targetCopy z.1 at hz
-    simpa [z, hfrom x] using hz
+    rw [hback] at hz
+    exact hz
   refine ⟨targetCopy, hcompat, ?_⟩
   intro y a hya
   obtain ⟨z, hyz, hza⟩ := hiso0 y a hya
-  let x : X := BoundaryRequest.embeddedFromRange ell z
-  refine ⟨x, ?_, ?_⟩
-  · exact hyz
-  · calc
-      ell x = z.1 :=
-        BoundaryRequest.embeddedFromRange_spec ell z
-      _ = a := hza
+  refine ⟨BoundaryRequest.embeddedFromRange ell z, hyz, ?_⟩
+  exact (BoundaryRequest.embeddedFromRange_spec ell z).trans hza
 
 /-- Isolation survives postcomposition of the target by a full embedding. -/
 theorem postcompTarget
