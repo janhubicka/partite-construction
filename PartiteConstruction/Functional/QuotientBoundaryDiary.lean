@@ -57,6 +57,77 @@ def IsolatedQuotientBoundary
 
 namespace IsolatedQuotientBoundary
 
+/-- Full homomorphisms cancel through a full target embedding. -/
+theorem Embedding.cancel_homomorphism
+    {X₀ X₁ X₂ : Type v}
+    {A₀ : Structure L X₀} {A₁ : Structure L X₁}
+    {A₂ : Structure L X₂}
+    (j : Embedding A₁ A₂) {g : X₀ → X₁}
+    (h : A₀.IsHomomorphism A₂ (j ∘ g)) :
+    A₀.IsHomomorphism A₁ g := by
+  constructor
+  · intro R x hx
+    exact (j.map_rel_iff R (g ∘ x)).mp (h.1 R x hx)
+  · intro F x
+    ext y
+    constructor
+    · rintro ⟨z, hz, rfl⟩
+      have htarget :
+          j (g z) ∈ A₂.func F (j ∘ (g ∘ x)) := by
+        have himg :
+            (j ∘ g) z ∈
+              imageSet (j ∘ g) (A₀.func F x) :=
+          ⟨z, hz, rfl⟩
+        have hm := h.2 F x
+        rw [hm] at himg
+        simpa [Function.comp_assoc] using himg
+      have hj :
+          j (g z) ∈ imageSet j (A₁.func F (g ∘ x)) := by
+        rw [j.map_func F (g ∘ x)]
+        exact htarget
+      rcases hj with ⟨b, hb, hbeq⟩
+      exact j.injective hbeq ▸ hb
+    · intro hy
+      have hj :
+          j y ∈ A₂.func F (j ∘ (g ∘ x)) := by
+        have himg :
+            j y ∈ imageSet j (A₁.func F (g ∘ x)) :=
+          ⟨y, hy, rfl⟩
+        rw [j.map_func F (g ∘ x)] at himg
+        exact himg
+      have hj' :
+          j y ∈ A₂.func F ((j ∘ g) ∘ x) := by
+        simpa [Function.comp_assoc] using hj
+      have hpre :
+          j y ∈ imageSet (j ∘ g) (A₀.func F x) := by
+        rw [h.2 F x]
+        exact hj'
+      rcases hpre with ⟨z, hz, hzy⟩
+      refine ⟨z, hz, ?_⟩
+      apply j.injective
+      exact hzy
+
+/-- Any quotient labelling realized inside a full local completion is
+necessarily a full homomorphism into the labelled control copy.  This is the
+admissibility condition that distinguishes genuine quotient boundaries from a
+raw weak part projection. -/
+theorem label_isHomomorphism
+    {r : QuotientBoundaryRequest A C}
+    {T : Structure L Y} {f : W → Y}
+    (hIso : IsolatedQuotientBoundary r T f)
+    (hf : C.IsHomomorphism T f) :
+    r.source.IsHomomorphism A r.label := by
+  obtain ⟨targetCopy, hcompat, _⟩ := hIso
+  have hcomp :
+      r.source.IsHomomorphism T (f ∘ r.embedding) :=
+    hf.comp r.embedding.isHomomorphism
+  have heq :
+      f ∘ r.embedding = targetCopy ∘ r.label := by
+    funext x
+    exact hcompat x
+  rw [heq] at hcomp
+  exact targetCopy.cancel_homomorphism hcomp
+
 /-- Isolation survives target postcomposition. -/
 theorem postcompTarget
     {r : QuotientBoundaryRequest A C}
