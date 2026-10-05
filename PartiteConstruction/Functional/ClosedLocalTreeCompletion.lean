@@ -138,6 +138,20 @@ theorem isClosed_iff_graph_functionClosedSet
     · exact (graph_func_snoc A F x y).2 hy
     · exact hx
 
+
+
+/-- For an arbitrary relational function-graph, graph closure is exactly
+ordinary function closure after decoding with `Structure.ofGraph`. -/
+theorem ofGraph_isClosed_iff_functionClosedSet
+    (R : RelStructure L.graph W) (S : Set W) :
+    (Structure.ofGraph R).IsClosed S ↔
+      RelStructure.FunctionClosedSet R S := by
+  constructor
+  · intro h F x y hy hx
+    exact h F x hx hy
+  · intro h F x hx y hy
+    exact h F x y hy hx
+
 /-- Factor a full embedding through another full embedding whose range
 contains it.  This is the function-language analogue of the relational helper
 used by the tree-gluing proofs. -/
