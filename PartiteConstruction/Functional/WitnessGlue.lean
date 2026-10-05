@@ -116,20 +116,44 @@ theorem functionalLiftMap_right
     (Classical.choose_spec huniq).1
     (Or.inr ⟨b, rfl, rfl⟩)
 
+/-- A side witness is isolated over the target root when every source-side
+point landing in that root already comes from the source overlap, with the
+same root label.  This is the exact condition supplied by projected-history
+bookkeeping in the noninjective mixed case. -/
+def RootIsolated
+    (s : Embedding D₁ A₁) (t : Embedding D₂ A₂)
+    (q : H → G) (h : E → E₂) : Prop :=
+  ∀ a g, h a = t g →
+    ∃ d : H, a = s d ∧ q d = g
+
+/-- Injectivity plus surjectivity of the overlap labelling implies root
+isolation.  This recovers the earlier exact-root special case. -/
+theorem rootIsolated_of_injective_surjective
+    (q : H → G) (hq : Function.Surjective q)
+    (hA : E → E₂)
+    (hcompatA : ∀ d, hA (sA d) = tA (q d))
+    (hinjA : Function.Injective hA) :
+    RootIsolated sA tA q hA := by
+  intro a g hag
+  obtain ⟨d, rfl⟩ := hq g
+  refine ⟨d, ?_, rfl⟩
+  apply hinjA
+  exact hag.trans (hcompatA d).symm
+
 /-- Compatible full homomorphism-embeddings lift across free amalgams when
-the common target root is exhausted by the source overlap and both side maps
-are injective. -/
+both side witnesses are isolated over the common target root.  No global
+injectivity is needed. -/
 theorem functionalLiftMap_isHomomorphismEmbedding
     (hSrc : IsFreeAmalgam sA sB iA iB)
     (hTgt : IsFreeAmalgam tA tB jA jB)
-    (q : H → G) (hq : Function.Surjective q)
+    (q : H → G)
     (hA : E → E₂) (hB : F → F₂)
     (hcompatA : ∀ d, hA (sA d) = tA (q d))
     (hcompatB : ∀ d, hB (sB d) = tB (q d))
     (hhA : A₁.IsHomomorphismEmbedding A₂ hA)
     (hhB : B₁.IsHomomorphismEmbedding B₂ hB)
-    (hinjA : Function.Injective hA)
-    (hinjB : Function.Injective hB) :
+    (hrootA : RootIsolated sA tA q hA)
+    (hrootB : RootIsolated sB tB q hB) :
     C₁.IsHomomorphismEmbedding C₂
       (functionalLiftMap hSrc hTgt q hA hB hcompatA hcompatB) := by
   classical
@@ -229,13 +253,7 @@ theorem functionalLiftMap_isHomomorphismEmbedding
                       hcompatA hcompatB b
               obtain ⟨g, hag, hbg⟩ :=
                 (hTgt.overlap (a₂ k) (hB b)).mp hcross
-              obtain ⟨d, hqd⟩ := hq g
-              have hbEq : b = sB d := by
-                apply hinjB
-                calc
-                  hB b = tB g := hbg
-                  _ = tB (q d) := congrArg tB hqd.symm
-                  _ = hB (sB d) := (hcompatB d).symm
+              obtain ⟨d, hbEq, hqd⟩ := hrootB b g hbg
               have hxleft : x k = iA (sA d) := by
                 calc
                   x k = iB b := hxb
@@ -281,13 +299,7 @@ theorem functionalLiftMap_isHomomorphismEmbedding
                   _ = jB (a₂ k) := congrFun hargs k
               obtain ⟨g, hag, hbg⟩ :=
                 (hTgt.overlap (hA a) (a₂ k)).mp hcross
-              obtain ⟨d, hqd⟩ := hq g
-              have haEq : a = sA d := by
-                apply hinjA
-                calc
-                  hA a = tA g := hag
-                  _ = tA (q d) := congrArg tA hqd.symm
-                  _ = hA (sA d) := (hcompatA d).symm
+              obtain ⟨d, haEq, hqd⟩ := hrootA a g hag
               have hxright : x k = iB (sB d) := by
                 calc
                   x k = iA a := hxa
@@ -477,6 +489,47 @@ variable {sE : Embedding Dsrc Esrc} {sF : Embedding Dsrc Fsrc}
 variable {iE : Embedding Esrc Csrc} {iF : Embedding Fsrc Csrc}
 variable {tE : Embedding Gov ETgt} {tF : Embedding Gov FTgt}
 
+/-- Glue two functional tree-completion witnesses when projected history
+isolates the common target root on both sides.  This is the noninjective
+functional analogue of the relational mixed witness glue. -/
+theorem glueIsolatedRoot
+    (hSrc : IsFreeAmalgam sE sF iE iF)
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (hcE : tE.ContainedInIrreducible)
+    (hcF : tF.ContainedInIrreducible)
+    (q : H → G)
+    (hE : E → TE) (hF : F → TF)
+    (hcompatE : ∀ d, hE (sE d) = tE (q d))
+    (hcompatF : ∀ d, hF (sF d) = tF (q d))
+    (hhE : Esrc.IsHomomorphismEmbedding ETgt hE)
+    (hhF : Fsrc.IsHomomorphismEmbedding FTgt hF)
+    (hrootE : IsFreeAmalgam.RootIsolated sE tE q hE)
+    (hrootF : IsFreeAmalgam.RootIsolated sF tF q hF) :
+    ∃ (T : Type v) (Target : Structure L T),
+      TreeAmalgam Base T Target ∧
+      ∃ f : C → T,
+        Csrc.IsHomomorphismEmbedding Target f := by
+  classical
+  let Target := FreeAmalgam.amalgam Gov ETgt FTgt tE tF
+  let jE := FreeAmalgam.leftEmbedding Gov ETgt FTgt tE tF
+  let jF := FreeAmalgam.rightEmbedding Gov ETgt FTgt tE tF
+  have hTgt : IsFreeAmalgam tE tF jE jF :=
+    FreeAmalgam.isFreeAmalgam Gov ETgt FTgt tE tF
+  have hTree :
+      TreeAmalgam Base
+        (FreeAmalgam.Vertex Gov ETgt FTgt tE tF) Target :=
+    FreeAmalgam.treeAmalgam Gov ETgt FTgt tE tF Base
+      hTreeE hTreeF hcE hcF
+  let f : C → FreeAmalgam.Vertex Gov ETgt FTgt tE tF :=
+    IsFreeAmalgam.functionalLiftMap hSrc hTgt q hE hF
+      hcompatE hcompatF
+  have hf : Csrc.IsHomomorphismEmbedding Target f :=
+    IsFreeAmalgam.functionalLiftMap_isHomomorphismEmbedding
+      hSrc hTgt q hE hF hcompatE hcompatF
+      hhE hhF hrootE hrootF
+  exact ⟨_, Target, hTree, f, hf⟩
+
 /-- Glue two injective functional tree-completion witnesses over a target root
 which is exactly covered by the source overlap. -/
 theorem glueExactRoot
@@ -512,10 +565,16 @@ theorem glueExactRoot
   let f : C → FreeAmalgam.Vertex Gov ETgt FTgt tE tF :=
     IsFreeAmalgam.functionalLiftMap hSrc hTgt q hE hF
       hcompatE hcompatF
+  have hrootE : IsFreeAmalgam.RootIsolated sE tE q hE :=
+    IsFreeAmalgam.rootIsolated_of_injective_surjective
+      q hq hE hcompatE hinjE
+  have hrootF : IsFreeAmalgam.RootIsolated sF tF q hF :=
+    IsFreeAmalgam.rootIsolated_of_injective_surjective
+      q hq hF hcompatF hinjF
   have hf : Csrc.IsHomomorphismEmbedding Target f :=
     IsFreeAmalgam.functionalLiftMap_isHomomorphismEmbedding
-      hSrc hTgt q hq hE hF hcompatE hcompatF
-      hhE hhF hinjE hinjF
+      hSrc hTgt q hE hF hcompatE hcompatF
+      hhE hhF hrootE hrootF
   have hinj : Function.Injective f :=
     IsFreeAmalgam.functionalLiftMap_injective
       hSrc hTgt q hq hE hF hcompatE hcompatF
