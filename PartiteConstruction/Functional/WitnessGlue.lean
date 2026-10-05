@@ -573,6 +573,60 @@ theorem glueCommonSourceRoot
     (fun d => by simpa [q] using hcompatF d)
     hhE hhF hrootE hrootF
 
+/-- Projected-history form of the common-overlap glue.
+
+The boundary set characterizes the source overlap on each side.  Equality in
+each side target remembers membership in that boundary.  Therefore the
+embedded overlap is root-isolated on both sides, and the full functional glue
+theorem applies. -/
+theorem glueRecordedBoundary
+    (hSrc : IsFreeAmalgam sE sF iE iF)
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (rE : Embedding Dsrc ETgt)
+    (rF : Embedding Dsrc FTgt)
+    (hcE : rE.ContainedInIrreducible)
+    (hcF : rF.ContainedInIrreducible)
+    (pE : E → P) (pF : F → P)
+    (Boundary : Set P)
+    (history : List (Set P))
+    (hBoundary : Boundary ∈ history)
+    (hE : E → TE) (hF : F → TF)
+    (hhE : Esrc.IsHomomorphismEmbedding ETgt hE)
+    (hhF : Fsrc.IsHomomorphismEmbedding FTgt hF)
+    (hHistE :
+      ∀ Hset ∈ history, ∀ x y : E,
+        hE x = hE y → (pE x ∈ Hset ↔ pE y ∈ Hset))
+    (hHistF :
+      ∀ Hset ∈ history, ∀ x y : F,
+        hF x = hF y → (pF x ∈ Hset ↔ pF y ∈ Hset))
+    (hcompatE : ∀ d, hE (sE d) = rE d)
+    (hcompatF : ∀ d, hF (sF d) = rF d)
+    (hcharE : ∀ x : E, pE x ∈ Boundary ↔
+      ∃ d : H, x = sE d)
+    (hcharF : ∀ x : F, pF x ∈ Boundary ↔
+      ∃ d : H, x = sF d) :
+    ∃ (T : Type v) (Target : Structure L T),
+      TreeAmalgam Base T Target ∧
+      ∃ f : C → T,
+        Csrc.IsHomomorphismEmbedding Target f := by
+  have hisoE :
+      ∀ x d, hE x = rE d →
+        ∃ d' : H, x = sE d' ∧ d' = d := by
+    exact rootIsolation_of_recorded_boundary
+      pE Boundary history hBoundary hE hHistE
+      sE rE hcompatE hcharE
+  have hisoF :
+      ∀ x d, hF x = rF d →
+        ∃ d' : H, x = sF d' ∧ d' = d := by
+    exact rootIsolation_of_recorded_boundary
+      pF Boundary history hBoundary hF hHistF
+      sF rF hcompatF hcharF
+  exact glueCommonSourceRoot
+    (Base := Base) hSrc hTreeE hTreeF
+    rE rF hcE hcF hE hF
+    hcompatE hcompatF hhE hhF hisoE hisoF
+
 /-- Glue two injective functional tree-completion witnesses over a target root
 which is exactly covered by the source overlap. -/
 theorem glueExactRoot
