@@ -703,7 +703,6 @@ theorem glueExactRoot
 
 namespace HasTreeCompletion
 
-universe u v
 variable {L : Language.{u}}
 variable {VB H E F C TE TF : Type v}
 variable {Base : Structure L VB}
