@@ -181,6 +181,20 @@ theorem witness_identityLabels
     obtain ⟨x, hyx, hxa⟩ := hiso y a hya
     exact ⟨x, hyx, hxa⟩
 
+/-- The relative-history invariant pulls back along a full embedding.  It is
+enough to pull back the ordinary combined-history invariant and then rebuild
+the relative request by one fresh Base-attachment. -/
+theorem pullback_embedding
+    {X : Type v} {C' : Structure L X}
+    (hA : A.Irreducible)
+    (eAB : Embedding A Base)
+    (h : FunctionalRelativeHistoryTreeLike
+      (A := A) (D := D) (C := C) (Base := Base) p n)
+    (e : Embedding C' C) :
+    FunctionalRelativeHistoryTreeLike
+      (A := A) (D := D) (C := C') (Base := Base) (p ∘ e) n :=
+  ofHistory hA eAB (h.toHistory.pullback_embedding e)
+
 /-- Presentation-free relative witness.  The distinguished boundary may be
 any full substructure embedded in A; internally we pass to the closed range of
 that embedding and use the literal-subtype relative witness. -/
