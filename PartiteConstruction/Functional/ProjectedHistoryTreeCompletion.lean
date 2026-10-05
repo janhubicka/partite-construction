@@ -202,6 +202,41 @@ theorem injectiveWitness_identity
 
 end FunctionalProjectedHistoryTreeLike
 
+/-- Usable form of root isolation.  The side source is already the induced
+closed test, so no closure proof appears in the statement. -/
+theorem rootIsolation_of_recorded_boundary
+    {E H Z : Type v}
+    {Esrc : Structure L E} {Dsrc : Structure L H}
+    {Target : Structure L Z}
+    (pE : E → P)
+    (Boundary : Set P)
+    (history : List (Set P))
+    (hBoundary : Boundary ∈ history)
+    (f : E → Z)
+    (hHist :
+      ∀ Hset ∈ history, ∀ x y : E,
+        f x = f y → (pE x ∈ Hset ↔ pE y ∈ Hset))
+    (sD : Embedding Dsrc Esrc)
+    (root : Embedding Dsrc Target)
+    (hcompat : ∀ d, f (sD d) = root d)
+    (hchar : ∀ x : E, pE x ∈ Boundary ↔
+      ∃ d : H, x = sD d) :
+    ∀ x d, f x = root d →
+      ∃ d' : H, x = sD d' ∧ d' = d := by
+  intro x d hxd
+  have hEq : f x = f (sD d) := hxd.trans (hcompat d).symm
+  have hmemRoot : pE (sD d) ∈ Boundary := by
+    exact (hchar (sD d)).2 ⟨d, rfl⟩
+  have hmemX : pE x ∈ Boundary :=
+    (hHist Boundary hBoundary x (sD d) hEq).2 hmemRoot
+  obtain ⟨d', hx⟩ := (hchar x).1 hmemX
+  refine ⟨d', hx, ?_⟩
+  apply root.injective
+  calc
+    root d' = f (sD d') := (hcompat d').symm
+    _ = f x := congrArg f hx.symm
+    _ = root d := hxd
+
 /-- If a closed test is cut out from a full A-copy, its pullback subset of A
 is closed. -/
 theorem closedAmbientIntersection
