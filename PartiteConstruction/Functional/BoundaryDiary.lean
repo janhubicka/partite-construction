@@ -208,6 +208,51 @@ theorem toRootIsolated
   refine ⟨x, hyx, ?_⟩
   exact hxa
 
+/-- Isolation of a range-normalized diary entry recovers the original
+embedded labelled boundary, with its original carrier and label embedding. -/
+theorem toEmbeddedLabels
+    {X : Type v} {R : Structure L X}
+    (ell : Embedding R A) (e : Embedding R C)
+    {T : Structure L Y} {f : W → Y}
+    (h :
+      IsolatedBoundary
+        (BoundaryRequest.ofEmbeddedLabels ell e) T f) :
+    ∃ targetCopy : Embedding A T,
+      (∀ x : X, f (e x) = targetCopy (ell x)) ∧
+      IsFreeAmalgam.RootIsolated e targetCopy ell f := by
+  classical
+  obtain ⟨targetCopy, hcompat0, hiso0⟩ := h
+  have hfrom (x : X) :
+      BoundaryRequest.embeddedFromRange ell
+        (⟨ell x, ⟨x, rfl⟩⟩ : Set.range ell) = x := by
+    apply ell.injective
+    calc
+      ell
+          (BoundaryRequest.embeddedFromRange ell
+            (⟨ell x, ⟨x, rfl⟩⟩ : Set.range ell)) =
+          ell x :=
+        BoundaryRequest.embeddedFromRange_spec ell
+          (⟨ell x, ⟨x, rfl⟩⟩ : Set.range ell)
+  have hcompat :
+      ∀ x : X, f (e x) = targetCopy (ell x) := by
+    intro x
+    let z : Set.range ell := ⟨ell x, ⟨x, rfl⟩⟩
+    have hz := hcompat0 z
+    change
+      f (e (BoundaryRequest.embeddedFromRange ell z)) =
+        targetCopy z.1 at hz
+    simpa [z, hfrom x] using hz
+  refine ⟨targetCopy, hcompat, ?_⟩
+  intro y a hya
+  obtain ⟨z, hyz, hza⟩ := hiso0 y a hya
+  let x : X := BoundaryRequest.embeddedFromRange ell z
+  refine ⟨x, ?_, ?_⟩
+  · exact hyz
+  · calc
+      ell x = z.1 :=
+        BoundaryRequest.embeddedFromRange_spec ell z
+      _ = a := hza
+
 /-- Isolation survives postcomposition of the target by a full embedding. -/
 theorem postcompTarget
     {r : BoundaryRequest A C}
