@@ -75,6 +75,130 @@ theorem mono
   intro S hS hgen hp hs
   exact h S hS (hgen.mono hmn) hp hs
 
+/-- The combined history invariant pulls back along a full embedding.
+Projected histories stay in the same ambient part structure; source histories
+are transported by direct image under the embedding. -/
+theorem pullback_embedding
+    {X : Type v} {C' : Structure L X}
+    (h : FunctionalHistoryTreeLike
+      (A := A) (D := D) (C := C) (Base := Base) p n)
+    (e : Embedding C' C) :
+    FunctionalHistoryTreeLike
+      (A := A) (D := D) (C := C') (Base := Base) (p ∘ e) n := by
+  classical
+  intro S hS hgen projectedHistory sourceHistory
+  let I : Finset W := S.image e
+  have hIclosed : C.IsClosed (↑I : Set W) := by
+    have hset :
+        (↑I : Set W) = imageSet e (↑S : Set X) := by
+      ext y
+      simp [I, imageSet]
+    rw [hset]
+    exact e.image_isClosed hS
+  let incS : Embedding (C'.induce (↑S : Set X) hS) C' :=
+    inclusion C' (↑S : Set X) hS
+  let incI : Embedding (C.induce (↑I : Set W) hIclosed) C :=
+    inclusion C (↑I : Set W) hIclosed
+  let j : Embedding (C'.induce (↑S : Set X) hS) C :=
+    e.comp incS
+  have hrange :
+      ∀ x : ↥(↑S : Set X),
+        ∃ y : ↥(↑I : Set W), j x = incI y := by
+    intro x
+    let y : ↥(↑I : Set W) :=
+      ⟨e x.1, Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩⟩
+    exact ⟨y, rfl⟩
+  let ee : Embedding
+      (C'.induce (↑S : Set X) hS)
+      (C.induce (↑I : Set W) hIclosed) :=
+    j.factorThroughClosedRange incI hrange
+  have hee (x : ↥(↑S : Set X)) :
+      (ee x).1 = e x.1 := by
+    have hx : j x = incI (ee x) := by
+      change j x = incI (Classical.choose (hrange x))
+      exact Classical.choose_spec (hrange x)
+    exact hx.symm
+  have heesurj : Function.Surjective ee := by
+    intro y
+    have hy : y.1 ∈ I := y.2
+    rcases Finset.mem_image.mp hy with ⟨x, hxS, hxy⟩
+    let xs : ↥(↑S : Set X) := ⟨x, hxS⟩
+    refine ⟨xs, ?_⟩
+    apply Subtype.ext
+    calc
+      (ee xs).1 = e x := hee xs
+      _ = y.1 := hxy
+  have hIgen :
+      (C.induce (↑I : Set W) hIclosed).GeneratedByAtMost n :=
+    hgen.of_surjective_embedding ee heesurj
+  let sourceHistoryI : List (Set W) :=
+    sourceHistory.map (fun H => e '' H)
+  obtain ⟨Z, T, hTree, fI, hfI, hPartI, hProjI, hSrcI⟩ :=
+    h I hIclosed hIgen projectedHistory sourceHistoryI
+  let f : ↥(↑S : Set X) → Z := fI ∘ ee
+  have hf :
+      (C'.induce (↑S : Set X) hS).IsHomomorphismEmbedding T f := by
+    exact hfI.comp ee.isHomomorphismEmbedding
+  have hPart :
+      FunctionalProjectedPartialIntersections
+        (A := A) (D := D) (C := C') (T := T)
+        (p ∘ e) S f := by
+    intro β H hH a hproj hRange
+    let aC : Embedding (A.induce H hH) C := e.comp a
+    have hprojC : ∀ x, p (aC x) = β x.1 := by
+      intro x
+      exact hproj x
+    have hRangeC : ∀ x, aC x ∈ I := by
+      intro x
+      exact Finset.mem_image.mpr ⟨a x, hRange x, rfl⟩
+    obtain ⟨eHT, heHT, hcHT⟩ :=
+      hPartI β H hH aC hprojC hRangeC
+    refine ⟨eHT, ?_, hcHT⟩
+    intro x
+    change eHT x = fI (ee ⟨a x, hRange x⟩)
+    have himage :
+        (⟨aC x, hRangeC x⟩ : ↥(↑I : Set W)) =
+          ee ⟨a x, hRange x⟩ := by
+      apply Subtype.ext
+      symm
+      exact hee ⟨a x, hRange x⟩
+    rw [← himage]
+    exact heHT x
+  have hProj :
+      FunctionalRespectsProjectedHistory
+        (p ∘ e) S f projectedHistory := by
+    intro H hH x y hxy
+    have hxyI : fI (ee x) = fI (ee y) := hxy
+    have hmem := hProjI H hH (ee x) (ee y) hxyI
+    simpa [Function.comp_apply, hee x, hee y] using hmem
+  have hSrc :
+      FunctionalRespectsSourceHistory S f sourceHistory := by
+    intro H hH x y hxy
+    have hHI : e '' H ∈ sourceHistoryI := by
+      simp [sourceHistoryI, hH]
+    have hxyI : fI (ee x) = fI (ee y) := hxy
+    have hmem := hSrcI (e '' H) hHI (ee x) (ee y) hxyI
+    have hx :
+        (ee x).1 ∈ e '' H ↔ x.1 ∈ H := by
+      rw [hee x]
+      constructor
+      · rintro ⟨z, hz, hez⟩
+        have : z = x.1 := e.injective hez
+        simpa [this] using hz
+      · intro hxH
+        exact ⟨x.1, hxH, rfl⟩
+    have hy :
+        (ee y).1 ∈ e '' H ↔ y.1 ∈ H := by
+      rw [hee y]
+      constructor
+      · rintro ⟨z, hz, hez⟩
+        have : z = y.1 := e.injective hez
+        simpa [this] using hz
+      · intro hyH
+        exact ⟨y.1, hyH, rfl⟩
+    exact hx.symm.trans (hmem.trans hy)
+  exact ⟨Z, T, hTree, f, hf, hPart, hProj, hSrc⟩
+
 /-- If the witness map is injective then it respects every source history. -/
 theorem respectsSourceHistory_of_injective
     {Y : Type v} {S : Finset W}
