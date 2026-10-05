@@ -105,9 +105,14 @@ theorem witness_identityLabels
         ∃ targetCopy : Embedding A Target,
           ∀ x : ↥H,
             f ⟨e x, hRange x⟩ = targetCopy x.1 := by
-  simpa [identityLabelEmbedding] using
+  obtain ⟨Z, Target, hTree, f, hf, hPart, hProj, hSrc,
+    targetCopy, htarget⟩ :=
     h.2 S hS hgen projectedHistory sourceHistory
       β H hH e hproj hRange (identityLabelEmbedding (A := A) H hH)
+  refine ⟨Z, Target, hTree, f, hf, hPart, hProj, hSrc,
+    targetCopy, ?_⟩
+  intro x
+  simpa [identityLabelEmbedding] using htarget x
 
 /-- The relative request is automatic from the ordinary combined history
 invariant: attach one fresh copy of Base over the already embedded partial
