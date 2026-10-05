@@ -55,6 +55,16 @@ noncomputable def Embedding.factorThroughClosedRange
   e.factorWithMap j (fun x => Classical.choose (h x))
     (fun x => Classical.choose_spec (h x))
 
+/-- The closed-range factorization composes back to the original embedding. -/
+theorem Embedding.factorThroughClosedRange_spec
+    {A : Structure L U} {B : Structure L V} {C : Structure L W}
+    (e : Embedding A C) (j : Embedding B C)
+    (h : ∀ x, ∃ y, e x = j y) (x : U) :
+    j (e.factorThroughClosedRange j h x) = e x := by
+  change j (Classical.choose (h x)) = e x
+  exact (Classical.choose_spec (h x)).symm
+
+
 /-- Weak maps can also be cancelled through a full target embedding. -/
 theorem Embedding.cancel_weak
     {A : Structure L U} {B : Structure L V} {C : Structure L W}
