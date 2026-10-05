@@ -155,7 +155,7 @@ theorem functionalLiftMap_preservesRightRoot
     {Rsrc : Structure L K} {Rtgt : Structure L Q}
     (rSrc : Embedding Rsrc B₁)
     (rTgt : Embedding Rtgt B₂)
-    (ell : Embedding Rsrc Rtgt)
+    (ell : K → Q)
     (hcompatR : ∀ k, hB (rSrc k) = rTgt (ell k))
     (hrootR : RootIsolated rSrc rTgt ell hB) :
     let Fmap :=
