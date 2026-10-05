@@ -248,6 +248,67 @@ theorem projectedHistory_of_sourcePreimages
     exact ⟨H, hH, rfl⟩
   simpa using hSrc (p ⁻¹' H) hpre x y hxy
 
+/-- A synchronized functional-history witness can be completed to control
+every ambient A-copy, without losing projected intersections or either diary.
+
+The EHN projection supplies the projected full A-copy needed to turn the
+projected-partial certificate into ordinary embedded-intersection data.
+Control completion then only postcomposes the target, so all synchronized
+certificates survive. -/
+theorem witness_withControl
+    [Finite U] [Finite W]
+    (hA : A.Irreducible)
+    (eAB : Embedding A Base)
+    (hp : C.IsEHNHomomorphismEmbedding D p)
+    (h : FunctionalHistoryTreeLike
+      (A := A) (D := D) (C := C) (Base := Base) p n)
+    (S : Finset W) (hS : C.IsClosed (↑S : Set W))
+    (hgen : (C.induce (↑S : Set W) hS).GeneratedByAtMost n)
+    (projectedHistory : List (Set P))
+    (sourceHistory : List (Set W)) :
+    ∃ (Z : Type v) (Target : Structure L Z),
+      TreeAmalgam Base Z Target ∧
+      ∃ f : ↥(↑S : Set W) → Z,
+        (C.induce (↑S : Set W) hS).IsHomomorphismEmbedding Target f ∧
+        FunctionalProjectedPartialIntersections
+          (A := A) (D := D) (C := C) (T := Target) p S f ∧
+        FunctionalRespectsProjectedHistory p S f projectedHistory ∧
+        FunctionalRespectsSourceHistory S f sourceHistory ∧
+        FunctionalControls
+          (A := A) (C := C) (T := Target) S f
+            (Finset.univ.toList : List (Embedding A C)) := by
+  classical
+  obtain ⟨Y, T, hTree, f, hf, hPart, hProj, hSrc⟩ :=
+    h S hS hgen projectedHistory sourceHistory
+  have hInt :
+      FunctionalEmbeddedIntersections
+        (A := A) (C := C) (T := T) S hS f :=
+    hPart.toEmbeddedIntersections hA hp
+  obtain ⟨Z, Target, hTree', j, hf', hctrl⟩ :=
+    LocallyClosedTreeCompletable.completeControl_of_embeddedIntersections_with_embedding
+      (A := A) (B := Base) (C := C)
+      hA eAB S hS hTree f hf hInt
+  let f' : ↥(↑S : Set W) → Z := j ∘ f
+  have hPart' :
+      FunctionalProjectedPartialIntersections
+        (A := A) (D := D) (C := C) (T := Target) p S f' := by
+    exact hPart.postcomp j
+  have hProj' :
+      FunctionalRespectsProjectedHistory p S f' projectedHistory := by
+    exact hProj.postcomp j
+  have hSrc' :
+      FunctionalRespectsSourceHistory S f' sourceHistory := by
+    exact hSrc.postcomp j
+  have hctrl' :
+      FunctionalControls
+        (A := A) (C := C) (T := Target) S f'
+          (Finset.univ.toList : List (Embedding A C)) := by
+    intro α hα
+    have hmem : α ∈ (Finset.univ.toList : List (Embedding A C)) := by
+      simp
+    exact hctrl α
+  exact ⟨Z, Target, hTree', f', hf', hPart', hProj', hSrc', hctrl'⟩
+
 end FunctionalHistoryTreeLike
 
 namespace IsFreeAmalgam
