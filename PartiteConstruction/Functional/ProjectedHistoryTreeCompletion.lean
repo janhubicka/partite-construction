@@ -89,6 +89,27 @@ theorem postcomp
 
 end Embedding.ContainedInIrreducible
 
+namespace FunctionalProjectedPartialIntersections
+
+/-- Projected-partial certificates survive postcomposition by a full target
+embedding. -/
+theorem postcomp
+    {p : W → P} {S : Finset W}
+    {f : ↥(↑S : Set W) → Y}
+    (h : FunctionalProjectedPartialIntersections
+      (A := A) (D := D) (C := C) (T := T) p S f)
+    {Z : Type v} {T' : Structure L Z} (j : Embedding T T') :
+    FunctionalProjectedPartialIntersections
+      (A := A) (D := D) (C := C) (T := T') p S (j ∘ f) := by
+  intro β H hH e hproj hRange
+  obtain ⟨eHT, heHT, hcHT⟩ := h β H hH e hproj hRange
+  refine ⟨j.comp eHT, ?_, hcHT.postcomp j⟩
+  intro x
+  change j (eHT x) = j (f ⟨e x, hRange x⟩)
+  exact congrArg j (heHT x)
+
+end FunctionalProjectedPartialIntersections
+
 namespace FunctionalProjectedHistoryTreeLike
 
 variable {p : W → P} {m n : ℕ}
