@@ -263,7 +263,7 @@ theorem overlapToPiece_functionClosed
         (RelStructure.Attachment.Piece
           B.toRelStructure S D.toRelStructure (maps B S D f) T i).rel
           (show L.graph.Symbol from Sum.inr F) t)
-      hcomp.symm)
+      hcomp)
     hy'
 
 /-- The overlap inclusion into the complementary rest is function-closed. -/
