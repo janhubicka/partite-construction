@@ -227,6 +227,21 @@ theorem quotient_surjective
   apply Subtype.ext
   exact hx
 
+/-- The quotient map is a full homomorphism onto the closed label root. -/
+theorem quotient_isHomomorphism
+    (h :
+      FunctionalLabelledIntersectionControl
+        (A := A) (C := C) (T := T) S f α)
+    (hS : C.IsClosed (↑S : Set W))
+    (hf :
+      (C.induce (↑S : Set W) hS).IsHomomorphism T f) :
+    (h.boundary hS).IsHomomorphism (h.root hS hf) h.quotient := by
+  have hl := h.label_isHomomorphism hS hf
+  have hc :=
+    hl.codRestrict h.labelRange (h.labelRange_closed hS hf)
+      (fun x => ⟨x, rfl⟩)
+  simpa [quotient] using hc
+
 /-- The quotient root embeds into the target inside the controlled A-copy. -/
 def rootEmbedding
     (h :
