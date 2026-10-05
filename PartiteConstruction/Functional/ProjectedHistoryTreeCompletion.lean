@@ -68,17 +68,11 @@ theorem postcomp
     {e : Embedding E T} (hc : e.ContainedInIrreducible)
     {T' : Structure L Z} (j : Embedding T T') :
     (j.comp e).ContainedInIrreducible := by
-  rcases hc with ⟨S, hS, hsub⟩
-  let inc : Embedding (T.induce S hS) T :=
-    inclusion T S hS
-  let eS : Embedding (T.induce S hS) T' := j.comp inc
-  let R : Set Z := Set.range eS
-  have hRclosed : T'.IsClosed R := eS.range_isClosed
-  refine ⟨R, ?_, ?_⟩
-  · exact hS.range_embedding eS
-  · intro x
-    let sx : S := ⟨e x, hsub x⟩
-    exact ⟨eS sx, ⟨sx, rfl⟩, rfl⟩
+  rcases hc with ⟨X, R, hR, k, hk⟩
+  refine ⟨X, R, hR, j.comp k, ?_⟩
+  intro a
+  obtain ⟨x, hx⟩ := hk a
+  exact ⟨x, congrArg j hx⟩
 
 end Embedding.ContainedInIrreducible
 
