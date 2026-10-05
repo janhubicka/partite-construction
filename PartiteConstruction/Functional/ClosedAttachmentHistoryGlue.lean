@@ -31,6 +31,7 @@ variable (idx : I0)
 attached copy. -/
 theorem glueRelativeHistory
     (hSupp : RelStructure.FunctionClosedSet Bsys.toRelStructure Supp)
+    (hA : A.Irreducible)
     (pSmall : ↥Test → P)
     (β : Structure.Embedding A Dbase)
     (ell :
@@ -59,14 +60,14 @@ theorem glueRelativeHistory
       (RelStructure.Attachment.RestV
         (W := W0) (I := I0) Supp Test idx)]
     (hPiece :
-      Structure.FunctionalRelativeHistoryTreeLike
+      _root_.StructuralRamsey.Structure.FunctionalRelativeHistoryTreeLike
         (A := A) (D := Dbase)
         (C := FullPiece Bsys Supp Dsys maps0 Test idx)
         (Base := Base)
         (pSmall ∘
           fullPieceInclusion Bsys Supp Dsys maps0 Test idx hSupp) n)
     (hRest :
-      Structure.FunctionalRelativeHistoryTreeLike
+      _root_.StructuralRamsey.Structure.FunctionalRelativeHistoryTreeLike
         (A := A) (D := Dbase)
         (C := FullRest Bsys Supp Dsys maps0 Test idx)
         (Base := Base)
@@ -91,13 +92,9 @@ theorem glueRelativeHistory
     full_decompose_named
       Bsys Supp Dsys maps0 Test idx hSupp
   exact
-    Structure.FunctionalRelativeHistoryTreeLike.glueWholeWitnesses
+    _root_.StructuralRamsey._root_.StructuralRamsey.Structure.FunctionalRelativeHistoryTreeLike.glueWholeWitnesses
       (A := A) (D := Dbase) (Base := Base)
-      (hA := by
-        -- The irreducibility hypothesis is read from the relative witness
-        -- only at the actual glue; make it explicit to the caller below.
-        exact Classical.choice (show Nonempty A.Irreducible from ?_))
-      hfree pSmall β ell hprojPiece hprojRest
+      hA hfree pSmall β ell hprojPiece hprojRest
       hPiece hRest hgenPiece hgenRest projectedHistory sourceHistory
 
 end StructuralRamsey.Partite.Closed.Attachment
