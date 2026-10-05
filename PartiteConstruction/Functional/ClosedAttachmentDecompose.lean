@@ -364,7 +364,7 @@ theorem piece_card_lt_of_not_inCopy
         T :=
     fun x => x.1
   apply Fintype.card_lt_of_injective_not_surjective
-    inc (fun _ _ h => Subtype.ext (congrArg Subtype.val h))
+    inc (fun _ _ h => Subtype.ext h)
   intro hsurj
   obtain ⟨x, hx⟩ := hsurj z
   apply hz
@@ -392,7 +392,7 @@ theorem rest_card_lt_of_outside
         T :=
     fun x => x.1
   apply Fintype.card_lt_of_injective_not_surjective
-    inc (fun _ _ h => Subtype.ext (congrArg Subtype.val h))
+    inc (fun _ _ h => Subtype.ext h)
   intro hsurj
   obtain ⟨x, hx⟩ := hsurj z
   apply x.2
