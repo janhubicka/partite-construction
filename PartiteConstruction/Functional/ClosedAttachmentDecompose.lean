@@ -199,12 +199,36 @@ theorem overlapToPiece_functionClosed
         B.toRelStructure S D.toRelStructure (maps B S D f) T i)
       (RelStructure.Attachment.overlapToPiece
         B.toRelStructure S D.toRelStructure (maps B S D f) T i) := by
+  let e :=
+    RelStructure.Attachment.overlapToPiece
+      B.toRelStructure S D.toRelStructure (maps B S D f) T i
   intro F x y hy
+  have hySmall0 :
+      (RelStructure.Attachment.Small
+        B.toRelStructure S D.toRelStructure (maps B S D f) T).rel
+        (.inr F)
+        (Subtype.val ∘
+          Structure.funcTuple (e ∘ x) y) := hy
+  have htuple :
+      Subtype.val ∘ Structure.funcTuple (e ∘ x) y =
+        Structure.funcTuple
+          (fun k => (x k).1) y.1 := by
+    calc
+      Subtype.val ∘ Structure.funcTuple (e ∘ x) y =
+          Structure.funcTuple
+            (Subtype.val ∘ (e ∘ x)) y.1 :=
+        Structure.comp_funcTuple Subtype.val (e ∘ x) y
+      _ = Structure.funcTuple (fun k => (x k).1) y.1 := by
+        congr 1
+        funext k
+        rfl
   have hySmall :
       (RelStructure.Attachment.Small
         B.toRelStructure S D.toRelStructure (maps B S D f) T).rel
         (.inr F)
-        (Structure.funcTuple (fun k => (x k).1) y.1) := hy
+        (Structure.funcTuple (fun k => (x k).1) y.1) := by
+    rw [← htuple]
+    exact hySmall0
   have hyRest :
       y.1 ∈ RelStructure.Attachment.restSet
         (W := W) (I := I) S T i :=
@@ -217,10 +241,20 @@ theorem overlapToPiece_functionClosed
         B.toRelStructure S D.toRelStructure
         (maps B S D f) T i :=
     ⟨y.1, y.2, hyRest⟩
-  refine ⟨z, ?_, ?_⟩
-  · exact hy
-  · apply Subtype.ext
+  have hez : e z = y := by
+    apply Subtype.ext
     rfl
+  have htarget :
+      (RelStructure.Attachment.Piece
+        B.toRelStructure S D.toRelStructure (maps B S D f) T i).rel
+        (.inr F) (e ∘ Structure.funcTuple x z) := by
+    have hcomp :=
+      Structure.comp_funcTuple e x z
+    rw [hcomp]
+    rw [hez]
+    exact hy
+  refine ⟨z, ?_, hez⟩
+  exact (e.map_rel_iff (.inr F) (Structure.funcTuple x z)).mp htarget
 
 /-- The overlap inclusion into the complementary rest is function-closed. -/
 theorem overlapToRest_functionClosed
@@ -232,12 +266,36 @@ theorem overlapToRest_functionClosed
         B.toRelStructure S D.toRelStructure (maps B S D f) T i)
       (RelStructure.Attachment.overlapToRest
         B.toRelStructure S D.toRelStructure (maps B S D f) T i) := by
+  let e :=
+    RelStructure.Attachment.overlapToRest
+      B.toRelStructure S D.toRelStructure (maps B S D f) T i
   intro F x y hy
+  have hySmall0 :
+      (RelStructure.Attachment.Small
+        B.toRelStructure S D.toRelStructure (maps B S D f) T).rel
+        (.inr F)
+        (Subtype.val ∘
+          Structure.funcTuple (e ∘ x) y) := hy
+  have htuple :
+      Subtype.val ∘ Structure.funcTuple (e ∘ x) y =
+        Structure.funcTuple
+          (fun k => (x k).1) y.1 := by
+    calc
+      Subtype.val ∘ Structure.funcTuple (e ∘ x) y =
+          Structure.funcTuple
+            (Subtype.val ∘ (e ∘ x)) y.1 :=
+        Structure.comp_funcTuple Subtype.val (e ∘ x) y
+      _ = Structure.funcTuple (fun k => (x k).1) y.1 := by
+        congr 1
+        funext k
+        rfl
   have hySmall :
       (RelStructure.Attachment.Small
         B.toRelStructure S D.toRelStructure (maps B S D f) T).rel
         (.inr F)
-        (Structure.funcTuple (fun k => (x k).1) y.1) := hy
+        (Structure.funcTuple (fun k => (x k).1) y.1) := by
+    rw [← htuple]
+    exact hySmall0
   have hyPiece :
       y.1 ∈ RelStructure.Attachment.pieceSet
         B.toRelStructure S D.toRelStructure (maps B S D f) T i :=
@@ -250,10 +308,20 @@ theorem overlapToRest_functionClosed
         B.toRelStructure S D.toRelStructure
         (maps B S D f) T i :=
     ⟨y.1, hyPiece, y.2⟩
-  refine ⟨z, ?_, ?_⟩
-  · exact hy
-  · apply Subtype.ext
+  have hez : e z = y := by
+    apply Subtype.ext
     rfl
+  have htarget :
+      (RelStructure.Attachment.Rest
+        B.toRelStructure S D.toRelStructure (maps B S D f) T i).rel
+        (.inr F) (e ∘ Structure.funcTuple x z) := by
+    have hcomp :=
+      Structure.comp_funcTuple e x z
+    rw [hcomp]
+    rw [hez]
+    exact hy
+  refine ⟨z, ?_, hez⟩
+  exact (e.map_rel_iff (.inr F) (Structure.funcTuple x z)).mp htarget
 
 /-- The relational decomposition of a closed test decodes to a genuine full
 function-language free amalgam.  This is the structural decomposition used in
