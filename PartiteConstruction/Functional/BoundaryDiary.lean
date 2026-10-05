@@ -173,6 +173,90 @@ theorem lift_preservesRightDiary
     hSrc hTgt q fL fR hcompatL hcompatR hrootL
     r (hDiary r hr)
 
+
+/-- Glue isolated common A-labels while carrying both an arbitrary source
+history and a finite diary of older boundaries living on the right side.
+
+This is the recursive closed-attachment primitive: the newly exposed overlap
+is used as the gluing root, while all previously exposed overlaps remain in
+the rest/core side and are transported through the compatible lift. -/
+theorem glueIsolatedCommonLabels_withHistoryAndRightDiary
+    {VB : Type v} {Base : Structure L VB}
+    (hA : A.Irreducible)
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (hTreeL : TreeAmalgam Base TE TL)
+    (hTreeR : TreeAmalgam Base TF TR)
+    (targetL : Embedding A TL)
+    (targetR : Embedding A TR)
+    (q : H → U) (hq : Function.Injective q)
+    (fL : E → TE) (fR : F → TF)
+    (hcompatL : ∀ d, fL (sL d) = targetL (q d))
+    (hcompatR : ∀ d, fR (sR d) = targetR (q d))
+    (hfL : Left.IsHomomorphismEmbedding TL fL)
+    (hfR : Right.IsHomomorphismEmbedding TR fR)
+    (hrootL : RootIsolated sL targetL q fL)
+    (hrootR : RootIsolated sR targetR q fR)
+    (history : List (Set Whole))
+    (hHistL :
+      ∀ Hset ∈ history, ∀ x y : E,
+        fL x = fL y → (iL x ∈ Hset ↔ iL y ∈ Hset))
+    (hHistR :
+      ∀ Hset ∈ history, ∀ x y : F,
+        fR x = fR y → (iR x ∈ Hset ↔ iR y ∈ Hset))
+    (requests : List (BoundaryRequest A Right))
+    (hDiaryR :
+      ∀ r ∈ requests, IsolatedBoundary r TR fR) :
+    ∃ (Z0 : Type v) (Target0 : Structure L Z0),
+      TreeAmalgam Base Z0 Target0 ∧
+      ∃ f : Whole → Z0,
+        WholeS.IsHomomorphismEmbedding Target0 f ∧
+        (∀ Hset ∈ history, ∀ x y : Whole,
+          f x = f y → (x ∈ Hset ↔ y ∈ Hset)) ∧
+        ∀ r ∈ requests,
+          IsolatedBoundary (r.postcomp iR) Target0 f := by
+  classical
+  let Target0 :=
+    FreeAmalgam.amalgam A TL TR targetL targetR
+  let jL :=
+    FreeAmalgam.leftEmbedding A TL TR targetL targetR
+  let jR :=
+    FreeAmalgam.rightEmbedding A TL TR targetL targetR
+  have hcL : targetL.ContainedInIrreducible := by
+    refine ⟨U, A, hA, targetL, ?_⟩
+    intro a
+    exact ⟨a, rfl⟩
+  have hcR : targetR.ContainedInIrreducible := by
+    refine ⟨U, A, hA, targetR, ?_⟩
+    intro a
+    exact ⟨a, rfl⟩
+  have hTree :
+      TreeAmalgam Base
+        (FreeAmalgam.Vertex A TL TR targetL targetR) Target0 :=
+    FreeAmalgam.treeAmalgam A TL TR targetL targetR Base
+      hTreeL hTreeR hcL hcR
+  have hTgt :
+      IsFreeAmalgam targetL targetR jL jR :=
+    FreeAmalgam.isFreeAmalgam A TL TR targetL targetR
+  let f : Whole → FreeAmalgam.Vertex A TL TR targetL targetR :=
+    functionalLiftMap hSrc hTgt q fL fR hcompatL hcompatR
+  have hf : WholeS.IsHomomorphismEmbedding Target0 f :=
+    functionalLiftMap_isHomomorphismEmbedding
+      hSrc hTgt q fL fR hcompatL hcompatR
+      hfL hfR hrootL hrootR
+  have hHist :
+      ∀ Hset ∈ history, ∀ x y : Whole,
+        f x = f y → (x ∈ Hset ↔ y ∈ Hset) :=
+    functionalLiftMap_respectsSourceSets
+      hSrc hTgt q hq fL fR hcompatL hcompatR
+      hrootL hrootR history hHistL hHistR
+  have hDiary :
+      ∀ r ∈ requests,
+        IsolatedBoundary (r.postcomp iR) Target0 f :=
+    lift_preservesRightDiary
+      hSrc hTgt q fL fR hcompatL hcompatR hrootL
+      requests hDiaryR
+  exact ⟨_, Target0, hTree, f, hf, hHist, hDiary⟩
+
 end IsFreeAmalgam
 
 end StructuralRamsey.Structure
