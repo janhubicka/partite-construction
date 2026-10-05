@@ -61,6 +61,7 @@ theorem functionalLiftMap_respectsProjectedSets
       lift x = lift y →
         (pWhole x ∈ K ↔ pWhole y ∈ K) := by
   classical
+  dsimp only
   let lift :=
     functionalLiftMap hSrc hTgt q fL fR hcompatL hcompatR
   intro K hK x y hxy
