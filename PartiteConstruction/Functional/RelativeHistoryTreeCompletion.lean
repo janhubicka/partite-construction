@@ -77,33 +77,16 @@ theorem mono
     β H hH e hproj hRange ell
 
 /-- Embed a requested closed boundary into the induced tested structure. -/
-def boundaryEmbedding
+noncomputable def boundaryEmbedding
     (S : Finset W) (hS : C.IsClosed (↑S : Set W))
     {H : Set U} (hH : A.IsClosed H)
     (e : Embedding (A.induce H hH) C)
     (hRange : ∀ x, e x ∈ S) :
-    Embedding (A.induce H hH) (C.induce (↑S : Set W) hS) := {
-  toFun := fun x => ⟨e x, hRange x⟩
-  injective := by
-    intro x y hxy
-    apply e.injective
-    exact congrArg Subtype.val hxy
-  map_rel_iff := by
-    intro R x
-    exact e.map_rel_iff R x
-  map_func := by
-    intro F x
-    ext y
-    constructor
-    · rintro ⟨z, hz, rfl⟩
-      exact hz
-    · intro hy
-      rw [← e.map_func F (Subtype.val ∘ x)] at hy
-      rcases hy with ⟨z, hz, hzy⟩
-      refine ⟨z, hz, ?_⟩
-      apply Subtype.ext
-      exact hzy
-}
+    Embedding (A.induce H hH) (C.induce (↑S : Set W) hS) := by
+  let inc : Embedding (C.induce (↑S : Set W) hS) C :=
+    inclusion C (↑S : Set W) hS
+  exact e.factorThroughClosedRange inc
+    (fun x => ⟨⟨e x, hRange x⟩, rfl⟩)
 
 /-- The isolation clause carried by a relative witness is exactly the
 root-isolation property for its boundary embedding and A-label map. -/
