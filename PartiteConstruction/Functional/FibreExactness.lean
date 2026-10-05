@@ -39,9 +39,12 @@ theorem functionClosure_inputs_irreducible_of_value
   have hHclosed : A.IsClosed Hset :=
     A.functionClosure_isClosed (Set.range x)
   let H : Structure L Hset := A.induce Hset hHclosed
-  let q : Fin (L.funcArity F) → Hset := closureLift A x
+  let q : Fin (L.funcArity F) → Hset :=
+    fun i => ⟨x i,
+      A.subset_functionClosure (Set.range x) ⟨i, rfl⟩⟩
   have hqgen : H.Generates q := by
-    simpa [H, Hset, q] using closureLift_generates A x
+    simpa [H, Hset, q, closureLift] using
+      (closureLift_generates A x)
   have hyH : y ∈ Hset := by
     apply hHclosed F x
     · intro i
@@ -49,6 +52,9 @@ theorem functionClosure_inputs_irreducible_of_value
     · exact hy
   let yH : Hset := ⟨y, hyH⟩
   have hfunc : yH ∈ H.func F q := by
+    change y ∈ A.func F (Subtype.val ∘ q)
+    have hqx : Subtype.val ∘ q = x := by rfl
+    rw [hqx]
     exact hy
   rw [irreducible_iff_noProperFreeDecomposition]
   rintro ⟨d⟩
@@ -94,13 +100,16 @@ theorem IsEHNHomomorphismEmbedding.map_func_of_nonempty
     let H : Structure L Hset := A.induce Hset hHclosed
     obtain ⟨y0, hy0⟩ := hne
     have hHirr : H.Irreducible := by
-      simpa [H, Hset] using
-        functionClosure_inputs_irreducible_of_value A F x hy0
+      change
+        (A.induce Hset
+          (A.functionClosure_isClosed (Set.range x))).Irreducible
+      exact functionClosure_inputs_irreducible_of_value A F x hy0
     let inc : Embedding H A := inclusion A Hset hHclosed
     obtain ⟨g, hg⟩ := hp.2 H hHirr inc
-    let q : Fin (L.funcArity F) → Hset := closureLift A x
-    have hqA : Subtype.val ∘ q = x := by
-      rfl
+    let q : Fin (L.funcArity F) → Hset :=
+      fun i => ⟨x i,
+        A.subset_functionClosure (Set.range x) ⟨i, rfl⟩⟩
+    have hqA : Subtype.val ∘ q = x := by rfl
     have hgargs : g ∘ q = p ∘ x := by
       funext i
       exact hg (q i)
