@@ -204,3 +204,5 @@ import PartiteConstruction.Functional.RelativeHistoryTreeCompletion
 import PartiteConstruction.Functional.MixedOverlapExactness
 
 import PartiteConstruction.Functional.FreeAmalgamPullback
+
+import PartiteConstruction.Functional.ProjectedPartialEmbedded
