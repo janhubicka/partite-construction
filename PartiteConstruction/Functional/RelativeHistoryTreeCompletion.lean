@@ -88,6 +88,21 @@ noncomputable def boundaryEmbedding
   exact e.factorThroughClosedRange inc
     (fun x => ⟨⟨e x, hRange x⟩, rfl⟩)
 
+/-- Pointwise equation for the induced-boundary factorization. -/
+theorem boundaryEmbedding_val
+    (S : Finset W) (hS : C.IsClosed (↑S : Set W))
+    {H : Set U} (hH : A.IsClosed H)
+    (e : Embedding (A.induce H hH) C)
+    (hRange : ∀ x, e x ∈ S) (x : ↥H) :
+    (boundaryEmbedding (A := A) S hS hH e hRange x).1 = e x := by
+  let inc : Embedding (C.induce (↑S : Set W) hS) C :=
+    inclusion C (↑S : Set W) hS
+  have hfac :=
+    Embedding.factorThroughClosedRange_spec e inc
+      (fun z => ⟨⟨e z, hRange z⟩, rfl⟩) x
+  exact hfac
+
+
 /-- The isolation clause carried by a relative witness is exactly the
 root-isolation property for its boundary embedding and A-label map. -/
 theorem rootIsolated_of_relativeWitness
@@ -110,7 +125,10 @@ theorem rootIsolated_of_relativeWitness
   obtain ⟨x, hyx, hxa⟩ := hiso y a hya
   refine ⟨x, ?_, hxa⟩
   apply Subtype.ext
-  exact hyx
+  calc
+    y.1 = e x := hyx
+    _ = (boundaryEmbedding (A := A) S hS hH e hRange x).1 :=
+      (boundaryEmbedding_val (A := A) S hS hH e hRange x).symm
 
 /-- Inclusion of a closed partial A-substructure gives the identity
 relative-labelling request. -/
