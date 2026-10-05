@@ -200,3 +200,5 @@ import PartiteConstruction.Functional.ControlCompletion
 import PartiteConstruction.Functional.HistoryTreeCompletion
 
 import PartiteConstruction.Functional.RelativeHistoryTreeCompletion
+
+import PartiteConstruction.Functional.MixedOverlapExactness
