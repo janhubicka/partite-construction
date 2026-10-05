@@ -208,3 +208,5 @@ import PartiteConstruction.Functional.FreeAmalgamPullback
 import PartiteConstruction.Functional.ProjectedPartialEmbedded
 
 import PartiteConstruction.Functional.IsolatedCommonLabelGlue
+
+import PartiteConstruction.Functional.HistoryMixedGlue
