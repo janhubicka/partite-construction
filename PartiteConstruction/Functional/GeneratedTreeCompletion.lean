@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.ClosedGeneratorRank
 import PartiteConstruction.Functional.WitnessGlue
+import PartiteConstruction.Functional.WeakInvariant
 
 /-! # Generator-local tree completability for function structures
 
@@ -46,6 +47,27 @@ theorem IsHomomorphismEmbedding.codRestrictRange
     Classical.choose_spec (hrange z)
   change (gr z).1 = f (e z)
   exact hfactor.symm.trans (hg z)
+
+
+/-- An irreducible test in an EHN-partite functional system already has a
+one-copy tree completion.  The weak global projection becomes a genuine full
+embedding on the irreducible test by definition of the EHN invariant. -/
+theorem HasTreeCompletion.of_irreducible_partite
+    {P Z : Type v}
+    {A : Structure L P} {Base : Structure L V}
+    {C : FunctionalPartite.System L P W}
+    (hC : C.WeaklyPartiteOver A)
+    (eAB : Embedding A Base)
+    (E : Structure L Z) (hE : E.Irreducible)
+    (e : Embedding E C.toStructure) :
+    HasTreeCompletion Base E := by
+  obtain ⟨g, hg⟩ := hC.2 E hE e
+  let h : Embedding E Base := eAB.comp g
+  have hTree : TreeAmalgam Base V Base :=
+    TreeAmalgam.copy (Embedding.id Base) (by
+      intro x
+      exact ⟨x, rfl⟩)
+  exact ⟨V, Base, hTree, h, h.isHomomorphismEmbedding⟩
 
 /-- Every finite n-generated genuine substructure of C has a full
 homomorphism-embedding into a genuine tree amalgam of copies of Base. -/
