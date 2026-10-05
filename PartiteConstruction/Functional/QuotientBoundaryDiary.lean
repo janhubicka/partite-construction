@@ -126,7 +126,7 @@ theorem label_isHomomorphism
     funext x
     exact hcompat x
   rw [heq] at hcomp
-  exact targetCopy.cancel_homomorphism hcomp
+  exact Embedding.cancel_homomorphism targetCopy hcomp
 
 /-- Isolation survives target postcomposition. -/
 theorem postcompTarget
