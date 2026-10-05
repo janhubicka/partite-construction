@@ -46,8 +46,11 @@ def FunctionalRelativeHistoryTreeLike
           FunctionalRespectsSourceHistory
             S f sourceHistory ∧
           ∃ targetCopy : Embedding A Target,
-            ∀ x : ↥H,
-              f ⟨e x, hRange x⟩ = targetCopy (ell x)
+            (∀ x : ↥H,
+              f ⟨e x, hRange x⟩ = targetCopy (ell x)) ∧
+            ∀ y : ↥(↑S : Set W), ∀ a : U,
+              f y = targetCopy a →
+                ∃ x : ↥H, y.1 = e x ∧ ell x = a
 
 namespace FunctionalRelativeHistoryTreeLike
 
@@ -103,20 +106,26 @@ theorem witness_identityLabels
         FunctionalRespectsSourceHistory
           S f sourceHistory ∧
         ∃ targetCopy : Embedding A Target,
-          ∀ x : ↥H,
-            f ⟨e x, hRange x⟩ = targetCopy x.1 := by
+          (∀ x : ↥H,
+            f ⟨e x, hRange x⟩ = targetCopy x.1) ∧
+          ∀ y : ↥(↑S : Set W), ∀ a : U,
+            f y = targetCopy a →
+              ∃ x : ↥H, y.1 = e x ∧ x.1 = a := by
   obtain ⟨Z, Target, hTree, f, hf, hPart, hProj, hSrc,
-    targetCopy, htarget⟩ :=
+    targetCopy, htarget, hiso⟩ :=
     h.2 S hS hgen projectedHistory sourceHistory
       β H hH e hproj hRange (identityLabelEmbedding (A := A) H hH)
   refine ⟨Z, Target, hTree, f, hf, hPart, hProj, hSrc,
-    targetCopy, ?_⟩
-  intro x
-  calc
-    f ⟨e x, hRange x⟩ =
-        targetCopy ((identityLabelEmbedding (A := A) H hH) x) :=
-      htarget x
-    _ = targetCopy x.1 := rfl
+    targetCopy, ?_, ?_⟩
+  · intro x
+    calc
+      f ⟨e x, hRange x⟩ =
+          targetCopy ((identityLabelEmbedding (A := A) H hH) x) :=
+        htarget x
+      _ = targetCopy x.1 := rfl
+  · intro y a hya
+    obtain ⟨x, hyx, hxa⟩ := hiso y a hya
+    exact ⟨x, hyx, hxa⟩
 
 /-- The relative request is automatic from the ordinary combined history
 invariant: attach one fresh copy of Base over the already embedded partial
@@ -132,8 +141,13 @@ theorem ofHistory
   refine ⟨h, ?_⟩
   intro S hS hgen projectedHistory sourceHistory
     β H hH e hproj hRange ell
-  obtain ⟨Y, T, hTree, f, hf, hPart, hProj, hSrc⟩ :=
-    h S hS hgen projectedHistory sourceHistory
+  let Boundary : Set W := Set.range e
+  obtain ⟨Y, T, hTree, f, hf, hPart, hProj, hSrcAll⟩ :=
+    h S hS hgen projectedHistory (Boundary :: sourceHistory)
+  have hSrc :
+      FunctionalRespectsSourceHistory S f sourceHistory := by
+    intro Hset hmem x y hxy
+    exact hSrcAll Hset (by simp [hmem]) x y hxy
   obtain ⟨eHT, heHT, hcT⟩ :=
     hPart β H hH e hproj hRange
   let Hstr := A.induce H hH
@@ -173,15 +187,47 @@ theorem ofHistory
     hSrc.postcomp l
   let targetCopy : Embedding A T' := r.comp eAB
   refine ⟨_, T', hTree', f', hf', hPart', hProj', hSrc',
-    targetCopy, ?_⟩
-  intro x
-  change l (f ⟨e x, hRange x⟩) = r (eAB (ell x))
-  calc
-    l (f ⟨e x, hRange x⟩) = l (eHT x) :=
-      congrArg l (heHT x).symm
-    _ = r (eHB x) :=
-      (hfree.overlap (eHT x) (eHB x)).mpr ⟨x, rfl, rfl⟩
-    _ = r (eAB (ell x)) := rfl
+    targetCopy, ?_, ?_⟩
+  · intro x
+    change l (f ⟨e x, hRange x⟩) = r (eAB (ell x))
+    calc
+      l (f ⟨e x, hRange x⟩) = l (eHT x) :=
+        congrArg l (heHT x).symm
+      _ = r (eHB x) :=
+        (hfree.overlap (eHT x) (eHB x)).mpr ⟨x, rfl, rfl⟩
+      _ = r (eAB (ell x)) := rfl
+  · intro y a hya
+    have hcross : l (f y) = r (eAB a) := by
+      exact hya
+    obtain ⟨z, hfz, hbase⟩ :=
+      (hfree.overlap (f y) (eAB a)).mp hcross
+    have ha : ell z = a := by
+      apply eAB.injective
+      calc
+        eAB (ell z) = eHB z := rfl
+        _ = eAB a := hbase.symm
+    let yz : ↥(↑S : Set W) := ⟨e z, hRange z⟩
+    have hEq : f y = f yz := by
+      calc
+        f y = eHT z := hfz
+        _ = f yz := heHT z
+    have hzBoundary : yz.1 ∈ Boundary := by
+      exact ⟨z, rfl⟩
+    have hyBoundary : y.1 ∈ Boundary :=
+      (hSrcAll Boundary (by simp) y yz hEq).2 hzBoundary
+    rcases hyBoundary with ⟨z', hz'⟩
+    have hzz : z' = z := by
+      apply eHT.injective
+      calc
+        eHT z' = f ⟨e z', hRange z'⟩ := heHT z'
+        _ = f y := by
+          apply congrArg f
+          apply Subtype.ext
+          exact hz'
+        _ = eHT z := hfz
+    subst z'
+    refine ⟨z, ?_, ha⟩
+    exact hz'.symm
 
 end FunctionalRelativeHistoryTreeLike
 
