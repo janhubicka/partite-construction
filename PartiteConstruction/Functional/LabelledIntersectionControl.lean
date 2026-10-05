@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.QuotientBoundaryDiary
+import PartiteConstruction.Functional.WeakOperations
 import PartiteConstruction.Structure.IrreducibleHomImage
 
 /-! # Functional labelled quotient roots for closed intersections
@@ -137,46 +138,24 @@ abbrev boundary
     (labelledBoundarySet_closed S hS α)
 
 /-- Embed the closed A-boundary into the closed tested substructure. -/
-def boundaryEmbedding
+noncomputable def boundaryEmbedding
     (hS : C.IsClosed (↑S : Set W)) :
-    Embedding (boundary (A := A) hS)
-      (C.induce (↑S : Set W) hS) where
-  toFun := fun x => ⟨α x.1, x.2⟩
-  injective := by
-    intro x y hxy
-    apply Subtype.ext
-    apply α.injective
-    exact congrArg Subtype.val hxy
-  map_rel_iff := by
-    intro R x
-    change C.rel R (α ∘ (Subtype.val ∘ x)) ↔
-      A.rel R (Subtype.val ∘ x)
-    exact α.map_rel_iff R (Subtype.val ∘ x)
-  map_func := by
-    intro F x
-    ext y
-    constructor
-    · rintro ⟨z, hz, rfl⟩
-      have himg :
-          α z.1 ∈
-            imageSet α (A.func F (Subtype.val ∘ x)) :=
-        ⟨z.1, hz, rfl⟩
-      rw [α.map_func F (Subtype.val ∘ x)] at himg
-      exact himg
-    · intro hy
-      have hyC :
-          y.1 ∈ C.func F (α ∘ (Subtype.val ∘ x)) := hy
-      rw [← α.map_func F (Subtype.val ∘ x)] at hyC
-      rcases hyC with ⟨z, hz, hzy⟩
-      have hzS :
-          α z ∈ S :=
-        hS F (α ∘ (Subtype.val ∘ x))
-          (fun i => (x i).2) hy
-      let zB : ↥(labelledBoundarySet S α) :=
-        ⟨z, hzS⟩
-      refine ⟨zB, hz, ?_⟩
-      apply Subtype.ext
-      exact hzy
+    Embedding (boundary (A := A) (α := α) hS)
+      (C.induce (↑S : Set W) hS) := by
+  let incA :
+      Embedding (boundary (A := A) (α := α) hS) A :=
+    inclusion A (labelledBoundarySet S α)
+      (labelledBoundarySet_closed S hS α)
+  let eAmbient :
+      Embedding (boundary (A := A) (α := α) hS) C :=
+    α.comp incA
+  let incC :
+      Embedding (C.induce (↑S : Set W) hS) C :=
+    inclusion C (↑S : Set W) hS
+  let q :
+      ↥(labelledBoundarySet S α) → ↥(↑S : Set W) :=
+    fun x => ⟨α x.1, x.2⟩
+  exact eAmbient.factorWithMap incC q (fun _ => rfl)
 
 /-- The chosen label map is automatically a full homomorphism on a closed
 test. -/
@@ -187,10 +166,10 @@ theorem label_isHomomorphism
     (hS : C.IsClosed (↑S : Set W))
     (hf :
       (C.induce (↑S : Set W) hS).IsHomomorphism T f) :
-    (boundary (A := A) hS).IsHomomorphism A h.label := by
-  let e := boundaryEmbedding (A := A) hS
+    (boundary (A := A) (α := α) hS).IsHomomorphism A h.label := by
+  let e := boundaryEmbedding (A := A) (α := α) hS
   have hcomp :
-      (boundary (A := A) hS).IsHomomorphism T
+      (boundary (A := A) (α := α) hS).IsHomomorphism T
         (f ∘ e) :=
     hf.comp e.isHomomorphism
   have heq :
