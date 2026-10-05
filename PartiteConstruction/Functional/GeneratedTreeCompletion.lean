@@ -86,7 +86,7 @@ theorem mono
     (h : LocallyGeneratedTreeCompletable Base C n) (hmn : m ≤ n) :
     LocallyGeneratedTreeCompletable Base C m := by
   intro Z _ E hE e
-  exact h E (hE.mono hmn) e
+  exact h (Z := Z) E (hE.mono hmn) e
 
 /-- A tree amalgam of Base is generator-locally tree completable at every
 finite level, by the inclusion of each genuine substructure. -/
@@ -124,7 +124,8 @@ theorem pullback_homEmbedding
   have hRgen : R.GeneratedByAtMost n := by
     exact homRange_generatedByAtMost hED.1 hgen
   let inc : Embedding R D := inclusion D Rset hED.1.range_isClosed
-  obtain ⟨TCarrier, T, hTree, f, hf⟩ := hD R hRgen inc
+  obtain ⟨TCarrier, T, hTree, f, hf⟩ :=
+    hD (Z := Rset) R hRgen inc
   exact ⟨TCarrier, T, hTree, f ∘ qR, hf.comp hER⟩
 
 /-- Generator-local completability implies the user-facing closed-substructure
@@ -147,7 +148,7 @@ theorem toLocallyClosedTreeCompletable
     simpa [hcard] using hScard
   let e : Embedding E C :=
     inclusion C (↑S : Set W) hclosed
-  exact h E hgen e
+  exact h (Z := ↥(↑S : Set W)) E hgen e
 
 end LocallyGeneratedTreeCompletable
 
