@@ -1,4 +1,4 @@
-import PartiteConstruction.Functional.HistoryTreeCompletion
+import PartiteConstruction.Functional.ProjectedPartialEmbedded
 
 /-! # Relative-labelled functional history witnesses
 
