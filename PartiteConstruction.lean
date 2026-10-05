@@ -194,3 +194,5 @@ import PartiteConstruction.Functional.GeneratedTreeCompletion
 import PartiteConstruction.Functional.ProjectedHistoryTreeCompletion
 
 import PartiteConstruction.Functional.ClosedAttachmentDecompose
+
+import PartiteConstruction.Functional.ControlCompletion
