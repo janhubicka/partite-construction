@@ -700,4 +700,74 @@ theorem glueExactRoot
       hinjE hinjF
   exact ⟨_, Target, hTree, f, hf, hinj⟩
 
+
+namespace HasTreeCompletion
+
+universe u v
+variable {L : Language.{u}}
+variable {VB H E F C TE TF : Type v}
+variable {Base : Structure L VB}
+variable {Dsrc : Structure L H} {Esrc : Structure L E}
+variable {Fsrc : Structure L F} {Csrc : Structure L C}
+variable {sE : Embedding Dsrc Esrc} {sF : Embedding Dsrc Fsrc}
+variable {iE : Embedding Esrc Csrc} {iF : Embedding Fsrc Csrc}
+
+/-- Recursive free-decomposition step for functional tree completions.
+
+The side completion maps may collapse reducible pieces.  The common source
+root is therefore supplied separately as an embedded, irreducibly-contained
+root in each side target, together with the isolation condition saying that
+no point outside the source overlap is sent into that root. -/
+theorem of_freeAmalgam
+    (hSrc : IsFreeAmalgam sE sF iE iF)
+    {ETgt : Structure L TE} {FTgt : Structure L TF}
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (hE : E → TE) (hF : F → TF)
+    (hhE : Esrc.IsHomomorphismEmbedding ETgt hE)
+    (hhF : Fsrc.IsHomomorphismEmbedding FTgt hF)
+    (rE : Embedding Dsrc ETgt)
+    (rF : Embedding Dsrc FTgt)
+    (hcE : rE.ContainedInIrreducible)
+    (hcF : rF.ContainedInIrreducible)
+    (hcompatE : ∀ d, hE (sE d) = rE d)
+    (hcompatF : ∀ d, hF (sF d) = rF d)
+    (hisoE : ∀ x d, hE x = rE d →
+      ∃ d' : H, x = sE d' ∧ d' = d)
+    (hisoF : ∀ x d, hF x = rF d →
+      ∃ d' : H, x = sF d' ∧ d' = d) :
+    HasTreeCompletion Base Csrc := by
+  obtain ⟨T, Target, hTree, f, hf⟩ :=
+    LocallyClosedTreeCompletable.glueCommonSourceRoot
+      (Base := Base) hSrc hTreeE hTreeF
+      rE rF hcE hcF hE hF
+      hcompatE hcompatF hhE hhF hisoE hisoF
+  exact ⟨T, Target, hTree, f, hf⟩
+
+/-- Proper free decompositions are the recursive case of the same lemma. -/
+theorem of_properFreeDecomposition
+    (d : ProperFreeDecomposition Csrc)
+    {ETgt : Structure L TE} {FTgt : Structure L TF}
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (hE : d.Left → TE) (hF : d.Right → TF)
+    (hhE : d.left.IsHomomorphismEmbedding ETgt hE)
+    (hhF : d.right.IsHomomorphismEmbedding FTgt hF)
+    (rE : Embedding d.common ETgt)
+    (rF : Embedding d.common FTgt)
+    (hcE : rE.ContainedInIrreducible)
+    (hcF : rF.ContainedInIrreducible)
+    (hcompatE : ∀ x, hE (d.toLeft x) = rE x)
+    (hcompatF : ∀ x, hF (d.toRight x) = rF x)
+    (hisoE : ∀ x z, hE x = rE z →
+      ∃ z' : d.Common, x = d.toLeft z' ∧ z' = z)
+    (hisoF : ∀ x z, hF x = rF z →
+      ∃ z' : d.Common, x = d.toRight z' ∧ z' = z) :
+    HasTreeCompletion Base Csrc :=
+  of_freeAmalgam d.free
+    hTreeE hTreeF hE hF hhE hhF
+    rE rF hcE hcF hcompatE hcompatF hisoE hisoF
+
+end HasTreeCompletion
+
 end StructuralRamsey.Structure.LocallyClosedTreeCompletable
