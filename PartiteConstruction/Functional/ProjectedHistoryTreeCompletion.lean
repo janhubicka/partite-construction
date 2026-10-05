@@ -191,39 +191,29 @@ theorem rootIsolation_of_source_boundary
         f x = f y → (x ∈ Hset ↔ y ∈ Hset))
     (sD : Embedding Dsrc Esrc)
     (root : Embedding Dsrc Target)
-    (q : H → H)
+    (q : H → H) (hq : Function.Surjective q)
     (hcompat : ∀ d, f (sD d) = root (q d))
     (hchar : ∀ x : E, x ∈ Boundary ↔
       ∃ d : H, x = sD d) :
     ∀ x d, f x = root d →
       ∃ d' : H, x = sD d' ∧ q d' = d := by
   intro x d hxd
-  have hrootmem : sD d ∈ Boundary := (hchar (sD d)).2 ⟨d, rfl⟩
-  -- We do not know that q is the identity, so compare with a labelled root
-  -- point only after choosing a source preimage carrying label d.
-  by_cases hd : ∃ d0 : H, q d0 = d
-  · obtain ⟨d0, hd0⟩ := hd
-    have hEq : f x = f (sD d0) := by
-      calc
-        f x = root d := hxd
-        _ = root (q d0) := congrArg root hd0.symm
-        _ = f (sD d0) := (hcompat d0).symm
-    have hxmem : x ∈ Boundary :=
-      (hHist Boundary hBoundary x (sD d0) hEq).2
-        ((hchar (sD d0)).2 ⟨d0, rfl⟩)
-    obtain ⟨d', hx⟩ := (hchar x).1 hxmem
-    refine ⟨d', hx, ?_⟩
-    apply root.injective
+  obtain ⟨d0, hd0⟩ := hq d
+  have hEq : f x = f (sD d0) := by
     calc
-      root (q d') = f (sD d') := (hcompat d').symm
-      _ = f x := congrArg f hx.symm
-      _ = root d := hxd
-  · exfalso
-    apply hd
-    -- hxd alone need not put d in the labelled root image; callers use this
-    -- lemma with q = id (or another surjective label map).  Keep the impossible
-    -- branch explicit so the theorem records that requirement.
-    exact ⟨d, rfl⟩
+      f x = root d := hxd
+      _ = root (q d0) := congrArg root hd0.symm
+      _ = f (sD d0) := (hcompat d0).symm
+  have hxmem : x ∈ Boundary :=
+    (hHist Boundary hBoundary x (sD d0) hEq).2
+      ((hchar (sD d0)).2 ⟨d0, rfl⟩)
+  obtain ⟨d', hx⟩ := (hchar x).1 hxmem
+  refine ⟨d', hx, ?_⟩
+  apply root.injective
+  calc
+    root (q d') = f (sD d') := (hcompat d').symm
+    _ = f x := congrArg f hx.symm
+    _ = root d := hxd
 
 /-- Usable form of root isolation.  The side source is already the induced
 closed test, so no closure proof appears in the statement. -/
