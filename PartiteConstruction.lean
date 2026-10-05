@@ -18,6 +18,7 @@ import PartiteConstruction.Functional.PartPredicates
 import PartiteConstruction.Functional.HalfClosedPartite
 import PartiteConstruction.Functional.SingletonExpansion
 import PartiteConstruction.Functional.SingletonReduction
+import PartiteConstruction.Functional.RankedTreeReduct
 import PartiteConstruction.Functional.PartialDomainEncoding
 import PartiteConstruction.Functional.FunctionDomains
 import PartiteConstruction.Functional.SingletonPartite
