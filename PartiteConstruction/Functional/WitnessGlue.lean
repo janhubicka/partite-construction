@@ -613,15 +613,37 @@ theorem glueRecordedBoundary
   have hisoE :
       ∀ x d, hE x = rE d →
         ∃ d' : H, x = sE d' ∧ d' = d := by
-    exact rootIsolation_of_recorded_boundary
-      pE Boundary history hBoundary hE hHistE
-      sE rE hcompatE hcharE
+    intro x d hxd
+    have hEq : hE x = hE (sE d) :=
+      hxd.trans (hcompatE d).symm
+    have hmemRoot : pE (sE d) ∈ Boundary :=
+      (hcharE (sE d)).2 ⟨d, rfl⟩
+    have hmemX : pE x ∈ Boundary :=
+      (hHistE Boundary hBoundary x (sE d) hEq).2 hmemRoot
+    obtain ⟨d', hx⟩ := (hcharE x).1 hmemX
+    refine ⟨d', hx, ?_⟩
+    apply rE.injective
+    calc
+      rE d' = hE (sE d') := (hcompatE d').symm
+      _ = hE x := congrArg hE hx.symm
+      _ = rE d := hxd
   have hisoF :
       ∀ x d, hF x = rF d →
         ∃ d' : H, x = sF d' ∧ d' = d := by
-    exact rootIsolation_of_recorded_boundary
-      pF Boundary history hBoundary hF hHistF
-      sF rF hcompatF hcharF
+    intro x d hxd
+    have hEq : hF x = hF (sF d) :=
+      hxd.trans (hcompatF d).symm
+    have hmemRoot : pF (sF d) ∈ Boundary :=
+      (hcharF (sF d)).2 ⟨d, rfl⟩
+    have hmemX : pF x ∈ Boundary :=
+      (hHistF Boundary hBoundary x (sF d) hEq).2 hmemRoot
+    obtain ⟨d', hx⟩ := (hcharF x).1 hmemX
+    refine ⟨d', hx, ?_⟩
+    apply rF.injective
+    calc
+      rF d' = hF (sF d') := (hcompatF d').symm
+      _ = hF x := congrArg hF hx.symm
+      _ = rF d := hxd
   exact glueCommonSourceRoot
     (Base := Base) hSrc hTreeE hTreeF
     rE rF hcE hcF hE hF
