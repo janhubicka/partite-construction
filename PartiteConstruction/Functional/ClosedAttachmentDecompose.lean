@@ -178,4 +178,195 @@ theorem overlap_functionClosed
     rest_functionClosed B S D f T i hS hT
       F x y hy (fun k => (hx k).2)⟩
 
+
+/-- The overlap is function-closed in the chosen piece. -/
+theorem overlap_in_piece_functionClosed
+    (hS : RelStructure.FunctionClosedSet B.toRelStructure S)
+    (hT : RelStructure.FunctionClosedSet
+      (RAttach B S D f).toRelStructure T) :
+    RelStructure.FunctionClosedMap
+      (RelStructure.Attachment.Overlap
+        B.toRelStructure S D.toRelStructure
+        (fun j => (f j).1.toEmbedding) T i)
+      (RelStructure.Attachment.Piece
+        B.toRelStructure S D.toRelStructure
+        (fun j => (f j).1.toEmbedding) T i)
+      (RelStructure.Attachment.overlapToPiece
+        B.toRelStructure S D.toRelStructure
+        (fun j => (f j).1.toEmbedding) T i) := by
+  intro F x y hy
+  have hySmall :
+      ((RAttach B S D f).toRelStructure.induce T).rel (.inr F)
+        (Structure.funcTuple
+          ((RelStructure.Attachment.pieceInclusion
+            B.toRelStructure S D.toRelStructure
+            (fun j => (f j).1.toEmbedding) T i) ∘
+            ((RelStructure.Attachment.overlapToPiece
+              B.toRelStructure S D.toRelStructure
+              (fun j => (f j).1.toEmbedding) T i) ∘ x))
+          ((RelStructure.Attachment.pieceInclusion
+            B.toRelStructure S D.toRelStructure
+            (fun j => (f j).1.toEmbedding) T i) y)) := by
+    exact hy
+  let ySmall :
+      RelStructure.Attachment.Small
+        B.toRelStructure S D.toRelStructure
+        (fun j => (f j).1.toEmbedding) T :=
+    (RelStructure.Attachment.pieceInclusion
+      B.toRelStructure S D.toRelStructure
+      (fun j => (f j).1.toEmbedding) T i) y
+  have hxOverlap :
+      ∀ k,
+        ((RelStructure.Attachment.pieceInclusion
+          B.toRelStructure S D.toRelStructure
+          (fun j => (f j).1.toEmbedding) T i)
+          ((RelStructure.Attachment.overlapToPiece
+            B.toRelStructure S D.toRelStructure
+            (fun j => (f j).1.toEmbedding) T i) (x k))) ∈
+          RelStructure.Attachment.overlapSet
+            (W := W) (I := I)
+            B.toRelStructure S D.toRelStructure
+            (fun j => (f j).1.toEmbedding) T i := by
+    intro k
+    exact (x k).2
+  have hyOverlap :
+      ySmall ∈
+        RelStructure.Attachment.overlapSet
+          (W := W) (I := I)
+          B.toRelStructure S D.toRelStructure
+          (fun j => (f j).1.toEmbedding) T i :=
+    overlap_functionClosed B S D f T i hS hT
+      F
+      (fun k =>
+        (RelStructure.Attachment.pieceInclusion
+          B.toRelStructure S D.toRelStructure
+          (fun j => (f j).1.toEmbedding) T i)
+          ((RelStructure.Attachment.overlapToPiece
+            B.toRelStructure S D.toRelStructure
+            (fun j => (f j).1.toEmbedding) T i) (x k)))
+      ySmall hySmall hxOverlap
+  let z :
+      RelStructure.Attachment.Overlap
+        B.toRelStructure S D.toRelStructure
+        (fun j => (f j).1.toEmbedding) T i :=
+    ⟨ySmall, hyOverlap⟩
+  refine ⟨z, ?_, ?_⟩
+  · exact hy
+  · apply Subtype.ext
+    rfl
+
+/-- The overlap is function-closed in the complementary rest. -/
+theorem overlap_in_rest_functionClosed
+    (hS : RelStructure.FunctionClosedSet B.toRelStructure S)
+    (hT : RelStructure.FunctionClosedSet
+      (RAttach B S D f).toRelStructure T) :
+    RelStructure.FunctionClosedMap
+      (RelStructure.Attachment.Overlap
+        B.toRelStructure S D.toRelStructure
+        (fun j => (f j).1.toEmbedding) T i)
+      (RelStructure.Attachment.Rest
+        B.toRelStructure S D.toRelStructure
+        (fun j => (f j).1.toEmbedding) T i)
+      (RelStructure.Attachment.overlapToRest
+        B.toRelStructure S D.toRelStructure
+        (fun j => (f j).1.toEmbedding) T i) := by
+  intro F x y hy
+  have hySmall :
+      ((RAttach B S D f).toRelStructure.induce T).rel (.inr F)
+        (Structure.funcTuple
+          ((RelStructure.Attachment.restInclusion
+            B.toRelStructure S D.toRelStructure
+            (fun j => (f j).1.toEmbedding) T i) ∘
+            ((RelStructure.Attachment.overlapToRest
+              B.toRelStructure S D.toRelStructure
+              (fun j => (f j).1.toEmbedding) T i) ∘ x))
+          ((RelStructure.Attachment.restInclusion
+            B.toRelStructure S D.toRelStructure
+            (fun j => (f j).1.toEmbedding) T i) y)) := by
+    exact hy
+  let ySmall :
+      RelStructure.Attachment.Small
+        B.toRelStructure S D.toRelStructure
+        (fun j => (f j).1.toEmbedding) T :=
+    (RelStructure.Attachment.restInclusion
+      B.toRelStructure S D.toRelStructure
+      (fun j => (f j).1.toEmbedding) T i) y
+  have hxOverlap :
+      ∀ k,
+        ((RelStructure.Attachment.restInclusion
+          B.toRelStructure S D.toRelStructure
+          (fun j => (f j).1.toEmbedding) T i)
+          ((RelStructure.Attachment.overlapToRest
+            B.toRelStructure S D.toRelStructure
+            (fun j => (f j).1.toEmbedding) T i) (x k))) ∈
+          RelStructure.Attachment.overlapSet
+            (W := W) (I := I)
+            B.toRelStructure S D.toRelStructure
+            (fun j => (f j).1.toEmbedding) T i := by
+    intro k
+    exact (x k).2
+  have hyOverlap :
+      ySmall ∈
+        RelStructure.Attachment.overlapSet
+          (W := W) (I := I)
+          B.toRelStructure S D.toRelStructure
+          (fun j => (f j).1.toEmbedding) T i :=
+    overlap_functionClosed B S D f T i hS hT
+      F
+      (fun k =>
+        (RelStructure.Attachment.restInclusion
+          B.toRelStructure S D.toRelStructure
+          (fun j => (f j).1.toEmbedding) T i)
+          ((RelStructure.Attachment.overlapToRest
+            B.toRelStructure S D.toRelStructure
+            (fun j => (f j).1.toEmbedding) T i) (x k)))
+      ySmall hySmall hxOverlap
+  let z :
+      RelStructure.Attachment.Overlap
+        B.toRelStructure S D.toRelStructure
+        (fun j => (f j).1.toEmbedding) T i :=
+    ⟨ySmall, hyOverlap⟩
+  refine ⟨z, ?_, ?_⟩
+  · exact hy
+  · apply Subtype.ext
+    rfl
+
+/-- A closed tested subset of a closed functional attachment is, after
+decoding graph relations, the genuine full free amalgam of its chosen-copy
+piece and complementary rest. -/
+theorem full_decompose
+    (hS : RelStructure.FunctionClosedSet B.toRelStructure S)
+    (hT : RelStructure.FunctionClosedSet
+      (RAttach B S D f).toRelStructure T) :
+    let g := fun j => (f j).1.toEmbedding
+    let hfree :=
+      RelStructure.Attachment.decompose
+        B.toRelStructure S D.toRelStructure g T i
+    let hfPiece :=
+      overlap_in_piece_functionClosed B S D f T i hS hT
+    let hfRest :=
+      overlap_in_rest_functionClosed B S D f T i hS hT
+    Structure.IsFreeAmalgam
+      (⟨RelStructure.Attachment.overlapToPiece
+          B.toRelStructure S D.toRelStructure g T i,
+        hfPiece⟩ : RelStructure.ClosedEmbedding _ _).toFull
+      (⟨RelStructure.Attachment.overlapToRest
+          B.toRelStructure S D.toRelStructure g T i,
+        hfRest⟩ : RelStructure.ClosedEmbedding _ _).toFull
+      (let hs := (hfree.sides_closed_iff).2 ⟨hfPiece, hfRest⟩
+       (⟨RelStructure.Attachment.pieceInclusion
+          B.toRelStructure S D.toRelStructure g T i,
+          hs.1⟩ : RelStructure.ClosedEmbedding _ _).toFull)
+      (let hs := (hfree.sides_closed_iff).2 ⟨hfPiece, hfRest⟩
+       (⟨RelStructure.Attachment.restInclusion
+          B.toRelStructure S D.toRelStructure g T i,
+          hs.2⟩ : RelStructure.ClosedEmbedding _ _).toFull) := by
+  dsimp
+  exact RelStructure.IsFreeAmalgam.toFull
+    (RelStructure.Attachment.decompose
+      B.toRelStructure S D.toRelStructure
+      (fun j => (f j).1.toEmbedding) T i)
+    (overlap_in_piece_functionClosed B S D f T i hS hT)
+    (overlap_in_rest_functionClosed B S D f T i hS hT)
+
 end StructuralRamsey.Partite.Closed.Attachment
