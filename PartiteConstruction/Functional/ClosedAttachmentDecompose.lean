@@ -488,13 +488,14 @@ noncomputable def fullSmallEmbeddingToCopy
       RelStructure.ClosedEmbedding
         ((RAttach B S D f).toRelStructure.induce T)
         (RAttach B S D f).toRelStructure :=
-    ⟨RelStructure.inclusion (RAttach B S D f).toRelStructure T, hTest⟩
+    RelStructure.ClosedEmbedding.inclusion
+      (RAttach B S D f).toRelStructure T hTest
   let smallFull := smallRel.toFull
   let copyRel :
       RelStructure.ClosedEmbedding
         B.toRelStructure (RAttach B S D f).toRelStructure :=
-    ⟨Partite.Attachment.copyEmbedding
-        B S D (fun j => (f j).1) i,
+    ⟨(Partite.Attachment.copyEmbedding
+        B S D (fun j => (f j).1) i).toEmbedding,
       Partite.Closed.Attachment.copy_closed
         (B := B) (S := S) (D := D) (f := f) hSupp i⟩
   let copyFull := copyRel.toFull
@@ -502,8 +503,12 @@ noncomputable def fullSmallEmbeddingToCopy
       ∀ z : T, ∃ x : V, smallFull z = copyFull x := by
     intro z
     rcases hcopy z with ⟨x, hx⟩
-    exact ⟨x, hx⟩
-  exact smallFull.factorThroughRange copyFull hrange
+    refine ⟨x, ?_⟩
+    change z.1 =
+      RelStructure.Attachment.copyMap
+        B.toRelStructure S D.toRelStructure (maps B S D f) i x
+    exact hx
+  exact smallFull.factorThroughClosedRange copyFull hrange
 
 /-- A closed test lying wholly in the attachment core embeds fully into the
 decoded functional core. -/
@@ -528,8 +533,8 @@ noncomputable def fullSmallEmbeddingToCore
   let coreRel :
       RelStructure.ClosedEmbedding
         D.toRelStructure (RAttach B S D f).toRelStructure :=
-    ⟨Partite.Attachment.coreEmbedding
-        B S D (fun j => (f j).1),
+    ⟨(Partite.Attachment.coreEmbedding
+        B S D (fun j => (f j).1)).toEmbedding,
       Partite.Closed.Attachment.core_closed
         (B := B) (S := S) (D := D) (f := f) hSupp⟩
   let coreFull := coreRel.toFull
@@ -537,8 +542,12 @@ noncomputable def fullSmallEmbeddingToCore
       ∀ z : T, ∃ w : W, smallFull z = coreFull w := by
     intro z
     rcases hcore z with ⟨w, hw⟩
-    exact ⟨w, hw⟩
-  exact smallFull.factorThroughRange coreFull hrange
+    refine ⟨w, ?_⟩
+    change z.1 =
+      (Partite.Attachment.coreEmbedding
+        B S D (fun j => (f j).1)).toEmbedding w
+    exact hw
+  exact smallFull.factorThroughClosedRange coreFull hrange
 
 end
 
