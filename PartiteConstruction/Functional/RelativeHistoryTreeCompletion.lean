@@ -31,10 +31,10 @@ def FunctionalRelativeHistoryTreeLike
     ∀ (projectedHistory : List (Set P))
       (sourceHistory : List (Set W))
       (β : Embedding A D) (H : Set U) (hH : A.IsClosed H)
-      (e : Embedding (A.induce H hH) C),
-      (∀ x, p (e x) = β x.1) →
-      (∀ x, e x ∈ S) →
-      ∀ ell : Embedding (A.induce H hH) A,
+      (e : Embedding (A.induce H hH) C)
+      (hproj : ∀ x, p (e x) = β x.1)
+      (hRange : ∀ x, e x ∈ S)
+      (ell : Embedding (A.induce H hH) A),
       ∃ (Z : Type v) (Target : Structure L Z),
         TreeAmalgam Base Z Target ∧
         ∃ f : ↥(↑S : Set W) → Z,
@@ -47,7 +47,7 @@ def FunctionalRelativeHistoryTreeLike
             S f sourceHistory ∧
           ∃ targetCopy : Embedding A Target,
             ∀ x : ↥H,
-              f ⟨e x, by assumption⟩ = targetCopy (ell x)
+              f ⟨e x, hRange x⟩ = targetCopy (ell x)
 
 namespace FunctionalRelativeHistoryTreeLike
 
