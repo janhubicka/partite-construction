@@ -140,6 +140,97 @@ theorem rootIsolated_of_injective_surjective
   apply hinjA
   exact hag.trans (hcompatA d).symm
 
+/-- A secondary isolated root carried by the right side remains isolated after
+the compatible functional lift.  This is the persistence fact used when an
+outer attachment boundary lies in the core/rest side of a later mixed split. -/
+theorem functionalLiftMap_preservesRightRoot
+    (hSrc : IsFreeAmalgam sA sB iA iB)
+    (hTgt : IsFreeAmalgam tA tB jA jB)
+    (q : H → G)
+    (hA : E → E₂) (hB : F → F₂)
+    (hcompatA : ∀ d, hA (sA d) = tA (q d))
+    (hcompatB : ∀ d, hB (sB d) = tB (q d))
+    (hrootA : RootIsolated sA tA q hA)
+    {K Q : Type v}
+    {Rsrc : Structure L K} {Rtgt : Structure L Q}
+    (rSrc : Embedding Rsrc B₁)
+    (rTgt : Embedding Rtgt B₂)
+    (ell : Embedding Rsrc Rtgt)
+    (hcompatR : ∀ k, hB (rSrc k) = rTgt (ell k))
+    (hrootR : RootIsolated rSrc rTgt ell hB) :
+    let Fmap :=
+      functionalLiftMap hSrc hTgt q hA hB hcompatA hcompatB
+    (∀ k,
+      Fmap ((iB.comp rSrc) k) =
+        (jB.comp rTgt) (ell k)) ∧
+    RootIsolated
+      (iB.comp rSrc) (jB.comp rTgt) ell Fmap := by
+  classical
+  let Fmap :=
+    functionalLiftMap hSrc hTgt q hA hB hcompatA hcompatB
+  have hcompatWhole :
+      ∀ k,
+        Fmap ((iB.comp rSrc) k) =
+          (jB.comp rTgt) (ell k) := by
+    intro k
+    calc
+      Fmap ((iB.comp rSrc) k) =
+          Fmap (iB (rSrc k)) := rfl
+      _ = jB (hB (rSrc k)) :=
+        functionalLiftMap_right
+          hSrc hTgt q hA hB hcompatA hcompatB (rSrc k)
+      _ = jB (rTgt (ell k)) :=
+        congrArg jB (hcompatR k)
+      _ = (jB.comp rTgt) (ell k) := rfl
+  refine ⟨hcompatWhole, ?_⟩
+  intro x u hxu
+  rcases hSrc.covers x with ⟨a, hxa⟩ | ⟨b, hxb⟩
+  · have hcross :
+        jA (hA a) = jB (rTgt u) := by
+      calc
+        jA (hA a) =
+            Fmap (iA a) :=
+          (functionalLiftMap_left
+            hSrc hTgt q hA hB hcompatA hcompatB a).symm
+        _ = Fmap x := congrArg Fmap hxa.symm
+        _ = (jB.comp rTgt) u := hxu
+        _ = jB (rTgt u) := rfl
+    obtain ⟨g, hag, hrg⟩ :=
+      (hTgt.overlap (hA a) (rTgt u)).mp hcross
+    obtain ⟨d, had, hqd⟩ := hrootA a g hag
+    have hright :
+        hB (sB d) = rTgt u := by
+      calc
+        hB (sB d) = tB (q d) := hcompatB d
+        _ = tB g := congrArg tB hqd
+        _ = rTgt u := hrg.symm
+    obtain ⟨k, hsk, hku⟩ := hrootR (sB d) u hright
+    refine ⟨k, ?_, hku⟩
+    calc
+      x = iA a := hxa
+      _ = iA (sA d) := congrArg iA had
+      _ = iB (sB d) :=
+        (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
+      _ = iB (rSrc k) := congrArg iB hsk
+      _ = (iB.comp rSrc) k := rfl
+  · have hright :
+        hB b = rTgt u := by
+      apply jB.injective
+      calc
+        jB (hB b) =
+            Fmap (iB b) :=
+          (functionalLiftMap_right
+            hSrc hTgt q hA hB hcompatA hcompatB b).symm
+        _ = Fmap x := congrArg Fmap hxb.symm
+        _ = (jB.comp rTgt) u := hxu
+        _ = jB (rTgt u) := rfl
+    obtain ⟨k, hbk, hku⟩ := hrootR b u hright
+    refine ⟨k, ?_, hku⟩
+    calc
+      x = iB b := hxb
+      _ = iB (rSrc k) := congrArg iB hbk
+      _ = (iB.comp rSrc) k := rfl
+
 /-- Compatible full homomorphism-embeddings lift across free amalgams when
 both side witnesses are isolated over the common target root.  No global
 injectivity is needed. -/
