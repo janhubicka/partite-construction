@@ -158,6 +158,38 @@ noncomputable def ofEmbeddedLabels
       _ = beta z.1 :=
         congrArg beta (BoundaryRequest.embeddedFromRange_spec ell z)
 
+/-- Factor a projected boundary backwards through a full source embedding
+whose range contains the boundary.  This is the diary restriction used when a
+recursive mixed step passes older boundaries to one side of a free amalgam. -/
+noncomputable def factorThroughRange
+    {P X : Type v} {D : Structure L P} {C' : Structure L X}
+    {p : W → P} {p' : X → P}
+    (r : ProjectedBoundaryRequest A D C p)
+    (j : Embedding C' C)
+    (hcomm : ∀ x, p (j x) = p' x)
+    (hrange :
+      ∀ x, ∃ y : X, r.boundary.embedding x = j y) :
+    ProjectedBoundaryRequest A D C' p' where
+  boundary := {
+    support := r.boundary.support
+    supportClosed := r.boundary.supportClosed
+    embedding :=
+      r.boundary.embedding.factorThroughClosedRange j hrange
+  }
+  beta := r.beta
+  projection := by
+    intro x
+    let e' :=
+      r.boundary.embedding.factorThroughClosedRange j hrange
+    have hfactor :
+        j (e' x) = r.boundary.embedding x := by
+      have hx := Classical.choose_spec (hrange x)
+      exact hx.symm
+    calc
+      p' (e' x) = p (j (e' x)) := (hcomm (e' x)).symm
+      _ = p (r.boundary.embedding x) := congrArg p hfactor
+      _ = r.beta x.1 := r.projection x
+
 /-- Transport a projected boundary through a full source embedding whose
 outer projection commutes with the old one. -/
 def postcomp
