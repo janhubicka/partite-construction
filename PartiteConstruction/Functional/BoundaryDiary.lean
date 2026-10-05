@@ -135,7 +135,9 @@ theorem lift_preservesRightBoundary
       hSrc hTgt q fL fR hcompatL hcompatR hrootL
       r.embedding targetCopy
       (inclusion A r.support r.supportClosed)
-      (fun x => by simpa using hsec x)
+      (fun x => by
+        change fR (r.embedding x) = targetCopy x.1
+        exact hsec x)
       hsecIso
   let f :=
     functionalLiftMap hSrc hTgt q fL fR hcompatL hcompatR
