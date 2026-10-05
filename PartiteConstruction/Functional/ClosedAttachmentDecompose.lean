@@ -469,6 +469,77 @@ theorem full_decompose_named
     fullPieceInclusion, fullRestInclusion]
     using full_decompose B S D f T i hS
 
+
+/-- A closed test lying wholly in one attached copy embeds fully back into the
+copied functional structure. -/
+noncomputable def fullSmallEmbeddingToCopy
+    (hSupp : RelStructure.FunctionClosedSet B.toRelStructure S)
+    (hTest :
+      RelStructure.FunctionClosedSet
+        (RAttach B S D f).toRelStructure T)
+    (hcopy :
+      ∀ z : T,
+        RelStructure.Attachment.InCopy
+          B.toRelStructure S D.toRelStructure (maps B S D f) i z.1) :
+    Structure.Embedding
+      (FullSmall B S D f T)
+      (Structure.ofGraph B.toRelStructure) := by
+  let smallRel :
+      RelStructure.ClosedEmbedding
+        ((RAttach B S D f).toRelStructure.induce T)
+        (RAttach B S D f).toRelStructure :=
+    ⟨RelStructure.inclusion (RAttach B S D f).toRelStructure T, hTest⟩
+  let smallFull := smallRel.toFull
+  let copyRel :
+      RelStructure.ClosedEmbedding
+        B.toRelStructure (RAttach B S D f).toRelStructure :=
+    ⟨Partite.Attachment.copyEmbedding
+        B S D (fun j => (f j).1) i,
+      Partite.Closed.Attachment.copy_closed
+        (B := B) (S := S) (D := D) (f := f) hSupp i⟩
+  let copyFull := copyRel.toFull
+  have hrange :
+      ∀ z : T, ∃ x : V, smallFull z = copyFull x := by
+    intro z
+    rcases hcopy z with ⟨x, hx⟩
+    exact ⟨x, hx⟩
+  exact smallFull.factorThroughRange copyFull hrange
+
+/-- A closed test lying wholly in the attachment core embeds fully into the
+decoded functional core. -/
+noncomputable def fullSmallEmbeddingToCore
+    (hSupp : RelStructure.FunctionClosedSet B.toRelStructure S)
+    (hTest :
+      RelStructure.FunctionClosedSet
+        (RAttach B S D f).toRelStructure T)
+    (hcore :
+      ∀ z : T, ∃ w : W, z.1 =
+        Partite.Attachment.coreEmbedding
+          B S D (fun j => (f j).1) w) :
+    Structure.Embedding
+      (FullSmall B S D f T)
+      (Structure.ofGraph D.toRelStructure) := by
+  let smallRel :
+      RelStructure.ClosedEmbedding
+        ((RAttach B S D f).toRelStructure.induce T)
+        (RAttach B S D f).toRelStructure :=
+    ⟨RelStructure.inclusion (RAttach B S D f).toRelStructure T, hTest⟩
+  let smallFull := smallRel.toFull
+  let coreRel :
+      RelStructure.ClosedEmbedding
+        D.toRelStructure (RAttach B S D f).toRelStructure :=
+    ⟨Partite.Attachment.coreEmbedding
+        B S D (fun j => (f j).1),
+      Partite.Closed.Attachment.core_closed
+        (B := B) (S := S) (D := D) (f := f) hSupp⟩
+  let coreFull := coreRel.toFull
+  have hrange :
+      ∀ z : T, ∃ w : W, smallFull z = coreFull w := by
+    intro z
+    rcases hcore z with ⟨w, hw⟩
+    exact ⟨w, hw⟩
+  exact smallFull.factorThroughRange coreFull hrange
+
 end
 
 end StructuralRamsey.Partite.Closed.Attachment
