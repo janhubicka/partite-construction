@@ -133,6 +133,49 @@ theorem irreducible_contained_in_copy
           e a = i₂ (e₂ a) := hea
           _ = i₂ (j₂ b) := congrArg i₂ hb
 
+
+
+/-- Forgetting ranks preserves a functional tree amalgam as soon as the
+reduced base is irreducible.  Root-containment after reduct is witnessed by
+a constituent base copy rather than by reducing an arbitrary intermediate
+irreducible witness. -/
+theorem rankReduct
+    {n : ℕ}
+    {Base : Structure (L.rankFunctions n) V}
+    {T : Structure (L.rankFunctions n) W}
+    (hBaseRed : (Structure.rankReduct Base).Irreducible)
+    (hT : TreeAmalgam Base W T) :
+    TreeAmalgam (Structure.rankReduct Base) W
+      (Structure.rankReduct T) := by
+  induction hT with
+  | copy e hsurj =>
+      exact TreeAmalgam.copy e.rankReduct hsurj
+  | @glue W₁ W₂ Z W T₁ T₂ D T
+      h₁ h₂ f₁ f₂ hc₁ hc₂ i₁ i₂ hfree ih₁ ih₂ =>
+      have hc₁red :
+          (f₁.rankReduct).ContainedInIrreducible := by
+        rcases hc₁ with ⟨Q, E, hE, j, hj⟩
+        obtain ⟨k, hk⟩ := h₁.irreducible_contained_in_copy hE j
+        refine ⟨V, Structure.rankReduct Base, hBaseRed,
+          k.rankReduct, ?_⟩
+        intro d
+        obtain ⟨x, hdx⟩ := hj d
+        obtain ⟨b, hxb⟩ := hk x
+        exact ⟨b, hdx.trans hxb⟩
+      have hc₂red :
+          (f₂.rankReduct).ContainedInIrreducible := by
+        rcases hc₂ with ⟨Q, E, hE, j, hj⟩
+        obtain ⟨k, hk⟩ := h₂.irreducible_contained_in_copy hE j
+        refine ⟨V, Structure.rankReduct Base, hBaseRed,
+          k.rankReduct, ?_⟩
+        intro d
+        obtain ⟨x, hdx⟩ := hj d
+        obtain ⟨b, hxb⟩ := hk x
+        exact ⟨b, hdx.trans hxb⟩
+      exact TreeAmalgam.glue
+        ih₁ ih₂ f₁.rankReduct f₂.rankReduct
+        hc₁red hc₂red i₁.rankReduct i₂.rankReduct
+        hfree.rankReduct
 end TreeAmalgam
 
 end StructuralRamsey.Structure
