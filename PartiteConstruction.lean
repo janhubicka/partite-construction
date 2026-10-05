@@ -190,3 +190,5 @@ import PartiteConstruction.Functional.InitialTreeCompletion
 import PartiteConstruction.Functional.ClosedGeneratorRank
 
 import PartiteConstruction.Functional.GeneratedTreeCompletion
+
+import PartiteConstruction.Functional.ProjectedHistoryTreeCompletion
