@@ -229,6 +229,24 @@ theorem histories_of_injective
     rfl
   · exact respectsSourceHistory_of_injective hf sourceHistory
 
+/-- Source history on the preimages of projected diary sets already implies
+the projected-history condition.  This lets the mixed functional step carry
+one source-side diary through the free-amalgam glue and recover the projected
+diary afterwards. -/
+theorem projectedHistory_of_sourcePreimages
+    {Y : Type v} {S : Finset W}
+    {f : ↥(↑S : Set W) → Y}
+    (history : List (Set P))
+    (hSrc :
+      FunctionalRespectsSourceHistory S f
+        (history.map (fun H => p ⁻¹' H))) :
+    FunctionalRespectsProjectedHistory p S f history := by
+  intro H hH x y hxy
+  have hpre :
+      p ⁻¹' H ∈ history.map (fun K => p ⁻¹' K) := by
+    apply List.mem_map.mpr
+    exact ⟨H, hH, rfl⟩
+  simpa using hSrc (p ⁻¹' H) hpre x y hxy
 
 end FunctionalHistoryTreeLike
 
