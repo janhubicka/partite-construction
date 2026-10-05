@@ -228,6 +228,136 @@ theorem histories_of_injective
     rfl
   · exact respectsSourceHistory_of_injective hf sourceHistory
 
+
 end FunctionalHistoryTreeLike
+
+namespace IsFreeAmalgam
+
+variable {H E F C₀ G ZL ZR Z : Type v}
+variable {Root : Structure L H}
+variable {Left : Structure L E} {Right : Structure L F}
+variable {Whole : Structure L C₀}
+variable {Gov : Structure L G}
+variable {TL : Structure L ZL} {TR : Structure L ZR}
+variable {Target : Structure L Z}
+variable {sL : Embedding Root Left} {sR : Embedding Root Right}
+variable {iL : Embedding Left Whole} {iR : Embedding Right Whole}
+variable {tL : Embedding Gov TL} {tR : Embedding Gov TR}
+variable {jL : Embedding TL Target} {jR : Embedding TR Target}
+
+/-- Source-side diary predicates survive the compatible functional lift.
+
+The only nontrivial case is equality between a point from the left side and a
+point from the right side.  Root isolation places both points over source-root
+vertices with the same target-root label; injectivity of the root labelling
+then identifies those source-root vertices, so the two source points were
+already equal in the free amalgam. -/
+theorem functionalLiftMap_respectsSourceSets
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (hTgt : IsFreeAmalgam tL tR jL jR)
+    (q : H → G) (hq : Function.Injective q)
+    (fL : E → ZL) (fR : F → ZR)
+    (hcompatL : ∀ d, fL (sL d) = tL (q d))
+    (hcompatR : ∀ d, fR (sR d) = tR (q d))
+    (hrootL : RootIsolated sL tL q fL)
+    (hrootR : RootIsolated sR tR q fR)
+    (history : List (Set C₀))
+    (hHistL :
+      ∀ Hset ∈ history, ∀ x y : E,
+        fL x = fL y → (iL x ∈ Hset ↔ iL y ∈ Hset))
+    (hHistR :
+      ∀ Hset ∈ history, ∀ x y : F,
+        fR x = fR y → (iR x ∈ Hset ↔ iR y ∈ Hset)) :
+    ∀ Hset ∈ history, ∀ x y : C₀,
+      functionalLiftMap hSrc hTgt q fL fR hcompatL hcompatR x =
+          functionalLiftMap hSrc hTgt q fL fR hcompatL hcompatR y →
+        (x ∈ Hset ↔ y ∈ Hset) := by
+  classical
+  let lift :=
+    functionalLiftMap hSrc hTgt q fL fR hcompatL hcompatR
+  intro Hset hH x y hxy
+  rcases hSrc.covers x with ⟨a, hxa⟩ | ⟨b, hxb⟩
+  · rcases hSrc.covers y with ⟨a', hya⟩ | ⟨b, hyb⟩
+    · have haa : fL a = fL a' := by
+        apply jL.injective
+        calc
+          jL (fL a) = lift (iL a) :=
+            (functionalLiftMap_left hSrc hTgt q fL fR
+              hcompatL hcompatR a).symm
+          _ = lift x := congrArg lift hxa.symm
+          _ = lift y := hxy
+          _ = lift (iL a') := congrArg lift hya
+          _ = jL (fL a') :=
+            functionalLiftMap_left hSrc hTgt q fL fR
+              hcompatL hcompatR a'
+      rw [hxa, hya]
+      exact hHistL Hset hH a a' haa
+    · have hcross : jL (fL a) = jR (fR b) := by
+        calc
+          jL (fL a) = lift (iL a) :=
+            (functionalLiftMap_left hSrc hTgt q fL fR
+              hcompatL hcompatR a).symm
+          _ = lift x := congrArg lift hxa.symm
+          _ = lift y := hxy
+          _ = lift (iR b) := congrArg lift hyb
+          _ = jR (fR b) :=
+            functionalLiftMap_right hSrc hTgt q fL fR
+              hcompatL hcompatR b
+      obtain ⟨g, hLg, hRg⟩ := (hTgt.overlap (fL a) (fR b)).mp hcross
+      obtain ⟨dL, ha, hqdL⟩ := hrootL a g hLg
+      obtain ⟨dR, hb, hqdR⟩ := hrootR b g hRg
+      have hd : dL = dR := by
+        apply hq
+        exact hqdL.trans hqdR.symm
+      have hab : iL a = iR b := by
+        calc
+          iL a = iL (sL dL) := congrArg iL ha
+          _ = iL (sL dR) := congrArg (fun d => iL (sL d)) hd
+          _ = iR (sR dR) :=
+            (hSrc.overlap (sL dR) (sR dR)).mpr ⟨dR, rfl, rfl⟩
+          _ = iR b := congrArg iR hb.symm
+      rw [hxa, hyb, hab]
+  · rcases hSrc.covers y with ⟨a, hya⟩ | ⟨b', hyb⟩
+    · have hcross : jL (fL a) = jR (fR b) := by
+        calc
+          jL (fL a) = lift (iL a) :=
+            (functionalLiftMap_left hSrc hTgt q fL fR
+              hcompatL hcompatR a).symm
+          _ = lift y := congrArg lift hya.symm
+          _ = lift x := hxy.symm
+          _ = lift (iR b) := congrArg lift hxb
+          _ = jR (fR b) :=
+            functionalLiftMap_right hSrc hTgt q fL fR
+              hcompatL hcompatR b
+      obtain ⟨g, hLg, hRg⟩ := (hTgt.overlap (fL a) (fR b)).mp hcross
+      obtain ⟨dL, ha, hqdL⟩ := hrootL a g hLg
+      obtain ⟨dR, hb, hqdR⟩ := hrootR b g hRg
+      have hd : dL = dR := by
+        apply hq
+        exact hqdL.trans hqdR.symm
+      have hab : iL a = iR b := by
+        calc
+          iL a = iL (sL dL) := congrArg iL ha
+          _ = iL (sL dR) := congrArg (fun d => iL (sL d)) hd
+          _ = iR (sR dR) :=
+            (hSrc.overlap (sL dR) (sR dR)).mpr ⟨dR, rfl, rfl⟩
+          _ = iR b := congrArg iR hb.symm
+      rw [hxb, hya, ← hab]
+    · have hbb : fR b = fR b' := by
+        apply jR.injective
+        calc
+          jR (fR b) = lift (iR b) :=
+            (functionalLiftMap_right hSrc hTgt q fL fR
+              hcompatL hcompatR b).symm
+          _ = lift x := congrArg lift hxb.symm
+          _ = lift y := hxy
+          _ = lift (iR b') := congrArg lift hyb
+          _ = jR (fR b') :=
+            functionalLiftMap_right hSrc hTgt q fL fR
+              hcompatL hcompatR b'
+      rw [hxb, hyb]
+      exact hHistR Hset hH b b' hbb
+
+end IsFreeAmalgam
 
 end StructuralRamsey.Structure
