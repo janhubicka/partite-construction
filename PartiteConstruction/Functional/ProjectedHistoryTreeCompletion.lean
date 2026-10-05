@@ -480,10 +480,7 @@ theorem glue_closed_attachment_test
             Bsys Supp Dsys maps0 Test idx hSupp d) :
     ∃ (Z : Type v) (Target : Structure L Z),
       TreeAmalgam Base Z Target ∧
-      ∃ f :
-        _root_.StructuralRamsey.RelStructure.Attachment.SmallV
-          Bsys.toRelStructure Supp Dsys.toRelStructure
-          ((fun j => (maps0 j).1.toEmbedding)) Test → Z,
+      ∃ f : ↥Test → Z,
         (_root_.StructuralRamsey.Partite.Closed.Attachment.FullSmall
           Bsys Supp Dsys maps0 Test).IsHomomorphismEmbedding Target f := by
   let hfree :=
