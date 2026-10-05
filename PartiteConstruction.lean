@@ -192,3 +192,5 @@ import PartiteConstruction.Functional.ClosedGeneratorRank
 import PartiteConstruction.Functional.GeneratedTreeCompletion
 
 import PartiteConstruction.Functional.ProjectedHistoryTreeCompletion
+
+import PartiteConstruction.Functional.ClosedAttachmentDecompose
