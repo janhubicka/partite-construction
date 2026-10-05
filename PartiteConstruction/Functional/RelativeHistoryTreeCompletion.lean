@@ -76,6 +76,59 @@ theorem mono
   exact h.2 S hS (hgen.mono hmn) projectedHistory sourceHistory
     β H hH e hproj hRange ell
 
+/-- Embed a requested closed boundary into the induced tested structure. -/
+def boundaryEmbedding
+    (S : Finset W) (hS : C.IsClosed (↑S : Set W))
+    {H : Set U} (hH : A.IsClosed H)
+    (e : Embedding (A.induce H hH) C)
+    (hRange : ∀ x, e x ∈ S) :
+    Embedding (A.induce H hH) (C.induce (↑S : Set W) hS) := {
+  toFun := fun x => ⟨e x, hRange x⟩
+  injective := by
+    intro x y hxy
+    apply e.injective
+    exact congrArg Subtype.val hxy
+  map_rel_iff := by
+    intro R x
+    exact e.map_rel_iff R x
+  map_func := by
+    intro F x
+    ext y
+    constructor
+    · rintro ⟨z, hz, rfl⟩
+      exact hz
+    · intro hy
+      rw [← e.map_func F (Subtype.val ∘ x)] at hy
+      rcases hy with ⟨z, hz, hzy⟩
+      refine ⟨z, hz, ?_⟩
+      apply Subtype.ext
+      exact hzy
+}
+
+/-- The isolation clause carried by a relative witness is exactly the
+root-isolation property for its boundary embedding and A-label map. -/
+theorem rootIsolated_of_relativeWitness
+    (S : Finset W) (hS : C.IsClosed (↑S : Set W))
+    {H : Set U} (hH : A.IsClosed H)
+    (e : Embedding (A.induce H hH) C)
+    (hRange : ∀ x, e x ∈ S)
+    (ell : Embedding (A.induce H hH) A)
+    {Z : Type v} {Target : Structure L Z}
+    (f : ↥(↑S : Set W) → Z)
+    (targetCopy : Embedding A Target)
+    (hiso :
+      ∀ y : ↥(↑S : Set W), ∀ a : U,
+        f y = targetCopy a →
+          ∃ x : ↥H, y.1 = e x ∧ ell x = a) :
+    IsFreeAmalgam.RootIsolated
+      (boundaryEmbedding (A := A) S hS hH e hRange)
+      targetCopy ell f := by
+  intro y a hya
+  obtain ⟨x, hyx, hxa⟩ := hiso y a hya
+  refine ⟨x, ?_, hxa⟩
+  apply Subtype.ext
+  exact hyx
+
 /-- Inclusion of a closed partial A-substructure gives the identity
 relative-labelling request. -/
 def identityLabelEmbedding
