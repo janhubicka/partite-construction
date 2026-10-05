@@ -101,6 +101,34 @@ variable {S : Finset W}
 variable {f : ↥(↑S : Set W) → Y}
 variable {α : Embedding A C}
 
+/-- Ordinary whole-A control canonically supplies quotient labels on the tested
+intersection. -/
+noncomputable def of_control
+    (targetCopy : Embedding A T)
+    (hctrl : ∀ a : U, ∀ ha : α a ∈ S,
+      ∃ a' : U, f ⟨α a, ha⟩ = targetCopy a') :
+    FunctionalLabelledIntersectionControl
+      (A := A) (C := C) (T := T) S f α where
+  targetCopy := targetCopy
+  label := fun x => Classical.choose (hctrl x.1 x.2)
+  agrees := fun x => Classical.choose_spec (hctrl x.1 x.2)
+
+/-- Package every ordinary ambient-copy control choice as functional labelled
+quotient data. -/
+theorem of_controls
+    (hctrl :
+      ∀ α : Embedding A C,
+        ∃ α' : Embedding A T,
+          ∀ a : U, ∀ ha : α a ∈ S,
+            ∃ a' : U, f ⟨α a, ha⟩ = α' a') :
+    ∀ α : Embedding A C,
+      Nonempty
+        (FunctionalLabelledIntersectionControl
+          (A := A) (C := C) (T := T) S f α) := by
+  intro β
+  obtain ⟨β', hβ'⟩ := hctrl β
+  exact ⟨of_control β' hβ'⟩
+
 /-- The full boundary substructure cut out by a closed test. -/
 abbrev boundary
     (hS : C.IsClosed (↑S : Set W)) :
