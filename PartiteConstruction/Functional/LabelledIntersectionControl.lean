@@ -235,7 +235,8 @@ theorem quotient_isHomomorphism
     (hS : C.IsClosed (↑S : Set W))
     (hf :
       (C.induce (↑S : Set W) hS).IsHomomorphism T f) :
-    (h.boundary hS).IsHomomorphism (h.root hS hf) h.quotient := by
+    (boundary (A := A) (α := α) hS).IsHomomorphism
+      (h.root hS hf) h.quotient := by
   have hl := h.label_isHomomorphism hS hf
   have hc :=
     hl.codRestrict h.labelRange (h.labelRange_closed hS hf)
