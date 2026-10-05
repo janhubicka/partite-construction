@@ -379,6 +379,96 @@ theorem full_decompose
     (overlapToPiece_functionClosed B S D f T i hS)
     (overlapToRest_functionClosed B S D f T i hS)
 
+
+/-! Named full-structure view of the closed-test decomposition. -/
+
+abbrev FullSmall :=
+  Structure.ofGraph
+    (RelStructure.Attachment.Small
+      B.toRelStructure S D.toRelStructure (maps B S D f) T)
+
+abbrev FullPiece :=
+  Structure.ofGraph
+    (RelStructure.Attachment.Piece
+      B.toRelStructure S D.toRelStructure (maps B S D f) T i)
+
+abbrev FullRest :=
+  Structure.ofGraph
+    (RelStructure.Attachment.Rest
+      B.toRelStructure S D.toRelStructure (maps B S D f) T i)
+
+abbrev FullOverlap :=
+  Structure.ofGraph
+    (RelStructure.Attachment.Overlap
+      B.toRelStructure S D.toRelStructure (maps B S D f) T i)
+
+noncomputable def fullOverlapToPiece
+    (hS : RelStructure.FunctionClosedSet B.toRelStructure S) :
+    Structure.Embedding
+      (FullOverlap B S D f T i)
+      (FullPiece B S D f T i) :=
+  (⟨RelStructure.Attachment.overlapToPiece
+      B.toRelStructure S D.toRelStructure (maps B S D f) T i,
+    overlapToPiece_functionClosed B S D f T i hS⟩ :
+      RelStructure.ClosedEmbedding _ _).toFull
+
+noncomputable def fullOverlapToRest
+    (hS : RelStructure.FunctionClosedSet B.toRelStructure S) :
+    Structure.Embedding
+      (FullOverlap B S D f T i)
+      (FullRest B S D f T i) :=
+  (⟨RelStructure.Attachment.overlapToRest
+      B.toRelStructure S D.toRelStructure (maps B S D f) T i,
+    overlapToRest_functionClosed B S D f T i hS⟩ :
+      RelStructure.ClosedEmbedding _ _).toFull
+
+noncomputable def fullPieceInclusion
+    (hS : RelStructure.FunctionClosedSet B.toRelStructure S) :
+    Structure.Embedding
+      (FullPiece B S D f T i)
+      (FullSmall B S D f T) := by
+  let hfree :=
+    RelStructure.Attachment.decompose
+      B.toRelStructure S D.toRelStructure (maps B S D f) T i
+  let hfPiece :=
+    overlapToPiece_functionClosed B S D f T i hS
+  let hfRest :=
+    overlapToRest_functionClosed B S D f T i hS
+  have hs := (hfree.sides_closed_iff).2 ⟨hfPiece, hfRest⟩
+  exact
+    (⟨RelStructure.Attachment.pieceInclusion
+        B.toRelStructure S D.toRelStructure (maps B S D f) T i,
+      hs.1⟩ : RelStructure.ClosedEmbedding _ _).toFull
+
+noncomputable def fullRestInclusion
+    (hS : RelStructure.FunctionClosedSet B.toRelStructure S) :
+    Structure.Embedding
+      (FullRest B S D f T i)
+      (FullSmall B S D f T) := by
+  let hfree :=
+    RelStructure.Attachment.decompose
+      B.toRelStructure S D.toRelStructure (maps B S D f) T i
+  let hfPiece :=
+    overlapToPiece_functionClosed B S D f T i hS
+  let hfRest :=
+    overlapToRest_functionClosed B S D f T i hS
+  have hs := (hfree.sides_closed_iff).2 ⟨hfPiece, hfRest⟩
+  exact
+    (⟨RelStructure.Attachment.restInclusion
+        B.toRelStructure S D.toRelStructure (maps B S D f) T i,
+      hs.2⟩ : RelStructure.ClosedEmbedding _ _).toFull
+
+theorem full_decompose_named
+    (hS : RelStructure.FunctionClosedSet B.toRelStructure S) :
+    Structure.IsFreeAmalgam
+      (fullOverlapToPiece B S D f T i hS)
+      (fullOverlapToRest B S D f T i hS)
+      (fullPieceInclusion B S D f T i hS)
+      (fullRestInclusion B S D f T i hS) := by
+  simpa [fullOverlapToPiece, fullOverlapToRest,
+    fullPieceInclusion, fullRestInclusion]
+    using full_decompose B S D f T i hS
+
 end
 
 end StructuralRamsey.Partite.Closed.Attachment
