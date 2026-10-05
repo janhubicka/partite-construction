@@ -102,7 +102,8 @@ theorem base (Base : Structure L V) (n : ℕ) :
     TreeAmalgam.copy (Embedding.id Base) (by
       intro x
       exact ⟨x, rfl⟩)
-  exact of_treeAmalgam (Base := Base) (C := Base) (W := V) hTree n
+  intro Z _ E _ e
+  exact ⟨V, Base, hTree, e, e.isHomomorphismEmbedding⟩
 
 /-- The generator-local property pulls back along a full
 homomorphism-embedding.  This is the composition step used whenever the
