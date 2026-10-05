@@ -210,3 +210,5 @@ import PartiteConstruction.Functional.ProjectedPartialEmbedded
 import PartiteConstruction.Functional.IsolatedCommonLabelGlue
 
 import PartiteConstruction.Functional.HistoryMixedGlue
+
+import PartiteConstruction.Functional.ClosedAttachmentHistoryGlue
