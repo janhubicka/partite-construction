@@ -530,6 +530,92 @@ theorem glueIsolatedRoot
       hhE hhF hrootE hrootF
   exact ⟨_, Target, hTree, f, hf⟩
 
+/-- Glue two functional tree-completion witnesses while retaining control of
+every copy of an irreducible control structure.  Compared with the relational
+controlled glue, exact preservation of function fibres is supplied by the
+two root-isolation hypotheses. -/
+theorem glueControlledIsolatedRoot
+    (hControl : Control.Irreducible)
+    (hSrc : IsFreeAmalgam sE sF iE iF)
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (hcE : tE.ContainedInIrreducible)
+    (hcF : tF.ContainedInIrreducible)
+    (q : H → G)
+    (hE : E → TE) (hF : F → TF)
+    (hcompatE : ∀ d, hE (sE d) = tE (q d))
+    (hcompatF : ∀ d, hF (sF d) = tF (q d))
+    (hhE : Esrc.IsHomomorphismEmbedding ETgt hE)
+    (hhF : Fsrc.IsHomomorphismEmbedding FTgt hF)
+    (hrootE : IsFreeAmalgam.RootIsolated sE tE q hE)
+    (hrootF : IsFreeAmalgam.RootIsolated sF tF q hF)
+    (ctrlE : ∀ α : Embedding Control Esrc,
+      ∃ α' : Embedding Control ETgt,
+        ∀ a : UA, ∃ a' : UA, hE (α a) = α' a')
+    (ctrlF : ∀ α : Embedding Control Fsrc,
+      ∃ α' : Embedding Control FTgt,
+        ∀ a : UA, ∃ a' : UA, hF (α a) = α' a') :
+    ∃ (T : Type v) (Target : Structure L T),
+      TreeAmalgam Base T Target ∧
+      ∃ f : C → T,
+        Csrc.IsHomomorphismEmbedding Target f ∧
+        ∀ α : Embedding Control Csrc,
+          ∃ α' : Embedding Control Target,
+            ∀ a : UA, ∃ a' : UA, f (α a) = α' a' := by
+  classical
+  let Target := FreeAmalgam.amalgam Gov ETgt FTgt tE tF
+  let jE := FreeAmalgam.leftEmbedding Gov ETgt FTgt tE tF
+  let jF := FreeAmalgam.rightEmbedding Gov ETgt FTgt tE tF
+  have hTgt : IsFreeAmalgam tE tF jE jF :=
+    FreeAmalgam.isFreeAmalgam Gov ETgt FTgt tE tF
+  have hTree :
+      TreeAmalgam Base
+        (FreeAmalgam.Vertex Gov ETgt FTgt tE tF) Target :=
+    FreeAmalgam.treeAmalgam Gov ETgt FTgt tE tF Base
+      hTreeE hTreeF hcE hcF
+  let f : C → FreeAmalgam.Vertex Gov ETgt FTgt tE tF :=
+    IsFreeAmalgam.functionalLiftMap hSrc hTgt q hE hF
+      hcompatE hcompatF
+  have hf : Csrc.IsHomomorphismEmbedding Target f :=
+    IsFreeAmalgam.functionalLiftMap_isHomomorphismEmbedding
+      hSrc hTgt q hE hF hcompatE hcompatF
+      hhE hhF hrootE hrootF
+  refine ⟨_, Target, hTree, f, hf, ?_⟩
+  intro α
+  rcases hControl hSrc α with hleft | hright
+  · let αE : Embedding Control Esrc :=
+      α.factorThroughRange iE hleft
+    obtain ⟨αT, hαT⟩ := ctrlE αE
+    let α' : Embedding Control Target := jE.comp αT
+    refine ⟨α', ?_⟩
+    intro a
+    obtain ⟨a', ha'⟩ := hαT a
+    refine ⟨a', ?_⟩
+    have hea := Classical.choose_spec (hleft a)
+    change f (α a) = jE (αT a')
+    calc
+      f (α a) = f (iE (αE a)) := congrArg f hea
+      _ = jE (hE (αE a)) :=
+        IsFreeAmalgam.functionalLiftMap_left
+          hSrc hTgt q hE hF hcompatE hcompatF (αE a)
+      _ = jE (αT a') := congrArg jE ha'
+  · let αF : Embedding Control Fsrc :=
+      α.factorThroughRange iF hright
+    obtain ⟨αT, hαT⟩ := ctrlF αF
+    let α' : Embedding Control Target := jF.comp αT
+    refine ⟨α', ?_⟩
+    intro a
+    obtain ⟨a', ha'⟩ := hαT a
+    refine ⟨a', ?_⟩
+    have hea := Classical.choose_spec (hright a)
+    change f (α a) = jF (αT a')
+    calc
+      f (α a) = f (iF (αF a)) := congrArg f hea
+      _ = jF (hF (αF a)) :=
+        IsFreeAmalgam.functionalLiftMap_right
+          hSrc hTgt q hE hF hcompatE hcompatF (αF a)
+      _ = jF (αT a') := congrArg jF ha'
+
 /-- Glue over the source overlap itself.  This is the form used by the
 functional projected-history induction: the two side witnesses already
 contain compatible embedded copies of the closed overlap, and history says
