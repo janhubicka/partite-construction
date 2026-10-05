@@ -528,7 +528,8 @@ noncomputable def fullSmallEmbeddingToCore
       RelStructure.ClosedEmbedding
         ((RAttach B S D f).toRelStructure.induce T)
         (RAttach B S D f).toRelStructure :=
-    ⟨RelStructure.inclusion (RAttach B S D f).toRelStructure T, hTest⟩
+    RelStructure.ClosedEmbedding.inclusion
+      (RAttach B S D f).toRelStructure T hTest
   let smallFull := smallRel.toFull
   let coreRel :
       RelStructure.ClosedEmbedding
