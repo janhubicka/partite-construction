@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.SingletonReduction
 import PartiteConstruction.Functional.FunctionalTreeAmalgam
+import PartiteConstruction.Structure.IrreducibleHomImage
 
 /-! # Forgetting singleton ranks in functional tree constructions
 
@@ -176,6 +177,70 @@ theorem rankReduct
         ih₁ ih₂ f₁.rankReduct f₂.rankReduct
         hc₁red hc₂red i₁.rankReduct i₂.rankReduct
         hfree.rankReduct
+
+
+/-- A tree may be rebased along a surjective full embedding of base
+structures. -/
+theorem rebase_surjective
+    {Base₀ : Structure L U} {Base₁ : Structure L V}
+    {T : Structure L W}
+    (hT : TreeAmalgam Base₁ W T)
+    (e : Embedding Base₀ Base₁)
+    (he : Function.Surjective e) :
+    TreeAmalgam Base₀ W T := by
+  induction hT with
+  | copy j hj =>
+      refine TreeAmalgam.copy (j.comp e) ?_
+      intro y
+      obtain ⟨b, hb⟩ := hj y
+      obtain ⟨a, ha⟩ := he b
+      refine ⟨a, ?_⟩
+      change j (e a) = y
+      rw [ha, hb]
+  | @glue W₁ W₂ Z W T₁ T₂ D T
+      h₁ h₂ f₁ f₂ hc₁ hc₂ i₁ i₂ hfree ih₁ ih₂ =>
+      exact TreeAmalgam.glue
+        ih₁ ih₂ f₁ f₂ hc₁ hc₂ i₁ i₂ hfree
+
+/-- The canonical ranked expansion reduces back to the original structure by
+the identity map whenever all original fibres are covered by the available
+ranks. -/
+noncomputable def rankExpandReductEmbedding
+    (A : Structure L U) [LinearOrder U] [Finite U]
+    (n : ℕ) (hA : RankCovered A n) :
+    Embedding A
+      (Structure.rankReduct (Structure.rankExpand A n)) :=
+  (Embedding.id (Structure.rankExpand A n)).forgetRanks hA
+
+theorem rankExpandReductEmbedding_surjective
+    (A : Structure L U) [LinearOrder U] [Finite U]
+    (n : ℕ) (hA : RankCovered A n) :
+    Function.Surjective (rankExpandReductEmbedding A n hA) := by
+  intro x
+  exact ⟨x, rfl⟩
+
+/-- Final structural singleton-rank descent for tree amalgams. -/
+theorem rankExpand_treeReduct
+    (Base : Structure L V) [LinearOrder V] [Finite V]
+    (n : ℕ) (hCover : RankCovered Base n)
+    (hBase : Base.Irreducible)
+    {T : Structure (L.rankFunctions n) W}
+    (hT : TreeAmalgam (Structure.rankExpand Base n) W T) :
+    TreeAmalgam Base W (Structure.rankReduct T) := by
+  let e : Embedding Base
+      (Structure.rankReduct (Structure.rankExpand Base n)) :=
+    rankExpandReductEmbedding Base n hCover
+  have he : Function.Surjective e :=
+    rankExpandReductEmbedding_surjective Base n hCover
+  have hBaseRed :
+      (Structure.rankReduct (Structure.rankExpand Base n)).Irreducible :=
+    hBase.of_surjective_homomorphism e.isHomomorphism he
+  have hRed :
+      TreeAmalgam
+        (Structure.rankReduct (Structure.rankExpand Base n))
+        W (Structure.rankReduct T) :=
+    TreeAmalgam.rankReduct hBaseRed hT
+  exact hRed.rebase_surjective e he
 end TreeAmalgam
 
 end StructuralRamsey.Structure
