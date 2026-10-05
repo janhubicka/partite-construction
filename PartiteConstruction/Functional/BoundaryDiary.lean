@@ -123,6 +123,61 @@ def postcomp
 
 end BoundaryRequest
 
+/-- A boundary request together with the full A-copy in the projection target
+through which its literal A-labels project.  These are precisely the diary
+entries produced by closed partite overlaps. -/
+structure ProjectedBoundaryRequest
+    {P : Type v} (A : Structure L U) (D : Structure L P)
+    (C : Structure L W) (p : W → P) where
+  boundary : BoundaryRequest A C
+  beta : Embedding A D
+  projection :
+    ∀ x, p (boundary.embedding x) = beta x.1
+
+namespace ProjectedBoundaryRequest
+
+/-- Normalize an arbitrary embedded labelled boundary and remember its
+projection through a full A-copy of D. -/
+noncomputable def ofEmbeddedLabels
+    {P X : Type v} {D : Structure L P} {R : Structure L X}
+    {p : W → P}
+    (ell : Embedding R A) (beta : Embedding A D)
+    (e : Embedding R C)
+    (hproj : ∀ x, p (e x) = beta (ell x)) :
+    ProjectedBoundaryRequest A D C p where
+  boundary := BoundaryRequest.ofEmbeddedLabels ell e
+  beta := beta
+  projection := by
+    intro z
+    change
+      p (e (BoundaryRequest.embeddedFromRange ell z)) = beta z.1
+    calc
+      p (e (BoundaryRequest.embeddedFromRange ell z)) =
+          beta (ell (BoundaryRequest.embeddedFromRange ell z)) :=
+        hproj (BoundaryRequest.embeddedFromRange ell z)
+      _ = beta z.1 :=
+        congrArg beta (BoundaryRequest.embeddedFromRange_spec ell z)
+
+/-- Transport a projected boundary through a full source embedding whose
+outer projection commutes with the old one. -/
+def postcomp
+    {P X : Type v} {D : Structure L P} {C' : Structure L X}
+    {p : W → P} {p' : X → P}
+    (r : ProjectedBoundaryRequest A D C p)
+    (j : Embedding C C')
+    (hcomm : ∀ x, p' (j x) = p x) :
+    ProjectedBoundaryRequest A D C' p' where
+  boundary := r.boundary.postcomp j
+  beta := r.beta
+  projection := by
+    intro x
+    calc
+      p' ((r.boundary.postcomp j).embedding x) =
+          p (r.boundary.embedding x) := hcomm _
+      _ = r.beta x.1 := r.projection x
+
+end ProjectedBoundaryRequest
+
 /-- A witness map realizes a boundary inside one target A-copy and no source
 point outside the boundary leaks into that copy. -/
 def IsolatedBoundary
