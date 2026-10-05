@@ -274,9 +274,10 @@ theorem witness_withControl
           (A := A) (D := D) (C := C) (T := Target) p S f ∧
         FunctionalRespectsProjectedHistory p S f projectedHistory ∧
         FunctionalRespectsSourceHistory S f sourceHistory ∧
-        FunctionalControls
-          (A := A) (C := C) (T := Target) S f
-            (Finset.univ.toList : List (Embedding A C)) := by
+        (∀ α : Embedding A C,
+          ∃ α' : Embedding A Target,
+            ∀ a : U, ∀ ha : α a ∈ S,
+              ∃ a' : U, f ⟨α a, ha⟩ = α' a') := by
   classical
   obtain ⟨Y, T, hTree, f, hf, hPart, hProj, hSrc⟩ :=
     h S hS hgen projectedHistory sourceHistory
@@ -299,15 +300,7 @@ theorem witness_withControl
   have hSrc' :
       FunctionalRespectsSourceHistory S f' sourceHistory := by
     exact hSrc.postcomp j
-  have hctrl' :
-      FunctionalControls
-        (A := A) (C := C) (T := Target) S f'
-          (Finset.univ.toList : List (Embedding A C)) := by
-    intro α hα
-    have hmem : α ∈ (Finset.univ.toList : List (Embedding A C)) := by
-      simp
-    exact hctrl α
-  exact ⟨Z, Target, hTree', f', hf', hPart', hProj', hSrc', hctrl'⟩
+  exact ⟨Z, Target, hTree', f', hf', hPart', hProj', hSrc', hctrl⟩
 
 end FunctionalHistoryTreeLike
 
