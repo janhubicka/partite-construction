@@ -73,6 +73,42 @@ theorem mono
   exact h.2 S hS (hgen.mono hmn) projectedHistory sourceHistory
     β H hH e hproj hRange ell
 
+/-- Inclusion of a closed partial A-substructure gives the identity
+relative-labelling request. -/
+def identityLabelEmbedding
+    (H : Set U) (hH : A.IsClosed H) :
+    Embedding (A.induce H hH) A :=
+  inclusion A H hH
+
+/-- Specialize the relative request to identity A-labels. -/
+theorem witness_identityLabels
+    (h : FunctionalRelativeHistoryTreeLike
+      (A := A) (D := D) (C := C) (Base := Base) p n)
+    (S : Finset W) (hS : C.IsClosed (↑S : Set W))
+    (hgen : (C.induce (↑S : Set W) hS).GeneratedByAtMost n)
+    (projectedHistory : List (Set P))
+    (sourceHistory : List (Set W))
+    (β : Embedding A D) (H : Set U) (hH : A.IsClosed H)
+    (e : Embedding (A.induce H hH) C)
+    (hproj : ∀ x, p (e x) = β x.1)
+    (hRange : ∀ x, e x ∈ S) :
+    ∃ (Z : Type v) (Target : Structure L Z),
+      TreeAmalgam Base Z Target ∧
+      ∃ f : ↥(↑S : Set W) → Z,
+        (C.induce (↑S : Set W) hS).IsHomomorphismEmbedding Target f ∧
+        FunctionalProjectedPartialIntersections
+          (A := A) (D := D) (C := C) (T := Target) p S f ∧
+        FunctionalRespectsProjectedHistory
+          p S f projectedHistory ∧
+        FunctionalRespectsSourceHistory
+          S f sourceHistory ∧
+        ∃ targetCopy : Embedding A Target,
+          ∀ x : ↥H,
+            f ⟨e x, hRange x⟩ = targetCopy x.1 := by
+  simpa [identityLabelEmbedding] using
+    h.2 S hS hgen projectedHistory sourceHistory
+      β H hH e hproj hRange (identityLabelEmbedding (A := A) H hH)
+
 /-- The relative request is automatic from the ordinary combined history
 invariant: attach one fresh copy of Base over the already embedded partial
 A-boundary. -/
