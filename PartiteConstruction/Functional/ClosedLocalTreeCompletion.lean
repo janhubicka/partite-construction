@@ -1,3 +1,4 @@
+import PartiteConstruction.Structure.NullaryRoot
 import PartiteConstruction.Functional.FunctionalTreeAmalgam
 import PartiteConstruction.Structure.FreeAmalgamationClass
 
@@ -121,6 +122,48 @@ theorem base (Base : Structure L V) (n : ℕ) :
       intro x
       exact ⟨x, rfl⟩)
   exact of_treeAmalgam hTree n
+
+
+/-- Closed local tree-completability pulls back along a genuine full
+embedding.  The image of a closed test is closed because full embeddings map
+complete function fibres onto complete function fibres. -/
+theorem pullback_embedding
+    {C' : Structure L X}
+    (h : LocallyClosedTreeCompletable Base C n)
+    (e : Embedding C' C) :
+    LocallyClosedTreeCompletable Base C' n := by
+  classical
+  intro S hScard hS
+  let I : Finset W := S.image e
+  have hIcard : I.card ≤ n := by
+    exact (Finset.card_image_le).trans hScard
+  have hset :
+      (↑I : Set W) = imageSet e (↑S : Set X) := by
+    ext y
+    simp [I, imageSet]
+  have hIclosed : C.IsClosed (↑I : Set W) := by
+    rw [hset]
+    exact e.image_isClosed hS
+  obtain ⟨Y, T, hTree, f, hf⟩ :=
+    h I hIcard hIclosed
+  let incS : Embedding (C'.induce (↑S : Set X) hS) C' :=
+    inclusion C' (↑S : Set X) hS
+  let incI : Embedding (C.induce (↑I : Set W) hIclosed) C :=
+    inclusion C (↑I : Set W) hIclosed
+  let j : Embedding (C'.induce (↑S : Set X) hS) C :=
+    e.comp incS
+  have hrange :
+      ∀ x : ↥(↑S : Set X),
+        ∃ y : ↥(↑I : Set W), j x = incI y := by
+    intro x
+    let y : ↥(↑I : Set W) :=
+      ⟨e x.1, Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩⟩
+    exact ⟨y, rfl⟩
+  let ee : Embedding
+      (C'.induce (↑S : Set X) hS)
+      (C.induce (↑I : Set W) hIclosed) :=
+    j.factorThroughRange incI hrange
+  exact ⟨Y, T, hTree, f ∘ ee, hf.comp ee.isHomomorphismEmbedding⟩
 
 end LocallyClosedTreeCompletable
 
