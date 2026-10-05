@@ -26,6 +26,92 @@ structure BoundaryRequest (A : Structure L U) (C : Structure L W) where
 
 namespace BoundaryRequest
 
+/-- Re-present an arbitrary embedded partial A-copy by the literal closed
+range of its label embedding.  This makes boundary requests homogeneous enough
+to store in one finite diary even when the original overlap carriers differ. -/
+noncomputable def embeddedFromRange
+    {X : Type v} {R : Structure L X}
+    (ell : Embedding R A) :
+    Embedding
+      (A.induce (Set.range ell) ell.range_isClosed) R := by
+  classical
+  let inc : Embedding
+      (A.induce (Set.range ell) ell.range_isClosed) A :=
+    inclusion A (Set.range ell) ell.range_isClosed
+  have hrange :
+      ∀ z : Set.range ell, ∃ x : X, inc z = ell x := by
+    intro z
+    rcases z.2 with ⟨x, hx⟩
+    exact ⟨x, hx.symm⟩
+  exact inc.factorThroughClosedRange ell hrange
+
+theorem embeddedFromRange_spec
+    {X : Type v} {R : Structure L X}
+    (ell : Embedding R A)
+    (z : Set.range ell) :
+    ell (embeddedFromRange ell z) = z.1 := by
+  classical
+  let inc : Embedding
+      (A.induce (Set.range ell) ell.range_isClosed) A :=
+    inclusion A (Set.range ell) ell.range_isClosed
+  have hrange :
+      ∀ w : Set.range ell, ∃ x : X, inc w = ell x := by
+    intro w
+    rcases w.2 with ⟨x, hx⟩
+    exact ⟨x, hx.symm⟩
+  have h :=
+    Embedding.factorThroughClosedRange_spec inc ell hrange z
+  exact h
+
+/-- Normalize an arbitrary embedded labelled boundary to a literal closed
+support of A. -/
+noncomputable def ofEmbeddedLabels
+    {X : Type v} {R : Structure L X}
+    (ell : Embedding R A) (e : Embedding R C) :
+    BoundaryRequest A C where
+  support := Set.range ell
+  supportClosed := ell.range_isClosed
+  embedding := e.comp (embeddedFromRange ell)
+
+/-- A relative witness for an arbitrary embedded labelled boundary yields an
+isolated diary entry after range normalization. -/
+theorem isolated_ofEmbeddedLabels
+    {X : Type v} {R : Structure L X}
+    (ell : Embedding R A) (e : Embedding R C)
+    {TCarrier : Type v} {T : Structure L TCarrier}
+    (f : W → TCarrier) (targetCopy : Embedding A T)
+    (hcompat : ∀ x : X, f (e x) = targetCopy (ell x))
+    (hiso : ∀ y : W, ∀ a : U, f y = targetCopy a →
+      ∃ x : X, y = e x ∧ ell x = a) :
+    IsolatedBoundary (ofEmbeddedLabels ell e) T f := by
+  classical
+  refine ⟨targetCopy, ?_, ?_⟩
+  · intro z
+    change
+      f (e (embeddedFromRange ell z)) = targetCopy z.1
+    calc
+      f (e (embeddedFromRange ell z)) =
+          targetCopy (ell (embeddedFromRange ell z)) :=
+        hcompat (embeddedFromRange ell z)
+      _ = targetCopy z.1 :=
+        congrArg targetCopy (embeddedFromRange_spec ell z)
+  · intro y a hya
+    obtain ⟨x, hyx, hxa⟩ := hiso y a hya
+    let z : Set.range ell := ⟨ell x, ⟨x, rfl⟩⟩
+    refine ⟨z, ?_, ?_⟩
+    · change y = e (embeddedFromRange ell z)
+      calc
+        y = e x := hyx
+        _ = e (embeddedFromRange ell z) := by
+          apply congrArg e
+          apply ell.injective
+          calc
+            ell x = z.1 := rfl
+            _ = ell (embeddedFromRange ell z) :=
+              (embeddedFromRange_spec ell z).symm
+    · change z.1 = a
+      exact hxa
+
 /-- Transport a boundary forward along a full source embedding. -/
 def postcomp
     {X : Type v} {C' : Structure L X}
