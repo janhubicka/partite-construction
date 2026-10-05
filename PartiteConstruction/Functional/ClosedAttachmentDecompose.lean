@@ -220,8 +220,6 @@ theorem overlapToPiece_functionClosed
         Structure.comp_funcTuple Subtype.val (e ∘ x) y
       _ = Structure.funcTuple (fun k => (x k).1) y.1 := by
         congr 1
-        funext k
-        rfl
   have hySmall :
       (RelStructure.Attachment.Small
         B.toRelStructure S D.toRelStructure (maps B S D f) T).rel
@@ -244,17 +242,29 @@ theorem overlapToPiece_functionClosed
   have hez : e z = y := by
     apply Subtype.ext
     rfl
-  have htarget :
+  refine ⟨z, ?_, hez⟩
+  apply
+    (e.map_rel_iff
+      (show L.graph.Symbol from Sum.inr F)
+      (Structure.funcTuple x z)).mp
+  have hcomp :
+      e ∘ Structure.funcTuple x z =
+        Structure.funcTuple (e ∘ x) (e z) :=
+    Structure.comp_funcTuple e x z
+  have hy' :
       (RelStructure.Attachment.Piece
         B.toRelStructure S D.toRelStructure (maps B S D f) T i).rel
-        (.inr F) (e ∘ Structure.funcTuple x z) := by
-    have hcomp :=
-      Structure.comp_funcTuple e x z
-    rw [hcomp]
-    rw [hez]
-    exact hy
-  refine ⟨z, ?_, hez⟩
-  exact (e.map_rel_iff (.inr F) (Structure.funcTuple x z)).mp htarget
+        (show L.graph.Symbol from Sum.inr F)
+        (Structure.funcTuple (e ∘ x) (e z)) := by
+    simpa [hez] using hy
+  exact Eq.mpr
+    (congrArg
+      (fun t =>
+        (RelStructure.Attachment.Piece
+          B.toRelStructure S D.toRelStructure (maps B S D f) T i).rel
+          (show L.graph.Symbol from Sum.inr F) t)
+      hcomp.symm)
+    hy'
 
 /-- The overlap inclusion into the complementary rest is function-closed. -/
 theorem overlapToRest_functionClosed
@@ -287,8 +297,6 @@ theorem overlapToRest_functionClosed
         Structure.comp_funcTuple Subtype.val (e ∘ x) y
       _ = Structure.funcTuple (fun k => (x k).1) y.1 := by
         congr 1
-        funext k
-        rfl
   have hySmall :
       (RelStructure.Attachment.Small
         B.toRelStructure S D.toRelStructure (maps B S D f) T).rel
@@ -311,17 +319,29 @@ theorem overlapToRest_functionClosed
   have hez : e z = y := by
     apply Subtype.ext
     rfl
-  have htarget :
+  refine ⟨z, ?_, hez⟩
+  apply
+    (e.map_rel_iff
+      (show L.graph.Symbol from Sum.inr F)
+      (Structure.funcTuple x z)).mp
+  have hcomp :
+      e ∘ Structure.funcTuple x z =
+        Structure.funcTuple (e ∘ x) (e z) :=
+    Structure.comp_funcTuple e x z
+  have hy' :
       (RelStructure.Attachment.Rest
         B.toRelStructure S D.toRelStructure (maps B S D f) T i).rel
-        (.inr F) (e ∘ Structure.funcTuple x z) := by
-    have hcomp :=
-      Structure.comp_funcTuple e x z
-    rw [hcomp]
-    rw [hez]
-    exact hy
-  refine ⟨z, ?_, hez⟩
-  exact (e.map_rel_iff (.inr F) (Structure.funcTuple x z)).mp htarget
+        (show L.graph.Symbol from Sum.inr F)
+        (Structure.funcTuple (e ∘ x) (e z)) := by
+    simpa [hez] using hy
+  exact Eq.mpr
+    (congrArg
+      (fun t =>
+        (RelStructure.Attachment.Rest
+          B.toRelStructure S D.toRelStructure (maps B S D f) T i).rel
+          (show L.graph.Symbol from Sum.inr F) t)
+      hcomp.symm)
+    hy'
 
 /-- The relational decomposition of a closed test decodes to a genuine full
 function-language free amalgam.  This is the structural decomposition used in
