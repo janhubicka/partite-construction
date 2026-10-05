@@ -285,6 +285,105 @@ theorem witness_embeddedLabels
         _ = z.1 := rfl
         _ = a := hza
 
+/-- Whole-structure specialization of the presentation-free relative witness.
+This is the side-witness interface used by mixed free-amalgam gluing. -/
+theorem fullWitness_embeddedLabels
+    [Fintype W]
+    (h : FunctionalRelativeHistoryTreeLike
+      (A := A) (D := D) (C := C) (Base := Base) p n)
+    (hgen : C.GeneratedByAtMost n)
+    (projectedHistory : List (Set P))
+    (sourceHistory : List (Set W))
+    {X : Type v} {R : Structure L X}
+    (ell : Embedding R A) (β : Embedding A D)
+    (e : Embedding R C)
+    (hproj : ∀ x, p (e x) = β (ell x)) :
+    ∃ (Z : Type v) (Target : Structure L Z),
+      TreeAmalgam Base Z Target ∧
+      ∃ f : W → Z,
+        C.IsHomomorphismEmbedding Target f ∧
+        FunctionalProjectedEmbeddedIntersections
+          (A := A) (D := D) C p Target f ∧
+        (∀ Hset ∈ projectedHistory, ∀ x y : W,
+          f x = f y → (p x ∈ Hset ↔ p y ∈ Hset)) ∧
+        (∀ Hset ∈ sourceHistory, ∀ x y : W,
+          f x = f y → (x ∈ Hset ↔ y ∈ Hset)) ∧
+        ∃ targetCopy : Embedding A Target,
+          (∀ x : X, f (e x) = targetCopy (ell x)) ∧
+          ∀ y : W, ∀ a : U,
+            f y = targetCopy a →
+              ∃ x : X, y = e x ∧ ell x = a := by
+  classical
+  let S : Finset W := Finset.univ
+  have hS : C.IsClosed (↑S : Set W) := by
+    intro F x _ y _
+    simp [S]
+  let Small := C.induce (↑S : Set W) hS
+  let inc : Embedding Small C :=
+    inclusion C (↑S : Set W) hS
+  let allEmb : Embedding C Small :=
+    (Embedding.id C).factorWithMap inc
+      (fun x => ⟨x, Finset.mem_univ x⟩)
+      (fun _ => rfl)
+  have hsurj : Function.Surjective allEmb := by
+    intro y
+    refine ⟨y.1, ?_⟩
+    apply Subtype.ext
+    rfl
+  have hgenSmall : Small.GeneratedByAtMost n :=
+    hgen.of_surjective_embedding allEmb hsurj
+  have hRange : ∀ x : X, e x ∈ S := by
+    intro x
+    exact Finset.mem_univ _
+  obtain ⟨Z, Target, hTree, f0, hf0, hPart0, hProj0, hSrc0,
+    targetCopy, htarget0, hiso0⟩ :=
+    h.witness_embeddedLabels
+      S hS hgenSmall projectedHistory sourceHistory
+      ell β e hproj hRange
+  let f : W → Z := f0 ∘ allEmb
+  have hf : C.IsHomomorphismEmbedding Target f :=
+    hf0.comp allEmb.isHomomorphismEmbedding
+  have hPart :
+      FunctionalProjectedEmbeddedIntersections
+        (A := A) (D := D) C p Target f := by
+    intro Q R0 ell0 β0 e0 hproj0
+    have hRange0 : ∀ x, e0 x ∈ S := by
+      intro x
+      exact Finset.mem_univ _
+    obtain ⟨eRT, heRT, hc⟩ :=
+      hPart0.embeddedWitness β0 ell0 e0 hproj0 hRange0
+    refine ⟨eRT, ?_, hc⟩
+    intro x
+    change eRT x = f0 (allEmb (e0 x))
+    have hx := heRT x
+    exact hx
+  have hProj :
+      ∀ Hset ∈ projectedHistory, ∀ x y : W,
+        f x = f y → (p x ∈ Hset ↔ p y ∈ Hset) := by
+    intro Hset hmem x y hxy
+    exact hProj0 Hset hmem (allEmb x) (allEmb y) hxy
+  have hSrc :
+      ∀ Hset ∈ sourceHistory, ∀ x y : W,
+        f x = f y → (x ∈ Hset ↔ y ∈ Hset) := by
+    intro Hset hmem x y hxy
+    have hs := hSrc0 Hset hmem (allEmb x) (allEmb y) hxy
+    exact hs
+  have htarget : ∀ x : X, f (e x) = targetCopy (ell x) := by
+    intro x
+    change f0 (allEmb (e x)) = targetCopy (ell x)
+    exact htarget0 x
+  have hiso :
+      ∀ y : W, ∀ a : U,
+        f y = targetCopy a →
+          ∃ x : X, y = e x ∧ ell x = a := by
+    intro y a hya
+    obtain ⟨x, hyx, hxa⟩ :=
+      hiso0 (allEmb y) a hya
+    refine ⟨x, ?_, hxa⟩
+    exact hyx
+  exact ⟨Z, Target, hTree, f, hf, hPart, hProj, hSrc,
+    targetCopy, htarget, hiso⟩
+
 /-- The relative request is automatic from the ordinary combined history
 invariant: attach one fresh copy of Base over the already embedded partial
 A-boundary. -/
