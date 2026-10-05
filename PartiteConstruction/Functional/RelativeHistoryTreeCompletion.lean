@@ -181,6 +181,110 @@ theorem witness_identityLabels
     obtain ⟨x, hyx, hxa⟩ := hiso y a hya
     exact ⟨x, hyx, hxa⟩
 
+/-- Presentation-free relative witness.  The distinguished boundary may be
+any full substructure embedded in A; internally we pass to the closed range of
+that embedding and use the literal-subtype relative witness. -/
+theorem witness_embeddedLabels
+    (h : FunctionalRelativeHistoryTreeLike
+      (A := A) (D := D) (C := C) (Base := Base) p n)
+    (S : Finset W) (hS : C.IsClosed (↑S : Set W))
+    (hgen : (C.induce (↑S : Set W) hS).GeneratedByAtMost n)
+    (projectedHistory : List (Set P))
+    (sourceHistory : List (Set W))
+    {X : Type v} {R : Structure L X}
+    (ell : Embedding R A) (β : Embedding A D)
+    (e : Embedding R C)
+    (hproj : ∀ x, p (e x) = β (ell x))
+    (hRange : ∀ x, e x ∈ S) :
+    ∃ (Z : Type v) (Target : Structure L Z),
+      TreeAmalgam Base Z Target ∧
+      ∃ f : ↥(↑S : Set W) → Z,
+        (C.induce (↑S : Set W) hS).IsHomomorphismEmbedding Target f ∧
+        FunctionalProjectedPartialIntersections
+          (A := A) (D := D) (C := C) (T := Target) p S f ∧
+        FunctionalRespectsProjectedHistory
+          p S f projectedHistory ∧
+        FunctionalRespectsSourceHistory
+          S f sourceHistory ∧
+        ∃ targetCopy : Embedding A Target,
+          (∀ x : X,
+            f ⟨e x, hRange x⟩ = targetCopy (ell x)) ∧
+          ∀ y : ↥(↑S : Set W), ∀ a : U,
+            f y = targetCopy a →
+              ∃ x : X, y.1 = e x ∧ ell x = a := by
+  classical
+  let H : Set U := Set.range ell
+  have hH : A.IsClosed H := ell.range_isClosed
+  let inc : Embedding (A.induce H hH) A :=
+    inclusion A H hH
+  have hToRange :
+      ∀ x : X, ∃ z : H, ell x = inc z := by
+    intro x
+    exact ⟨⟨ell x, ⟨x, rfl⟩⟩, rfl⟩
+  let toRange : Embedding R (A.induce H hH) :=
+    ell.factorThroughClosedRange inc hToRange
+  have hToRangeSpec (x : X) :
+      inc (toRange x) = ell x :=
+    Embedding.factorThroughClosedRange_spec ell inc hToRange x
+  have hFromRange :
+      ∀ z : H, ∃ x : X, inc z = ell x := by
+    intro z
+    rcases z.2 with ⟨x, hx⟩
+    exact ⟨x, hx.symm⟩
+  let fromRange : Embedding (A.induce H hH) R :=
+    inc.factorThroughClosedRange ell hFromRange
+  have hFromRangeSpec (z : H) :
+      ell (fromRange z) = inc z :=
+    Embedding.factorThroughClosedRange_spec inc ell hFromRange z
+  have hInv (x : X) : fromRange (toRange x) = x := by
+    apply ell.injective
+    calc
+      ell (fromRange (toRange x)) = inc (toRange x) :=
+        hFromRangeSpec (toRange x)
+      _ = ell x := hToRangeSpec x
+  let eH : Embedding (A.induce H hH) C :=
+    e.comp fromRange
+  have hprojH : ∀ z, p (eH z) = β z.1 := by
+    intro z
+    calc
+      p (eH z) = β (ell (fromRange z)) :=
+        hproj (fromRange z)
+      _ = β z.1 := by
+        apply congrArg β
+        exact hFromRangeSpec z
+  have hRangeH : ∀ z, eH z ∈ S := by
+    intro z
+    exact hRange (fromRange z)
+  obtain ⟨Z, Target, hTree, f, hf, hPart, hProj, hSrc,
+    targetCopy, htarget, hiso⟩ :=
+    h.witness_identityLabels
+      S hS hgen projectedHistory sourceHistory
+      β H hH eH hprojH hRangeH
+  refine ⟨Z, Target, hTree, f, hf, hPart, hProj, hSrc,
+    targetCopy, ?_, ?_⟩
+  · intro x
+    have hx := htarget (toRange x)
+    calc
+      f ⟨e x, hRange x⟩ =
+          f ⟨eH (toRange x), hRangeH (toRange x)⟩ := by
+        apply congrArg f
+        apply Subtype.ext
+        change e x = e (fromRange (toRange x))
+        exact congrArg e (hInv x).symm
+      _ = targetCopy (toRange x).1 := hx
+      _ = targetCopy (ell x) := by
+        apply congrArg targetCopy
+        exact hToRangeSpec x
+  · intro y a hya
+    obtain ⟨z, hyz, hza⟩ := hiso y a hya
+    let x : X := fromRange z
+    refine ⟨x, ?_, ?_⟩
+    · exact hyz
+    · calc
+        ell x = inc z := hFromRangeSpec z
+        _ = z.1 := rfl
+        _ = a := hza
+
 /-- The relative request is automatic from the ordinary combined history
 invariant: attach one fresh copy of Base over the already embedded partial
 A-boundary. -/
