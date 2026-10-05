@@ -247,8 +247,9 @@ theorem quotient_isHomomorphism
     hl.codRestrict h.labelRange hclosed (fun x => ⟨x, rfl⟩)
   change
     (boundary (A := A) (α := α) hS).IsHomomorphism
-      (A.induce h.labelRange hclosed) h.quotient
-  simpa [quotient] using hc
+      (A.induce h.labelRange hclosed)
+      (fun x => ⟨h.label x, ⟨x, rfl⟩⟩)
+  exact hc
 
 /-- The quotient root embeds into the target inside the controlled A-copy. -/
 def rootEmbedding
