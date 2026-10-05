@@ -149,6 +149,30 @@ theorem lift_preservesRightBoundary
     refine ⟨x, hyx, ?_⟩
     exact hxa
 
+
+/-- A finite diary of isolated right-side boundaries survives the same
+compatible functional lift.  This is the list-level persistence interface
+used by the recursive closed-attachment proof. -/
+theorem lift_preservesRightDiary
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (hTgt : IsFreeAmalgam tL tR jL jR)
+    (q : H → G)
+    (fL : E → TE) (fR : F → TF)
+    (hcompatL : ∀ d, fL (sL d) = tL (q d))
+    (hcompatR : ∀ d, fR (sR d) = tR (q d))
+    (hrootL : RootIsolated sL tL q fL)
+    (requests : List (BoundaryRequest A Right))
+    (hDiary :
+      ∀ r ∈ requests, IsolatedBoundary r TR fR) :
+    let f :=
+      functionalLiftMap hSrc hTgt q fL fR hcompatL hcompatR
+    ∀ r ∈ requests,
+      IsolatedBoundary (r.postcomp iR) Target f := by
+  intro f r hr
+  exact lift_preservesRightBoundary
+    hSrc hTgt q fL fR hcompatL hcompatR hrootL
+    r (hDiary r hr)
+
 end IsFreeAmalgam
 
 end StructuralRamsey.Structure
