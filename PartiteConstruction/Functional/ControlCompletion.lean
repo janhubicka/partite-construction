@@ -65,6 +65,40 @@ end FunctionalEmbeddedIntersections
 
 namespace FunctionalProjectedPartialIntersections
 
+/-- Projected-partial certificates give ordinary ambient intersection
+certificates whenever the ambient projection is an EHN projection and A is
+irreducible.  The EHN invariant supplies the full projected A-copy used by the
+certificate. -/
+theorem toEmbeddedIntersections
+    {P : Type v} {D : Structure L P}
+    {Base : Structure L V} {Target : Structure L Y}
+    {p : W → P}
+    {S : Finset W} {hS : C.IsClosed (↑S : Set W)}
+    {f : ↥(↑S : Set W) → Y}
+    (hA : A.Irreducible)
+    (hp : C.IsEHNHomomorphismEmbedding D p)
+    (h :
+      FunctionalProjectedPartialIntersections
+        (A := A) (D := D) (C := C) (T := Target)
+        p S f) :
+    FunctionalEmbeddedIntersections
+      (A := A) (C := C) (T := Target) S hS f := by
+  intro α
+  dsimp
+  obtain ⟨β, hβ⟩ := hp.2 A hA α
+  let Hset : Set U := {a : U | α a ∈ S}
+  let hH : A.IsClosed Hset :=
+    closed_preimage α (↑S : Set W) hS
+  let eH : Embedding (A.induce Hset hH) C :=
+    α.comp (inclusion A Hset hH)
+  have hproj : ∀ x, p (eH x) = β x.1 := by
+    intro x
+    exact (hβ x.1).symm
+  have hRange : ∀ x, eH x ∈ S := by
+    intro x
+    exact x.2
+  exact h β Hset hH eH hproj hRange
+
 /-- Projected-partial certificates specialize to ordinary ambient
 intersection certificates when the projection is the identity on the ambient
 structure. -/
