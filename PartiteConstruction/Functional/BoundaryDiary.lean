@@ -24,6 +24,17 @@ structure BoundaryRequest (A : Structure L U) (C : Structure L W) where
   supportClosed : A.IsClosed support
   embedding : Embedding (A.induce support supportClosed) C
 
+/-- A witness map realizes a boundary inside one target A-copy and no source
+point outside the boundary leaks into that copy. -/
+def IsolatedBoundary
+    (r : BoundaryRequest A C)
+    (T : Structure L Y) (f : W → Y) : Prop :=
+  ∃ targetCopy : Embedding A T,
+    (∀ x, f (r.embedding x) = targetCopy x.1) ∧
+    ∀ y a, f y = targetCopy a →
+      ∃ x, y = r.embedding x ∧ x.1 = a
+
+
 namespace BoundaryRequest
 
 /-- Re-present an arbitrary embedded partial A-copy by the literal closed
@@ -209,16 +220,6 @@ def postcomp
       _ = r.beta x.1 := r.projection x
 
 end ProjectedBoundaryRequest
-
-/-- A witness map realizes a boundary inside one target A-copy and no source
-point outside the boundary leaks into that copy. -/
-def IsolatedBoundary
-    (r : BoundaryRequest A C)
-    (T : Structure L Y) (f : W → Y) : Prop :=
-  ∃ targetCopy : Embedding A T,
-    (∀ x, f (r.embedding x) = targetCopy x.1) ∧
-    ∀ y a, f y = targetCopy a →
-      ∃ x, y = r.embedding x ∧ x.1 = a
 
 namespace IsolatedBoundary
 
