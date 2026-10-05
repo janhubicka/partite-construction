@@ -188,3 +188,5 @@ import PartiteConstruction.Functional.WitnessGlue
 import PartiteConstruction.Functional.InitialTreeCompletion
 
 import PartiteConstruction.Functional.ClosedGeneratorRank
+
+import PartiteConstruction.Functional.GeneratedTreeCompletion
