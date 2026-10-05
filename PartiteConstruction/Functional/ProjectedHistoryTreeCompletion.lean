@@ -101,6 +101,105 @@ theorem respectsHistory_of_kernel_refines_projection
   intro H _ x y hxy
   rw [hkern x y hxy]
 
+
+/-- Projected-history coherence immediately implies generator-local tree
+completability by forgetting the extra partial-intersection and history data. -/
+theorem toLocallyGeneratedTreeCompletable
+    (h : FunctionalProjectedHistoryTreeLike
+      (A := A) (D := D) (C := C) (Base := Base) p n) :
+    LocallyGeneratedTreeCompletable Base C n := by
+  intro Z _ E hgen e
+  let R : Set W := Set.range e
+  have hRclosed : C.IsClosed R := e.range_isClosed
+  let S : Finset W := Finset.univ.image e
+  have hSset : (↑S : Set W) = R := by
+    ext w
+    constructor
+    · intro hw
+      rcases Finset.mem_image.mp hw with ⟨z, _, rfl⟩
+      exact ⟨z, rfl⟩
+    · rintro ⟨z, rfl⟩
+      exact Finset.mem_image.mpr ⟨z, Finset.mem_univ z, rfl⟩
+  have hSclosed : C.IsClosed (↑S : Set W) := by
+    rw [hSset]
+    exact hRclosed
+  let eR : Embedding E (C.induce (↑S : Set W) hSclosed) := by
+    refine e.factorThroughRange
+      (inclusion C (↑S : Set W) hSclosed) ?_
+    intro z
+    exact ⟨⟨e z, by
+      change e z ∈ (↑S : Set W)
+      exact Finset.mem_image.mpr ⟨z, Finset.mem_univ z, rfl⟩⟩, rfl⟩
+  have hgenS :
+      (C.induce (↑S : Set W) hSclosed).GeneratedByAtMost n := by
+    have hhom :
+        E.IsHomomorphism
+          (C.induce (↑S : Set W) hSclosed) eR :=
+      eR.isHomomorphism
+    have hRangeAll :
+        Set.range eR = Set.univ := by
+      ext x
+      constructor
+      · intro _
+        simp
+      · intro _
+        rcases x with ⟨w, hw⟩
+        have hwR : w ∈ Set.range e := by
+          rw [← hSset]
+          exact hw
+        rcases hwR with ⟨z, rfl⟩
+        exact ⟨z, by
+          apply Subtype.ext
+          rfl⟩
+    have hRgen :=
+      homRange_generatedByAtMost hhom hgen
+    simpa [hRangeAll] using hRgen
+  obtain ⟨Y, T, hTree, f, hf, _, _⟩ :=
+    h S hSclosed hgenS []
+  exact ⟨Y, T, hTree, f ∘ eR, hf.comp eR.isHomomorphismEmbedding⟩
+
+/-- In particular, projected-history coherence gives the literal
+closed-substructure statement used in the manuscript. -/
+theorem toLocallyClosedTreeCompletable
+    (h : FunctionalProjectedHistoryTreeLike
+      (A := A) (D := D) (C := C) (Base := Base) p n) :
+    LocallyClosedTreeCompletable Base C n :=
+  h.toLocallyGeneratedTreeCompletable.toLocallyClosedTreeCompletable
+
+/-- At identity projection, asking the history to remember every singleton
+part of the tested closed set forces the witness map to be injective. -/
+theorem injectiveWitness_identity
+    {P : Type v} {D : Structure L P}
+    {A : Structure L U} {Base : Structure L V}
+    {n : ℕ}
+    (h : FunctionalProjectedHistoryTreeLike
+      (A := A) (D := D) (C := D) (Base := Base) id n)
+    (S : Finset P) (hS : D.IsClosed (↑S : Set P))
+    (hgen : (D.induce (↑S : Set P) hS).GeneratedByAtMost n) :
+    ∃ (Z : Type v) (Target : Structure L Z),
+      TreeAmalgam Base Z Target ∧
+      ∃ f : ↥(↑S : Set P) → Z,
+        (D.induce (↑S : Set P) hS).IsHomomorphismEmbedding Target f ∧
+        Function.Injective f := by
+  classical
+  let history : List (Set P) :=
+    S.toList.map (fun x => ({x} : Set P))
+  obtain ⟨Z, Target, hTree, f, hf, _, hHist⟩ :=
+    h S hS hgen history
+  refine ⟨Z, Target, hTree, f, hf, ?_⟩
+  intro x y hxy
+  let H : Set P := {x.1}
+  have hxList : x.1 ∈ S.toList := by
+    simpa using x.2
+  have hH : H ∈ history := by
+    simp [history, H, hxList]
+  have hmem := hHist H hH x y hxy
+  have hy : y.1 = x.1 := by
+    have : y.1 ∈ H := hmem.mp (by simp [H])
+    simpa [H] using this
+  apply Subtype.ext
+  exact hy.symm
+
 end FunctionalProjectedHistoryTreeLike
 
 /-- If a closed test is cut out from a full A-copy, its pullback subset of A
