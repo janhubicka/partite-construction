@@ -340,7 +340,7 @@ theorem overlapToRest_functionClosed
         (RelStructure.Attachment.Rest
           B.toRelStructure S D.toRelStructure (maps B S D f) T i).rel
           (show L.graph.Symbol from Sum.inr F) t)
-      hcomp.symm)
+      hcomp)
     hy'
 
 /-- The relational decomposition of a closed test decodes to a genuine full
