@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.GeneratedTreeCompletion
+import PartiteConstruction.Functional.ClosedAttachmentDecompose
 
 /-! # Projected-history tree witnesses for closed functional tests
 
@@ -410,52 +411,52 @@ theorem glue_closed_attachment_test
     {Bsys : Partite.System L.graph P0 V0}
     {Dsys : Partite.System L.graph P0 W0}
     {Supp : Set V0}
-    {maps0 : I0 → Partite.Closed.Embedding (Bsys.induce Supp) Dsys}
-    {Test : Set (Partite.Attachment.Vertex Supp (W := W0) (I := I0))}
+    {maps0 : I0 → _root_.StructuralRamsey.Partite.Closed.Embedding (Bsys.induce Supp) Dsys}
+    {Test : Set (_root_.StructuralRamsey.Partite.Attachment.Vertex Supp (W := W0) (I := I0))}
     {idx : I0}
     {TL0 : Structure L ZL} {TR0 : Structure L ZR}
     (hSupp : RelStructure.FunctionClosedSet Bsys.toRelStructure Supp)
     (hTreeL : TreeAmalgam Base ZL TL0)
     (hTreeR : TreeAmalgam Base ZR TR0)
     (fL :
-      RelStructure.Attachment.PieceV
+      _root_.StructuralRamsey.RelStructure.Attachment.PieceV
         Bsys.toRelStructure Supp Dsys.toRelStructure
-        (Partite.Closed.Attachment.maps Bsys Supp Dsys maps0) Test idx → ZL)
+        (_root_.StructuralRamsey.Partite.Closed.Attachment.maps Bsys Supp Dsys maps0) Test idx → ZL)
     (fR :
-      RelStructure.Attachment.RestV
+      _root_.StructuralRamsey.RelStructure.Attachment.RestV
         (W := W0) (I := I0) Supp Test idx → ZR)
     (hfL :
-      (Partite.Closed.Attachment.FullPiece
+      (_root_.StructuralRamsey.Partite.Closed.Attachment.FullPiece
         Bsys Supp Dsys maps0 Test idx).IsHomomorphismEmbedding TL0 fL)
     (hfR :
-      (Partite.Closed.Attachment.FullRest
+      (_root_.StructuralRamsey.Partite.Closed.Attachment.FullRest
         Bsys Supp Dsys maps0 Test idx).IsHomomorphismEmbedding TR0 fR)
     (rootL :
       Embedding
-        (Partite.Closed.Attachment.FullOverlap
+        (_root_.StructuralRamsey.Partite.Closed.Attachment.FullOverlap
           Bsys Supp Dsys maps0 Test idx)
         TL0)
     (rootR :
       Embedding
-        (Partite.Closed.Attachment.FullOverlap
+        (_root_.StructuralRamsey.Partite.Closed.Attachment.FullOverlap
           Bsys Supp Dsys maps0 Test idx)
         TR0)
     (hcL : rootL.ContainedInIrreducible)
     (hcR : rootR.ContainedInIrreducible)
     (hcompatL :
       ∀ d,
-        fL (Partite.Closed.Attachment.fullOverlapToPiece
+        fL (_root_.StructuralRamsey.Partite.Closed.Attachment.fullOverlapToPiece
           Bsys Supp Dsys maps0 Test idx hSupp d) = rootL d)
     (hcompatR :
       ∀ d,
-        fR (Partite.Closed.Attachment.fullOverlapToRest
+        fR (_root_.StructuralRamsey.Partite.Closed.Attachment.fullOverlapToRest
           Bsys Supp Dsys maps0 Test idx hSupp d) = rootR d)
     (pL :
-      RelStructure.Attachment.PieceV
+      _root_.StructuralRamsey.RelStructure.Attachment.PieceV
         Bsys.toRelStructure Supp Dsys.toRelStructure
-        (Partite.Closed.Attachment.maps Bsys Supp Dsys maps0) Test idx → P)
+        (_root_.StructuralRamsey.Partite.Closed.Attachment.maps Bsys Supp Dsys maps0) Test idx → P)
     (pR :
-      RelStructure.Attachment.RestV
+      _root_.StructuralRamsey.RelStructure.Attachment.RestV
         (W := W0) (I := I0) Supp Test idx → P)
     (Boundary : Set P)
     (histL histR : List (Set P))
@@ -470,23 +471,23 @@ theorem glue_closed_attachment_test
     (hcharL :
       ∀ x, pL x ∈ Boundary ↔
         ∃ d, x =
-          Partite.Closed.Attachment.fullOverlapToPiece
+          _root_.StructuralRamsey.Partite.Closed.Attachment.fullOverlapToPiece
             Bsys Supp Dsys maps0 Test idx hSupp d)
     (hcharR :
       ∀ x, pR x ∈ Boundary ↔
         ∃ d, x =
-          Partite.Closed.Attachment.fullOverlapToRest
+          _root_.StructuralRamsey.Partite.Closed.Attachment.fullOverlapToRest
             Bsys Supp Dsys maps0 Test idx hSupp d) :
     ∃ (Z : Type v) (Target : Structure L Z),
       TreeAmalgam Base Z Target ∧
       ∃ f :
-        RelStructure.Attachment.SmallV
+        _root_.StructuralRamsey.RelStructure.Attachment.SmallV
           Bsys.toRelStructure Supp Dsys.toRelStructure
-          (Partite.Closed.Attachment.maps Bsys Supp Dsys maps0) Test → Z,
-        (Partite.Closed.Attachment.FullSmall
+          (_root_.StructuralRamsey.Partite.Closed.Attachment.maps Bsys Supp Dsys maps0) Test → Z,
+        (_root_.StructuralRamsey.Partite.Closed.Attachment.FullSmall
           Bsys Supp Dsys maps0 Test).IsHomomorphismEmbedding Target f := by
   let hfree :=
-    Partite.Closed.Attachment.full_decompose_named
+    _root_.StructuralRamsey.Partite.Closed.Attachment.full_decompose_named
       Bsys Supp Dsys maps0 Test idx hSupp
   exact glue_recorded_boundary
     (Base := Base)
