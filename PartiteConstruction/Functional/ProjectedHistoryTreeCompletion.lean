@@ -89,6 +89,36 @@ theorem postcomp
 
 end Embedding.ContainedInIrreducible
 
+namespace FunctionalRespectsProjectedHistory
+
+/-- Projected history survives postcomposition by an injective target map. -/
+theorem postcomp
+    {p : W → P} {S : Finset W}
+    {f : ↥(↑S : Set W) → Y}
+    {history : List (Set P)}
+    (h : FunctionalRespectsProjectedHistory p S f history)
+    {Z : Type v} {T' : Structure L Z} (j : Embedding T T') :
+    FunctionalRespectsProjectedHistory p S (j ∘ f) history := by
+  intro H hH x y hxy
+  exact h H hH x y (j.injective hxy)
+
+end FunctionalRespectsProjectedHistory
+
+namespace FunctionalRespectsSourceHistory
+
+/-- Source history survives postcomposition by an injective target map. -/
+theorem postcomp
+    {S : Finset W}
+    {f : ↥(↑S : Set W) → Y}
+    {history : List (Set W)}
+    (h : FunctionalRespectsSourceHistory S f history)
+    {Z : Type v} {T' : Structure L Z} (j : Embedding T T') :
+    FunctionalRespectsSourceHistory S (j ∘ f) history := by
+  intro H hH x y hxy
+  exact h H hH x y (j.injective hxy)
+
+end FunctionalRespectsSourceHistory
+
 namespace FunctionalProjectedPartialIntersections
 
 /-- Projected-partial certificates survive postcomposition by a full target
