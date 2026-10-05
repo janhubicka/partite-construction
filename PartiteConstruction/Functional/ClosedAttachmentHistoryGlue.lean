@@ -82,8 +82,8 @@ theorem glueRelativeHistory
     ∃ (Z : Type v) (Target : Structure L Z),
       TreeAmalgam Base Z Target ∧
       ∃ f : ↥Test → Z,
-        (FullSmall Bsys Supp Dsys maps0 Test).
-          IsHomomorphismEmbedding Target f ∧
+        _root_.StructuralRamsey.Structure.IsHomomorphismEmbedding
+          (FullSmall Bsys Supp Dsys maps0 Test) Target f ∧
         (∀ Hset ∈ projectedHistory, ∀ x y : ↥Test,
           f x = f y → (pSmall x ∈ Hset ↔ pSmall y ∈ Hset)) ∧
         (∀ Hset ∈ sourceHistory, ∀ x y : ↥Test,
