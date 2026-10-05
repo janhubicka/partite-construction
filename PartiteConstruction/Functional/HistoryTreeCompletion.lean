@@ -175,7 +175,8 @@ theorem pullback_embedding
       FunctionalRespectsSourceHistory S f sourceHistory := by
     intro H hH x y hxy
     have hHI : e '' H ∈ sourceHistoryI := by
-      simp [sourceHistoryI, hH]
+      apply List.mem_map.mpr
+      exact ⟨H, hH, rfl⟩
     have hxyI : fI (ee x) = fI (ee y) := hxy
     have hmem := hSrcI (e '' H) hHI (ee x) (ee y) hxyI
     have hx :
