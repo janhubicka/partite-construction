@@ -530,6 +530,49 @@ theorem glueIsolatedRoot
       hhE hhF hrootE hrootF
   exact ⟨_, Target, hTree, f, hf⟩
 
+/-- Glue over the source overlap itself.  This is the form used by the
+functional projected-history induction: the two side witnesses already
+contain compatible embedded copies of the closed overlap, and history says
+that those copies are isolated from points outside the overlap. -/
+theorem glueCommonSourceRoot
+    (hSrc : IsFreeAmalgam sE sF iE iF)
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (rE : Embedding Dsrc ETgt)
+    (rF : Embedding Dsrc FTgt)
+    (hcE : rE.ContainedInIrreducible)
+    (hcF : rF.ContainedInIrreducible)
+    (hE : E → TE) (hF : F → TF)
+    (hcompatE : ∀ d, hE (sE d) = rE d)
+    (hcompatF : ∀ d, hF (sF d) = rF d)
+    (hhE : Esrc.IsHomomorphismEmbedding ETgt hE)
+    (hhF : Fsrc.IsHomomorphismEmbedding FTgt hF)
+    (hisoE : ∀ a d, hE a = rE d →
+      ∃ d' : H, a = sE d' ∧ d' = d)
+    (hisoF : ∀ b d, hF b = rF d →
+      ∃ d' : H, b = sF d' ∧ d' = d) :
+    ∃ (T : Type v) (Target : Structure L T),
+      TreeAmalgam Base T Target ∧
+      ∃ f : C → T,
+        Csrc.IsHomomorphismEmbedding Target f := by
+  let q : H → H := id
+  have hrootE :
+      IsFreeAmalgam.RootIsolated sE rE q hE := by
+    intro a d had
+    obtain ⟨d', ha, hd⟩ := hisoE a d had
+    exact ⟨d', ha, hd⟩
+  have hrootF :
+      IsFreeAmalgam.RootIsolated sF rF q hF := by
+    intro b d hbd
+    obtain ⟨d', hb, hd⟩ := hisoF b d hbd
+    exact ⟨d', hb, hd⟩
+  exact glueIsolatedRoot
+    (Base := Base) (Gov := Dsrc)
+    hSrc hTreeE hTreeF hcE hcF q hE hF
+    (fun d => by simpa [q] using hcompatE d)
+    (fun d => by simpa [q] using hcompatF d)
+    hhE hhF hrootE hrootF
+
 /-- Glue two injective functional tree-completion witnesses over a target root
 which is exactly covered by the source overlap. -/
 theorem glueExactRoot
