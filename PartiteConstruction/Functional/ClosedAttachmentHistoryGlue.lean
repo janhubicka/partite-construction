@@ -96,8 +96,8 @@ theorem gluePieceWithRestDiary
       RelStructure.Attachment.RestV
         (W := W0) (I := I0) Supp Test idx → ZR)
     (hfR :
-      (FullRest Bsys Supp Dsys maps0 Test idx).
-        IsHomomorphismEmbedding TR fR)
+      _root_.StructuralRamsey.Structure.IsHomomorphismEmbedding
+        (FullRest Bsys Supp Dsys maps0 Test idx) TR fR)
     (hHistR :
       ∀ Hset ∈ history,
         ∀ x y :
@@ -179,12 +179,11 @@ theorem gluePieceWithRestDiary
     _root_.StructuralRamsey.Structure.IsolatedBoundary.toEmbeddedLabels
       ell sR hCurrent
   simpa [sL, sR, iL, iR] using
-    (_root_.StructuralRamsey.Structure.IsFreeAmalgam.
-      glueIsolatedCommonLabels_withHistoryAndRightDiary
-        (A := A) (Base := Base)
-        hA hfree hTreeL hTreeR targetL targetR ell ell.injective
-        fL fR hcompatL hcompatR hfL hfR hrootL hrootR
-        history hHistL hHistR oldRequests hDiaryR)
+    (_root_.StructuralRamsey.Structure.IsFreeAmalgam.glueIsolatedCommonLabels_withHistoryAndRightDiary
+      (A := A) (Base := Base)
+      hA hfree hTreeL hTreeR targetL targetR ell ell.injective
+      fL fR hcompatL hcompatR hfL hfR hrootL hrootR
+      history hHistL hHistR oldRequests hDiaryR)
 
 /-- Glue relative-history witnesses for the two closed sides of one chosen
 attached copy. -/
