@@ -205,4 +205,80 @@ theorem closedAmbientIntersection
     A.IsClosed {a | α a ∈ S} :=
   closed_preimage α S hS
 
+
+namespace FunctionalProjectedHistoryTreeLike
+
+variable {H E F Z₁ Z₂ C₀ : Type v}
+variable {Root : Structure L H}
+variable {Left : Structure L E} {Right : Structure L F}
+variable {Whole : Structure L C₀}
+variable {TL : Structure L Z₁} {TR : Structure L Z₂}
+variable {sL : Embedding Root Left} {sR : Embedding Root Right}
+variable {iL : Embedding Left Whole} {iR : Embedding Right Whole}
+
+/-- Mixed functional gluing from two projected-history witnesses.
+
+The common source root is already a genuine closed substructure.  Its two
+target embeddings are supplied by the projected-partial certificates and are
+assumed contained in irreducibles.  A recorded boundary set characterizes the
+source root on each side; this gives exactly the root-isolation hypotheses of
+the full fibre-surjective functional glue. -/
+theorem glue_recorded_boundary
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (hTreeL : TreeAmalgam Base Z₁ TL)
+    (hTreeR : TreeAmalgam Base Z₂ TR)
+    (fL : E → Z₁) (fR : F → Z₂)
+    (hfL : Left.IsHomomorphismEmbedding TL fL)
+    (hfR : Right.IsHomomorphismEmbedding TR fR)
+    (tL : Embedding Root TL) (tR : Embedding Root TR)
+    (hcL : tL.ContainedInIrreducible)
+    (hcR : tR.ContainedInIrreducible)
+    (hcompatL : ∀ d, fL (sL d) = tL d)
+    (hcompatR : ∀ d, fR (sR d) = tR d)
+    (pL : E → P) (pR : F → P)
+    (Boundary : Set P)
+    (histL histR : List (Set P))
+    (hBoundaryL : Boundary ∈ histL)
+    (hBoundaryR : Boundary ∈ histR)
+    (hHistL :
+      ∀ Hset ∈ histL, ∀ x y : E,
+        fL x = fL y → (pL x ∈ Hset ↔ pL y ∈ Hset))
+    (hHistR :
+      ∀ Hset ∈ histR, ∀ x y : F,
+        fR x = fR y → (pR x ∈ Hset ↔ pR y ∈ Hset))
+    (hcharL : ∀ x : E, pL x ∈ Boundary ↔
+      ∃ d : H, x = sL d)
+    (hcharR : ∀ x : F, pR x ∈ Boundary ↔
+      ∃ d : H, x = sR d) :
+    ∃ (Z : Type v) (Target : Structure L Z),
+      TreeAmalgam Base Z Target ∧
+      ∃ f : C₀ → Z, Whole.IsHomomorphismEmbedding Target f := by
+  have hrootL :
+      IsFreeAmalgam.RootIsolated sL tL id fL := by
+    intro x d hxd
+    obtain ⟨d', hx, hdd⟩ :=
+      rootIsolation_of_recorded_boundary
+        (pE := pL) Boundary histL hBoundaryL
+        fL hHistL sL tL hcompatL hcharL x d hxd
+    refine ⟨d', hx, ?_⟩
+    simpa using hdd
+  have hrootR :
+      IsFreeAmalgam.RootIsolated sR tR id fR := by
+    intro x d hxd
+    obtain ⟨d', hx, hdd⟩ :=
+      rootIsolation_of_recorded_boundary
+        (pE := pR) Boundary histR hBoundaryR
+        fR hHistR sR tR hcompatR hcharR x d hxd
+    refine ⟨d', hx, ?_⟩
+    simpa using hdd
+  exact
+    LocallyClosedTreeCompletable.glueIsolatedRoot
+      (Base := Base) hSrc hTreeL hTreeR hcL hcR
+      id fL fR
+      (fun d => by simpa using hcompatL d)
+      (fun d => by simpa using hcompatR d)
+      hfL hfR hrootL hrootR
+
+end FunctionalProjectedHistoryTreeLike
+
 end StructuralRamsey.Structure
