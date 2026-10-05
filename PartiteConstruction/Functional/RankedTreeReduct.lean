@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.SingletonReduction
 import PartiteConstruction.Functional.FunctionalTreeAmalgam
+import PartiteConstruction.Functional.ClosedLocalTreeCompletion
 import PartiteConstruction.Structure.IrreducibleHomImage
 
 /-! # Forgetting singleton ranks in functional tree constructions
@@ -119,7 +120,8 @@ theorem irreducible_contained_in_copy
         have hea := Classical.choose_spec (hleft a)
         change e a = i₁ (j₁ b)
         calc
-          e a = i₁ (e₁ a) := hea
+          e a = i₁ (e₁ a) := by
+            simpa [e₁, Embedding.factorThroughRange] using hea
           _ = i₁ (j₁ b) := congrArg i₁ hb
       · let e₂ : Embedding A T₂ :=
           e.factorThroughRange i₂ hright
@@ -131,7 +133,8 @@ theorem irreducible_contained_in_copy
         have hea := Classical.choose_spec (hright a)
         change e a = i₂ (j₂ b)
         calc
-          e a = i₂ (e₂ a) := hea
+          e a = i₂ (e₂ a) := by
+            simpa [e₂, Embedding.factorThroughRange] using hea
           _ = i₂ (j₂ b) := congrArg i₂ hb
 
 
