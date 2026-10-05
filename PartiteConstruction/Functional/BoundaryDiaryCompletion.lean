@@ -224,7 +224,7 @@ theorem fullWitness_withBoundaryDiary
               apply eRT.injective
               calc
                 eRT z' = f (r.boundary.embedding z') := heRT z'
-                _ = f y := congrArg f hyz'.symm
+                _ = f y := congrArg f hyz'
                 _ = f (r.boundary.embedding z) := hEq0
                 _ = eRT z := (heRT z).symm
             subst z'
