@@ -49,27 +49,36 @@ theorem piece_functionClosed
       (RelStructure.Attachment.pieceSet
         B.toRelStructure S D.toRelStructure (maps B S D f) T i) := by
   classical
-  let copy : Partite.Closed.Embedding B (RAttach B S D f) :=
-    ⟨Partite.Attachment.copyEmbedding
-        B S D (fun j => (f j).1) i,
-      Partite.Closed.Attachment.copy_closed
-        (B := B) (S := S) (D := D) (f := f) hS i⟩
+  let copyMap :=
+    Partite.Attachment.copyEmbedding
+      B S D (fun j => (f j).1) i
+  have hcopyClosed :
+      RelStructure.FunctionClosedMap
+        B.toRelStructure
+        (RAttach B S D f).toRelStructure copyMap :=
+    Partite.Closed.Attachment.copy_closed
+      (B := B) (S := S) (D := D) (f := f) hS i
   intro F x y hy hx
   choose a ha using hx
   let args : Fin (L.funcArity F) → V := a
   have hinputs :
-      (fun k => (x k).1) = copy ∘ args := by
+      (fun k => (x k).1) = copyMap ∘ args := by
     funext k
-    exact (ha k).symm
+    exact ha k
+  have hyWhole0 :
+      (RAttach B S D f).rel (.inr F)
+        (Subtype.val ∘ Structure.funcTuple x y) := hy
+  have htuple :
+      Subtype.val ∘ Structure.funcTuple x y =
+        Structure.funcTuple (fun k => (x k).1) y.1 :=
+    Structure.comp_funcTuple Subtype.val x y
   have hyWhole :
       (RAttach B S D f).rel (.inr F)
-        (Structure.funcTuple (copy ∘ args) y.1) := by
-    change
-      (RAttach B S D f).rel (.inr F)
-        (Structure.funcTuple (fun k => (x k).1) y.1) at hy
-    rwa [hinputs] at hy
+        (Structure.funcTuple (copyMap ∘ args) y.1) := by
+    rw [← hinputs, ← htuple]
+    exact hyWhole0
   obtain ⟨z, hz, hzy⟩ :=
-    copy.toRelClosed.closed F args y.1 hyWhole
+    hcopyClosed F args y.1 hyWhole
   refine ⟨z, ?_⟩
   exact hzy.symm
 
@@ -90,9 +99,18 @@ theorem rest_functionClosed
   intro F x y hy hx
   intro hyOutside
   rcases hyOutside with ⟨out, hyEq⟩
+  have hyWhole0 :
+      (RAttach B S D f).rel (.inr F)
+        (Subtype.val ∘ Structure.funcTuple x y) := hy
+  have htuple :
+      Subtype.val ∘ Structure.funcTuple x y =
+        Structure.funcTuple (fun k => (x k).1) y.1 :=
+    Structure.comp_funcTuple Subtype.val x y
   have hyWhole :
       (RAttach B S D f).rel (.inr F)
-        (Structure.funcTuple (fun k => (x k).1) y.1) := hy
+        (Structure.funcTuple (fun k => (x k).1) y.1) := by
+    rw [← htuple]
+    exact hyWhole0
   have hlast :
       (Structure.funcTuple (fun k => (x k).1) y.1)
           (Fin.last (L.funcArity F)) =
