@@ -127,6 +127,7 @@ theorem fullWitness_withBoundaryDiary
 
   have aux :
       ∀ rs : List (ProjectedBoundaryRequest A D C p),
+        (∀ r ∈ rs, r ∈ requests) →
         ∃ (Z0 : Type v) (T0 : Structure L Z0),
           TreeAmalgam Base Z0 T0 ∧
           ∃ j : Embedding T T0,
@@ -135,11 +136,18 @@ theorem fullWitness_withBoundaryDiary
     intro rs
     induction rs with
     | nil =>
+        intro _hsub
         refine ⟨Y, T, hTree, Embedding.id T, ?_⟩
         intro r hr
         exact (List.not_mem_nil hr).elim
     | cons r rs ih =>
-        obtain ⟨Z1, T1, hTree1, j1, hDiary1⟩ := ih
+        intro hsub
+        have hrReq : r ∈ requests :=
+          hsub r (by simp)
+        have hrsReq : ∀ q ∈ rs, q ∈ requests := by
+          intro q hq
+          exact hsub q (by simp [hq])
+        obtain ⟨Z1, T1, hTree1, j1, hDiary1⟩ := ih hrsReq
         obtain ⟨eRT, heRT, hcRT⟩ := requestEmbedding r
         let Hstr :=
           A.induce r.boundary.support r.boundary.supportClosed
@@ -198,7 +206,7 @@ theorem fullWitness_withBoundaryDiary
               (hfree.overlap (j1 (f y)) (eAB a)).mp hcross
             have ha : z.1 = a := by
               apply eAB.injective
-              exact hzBase
+              exact hzBase.symm
             have hEq0 :
                 f y = f (r.boundary.embedding z) := by
               apply j1.injective
@@ -209,7 +217,7 @@ theorem fullWitness_withBoundaryDiary
                   congrArg j1 (heRT z)
             have hyRange :
                 y ∈ Set.range r.boundary.embedding :=
-              (hBoundaryRange r (by simp) y
+              (hBoundaryRange r hrReq y
                 (r.boundary.embedding z) hEq0).2 ⟨z, rfl⟩
             rcases hyRange with ⟨z', hyz'⟩
             have hzz : z' = z := by
@@ -228,7 +236,10 @@ theorem fullWitness_withBoundaryDiary
         · exact hNew
         · exact hOld q hq
 
-  obtain ⟨Z, Target, hTree', j, hDiary⟩ := aux requests
+  obtain ⟨Z, Target, hTree', j, hDiary⟩ :=
+    aux requests (by
+      intro r hr
+      exact hr)
   let f' : W → Z := j ∘ f
   have hf' : C.IsHomomorphismEmbedding Target f' :=
     j.isHomomorphismEmbedding.comp hf
