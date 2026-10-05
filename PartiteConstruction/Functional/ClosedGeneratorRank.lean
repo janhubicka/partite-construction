@@ -53,8 +53,8 @@ number of vertices in that set. -/
 theorem functionClosure_finset_generatedByAtMost
     (B : Structure L V) (S : Finset V) :
     let H := B.functionClosure (↑S : Set V)
-    (B.induce H (B.functionClosure_isClosed (↑S : Set V))).
-      GeneratedByAtMost S.card := by
+    GeneratedByAtMost
+      (B.induce H (B.functionClosure_isClosed (↑S : Set V))) S.card := by
   classical
   let H := B.functionClosure (↑S : Set V)
   let C := B.induce H (B.functionClosure_isClosed (↑S : Set V))
