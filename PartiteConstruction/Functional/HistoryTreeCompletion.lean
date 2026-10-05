@@ -379,4 +379,73 @@ theorem functionalLiftMap_respectsSourceSets
 
 end IsFreeAmalgam
 
+namespace LocallyClosedTreeCompletable
+
+variable {H E F C₀ G ZL ZR : Type v}
+variable {Root : Structure L H}
+variable {Left : Structure L E} {Right : Structure L F}
+variable {Whole : Structure L C₀}
+variable {Gov : Structure L G}
+variable {TL : Structure L ZL} {TR : Structure L ZR}
+variable {sL : Embedding Root Left} {sR : Embedding Root Right}
+variable {iL : Embedding Left Whole} {iR : Embedding Right Whole}
+variable {tL : Embedding Gov TL} {tR : Embedding Gov TR}
+
+/-- Glue two functional tree witnesses while preserving arbitrary finite
+source-side diary predicates on the whole source free amalgam. -/
+theorem glueIsolatedRoot_withSourceHistory
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (hTreeL : TreeAmalgam Base ZL TL)
+    (hTreeR : TreeAmalgam Base ZR TR)
+    (hcL : tL.ContainedInIrreducible)
+    (hcR : tR.ContainedInIrreducible)
+    (q : H → G) (hq : Function.Injective q)
+    (fL : E → ZL) (fR : F → ZR)
+    (hcompatL : ∀ d, fL (sL d) = tL (q d))
+    (hcompatR : ∀ d, fR (sR d) = tR (q d))
+    (hfL : Left.IsHomomorphismEmbedding TL fL)
+    (hfR : Right.IsHomomorphismEmbedding TR fR)
+    (hrootL : IsFreeAmalgam.RootIsolated sL tL q fL)
+    (hrootR : IsFreeAmalgam.RootIsolated sR tR q fR)
+    (history : List (Set C₀))
+    (hHistL :
+      ∀ Hset ∈ history, ∀ x y : E,
+        fL x = fL y → (iL x ∈ Hset ↔ iL y ∈ Hset))
+    (hHistR :
+      ∀ Hset ∈ history, ∀ x y : F,
+        fR x = fR y → (iR x ∈ Hset ↔ iR y ∈ Hset)) :
+    ∃ (Z : Type v) (Target : Structure L Z),
+      TreeAmalgam Base Z Target ∧
+      ∃ f : C₀ → Z,
+        Whole.IsHomomorphismEmbedding Target f ∧
+        ∀ Hset ∈ history, ∀ x y : C₀,
+          f x = f y → (x ∈ Hset ↔ y ∈ Hset) := by
+  classical
+  let Target := FreeAmalgam.amalgam Gov TL TR tL tR
+  let jL := FreeAmalgam.leftEmbedding Gov TL TR tL tR
+  let jR := FreeAmalgam.rightEmbedding Gov TL TR tL tR
+  have hTgt : IsFreeAmalgam tL tR jL jR :=
+    FreeAmalgam.isFreeAmalgam Gov TL TR tL tR
+  have hTree :
+      TreeAmalgam Base
+        (FreeAmalgam.Vertex Gov TL TR tL tR) Target :=
+    FreeAmalgam.treeAmalgam Gov TL TR tL tR Base
+      hTreeL hTreeR hcL hcR
+  let f : C₀ → FreeAmalgam.Vertex Gov TL TR tL tR :=
+    IsFreeAmalgam.functionalLiftMap hSrc hTgt q fL fR
+      hcompatL hcompatR
+  have hf : Whole.IsHomomorphismEmbedding Target f :=
+    IsFreeAmalgam.functionalLiftMap_isHomomorphismEmbedding
+      hSrc hTgt q fL fR hcompatL hcompatR
+      hfL hfR hrootL hrootR
+  have hHist :
+      ∀ Hset ∈ history, ∀ x y : C₀,
+        f x = f y → (x ∈ Hset ↔ y ∈ Hset) :=
+    IsFreeAmalgam.functionalLiftMap_respectsSourceSets
+      hSrc hTgt q hq fL fR hcompatL hcompatR
+      hrootL hrootR history hHistL hHistR
+  exact ⟨_, Target, hTree, f, hf, hHist⟩
+
+end LocallyClosedTreeCompletable
+
 end StructuralRamsey.Structure
