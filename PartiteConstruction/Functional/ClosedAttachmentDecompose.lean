@@ -188,6 +188,109 @@ theorem overlap_functionClosed
     rest_functionClosed B S D f T i hS
       F x y hy (fun k => (hx k).2)⟩
 
+
+/-- The overlap inclusion into the chosen piece is function-closed. -/
+theorem overlapToPiece_functionClosed
+    (hS : RelStructure.FunctionClosedSet B.toRelStructure S) :
+    RelStructure.FunctionClosedMap
+      (RelStructure.Attachment.Overlap
+        B.toRelStructure S D.toRelStructure (maps B S D f) T i)
+      (RelStructure.Attachment.Piece
+        B.toRelStructure S D.toRelStructure (maps B S D f) T i)
+      (RelStructure.Attachment.overlapToPiece
+        B.toRelStructure S D.toRelStructure (maps B S D f) T i) := by
+  intro F x y hy
+  have hySmall :
+      (RelStructure.Attachment.Small
+        B.toRelStructure S D.toRelStructure (maps B S D f) T).rel
+        (.inr F)
+        (Structure.funcTuple (fun k => (x k).1) y.1) := hy
+  have hyRest :
+      y.1 ∈ RelStructure.Attachment.restSet
+        (W := W) (I := I) S T i :=
+    rest_functionClosed B S D f T i hS
+      F (fun k => (x k).1) y.1 hySmall
+      (fun k => (x k).2.2)
+  let z :
+      RelStructure.Attachment.OverlapV
+        (W := W) (I := I)
+        B.toRelStructure S D.toRelStructure
+        (maps B S D f) T i :=
+    ⟨y.1, y.2, hyRest⟩
+  refine ⟨z, ?_, ?_⟩
+  · exact hy
+  · apply Subtype.ext
+    rfl
+
+/-- The overlap inclusion into the complementary rest is function-closed. -/
+theorem overlapToRest_functionClosed
+    (hS : RelStructure.FunctionClosedSet B.toRelStructure S) :
+    RelStructure.FunctionClosedMap
+      (RelStructure.Attachment.Overlap
+        B.toRelStructure S D.toRelStructure (maps B S D f) T i)
+      (RelStructure.Attachment.Rest
+        B.toRelStructure S D.toRelStructure (maps B S D f) T i)
+      (RelStructure.Attachment.overlapToRest
+        B.toRelStructure S D.toRelStructure (maps B S D f) T i) := by
+  intro F x y hy
+  have hySmall :
+      (RelStructure.Attachment.Small
+        B.toRelStructure S D.toRelStructure (maps B S D f) T).rel
+        (.inr F)
+        (Structure.funcTuple (fun k => (x k).1) y.1) := hy
+  have hyPiece :
+      y.1 ∈ RelStructure.Attachment.pieceSet
+        B.toRelStructure S D.toRelStructure (maps B S D f) T i :=
+    piece_functionClosed B S D f T i hS
+      F (fun k => (x k).1) y.1 hySmall
+      (fun k => (x k).2.1)
+  let z :
+      RelStructure.Attachment.OverlapV
+        (W := W) (I := I)
+        B.toRelStructure S D.toRelStructure
+        (maps B S D f) T i :=
+    ⟨y.1, hyPiece, y.2⟩
+  refine ⟨z, ?_, ?_⟩
+  · exact hy
+  · apply Subtype.ext
+    rfl
+
+/-- The relational decomposition of a closed test decodes to a genuine full
+function-language free amalgam.  This is the structural decomposition used in
+the mixed functional Picture step. -/
+theorem full_decompose
+    (hS : RelStructure.FunctionClosedSet B.toRelStructure S) :
+    let g := maps B S D f
+    let hfree :=
+      RelStructure.Attachment.decompose
+        B.toRelStructure S D.toRelStructure g T i
+    let hfPiece :=
+      overlapToPiece_functionClosed B S D f T i hS
+    let hfRest :=
+      overlapToRest_functionClosed B S D f T i hS
+    Structure.IsFreeAmalgam
+      (⟨RelStructure.Attachment.overlapToPiece
+          B.toRelStructure S D.toRelStructure g T i,
+        hfPiece⟩ : RelStructure.ClosedEmbedding _ _).toFull
+      (⟨RelStructure.Attachment.overlapToRest
+          B.toRelStructure S D.toRelStructure g T i,
+        hfRest⟩ : RelStructure.ClosedEmbedding _ _).toFull
+      (let hs := (hfree.sides_closed_iff).2 ⟨hfPiece, hfRest⟩
+       (⟨RelStructure.Attachment.pieceInclusion
+          B.toRelStructure S D.toRelStructure g T i,
+          hs.1⟩ : RelStructure.ClosedEmbedding _ _).toFull)
+      (let hs := (hfree.sides_closed_iff).2 ⟨hfPiece, hfRest⟩
+       (⟨RelStructure.Attachment.restInclusion
+          B.toRelStructure S D.toRelStructure g T i,
+          hs.2⟩ : RelStructure.ClosedEmbedding _ _).toFull) := by
+  dsimp
+  exact RelStructure.IsFreeAmalgam.toFull
+    (RelStructure.Attachment.decompose
+      B.toRelStructure S D.toRelStructure
+      (maps B S D f) T i)
+    (overlapToPiece_functionClosed B S D f T i hS)
+    (overlapToRest_functionClosed B S D f T i hS)
+
 end
 
 end StructuralRamsey.Partite.Closed.Attachment
