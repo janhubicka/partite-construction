@@ -421,7 +421,7 @@ theorem glue_closed_attachment_test
     (fL :
       _root_.StructuralRamsey.RelStructure.Attachment.PieceV
         Bsys.toRelStructure Supp Dsys.toRelStructure
-        (_root_.StructuralRamsey.Partite.Closed.Attachment.maps Bsys Supp Dsys maps0) Test idx → ZL)
+        ((fun j => (maps0 j).1.toEmbedding)) Test idx → ZL)
     (fR :
       _root_.StructuralRamsey.RelStructure.Attachment.RestV
         (W := W0) (I := I0) Supp Test idx → ZR)
@@ -454,7 +454,7 @@ theorem glue_closed_attachment_test
     (pL :
       _root_.StructuralRamsey.RelStructure.Attachment.PieceV
         Bsys.toRelStructure Supp Dsys.toRelStructure
-        (_root_.StructuralRamsey.Partite.Closed.Attachment.maps Bsys Supp Dsys maps0) Test idx → P)
+        ((fun j => (maps0 j).1.toEmbedding)) Test idx → P)
     (pR :
       _root_.StructuralRamsey.RelStructure.Attachment.RestV
         (W := W0) (I := I0) Supp Test idx → P)
@@ -483,7 +483,7 @@ theorem glue_closed_attachment_test
       ∃ f :
         _root_.StructuralRamsey.RelStructure.Attachment.SmallV
           Bsys.toRelStructure Supp Dsys.toRelStructure
-          (_root_.StructuralRamsey.Partite.Closed.Attachment.maps Bsys Supp Dsys maps0) Test → Z,
+          ((fun j => (maps0 j).1.toEmbedding)) Test → Z,
         (_root_.StructuralRamsey.Partite.Closed.Attachment.FullSmall
           Bsys Supp Dsys maps0 Test).IsHomomorphismEmbedding Target f := by
   let hfree :=
