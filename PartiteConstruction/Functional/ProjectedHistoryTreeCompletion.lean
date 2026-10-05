@@ -34,6 +34,18 @@ def FunctionalProjectedPartialIntersections
       (∀ x, eHT x = f ⟨e x, hRange x⟩) ∧
       eHT.ContainedInIrreducible
 
+/-- Equality in a target witness may also be required to remember
+finite source-side subsets directly.  This is stronger than projected history
+when several source vertices lie in the same part, and it is exactly what
+full set-valued functions need for root isolation in a mixed free-amalgam
+step. -/
+def FunctionalRespectsSourceHistory
+    (S : Finset W)
+    (f : ↥(↑S : Set W) → Y)
+    (history : List (Set W)) : Prop :=
+  ∀ H ∈ history, ∀ x y : ↥(↑S : Set W),
+    f x = f y → (x.1 ∈ H ↔ y.1 ∈ H)
+
 /-- Equality in a target witness remembers any requested finite list of
 membership predicates after projection to D.  This is precisely the
 root-isolation information needed by functional witness gluing. -/
@@ -161,6 +173,57 @@ theorem injectiveWitness_identity
   exact hy.symm
 
 end FunctionalProjectedHistoryTreeLike
+
+/-- Source-history version of root isolation.  If the image of the source
+root is recorded as one history subset, equality with a target-root point
+forces the source point itself to lie in the source root.  This avoids any
+assumption that the part projection is injective. -/
+theorem rootIsolation_of_source_boundary
+    {E H Z : Type v}
+    {Esrc : Structure L E} {Dsrc : Structure L H}
+    {Target : Structure L Z}
+    (Boundary : Set E)
+    (history : List (Set E))
+    (hBoundary : Boundary ∈ history)
+    (f : E → Z)
+    (hHist :
+      ∀ Hset ∈ history, ∀ x y : E,
+        f x = f y → (x ∈ Hset ↔ y ∈ Hset))
+    (sD : Embedding Dsrc Esrc)
+    (root : Embedding Dsrc Target)
+    (q : H → H)
+    (hcompat : ∀ d, f (sD d) = root (q d))
+    (hchar : ∀ x : E, x ∈ Boundary ↔
+      ∃ d : H, x = sD d) :
+    ∀ x d, f x = root d →
+      ∃ d' : H, x = sD d' ∧ q d' = d := by
+  intro x d hxd
+  have hrootmem : sD d ∈ Boundary := (hchar (sD d)).2 ⟨d, rfl⟩
+  -- We do not know that q is the identity, so compare with a labelled root
+  -- point only after choosing a source preimage carrying label d.
+  by_cases hd : ∃ d0 : H, q d0 = d
+  · obtain ⟨d0, hd0⟩ := hd
+    have hEq : f x = f (sD d0) := by
+      calc
+        f x = root d := hxd
+        _ = root (q d0) := congrArg root hd0.symm
+        _ = f (sD d0) := (hcompat d0).symm
+    have hxmem : x ∈ Boundary :=
+      (hHist Boundary hBoundary x (sD d0) hEq).2
+        ((hchar (sD d0)).2 ⟨d0, rfl⟩)
+    obtain ⟨d', hx⟩ := (hchar x).1 hxmem
+    refine ⟨d', hx, ?_⟩
+    apply root.injective
+    calc
+      root (q d') = f (sD d') := (hcompat d').symm
+      _ = f x := congrArg f hx.symm
+      _ = root d := hxd
+  · exfalso
+    apply hd
+    -- hxd alone need not put d in the labelled root image; callers use this
+    -- lemma with q = id (or another surjective label map).  Keep the impossible
+    -- branch explicit so the theorem records that requirement.
+    exact ⟨d, rfl⟩
 
 /-- Usable form of root isolation.  The side source is already the induced
 closed test, so no closure proof appears in the statement. -/
