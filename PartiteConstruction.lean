@@ -218,5 +218,6 @@ import PartiteConstruction.Functional.BoundaryDiary
 import PartiteConstruction.Functional.QuotientBoundaryDiary
 import PartiteConstruction.Functional.LabelledIntersectionControl
 import PartiteConstruction.Functional.LabelledHistoryControl
+import PartiteConstruction.Functional.QuotientProjectedHistoryGlue
 
 import PartiteConstruction.Functional.BoundaryDiaryCompletion
