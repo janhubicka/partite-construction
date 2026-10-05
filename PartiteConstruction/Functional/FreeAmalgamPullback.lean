@@ -44,6 +44,10 @@ structure EmbeddingPullback
   right_factor : ∀ x, e (rightIn x) = iF (rightMap x)
   common_left : ∀ x, leftMap (toLeft x) = sE (commonMap x)
   common_right : ∀ x, rightMap (toRight x) = sF (commonMap x)
+  left_reflect : ∀ a d, leftMap a = sE d →
+    ∃ z, a = toLeft z ∧ commonMap z = d
+  right_reflect : ∀ b d, rightMap b = sF d →
+    ∃ z, b = toRight z ∧ commonMap z = d
 
 /-- Every full embedding into a functional free amalgam has the canonical
 closed pullback diagram. -/
@@ -234,6 +238,56 @@ noncomputable def embeddingPullback
       _ = iF (sF (mapCommon z)) :=
         (hfree.overlap (sE (mapCommon z)) (sF (mapCommon z))).mpr
           ⟨mapCommon z, rfl, rfl⟩
+  have hLeftReflect :
+      ∀ a d, mapLeft a = sE d →
+        ∃ z : Mset, a = mL z ∧ mapCommon z = d := by
+    intro a d had
+    have hRightMem : a.1 ∈ Rset := by
+      change e a.1 ∈ Set.range iF
+      refine ⟨sF d, ?_⟩
+      calc
+        iF (sF d) = iE (sE d) :=
+          ((hfree.overlap (sE d) (sF d)).mpr
+            ⟨d, rfl, rfl⟩).symm
+        _ = iE (mapLeft a) := congrArg iE had.symm
+        _ = e (iL a) := hLeftFactor a
+        _ = e a.1 := rfl
+    let z : Mset := ⟨a.1, ⟨a.2, hRightMem⟩⟩
+    have haz : a = mL z := by
+      apply Subtype.ext
+      rfl
+    refine ⟨z, haz, ?_⟩
+    apply sE.injective
+    calc
+      sE (mapCommon z) = mapLeft (mL z) :=
+        (hCommonLeft z).symm
+      _ = mapLeft a := congrArg mapLeft haz.symm
+      _ = sE d := had
+  have hRightReflect :
+      ∀ b d, mapRight b = sF d →
+        ∃ z : Mset, b = mR z ∧ mapCommon z = d := by
+    intro b d hbd
+    have hLeftMem : b.1 ∈ Lset := by
+      change e b.1 ∈ Set.range iE
+      refine ⟨sE d, ?_⟩
+      calc
+        iE (sE d) = iF (sF d) :=
+          (hfree.overlap (sE d) (sF d)).mpr
+            ⟨d, rfl, rfl⟩
+        _ = iF (mapRight b) := congrArg iF hbd.symm
+        _ = e (iR b) := hRightFactor b
+        _ = e b.1 := rfl
+    let z : Mset := ⟨b.1, ⟨hLeftMem, b.2⟩⟩
+    have hbz : b = mR z := by
+      apply Subtype.ext
+      rfl
+    refine ⟨z, hbz, ?_⟩
+    apply sF.injective
+    calc
+      sF (mapCommon z) = mapRight (mR z) :=
+        (hCommonRight z).symm
+      _ = mapRight b := congrArg mapRight hbz.symm
+      _ = sF d := hbd
   exact {
     Common := Mset
     Left := Lset
@@ -253,6 +307,8 @@ noncomputable def embeddingPullback
     right_factor := hRightFactor
     common_left := hCommonLeft
     common_right := hCommonRight
+    left_reflect := hLeftReflect
+    right_reflect := hRightReflect
   }
 
 end StructuralRamsey.Structure.IsFreeAmalgam
