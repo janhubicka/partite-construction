@@ -162,7 +162,7 @@ theorem pullback_embedding
   let ee : Embedding
       (C'.induce (↑S : Set X) hS)
       (C.induce (↑I : Set W) hIclosed) :=
-    j.factorThroughRange incI hrange
+    j.factorThroughClosedRange incI hrange
   exact ⟨Y, T, hTree, f ∘ ee, hf.comp ee.isHomomorphismEmbedding⟩
 
 end LocallyClosedTreeCompletable
