@@ -180,4 +180,32 @@ theorem IsEHNHomomorphismEmbedding.isHomomorphism_of_domainReflection
       · intro hy
         exact False.elim (htgt ⟨y, hy⟩)
 
+
+/-- On a closed test, the only missing ingredient for upgrading an EHN
+projection to a full homomorphism-embedding is reflection of function-domain
+nonemptiness on that test. -/
+theorem IsEHNHomomorphismEmbedding.restrictClosed_toFull_of_domainReflection
+    {A : Structure L U} {B : Structure L V}
+    {p : U → V}
+    (hp : A.IsEHNHomomorphismEmbedding B p)
+    (S : Set U) (hS : A.IsClosed S)
+    (hreflect :
+      ∀ F (x : Fin (L.funcArity F) → S),
+        (B.func F ((p ∘ Subtype.val) ∘ x)).Nonempty →
+          ((A.induce S hS).func F x).Nonempty) :
+    (A.induce S hS).IsHomomorphismEmbedding B
+      (p ∘ Subtype.val) := by
+  let inc : Embedding (A.induce S hS) A :=
+    inclusion A S hS
+  have hpS :
+      (A.induce S hS).IsEHNHomomorphismEmbedding B
+        (p ∘ Subtype.val) := by
+    change
+      (A.induce S hS).IsEHNHomomorphismEmbedding B (p ∘ inc)
+    exact hp.comp inc.isEHNHomomorphismEmbedding
+  refine ⟨hpS.isHomomorphism_of_domainReflection ?_, hpS.2⟩
+  intro F x htgt
+  simpa [Function.comp_assoc] using hreflect F x (by
+    simpa [Function.comp_assoc] using htgt)
+
 end StructuralRamsey.Structure
