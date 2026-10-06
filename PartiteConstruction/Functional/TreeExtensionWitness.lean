@@ -96,9 +96,6 @@ theorem pullback_embedding
 /-- Further strict attachments to the target preserve a relative completion. -/
 theorem extendTarget
     (q : H → G)
-    (h :
-      HasTreeExtensionCompletion
-        (Base := Base) (Start := Start) s q)
     {Z₂ : Type v} {Target₂ : Structure L Z₂}
     {Z : Type v} {Target : Structure L Z}
     (hMore : TreeExtension Base Target Z₂ Target₂)
