@@ -29,7 +29,7 @@ variable {VB VS : Type v}
 /-- A finite sequence of strict Base-copy attachments starting from Start. -/
 inductive TreeExtension
     (Base : Structure L VB) (Start : Structure L VS) :
-    (W : Type v) -> Structure L W -> Type (max u v)
+    (W : Type v) -> Structure L W -> Type (max (u + 1) (v + 1))
   | refl :
       TreeExtension Base Start VS Start
   | attach
