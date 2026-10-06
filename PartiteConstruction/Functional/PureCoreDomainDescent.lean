@@ -99,5 +99,32 @@ theorem power_weakRestrict_domainFailure_ambient
     exact haD0
   exact ⟨i, ⟨α a, haD⟩, hiAmbient⟩
 
+
+/-- If the ambient previous-stage EHN projection reflects function domains,
+then the weak-restriction Hales--Jewett power reflects domains as well.  This
+is the direct contrapositive of the domain-failure descent theorem above. -/
+theorem power_weakRestrict_domainReflection
+    (B : System L P V)
+    (D : Structure L P)
+    (hB : B.WeaklyPartiteOver D)
+    (A : Structure L U)
+    (α : Structure.Embedding A D)
+    (N : ℕ)
+    (hreflect :
+      ∀ F (x : Fin (L.funcArity F) → V),
+        (D.func F (B.part ∘ x)).Nonempty →
+          (B.toStructure.func F x).Nonempty) :
+    ∀ F (x : Fin (L.funcArity F) →
+        Vertex (B.weakRestrict D hB.1 A α) N),
+      (A.func F
+        ((power (B.weakRestrict D hB.1 A α) N).part ∘ x)).Nonempty →
+      ((power (B.weakRestrict D hB.1 A α) N).toStructure.func F x).Nonempty := by
+  intro F x htgt
+  by_contra hpow
+  obtain ⟨i, htarget, hsource⟩ :=
+    power_weakRestrict_domainFailure_ambient
+      B D hB A α N F x htgt hpow
+  exact hsource (hreflect F
+    (fun j => ((x j).coord i).1) htarget)
 end Induced
 end StructuralRamsey.FunctionalPartite
