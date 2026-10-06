@@ -166,6 +166,159 @@ theorem respectsHistory_of_kernel_refines_projection
   rw [hkern x y hxy]
 
 
+/-- Pull a projected-history witness back along a full functional
+homomorphism-embedding by passing to the closed projected image of the test.
+
+Unlike the source-history pullback, no injectivity is required: all diary data
+lives in the outer structure D and is therefore stable under quotienting the
+test by the projection. -/
+theorem witness_of_homEmbedding_image
+    (hD : FunctionalProjectedHistoryTreeLike
+      (A := A) (D := D) (C := D) (Base := Base) id n)
+    (hp : C.IsHomomorphismEmbedding D p)
+    (S : Finset W) (hS : C.IsClosed (↑S : Set W))
+    (hgen : (C.induce (↑S : Set W) hS).GeneratedByAtMost n)
+    (history : List (Set P)) :
+    ∃ (Z : Type v) (Target : Structure L Z),
+      TreeAmalgam Base Z Target ∧
+      ∃ f : ↥(↑S : Set W) → Z,
+        IsHomomorphismEmbedding
+          (C.induce (↑S : Set W) hS) Target f ∧
+        FunctionalProjectedPartialIntersections
+          (A := A) (D := D) (C := C) (T := Target) p S f ∧
+        FunctionalRespectsProjectedHistory p S f history := by
+  classical
+  let Small := C.induce (↑S : Set W) hS
+  let inc : Embedding Small C :=
+    inclusion C (↑S : Set W) hS
+  let q : ↥(↑S : Set W) → P := p ∘ inc
+  have hqIHE : IsHomomorphismEmbedding Small D q :=
+    hp.comp inc.isHomomorphismEmbedding
+  have hqHom : Small.IsHomomorphism D q := hqIHE.1
+
+  let I : Finset P := S.image p
+  have hrange : Set.range q = (↑I : Set P) := by
+    ext y
+    constructor
+    · rintro ⟨x, rfl⟩
+      exact Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩
+    · intro hy
+      rcases Finset.mem_image.mp hy with ⟨x, hxS, hxy⟩
+      let xs : ↥(↑S : Set W) := ⟨x, hxS⟩
+      exact ⟨xs, hxy⟩
+  have hIclosed : D.IsClosed (↑I : Set P) := by
+    rw [← hrange]
+    exact hqHom.range_isClosed
+  let R := D.induce (↑I : Set P) hIclosed
+  let incR : Embedding R D :=
+    inclusion D (↑I : Set P) hIclosed
+  let qR : ↥(↑S : Set W) → ↥(↑I : Set P) :=
+    fun x => ⟨q x, Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩⟩
+
+  have hqRHom : Small.IsHomomorphism R qR :=
+    hqHom.codRestrict (↑I : Set P) hIclosed
+      (fun x => Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩)
+  have hqRIHE : Small.IsHomomorphismEmbedding R qR := by
+    refine ⟨hqRHom, ?_⟩
+    intro X E hE e
+    obtain ⟨g, hg⟩ := hqIHE.2 E hE e
+    have hgrange :
+        ∀ z : X, ∃ r : ↥(↑I : Set P), g z = incR r := by
+      intro z
+      let r : ↥(↑I : Set P) :=
+        ⟨q (e z), Finset.mem_image.mpr
+          ⟨(e z).1, (e z).2, rfl⟩⟩
+      exact ⟨r, hg z⟩
+    let gr : Embedding E R :=
+      g.factorThroughClosedRange incR hgrange
+    refine ⟨gr, ?_⟩
+    intro z
+    apply Subtype.ext
+    have hfactor :
+        incR (gr z) = g z :=
+      Embedding.factorThroughClosedRange_spec g incR hgrange z
+    calc
+      (gr z).1 = g z := hfactor
+      _ = q (e z) := hg z
+      _ = (qR (e z)).1 := rfl
+
+  have hIgen : R.GeneratedByAtMost n := by
+    have hgenRange :=
+      homRange_generatedByAtMost hqHom hgen
+    let Range :=
+      D.induce (Set.range q) hqHom.range_isClosed
+    let incRange : Embedding Range D :=
+      inclusion D (Set.range q) hqHom.range_isClosed
+    have hinto :
+        ∀ x : ↥(Set.range q),
+          ∃ y : ↥(↑I : Set P), incRange x = incR y := by
+      intro x
+      have hxI : x.1 ∈ (↑I : Set P) := by
+        rw [← hrange]
+        exact x.2
+      exact ⟨⟨x.1, hxI⟩, rfl⟩
+    let eRange : Embedding Range R :=
+      incRange.factorThroughClosedRange incR hinto
+    have heSurj : Function.Surjective eRange := by
+      intro y
+      have hyRange : y.1 ∈ Set.range q := by
+        rw [hrange]
+        exact y.2
+      let x : ↥(Set.range q) := ⟨y.1, hyRange⟩
+      refine ⟨x, ?_⟩
+      apply Subtype.ext
+      have hs :=
+        Embedding.factorThroughClosedRange_spec
+          incRange incR hinto x
+      change (eRange x).1 = x.1 at hs
+      exact hs
+    have hgenRange' : Range.GeneratedByAtMost n := by
+      simpa [Range] using hgenRange
+    exact hgenRange'.of_surjective_embedding eRange heSurj
+
+  obtain ⟨Z, Target, hTree, g, hg, hPartD, hHistD⟩ :=
+    hD I hIclosed hIgen history
+  let f : ↥(↑S : Set W) → Z := g ∘ qR
+  have hf : Small.IsHomomorphismEmbedding Target f :=
+    hg.comp hqRIHE
+
+  have hPart :
+      FunctionalProjectedPartialIntersections
+        (A := A) (D := D) (C := C) (T := Target) p S f := by
+    intro β H hH e hproj hRange
+    let eD : Embedding (A.induce H hH) D :=
+      β.comp (inclusion A H hH)
+    have hRangeD : ∀ x, eD x ∈ I := by
+      intro x
+      apply Finset.mem_image.mpr
+      refine ⟨e x, hRange x, ?_⟩
+      change p (e x) = β x.1
+      exact hproj x
+    have hprojD : ∀ x, (id : P → P) (eD x) = β x.1 :=
+      fun _ => rfl
+    obtain ⟨eHT, heHT, hcHT⟩ :=
+      hPartD β H hH eD hprojD hRangeD
+    refine ⟨eHT, ?_, hcHT⟩
+    intro x
+    change eHT x = g (qR ⟨e x, hRange x⟩)
+    have hx :
+        (⟨eD x, hRangeD x⟩ : ↥(↑I : Set P)) =
+          qR ⟨e x, hRange x⟩ := by
+      apply Subtype.ext
+      change β x.1 = p (e x)
+      exact (hproj x).symm
+    rw [← hx]
+    exact heHT x
+
+  have hHist :
+      FunctionalRespectsProjectedHistory p S f history := by
+    intro K hK x y hxy
+    have hbase := hHistD K hK (qR x) (qR y) hxy
+    change (p x.1 ∈ K ↔ p y.1 ∈ K) at hbase
+    exact hbase
+
+  exact ⟨Z, Target, hTree, f, hf, hPart, hHist⟩
+
 /-- Projected-history coherence gives the literal closed-substructure
 statement used in the manuscript.  A closed test on at most n vertices is
 generated by all of its vertices, so its generator rank is at most n. -/
