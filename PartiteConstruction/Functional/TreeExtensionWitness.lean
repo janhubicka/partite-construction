@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.TreeExtensionGlue
 import PartiteConstruction.Functional.RelativeHistoryTreeCompletion
+import PartiteConstruction.Functional.QuotientBoundaryDiary
 
 /-! # Relative functional completions over a prescribed root tree
 
@@ -168,6 +169,120 @@ theorem glue
 
 end HasTreeExtensionCompletion
 
+
+
+/-- An isolated quotient-labelled boundary can be standardized to a relative
+completion rooted at the fixed Base itself.
+
+No injectivity of the quotient label is required.  Attach one fresh Base copy
+to the side target along the isolated A-copy, then reroot the resulting strict
+tree at that fresh Base copy.  Root isolation is inherited from the quotient
+boundary certificate and exactness of the free-amalgam overlap. -/
+theorem HasTreeExtensionCompletion.of_isolatedQuotientBoundary_rootedBase
+    {U W V Y : Type v}
+    {A : Structure L U} {C : Structure L W}
+    {Base₀ : Structure L V} {T : Structure L Y}
+    [Finite V]
+    (hA : A.Irreducible)
+    (hBase : Base₀.Irreducible)
+    (eAB : Embedding A Base₀)
+    (r : QuotientBoundaryRequest A C)
+    (hTree : TreeAmalgam Base₀ Y T)
+    (f : W → Y)
+    (hf : C.IsHomomorphismEmbedding T f)
+    (hIso : IsolatedQuotientBoundary r T f) :
+    HasTreeExtensionCompletion
+      (Base := Base₀) (Start := Base₀)
+      r.embedding (fun x => eAB (r.label x)) := by
+  classical
+  obtain ⟨targetCopy, hcompat, hroot⟩ := hIso
+  have hcT : targetCopy.ContainedInIrreducible := by
+    refine ⟨U, A, hA, targetCopy, ?_⟩
+    intro a
+    exact ⟨a, rfl⟩
+  have hcB : eAB.ContainedInIrreducible := by
+    refine ⟨U, A, hA, eAB, ?_⟩
+    intro a
+    exact ⟨a, rfl⟩
+
+  let T1 := FreeAmalgam.amalgam A T Base₀ targetCopy eAB
+  let l : Embedding T T1 :=
+    FreeAmalgam.leftEmbedding A T Base₀ targetCopy eAB
+  let rb : Embedding Base₀ T1 :=
+    FreeAmalgam.rightEmbedding A T Base₀ targetCopy eAB
+  have hfree : IsFreeAmalgam targetCopy eAB l rb :=
+    FreeAmalgam.isFreeAmalgam A T Base₀ targetCopy eAB
+  have hTree1 : TreeAmalgam Base₀ _ T1 :=
+    FreeAmalgam.treeAmalgam A T Base₀ targetCopy eAB Base₀
+      hTree
+      (TreeAmalgam.copy (Embedding.id Base₀) (by
+        intro b
+        exact ⟨b, rfl⟩))
+      hcT hcB
+
+  let f1 : W → _ := l ∘ f
+  have hf1 : C.IsHomomorphismEmbedding T1 f1 :=
+    l.isHomomorphismEmbedding.comp hf
+  have hcompat1 :
+      ∀ x : r.Carrier,
+        f1 (r.embedding x) = rb (eAB (r.label x)) := by
+    intro x
+    change l (f (r.embedding x)) = rb (eAB (r.label x))
+    calc
+      l (f (r.embedding x)) =
+          l (targetCopy (r.label x)) :=
+        congrArg l (hcompat x)
+      _ = rb (eAB (r.label x)) :=
+        (hfree.overlap
+          (targetCopy (r.label x))
+          (eAB (r.label x))).mpr
+            ⟨r.label x, rfl, rfl⟩
+
+  have hroot1 :
+      IsFreeAmalgam.RootIsolated
+        r.embedding rb (fun x => eAB (r.label x)) f1 := by
+    intro y b hyb
+    change l (f y) = rb b at hyb
+    obtain ⟨a, hfa, hba⟩ :=
+      (hfree.overlap (f y) b).mp hyb
+    obtain ⟨x, hyx, hxa⟩ := hroot y a hfa
+    refine ⟨x, hyx, ?_⟩
+    calc
+      eAB (r.label x) = eAB a :=
+        congrArg eAB hxa
+      _ = b := hba.symm
+
+  obtain ⟨Z2, T2, hExt, j, hj⟩ :=
+    TreeExtension.embedIntoRootedExtension
+      hBase hTree1 rb
+  let f2 : W → Z2 := j ∘ f1
+  have hf2 : C.IsHomomorphismEmbedding T2 f2 :=
+    j.isHomomorphismEmbedding.comp hf1
+  have hcompat2 :
+      ∀ x : r.Carrier,
+        f2 (r.embedding x) =
+          hExt.startEmbedding (eAB (r.label x)) := by
+    intro x
+    calc
+      f2 (r.embedding x) = j (f1 (r.embedding x)) := rfl
+      _ = j (rb (eAB (r.label x))) :=
+        congrArg j (hcompat1 x)
+      _ = hExt.startEmbedding (eAB (r.label x)) :=
+        hj (eAB (r.label x))
+  have hroot2 :
+      IsFreeAmalgam.RootIsolated
+        r.embedding hExt.startEmbedding
+        (fun x => eAB (r.label x)) f2 := by
+    intro y b hyb
+    have hyb1 : f1 y = rb b := by
+      apply j.injective
+      calc
+        j (f1 y) = f2 y := rfl
+        _ = hExt.startEmbedding b := hyb
+        _ = j (rb b) := (hj b).symm
+    exact hroot1 y b hyb1
+
+  exact ⟨Z2, T2, hExt, f2, hf2, hcompat2, hroot2⟩
 
 namespace FunctionalRelativeHistoryTreeLike
 
