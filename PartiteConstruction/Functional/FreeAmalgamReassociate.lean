@@ -51,7 +51,8 @@ theorem right_identity
       exact ⟨s, h, rfl⟩
     · rintro ⟨d, hm, hs⟩
       subst s
-      simpa using hm
+      change m = e d
+      exact hm
   · intro Rel z
     constructor
     · intro hz
@@ -74,9 +75,12 @@ theorem right_identity
     · rintro (⟨a, b, hb, hargs, hout⟩ |
         ⟨a, b, hb, hargs, hout⟩)
       · have hargs' : args = a := by
-          simpa using hargs
+          funext q
+          change args q = a q
+          exact congrFun hargs q
         have hout' : y = b := by
-          simpa using hout
+          change y = b
+          exact hout
         simpa [hargs', hout'] using hb
       · have himg :
             e b ∈ imageSet e (Start.func F a) :=
@@ -211,9 +215,9 @@ theorem reassociate_right
         ⟨a, b, hb, hargs, hout⟩ |
         ⟨a, b, hb, hargs, hout⟩
       · rcases (hOuter.func_iff F a b).mp hb with
-          ⟨margs, mb, hma, hmb⟩ |
-          ⟨targs, tb, hta, htb⟩
-        · refine Or.inl ⟨margs, mb, ?_, ?_⟩
+          ⟨margs, mb, hmemb, hma, hmb⟩ |
+          ⟨targs, tb, htemb, hta, htb⟩
+        · refine Or.inl ⟨margs, mb, hmemb, ?_, ?_⟩
           · funext q
             have haq := congrFun hargs q
             have hmaq := congrFun hma q
@@ -229,7 +233,7 @@ theorem reassociate_right
               jT tb ∈ Ext.func F (jT ∘ targs) := by
             have himg :
                 jT tb ∈ imageSet jT (Tstr.func F targs) :=
-              ⟨tb, tb, rfl⟩
+              ⟨tb, htemb, rfl⟩
             rw [jT.map_func F targs] at himg
             exact himg
           refine Or.inr ⟨jT ∘ targs, jT tb, tmem, ?_, ?_⟩
