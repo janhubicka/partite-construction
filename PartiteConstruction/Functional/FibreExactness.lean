@@ -266,8 +266,8 @@ namespace StructuralRamsey.FunctionalPartite.Induced
 
 open StructuralRamsey.Structure
 
-universe u v w
-variable {L : Language.{u}} {P : Type v} {V : Type w}
+universe u v
+variable {L : Language.{u}} {P V : Type v}
 variable {A : Structure L P} {B : System L P V} {N : ℕ}
 
 /-- A domain-reflection failure in a functional Hales--Jewett power already
