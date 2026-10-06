@@ -207,32 +207,44 @@ theorem completeControl_of_embeddedIntersections
     | nil =>
         intro Y0 T0 hTree0 f0 hInt0 zs hctrl0
         let j : ClosedEmbedding T0 T0 := ClosedEmbedding.id T0
+        have hjf : ClosedEmbedding.comp j f0 = f0 := by
+          apply ClosedEmbedding.ext
+          intro x
+          rfl
         refine ⟨Y0, T0, hTree0, j, ?_, ?_⟩
-        · simpa [j] using hInt0
-        · simpa [j] using hctrl0
+        · rw [hjf]
+          exact hInt0
+        · rw [hjf]
+          simpa using hctrl0
     | cons α ys ih =>
         intro Y0 T0 hTree0 f0 hInt0 zs hctrl0
-        obtain ⟨Y1, T1, hTree1, j1, hInt1, hctrl1⟩ :=
-          ih hTree0 f0 hInt0 zs hctrl0
-        obtain ⟨Z1, T2, hTree2, j2, hctrl2⟩ :=
+        obtain ⟨Y1, T1, hTree1, j1, hctrl1⟩ :=
           addControl_of_embeddedIntersection
             (A := A) (Base := Base) (C := C)
-            hA eAB S hS hTree1
-            (ClosedEmbedding.comp j1 f0)
-            (ys.reverse ++ zs) hctrl1 α
-            (hInt1 α)
+            hA eAB S hS hTree0 f0
+            zs hctrl0 α (hInt0 α)
+        have hInt1 :
+            FunctionClosedEmbeddedIntersections
+              (A := A) (C := C) (T := T1) S hS
+              (ClosedEmbedding.comp j1 f0) :=
+          hInt0.postcomp j1
+        obtain ⟨Z1, T2, hTree2, j2, hInt2, hctrl2⟩ :=
+          ih hTree1 (ClosedEmbedding.comp j1 f0)
+            hInt1 (α :: zs) hctrl1
         let j : ClosedEmbedding T0 T2 :=
           ClosedEmbedding.comp j2 j1
-        have hInt2 :
-            FunctionClosedEmbeddedIntersections
-              (A := A) (C := C) (T := T2) S hS
-              (ClosedEmbedding.comp j
-                f0) := by
-          have hpost := hInt1.postcomp j2
-          simpa [j, ClosedEmbedding.comp] using hpost
-        refine ⟨Z1, T2, hTree2, j, hInt2, ?_⟩
-        simpa [j, ClosedEmbedding.comp,
-          List.reverse_cons, List.append_assoc] using hctrl2
+        have hjf :
+            ClosedEmbedding.comp j f0 =
+              ClosedEmbedding.comp j2
+                (ClosedEmbedding.comp j1 f0) := by
+          apply ClosedEmbedding.ext
+          intro x
+          rfl
+        refine ⟨Z1, T2, hTree2, j, ?_, ?_⟩
+        · rw [hjf]
+          exact hInt2
+        · rw [hjf]
+          simpa [List.reverse_cons, List.append_assoc] using hctrl2
   obtain ⟨Z0, T', hTree', j, hInt', hctrl'⟩ :=
     aux xs hTree f hInt [] (by
       intro α hmem
