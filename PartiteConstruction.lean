@@ -178,6 +178,7 @@ import PartiteConstruction.Functional.FunctionClosedControlCompletion
 import PartiteConstruction.Functional.LooseTreeAmalgam
 
 import PartiteConstruction.Functional.FunctionalTreeAmalgam
+import PartiteConstruction.Functional.TreeExtension
 
 import PartiteConstruction.Functional.FibreSurjectivityObstruction
 
