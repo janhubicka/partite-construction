@@ -172,6 +172,7 @@ import PartiteConstruction.Functional.TreeTransferObstruction
 
 import PartiteConstruction.Functional.ClosedTreeAmalgam
 import PartiteConstruction.Functional.FunctionClosedLocalTree
+import PartiteConstruction.Functional.LooseTreeAmalgam
 
 import PartiteConstruction.Functional.FunctionalTreeAmalgam
 
