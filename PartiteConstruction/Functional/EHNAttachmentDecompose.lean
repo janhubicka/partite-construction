@@ -71,8 +71,9 @@ theorem closedTest_decompose
       (unitCopyEmbedding B S hS D f).preimage_isClosed Test hTest
     let hRoot :
       (B.induce S hS).toStructure.IsClosed rootSet :=
-      ((unitCoreEmbedding B S hS D f).comp f.toEmbedding).
-        preimage_isClosed Test hTest
+      Structure.Embedding.preimage_isClosed
+        ((unitCoreEmbedding B S hS D f).comp f.toEmbedding)
+        Test hTest
     let CoreSmall := D.toStructure.induce coreSet hCore
     let CopySmall := B.toStructure.induce copySet hCopy
     let RootSmall := (B.induce S hS).toStructure.induce rootSet hRoot
@@ -88,6 +89,7 @@ theorem closedTest_decompose
 
 /-- In a genuinely mixed finite test, the core preimage is strictly smaller. -/
 theorem corePreimage_card_lt
+    [Fintype W]
     (Test : Finset (Structure.Attachment.Vertex S
       (W := W) (I := PUnit.{v+1})))
     (hTest : (UnitAttachD B S hS D f).toStructure.IsClosed
@@ -116,6 +118,7 @@ theorem corePreimage_card_lt
 /-- Symmetrically, a point outside the copied side makes the copy preimage
 strictly smaller. -/
 theorem copyPreimage_card_lt
+    [Fintype V]
     (Test : Finset (Structure.Attachment.Vertex S
       (W := W) (I := PUnit.{v+1})))
     (hTest : (UnitAttachD B S hS D f).toStructure.IsClosed
