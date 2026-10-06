@@ -142,10 +142,13 @@ theorem pureCopy_locallyClosedTreeCompletable
         ((UnitAttach B S hS D f).toStructure.induce
           (↑Test : Set _) hTest) n :=
     hB.pullback_embedding e
-  letI : Fintype ↥(↑Test : Set _) := Fintype.ofFinite _
+  let TestSet : Set
+      (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1})) :=
+    ↑Test
+  letI : Fintype ↥TestSet := Fintype.ofFinite _
   have hcard' :
-      Fintype.card ↥(↑Test : Set _) ≤ n := by
-    simpa using hcard
+      Fintype.card ↥TestSet ≤ n := by
+    simpa [TestSet] using hcard
   exact hPull.fullWitness hcard'
 
 /-- Pure-core local-tree witness for one EHN attachment. -/
@@ -176,10 +179,13 @@ theorem pureCore_locallyClosedTreeCompletable
         ((UnitAttach B S hS D f).toStructure.induce
           (↑Test : Set _) hTest) n :=
     hD.pullback_embedding e
-  letI : Fintype ↥(↑Test : Set _) := Fintype.ofFinite _
+  let TestSet : Set
+      (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1})) :=
+    ↑Test
+  letI : Fintype ↥TestSet := Fintype.ofFinite _
   have hcard' :
-      Fintype.card ↥(↑Test : Set _) ≤ n := by
-    simpa using hcard
+      Fintype.card ↥TestSet ≤ n := by
+    simpa [TestSet] using hcard
   exact hPull.fullWitness hcard'
 
 end StructuralRamsey.FunctionalPartite.Attachment
