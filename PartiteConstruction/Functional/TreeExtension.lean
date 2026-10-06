@@ -62,7 +62,7 @@ variable {Base : Structure L VB} {Start : Structure L VS}
 
 
 /-- Concatenate two strict tree extensions. -/
-def trans
+noncomputable def trans
     {W X : Type v}
     {T : Structure L W} {R : Structure L X}
     (h₁ : TreeExtension Base Start W T)
