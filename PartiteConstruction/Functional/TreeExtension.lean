@@ -133,8 +133,8 @@ theorem replay
         refine ⟨d, ?_, rfl⟩
         exact hbd
       let eNew : Embedding
-          (FreeAmalgam.Vertex Root T Base fT fBase)
-          (FreeAmalgam.Vertex Root Mid Base rMid fBase) :=
+          (FreeAmalgam.amalgam Root T Base fT fBase)
+          (FreeAmalgam.amalgam Root Mid Base rMid fBase) :=
         IsFreeAmalgam.functionalLiftEmbedding
           hSrc hTgt id Function.injective_id
           ePrev (Embedding.id Base)
@@ -170,8 +170,8 @@ theorem merge
     {TL : Structure L WL} {TR : Structure L WR}
     (hL : TreeExtension Base Start WL TL)
     (hR : TreeExtension Base Start WR TR) :
-    ∃ (Z : Type v) (Target : Structure L Z),
-      TreeExtension Base TL Z Target ∧
+    ∃ (Z : Type v) (Target : Structure L Z)
+      (hExt : TreeExtension Base TL Z Target),
       ∃ eL : Embedding TL Target,
         ∃ eR : Embedding TR Target,
           ∀ x : VS,
