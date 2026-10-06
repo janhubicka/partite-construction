@@ -155,6 +155,7 @@ import PartiteConstruction.Iterated.ProjectedRelativeLabelledLocalTreeLike
 import PartiteConstruction.Iterated.ProjectedHistoryMixedGlue
 
 import PartiteConstruction.Functional.FreeAmalgamClosed
+import PartiteConstruction.Functional.FreeAmalgamClosedInduce
 import PartiteConstruction.Functional.ClosedLiftEmbedding
 
 import PartiteConstruction.Functional.HalfClosedTheorem
