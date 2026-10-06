@@ -62,6 +62,53 @@ structure ProperFreeDecomposition (A : Structure L U) where
   leftProper : ¬ Function.Surjective leftIn
   rightProper : ¬ Function.Surjective rightIn
 
+
+namespace ProperFreeDecomposition
+
+/-- In a finite proper free decomposition, the left side has strictly smaller
+carrier than the whole structure. -/
+theorem left_card_lt
+    [Finite U] {A : Structure L U}
+    (d : ProperFreeDecomposition A) :
+    Nat.card d.Left < Nat.card U := by
+  letI : Fintype U := Fintype.ofFinite U
+  letI : Finite d.Left :=
+    Finite.of_injective d.leftIn d.leftIn.injective
+  letI : Fintype d.Left := Fintype.ofFinite d.Left
+  rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]
+  exact Fintype.card_lt_of_injective_not_surjective
+    d.leftIn d.leftIn.injective d.leftProper
+
+/-- In a finite proper free decomposition, the right side has strictly smaller
+carrier than the whole structure. -/
+theorem right_card_lt
+    [Finite U] {A : Structure L U}
+    (d : ProperFreeDecomposition A) :
+    Nat.card d.Right < Nat.card U := by
+  letI : Fintype U := Fintype.ofFinite U
+  letI : Finite d.Right :=
+    Finite.of_injective d.rightIn d.rightIn.injective
+  letI : Fintype d.Right := Fintype.ofFinite d.Right
+  rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]
+  exact Fintype.card_lt_of_injective_not_surjective
+    d.rightIn d.rightIn.injective d.rightProper
+
+/-- The common part is also strictly smaller than the finite whole structure. -/
+theorem common_card_lt
+    [Finite U] {A : Structure L U}
+    (d : ProperFreeDecomposition A) :
+    Nat.card d.Common < Nat.card U := by
+  letI : Finite d.Left :=
+    Finite.of_injective d.leftIn d.leftIn.injective
+  letI : Finite d.Common :=
+    Finite.of_injective d.toLeft d.toLeft.injective
+  calc
+    Nat.card d.Common ≤ Nat.card d.Left :=
+      Nat.card_le_card_of_injective d.toLeft.injective
+    _ < Nat.card U := d.left_card_lt
+
+end ProperFreeDecomposition
+
 /-- An irreducible structure has no proper free decomposition. -/
 theorem Irreducible.noProperFreeDecomposition
     {A : Structure L U} (hA : A.Irreducible) :
