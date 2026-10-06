@@ -92,10 +92,9 @@ theorem irreducible_contained_in_copy
   | @glue W₁ W₂ Z W T₁ T₂ D T
       h₁ h₂ f₁ f₂ hc₁ hc₂ i₁ i₂ hfree ih₁ ih₂ =>
       rcases hfree.irreducible_side hA e with hleft | hright
-      · have he : ∀ a : U, ∃ x : W₁, e a = i₁ x := by
-          intro a
-          exact hleft ⟨e a, ⟨a, rfl⟩⟩
-        let e₁ : Embedding A T₁ := e.factorThroughRange i₁ he
+      · have he : ∀ a : U, ∃ x : W₁, e a = i₁ x := hleft
+        let e₁ : Embedding A T₁ :=
+          e.factorThroughClosedRange i₁ he
         obtain ⟨j₁, hj₁⟩ := ih₁ e₁
         refine ⟨i₁.comp j₁, ?_⟩
         intro a
@@ -105,10 +104,9 @@ theorem irreducible_contained_in_copy
         calc
           e a = i₁ (e₁ a) := hea
           _ = i₁ (j₁ b) := congrArg i₁ hb
-      · have he : ∀ a : U, ∃ x : W₂, e a = i₂ x := by
-          intro a
-          exact hright ⟨e a, ⟨a, rfl⟩⟩
-        let e₂ : Embedding A T₂ := e.factorThroughRange i₂ he
+      · have he : ∀ a : U, ∃ x : W₂, e a = i₂ x := hright
+        let e₂ : Embedding A T₂ :=
+          e.factorThroughClosedRange i₂ he
         obtain ⟨j₂, hj₂⟩ := ih₂ e₂
         refine ⟨i₂.comp j₂, ?_⟩
         intro a
