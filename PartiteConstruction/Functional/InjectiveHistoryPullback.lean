@@ -118,7 +118,36 @@ theorem witness_pullback_injective
       R.GeneratedByAtMost n := by
     have hgenRange :=
       homRange_generatedByAtMost hqHom hgen
-    simpa only [R, hrange] using hgenRange
+    let Range :=
+      D.induce (Set.range q) hqHom.range_isClosed
+    let incRange : Embedding Range D :=
+      inclusion D (Set.range q) hqHom.range_isClosed
+    have hinto :
+        ∀ x : ↥(Set.range q),
+          ∃ y : ↥(↑I : Set P), incRange x = incR y := by
+      intro x
+      have hxI : x.1 ∈ (↑I : Set P) := by
+        rw [← hrange]
+        exact x.2
+      exact ⟨⟨x.1, hxI⟩, rfl⟩
+    let eRange : Embedding Range R :=
+      incRange.factorThroughClosedRange incR hinto
+    have heSurj : Function.Surjective eRange := by
+      intro y
+      have hyRange : y.1 ∈ Set.range q := by
+        rw [hrange]
+        exact y.2
+      let x : ↥(Set.range q) := ⟨y.1, hyRange⟩
+      refine ⟨x, ?_⟩
+      apply Subtype.ext
+      have hs :=
+        Embedding.factorThroughClosedRange_spec
+          incRange incR hinto x
+      change (eRange x).1 = x.1 at hs
+      exact hs
+    have hgenRange' : Range.GeneratedByAtMost n := by
+      simpa [Range] using hgenRange
+    exact hgenRange'.of_surjective_embedding eRange heSurj
 
   let sourceHistoryD : List (Set P) :=
     sourceHistory.map
