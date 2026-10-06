@@ -128,6 +128,44 @@ theorem label_isHomomorphism
   rw [heq] at hcomp
   exact Embedding.cancel_homomorphism targetCopy hcomp
 
+
+/-- With a homomorphism-embedding side witness, an isolated quotient label is
+itself a homomorphism-embedding into A.  On every irreducible source piece,
+the side witness supplies an actual embedding into the target; compatibility
+puts its range inside the distinguished target A-copy, so it factors back
+through that copy. -/
+theorem label_isHomomorphismEmbedding
+    {r : QuotientBoundaryRequest A C}
+    {T : Structure L Y} {f : W → Y}
+    (hIso : IsolatedQuotientBoundary r T f)
+    (hf : C.IsHomomorphismEmbedding T f) :
+    r.source.IsHomomorphismEmbedding A r.label := by
+  obtain ⟨targetCopy, hcompat, _⟩ := hIso
+  refine ⟨hIso.label_isHomomorphism hf.1, ?_⟩
+  intro X E hE e
+  obtain ⟨g, hg⟩ :=
+    hf.2 E hE (r.embedding.comp e)
+  have hgrange :
+      ∀ x : X, ∃ a : U, g x = targetCopy a := by
+    intro x
+    refine ⟨r.label (e x), ?_⟩
+    calc
+      g x = f (r.embedding (e x)) := hg x
+      _ = targetCopy (r.label (e x)) :=
+        hcompat (e x)
+  let gA : Embedding E A :=
+    g.factorThroughClosedRange targetCopy hgrange
+  refine ⟨gA, ?_⟩
+  intro x
+  apply targetCopy.injective
+  calc
+    targetCopy (gA x) = g x :=
+      Embedding.factorThroughClosedRange_spec
+        g targetCopy hgrange x
+    _ = f (r.embedding (e x)) := hg x
+    _ = targetCopy (r.label (e x)) :=
+      hcompat (e x)
+
 /-- Isolation survives target postcomposition. -/
 theorem postcompTarget
     {r : QuotientBoundaryRequest A C}
