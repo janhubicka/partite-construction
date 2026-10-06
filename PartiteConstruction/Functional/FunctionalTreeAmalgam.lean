@@ -34,6 +34,24 @@ def Embedding.ContainedInIrreducible
     ∃ j : Embedding E B, ∀ a : U, ∃ x : X, f a = j x
 
 
+namespace Embedding.ContainedInIrreducible
+
+/-- Containment in an irreducible functional piece survives postcomposition
+by a full embedding of the target. -/
+theorem postcomp
+    {A : Structure L U} {B : Structure L V}
+    {C : Structure L W}
+    {e : Embedding A B} (hc : e.ContainedInIrreducible)
+    (j : Embedding B C) :
+    (j.comp e).ContainedInIrreducible := by
+  rcases hc with ⟨X, R, hR, k, hk⟩
+  refine ⟨X, R, hR, j.comp k, ?_⟩
+  intro a
+  obtain ⟨x, hx⟩ := hk a
+  exact ⟨x, congrArg j hx⟩
+
+end Embedding.ContainedInIrreducible
+
 /-- Tree amalgams in the full relation/function language. -/
 inductive TreeAmalgam (Base : Structure L V) :
     (W : Type v) → Structure L W → Prop
