@@ -31,6 +31,63 @@ variable {rT : Embedding Root Tstr} {rP : Embedding Root Piece}
 variable {jT : Embedding Tstr Ext} {jP : Embedding Piece Ext}
 variable {kMid : Embedding Mid Out} {kP : Embedding Piece Out}
 
+/-- Adjoining the common structure itself on the right is a degenerate free
+amalgam.  This is the base case for replaying a tree extension over a new
+ambient target. -/
+theorem right_identity
+    {S M : Type v}
+    {Start : Structure L S} {Mstr : Structure L M}
+    (e : Embedding Start Mstr) :
+    IsFreeAmalgam
+      e (Embedding.id Start)
+      (Embedding.id Mstr) e := by
+  classical
+  constructor
+  · intro z
+    exact Or.inl ⟨z, rfl⟩
+  · intro m s
+    constructor
+    · intro h
+      exact ⟨s, h, rfl⟩
+    · rintro ⟨d, hm, hs⟩
+      subst s
+      simpa using hm
+  · intro Rel z
+    constructor
+    · intro hz
+      exact Or.inl ⟨z, hz, by
+        funext q
+        rfl⟩
+    · rintro (⟨x, hx, hzx⟩ | ⟨x, hx, hzx⟩)
+      · simpa using Eq.mp
+          (congrArg (fun t => Mstr.rel Rel t) hzx.symm) hx
+      · have he : Mstr.rel Rel (e ∘ x) :=
+          (e.map_rel_iff Rel x).2 hx
+        exact Eq.mp
+          (congrArg (fun t => Mstr.rel Rel t) hzx.symm) he
+  · intro F args y
+    constructor
+    · intro hy
+      exact Or.inl ⟨args, y, hy, by
+        funext q
+        rfl, rfl⟩
+    · rintro (⟨a, b, hb, hargs, hout⟩ |
+        ⟨a, b, hb, hargs, hout⟩)
+      · have hargs' : args = a := by
+          simpa using hargs
+        have hout' : y = b := by
+          simpa using hout
+        simpa [hargs', hout'] using hb
+      · have himg :
+            e b ∈ imageSet e (Start.func F a) :=
+          ⟨b, hb, rfl⟩
+        rw [e.map_func F a] at himg
+        have hargs' : args = e ∘ a := by
+          simpa using hargs
+        have hout' : y = e b := by
+          simpa using hout
+        simpa [hargs', hout'] using himg
+
 /-- Push one free attachment through the right side of another free amalgam. -/
 theorem reassociate_right
     (hOuter : IsFreeAmalgam sM sT iM iT)
