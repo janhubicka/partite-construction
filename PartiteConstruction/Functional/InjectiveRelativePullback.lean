@@ -156,7 +156,7 @@ theorem FunctionalProjectedHistoryTreeLike.relativeWitness_of_injective_projecti
   let incH : Embedding Hstr A :=
     inclusion A Hset hHclosed
   let eD : Embedding Hstr D := β.comp incH
-  have hRangeD : ∀ x : Hstr, eD x ∈ I := by
+  have hRangeD : ∀ x : ↥Hset, eD x ∈ I := by
     intro x
     rcases x.2 with ⟨d, hd⟩
     apply Finset.mem_image.mpr
@@ -166,7 +166,7 @@ theorem FunctionalProjectedHistoryTreeLike.relativeWitness_of_injective_projecti
       p (s d) = β (q d) := hproj d
       _ = β x.1 := congrArg β hd
   have hprojD :
-      ∀ x : Hstr, (id : P → P) (eD x) = β x.1 :=
+      ∀ x : ↥Hset, (id : P → P) (eD x) = β x.1 :=
     fun _ => rfl
 
   have hRel :
@@ -193,7 +193,7 @@ theorem FunctionalProjectedHistoryTreeLike.relativeWitness_of_injective_projecti
   have hcompat :
       ∀ d : H, f (s d) = targetCopy (q d) := by
     intro d
-    let xH : Hstr := ⟨q d, ⟨d, rfl⟩⟩
+    let xH : ↥Hset := ⟨q d, ⟨d, rfl⟩⟩
     have hxI : eD xH ∈ I := hRangeD xH
     have hx :
         pR (s d) = (⟨eD xH, hxI⟩ : ↥(↑I : Set P)) := by
@@ -214,7 +214,7 @@ theorem FunctionalProjectedHistoryTreeLike.relativeWitness_of_injective_projecti
         p y = p (s d) := by
       calc
         p y = (pR y).1 := rfl
-        _ = eD xH := congrArg Subtype.val hyD
+        _ = eD xH := hyD
         _ = β xH.1 := rfl
         _ = β (q d) := congrArg β hd.symm
         _ = p (s d) := (hproj d).symm
