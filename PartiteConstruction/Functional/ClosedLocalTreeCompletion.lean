@@ -124,6 +124,33 @@ theorem base (Base : Structure L V) (n : ℕ) :
   exact of_treeAmalgam hTree n
 
 
+/-- Extract a completion witness for the whole finite structure. -/
+theorem fullWitness
+    [Fintype W]
+    (h : LocallyClosedTreeCompletable Base C n)
+    (hcard : Fintype.card W ≤ n) :
+    HasTreeCompletion Base C := by
+  classical
+  let S : Finset W := Finset.univ
+  have hS : C.IsClosed (↑S : Set W) := by
+    intro F x _ y _
+    simp [S]
+  have hScard : S.card ≤ n := by
+    simpa [S] using hcard
+  obtain ⟨Y, T, hTree, f0, hf0⟩ :=
+    h S hScard hS
+  let Small := C.induce (↑S : Set W) hS
+  let inc : Embedding Small C :=
+    inclusion C (↑S : Set W) hS
+  let allEmb : Embedding C Small :=
+    (Embedding.id C).factorWithMap inc
+      (fun x => ⟨x, Finset.mem_univ x⟩)
+      (fun _ => rfl)
+  let f : W → Y := f0 ∘ allEmb
+  have hf : C.IsHomomorphismEmbedding T f :=
+    hf0.comp allEmb.isHomomorphismEmbedding
+  exact ⟨Y, T, hTree, f, hf⟩
+
 /-- Closed local tree-completability pulls back along a genuine full
 embedding.  The image of a closed test is closed because full embeddings map
 complete function fibres onto complete function fibres. -/
