@@ -200,6 +200,7 @@ import PartiteConstruction.Functional.ClosedGeneratorRank
 import PartiteConstruction.Functional.GeneratedTreeCompletion
 import PartiteConstruction.Functional.FibreExactness
 import PartiteConstruction.Functional.EHNTestDecompose
+import PartiteConstruction.Functional.EHNRootDichotomy
 import PartiteConstruction.Functional.PureCoreDomainReflection
 import PartiteConstruction.Functional.PureCoreDomainDescent
 
