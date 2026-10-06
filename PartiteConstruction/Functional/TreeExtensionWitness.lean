@@ -59,6 +59,7 @@ theorem root
 /-- Pull a relative completion back along a full source embedding which
 commutes with the distinguished root. -/
 theorem pullback_embedding
+    {s : Embedding Root Side}
     {E₁ : Type v} {Side₁ : Structure L E₁}
     (j : Embedding Side₁ Side)
     (s₁ : Embedding Root Side₁)
@@ -95,6 +96,7 @@ theorem pullback_embedding
 
 /-- Further strict attachments to the target preserve a relative completion. -/
 theorem extendTarget
+    {s : Embedding Root Side}
     (q : H → G)
     {Z₂ : Type v} {Target₂ : Structure L Z₂}
     {Z : Type v} {Target : Structure L Z}
