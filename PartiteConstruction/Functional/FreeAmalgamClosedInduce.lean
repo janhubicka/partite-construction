@@ -333,7 +333,7 @@ theorem leftPreimage_card_lt
     obtain ⟨x, hx⟩ := hsurj z
     apply hz
     refine ⟨x.1, ?_⟩
-    exact congrArg Subtype.val hx
+    exact (congrArg Subtype.val hx).symm
 
 /-- Symmetric strict-cardinality drop for the right preimage. -/
 theorem rightPreimage_card_lt
@@ -354,6 +354,6 @@ theorem rightPreimage_card_lt
     obtain ⟨x, hx⟩ := hsurj z
     apply hz
     refine ⟨x.1, ?_⟩
-    exact congrArg Subtype.val hx
+    exact (congrArg Subtype.val hx).symm
 
 end StructuralRamsey.Structure.IsFreeAmalgam
