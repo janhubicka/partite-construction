@@ -73,7 +73,7 @@ inductive TreeAmalgam (Base : Structure L V) :
 
 
 
-namespace Structure.TreeAmalgam
+namespace TreeAmalgam
 
 /-- Every embedded irreducible full substructure of a functional tree amalgam
 lies in one constituent copy of the base. -/
@@ -91,9 +91,7 @@ theorem irreducible_contained_in_copy
       exact ⟨b, hb.symm⟩
   | @glue W₁ W₂ Z W T₁ T₂ D T
       h₁ h₂ f₁ f₂ hc₁ hc₂ i₁ i₂ hfree ih₁ ih₂ =>
-      let S : Set W := Set.range e
-      have hS : (T.induce S).Irreducible := hA.range_embedding e
-      rcases hfree.irreducible_side S hS with hleft | hright
+      rcases hfree.irreducible_side hA e with hleft | hright
       · have he : ∀ a : U, ∃ x : W₁, e a = i₁ x := by
           intro a
           exact hleft ⟨e a, ⟨a, rfl⟩⟩
@@ -121,7 +119,7 @@ theorem irreducible_contained_in_copy
           e a = i₂ (e₂ a) := hea
           _ = i₂ (j₂ b) := congrArg i₂ hb
 
-end Structure.TreeAmalgam
+end TreeAmalgam
 
 end Structure
 
