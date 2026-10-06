@@ -89,7 +89,7 @@ theorem closedTest_decompose
 
 /-- In a genuinely mixed finite test, the core preimage is strictly smaller. -/
 theorem corePreimage_card_lt
-    [Fintype W]
+    [Finite W]
     (Test : Finset (Structure.Attachment.Vertex S
       (W := W) (I := PUnit.{v+1})))
     (hTest : (UnitAttachD B S hS D f).toStructure.IsClosed
@@ -97,11 +97,12 @@ theorem corePreimage_card_lt
     (z : ↥(↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1}))))
     (hz : ¬ ∃ w : W,
       z.1 = unitCoreEmbedding B S hS D f w) :
-    Fintype.card
+    Nat.card
         ((unitCoreEmbedding B S hS D f) ⁻¹'
           (↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1})))) <
       Test.card := by
   classical
+  letI : Fintype W := Fintype.ofFinite W
   let TestSet : Set
       (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1})) :=
     ↑Test
@@ -113,12 +114,13 @@ theorem corePreimage_card_lt
       Fintype.card CoreSet < Fintype.card TestSet :=
     (unit_isFreeAmalgam_full B S hS D f).leftPreimage_card_lt
       TestSet hTest z hz
+  rw [Nat.card_eq_fintype_card]
   simpa [CoreSet, TestSet] using hlt
 
 /-- Symmetrically, a point outside the copied side makes the copy preimage
 strictly smaller. -/
 theorem copyPreimage_card_lt
-    [Fintype V]
+    [Finite V]
     (Test : Finset (Structure.Attachment.Vertex S
       (W := W) (I := PUnit.{v+1})))
     (hTest : (UnitAttachD B S hS D f).toStructure.IsClosed
@@ -126,11 +128,12 @@ theorem copyPreimage_card_lt
     (z : ↥(↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1}))))
     (hz : ¬ ∃ x : V,
       z.1 = unitCopyEmbedding B S hS D f x) :
-    Fintype.card
+    Nat.card
         ((unitCopyEmbedding B S hS D f) ⁻¹'
           (↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1})))) <
       Test.card := by
   classical
+  letI : Fintype V := Fintype.ofFinite V
   let TestSet : Set
       (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1})) :=
     ↑Test
@@ -142,6 +145,7 @@ theorem copyPreimage_card_lt
       Fintype.card CopySet < Fintype.card TestSet :=
     (unit_isFreeAmalgam_full B S hS D f).rightPreimage_card_lt
       TestSet hTest z hz
+  rw [Nat.card_eq_fintype_card]
   simpa [CopySet, TestSet] using hlt
 
 end StructuralRamsey.FunctionalPartite.Attachment
