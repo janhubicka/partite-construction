@@ -29,7 +29,7 @@ variable {VB VS : Type v}
 /-- A finite sequence of strict Base-copy attachments starting from Start. -/
 inductive TreeExtension
     (Base : Structure L VB) (Start : Structure L VS) :
-    (W : Type v) -> Structure L W -> Prop
+    (W : Type v) -> Structure L W -> Type (max u v)
   | refl :
       TreeExtension Base Start VS Start
   | attach
@@ -102,7 +102,7 @@ theorem replay
       intro x
       rfl
   | @attach W H T Root prev fT fBase hcT hcBase ih =>
-      obtain ⟨Y, Mid, hMid, ePrev, hStart⟩ := ih e0
+      obtain ⟨Y, Mid, hMid, ePrev, hStart⟩ := ih
       let rMid : Embedding Root Mid := ePrev.comp fT
       have hcMid : rMid.ContainedInIrreducible :=
         hcT.postcomp ePrev
