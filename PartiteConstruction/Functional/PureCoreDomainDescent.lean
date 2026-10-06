@@ -29,7 +29,7 @@ theorem power_weakRestrict_domainFailure_ambient
     (D : Structure L P)
     (hB : B.WeaklyPartiteOver D)
     (A : Structure L U)
-    (α : Embedding A D)
+    (α : Structure.Embedding A D)
     (N : ℕ)
     (F : L.FuncSymbol)
     (x : Fin (L.funcArity F) →
