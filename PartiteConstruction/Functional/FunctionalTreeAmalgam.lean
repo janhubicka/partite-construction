@@ -71,6 +71,58 @@ inductive TreeAmalgam (Base : Structure L V) :
       (hfree : IsFreeAmalgam f₁ f₂ i₁ i₂) :
       TreeAmalgam Base W T
 
+
+
+namespace Structure.TreeAmalgam
+
+/-- Every embedded irreducible full substructure of a functional tree amalgam
+lies in one constituent copy of the base. -/
+theorem irreducible_contained_in_copy
+    {Base : Structure L V} {T : Structure L W}
+    (hT : TreeAmalgam Base W T)
+    {A : Structure L U} (hA : A.Irreducible)
+    (e : Embedding A T) :
+    ∃ j : Embedding Base T, ∀ a : U, ∃ b : V, e a = j b := by
+  induction hT with
+  | copy j hsurj =>
+      refine ⟨j, ?_⟩
+      intro a
+      obtain ⟨b, hb⟩ := hsurj (e a)
+      exact ⟨b, hb.symm⟩
+  | @glue W₁ W₂ Z W T₁ T₂ D T
+      h₁ h₂ f₁ f₂ hc₁ hc₂ i₁ i₂ hfree ih₁ ih₂ =>
+      let S : Set W := Set.range e
+      have hS : (T.induce S).Irreducible := hA.range_embedding e
+      rcases hfree.irreducible_side S hS with hleft | hright
+      · have he : ∀ a : U, ∃ x : W₁, e a = i₁ x := by
+          intro a
+          exact hleft ⟨e a, ⟨a, rfl⟩⟩
+        let e₁ : Embedding A T₁ := e.factorThroughRange i₁ he
+        obtain ⟨j₁, hj₁⟩ := ih₁ e₁
+        refine ⟨i₁.comp j₁, ?_⟩
+        intro a
+        obtain ⟨b, hb⟩ := hj₁ a
+        refine ⟨b, ?_⟩
+        have hea := Classical.choose_spec (he a)
+        calc
+          e a = i₁ (e₁ a) := hea
+          _ = i₁ (j₁ b) := congrArg i₁ hb
+      · have he : ∀ a : U, ∃ x : W₂, e a = i₂ x := by
+          intro a
+          exact hright ⟨e a, ⟨a, rfl⟩⟩
+        let e₂ : Embedding A T₂ := e.factorThroughRange i₂ he
+        obtain ⟨j₂, hj₂⟩ := ih₂ e₂
+        refine ⟨i₂.comp j₂, ?_⟩
+        intro a
+        obtain ⟨b, hb⟩ := hj₂ a
+        refine ⟨b, ?_⟩
+        have hea := Classical.choose_spec (he a)
+        calc
+          e a = i₂ (e₂ a) := hea
+          _ = i₂ (j₂ b) := congrArg i₂ hb
+
+end Structure.TreeAmalgam
+
 end Structure
 
 namespace RelStructure.IsFreeAmalgam
