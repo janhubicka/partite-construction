@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.FunctionalTreeAmalgam
 import PartiteConstruction.Functional.ClosedLocalTreeCompletion
 import PartiteConstruction.Functional.FunctionDomains
+import PartiteConstruction.Functional.ClosedLiftEmbedding
 import PartiteConstruction.Structure.WeakSubstructure
 
 /-! # Local completion by function-closed graph trees
@@ -38,6 +39,71 @@ def FunctionClosedHasTreeCompletion
     Nonempty (ClosedEmbedding C T)
 
 namespace FunctionClosedHasTreeCompletion
+
+/-- Glue two explicit closure-aware strict-tree witnesses across a source free
+amalgam.  The source root embeddings must be function-closed, and their images
+in the two target trees must satisfy the survey's irreducible-containment
+condition.  No further closure argument is needed: compatible closed side
+embeddings lift to a closed whole embedding. -/
+theorem glue
+    {H E F X YL YR : Type v}
+    {Root : RelStructure L.graph H}
+    {Left : RelStructure L.graph E}
+    {Right : RelStructure L.graph F}
+    {Whole : RelStructure L.graph X}
+    {Base : RelStructure L.graph V}
+    {TL : RelStructure L.graph YL}
+    {TR : RelStructure L.graph YR}
+    {sL : Embedding Root Left}
+    {sR : Embedding Root Right}
+    {iL : Embedding Left Whole}
+    {iR : Embedding Right Whole}
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (hsL : FunctionClosedMap Root Left sL)
+    (hsR : FunctionClosedMap Root Right sR)
+    (hTreeL : FunctionClosedTreeAmalgam Base YL TL)
+    (hTreeR : FunctionClosedTreeAmalgam Base YR TR)
+    (eL : ClosedEmbedding Left TL)
+    (eR : ClosedEmbedding Right TR)
+    (hcL : (eL.toEmbedding.comp sL).ContainedInIrreducible)
+    (hcR : (eR.toEmbedding.comp sR).ContainedInIrreducible) :
+    FunctionClosedHasTreeCompletion Base Whole := by
+  classical
+  let tL : Embedding Root TL := eL.toEmbedding.comp sL
+  let tR : Embedding Root TR := eR.toEmbedding.comp sR
+  let Target := FreeAmalgam.amalgam Root TL TR tL tR
+  let jL := FreeAmalgam.leftEmbedding Root TL TR tL tR
+  let jR := FreeAmalgam.rightEmbedding Root TL TR tL tR
+  have hTgt : IsFreeAmalgam tL tR jL jR :=
+    FreeAmalgam.isFreeAmalgam Root TL TR tL tR
+  have htLclosed : FunctionClosedMap Root TL tL :=
+    eL.closed.comp hsL
+  have htRclosed : FunctionClosedMap Root TR tR :=
+    eR.closed.comp hsR
+  have hTree :
+      FunctionClosedTreeAmalgam Base
+        (FreeAmalgam.Vertex Root TL TR tL tR) Target :=
+    FunctionClosedTreeAmalgam.glue
+      hTreeL hTreeR tL tR htLclosed htRclosed
+      hcL hcR jL jR hTgt
+  have hcompatL : ∀ d, eL (sL d) = tL d := fun _ => rfl
+  have hcompatR : ∀ d, eR (sR d) = tR d := fun _ => rfl
+  have hexL :
+      IsFreeAmalgam.ReflectsOverlap id sL tL eL.toEmbedding := by
+    intro a g hag
+    refine ⟨g, ?_, rfl⟩
+    apply eL.toEmbedding.injective
+    exact hag
+  have hexR :
+      IsFreeAmalgam.ReflectsOverlap id sR tR eR.toEmbedding := by
+    intro b g hbg
+    refine ⟨g, ?_, rfl⟩
+    apply eR.toEmbedding.injective
+    exact hbg
+  let e : ClosedEmbedding Whole Target :=
+    hSrc.liftClosedEmbedding hTgt id eL eR
+      hcompatL hcompatR hexL hexR
+  exact ⟨_, Target, hTree, ⟨e⟩⟩
 
 /-- A closed embedding into one copy of the base is already a
 function-closed tree completion. -/
