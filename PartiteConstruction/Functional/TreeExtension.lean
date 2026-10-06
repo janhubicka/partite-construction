@@ -249,6 +249,141 @@ theorem replay
                 (Base := Base) (Start := Mstr) hMid) (e0 x)) :=
           congrArg lM (hStart x)
 
+/-- A strict tree can be rerooted at any chosen embedded copy of an
+irreducible finite base, after embedding it into a further strict extension.
+
+The further target is an extension of the base itself, and the chosen copy is
+identified with the canonical starting copy. -/
+theorem embedIntoRootedExtension
+    [Finite VB]
+    (hBase : Base.Irreducible)
+    {W : Type v} {T : Structure L W}
+    (hT : TreeAmalgam Base W T) :
+    ∀ j : Embedding Base T,
+      ∃ (Z : Type v) (Target : Structure L Z)
+        (hExt : TreeExtension Base Base Z Target)
+        (e : Embedding T Target),
+        ∀ b : VB, e (j b) = hExt.startEmbedding b := by
+  classical
+  induction hT with
+  | @copy W T e0 hsurj =>
+      intro j
+      let eqv : VB ≃ W :=
+        Equiv.ofBijective e0 ⟨e0.injective, hsurj⟩
+      have hjSurj : Function.Surjective j :=
+        (Finite.injective_iff_surjective_of_equiv eqv).mp j.injective
+      let hRange :
+          ∀ y : W, ∃ b : VB, (Embedding.id T) y = j b := by
+        intro y
+        obtain ⟨b, hb⟩ := hjSurj y
+        exact ⟨b, hb.symm⟩
+      let jInv : Embedding T Base :=
+        (Embedding.id T).factorThroughRange j hRange
+      refine ⟨VB, Base, TreeExtension.refl, jInv, ?_⟩
+      intro b
+      change jInv (j b) = b
+      apply j.injective
+      have hs := Classical.choose_spec (hRange (j b))
+      exact hs.symm
+  | @glue W₁ W₂ H W T₁ T₂ Root T
+      h₁ h₂ f₁ f₂ hc₁ hc₂ i₁ i₂ hfree ih₁ ih₂ =>
+      intro j
+      rcases hfree.irreducible_side hBase j with hleft | hright
+      · let j₁ : Embedding Base T₁ :=
+          j.factorThroughRange i₁ hleft
+        have hj₁ (b : VB) : j b = i₁ (j₁ b) :=
+          Classical.choose_spec (hleft b)
+        obtain ⟨Z₁, R₁, hExt₁, e₁, he₁⟩ := ih₁ j₁
+        let r₁ : Embedding Root R₁ := e₁.comp f₁
+        have hcr₁ : r₁.ContainedInIrreducible :=
+          hc₁.postcomp e₁
+        let Target := FreeAmalgam.amalgam Root R₁ T₂ r₁ f₂
+        let lT := FreeAmalgam.leftEmbedding Root T₁ T₂ f₁ f₂
+        let rT := FreeAmalgam.rightEmbedding Root T₁ T₂ f₁ f₂
+        let lR := FreeAmalgam.leftEmbedding Root R₁ T₂ r₁ f₂
+        let rR := FreeAmalgam.rightEmbedding Root R₁ T₂ r₁ f₂
+        have hTgt : IsFreeAmalgam r₁ f₂ lR rR :=
+          FreeAmalgam.isFreeAmalgam Root R₁ T₂ r₁ f₂
+        have hrootL : IsFreeAmalgam.RootIsolated f₁ r₁ id e₁ := by
+          intro x d hxd
+          refine ⟨d, ?_, rfl⟩
+          apply e₁.injective
+          exact hxd
+        have hrootR :
+            IsFreeAmalgam.RootIsolated f₂ f₂ id
+              (Embedding.id T₂) := by
+          intro x d hxd
+          exact ⟨d, hxd, rfl⟩
+        let eWhole : Embedding T Target :=
+          IsFreeAmalgam.functionalLiftEmbedding
+            hfree hTgt id Function.injective_id
+            e₁ (Embedding.id T₂)
+            (fun _ => rfl) (fun _ => rfl)
+            hrootL hrootR
+        let hFinal : TreeExtension Base Base
+            (FreeAmalgam.Vertex Root R₁ T₂ r₁ f₂) Target :=
+          TreeExtension.attachTree hExt₁ h₂
+            r₁ f₂ hcr₁ hc₂
+        refine ⟨_, Target, hFinal, eWhole, ?_⟩
+        intro b
+        change eWhole (j b) = lR (hExt₁.startEmbedding b)
+        calc
+          eWhole (j b) = eWhole (i₁ (j₁ b)) :=
+            congrArg eWhole (hj₁ b)
+          _ = lR (e₁ (j₁ b)) :=
+            IsFreeAmalgam.functionalLiftMap_left
+              hfree hTgt id e₁ (Embedding.id T₂)
+              (fun _ => rfl) (fun _ => rfl) (j₁ b)
+          _ = lR (hExt₁.startEmbedding b) :=
+            congrArg lR (he₁ b)
+      · let j₂ : Embedding Base T₂ :=
+          j.factorThroughRange i₂ hright
+        have hj₂ (b : VB) : j b = i₂ (j₂ b) :=
+          Classical.choose_spec (hright b)
+        obtain ⟨Z₂, R₂, hExt₂, e₂, he₂⟩ := ih₂ j₂
+        let r₂ : Embedding Root R₂ := e₂.comp f₂
+        have hcr₂ : r₂.ContainedInIrreducible :=
+          hc₂.postcomp e₂
+        let Target := FreeAmalgam.amalgam Root R₂ T₁ r₂ f₁
+        let lR := FreeAmalgam.leftEmbedding Root R₂ T₁ r₂ f₁
+        let rR := FreeAmalgam.rightEmbedding Root R₂ T₁ r₂ f₁
+        have hSrc : IsFreeAmalgam f₂ f₁ i₂ i₁ :=
+          hfree.swap
+        have hTgt : IsFreeAmalgam r₂ f₁ lR rR :=
+          FreeAmalgam.isFreeAmalgam Root R₂ T₁ r₂ f₁
+        have hrootL : IsFreeAmalgam.RootIsolated f₂ r₂ id e₂ := by
+          intro x d hxd
+          refine ⟨d, ?_, rfl⟩
+          apply e₂.injective
+          exact hxd
+        have hrootR :
+            IsFreeAmalgam.RootIsolated f₁ f₁ id
+              (Embedding.id T₁) := by
+          intro x d hxd
+          exact ⟨d, hxd, rfl⟩
+        let eWhole : Embedding T Target :=
+          IsFreeAmalgam.functionalLiftEmbedding
+            hSrc hTgt id Function.injective_id
+            e₂ (Embedding.id T₁)
+            (fun _ => rfl) (fun _ => rfl)
+            hrootL hrootR
+        let hFinal : TreeExtension Base Base
+            (FreeAmalgam.Vertex Root R₂ T₁ r₂ f₁) Target :=
+          TreeExtension.attachTree hExt₂ h₁
+            r₂ f₁ hcr₂ hc₁
+        refine ⟨_, Target, hFinal, eWhole, ?_⟩
+        intro b
+        change eWhole (j b) = lR (hExt₂.startEmbedding b)
+        calc
+          eWhole (j b) = eWhole (i₂ (j₂ b)) :=
+            congrArg eWhole (hj₂ b)
+          _ = lR (e₂ (j₂ b)) :=
+            IsFreeAmalgam.functionalLiftMap_left
+              hSrc hTgt id e₂ (Embedding.id T₁)
+              (fun _ => rfl) (fun _ => rfl) (j₂ b)
+          _ = lR (hExt₂.startEmbedding b) :=
+            congrArg lR (he₂ b)
+
 /-- Two extensions of the same start embed compatibly into one common
 extension. -/
 theorem merge
