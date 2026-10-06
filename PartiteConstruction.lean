@@ -171,6 +171,7 @@ import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 import PartiteConstruction.Functional.TreeTransferObstruction
 
 import PartiteConstruction.Functional.ClosedTreeAmalgam
+import PartiteConstruction.Functional.FunctionClosedLocalTree
 
 import PartiteConstruction.Functional.FunctionalTreeAmalgam
 
