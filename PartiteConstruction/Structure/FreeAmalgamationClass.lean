@@ -104,7 +104,7 @@ theorem common_card_lt
     Finite.of_injective d.toLeft d.toLeft.injective
   calc
     Nat.card d.Common ≤ Nat.card d.Left :=
-      Nat.card_le_card_of_injective d.toLeft.injective
+      Nat.card_le_card_of_injective d.toLeft d.toLeft.injective
     _ < Nat.card U := d.left_card_lt
 
 end ProperFreeDecomposition
