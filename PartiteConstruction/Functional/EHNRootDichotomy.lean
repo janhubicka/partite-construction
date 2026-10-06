@@ -36,12 +36,10 @@ theorem closedRoot_embedding_or_decompose
     (hRoot :
       (B.weakRestrict D hB.1 A alpha).toStructure.IsClosed
         (↑RootTest : Set _)) :
-    let R :=
-      (B.weakRestrict D hB.1 A alpha).toStructure.induce
-        (↑RootTest : Set _) hRoot
-    let inc : Structure.Embedding R
-        (B.weakRestrict D hB.1 A alpha).toStructure :=
-      Structure.inclusion _ (↑RootTest : Set _) hRoot
+    let WR := (B.weakRestrict D hB.1 A alpha).toStructure
+    let R := WR.induce (↑RootTest : Set _) hRoot
+    let inc : Structure.Embedding R WR :=
+      Structure.inclusion WR (↑RootTest : Set _) hRoot
     (∃ g : Structure.Embedding R A,
         ∀ x, g x =
           (B.weakRestrict D hB.1 A alpha).part (inc x)) ∨
