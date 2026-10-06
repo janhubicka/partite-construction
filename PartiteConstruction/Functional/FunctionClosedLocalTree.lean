@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.FunctionalTreeAmalgam
 import PartiteConstruction.Functional.ClosedLocalTreeCompletion
+import PartiteConstruction.Functional.FunctionDomains
 import PartiteConstruction.Structure.WeakSubstructure
 
 /-! # Local completion by function-closed graph trees
@@ -25,7 +26,7 @@ universe u v
 namespace RelStructure
 
 variable {L : Language.{u}}
-variable {V W : Type v}
+variable {U V W : Type v}
 
 /-- A relational graph structure admits a closed embedding into a
 function-closed tree amalgam of copies of the base graph. -/
@@ -35,6 +36,37 @@ def FunctionClosedHasTreeCompletion
   ∃ (Y : Type v) (T : RelStructure L.graph Y),
     FunctionClosedTreeAmalgam Base Y T ∧
     Nonempty (ClosedEmbedding C T)
+
+namespace FunctionClosedHasTreeCompletion
+
+/-- A closed embedding into one copy of the base is already a
+function-closed tree completion. -/
+theorem of_closedEmbedding
+    {Base : RelStructure L.graph V}
+    {C : RelStructure L.graph W}
+    (e : ClosedEmbedding C Base) :
+    FunctionClosedHasTreeCompletion Base C := by
+  have hTree :
+      FunctionClosedTreeAmalgam Base V Base :=
+    FunctionClosedTreeAmalgam.copy (RelStructure.Iso.refl Base)
+  exact ⟨V, Base, hTree, ⟨e⟩⟩
+
+/-- In the domain-expanded partial-function language, the standard
+semi-closed criterion upgrades an ordinary embedding into one Base copy to
+the closed embedding required by the local tree invariant. -/
+theorem of_localSemiClosed
+    {A : RelStructure L.withFunctionDomains.graph U}
+    {Base : RelStructure L.withFunctionDomains.graph V}
+    (hBaseRoot : Base.OutputImpliesDomain)
+    (e : RelStructure.Embedding A Base)
+    (hLocal : LocallySingleValuedOn A Base e)
+    (hAtotal : A.FunctionDomainTotal) :
+    FunctionClosedHasTreeCompletion Base A :=
+  of_closedEmbedding
+    (closedEmbedding_of_localSemiClosed
+      hBaseRoot e hLocal hAtotal)
+
+end FunctionClosedHasTreeCompletion
 
 /-- Every function-closed finite test on at most n vertices admits a closed
 embedding into a function-closed tree amalgam of copies of Base. -/
