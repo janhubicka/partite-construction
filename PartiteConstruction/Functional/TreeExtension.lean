@@ -278,7 +278,7 @@ theorem embedIntoRootedExtension
         obtain ⟨b, hb⟩ := hjSurj y
         exact ⟨b, hb.symm⟩
       let jInv : Embedding T Base :=
-        (Embedding.id T).factorThroughRange j hRange
+        (Embedding.id T).factorThroughClosedRange j hRange
       refine ⟨VB, Base, TreeExtension.refl, jInv, ?_⟩
       intro b
       change jInv (j b) = b
@@ -290,7 +290,7 @@ theorem embedIntoRootedExtension
       intro j
       rcases hfree.irreducible_side hBase j with hleft | hright
       · let j₁ : Embedding Base T₁ :=
-          j.factorThroughRange i₁ hleft
+          j.factorThroughClosedRange i₁ hleft
         have hj₁ (b : VB) : j b = i₁ (j₁ b) :=
           Classical.choose_spec (hleft b)
         obtain ⟨Z₁, R₁, hExt₁, e₁, he₁⟩ := ih₁ j₁
@@ -337,7 +337,7 @@ theorem embedIntoRootedExtension
           _ = lR (hExt₁.startEmbedding b) :=
             congrArg lR (he₁ b)
       · let j₂ : Embedding Base T₂ :=
-          j.factorThroughRange i₂ hright
+          j.factorThroughClosedRange i₂ hright
         have hj₂ (b : VB) : j b = i₂ (j₂ b) :=
           Classical.choose_spec (hright b)
         obtain ⟨Z₂, R₂, hExt₂, e₂, he₂⟩ := ih₂ j₂
