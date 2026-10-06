@@ -208,6 +208,7 @@ import PartiteConstruction.Functional.ControlCompletion
 
 import PartiteConstruction.Functional.HistoryTreeCompletion
 import PartiteConstruction.Functional.InjectiveHistoryPullback
+import PartiteConstruction.Functional.InjectiveRelativePullback
 
 import PartiteConstruction.Functional.RelativeHistoryTreeCompletion
 
