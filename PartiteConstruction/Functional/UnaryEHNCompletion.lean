@@ -53,39 +53,35 @@ theorem onePointClosure_irreducible
       (C.functionClosure_isClosed
         (Set.range (fun _ : One => c)))).Irreducible := by
   classical
-  let q0 : One → W := fun _ => c
-  let Hset := C.functionClosure (Set.range q0)
-  have hHclosed : C.IsClosed Hset :=
-    C.functionClosure_isClosed (Set.range q0)
-  let H : Structure L Hset := C.induce Hset hHclosed
-  let q : One → Hset := closureLift C q0
-  have hgen : H.Generates q := by
-    simpa [H, Hset, q, q0] using
-      (closureLift_generates C q0)
-  change H.Irreducible
+  let q :
+      One → C.functionClosure (Set.range (fun _ : One => c)) :=
+    closureLift C (fun _ : One => c)
+  have hgen :
+      (C.induce
+        (C.functionClosure (Set.range (fun _ : One => c)))
+        (C.functionClosure_isClosed
+          (Set.range (fun _ : One => c)))).Generates q := by
+    simpa [q] using
+      (closureLift_generates C (fun _ : One => c))
   rw [irreducible_iff_noProperFreeDecomposition]
   rintro ⟨d⟩
   rcases d.free.covers (q One.star) with hleft | hright
   · rcases hleft with ⟨x, hx⟩
     apply d.leftProper
     intro z
-    have hz : z ∈ Set.range d.leftIn := by
-      apply hgen (Set.range d.leftIn) d.leftIn.range_isClosed
-      intro a
-      have ha : a = One.star := Subsingleton.elim _ _
-      subst a
-      exact ⟨x, hx.symm⟩
-    exact hz
+    apply hgen (Set.range d.leftIn) d.leftIn.range_isClosed
+    intro a
+    have ha : a = One.star := Subsingleton.elim _ _
+    subst a
+    exact ⟨x, hx.symm⟩
   · rcases hright with ⟨x, hx⟩
     apply d.rightProper
     intro z
-    have hz : z ∈ Set.range d.rightIn := by
-      apply hgen (Set.range d.rightIn) d.rightIn.range_isClosed
-      intro a
-      have ha : a = One.star := Subsingleton.elim _ _
-      subst a
-      exact ⟨x, hx.symm⟩
-    exact hz
+    apply hgen (Set.range d.rightIn) d.rightIn.range_isClosed
+    intro a
+    have ha : a = One.star := Subsingleton.elim _ _
+    subst a
+    exact ⟨x, hx.symm⟩
 
 /-- For unary functions, an EHN projection preserves complete function fibres
 onto the target, hence is a full homomorphism. -/
@@ -111,16 +107,13 @@ theorem IsEHNHomomorphismEmbedding.isHomomorphism_of_unary
   let c : W := x i0
   let q : One → W := fun _ => c
   let Hset : Set W := C.functionClosure (Set.range q)
-  have hHclosed : C.IsClosed Hset :=
-    C.functionClosure_isClosed (Set.range q)
-  let H : Structure L Hset := C.induce Hset hHclosed
+  let H : Structure L Hset :=
+    C.induce Hset (C.functionClosure_isClosed (Set.range q))
   have hHirr : H.Irreducible := by
-    change
-      (C.induce Hset
-        (C.functionClosure_isClosed (Set.range q))).Irreducible
-    simpa [Hset, q, c] using
+    simpa [H, Hset, q, c] using
       (onePointClosure_irreducible C c)
-  let inc : Embedding H C := inclusion C Hset hHclosed
+  let inc : Embedding H C :=
+    inclusion C Hset (C.functionClosure_isClosed (Set.range q))
   obtain ⟨g, hg⟩ := hp.2 H hHirr inc
   have hcH : c ∈ Hset := by
     apply C.subset_functionClosure (Set.range q)
