@@ -64,7 +64,7 @@ theorem onePointClosure_irreducible
     have hqa : q a = q c := by
       apply Subtype.ext
       rfl
-    exact hqa.trans hx
+    exact (hqa.trans hx).symm
   · rcases hright with ⟨x, hx⟩
     apply d.rightProper
     intro z
@@ -74,7 +74,7 @@ theorem onePointClosure_irreducible
     have hqa : q a = q c := by
       apply Subtype.ext
       rfl
-    exact hqa.trans hx
+    exact (hqa.trans hx).symm
 
 /-- For unary functions, an EHN projection preserves complete function fibres
 onto the target, hence is a full homomorphism. -/
@@ -100,14 +100,16 @@ theorem IsEHNHomomorphismEmbedding.isHomomorphism_of_unary
   let c : W := x i0
   let q0 : W → W := fun _ => c
   let Hset : Set W := C.functionClosure (Set.range q0)
+  have hHirr :
+      (C.induce Hset
+        (C.functionClosure_isClosed (Set.range q0))).Irreducible := by
+    simpa [Hset, q0, c] using
+      (onePointClosure_irreducible C c)
   let H : Structure L Hset :=
     C.induce Hset (C.functionClosure_isClosed (Set.range q0))
-  have hHirr : H.Irreducible := by
-    simpa [H, Hset, q0, c] using
-      (onePointClosure_irreducible C c)
   let inc : Embedding H C :=
     inclusion C Hset (C.functionClosure_isClosed (Set.range q0))
-  obtain ⟨g, hg⟩ := hp.2 H hHirr inc
+  obtain ⟨g, hg⟩ := hp.2 H (by simpa [H] using hHirr) inc
   have hcH : c ∈ Hset := by
     apply C.subset_functionClosure (Set.range q0)
     exact ⟨c, rfl⟩
