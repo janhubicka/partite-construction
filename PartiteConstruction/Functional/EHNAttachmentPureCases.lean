@@ -29,7 +29,7 @@ variable (D : System L P W)
 variable (f :
   FunctionalPartite.Embedding (B.induce S hS) D)
 
-abbrev UnitAttach :=
+noncomputable abbrev UnitAttach :=
   attach B S hS D (fun _ : PUnit.{v+1} => f)
 
 /-- A closed test lying wholly in the single attached copy factors fully back
@@ -50,14 +50,16 @@ noncomputable def testEmbeddingToCopy
       ((UnitAttach B S hS D f).toStructure.induce
         (↑Test : Set _) hTest)
       B.toStructure := by
+  let TestSet : Set
+      (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1})) :=
+    ↑Test
   let Small :=
-    (UnitAttach B S hS D f).toStructure.induce
-      (↑Test : Set _) hTest
+    (UnitAttach B S hS D f).toStructure.induce TestSet hTest
   let incSmall : Structure.Embedding Small
       (UnitAttach B S hS D f).toStructure :=
     Structure.inclusion
       (UnitAttach B S hS D f).toStructure
-      (↑Test : Set _) hTest
+      TestSet hTest
   let copyEmb : Structure.Embedding B.toStructure
       (UnitAttach B S hS D f).toStructure :=
     Structure.Attachment.copyEmbedding
@@ -65,7 +67,7 @@ noncomputable def testEmbeddingToCopy
       (fun _ : PUnit.{v+1} => f.toEmbedding)
       PUnit.unit
   have hrange :
-      ∀ z : ↥(↑Test : Set _),
+      ∀ z : ↥TestSet,
         ∃ x : V, incSmall z = copyEmb x := by
     intro z
     rcases hcopy z with ⟨x, hx⟩
@@ -88,21 +90,23 @@ noncomputable def testEmbeddingToCore
       ((UnitAttach B S hS D f).toStructure.induce
         (↑Test : Set _) hTest)
       D.toStructure := by
+  let TestSet : Set
+      (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1})) :=
+    ↑Test
   let Small :=
-    (UnitAttach B S hS D f).toStructure.induce
-      (↑Test : Set _) hTest
+    (UnitAttach B S hS D f).toStructure.induce TestSet hTest
   let incSmall : Structure.Embedding Small
       (UnitAttach B S hS D f).toStructure :=
     Structure.inclusion
       (UnitAttach B S hS D f).toStructure
-      (↑Test : Set _) hTest
+      TestSet hTest
   let coreEmb : Structure.Embedding D.toStructure
       (UnitAttach B S hS D f).toStructure :=
     Structure.Attachment.coreEmbedding
       B.toStructure S hS D.toStructure
       (fun _ : PUnit.{v+1} => f.toEmbedding)
   have hrange :
-      ∀ z : ↥(↑Test : Set _),
+      ∀ z : ↥TestSet,
         ∃ w : W, incSmall z = coreEmb w := by
     intro z
     rcases hcore z with ⟨w, hw⟩
