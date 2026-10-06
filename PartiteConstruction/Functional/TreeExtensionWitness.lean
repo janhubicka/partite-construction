@@ -55,6 +55,94 @@ theorem root
     refine ⟨x, rfl, ?_⟩
     exact hxa
 
+
+/-- Pull a relative completion back along a full source embedding which
+commutes with the distinguished root. -/
+theorem pullback_embedding
+    {E₁ : Type v} {Side₁ : Structure L E₁}
+    (j : Embedding Side₁ Side)
+    (s₁ : Embedding Root Side₁)
+    (hcomm : ∀ d, j (s₁ d) = s d)
+    (q : H → G)
+    (h :
+      HasTreeExtensionCompletion
+        (Base := Base) (Start := Start) s q) :
+    HasTreeExtensionCompletion
+      (Base := Base) (Start := Start) s₁ q := by
+  obtain ⟨Z, Target, hExt, f, hf, hcompat, hroot⟩ := h
+  let f₁ : E₁ → Z := f ∘ j
+  have hf₁ : Side₁.IsHomomorphismEmbedding Target f₁ :=
+    hf.comp j.isHomomorphismEmbedding
+  have hcompat₁ :
+      ∀ d, f₁ (s₁ d) = hExt.startEmbedding (q d) := by
+    intro d
+    change f (j (s₁ d)) = hExt.startEmbedding (q d)
+    rw [hcomm d]
+    exact hcompat d
+  have hroot₁ :
+      IsFreeAmalgam.RootIsolated
+        s₁ hExt.startEmbedding q f₁ := by
+    intro x a hxa
+    have hxa' :
+        f (j x) = hExt.startEmbedding a := hxa
+    obtain ⟨d, hjx, hda⟩ := hroot (j x) a hxa'
+    refine ⟨d, ?_, hda⟩
+    apply j.injective
+    calc
+      j x = s d := hjx
+      _ = j (s₁ d) := (hcomm d).symm
+  exact ⟨Z, Target, hExt, f₁, hf₁, hcompat₁, hroot₁⟩
+
+/-- Further strict attachments to the target preserve a relative completion. -/
+theorem extendTarget
+    (q : H → G)
+    (h :
+      HasTreeExtensionCompletion
+        (Base := Base) (Start := Start) s q)
+    {Z₂ : Type v} {Target₂ : Structure L Z₂}
+    {Z : Type v} {Target : Structure L Z}
+    (hMore : TreeExtension Base Target Z₂ Target₂)
+    (hTarget :
+      ∃ hExt : TreeExtension Base Start Z Target,
+        ∃ f : E → Z,
+          Side.IsHomomorphismEmbedding Target f ∧
+          (∀ d, f (s d) = hExt.startEmbedding (q d)) ∧
+          IsFreeAmalgam.RootIsolated
+            s hExt.startEmbedding q f) :
+    HasTreeExtensionCompletion
+      (Base := Base) (Start := Start) s q := by
+  obtain ⟨hExt, f, hf, hcompat, hroot⟩ := hTarget
+  let hAll : TreeExtension Base Start Z₂ Target₂ :=
+    hExt.trans hMore
+  let j : Embedding Target Target₂ :=
+    hMore.startEmbedding
+  let f₂ : E → Z₂ := j ∘ f
+  have hf₂ : Side.IsHomomorphismEmbedding Target₂ f₂ :=
+    j.isHomomorphismEmbedding.comp hf
+  have hcompat₂ :
+      ∀ d, f₂ (s d) = hAll.startEmbedding (q d) := by
+    intro d
+    calc
+      f₂ (s d) = j (f (s d)) := rfl
+      _ = j (hExt.startEmbedding (q d)) :=
+        congrArg j (hcompat d)
+      _ = hAll.startEmbedding (q d) :=
+        (TreeExtension.startEmbedding_trans hExt hMore (q d)).symm
+  have hroot₂ :
+      IsFreeAmalgam.RootIsolated
+        s hAll.startEmbedding q f₂ := by
+    intro x a hxa
+    have hxa' :
+        f x = hExt.startEmbedding a := by
+      apply j.injective
+      calc
+        j (f x) = f₂ x := rfl
+        _ = hAll.startEmbedding a := hxa
+        _ = j (hExt.startEmbedding a) :=
+          TreeExtension.startEmbedding_trans hExt hMore a
+    exact hroot x a hxa'
+  exact ⟨Z₂, Target₂, hAll, f₂, hf₂, hcompat₂, hroot₂⟩
+
 /-- Two side completions relative to the same strict root tree glue to a full
 completion of their source free amalgam. -/
 theorem glue
