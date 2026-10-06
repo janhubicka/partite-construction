@@ -60,6 +60,24 @@ namespace TreeExtension
 
 variable {Base : Structure L VB} {Start : Structure L VS}
 
+
+/-- Concatenate two strict tree extensions. -/
+def trans
+    {W X : Type v}
+    {T : Structure L W} {R : Structure L X}
+    (h₁ : TreeExtension Base Start W T)
+    (h₂ : TreeExtension Base T X R) :
+    TreeExtension Base Start X R := by
+  induction h₂ with
+  | refl =>
+      exact h₁
+  | @attach W' H T' Root prev fT fBase hcT hcBase ih =>
+      exact TreeExtension.attach ih fT fBase hcT hcBase
+  | @attachTree W' H Y T' Root Branch prev hBranch
+      fT fBranch hcT hcBranch ih =>
+      exact TreeExtension.attachTree ih hBranch
+        fT fBranch hcT hcBranch
+
 /-- The canonical copy of the starting structure inside an extension. -/
 noncomputable def startEmbedding
     {W : Type v} {T : Structure L W}
@@ -75,6 +93,40 @@ noncomputable def startEmbedding
       fT fBranch hcT hcBranch ih =>
       exact
         (FreeAmalgam.leftEmbedding Root T Branch fT fBranch).comp ih
+
+
+/-- The canonical start embedding of a concatenated extension is the
+composition of the two canonical start embeddings. -/
+theorem startEmbedding_trans
+    {W X : Type v}
+    {T : Structure L W} {R : Structure L X}
+    (h₁ : TreeExtension Base Start W T)
+    (h₂ : TreeExtension Base T X R)
+    (x : VS) :
+    (h₁.trans h₂).startEmbedding x =
+      h₂.startEmbedding (h₁.startEmbedding x) := by
+  induction h₂ with
+  | refl =>
+      rfl
+  | @attach W' H T' Root prev fT fBase hcT hcBase ih =>
+      change
+        (FreeAmalgam.leftEmbedding Root T' Base fT fBase)
+            ((h₁.trans prev).startEmbedding x) =
+          (FreeAmalgam.leftEmbedding Root T' Base fT fBase)
+            (prev.startEmbedding (h₁.startEmbedding x))
+      exact congrArg
+        (FreeAmalgam.leftEmbedding Root T' Base fT fBase)
+        ih
+  | @attachTree W' H Y T' Root Branch prev hBranch
+      fT fBranch hcT hcBranch ih =>
+      change
+        (FreeAmalgam.leftEmbedding Root T' Branch fT fBranch)
+            ((h₁.trans prev).startEmbedding x) =
+          (FreeAmalgam.leftEmbedding Root T' Branch fT fBranch)
+            (prev.startEmbedding (h₁.startEmbedding x))
+      exact congrArg
+        (FreeAmalgam.leftEmbedding Root T' Branch fT fBranch)
+        ih
 
 /-- Extending an already strict Base-tree preserves strict tree-amalgamhood. -/
 theorem toTree
