@@ -45,7 +45,9 @@ theorem closedRoot_embedding_or_decompose
           (B.weakRestrict D hB.1 A alpha).part (inc x)) ∨
       Nonempty (ProperFreeDecomposition R) := by
   exact
-    (B.weakRestrict_invariant D hB.1 A alpha hB).
-      closedTest_embedding_or_decompose RootTest hRoot
+    StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.
+      closedTest_embedding_or_decompose
+        (B.weakRestrict_invariant D hB.1 A alpha hB)
+        RootTest hRoot
 
 end StructuralRamsey.FunctionalPartite
