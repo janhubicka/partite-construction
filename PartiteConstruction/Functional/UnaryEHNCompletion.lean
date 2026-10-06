@@ -38,43 +38,62 @@ is closed, hence it contains the whole generated hull. -/
 theorem onePointClosure_irreducible
     (C : Structure L W) (c : W) :
     (C.induce
-      (C.functionClosure (Set.range (fun _ : W => c)))
+      (C.functionClosure (Set.range (fun _ : One => c)))
       (C.functionClosure_isClosed
-        (Set.range (fun _ : W => c)))).Irreducible := by
+        (Set.range (fun _ : One => c)))).Irreducible := by
   classical
-  let q :
-      W → C.functionClosure (Set.range (fun _ : W => c)) :=
-    closureLift C (fun _ : W => c)
-  have hgen :
-      (C.induce
-        (C.functionClosure (Set.range (fun _ : W => c)))
-        (C.functionClosure_isClosed
-          (Set.range (fun _ : W => c)))).Generates q := by
-    simpa [q] using
-      (closureLift_generates C (fun _ : W => c))
-  rw [irreducible_iff_noProperFreeDecomposition]
-  rintro ⟨d⟩
-  rcases d.free.covers (q c) with hleft | hright
-  · rcases hleft with ⟨x, hx⟩
-    apply d.leftProper
-    intro z
-    apply hgen (Set.range d.leftIn) d.leftIn.range_isClosed
-    intro a
-    refine ⟨x, ?_⟩
-    have hqa : q a = q c := by
-      apply Subtype.ext
-      rfl
-    exact (hqa.trans hx).symm
-  · rcases hright with ⟨x, hx⟩
-    apply d.rightProper
-    intro z
-    apply hgen (Set.range d.rightIn) d.rightIn.range_isClosed
-    intro a
-    refine ⟨x, ?_⟩
-    have hqa : q a = q c := by
-      apply Subtype.ext
-      rfl
-    exact (hqa.trans hx).symm
+  let S : Set W :=
+    C.functionClosure (Set.range (fun _ : One => c))
+  have hS : C.IsClosed S :=
+    C.functionClosure_isClosed (Set.range (fun _ : One => c))
+  let H : Structure L S := C.induce S hS
+  let q : One → S :=
+    fun _ => ⟨c,
+      C.subset_functionClosure
+        (Set.range (fun _ : One => c)) ⟨One.star, rfl⟩⟩
+  have hgen : H.Generates q := by
+    intro T hT hqT z
+    let T0 : Set W :=
+      {w | ∃ hw : w ∈ S, (⟨w, hw⟩ : S) ∈ T}
+    have hT0 : C.IsClosed T0 := by
+      intro F x hx y hy
+      let xs : Fin (L.funcArity F) → S :=
+        fun i => ⟨x i, (hx i).choose⟩
+      have hxs : ∀ i, xs i ∈ T :=
+        fun i => (hx i).choose_spec
+      have hyS : y ∈ S :=
+        hS F x (fun i => (hx i).choose) hy
+      have hyT : (⟨y, hyS⟩ : S) ∈ T :=
+        hT F xs hxs hy
+      exact ⟨hyS, hyT⟩
+    have hcT0 : c ∈ T0 := by
+      exact ⟨(q One.star).2, hqT One.star⟩
+    have hseed : Set.range (fun _ : One => c) ⊆ T0 := by
+      rintro _ ⟨a, rfl⟩
+      have ha : a = One.star := Subsingleton.elim _ _
+      simpa [ha] using hcT0
+    have hz0 : z.1 ∈ T0 :=
+      z.2 T0 hT0 hseed
+    exact hz0.2
+  have hGoal : H.Irreducible := by
+    rw [irreducible_iff_noProperFreeDecomposition]
+    rintro ⟨d⟩
+    rcases d.free.covers (q One.star) with ⟨x, hx⟩ | ⟨x, hx⟩
+    · apply d.leftProper
+      intro z
+      exact hgen (Set.range d.leftIn) d.leftIn.range_isClosed
+        (fun a => by
+          have ha : a = One.star := Subsingleton.elim _ _
+          subst a
+          exact ⟨x, hx.symm⟩) z
+    · apply d.rightProper
+      intro z
+      exact hgen (Set.range d.rightIn) d.rightIn.range_isClosed
+        (fun a => by
+          have ha : a = One.star := Subsingleton.elim _ _
+          subst a
+          exact ⟨x, hx.symm⟩) z
+  simpa [H, S, hS] using hGoal
 
 /-- For unary functions, an EHN projection preserves complete function fibres
 onto the target, hence is a full homomorphism. -/
