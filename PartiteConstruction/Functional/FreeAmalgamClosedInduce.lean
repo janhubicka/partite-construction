@@ -312,4 +312,48 @@ theorem induceClosed
         rw [hargs, hout]
         exact himg
 
+
+/-- If a closed test contains a point outside the left side of a free amalgam,
+then the induced left preimage has strictly smaller finite cardinality. -/
+theorem leftPreimage_card_lt
+    (hfree : IsFreeAmalgam sL sR iL iR)
+    (S : Set C) (hS : Whole.IsClosed S)
+    [Fintype S] [Fintype (iL ⁻¹' S)]
+    (z : S)
+    (hz : ¬ ∃ a : E, z.1 = iL a) :
+    Fintype.card (iL ⁻¹' S) < Fintype.card S := by
+  let j : (iL ⁻¹' S) → S :=
+    fun x => ⟨iL x.1, x.2⟩
+  apply Fintype.card_lt_of_injective_not_surjective j
+  · intro x y hxy
+    apply Subtype.ext
+    apply iL.injective
+    exact congrArg Subtype.val hxy
+  · intro hsurj
+    obtain ⟨x, hx⟩ := hsurj z
+    apply hz
+    refine ⟨x.1, ?_⟩
+    exact congrArg Subtype.val hx
+
+/-- Symmetric strict-cardinality drop for the right preimage. -/
+theorem rightPreimage_card_lt
+    (hfree : IsFreeAmalgam sL sR iL iR)
+    (S : Set C) (hS : Whole.IsClosed S)
+    [Fintype S] [Fintype (iR ⁻¹' S)]
+    (z : S)
+    (hz : ¬ ∃ b : F, z.1 = iR b) :
+    Fintype.card (iR ⁻¹' S) < Fintype.card S := by
+  let j : (iR ⁻¹' S) → S :=
+    fun x => ⟨iR x.1, x.2⟩
+  apply Fintype.card_lt_of_injective_not_surjective j
+  · intro x y hxy
+    apply Subtype.ext
+    apply iR.injective
+    exact congrArg Subtype.val hxy
+  · intro hsurj
+    obtain ⟨x, hx⟩ := hsurj z
+    apply hz
+    refine ⟨x.1, ?_⟩
+    exact congrArg Subtype.val hx
+
 end StructuralRamsey.Structure.IsFreeAmalgam
