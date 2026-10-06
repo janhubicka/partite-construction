@@ -44,16 +44,18 @@ theorem pureCore_oneCopy_of_domainReflection
       Structure.IsHomomorphismEmbedding
         (E.toStructure.induce (↑S : Set W) hS)
         A (E.part ∘ Subtype.val) :=
-    hE.restrictClosed_toFull_of_domainReflection
-      (↑S : Set W) hS hreflect
+    StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.restrictClosed_toFull_of_domainReflection
+      hE (↑S : Set W) hS hreflect
   let f : ↥(↑S : Set W) → V :=
     eAB ∘ (E.part ∘ Subtype.val)
   have hf :
       Structure.IsHomomorphismEmbedding
         (E.toStructure.induce (↑S : Set W) hS) Base f := by
-    exact eAB.isHomomorphismEmbedding.comp hpS
+    exact StructuralRamsey.Structure.IsHomomorphismEmbedding.comp
+      eAB.isHomomorphismEmbedding hpS
   have hTree : TreeAmalgam Base V Base :=
-    TreeAmalgam.copy (Structure.Embedding.id Base) (by
+    StructuralRamsey.Structure.TreeAmalgam.copy
+      (Structure.Embedding.id Base) (by
       intro b
       exact ⟨b, rfl⟩)
   exact ⟨V, Base, hTree, f, hf⟩
