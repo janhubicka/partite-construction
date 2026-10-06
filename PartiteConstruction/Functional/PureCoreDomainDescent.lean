@@ -70,7 +70,7 @@ theorem power_weakRestrict_domainFailure_ambient
         R.part ∘ (fun j => (x j).coord i) =
           (power R N).part ∘ x := by
       funext j
-      exact ((x j).belongs i).symm
+      exact (x j).belongs i
     rw [hargs]
     exact ha
   have haImg :
