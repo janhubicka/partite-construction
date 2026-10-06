@@ -62,6 +62,7 @@ theorem onePointClosure_irreducible
   have hgen : H.Generates q := by
     simpa [H, Hset, q, q0] using
       (closureLift_generates C q0)
+  change H.Irreducible
   rw [irreducible_iff_noProperFreeDecomposition]
   rintro ⟨d⟩
   rcases d.free.covers (q One.star) with hleft | hright
