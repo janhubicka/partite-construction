@@ -134,7 +134,9 @@ theorem pureCopy_locallyClosedTreeCompletable
       ((UnitAttach B S hS D f).toStructure.induce
         (↑Test : Set _) hTest) := by
   let e :=
-    testEmbeddingToCopy B S hS D f Test hTest hcopy
+    testEmbeddingToCopy
+      (B := B) (S := S) (hS := hS) (D := D) (f := f)
+      Test hTest hcopy
   have hPull :
       LocallyClosedTreeCompletable Base
         ((UnitAttach B S hS D f).toStructure.induce
@@ -166,7 +168,9 @@ theorem pureCore_locallyClosedTreeCompletable
       ((UnitAttach B S hS D f).toStructure.induce
         (↑Test : Set _) hTest) := by
   let e :=
-    testEmbeddingToCore B S hS D f Test hTest hcore
+    testEmbeddingToCore
+      (B := B) (S := S) (hS := hS) (D := D) (f := f)
+      Test hTest hcore
   have hPull :
       LocallyClosedTreeCompletable Base
         ((UnitAttach B S hS D f).toStructure.induce
