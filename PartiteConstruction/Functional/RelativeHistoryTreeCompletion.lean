@@ -384,17 +384,6 @@ theorem fullWitness_embeddedLabels
   exact ⟨Z, Target, hTree, f, hf, hPart, hProj, hSrc,
     targetCopy, htarget, hiso⟩
 
-/-- At identity projection, projected histories already suffice for the
-relative labelled invariant. -/
-theorem ofProjectedHistory_identity
-    (hA : A.Irreducible)
-    (eAB : Embedding A Base)
-    (h : FunctionalProjectedHistoryTreeLike
-      (A := A) (D := D) (C := D) (Base := Base) id n) :
-    FunctionalRelativeHistoryTreeLike
-      (A := A) (D := D) (C := D) (Base := Base) id n :=
-  ofHistory hA eAB h.toHistory_identity
-
 /-- The relative request is automatic from the ordinary combined history
 invariant: attach one fresh copy of Base over the already embedded partial
 A-boundary. -/
@@ -496,6 +485,17 @@ theorem ofHistory
     subst z'
     refine ⟨z, ?_, ha⟩
     exact hz'.symm
+
+/-- At identity projection, projected histories already suffice for the
+relative labelled invariant. -/
+theorem ofProjectedHistory_identity
+    (hA : A.Irreducible)
+    (eAB : Embedding A Base)
+    (h : FunctionalProjectedHistoryTreeLike
+      (A := A) (D := D) (C := D) (Base := Base) id n) :
+    FunctionalRelativeHistoryTreeLike
+      (A := A) (D := D) (C := D) (Base := Base) id n :=
+  ofHistory hA eAB h.toHistory_identity
 
 /-- The relative-history invariant pulls back along a full embedding.  It is
 enough to pull back the ordinary combined-history invariant and then rebuild
