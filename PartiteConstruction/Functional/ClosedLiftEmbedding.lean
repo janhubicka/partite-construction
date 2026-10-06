@@ -89,10 +89,15 @@ noncomputable def liftClosedEmbedding
           _ = a₂ := ha₂.symm
     · rintro ⟨a, rfl⟩
       refine ⟨iA a, ?_⟩
-      exact
-        (liftMap_left hSrc hTgt q
+      change
+        liftMap hSrc hTgt q
           hA.toEmbedding hB.toEmbedding
-          hcompatA hcompatB a).symm
+          hcompatA hcompatB (iA a) =
+          jA (hA a)
+      exact
+        liftMap_left hSrc hTgt q
+          hA.toEmbedding hB.toEmbedding
+          hcompatA hcompatB a
   have hpreB :
       jB ⁻¹' Set.range e = Set.range hB := by
     ext b₂
@@ -131,10 +136,15 @@ noncomputable def liftClosedEmbedding
           _ = jB b₂ := hc
     · rintro ⟨b, rfl⟩
       refine ⟨iB b, ?_⟩
-      exact
-        (liftMap_right hSrc hTgt q
+      change
+        liftMap hSrc hTgt q
           hA.toEmbedding hB.toEmbedding
-          hcompatA hcompatB b).symm
+          hcompatA hcompatB (iB b) =
+          jB (hB b)
+      exact
+        liftMap_right hSrc hTgt q
+          hA.toEmbedding hB.toEmbedding
+          hcompatA hcompatB b
   have hRangeA :
       FunctionClosedSet A₂ (Set.range hA) :=
     (hA.toEmbedding.functionClosed_iff_range).1 hA.closed
