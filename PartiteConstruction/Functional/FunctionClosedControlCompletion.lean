@@ -158,6 +158,89 @@ theorem addControl_of_embeddedIntersection
     obtain ⟨a', ha'⟩ := hβ' a ha
     exact ⟨a', congrArg l ha'⟩
 
+/-- Complete strict closed control for every ambient closed A-copy while
+retaining a closed embedding of the original target tree. -/
+theorem completeControl_of_embeddedIntersections
+    [Finite U] [Finite W]
+    (hA : A.Irreducible)
+    (eAB : ClosedEmbedding A Base)
+    (S : Finset W) (hS : FunctionClosedSet C (↑S : Set W))
+    (hTree : FunctionClosedTreeAmalgam Base Y T)
+    (f : ClosedEmbedding (C.induce (↑S : Set W)) T)
+    (hInt : FunctionClosedEmbeddedIntersections
+      (A := A) (C := C) (T := T) S hS f) :
+    ∃ (Z0 : Type v) (T' : RelStructure L.graph Z0),
+      FunctionClosedTreeAmalgam Base Z0 T' ∧
+      ∃ j : ClosedEmbedding T T',
+        FunctionClosedEmbeddedIntersections
+          (A := A) (C := C) (T := T') S hS
+          (ClosedEmbedding.comp j f) ∧
+        ∀ α : ClosedEmbedding A C,
+          ∃ α' : ClosedEmbedding A T',
+            ∀ a : U, ∀ ha : α a ∈ S,
+              ∃ a' : U,
+                (ClosedEmbedding.comp j f) ⟨α a, ha⟩ = α' a' := by
+  classical
+  letI : Fintype (ClosedEmbedding A C) := Fintype.ofFinite _
+  let xs : List (ClosedEmbedding A C) := Finset.univ.toList
+  have aux :
+      ∀ ys : List (ClosedEmbedding A C),
+      ∀ {Y0 : Type v} {T0 : RelStructure L.graph Y0},
+      FunctionClosedTreeAmalgam Base Y0 T0 →
+      ∀ (f0 : ClosedEmbedding (C.induce (↑S : Set W)) T0),
+      FunctionClosedEmbeddedIntersections
+        (A := A) (C := C) (T := T0) S hS f0 →
+      ∀ zs : List (ClosedEmbedding A C),
+      FunctionClosedControls
+        (A := A) (C := C) (T := T0) S f0 zs →
+      ∃ (Z1 : Type v) (T1 : RelStructure L.graph Z1),
+        FunctionClosedTreeAmalgam Base Z1 T1 ∧
+        ∃ j : ClosedEmbedding T0 T1,
+          FunctionClosedEmbeddedIntersections
+            (A := A) (C := C) (T := T1) S hS
+            (ClosedEmbedding.comp j f0) ∧
+          FunctionClosedControls
+            (A := A) (C := C) (T := T1) S
+            (ClosedEmbedding.comp j f0) (ys.reverse ++ zs) := by
+    intro ys
+    induction ys with
+    | nil =>
+        intro Y0 T0 hTree0 f0 hInt0 zs hctrl0
+        let j : ClosedEmbedding T0 T0 := ClosedEmbedding.id T0
+        refine ⟨Y0, T0, hTree0, j, ?_, ?_⟩
+        · simpa [j] using hInt0
+        · simpa [j] using hctrl0
+    | cons α ys ih =>
+        intro Y0 T0 hTree0 f0 hInt0 zs hctrl0
+        obtain ⟨Y1, T1, hTree1, j1, hInt1, hctrl1⟩ :=
+          ih hTree0 f0 hInt0 zs hctrl0
+        obtain ⟨Z1, T2, hTree2, j2, hctrl2⟩ :=
+          addControl_of_embeddedIntersection
+            (A := A) (Base := Base) (C := C)
+            hA eAB S hS hTree1
+            (ClosedEmbedding.comp j1 f0)
+            (ys.reverse ++ zs) hctrl1 α
+            (hInt1 α)
+        let j : ClosedEmbedding T0 T2 :=
+          ClosedEmbedding.comp j2 j1
+        have hInt2 :
+            FunctionClosedEmbeddedIntersections
+              (A := A) (C := C) (T := T2) S hS
+              (ClosedEmbedding.comp j
+                f0) := by
+          have hpost := hInt1.postcomp j2
+          simpa [j, ClosedEmbedding.comp] using hpost
+        refine ⟨Z1, T2, hTree2, j, hInt2, ?_⟩
+        simpa [j, ClosedEmbedding.comp,
+          List.reverse_cons, List.append_assoc] using hctrl2
+  obtain ⟨Z0, T', hTree', j, hInt', hctrl'⟩ :=
+    aux xs hTree f hInt [] (by
+      intro α hmem
+      exact (List.not_mem_nil hmem).elim)
+  refine ⟨Z0, T', hTree', j, hInt', ?_⟩
+  intro α
+  exact hctrl' α (by simp [xs])
+
 end FunctionClosedHasTreeCompletion
 
 end StructuralRamsey.RelStructure
