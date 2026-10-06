@@ -77,12 +77,12 @@ theorem induceClosed
   let jR0 : Embedding RS Whole := iR.comp incR
 
   have hmLrange :
-      ∀ x : MS, ∃ y : LS, mL0 x = incL y := by
+      ∀ x : Mset, ∃ y : Lset, mL0 x = incL y := by
     intro x
-    let y : LS := ⟨sL x.1, x.2⟩
+    let y : Lset := ⟨sL x.1, x.2⟩
     exact ⟨y, rfl⟩
   have hmRrange :
-      ∀ x : MS, ∃ y : RS, mR0 x = incR y := by
+      ∀ x : Mset, ∃ y : Rset, mR0 x = incR y := by
     intro x
     have hxR : iR (sR x.1) ∈ S := by
       have hov :
@@ -91,14 +91,14 @@ theorem induceClosed
           ⟨x.1, rfl, rfl⟩
       rw [← hov]
       exact x.2
-    let y : RS := ⟨sR x.1, hxR⟩
+    let y : Rset := ⟨sR x.1, hxR⟩
     exact ⟨y, rfl⟩
   have hjLrange :
-      ∀ x : LS, ∃ y : WS, jL0 x = incW y := by
+      ∀ x : Lset, ∃ y : S, jL0 x = incW y := by
     intro x
     exact ⟨⟨iL x.1, x.2⟩, rfl⟩
   have hjRrange :
-      ∀ x : RS, ∃ y : WS, jR0 x = incW y := by
+      ∀ x : Rset, ∃ y : S, jR0 x = incW y := by
     intro x
     exact ⟨⟨iR x.1, x.2⟩, rfl⟩
 
@@ -111,22 +111,22 @@ theorem induceClosed
   let jR : Embedding RS WS :=
     jR0.factorThroughClosedRange incW hjRrange
 
-  have hmLval (x : MS) : (mL x).1 = sL x.1 := by
+  have hmLval (x : Mset) : (mL x).1 = sL x.1 := by
     have h :=
       Embedding.factorThroughClosedRange_spec
         mL0 incL hmLrange x
     exact h
-  have hmRval (x : MS) : (mR x).1 = sR x.1 := by
+  have hmRval (x : Mset) : (mR x).1 = sR x.1 := by
     have h :=
       Embedding.factorThroughClosedRange_spec
         mR0 incR hmRrange x
     exact h
-  have hjLval (x : LS) : (jL x).1 = iL x.1 := by
+  have hjLval (x : Lset) : (jL x).1 = iL x.1 := by
     have h :=
       Embedding.factorThroughClosedRange_spec
         jL0 incW hjLrange x
     exact h
-  have hjRval (x : RS) : (jR x).1 = iR x.1 := by
+  have hjRval (x : Rset) : (jR x).1 = iR x.1 := by
     have h :=
       Embedding.factorThroughClosedRange_spec
         jR0 incW hjRrange x
@@ -139,14 +139,14 @@ theorem induceClosed
     · have haS : iL a ∈ S := by
         rw [← ha]
         exact z.2
-      let aS : LS := ⟨a, haS⟩
+      let aS : Lset := ⟨a, haS⟩
       refine Or.inl ⟨aS, ?_⟩
       apply Subtype.ext
       exact (hjLval aS).trans ha.symm
     · have hbS : iR b ∈ S := by
         rw [← hb]
         exact z.2
-      let bS : RS := ⟨b, hbS⟩
+      let bS : Rset := ⟨b, hbS⟩
       refine Or.inr ⟨bS, ?_⟩
       apply Subtype.ext
       exact (hjRval bS).trans hb.symm
@@ -163,7 +163,7 @@ theorem induceClosed
       have hdS : iL (sL d) ∈ S := by
         rw [← had]
         exact a.2
-      let dS : MS := ⟨d, hdS⟩
+      let dS : Mset := ⟨d, hdS⟩
       refine ⟨dS, ?_, ?_⟩
       · apply Subtype.ext
         calc
@@ -197,7 +197,7 @@ theorem induceClosed
           change (incW (z k)).1 ∈ S at hzS
           rw [hk] at hzS
           exact hzS
-        let xs : Fin (L.relArity R) → LS :=
+        let xs : Fin (L.relArity R) → Lset :=
           fun k => ⟨x k, hxS k⟩
         have hrelLS : LS.rel R xs := hx
         refine Or.inl ⟨xs, hrelLS, ?_⟩
@@ -214,7 +214,7 @@ theorem induceClosed
           change (incW (z k)).1 ∈ S at hzS
           rw [hk] at hzS
           exact hzS
-        let xs : Fin (L.relArity R) → RS :=
+        let xs : Fin (L.relArity R) → Rset :=
           fun k => ⟨x k, hxS k⟩
         have hrelRS : RS.rel R xs := hx
         refine Or.inr ⟨xs, hrelRS, ?_⟩
@@ -251,9 +251,9 @@ theorem induceClosed
           change (incW y).1 ∈ S at hyS
           rw [hout] at hyS
           exact hyS
-        let as : Fin (L.funcArity F0) → LS :=
+        let as : Fin (L.funcArity F0) → Lset :=
           fun k => ⟨a k, haS k⟩
-        let bs : LS := ⟨b, hbS⟩
+        let bs : Lset := ⟨b, hbS⟩
         have hbLS : bs ∈ LS.func F0 as := hb
         refine Or.inl ⟨as, bs, hbLS, ?_, ?_⟩
         · funext k
@@ -279,9 +279,9 @@ theorem induceClosed
           change (incW y).1 ∈ S at hyS
           rw [hout] at hyS
           exact hyS
-        let as : Fin (L.funcArity F0) → RS :=
+        let as : Fin (L.funcArity F0) → Rset :=
           fun k => ⟨a k, haS k⟩
-        let bs : RS := ⟨b, hbS⟩
+        let bs : Rset := ⟨b, hbS⟩
         have hbRS : bs ∈ RS.func F0 as := hb
         refine Or.inr ⟨as, bs, hbRS, ?_, ?_⟩
         · funext k
