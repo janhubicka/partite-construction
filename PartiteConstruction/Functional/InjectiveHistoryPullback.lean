@@ -56,7 +56,7 @@ theorem witness_pullback_injective
   let inc : Embedding Small C :=
     inclusion C (↑S : Set W) hS
   let q : ↥(↑S : Set W) → P := p ∘ inc
-  have hqIHE : Small.IsHomomorphismEmbedding D q :=
+  have hqIHE : IsHomomorphismEmbedding Small D q :=
     hp.comp inc.isHomomorphismEmbedding
   have hqHom : Small.IsHomomorphism D q :=
     hqIHE.1
@@ -118,7 +118,9 @@ theorem witness_pullback_injective
       R.GeneratedByAtMost n := by
     have hgenRange :=
       homRange_generatedByAtMost hqHom hgen
-    simpa [R, hrange] using hgenRange
+    dsimp [R]
+    rw [← hrange]
+    exact hgenRange
 
   let sourceHistoryD : List (Set P) :=
     sourceHistory.map
@@ -156,7 +158,7 @@ theorem witness_pullback_injective
         (⟨eD x, hRangeD x⟩ : ↥(↑I : Set P)) =
           qR ⟨e x, hRange x⟩ := by
       apply Subtype.ext
-      exact (hproj x).symm
+      exact hproj x
     rw [← hx]
     exact heHT x
 
@@ -166,7 +168,8 @@ theorem witness_pullback_injective
     intro K hK x y hxy
     have h :=
       hProjR K hK (qR x) (qR y) hxy
-    simpa [qR, q, inc, Function.comp_apply] using h
+    change (p x.1 ∈ K ↔ p y.1 ∈ K) at h
+    exact h
 
   have hSrc :
       FunctionalRespectsSourceHistory
