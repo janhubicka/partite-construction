@@ -260,3 +260,71 @@ theorem IsEHNHomomorphismEmbedding.restrictClosed_toFull_of_domainReflection
     simpa [Function.comp_assoc] using htgt)
 
 end StructuralRamsey.Structure
+
+
+namespace StructuralRamsey.FunctionalPartite.Induced
+
+open StructuralRamsey.Structure
+
+universe u v w
+variable {L : Language.{u}} {P : Type v} {V : Type w}
+variable {A : Structure L P} {B : System L P V} {N : ℕ}
+
+/-- A domain-reflection failure in a functional Hales--Jewett power already
+occurs in one coordinate downstairs.  There is no independent synchronization
+failure: if every coordinate fibre is nonempty, EHN fibre exactness lets us
+choose outputs in one common target part and assemble a power output. -/
+theorem power_domainFailure_coordinate
+    (hB : B.WeaklyPartiteOver A)
+    (F : L.FuncSymbol)
+    (x : Fin (L.funcArity F) → Vertex B N)
+    (htgt :
+      (A.func F ((power B N).part ∘ x)).Nonempty)
+    (hpow :
+      ¬ ((power B N).toStructure.func F x).Nonempty) :
+    ∃ i : Fin N,
+      ¬ (B.toStructure.func F
+        (fun j => (x j).coord i)).Nonempty := by
+  classical
+  by_contra hbad
+  push_neg at hbad
+  obtain ⟨a, ha⟩ := htgt
+  have hcoord :
+      ∀ i : Fin N,
+        ∃ b : V,
+          b ∈ B.func F (fun j => (x j).coord i) ∧
+          B.part b = a := by
+    intro i
+    have hne :
+        (B.func F (fun j => (x j).coord i)).Nonempty :=
+      hbad i
+    have hexact :=
+      hB.map_func_of_nonempty F
+        (fun j => (x j).coord i) hne
+    have hargs :
+        B.part ∘ (fun j => (x j).coord i) =
+          (power B N).part ∘ x := by
+      funext j
+      exact (x j).belongs i
+    have ha' :
+        a ∈ A.func F
+          (B.part ∘ (fun j => (x j).coord i)) := by
+      rw [hargs]
+      exact ha
+    have himg :
+        a ∈ imageSet B.part
+          (B.func F (fun j => (x j).coord i)) := by
+      rw [hexact]
+      exact ha'
+    rcases himg with ⟨b, hb, hba⟩
+    exact ⟨b, hb, hba⟩
+  choose b hb hpart using hcoord
+  let y : Vertex B N := {
+    part := a
+    coord := b
+    belongs := hpart
+  }
+  apply hpow
+  exact ⟨y, hb⟩
+
+end StructuralRamsey.FunctionalPartite.Induced
