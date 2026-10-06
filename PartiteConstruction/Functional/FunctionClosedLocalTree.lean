@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.FunctionalTreeAmalgam
+import PartiteConstruction.Functional.ClosedLocalTreeCompletion
 import PartiteConstruction.Structure.WeakSubstructure
 
 /-! # Local completion by function-closed graph trees
