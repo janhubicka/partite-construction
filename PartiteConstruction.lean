@@ -206,6 +206,7 @@ import PartiteConstruction.Functional.ClosedAttachmentDecompose
 import PartiteConstruction.Functional.ControlCompletion
 
 import PartiteConstruction.Functional.HistoryTreeCompletion
+import PartiteConstruction.Functional.InjectiveHistoryPullback
 
 import PartiteConstruction.Functional.RelativeHistoryTreeCompletion
 
