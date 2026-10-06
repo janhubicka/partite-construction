@@ -163,4 +163,32 @@ theorem IsEHNHomomorphismEmbedding.hasInjectiveLooseTreeCompletion
   letI : Fintype W := Fintype.ofFinite W
   exact aux (Fintype.card W) C p rfl hp
 
+
+/-- Every closed finite test embeds into a loose Base-tree whenever the ambient
+structure carries an EHN projection to a control structure embedding in Base. -/
+def LocallyClosedLooseTreeEmbeddable
+    (Base : Structure L V) (C : Structure L W) (n : ℕ) : Prop :=
+  ∀ S : Finset W, S.card ≤ n →
+    ∀ hS : C.IsClosed (↑S : Set W),
+      ∃ (Y : Type v) (T : Structure L Y),
+        LooseTreeAmalgam Base Y T ∧
+        Nonempty (Embedding (C.induce (↑S : Set W) hS) T)
+
+theorem IsEHNHomomorphismEmbedding.locallyClosedLooseTreeEmbeddable
+    {A : Structure L U} {Base : Structure L V}
+    {C : Structure L W} {p : W → U}
+    (hp : C.IsEHNHomomorphismEmbedding A p)
+    (eAB : Embedding A Base)
+    (n : ℕ) :
+    LocallyClosedLooseTreeEmbeddable Base C n := by
+  intro S _ hS
+  let inc : Embedding (C.induce (↑S : Set W) hS) C :=
+    inclusion C (↑S : Set W) hS
+  have hpS :
+      (C.induce (↑S : Set W) hS).
+        IsEHNHomomorphismEmbedding A (p ∘ inc) :=
+    hp.comp inc.isEHNHomomorphismEmbedding
+  letI : Finite (↥(↑S : Set W)) := Finite.of_fintype _
+  exact hpS.hasInjectiveLooseTreeCompletion eAB
+
 end StructuralRamsey.Structure
