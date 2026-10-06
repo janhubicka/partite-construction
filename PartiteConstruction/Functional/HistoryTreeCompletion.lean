@@ -43,6 +43,34 @@ def FunctionalHistoryTreeLike
         FunctionalRespectsSourceHistory
           S f sourceHistory
 
+namespace FunctionalProjectedHistoryTreeLike
+
+/-- At the identity projection, projected histories already carry arbitrary
+source-side histories: both are simply finite lists of subsets of D. -/
+theorem toHistory_identity
+    {D0 : Structure L P}
+    (h : FunctionalProjectedHistoryTreeLike
+      (A := A) (D := D0) (C := D0) (Base := Base) id n) :
+    FunctionalHistoryTreeLike
+      (A := A) (D := D0) (C := D0) (Base := Base) id n := by
+  intro S hS hgen projectedHistory sourceHistory
+  let history : List (Set P) := projectedHistory ++ sourceHistory
+  obtain ⟨Z, Target, hTree, f, hf, hPart, hHist⟩ :=
+    h S hS hgen history
+  have hProj :
+      FunctionalRespectsProjectedHistory id S f projectedHistory := by
+    intro H hH x y hxy
+    exact hHist H (List.mem_append.mpr (Or.inl hH)) x y hxy
+  have hSrc :
+      FunctionalRespectsSourceHistory S f sourceHistory := by
+    intro H hH x y hxy
+    have hh :=
+      hHist H (List.mem_append.mpr (Or.inr hH)) x y hxy
+    simpa using hh
+  exact ⟨Z, Target, hTree, f, hf, hPart, hProj, hSrc⟩
+
+end FunctionalProjectedHistoryTreeLike
+
 namespace FunctionalHistoryTreeLike
 
 variable {p : W → P} {m n : ℕ}
