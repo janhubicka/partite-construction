@@ -43,8 +43,8 @@ theorem witness_pullback_injective
     ∃ (Z : Type v) (Target : Structure L Z),
       TreeAmalgam Base Z Target ∧
       ∃ f : ↥(↑S : Set W) → Z,
-        (C.induce (↑S : Set W) hS).
-          IsHomomorphismEmbedding Target f ∧
+        IsHomomorphismEmbedding
+          (C.induce (↑S : Set W) hS) Target f ∧
         FunctionalProjectedPartialIntersections
           (A := A) (D := D) (C := C) (T := Target) p S f ∧
         FunctionalRespectsProjectedHistory
@@ -118,9 +118,7 @@ theorem witness_pullback_injective
       R.GeneratedByAtMost n := by
     have hgenRange :=
       homRange_generatedByAtMost hqHom hgen
-    dsimp [R]
-    rw [← hrange]
-    exact hgenRange
+    simpa only [R, hrange] using hgenRange
 
   let sourceHistoryD : List (Set P) :=
     sourceHistory.map
@@ -145,7 +143,8 @@ theorem witness_pullback_injective
       intro x
       apply Finset.mem_image.mpr
       refine ⟨e x, hRange x, ?_⟩
-      exact (hproj x).symm
+      change p (e x) = β x.1
+      exact hproj x
     have hprojD : ∀ x, (id : P → P) (eD x) = β x.1 := by
       intro x
       rfl
@@ -158,7 +157,8 @@ theorem witness_pullback_injective
         (⟨eD x, hRangeD x⟩ : ↥(↑I : Set P)) =
           qR ⟨e x, hRange x⟩ := by
       apply Subtype.ext
-      exact hproj x
+      change β x.1 = p (e x)
+      exact (hproj x).symm
     rw [← hx]
     exact heHT x
 
