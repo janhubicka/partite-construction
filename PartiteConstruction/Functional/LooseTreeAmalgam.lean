@@ -185,8 +185,8 @@ theorem IsEHNHomomorphismEmbedding.locallyClosedLooseTreeEmbeddable
   let inc : Embedding (C.induce (↑S : Set W) hS) C :=
     inclusion C (↑S : Set W) hS
   have hpS :
-      (C.induce (↑S : Set W) hS).
-        IsEHNHomomorphismEmbedding A (p ∘ inc) :=
+      IsEHNHomomorphismEmbedding
+        (C.induce (↑S : Set W) hS) A (p ∘ inc) :=
     hp.comp inc.isEHNHomomorphismEmbedding
   letI : Finite (↥(↑S : Set W)) := Finite.of_fintype _
   exact hpS.hasInjectiveLooseTreeCompletion eAB
