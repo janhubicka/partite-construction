@@ -38,18 +38,19 @@ theorem pureCore_oneCopy_of_domainReflection
     ∃ (Z : Type v) (Target : Structure L Z),
       TreeAmalgam Base Z Target ∧
       ∃ f : ↥(↑S : Set W) → Z,
-        (E.toStructure.induce (↑S : Set W) hS).
-          IsHomomorphismEmbedding Target f := by
+        Structure.IsHomomorphismEmbedding
+          (E.toStructure.induce (↑S : Set W) hS) Target f := by
   have hpS :
-      (E.toStructure.induce (↑S : Set W) hS).
-        IsHomomorphismEmbedding A (E.part ∘ Subtype.val) :=
+      Structure.IsHomomorphismEmbedding
+        (E.toStructure.induce (↑S : Set W) hS)
+        A (E.part ∘ Subtype.val) :=
     hE.restrictClosed_toFull_of_domainReflection
       (↑S : Set W) hS hreflect
   let f : ↥(↑S : Set W) → V :=
     eAB ∘ (E.part ∘ Subtype.val)
   have hf :
-      (E.toStructure.induce (↑S : Set W) hS).
-        IsHomomorphismEmbedding Base f := by
+      Structure.IsHomomorphismEmbedding
+        (E.toStructure.induce (↑S : Set W) hS) Base f := by
     exact eAB.isHomomorphismEmbedding.comp hpS
   have hTree : TreeAmalgam Base V Base :=
     TreeAmalgam.copy (Structure.Embedding.id Base) (by
