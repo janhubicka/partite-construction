@@ -139,4 +139,40 @@ theorem glueWholeWitnesses
 
   exact ⟨Z, Target, hTree, f, hf, hProj, hSrcHist⟩
 
+
+/-- Completion-only corollary of the relative-history mixed glue.
+
+Once the common source root embeds into A with the prescribed outer
+projection, the two side relative-history invariants already suffice to
+complete the whole free amalgam.  No additional history sets are needed for
+this branch. -/
+theorem hasTreeCompletion_of_embeddedRoot
+    (hA : A.Irreducible)
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (p : C → P)
+    (β : Embedding A D)
+    (ell : Embedding Root A)
+    (hprojL : ∀ x, p (iL (sL x)) = β (ell x))
+    (hprojR : ∀ x, p (iR (sR x)) = β (ell x))
+    {n : ℕ}
+    [Fintype E] [Fintype F]
+    (hLeft :
+      FunctionalRelativeHistoryTreeLike
+        (A := A) (D := D) (C := Left) (Base := Base)
+        (p ∘ iL) n)
+    (hRight :
+      FunctionalRelativeHistoryTreeLike
+        (A := A) (D := D) (C := Right) (Base := Base)
+        (p ∘ iR) n)
+    (hgenL : Left.GeneratedByAtMost n)
+    (hgenR : Right.GeneratedByAtMost n) :
+    HasTreeCompletion Base Whole := by
+  obtain ⟨Z, Target, hTree, f, hf, _, _⟩ :=
+    glueWholeWitnesses
+      (A := A) (D := D) (Base := Base)
+      hA hSrc p β ell hprojL hprojR
+      hLeft hRight hgenL hgenR [] []
+  exact ⟨Z, Target, hTree, f, hf⟩
+
+
 end StructuralRamsey.Structure.FunctionalRelativeHistoryTreeLike
