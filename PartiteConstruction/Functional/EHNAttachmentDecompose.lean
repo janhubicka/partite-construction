@@ -93,13 +93,13 @@ theorem corePreimage_card_lt
     (Test : Finset (Structure.Attachment.Vertex S
       (W := W) (I := PUnit.{v+1})))
     (hTest : (UnitAttachD B S hS D f).toStructure.IsClosed
-      (↑Test : Set _))
-    (z : ↥(↑Test : Set _))
+      (↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1}))))
+    (z : ↥(↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1}))))
     (hz : ¬ ∃ w : W,
       z.1 = unitCoreEmbedding B S hS D f w) :
     Fintype.card
         ((unitCoreEmbedding B S hS D f) ⁻¹'
-          (↑Test : Set _)) <
+          (↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1})))) <
       Test.card := by
   classical
   let TestSet : Set
@@ -122,13 +122,13 @@ theorem copyPreimage_card_lt
     (Test : Finset (Structure.Attachment.Vertex S
       (W := W) (I := PUnit.{v+1})))
     (hTest : (UnitAttachD B S hS D f).toStructure.IsClosed
-      (↑Test : Set _))
-    (z : ↥(↑Test : Set _))
+      (↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1}))))
+    (z : ↥(↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1}))))
     (hz : ¬ ∃ x : V,
       z.1 = unitCopyEmbedding B S hS D f x) :
     Fintype.card
         ((unitCopyEmbedding B S hS D f) ⁻¹'
-          (↑Test : Set _)) <
+          (↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1})))) <
       Test.card := by
   classical
   let TestSet : Set
