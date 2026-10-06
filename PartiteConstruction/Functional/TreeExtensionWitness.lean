@@ -170,6 +170,42 @@ theorem glue
 end HasTreeExtensionCompletion
 
 
+/-- Two sides have compatible strict completions over one common tree
+completion of their source root.  This is the natural induction output for a
+mixed functional free-amalgam step with a reducible overlap. -/
+def HasCommonRootedCompletions
+    {F : Type v} {Right : Structure L F}
+    (sL : Embedding Root Side) (sR : Embedding Root Right) : Prop :=
+  ∃ (G₀ : Type v) (Start₀ : Structure L G₀),
+    TreeAmalgam Base G₀ Start₀ ∧
+    ∃ q : H → G₀,
+      Root.IsHomomorphismEmbedding Start₀ q ∧
+      HasTreeExtensionCompletion
+        (Base := Base) (Start := Start₀) sL q ∧
+      HasTreeExtensionCompletion
+        (Base := Base) (Start := Start₀) sR q
+
+namespace HasCommonRootedCompletions
+
+/-- Compatible rooted side completions immediately give a strict completion of
+their source free amalgam. -/
+theorem glue
+    {F C : Type v}
+    {Right : Structure L F} {Whole : Structure L C}
+    {sL : Embedding Root Side} {sR : Embedding Root Right}
+    {iL : Embedding Side Whole} {iR : Embedding Right Whole}
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (h :
+      HasCommonRootedCompletions
+        (Base := Base) sL sR) :
+    HasTreeCompletion Base Whole := by
+  obtain ⟨G₀, Start₀, hStart, q, _hq, hL, hR⟩ := h
+  exact HasTreeExtensionCompletion.glue
+    hSrc hStart q hL hR
+
+end HasCommonRootedCompletions
+
+
 
 /-- An isolated quotient-labelled boundary can be standardized to a relative
 completion rooted at the fixed Base itself.
@@ -402,6 +438,55 @@ theorem fullWitness_rootedBase
     exact hroot1 y b hyb1
 
   exact ⟨Z2, T2, hExt, f2, hf2, hcompat2, hroot2⟩
+
+
+/-- If the common root genuinely embeds into one A-copy, two relative-history
+side invariants produce compatible rooted completions with the fixed Base as
+their common start.  This is the terminal branch of the reducible-root
+induction. -/
+theorem commonRootedCompletions_embeddedLabels
+    {F H₀ : Type v}
+    {Right : Structure L F}
+    {Root₀ : Structure L H₀}
+    {sL : Embedding Root₀ C}
+    {sR : Embedding Root₀ Right}
+    {pR : F → P}
+    [Fintype W] [Fintype F] [Finite V]
+    (hA : A.Irreducible)
+    (hBase : Base₀.Irreducible)
+    (eAB : Embedding A Base₀)
+    (hL :
+      FunctionalRelativeHistoryTreeLike
+        (A := A) (D := D) (C := C) (Base := Base₀) p n)
+    (hR :
+      FunctionalRelativeHistoryTreeLike
+        (A := A) (D := D) (C := Right) (Base := Base₀) pR n)
+    (hgenL : C.GeneratedByAtMost n)
+    (hgenR : Right.GeneratedByAtMost n)
+    (ell : Embedding Root₀ A)
+    (β : Embedding A D)
+    (hprojL : ∀ x, p (sL x) = β (ell x))
+    (hprojR : ∀ x, pR (sR x) = β (ell x)) :
+    HasCommonRootedCompletions
+      (Base := Base₀) sL sR := by
+  let q : H₀ → V := fun x => eAB (ell x)
+  have hq : Root₀.IsHomomorphismEmbedding Base₀ q :=
+    eAB.isHomomorphismEmbedding.comp ell.isHomomorphismEmbedding
+  have hTreeBase : TreeAmalgam Base₀ V Base₀ :=
+    TreeAmalgam.copy (Embedding.id Base₀) (by
+      intro b
+      exact ⟨b, rfl⟩)
+  have hLeft :
+      HasTreeExtensionCompletion
+        (Base := Base₀) (Start := Base₀) sL q :=
+    hL.fullWitness_rootedBase
+      hA hBase eAB hgenL ell β sL hprojL
+  have hRight :
+      HasTreeExtensionCompletion
+        (Base := Base₀) (Start := Base₀) sR q :=
+    hR.fullWitness_rootedBase
+      hA hBase eAB hgenR ell β sR hprojR
+  exact ⟨V, Base₀, hTreeBase, q, hq, hLeft, hRight⟩
 
 end FunctionalRelativeHistoryTreeLike
 
