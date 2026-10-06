@@ -42,7 +42,8 @@ theorem functionClosure_inputs_irreducible_of_value
   let q : Fin (L.funcArity F) → Hset :=
     fun i => ⟨x i,
       A.subset_functionClosure (Set.range x) ⟨i, rfl⟩⟩
-  have hqgen : H.Generates q := by
+  have hqgen :
+      Generates (U := Fin (L.funcArity F)) H q := by
     simpa [H, Hset, q, closureLift] using
       (closureLift_generates A x)
   have hyH : y ∈ Hset := by
