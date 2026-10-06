@@ -205,8 +205,7 @@ theorem induceClosed
         funext k
         apply Subtype.ext
         calc
-          (z k).1 = (incW (z k)).1 := rfl
-          _ = iL (x k) := congrFun heq k
+          (z k).1 = iL (x k) := congrFun heq k
           _ = (jL (xs k)).1 := (hjLval (xs k)).symm
       · have hxS : ∀ k, iR (x k) ∈ S := by
           intro k
@@ -223,8 +222,7 @@ theorem induceClosed
         funext k
         apply Subtype.ext
         calc
-          (z k).1 = (incW (z k)).1 := rfl
-          _ = iR (x k) := congrFun heq k
+          (z k).1 = iR (x k) := congrFun heq k
           _ = (jR (xs k)).1 := (hjRval (xs k)).symm
     · rintro (⟨x, hx, rfl⟩ | ⟨x, hx, rfl⟩)
       · exact (jL.map_rel_iff R x).mpr hx
@@ -262,13 +260,11 @@ theorem induceClosed
         · funext k
           apply Subtype.ext
           calc
-            (x k).1 = (incW (x k)).1 := rfl
-            _ = iL (a k) := congrFun hargs k
+            (x k).1 = iL (a k) := congrFun hargs k
             _ = (jL (as k)).1 := (hjLval (as k)).symm
         · apply Subtype.ext
           calc
-            y.1 = (incW y).1 := rfl
-            _ = iL b := hout
+            y.1 = iL b := hout
             _ = (jL bs).1 := (hjLval bs).symm
       · have haS : ∀ k, iR (a k) ∈ S := by
           intro k
@@ -291,13 +287,11 @@ theorem induceClosed
         · funext k
           apply Subtype.ext
           calc
-            (x k).1 = (incW (x k)).1 := rfl
-            _ = iR (a k) := congrFun hargs k
+            (x k).1 = iR (a k) := congrFun hargs k
             _ = (jR (as k)).1 := (hjRval (as k)).symm
         · apply Subtype.ext
           calc
-            y.1 = (incW y).1 := rfl
-            _ = iR b := hout
+            y.1 = iR b := hout
             _ = (jR bs).1 := (hjRval bs).symm
     · rintro (⟨a, b, hb, hargs, hout⟩ |
         ⟨a, b, hb, hargs, hout⟩)
