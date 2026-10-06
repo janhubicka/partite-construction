@@ -89,17 +89,12 @@ theorem replay
     (h : TreeExtension Base Start W T)
     {M : Type v} {Mstr : Structure L M}
     (e0 : Embedding Start Mstr) :
-    ∃ (Z : Type v) (Target : Structure L Z),
-      TreeExtension Base Mstr Z Target ∧
-      ∃ e : Embedding T Target,
+    ∃ (Z : Type v) (Target : Structure L Z)
+      (hExt : TreeExtension Base Mstr Z Target)
+      (e : Embedding T Target),
         ∀ x : VS,
           e (h.startEmbedding x) =
-            (TreeExtension.startEmbedding
-              (Base := Base) (Start := Mstr)
-              (show TreeExtension Base Mstr Z Target from
-                Classical.choose
-                  (show Nonempty (TreeExtension Base Mstr Z Target) from
-                    ⟨by assumption⟩))) (e0 x) := by
+            hExt.startEmbedding (e0 x) := by
   classical
   induction h with
   | refl =>
