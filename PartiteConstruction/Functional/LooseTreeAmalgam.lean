@@ -64,14 +64,12 @@ def HasInjectiveLooseTreeCompletion
 /-- Every finite EHN source admits an injective full completion into a loose
 tree of copies of Base, provided the EHN control structure embeds into Base. -/
 theorem IsEHNHomomorphismEmbedding.hasInjectiveLooseTreeCompletion
-    {A : Structure L U} {C : Structure L W}
-    {p : W → U} [Finite W]
+    {A : Structure L U} {Base : Structure L V}
+    {C : Structure L W} {p : W → U} [Finite W]
     (hp : C.IsEHNHomomorphismEmbedding A p)
-    (eAB : Embedding A (show Structure L V from ‹_›)) :
-    HasInjectiveLooseTreeCompletion
-      (show Structure L V from ‹_›) C := by
+    (eAB : Embedding A Base) :
+    HasInjectiveLooseTreeCompletion Base C := by
   classical
-  let Base : Structure L V := (show Structure L V from ‹_›)
   let aux :
       ∀ n : ℕ, ∀ {X : Type v} [Fintype X],
         ∀ (E : Structure L X) (q : X → U),
