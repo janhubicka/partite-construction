@@ -43,9 +43,34 @@ theorem functionClosure_inputs_irreducible_of_value
     fun i => ⟨x i,
       A.subset_functionClosure (Set.range x) ⟨i, rfl⟩⟩
   have hqgen :
-      Generates (U := Fin (L.funcArity F)) H q := by
-    simpa [H, Hset, q, closureLift] using
-      (closureLift_generates A x)
+      ∀ T : Set Hset, H.IsClosed T →
+        (∀ i, q i ∈ T) → ∀ z : Hset, z ∈ T := by
+    intro T hT hqT z
+    let T0 : Set U :=
+      {a | ∃ ha : a ∈ Hset, (⟨a, ha⟩ : Hset) ∈ T}
+    have hT0 : A.IsClosed T0 := by
+      intro G args hargs out hout
+      let argsH : Fin (L.funcArity G) → Hset :=
+        fun i => ⟨args i, (hargs i).choose⟩
+      have hargsHT : ∀ i, argsH i ∈ T :=
+        fun i => (hargs i).choose_spec
+      have houtH : out ∈ Hset :=
+        hHclosed G args (fun i => (hargs i).choose) hout
+      have houtIn :
+          (⟨out, houtH⟩ : Hset) ∈ H.func G argsH := by
+        change out ∈ A.func G (Subtype.val ∘ argsH)
+        have hval : Subtype.val ∘ argsH = args := by
+          funext i
+          rfl
+        rw [hval]
+        exact hout
+      exact ⟨houtH, hT G argsH hargsHT houtIn⟩
+    have hxT0 : Set.range x ⊆ T0 := by
+      rintro _ ⟨i, rfl⟩
+      exact ⟨(q i).2, hqT i⟩
+    have hzT0 : z.1 ∈ T0 :=
+      z.2 T0 hT0 hxT0
+    exact hzT0.2
   have hyH : y ∈ Hset := by
     apply hHclosed F x
     · intro i
