@@ -193,6 +193,7 @@ import PartiteConstruction.Functional.WitnessGlue
 
 import PartiteConstruction.Functional.InitialTreeCompletion
 import PartiteConstruction.Functional.EHNAttachmentPureCases
+import PartiteConstruction.Functional.EHNAttachmentDecompose
 
 import PartiteConstruction.Functional.ClosedGeneratorRank
 
