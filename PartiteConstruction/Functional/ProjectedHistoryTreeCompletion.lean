@@ -72,23 +72,6 @@ def FunctionalProjectedHistoryTreeLike
           (A := A) (D := D) (C := C) (T := Target) p S f ∧
         FunctionalRespectsProjectedHistory p S f history
 
-namespace Embedding.ContainedInIrreducible
-
-/-- Containment in an irreducible functional piece survives
-postcomposition by a full embedding of the target. -/
-theorem postcomp
-    {H Z : Type v} {E : Structure L H}
-    {e : Embedding E T} (hc : e.ContainedInIrreducible)
-    {T' : Structure L Z} (j : Embedding T T') :
-    (j.comp e).ContainedInIrreducible := by
-  rcases hc with ⟨X, R, hR, k, hk⟩
-  refine ⟨X, R, hR, j.comp k, ?_⟩
-  intro a
-  obtain ⟨x, hx⟩ := hk a
-  exact ⟨x, congrArg j hx⟩
-
-end Embedding.ContainedInIrreducible
-
 namespace FunctionalRespectsProjectedHistory
 
 /-- Projected history survives postcomposition by an injective target map. -/
