@@ -194,6 +194,7 @@ import PartiteConstruction.Functional.GeneratedTreeCompletion
 import PartiteConstruction.Functional.UnaryEHNCompletion
 import PartiteConstruction.Functional.FibreExactness
 import PartiteConstruction.Functional.PureCoreDomainReflection
+import PartiteConstruction.Functional.PureCoreDomainDescent
 
 import PartiteConstruction.Functional.ProjectedHistoryTreeCompletion
 
