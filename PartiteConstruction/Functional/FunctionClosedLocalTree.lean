@@ -82,6 +82,39 @@ def closedInduceGraph
 
 namespace FunctionClosedLocallyTreeCompletable
 
+variable {BaseGraph : RelStructure L.graph V}
+variable {CGraph : RelStructure L.graph W}
+variable {m : ℕ}
+
+/-- Monotonicity in the local size bound. -/
+theorem mono
+    (h : FunctionClosedLocallyTreeCompletable BaseGraph CGraph n)
+    (hmn : m ≤ n) :
+    FunctionClosedLocallyTreeCompletable BaseGraph CGraph m := by
+  intro S hcard hS
+  exact h S (hcard.trans hmn) hS
+
+/-- A function-closed tree amalgam is locally complete at every finite scale,
+using the closed inclusion of the tested set. -/
+theorem of_treeAmalgam
+    (hTree : FunctionClosedTreeAmalgam BaseGraph W CGraph)
+    (n : ℕ) :
+    FunctionClosedLocallyTreeCompletable BaseGraph CGraph n := by
+  intro S _ hS
+  let e : ClosedEmbedding
+      (CGraph.induce (↑S : Set W)) CGraph :=
+    ClosedEmbedding.inclusion CGraph (↑S : Set W) hS
+  exact ⟨W, CGraph, hTree, ⟨e⟩⟩
+
+/-- One copy of the base graph is locally complete at every scale. -/
+theorem base
+    (BaseGraph : RelStructure L.graph V) (n : ℕ) :
+    FunctionClosedLocallyTreeCompletable BaseGraph BaseGraph n := by
+  have hTree :
+      FunctionClosedTreeAmalgam BaseGraph V BaseGraph :=
+    FunctionClosedTreeAmalgam.copy (RelStructure.Iso.refl BaseGraph)
+  exact of_treeAmalgam hTree n
+
 variable {Base : Structure L V}
 variable {C : Structure L W}
 variable {n : ℕ}
