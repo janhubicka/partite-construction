@@ -31,6 +31,17 @@ structure QuotientBoundaryRequest
 
 namespace QuotientBoundaryRequest
 
+
+/-- Build a quotient-boundary request from an embedded source and a label map. -/
+def mk
+    {X : Type v} {R : Structure L X}
+    (e : Embedding R C) (q : X → U) :
+    QuotientBoundaryRequest A C where
+  Carrier := X
+  source := R
+  embedding := e
+  label := q
+
 /-- Transport the source boundary through a full embedding. -/
 def postcomp
     {X : Type v} {C' : Structure L X}
