@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.TreeExtensionGlue
+import PartiteConstruction.Functional.RelativeHistoryTreeCompletion
 
 /-! # Relative functional completions over a prescribed root tree
 
@@ -79,5 +80,127 @@ theorem glue
       fL fR hcompatL hcompatR hfL hfR hrootL hrootR
 
 end HasTreeExtensionCompletion
+
+
+namespace FunctionalRelativeHistoryTreeLike
+
+variable {U P W V X : Type v}
+variable {A : Structure L U} {D : Structure L P}
+variable {C : Structure L W} {Base₀ : Structure L V}
+variable {p : W → P} {n : ℕ}
+
+/-- An embedded-labelled relative-history witness can be standardized to a
+tree extension rooted at the fixed Base itself.
+
+After obtaining the isolated target A-copy, attach one fresh Base-copy along
+it using eAB.  Reroot the resulting strict tree at that fresh Base-copy.  The
+distinguished source boundary then has the fixed Base-label
+\`eAB ∘ ell\`, independently of how the original target tree was built. -/
+theorem fullWitness_rootedBase
+    [Fintype W] [Finite V]
+    (hA : A.Irreducible)
+    (hBase : Base₀.Irreducible)
+    (eAB : Embedding A Base₀)
+    (h :
+      FunctionalRelativeHistoryTreeLike
+        (A := A) (D := D) (C := C) (Base := Base₀) p n)
+    (hgen : C.GeneratedByAtMost n)
+    {R : Structure L X}
+    (ell : Embedding R A)
+    (β : Embedding A D)
+    (e : Embedding R C)
+    (hproj : ∀ x, p (e x) = β (ell x)) :
+    HasTreeExtensionCompletion
+      (Base := Base₀) (Start := Base₀)
+      e (fun x => eAB (ell x)) := by
+  classical
+  obtain ⟨Z, T, hTree, f, hf, _hPart, _hProj, _hSrc,
+    targetCopy, hcompat, hiso⟩ :=
+    h.fullWitness_embeddedLabels
+      hgen [] [] ell β e hproj
+
+  have hcT : targetCopy.ContainedInIrreducible := by
+    refine ⟨U, A, hA, targetCopy, ?_⟩
+    intro a
+    exact ⟨a, rfl⟩
+  have hcB : eAB.ContainedInIrreducible := by
+    refine ⟨U, A, hA, eAB, ?_⟩
+    intro a
+    exact ⟨a, rfl⟩
+
+  let T1 := FreeAmalgam.amalgam A T Base₀ targetCopy eAB
+  let l : Embedding T T1 :=
+    FreeAmalgam.leftEmbedding A T Base₀ targetCopy eAB
+  let r : Embedding Base₀ T1 :=
+    FreeAmalgam.rightEmbedding A T Base₀ targetCopy eAB
+  have hfree : IsFreeAmalgam targetCopy eAB l r :=
+    FreeAmalgam.isFreeAmalgam A T Base₀ targetCopy eAB
+  have hTree1 : TreeAmalgam Base₀ _ T1 :=
+    FreeAmalgam.treeAmalgam A T Base₀ targetCopy eAB Base₀
+      hTree
+      (TreeAmalgam.copy (Embedding.id Base₀) (by
+        intro b
+        exact ⟨b, rfl⟩))
+      hcT hcB
+
+  let f1 : W → _ := l ∘ f
+  have hf1 : C.IsHomomorphismEmbedding T1 f1 :=
+    l.isHomomorphismEmbedding.comp hf
+  have hcompat1 :
+      ∀ x : X, f1 (e x) = r (eAB (ell x)) := by
+    intro x
+    change l (f (e x)) = r (eAB (ell x))
+    calc
+      l (f (e x)) = l (targetCopy (ell x)) :=
+        congrArg l (hcompat x)
+      _ = r (eAB (ell x)) :=
+        (hfree.overlap (targetCopy (ell x)) (eAB (ell x))).mpr
+          ⟨ell x, rfl, rfl⟩
+
+  have hroot1 :
+      IsFreeAmalgam.RootIsolated
+        e r (fun x => eAB (ell x)) f1 := by
+    intro y b hyb
+    change l (f y) = r b at hyb
+    obtain ⟨a, hfa, hba⟩ :=
+      (hfree.overlap (f y) b).mp hyb
+    obtain ⟨x, hyx, hxa⟩ := hiso y a hfa
+    refine ⟨x, hyx, ?_⟩
+    calc
+      eAB (ell x) = eAB a := congrArg eAB hxa
+      _ = b := hba.symm
+
+  obtain ⟨Z2, T2, hExt, j, hj⟩ :=
+    TreeExtension.embedIntoRootedExtension
+      hBase hTree1 r
+  let f2 : W → Z2 := j ∘ f1
+  have hf2 : C.IsHomomorphismEmbedding T2 f2 :=
+    j.isHomomorphismEmbedding.comp hf1
+  have hcompat2 :
+      ∀ x : X,
+        f2 (e x) =
+          hExt.startEmbedding (eAB (ell x)) := by
+    intro x
+    calc
+      f2 (e x) = j (f1 (e x)) := rfl
+      _ = j (r (eAB (ell x))) :=
+        congrArg j (hcompat1 x)
+      _ = hExt.startEmbedding (eAB (ell x)) :=
+        hj (eAB (ell x))
+  have hroot2 :
+      IsFreeAmalgam.RootIsolated
+        e hExt.startEmbedding (fun x => eAB (ell x)) f2 := by
+    intro y b hyb
+    have hyb1 : f1 y = r b := by
+      apply j.injective
+      calc
+        j (f1 y) = f2 y := rfl
+        _ = hExt.startEmbedding b := hyb
+        _ = j (r b) := (hj b).symm
+    exact hroot1 y b hyb1
+
+  exact ⟨Z2, T2, hExt, f2, hf2, hcompat2, hroot2⟩
+
+end FunctionalRelativeHistoryTreeLike
 
 end StructuralRamsey.Structure
