@@ -142,14 +142,14 @@ theorem induceClosed
       let aS : Lset := ⟨a, haS⟩
       refine Or.inl ⟨aS, ?_⟩
       apply Subtype.ext
-      exact (hjLval aS).trans ha.symm
+      exact ha.trans (hjLval aS).symm
     · have hbS : iR b ∈ S := by
         rw [← hb]
         exact z.2
       let bS : Rset := ⟨b, hbS⟩
       refine Or.inr ⟨bS, ?_⟩
       apply Subtype.ext
-      exact (hjRval bS).trans hb.symm
+      exact hb.trans (hjRval bS).symm
   · intro a b
     constructor
     · intro hab
@@ -167,12 +167,12 @@ theorem induceClosed
       refine ⟨dS, ?_, ?_⟩
       · apply Subtype.ext
         calc
-          (mL dS).1 = sL d := hmLval dS
-          _ = a.1 := had.symm
+          a.1 = sL d := had
+          _ = (mL dS).1 := (hmLval dS).symm
       · apply Subtype.ext
         calc
-          (mR dS).1 = sR d := hmRval dS
-          _ = b.1 := hbd.symm
+          b.1 = sR d := hbd
+          _ = (mR dS).1 := (hmRval dS).symm
     · rintro ⟨d, rfl, rfl⟩
       apply Subtype.ext
       calc
@@ -193,9 +193,10 @@ theorem induceClosed
       · have hxS : ∀ k, iL (x k) ∈ S := by
           intro k
           have hk := congrFun heq k
-          have hzS := (z k).2
-          change (incW (z k)).1 ∈ S at hzS
-          rw [hk] at hzS
+          have hzS : (z k).1 ∈ S := (z k).2
+          have hk' : (z k).1 = iL (x k) := by
+            exact congrFun heq k
+          rw [← hk']
           exact hzS
         let xs : Fin (L.relArity R) → Lset :=
           fun k => ⟨x k, hxS k⟩
@@ -210,9 +211,10 @@ theorem induceClosed
       · have hxS : ∀ k, iR (x k) ∈ S := by
           intro k
           have hk := congrFun heq k
-          have hzS := (z k).2
-          change (incW (z k)).1 ∈ S at hzS
-          rw [hk] at hzS
+          have hzS : (z k).1 ∈ S := (z k).2
+          have hk' : (z k).1 = iR (x k) := by
+            exact congrFun heq k
+          rw [← hk']
           exact hzS
         let xs : Fin (L.relArity R) → Rset :=
           fun k => ⟨x k, hxS k⟩
@@ -241,15 +243,16 @@ theorem induceClosed
         ⟨a, b, hb, hargs, hout⟩
       · have haS : ∀ k, iL (a k) ∈ S := by
           intro k
-          have hk := congrFun hargs k
-          have hxS := (x k).2
-          change (incW (x k)).1 ∈ S at hxS
-          rw [hk] at hxS
+          have hxS : (x k).1 ∈ S := (x k).2
+          have hk' : (x k).1 = iL (a k) := by
+            exact congrFun hargs k
+          rw [← hk']
           exact hxS
         have hbS : iL b ∈ S := by
-          have hyS := y.2
-          change (incW y).1 ∈ S at hyS
-          rw [hout] at hyS
+          have hyS : y.1 ∈ S := y.2
+          have hout' : y.1 = iL b := by
+            exact hout
+          rw [← hout']
           exact hyS
         let as : Fin (L.funcArity F0) → Lset :=
           fun k => ⟨a k, haS k⟩
@@ -269,15 +272,16 @@ theorem induceClosed
             _ = (jL bs).1 := (hjLval bs).symm
       · have haS : ∀ k, iR (a k) ∈ S := by
           intro k
-          have hk := congrFun hargs k
-          have hxS := (x k).2
-          change (incW (x k)).1 ∈ S at hxS
-          rw [hk] at hxS
+          have hxS : (x k).1 ∈ S := (x k).2
+          have hk' : (x k).1 = iR (a k) := by
+            exact congrFun hargs k
+          rw [← hk']
           exact hxS
         have hbS : iR b ∈ S := by
-          have hyS := y.2
-          change (incW y).1 ∈ S at hyS
-          rw [hout] at hyS
+          have hyS : y.1 ∈ S := y.2
+          have hout' : y.1 = iR b := by
+            exact hout
+          rw [← hout']
           exact hyS
         let as : Fin (L.funcArity F0) → Rset :=
           fun k => ⟨a k, haS k⟩
@@ -297,9 +301,21 @@ theorem induceClosed
             _ = (jR bs).1 := (hjRval bs).symm
     · rintro (⟨a, b, hb, hargs, hout⟩ |
         ⟨a, b, hb, hargs, hout⟩)
-      · exact (jL.map_func F0 a) ▸
-          ⟨b, hb, hout⟩
-      · exact (jR.map_func F0 a) ▸
-          ⟨b, hb, hout⟩
+      · have himg :
+            jL b ∈ WS.func F0 (jL ∘ a) := by
+          have h0 : jL b ∈ imageSet jL (LS.func F0 a) :=
+            ⟨b, hb, rfl⟩
+          rw [jL.map_func F0 a] at h0
+          exact h0
+        rw [hargs, hout]
+        exact himg
+      · have himg :
+            jR b ∈ WS.func F0 (jR ∘ a) := by
+          have h0 : jR b ∈ imageSet jR (RS.func F0 a) :=
+            ⟨b, hb, rfl⟩
+          rw [jR.map_func F0 a] at h0
+          exact h0
+        rw [hargs, hout]
+        exact himg
 
 end StructuralRamsey.Structure.IsFreeAmalgam
