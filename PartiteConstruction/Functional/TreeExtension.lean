@@ -42,6 +42,18 @@ inductive TreeExtension
       TreeExtension Base Start
         (FreeAmalgam.Vertex Root T Base fT fBase)
         (FreeAmalgam.amalgam Root T Base fT fBase)
+  | attachTree
+      {W H X : Type v}
+      {T : Structure L W} {Root : Structure L H}
+      {Branch : Structure L X}
+      (prev : TreeExtension Base Start W T)
+      (hBranch : TreeAmalgam Base X Branch)
+      (fT : Embedding Root T) (fBranch : Embedding Root Branch)
+      (hcT : fT.ContainedInIrreducible)
+      (hcBranch : fBranch.ContainedInIrreducible) :
+      TreeExtension Base Start
+        (FreeAmalgam.Vertex Root T Branch fT fBranch)
+        (FreeAmalgam.amalgam Root T Branch fT fBranch)
 
 namespace TreeExtension
 
@@ -58,6 +70,10 @@ noncomputable def startEmbedding
   | @attach W H T Root prev fT fBase hcT hcBase ih =>
       exact
         (FreeAmalgam.leftEmbedding Root T Base fT fBase).comp ih
+  | @attachTree W H X T Root Branch prev hBranch
+      fT fBranch hcT hcBranch ih =>
+      exact
+        (FreeAmalgam.leftEmbedding Root T Branch fT fBranch).comp ih
 
 /-- Extending an already strict Base-tree preserves strict tree-amalgamhood. -/
 theorem toTree
@@ -78,6 +94,13 @@ theorem toTree
           exact ⟨b, rfl⟩))
         fT fBase hcT hcBase l r
         (FreeAmalgam.isFreeAmalgam Root T Base fT fBase)
+  | @attachTree W H X T Root Branch prev hBranch
+      fT fBranch hcT hcBranch ih =>
+      let l := FreeAmalgam.leftEmbedding Root T Branch fT fBranch
+      let r := FreeAmalgam.rightEmbedding Root T Branch fT fBranch
+      exact TreeAmalgam.glue
+        ih hBranch fT fBranch hcT hcBranch l r
+        (FreeAmalgam.isFreeAmalgam Root T Branch fT fBranch)
 
 /-- Replay an extension on top of an arbitrary embedded copy of its start.
 
@@ -155,6 +178,69 @@ theorem replay
             lM (ePrev (prev.startEmbedding x)) :=
           IsFreeAmalgam.functionalLiftMap_left
             hSrc hTgt id ePrev (Embedding.id Base)
+            (fun _ => rfl) (fun _ => rfl)
+            (prev.startEmbedding x)
+        _ =
+            lM
+              ((TreeExtension.startEmbedding
+                (Base := Base) (Start := Mstr) hMid) (e0 x)) :=
+          congrArg lM (hStart x)
+  | @attachTree W H X T Root Branch prev hBranch
+      fT fBranch hcT hcBranch ih =>
+      obtain ⟨Y, Mid, hMid, ePrev, hStart⟩ := ih
+      let rMid : Embedding Root Mid := ePrev.comp fT
+      have hcMid : rMid.ContainedInIrreducible :=
+        hcT.postcomp ePrev
+      let Target :=
+        FreeAmalgam.amalgam Root Mid Branch rMid fBranch
+      let lT :=
+        FreeAmalgam.leftEmbedding Root T Branch fT fBranch
+      let rT :=
+        FreeAmalgam.rightEmbedding Root T Branch fT fBranch
+      let lM :=
+        FreeAmalgam.leftEmbedding Root Mid Branch rMid fBranch
+      let rM :=
+        FreeAmalgam.rightEmbedding Root Mid Branch rMid fBranch
+      have hSrc : IsFreeAmalgam fT fBranch lT rT :=
+        FreeAmalgam.isFreeAmalgam Root T Branch fT fBranch
+      have hTgt : IsFreeAmalgam rMid fBranch lM rM :=
+        FreeAmalgam.isFreeAmalgam Root Mid Branch rMid fBranch
+      have hrootL :
+          IsFreeAmalgam.RootIsolated fT rMid id ePrev := by
+        intro a d had
+        refine ⟨d, ?_, rfl⟩
+        apply ePrev.injective
+        exact had
+      have hrootR :
+          IsFreeAmalgam.RootIsolated fBranch fBranch id
+            (Embedding.id Branch) := by
+        intro b d hbd
+        refine ⟨d, ?_, rfl⟩
+        exact hbd
+      let eNew : Embedding
+          (FreeAmalgam.amalgam Root T Branch fT fBranch)
+          (FreeAmalgam.amalgam Root Mid Branch rMid fBranch) :=
+        IsFreeAmalgam.functionalLiftEmbedding
+          hSrc hTgt id Function.injective_id
+          ePrev (Embedding.id Branch)
+          (fun _ => rfl) (fun _ => rfl)
+          hrootL hrootR
+      let hFinal : TreeExtension Base Mstr
+          (FreeAmalgam.Vertex Root Mid Branch rMid fBranch) Target :=
+        TreeExtension.attachTree hMid hBranch
+          rMid fBranch hcMid hcBranch
+      refine ⟨_, Target, hFinal, eNew, ?_⟩
+      intro x
+      change
+        eNew (lT (prev.startEmbedding x)) =
+          lM
+            ((TreeExtension.startEmbedding
+              (Base := Base) (Start := Mstr) hMid) (e0 x))
+      calc
+        eNew (lT (prev.startEmbedding x)) =
+            lM (ePrev (prev.startEmbedding x)) :=
+          IsFreeAmalgam.functionalLiftMap_left
+            hSrc hTgt id ePrev (Embedding.id Branch)
             (fun _ => rfl) (fun _ => rfl)
             (prev.startEmbedding x)
         _ =
