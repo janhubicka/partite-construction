@@ -250,3 +250,5 @@ import PartiteConstruction.Functional.EHNStageInvariant
 import PartiteConstruction.Functional.EHNPictureInvariant
 
 import PartiteConstruction.Functional.EHNInvariantConstruction
+
+import PartiteConstruction.Functional.HistoryZero
