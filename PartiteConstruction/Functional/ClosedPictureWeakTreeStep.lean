@@ -37,7 +37,7 @@ theorem pictureLemma_withLocal
     (hLocal : RelStructure.LocallyTreeCompletable Base B.toRelStructure n)
     (hB : B.IsPartiteOver D)
     (hU : B.FunctionOutputTransversal)
-    [Finite U] [Finite V]
+    [Finite U] [Finite V] [Finite P]
     (κ : Type*) [Fintype κ] :
     ∃ (X : Type v) (_ : Finite X)
       (C : Partite.System L.graph P X),
