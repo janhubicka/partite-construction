@@ -45,31 +45,24 @@ theorem closedTest_decompose_of_domainFailure
   let Small := C.induce (↑S : Set W) hS
   let inc : Embedding Small C :=
     inclusion C (↑S : Set W) hS
-  let pS : ↥(↑S : Set W) → P := p ∘ inc
-  have hpS : Small.IsEHNHomomorphismEmbedding D pS := by
-    exact hp.comp inc.isEHNHomomorphismEmbedding
-  have hsrc' : ¬ (Small.func F x).Nonempty := hsrc
-  have htgt' : (D.func F (pS ∘ x)).Nonempty := by
-    change (D.func F ((p ∘ Subtype.val) ∘ x)).Nonempty
-    exact htgt
-  have hSmallNotIrr : ¬ Small.Irreducible := by
-    intro hIrr
-    obtain ⟨g, hg⟩ := hpS.2 Small hIrr (Embedding.id Small)
-    have hEq : g ∘ x = pS ∘ x := by
+  rcases hp.closedTest_embedding_or_decompose S hS with
+    hEmbed | hDecomp
+  · rcases hEmbed with ⟨g, hg⟩
+    have hargs :
+        g ∘ x = (p ∘ Subtype.val) ∘ x := by
       funext i
       exact hg (x i)
-    have htgtG : (D.func F (g ∘ x)).Nonempty := by
-      simpa only [hEq] using htgt'
-    rw [← g.map_func F x] at htgtG
-    rcases htgtG with ⟨y, hy⟩
-    rcases hy with ⟨z, hz, _⟩
-    exact hsrc' ⟨z, hz⟩
-  have hdec : Nonempty (ProperFreeDecomposition Small) := by
-    by_contra hnone
-    exact hSmallNotIrr
-      ((irreducible_iff_noProperFreeDecomposition Small).mpr hnone)
-  rcases hdec with ⟨d⟩
-  letI : Finite ↥(↑S : Set W) := Finite.of_fintype _
-  exact ⟨d, d.left_card_lt, d.right_card_lt, d.common_card_lt⟩
+    obtain ⟨y, hy⟩ := htgt
+    have hy' : y ∈ D.func F (g ∘ x) := by
+      rw [hargs]
+      exact hy
+    have himg : y ∈ imageSet g (Small.func F x) := by
+      rw [g.map_func F x]
+      exact hy'
+    rcases himg with ⟨z, hz, _⟩
+    exact (hsrc ⟨z, hz⟩).elim
+  · rcases hDecomp with ⟨d⟩
+    letI : Finite ↥(↑S : Set W) := Finite.of_fintype _
+    exact ⟨d, d.left_card_lt, d.right_card_lt, d.common_card_lt⟩
 
 end StructuralRamsey.Structure.IsEHNHomomorphismEmbedding
