@@ -44,11 +44,14 @@ theorem projectedKernel_of_singletonHistory
         q x = q y → (p x ∈ K ↔ p y ∈ K)) :
     ∀ x y, q x = q y → p x = p y := by
   intro x y hxy
+  have hself : p x ∈ Set.singleton (p x) := by
+    change p x = p x
+    rfl
   have hmem : p y ∈ Set.singleton (p x) :=
-    (hHist (Set.singleton (p x)) (hSingle (p x)) x y hxy).mp
-      (by simp)
+    (hHist (Set.singleton (p x)) (hSingle (p x)) x y hxy).mp hself
   have hEq : p y = p x := by
-    simpa using hmem
+    change p y = p x at hmem
+    exact hmem
   exact hEq.symm
 
 /-- A map which is constant on the fibres of a quotient map factors through
@@ -67,7 +70,7 @@ theorem projectedMap_factors_of_kernel
   intro x
   have hx : ∃ z : H, q z = q x := ⟨x, rfl⟩
   have hval : pG (q x) = p (Classical.choose hx) := by
-    simp only [pG, dif_pos hx]
+    simp only [pG, dite_eq_left hx]
   rw [hval]
   exact hKer x (Classical.choose hx)
     (Classical.choose_spec hx).symm
