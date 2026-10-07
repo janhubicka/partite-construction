@@ -224,3 +224,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTestPullback_common_embedding_or_decompose
 
 #print axioms StructuralRamsey.Structure.IsFreeAmalgam.projectedHistoryCompletion_of_irreducibleEHN_root
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTestPullback_common_part_compat
