@@ -1,3 +1,6 @@
+import PartiteConstruction.Functional.EHNInvariantConstruction
+import PartiteConstruction.Functional.EHNPictureInvariant
+import PartiteConstruction.Functional.EHNStageInvariant
 import PartiteConstruction.Ramsey.FreeAmalgamationFunctionsAllArity
 import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 import PartiteConstruction.Ramsey.ForbiddenFunctions
