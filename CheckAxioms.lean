@@ -441,3 +441,11 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Closed.Picture.locallyTreeCompletable_projectedHistory
 
 #print axioms StructuralRamsey.Partite.Closed.Picture.locallyTreeLike_weakStep
+
+#print axioms StructuralRamsey.Partite.Closed.Picture.pictureLemma_withStrongTree
+#print axioms StructuralRamsey.Partite.Closed.Construction.build_withStrongTree
+#print axioms StructuralRamsey.Partite.Closed.Construction.inducedConstruction_withStrongTree
+#print axioms StructuralRamsey.Partite.Closed.IteratedWeak.first
+#print axioms StructuralRamsey.Partite.Closed.IteratedWeak.succ
+#print axioms StructuralRamsey.Partite.Closed.IteratedWeak.build
+#print axioms StructuralRamsey.Structure.inducedRamsey_iteratedWeakGraph
