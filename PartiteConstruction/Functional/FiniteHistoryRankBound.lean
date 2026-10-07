@@ -39,8 +39,11 @@ theorem fullProjectedHistory_of_smallEmbedding
   have hgen : Small.GeneratedByAtMost n := by
     apply (generatedByAtMost_card Small).mono
     simpa only [Nat.card_eq_fintype_card] using hcard
-  exact
-    (h.pullback_embedding e).toProjectedHistory
-      |>.toFullProjectedHistoryCompletion hgen
+  have hSmall :
+      FunctionalHistoryTreeLike
+        (A := A) (D := D) (C := Small) (Base := Base)
+        (p ∘ e) n :=
+    h.pullback_embedding e
+  exact hSmall.toProjectedHistory.toFullProjectedHistoryCompletion hgen
 
 end StructuralRamsey.Structure.FunctionalHistoryTreeLike
