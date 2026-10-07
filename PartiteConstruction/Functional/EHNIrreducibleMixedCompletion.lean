@@ -56,7 +56,9 @@ theorem projectedHistoryCompletion_of_irreducibleEHN_root
   obtain ⟨ell, hEll⟩ :=
     hEHN.2 Root hRoot (Embedding.id Root)
   have hLabel (d : H) : ell d = q d := by
-    simpa using hEll d
+    calc
+      ell d = q ((Embedding.id Root) d) := hEll d
+      _ = q d := rfl
   obtain ⟨pBase, hBaseProj⟩ :=
     projectedMap_factors_of_kernel
       (fun a : U => beta a) (fun a : U => eAB a)
