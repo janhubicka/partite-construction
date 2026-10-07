@@ -53,6 +53,9 @@ theorem closedTestPullback_common_part_compat
   let pb := closedTestPullback B Supp hSupp Dsys f Test hTest
   let WR := B.weakRestrict Douter hB.1 A alpha
   let q : pb.Common → U := WR.part ∘ pb.commonMap
+  change ∀ d : pb.Common,
+      Dsys.part (pb.leftMap (pb.toLeft d)) = alpha (q d) ∧
+      B.part (pb.rightMap (pb.toRight d)) = alpha (q d)
   intro d
   have hLabel :
       alpha (q d) = B.part (pb.commonMap d).1 :=
