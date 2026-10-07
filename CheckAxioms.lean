@@ -439,3 +439,8 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.Partite.Closed.Picture.toOrdinaryRelEmbedding
 #print axioms StructuralRamsey.Partite.Closed.Picture.locallyTreeCompletable_projectedHistory
+
+#print axioms StructuralRamsey.Partite.Closed.Picture.pictureLemma_withLocal
+#print axioms StructuralRamsey.Partite.Closed.Construction.build_withWeakTree
+#print axioms StructuralRamsey.Partite.Closed.Construction.inducedConstruction_withWeakTree
+#print axioms StructuralRamsey.Structure.inducedRamsey_weakTreeGraph_succ
