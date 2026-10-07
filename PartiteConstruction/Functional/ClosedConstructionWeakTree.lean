@@ -31,7 +31,7 @@ theorem build_withWeakTree
     [Finite U]
     (xs : List (RelevantEmbedding A B D))
     (κ : Type*) [Fintype κ]
-    {VB : Type v}
+    {VB : Type v} [Finite VB]
     (Base : RelStructure L.graph VB)
     (hA : A.Irreducible)
     (eAB : RelStructure.Embedding A Base)
