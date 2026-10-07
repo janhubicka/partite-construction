@@ -143,6 +143,95 @@ theorem extendTarget
     exact hroot x a hxa'
   exact ⟨Z₂, Target₂, hAll, f₂, hf₂, hcompat₂, hroot₂⟩
 
+/-- Relative completions over the same start are closed under source free
+amalgamation.  The common source root remains the distinguished root of the
+whole amalgam.
+
+This is stronger than `glue`: it retains the strict extension from the
+original start, so the result can be used recursively inside a larger
+free-amalgam decomposition. -/
+theorem glue_relative
+    {F C : Type v}
+    {Right : Structure L F} {Whole : Structure L C}
+    {sL : Embedding Root Side} {sR : Embedding Root Right}
+    {iL : Embedding Side Whole} {iR : Embedding Right Whole}
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (q : H → G)
+    (hL :
+      HasTreeExtensionCompletion
+        (Base := Base) (Start := Start) sL q)
+    (hR :
+      HasTreeExtensionCompletion
+        (Base := Base) (Start := Start) sR q) :
+    HasTreeExtensionCompletion
+      (Base := Base) (Start := Start) (iL.comp sL) q := by
+  classical
+  obtain ⟨ZL, TL, hExtL, fL, hfL, hcompatL, hrootL⟩ := hL
+  obtain ⟨ZR, TR, hExtR, fR, hfR, hcompatR, hrootR⟩ := hR
+  obtain ⟨Z, Target, hAll, eL, eR, hTgt, hStartL, hStartR⟩ :=
+    hExtL.mergeFree hExtR
+  let f : C → Z :=
+    IsFreeAmalgam.functionalLiftMap
+      hSrc hTgt q fL fR hcompatL hcompatR
+  have hf : Whole.IsHomomorphismEmbedding Target f :=
+    IsFreeAmalgam.functionalLiftMap_isHomomorphismEmbedding
+      hSrc hTgt q fL fR hcompatL hcompatR
+      hfL hfR hrootL hrootR
+  have hcompat :
+      ∀ d, f ((iL.comp sL) d) = hAll.startEmbedding (q d) := by
+    intro d
+    calc
+      f (iL (sL d)) =
+          eL (fL (sL d)) :=
+        IsFreeAmalgam.functionalLiftMap_left
+          hSrc hTgt q fL fR hcompatL hcompatR (sL d)
+      _ = eL (hExtL.startEmbedding (q d)) :=
+        congrArg eL (hcompatL d)
+      _ = hAll.startEmbedding (q d) :=
+        hStartL (q d)
+  have hroot :
+      IsFreeAmalgam.RootIsolated
+        (iL.comp sL) hAll.startEmbedding q f := by
+    intro x a hxa
+    rcases hSrc.covers x with ⟨l, hxl⟩ | ⟨r, hxr⟩
+    · have hside :
+          fL l = hExtL.startEmbedding a := by
+        apply eL.injective
+        calc
+          eL (fL l) = f (iL l) :=
+            (IsFreeAmalgam.functionalLiftMap_left
+              hSrc hTgt q fL fR hcompatL hcompatR l).symm
+          _ = f x := congrArg f hxl.symm
+          _ = hAll.startEmbedding a := hxa
+          _ = eL (hExtL.startEmbedding a) :=
+            (hStartL a).symm
+      obtain ⟨d, hld, hda⟩ := hrootL l a hside
+      refine ⟨d, ?_, hda⟩
+      change x = iL (sL d)
+      exact hxl.trans (congrArg iL hld)
+    · have hside :
+          fR r = hExtR.startEmbedding a := by
+        apply eR.injective
+        calc
+          eR (fR r) = f (iR r) :=
+            (IsFreeAmalgam.functionalLiftMap_right
+              hSrc hTgt q fL fR hcompatL hcompatR r).symm
+          _ = f x := congrArg f hxr.symm
+          _ = hAll.startEmbedding a := hxa
+          _ = eR (hExtR.startEmbedding a) :=
+            (hStartR a).symm
+      obtain ⟨d, hrd, hda⟩ := hrootR r a hside
+      refine ⟨d, ?_, hda⟩
+      change x = iL (sL d)
+      calc
+        x = iR r := hxr
+        _ = iR (sR d) := congrArg iR hrd
+        _ = iL (sL d) :=
+          ((hSrc.overlap (sL d) (sR d)).mpr
+            ⟨d, rfl, rfl⟩).symm
+  exact ⟨Z, Target, hAll, f, hf, hcompat, hroot⟩
+
+
 /-- Two side completions relative to the same strict root tree glue to a full
 completion of their source free amalgam. -/
 theorem glue
