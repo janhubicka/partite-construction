@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.EHNProjectionGraphBridge
 import PartiteConstruction.Functional.EHNToRelationalPartite
 import PartiteConstruction.Functional.DirectWeakIteration
 import PartiteConstruction.Functional.FreeAmalgamEmbeddedInduction
