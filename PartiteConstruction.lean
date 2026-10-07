@@ -237,6 +237,7 @@ import PartiteConstruction.Functional.MixedOverlapExactness
 
 import PartiteConstruction.Functional.FreeAmalgamPullback
 import PartiteConstruction.Functional.FreeAmalgamEmbeddedInduction
+import PartiteConstruction.Functional.FreeAmalgamHistoryInduction
 import PartiteConstruction.Functional.FreeAmalgamReassociate
 
 import PartiteConstruction.Functional.ProjectedPartialEmbedded
