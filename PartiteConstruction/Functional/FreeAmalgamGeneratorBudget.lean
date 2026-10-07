@@ -1,7 +1,7 @@
-import PartiteConstruction.Functional.ClosedgeneratorseratorRank
+import PartiteConstruction.Functional.ClosedGeneratorRank
 import PartiteConstruction.Structure.FreeAmalgam
 
-/-! # generatorserator budgets for functional free amalgams
+/-! # Generator budgets for functional free amalgams
 
 A generated substructure of a free amalgam may use generators from both sides.
 For one fixed side, the generators landing on that side together with the
@@ -113,12 +113,12 @@ theorem left_generatedByAtMost_add_root
       have hGTWhole : (↑G : Set C) ⊆ TWhole := by
         intro g hg
         rcases hfree.covers g with ⟨l, hgl⟩ | ⟨r, hgr⟩
-        · have hlleftGen : l ∈ leftGen := by
+        · have hlLeftGen : l ∈ leftGen := by
             apply Finset.mem_filter.mpr
             exact ⟨Finset.mem_univ l, by simpa [hgl] using hg⟩
           have hlT : l ∈ T := by
             apply hGeneratorsT
-            exact Finset.mem_union_left generators hlleftGen
+            exact Finset.mem_union_left generators hlLeftGen
           exact Or.inr ⟨l, hlT, hgl.symm⟩
         · exact Or.inl ⟨r, hgr.symm⟩
 
