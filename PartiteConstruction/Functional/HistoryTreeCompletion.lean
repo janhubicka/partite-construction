@@ -111,9 +111,18 @@ theorem of_treeAmalgam_of_closedSubstructures_irreducible
       exact ⟨x, rfl⟩
   have hInjective : Function.Injective f :=
     (inclusion C (↑S : Set W) hS).injective
-  obtain ⟨hProj, hSrc⟩ :=
-    histories_of_injective
-      (p := p) hInjective projectedHistory sourceHistory
+  have hProj :
+      FunctionalRespectsProjectedHistory p S f projectedHistory := by
+    intro H hH x y hxy
+    have hxy' : x = y := hInjective hxy
+    subst y
+    rfl
+  have hSrc :
+      FunctionalRespectsSourceHistory S f sourceHistory := by
+    intro H hH x y hxy
+    have hxy' : x = y := hInjective hxy
+    subst y
+    rfl
   exact ⟨W, C, hTree, f, hf, hPart, hProj, hSrc⟩
 
 
