@@ -209,3 +209,5 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.HasProjectedHistoryTreeCompletion.pullback_embedding
 #print axioms StructuralRamsey.Structure.FunctionalProjectedHistoryTreeLike.toFullProjectedHistoryCompletion
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.finiteHistoryCompletion_of_sides_and_relativeMixed
