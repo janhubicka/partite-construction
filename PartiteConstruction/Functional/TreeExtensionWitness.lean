@@ -107,8 +107,8 @@ theorem of_embedding_into_base
     refine ⟨d, ?_, ?_⟩
     · apply g.injective
       change g x = g (s d)
-      simpa [q] using hdx.symm
-    · simpa [q] using hda
+      simpa [q] using hdx
+    · simpa [q] using hda.symm
   exact ⟨_, Target, hExt, f, hf, hcompat, hroot⟩
 
 
