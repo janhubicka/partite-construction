@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.EHNAttachmentGraph
 import PartiteConstruction.Functional.EHNToRelationalPartite
 import PartiteConstruction.Functional.EHNProjectionGraphBridge
 import PartiteConstruction.Functional.DirectWeakIteration
@@ -242,3 +243,6 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.FunctionalPartite.System.toGraphPartite
 #print axioms StructuralRamsey.FunctionalPartite.System.toGraphPartite_isPartiteOver
+
+#print axioms StructuralRamsey.Structure.Attachment.attachingGraphMap
+#print axioms StructuralRamsey.Structure.Attachment.copyMap_graph_eq
