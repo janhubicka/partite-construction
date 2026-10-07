@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.EHNInitial
 import PartiteConstruction.Functional.ClosedLocalTreeCompletion
+import PartiteConstruction.Functional.HistoryTreeCompletion
 import PartiteConstruction.Functional.WeakAttachment
 
 /-! # Functional initial pictures are genuine tree amalgams
@@ -156,5 +157,44 @@ theorem initial_tree
   obtain ⟨T, hTree, _, hc⟩ :=
     initialList_tree hK B hmB hBirr hpos β₀ Finset.univ.toList
   exact ⟨T, hTree, fun β => hc β (by simp)⟩
+
+
+/-- The positive-arity initial EHN picture carries the full functional history
+invariant at every generator rank once closed substructures of the control
+structure are irreducible.
+
+No additional construction is needed: `initial_tree` already makes the
+initial stage a strict B-tree, and the inclusion witness in such a tree is
+injective, so every finite history is remembered automatically. -/
+theorem initial_history
+    {U : Type v}
+    (hK : Structure.FreeAmalgamationClass K)
+    (A : Structure L U)
+    (hAclosed :
+      ∀ (H : Set U) (hH : A.IsClosed H),
+        (A.induce H hH).Irreducible)
+    (B : Structure L V) [Finite V] [Finite P]
+    (hmB : K B)
+    (hBirr : B.Irreducible)
+    (hpos : L.PositiveFuncArity)
+    (beta0 : Structure.Embedding B D)
+    (n : ℕ) :
+    ∃ T : Stage K D,
+      Structure.TreeAmalgam B T.Carrier T.system.toStructure ∧
+      Structure.FunctionalHistoryTreeLike
+        (A := A) (D := D) (C := T.system.toStructure) (Base := B)
+        T.system.part n ∧
+      ∀ beta : Structure.Embedding B D,
+        ∃ e : Structure.Embedding B T.system.toStructure,
+          ∀ x, T.system.part (e x) = beta x := by
+  obtain ⟨T, hTree, hCopies⟩ :=
+    initial_tree hK B hmB hBirr hpos beta0
+  have hHist :
+      Structure.FunctionalHistoryTreeLike
+        (A := A) (D := D) (C := T.system.toStructure) (Base := B)
+        T.system.part n :=
+    Structure.FunctionalHistoryTreeLike.of_treeAmalgam_of_closedSubstructures_irreducible
+      hAclosed hTree T.system.part n
+  exact ⟨T, hTree, hHist, hCopies⟩
 
 end StructuralRamsey.FunctionalPartite.EHN
