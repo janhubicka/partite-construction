@@ -45,10 +45,12 @@ theorem reindexVertex_injective (j : I ↪ J) :
       cases hxy
     | inr b =>
       change Sum.inr (j a.1, a.2) = Sum.inr (j b.1, b.2) at hxy
-      exact congrArg Sum.inr
-        (Prod.ext
-          (j.injective (congrArg Prod.fst (Sum.inr.inj hxy)))
-          (congrArg Prod.snd (Sum.inr.inj hxy)))
+      have hp : (j a.1, a.2) = (j b.1, b.2) :=
+        Sum.inr.inj hxy
+      have hab : a = b := Prod.ext
+        (j.injective (congrArg Prod.fst hp))
+        (congrArg Prod.snd hp)
+      exact congrArg Sum.inr hab
 
 /-- The selected copied vertex is carried to the correspondingly indexed
 copy in the larger attachment. -/
@@ -91,12 +93,9 @@ noncomputable def reindexEmbedding
         subst t
         have hcoreTarget :
             (attach B S D g).rel R (Sum.inl ∘ w) := by
-          have heq :
-              (reindexVertex j ∘ (Sum.inl ∘ w)) =
-                (Sum.inl ∘ w) := by
-            funext k
-            rfl
-          exact Eq.mp (congrArg ((attach B S D g).rel R) heq) hTarget
+          convert hTarget using 1
+          funext k
+          rfl
         have hwRel : D.rel R w :=
           (core_rel_iff (B := B) (S := S) (D := D)
             (f := g) R w).mp hcoreTarget
