@@ -239,6 +239,7 @@ import PartiteConstruction.Functional.FreeAmalgamPullback
 import PartiteConstruction.Functional.FreeAmalgamEmbeddedInduction
 import PartiteConstruction.Functional.FreeAmalgamHistoryInduction
 import PartiteConstruction.Functional.PureHistoryTreeCompletion
+import PartiteConstruction.Functional.FiniteHistoryRankBound
 import PartiteConstruction.Functional.FreeAmalgamReassociate
 
 import PartiteConstruction.Functional.ProjectedPartialEmbedded
