@@ -1,3 +1,5 @@
+import PartiteConstruction.Functional.InitialTreeCompletion
+import PartiteConstruction.Functional.HistoryZero
 import PartiteConstruction.Functional.EHNInvariantConstruction
 import PartiteConstruction.Functional.EHNPictureInvariant
 import PartiteConstruction.Functional.EHNStageInvariant
@@ -149,3 +151,10 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma_preserving
 #print axioms StructuralRamsey.FunctionalPartite.EHN.canonicalize_preserving
 #print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_preserving
+
+#print axioms StructuralRamsey.Structure.GeneratedByAtMost.empty_isClosed_of_positiveArity
+#print axioms StructuralRamsey.Structure.GeneratedByAtMost.functionClosure_empty_of_positiveArity
+#print axioms StructuralRamsey.Structure.GeneratedByAtMost.isEmpty_of_zero
+#print axioms StructuralRamsey.Structure.FunctionalProjectedHistoryTreeLike.identity_zero_of_embeddings
+#print axioms StructuralRamsey.Structure.FunctionalHistoryTreeLike.of_treeAmalgam_of_closedSubstructures_irreducible
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initial_history
