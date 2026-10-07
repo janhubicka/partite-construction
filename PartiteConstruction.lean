@@ -180,6 +180,7 @@ import PartiteConstruction.Functional.LooseTreeAmalgam
 import PartiteConstruction.Functional.FunctionalTreeAmalgam
 import PartiteConstruction.Functional.TreeExtension
 import PartiteConstruction.Functional.TreeExtensionGlue
+import PartiteConstruction.Functional.TreeExtensionHistoryGlue
 import PartiteConstruction.Functional.TreeExtensionWitness
 
 import PartiteConstruction.Functional.FibreSurjectivityObstruction
