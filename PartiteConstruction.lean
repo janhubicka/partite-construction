@@ -254,3 +254,5 @@ import PartiteConstruction.Functional.EHNInvariantConstruction
 import PartiteConstruction.Functional.HistoryZero
 
 import PartiteConstruction.Functional.PureCoreProjectedHistory
+
+import PartiteConstruction.Functional.InjectiveProjectedGlue
