@@ -232,6 +232,61 @@ theorem glue_relative
   exact ⟨Z, Target, hAll, f, hf, hcompat, hroot⟩
 
 
+/-- Rebase a relative completion along a further strict extension of the
+common root tree.
+
+The side target is replayed over the larger start.  Exact free-amalgam
+overlap supplied by `replayFree` transports root isolation: any side point
+landing in the new start must already have landed in the old start. -/
+theorem rebase
+    {G₂ : Type v} {Start₂ : Structure L G₂}
+    (q : H → G)
+    (h :
+      HasTreeExtensionCompletion
+        (Base := Base) (Start := Start) s q)
+    (hMore : TreeExtension Base Start G₂ Start₂) :
+    HasTreeExtensionCompletion
+      (Base := Base) (Start := Start₂) s
+      (hMore.startEmbedding ∘ q) := by
+  classical
+  obtain ⟨Z, Target, hExt, f, hf, hcompat, hroot⟩ := h
+  obtain ⟨Z₂, Target₂, hExt₂, e, hFree, hStart⟩ :=
+    hExt.replayFree hMore.startEmbedding
+  let f₂ : E → Z₂ := e ∘ f
+  have hf₂ : Side.IsHomomorphismEmbedding Target₂ f₂ :=
+    e.isHomomorphismEmbedding.comp hf
+  have hcompat₂ :
+      ∀ d, f₂ (s d) =
+        hExt₂.startEmbedding ((hMore.startEmbedding ∘ q) d) := by
+    intro d
+    calc
+      f₂ (s d) = e (f (s d)) := rfl
+      _ = e (hExt.startEmbedding (q d)) :=
+        congrArg e (hcompat d)
+      _ = hExt₂.startEmbedding (hMore.startEmbedding (q d)) :=
+        hStart (q d)
+      _ = hExt₂.startEmbedding ((hMore.startEmbedding ∘ q) d) := rfl
+  have hroot₂ :
+      IsFreeAmalgam.RootIsolated
+        s hExt₂.startEmbedding (hMore.startEmbedding ∘ q) f₂ := by
+    intro x a hxa
+    have hmeet :
+        hExt₂.startEmbedding a = e (f x) :=
+      hxa.symm
+    obtain ⟨b, hab, hfb⟩ :=
+      (hFree.overlap a (f x)).mp hmeet
+    obtain ⟨d, hxd, hdb⟩ :=
+      hroot x b hfb.symm
+    refine ⟨d, hxd, ?_⟩
+    calc
+      (hMore.startEmbedding ∘ q) d =
+          hMore.startEmbedding (q d) := rfl
+      _ = hMore.startEmbedding b :=
+        congrArg hMore.startEmbedding hdb
+      _ = a := hab.symm
+  exact ⟨Z₂, Target₂, hExt₂, f₂, hf₂, hcompat₂, hroot₂⟩
+
+
 /-- Two side completions relative to the same strict root tree glue to a full
 completion of their source free amalgam. -/
 theorem glue
