@@ -47,9 +47,11 @@ theorem reindexVertex_injective (j : I ↪ J) :
       change Sum.inr (j a.1, a.2) = Sum.inr (j b.1, b.2) at hxy
       have hp : (j a.1, a.2) = (j b.1, b.2) :=
         Sum.inr.inj hxy
-      have hab : a = b := Prod.ext
-        (j.injective (congrArg Prod.fst hp))
-        (congrArg Prod.snd hp)
+      have hIdx : j a.1 = j b.1 :=
+        congrArg (fun t : J × {x : V // x ∉ S} => t.1) hp
+      have hOutside : a.2 = b.2 :=
+        congrArg (fun t : J × {x : V // x ∉ S} => t.2) hp
+      have hab : a = b := Prod.ext (j.injective hIdx) hOutside
       exact congrArg Sum.inr hab
 
 /-- The selected copied vertex is carried to the correspondingly indexed
