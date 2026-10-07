@@ -477,6 +477,44 @@ theorem replayFree
           _ = lM (hMid.startEmbedding (e0 x)) :=
             congrArg lM (hStart x)
 
+/-- Two strict extensions of the same start have a common strict extension
+in which they form a genuine free amalgam over that start.
+
+Unlike `mergeFree_tree`, this version retains the extension from the original
+start together with the equations identifying both old start copies with its
+canonical start embedding. -/
+theorem mergeFree
+    {WL WR : Type v}
+    {TL : Structure L WL} {TR : Structure L WR}
+    (hL : TreeExtension Base Start WL TL)
+    (hR : TreeExtension Base Start WR TR) :
+    ∃ (Z : Type v) (Target : Structure L Z)
+      (hAll : TreeExtension Base Start Z Target),
+      ∃ eL : Embedding TL Target,
+        ∃ eR : Embedding TR Target,
+          IsFreeAmalgam
+              hL.startEmbedding hR.startEmbedding eL eR ∧
+          (∀ x : VS,
+            eL (hL.startEmbedding x) = hAll.startEmbedding x) ∧
+          ∀ x : VS,
+            eR (hR.startEmbedding x) = hAll.startEmbedding x := by
+  obtain ⟨Z, Target, hExt, eR, hFree, hcompat⟩ :=
+    hR.replayFree hL.startEmbedding
+  let eL : Embedding TL Target := hExt.startEmbedding
+  let hAll : TreeExtension Base Start Z Target :=
+    hL.trans hExt
+  refine ⟨Z, Target, hAll, eL, eR, hFree, ?_, ?_⟩
+  · intro x
+    exact (TreeExtension.startEmbedding_trans hL hExt x).symm
+  · intro x
+    calc
+      eR (hR.startEmbedding x) =
+          hExt.startEmbedding (hL.startEmbedding x) :=
+        hcompat x
+      _ = hAll.startEmbedding x :=
+        (TreeExtension.startEmbedding_trans hL hExt x).symm
+
+
 /-- Two strict extensions of the same start have a common strict target in
 which they form a genuine free amalgam over that start. -/
 theorem mergeFree_tree
