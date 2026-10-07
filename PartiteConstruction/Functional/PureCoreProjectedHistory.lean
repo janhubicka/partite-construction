@@ -94,7 +94,8 @@ theorem pureCore_projectedHistory_of_domainReflection
     have heHT :
         ∀ x, eHT x = f ⟨e x, hRange x⟩ := by
       intro x
-      apply eAB.injective
+      change eAB (ell x) = eAB (q ⟨e x, hRange x⟩)
+      apply congrArg eAB
       apply alpha.injective
       calc
         alpha (ell x) = beta x.1 := hell x
@@ -142,8 +143,7 @@ theorem pureCore_projectedHistoryTree_of_domainReflection
     ∃ (Z : Type v) (Target : Structure L Z),
       TreeAmalgam Base Z Target ∧
       ∃ f : ↥(↑S : Set W) → Z,
-        (E.toStructure.induce (↑S : Set W) hS)
-          .IsHomomorphismEmbedding Target f ∧
+        (E.toStructure.induce (↑S : Set W) hS).IsHomomorphismEmbedding Target f ∧
         FunctionalProjectedPartialIntersections
           (A := A) (D := D) (C := E.toStructure) (T := Target)
           p S f ∧
