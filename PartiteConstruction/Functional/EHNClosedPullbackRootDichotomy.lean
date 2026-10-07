@@ -96,7 +96,11 @@ theorem closedTestPullback_common_embedding_or_decompose
   · left
     obtain ⟨g, hg⟩ :=
       hp.2 pb.common hIrr (Embedding.id pb.common)
-    exact ⟨g, fun x => by simpa only [Embedding.id_apply] using hg x⟩
+    refine ⟨g, ?_⟩
+    intro x
+    calc
+      g x = q ((Embedding.id pb.common) x) := hg x
+      _ = q x := rfl
   · right
     by_contra hnone
     exact hIrr
