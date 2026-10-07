@@ -117,6 +117,16 @@ of a closed test need not be fibre-surjective.  The verified bridge
 does yield genuine strict functional tree completions **once** the graph
 tree's gluing roots and local test map are function-closed.  The n-pass
 weak-vertex theorem alone does not supply these additional certificates.
+
+The direct functional version should use `FunctionalPartite.EHN.pictureLemma`
+and `FunctionalPartite.EHN.inducedConstruction_preserving` on genuine
+functions. Its selected supports are already function-closed by
+`System.weak_support_closed`, so it requires no U-closed relational graph
+expansion. The verified n-pass **U-closed** route above is an optional
+representation theorem; it should not be confused with the native
+function-language induction still to be established. U-closed graph
+embeddings serve the separately checked recursive construction, whose
+intermediate graph stages need repair to restore intended functions.
 This is the precise remaining issue for an optional stronger functional
 sparsening theorem; it is not a gap in the relational Appendix theorem.
 

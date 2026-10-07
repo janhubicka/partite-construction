@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.DirectWeakIteration
 import PartiteConstruction.Functional.FreeAmalgamEmbeddedInduction
 import PartiteConstruction.Functional.FreeAmalgamHistoryInduction
 import PartiteConstruction.Functional.PureHistoryTreeCompletion
@@ -230,3 +231,7 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTestPullback_common_part_compat
 #print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.hasInjectiveLooseTreeCompletion
 #print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.locallyClosedLooseTreeEmbeddable
+
+#print axioms StructuralRamsey.Structure.irreducible_of_graph_irreducible
+#print axioms StructuralRamsey.FunctionalPartite.EHN.directSupport_and_restriction
+#print axioms StructuralRamsey.FunctionalPartite.EHN.directSupportInduceToWeak

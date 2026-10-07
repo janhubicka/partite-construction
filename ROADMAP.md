@@ -31,6 +31,18 @@ Strict relational sparsening with B irreducible and arbitrary A is checked
 through the complete binary-relation expansion and does not depend on the
 stronger synchronized tree invariant.
 
+### Optional direct functional iteration
+
+Implement the iterated weak-substructure size bound directly on genuine
+`FunctionalPartite.EHN` systems. The selected part support is closed under
+actual function values by `System.weak_support_closed`, and
+`System.weakRestrict` is a genuine full substructure. Use
+`Structure.weakInduce` for arbitrary small weak tests, without taking
+a closure hull or importing the recursive U-closed graph construction.
+The already-verified U-closed n-pass theorem is a separate auxiliary
+graph-level route. The remaining target-side issue for a strict functional
+tree statement is closure of gluing roots and local completion maps.
+
 ## Remaining proof obligations
 
 There are no remaining proof obligations for the statements currently printed
