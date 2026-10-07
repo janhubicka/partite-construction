@@ -106,11 +106,11 @@ def ofGraphGraphEmbedding
     | inl R0 =>
         exact Iff.rfl
     | inr F =>
-        change
+        change R.rel (.inr F) x ↔
           R.rel (.inr F)
             (funcTuple
               (fun i : Fin (L.funcArity F) => x i.castSucc)
-              (x (Fin.last (L.funcArity F)))) ↔ R.rel (.inr F) x
+              (x (Fin.last (L.funcArity F))))
         rw [funcTuple_eta]
 
 /-- Any relational local tree-completion theorem in the function-graph
