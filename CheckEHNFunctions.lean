@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.EHNToRelationalPartite
 import PartiteConstruction.Functional.EHNProjectionGraphBridge
 import PartiteConstruction.Functional.DirectWeakIteration
 import PartiteConstruction.Functional.FreeAmalgamEmbeddedInduction
@@ -238,3 +239,6 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.FunctionalPartite.EHN.directSupportInduceToWeak
 
 #print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.graphHomomorphismEmbedding
+
+#print axioms StructuralRamsey.FunctionalPartite.System.toGraphPartite
+#print axioms StructuralRamsey.FunctionalPartite.System.toGraphPartite_isPartiteOver
