@@ -33,7 +33,7 @@ namespace QuotientBoundaryRequest
 
 
 /-- Build a quotient-boundary request from an embedded source and a label map. -/
-def mk
+def ofEmbedding
     {X : Type v} {R : Structure L X}
     (e : Embedding R C) (q : X → U) :
     QuotientBoundaryRequest A C where
@@ -152,7 +152,7 @@ theorem label_isHomomorphismEmbedding
     (hf : C.IsHomomorphismEmbedding T f) :
     r.source.IsHomomorphismEmbedding A r.label := by
   obtain ⟨targetCopy, hcompat, _⟩ := hIso
-  refine ⟨hIso.label_isHomomorphism hf.1, ?_⟩
+  refine ⟨label_isHomomorphism hIso hf.1, ?_⟩
   intro X E hE e
   obtain ⟨g, hg⟩ :=
     hf.2 E hE (r.embedding.comp e)
