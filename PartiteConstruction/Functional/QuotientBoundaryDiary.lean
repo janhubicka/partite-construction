@@ -151,8 +151,10 @@ theorem label_isHomomorphismEmbedding
     (hIso : IsolatedQuotientBoundary r T f)
     (hf : C.IsHomomorphismEmbedding T f) :
     r.source.IsHomomorphismEmbedding A r.label := by
+  have hLabelHom : r.source.IsHomomorphism A r.label :=
+    label_isHomomorphism hIso hf.1
   obtain ⟨targetCopy, hcompat, _⟩ := hIso
-  refine ⟨label_isHomomorphism hIso hf.1, ?_⟩
+  refine ⟨hLabelHom, ?_⟩
   intro X E hE e
   obtain ⟨g, hg⟩ :=
     hf.2 E hE (r.embedding.comp e)
