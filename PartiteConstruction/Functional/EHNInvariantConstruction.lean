@@ -85,10 +85,10 @@ theorem inducedConstruction_preserving
     (hRamsey : Structure.Arrow A B D κ)
     (Q : Stage K D → Prop)
     (hInitial :
-      ∀ β₀ : Embedding B D,
+      ∀ β₀ : Structure.Embedding B D,
         ∃ S : Stage K D,
           Q S ∧
-          ∀ β : Embedding B D,
+          ∀ β : Structure.Embedding B D,
             ∃ j : Structure.Embedding B S.system.toStructure,
               ∀ x, S.system.part (j x) = β x)
     (hStep :
