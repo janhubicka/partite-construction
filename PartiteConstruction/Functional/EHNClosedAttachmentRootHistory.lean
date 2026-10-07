@@ -63,7 +63,7 @@ theorem closedTest_treeCompletion_of_sharedRootHistories
     (hTest :
       (UnitAttachD B S hS D f).toStructure.IsClosed
         (↑Test : Set _))
-    (pSmall : ↥(↑Test : Set _) → P)
+    (pSmall : ↥(↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1}))) → P)
     (history : List (Set P))
     (hShared :
       let pb := closedTestPullback B S hS D f (↑Test : Set _) hTest
@@ -79,10 +79,10 @@ theorem closedTest_treeCompletion_of_sharedRootHistories
           (history ++ singletonProjectedHistory P)) :
     ∃ (Z : Type v) (Target : Structure L Z),
       TreeAmalgam Base Z Target ∧
-      ∃ completed : ↥(↑Test : Set _) → Z,
+      ∃ completed : ↥(↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1}))) → Z,
         ((UnitAttachD B S hS D f).toStructure.induce
           (↑Test : Set _) hTest).IsHomomorphismEmbedding Target completed ∧
-        (∀ K ∈ history, ∀ x y,
+        (∀ K ∈ history, ∀ (x y : ↥(↑Test : Set (Structure.Attachment.Vertex S (W := W) (I := PUnit.{v+1})))),
           completed x = completed y →
             (pSmall x ∈ K ↔ pSmall y ∈ K)) := by
   classical
