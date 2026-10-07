@@ -12,7 +12,8 @@ import PartiteConstruction.Functional.ClosedInitial
 import PartiteConstruction.Functional.HalfClosedInitial
 import PartiteConstruction.Functional.HalfClosedConstruction
 import PartiteConstruction.Functional.NonClosedPictureObstruction
-import PartiteConstruction.Functional.ClosedPictureRepair
+import PartiteConstruction.Functional.ClosedPicture
+import PartiteConstruction.Functional.ClosedPictureWeakTreeRepair
 import PartiteConstruction.Functional.NestedFlatten
 import PartiteConstruction.Functional.PartPredicates
 import PartiteConstruction.Functional.HalfClosedPartite
