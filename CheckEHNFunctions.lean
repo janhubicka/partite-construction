@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.FreeAmalgamEmbeddedInduction
+import PartiteConstruction.Functional.FreeAmalgamHistoryInduction
 import PartiteConstruction.Functional.EHNDomainFailureDecompose
 import PartiteConstruction.Functional.InjectiveProjectedGlue
 import PartiteConstruction.Functional.EHNClosedRootInduction
@@ -202,3 +203,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.closedTest_decompose_of_domainFailure
 
 #print axioms StructuralRamsey.Structure.IsFreeAmalgam.finite_embedded_induction
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.finiteHistoryCompletion_of_relativeMixed
