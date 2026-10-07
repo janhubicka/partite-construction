@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.FreeAmalgamClosed
+import PartiteConstruction.Functional.FunctionClosedLocalTree
 import PartiteConstruction.Functional.HalfClosedTheorem
 import PartiteConstruction.Functional.QuotientFibreObstruction
 import PartiteConstruction.Functional.GeneratedRootedWitness
