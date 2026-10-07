@@ -33,6 +33,10 @@ noncomputable def graphAttachmentIso
   map_rel_iff := by
     classical
     intro R z
+    apply Iff.symm
+    change ((attach B S hS D f).graph.rel R z) ↔
+      (RelStructure.Attachment.attach B.graph S D.graph
+        (fun i => attachingGraphMap B S hS D (f i))).rel R z
     cases R with
     | inl R =>
         constructor
