@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.EHNDomainFailureDecompose
 import PartiteConstruction.Functional.InjectiveProjectedGlue
 import PartiteConstruction.Functional.EHNClosedRootInduction
 import PartiteConstruction.Functional.TreeExtensionHistoryGlue
@@ -173,3 +174,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.FunctionalPartite.pureCore_projectedHistoryTree_of_domainReflection
 #print axioms StructuralRamsey.Structure.LocallyClosedTreeCompletable.glueProjectedFull_injectiveProjection
 #print axioms StructuralRamsey.Structure.LocallyClosedTreeCompletable.glueProjectedFull_injectiveProjection_withHistory
+
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.closedTest_decompose_of_domainFailure
