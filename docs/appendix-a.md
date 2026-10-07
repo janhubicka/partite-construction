@@ -91,6 +91,36 @@ invariant actually used by sparsening.
 Optional stronger variants and diagnostic modules remain useful research
 infrastructure, but they are not manuscript validation obligations.
 
+
+### Actual U-closed weak-vertex iteration (8 October 2026)
+
+The full positive-arity functional Ramsey construction has now been
+formally iterated with **weak** vertex-set graph completions.
+`Partite.Closed.Picture.locallyTreeLike_weakStep` transfers the
+controlled relational locally-tree-like invariant through the exact
+U-closed Picture stage, including its restricted family of closed attaching
+maps.  The finite closed Ramsey trace and n-pass iteration are the theorems
+`Partite.Closed.Construction.inducedConstruction_withStrongTree` and
+`Structure.inducedRamsey_iteratedWeakGraph`.  CI checks the latter
+under graph-hereditary irreducibility of A and positive function arities.
+
+The final output retains the **full function-language Ramsey arrow** and a
+graph homomorphism-embedding to the original control.  Every weak vertex
+test of size at most n has a controlled relational graph-tree completion,
+hence every *genuine function-closed* test of this size inherits that
+graph-level conclusion without adding closure vertices.
+
+**Distinct target-side obligation.**  A relational tree amalgam of
+function graphs may have non-closed roots, and a graph homomorphism-embedding
+of a closed test need not be fibre-surjective.  The verified bridge
+`RelStructure.FunctionClosedLocallyTreeCompletable.toFunctional`
+does yield genuine strict functional tree completions **once** the graph
+tree's gluing roots and local test map are function-closed.  The n-pass
+weak-vertex theorem alone does not supply these additional certificates.
+This is the precise remaining issue for an optional stronger functional
+sparsening theorem; it is not a gap in the relational Appendix theorem.
+
+
 ## Validation discipline
 
 CI builds the umbrella and all audit imports, then checks every declaration in
