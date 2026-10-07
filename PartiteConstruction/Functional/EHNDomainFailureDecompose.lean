@@ -50,26 +50,20 @@ theorem closedTest_decompose_of_domainFailure
     exact hp.comp inc.isEHNHomomorphismEmbedding
   have hsrc' : ¬ (Small.func F x).Nonempty := hsrc
   have htgt' : (D.func F (pS ∘ x)).Nonempty := by
-    simpa [pS, inc, Function.comp_assoc] using htgt
-  have hred :
-      Nonempty
-        (ProperFreeDecomposition
-          (Small.induce
-            (Small.functionClosure (Set.range x))
-            (Small.functionClosure_isClosed (Set.range x)))) :=
-    hpS.inputHull_reducible_of_domainFailure F x htgt' hsrc'
+    change (D.func F ((p ∘ Subtype.val) ∘ x)).Nonempty
+    exact htgt
   have hSmallNotIrr : ¬ Small.Irreducible := by
     intro hIrr
-    let Hset := Small.functionClosure (Set.range x)
-    let Hull :=
-      Small.induce Hset
-        (Small.functionClosure_isClosed (Set.range x))
-    have hHullIrr : Hull.Irreducible := by
-      let eHull : Embedding Hull Small :=
-        inclusion Small Hset
-          (Small.functionClosure_isClosed (Set.range x))
-      exact hIrr.of_embedding eHull
-    exact hHullIrr.noProperFreeDecomposition hred
+    obtain ⟨g, hg⟩ := hpS.2 Small hIrr (Embedding.id Small)
+    have hEq : g ∘ x = pS ∘ x := by
+      funext i
+      exact hg (x i)
+    have htgtG : (D.func F (g ∘ x)).Nonempty := by
+      simpa only [hEq] using htgt'
+    rw [← g.map_func F x] at htgtG
+    rcases htgtG with ⟨y, hy⟩
+    rcases hy with ⟨z, hz, _⟩
+    exact hsrc' ⟨z, hz⟩
   have hdec : Nonempty (ProperFreeDecomposition Small) := by
     by_contra hnone
     exact hSmallNotIrr
