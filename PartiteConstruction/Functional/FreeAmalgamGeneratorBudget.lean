@@ -118,7 +118,7 @@ theorem left_generatedByAtMost_add_root
             exact ⟨Finset.mem_univ l, by simpa [hgl] using hg⟩
           have hlT : l ∈ T := by
             apply hGeneratorsT
-            exact Finset.mem_union_left generators hlLeftGen
+            exact Finset.mem_union_left rootGen hlLeftGen
           exact Or.inr ⟨l, hlT, hgl.symm⟩
         · exact Or.inl ⟨r, hgr.symm⟩
 
