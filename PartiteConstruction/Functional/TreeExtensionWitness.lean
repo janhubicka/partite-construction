@@ -225,16 +225,16 @@ theorem of_isolatedQuotientBoundaries_rootedBase
     (hfR : Right.IsHomomorphismEmbedding TR fR)
     (hIsoL :
       IsolatedQuotientBoundary
-        (QuotientBoundaryRequest.mk (A := A) sL label) TL fL)
+        (QuotientBoundaryRequest.ofEmbedding (A := A) sL label) TL fL)
     (hIsoR :
       IsolatedQuotientBoundary
-        (QuotientBoundaryRequest.mk (A := A) sR label) TR fR) :
+        (QuotientBoundaryRequest.ofEmbedding (A := A) sR label) TR fR) :
     HasCommonRootedCompletions
       (Base := Base) sL sR := by
   let rL : QuotientBoundaryRequest A Side :=
-    QuotientBoundaryRequest.mk sL label
+    QuotientBoundaryRequest.ofEmbedding sL label
   let rR : QuotientBoundaryRequest A Right :=
-    QuotientBoundaryRequest.mk sR label
+    QuotientBoundaryRequest.ofEmbedding sR label
   let q : H → VB := fun x => eAB (label x)
   have hLabel :
       Root.IsHomomorphismEmbedding A label := by
