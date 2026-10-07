@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.EHNAttachmentGraph
 import PartiteConstruction.Functional.EHNPowerGraph
 import PartiteConstruction.Functional.EHNToRelationalPartite
 import PartiteConstruction.Functional.EHNProjectionGraphBridge
@@ -246,3 +247,6 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.FunctionalPartite.Induced.vertexGraphEquiv
 #print axioms StructuralRamsey.FunctionalPartite.Induced.powerGraphIso
+
+#print axioms StructuralRamsey.Structure.Attachment.attachingGraphMap
+#print axioms StructuralRamsey.Structure.Attachment.copyMap_graph_eq
