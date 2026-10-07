@@ -111,7 +111,16 @@ def ofGraphGraphEmbedding
             (funcTuple
               (fun i : Fin (L.funcArity F) => x i.castSucc)
               (x (Fin.last (L.funcArity F))))
-        rw [funcTuple_eta]
+        have ht :
+            funcTuple
+                (fun i : Fin (L.funcArity F) => x i.castSucc)
+                (x (Fin.last (L.funcArity F))) = x :=
+          funcTuple_eta x
+        constructor
+        · intro hx
+          exact Eq.mp (congrArg (R.rel (.inr F)) ht).symm hx
+        · intro hx
+          exact Eq.mp (congrArg (R.rel (.inr F)) ht) hx
 
 /-- Any relational local tree-completion theorem in the function-graph
 language transfers to weak substructures of the decoded function structure.
