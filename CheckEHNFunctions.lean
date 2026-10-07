@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.EHNAttachmentGraphIso
+import PartiteConstruction.Functional.EHNAttachmentGraphIso
 import PartiteConstruction.Functional.EHNAttachmentGraph
 import PartiteConstruction.Functional.EHNToRelationalPartite
 import PartiteConstruction.Functional.EHNProjectionGraphBridge
@@ -247,5 +248,7 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.Attachment.attachingGraphMap
 #print axioms StructuralRamsey.Structure.Attachment.copyMap_graph_eq
+
+#print axioms StructuralRamsey.Structure.Attachment.graphAttachmentIso
 
 #print axioms StructuralRamsey.Structure.Attachment.graphAttachmentIso
