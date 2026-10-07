@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.EHNProjectionGraphBridge
 import PartiteConstruction.Functional.DirectWeakIteration
 import PartiteConstruction.Functional.FreeAmalgamEmbeddedInduction
 import PartiteConstruction.Functional.FreeAmalgamHistoryInduction
@@ -235,3 +236,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.irreducible_of_graph_irreducible
 #print axioms StructuralRamsey.FunctionalPartite.EHN.directSupport_and_restriction
 #print axioms StructuralRamsey.FunctionalPartite.EHN.directSupportInduceToWeak
+
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.graphHomomorphismEmbedding
