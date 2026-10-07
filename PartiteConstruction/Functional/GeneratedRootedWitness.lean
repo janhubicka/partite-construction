@@ -29,7 +29,7 @@ The function-closure of the two ranges costs only the number of named
 generators, not the cardinality of the closure.  The resulting local
 homomorphism-embedding is an actual embedding on the irreducible root. -/
 theorem rootedWitness
-    [Finite H] [Finite E]
+    [Finite H] [Finite E] [Finite X]
     (hRoot : Root.Irreducible)
     (eRoot : Embedding Root Core)
     (eSide : Embedding Side Core)
