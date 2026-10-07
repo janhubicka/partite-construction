@@ -44,6 +44,7 @@ theorem reindexVertex_injective (j : I ↪ J) :
     | inl b =>
       cases hxy
     | inr b =>
+      change Sum.inr (j a.1, a.2) = Sum.inr (j b.1, b.2) at hxy
       exact congrArg Sum.inr
         (Prod.ext
           (j.injective (congrArg Prod.fst (Sum.inr.inj hxy)))
@@ -60,8 +61,14 @@ theorem reindexVertex_copy
       copyMap B S D g (j i) x := by
   classical
   by_cases hx : x ∈ S
-  · simp [copyMap_mem i x hx, reindexVertex, hf i]
-  · simp [copyMap_not_mem i x hx, reindexVertex]
+  · rw [copyMap_mem (f := f) i x hx,
+        copyMap_mem (f := g) (j i) x hx]
+    change Sum.inl ((f i) ⟨x, hx⟩) =
+      Sum.inl ((g (j i)) ⟨x, hx⟩)
+    rw [hf i]
+  · rw [copyMap_not_mem (f := f) i x hx,
+        copyMap_not_mem (f := g) (j i) x hx]
+    rfl
 
 /-- Choosing an injectively indexed subfamily of copied structures gives
 an induced embedding between the free attachments. -/
@@ -84,7 +91,12 @@ noncomputable def reindexEmbedding
         subst t
         have hcoreTarget :
             (attach B S D g).rel R (Sum.inl ∘ w) := by
-          simpa [reindexVertex] using hTarget
+          have heq :
+              (reindexVertex j ∘ (Sum.inl ∘ w)) =
+                (Sum.inl ∘ w) := by
+            funext k
+            rfl
+          exact Eq.mp (congrArg ((attach B S D g).rel R) heq) hTarget
         have hwRel : D.rel R w :=
           (core_rel_iff (B := B) (S := S) (D := D)
             (f := g) R w).mp hcoreTarget
