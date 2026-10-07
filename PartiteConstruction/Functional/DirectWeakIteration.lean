@@ -78,8 +78,8 @@ theorem irreducible_of_graph_irreducible
           refine Fin.lastCases ?_ (fun l => ?_) k
           · exact ⟨b, hout⟩
           · exact ⟨a l, congrFun hargs l⟩
-        exact hx (hall i).choose ((hall i).choose_spec.trans
-          (congrArg e hzi).symm)
+        exact hx (hall i).choose
+          ((congrArg e hzi).symm.trans (hall i).choose_spec)
       · have hall : ∀ k : Fin (L.funcArity F0 + 1),
             ∃ t : F, e (z k) = iF t := by
           intro k
