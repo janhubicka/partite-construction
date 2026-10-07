@@ -36,17 +36,17 @@ theorem canonicalize_preserving
     (κ : Type*) [Fintype κ]
     (Q : Stage K D → Prop)
     (hStep :
-      ∀ (S : Stage K D) (α : Embedding A D),
+      ∀ (S : Stage K D) (α : Structure.Embedding A D),
         Q S →
         ∃ R : Stage K D,
           Q R ∧ PictureProperty A S R α κ)
     (S : Stage K D) (hQS : Q S)
-    (xs : List (Embedding A D)) :
+    (xs : List (Structure.Embedding A D)) :
     ∃ T : Stage K D,
       Q T ∧
-      ∀ χ : Embedding A T.system.toStructure → κ,
+      ∀ χ : Structure.Embedding A T.system.toStructure → κ,
         ∃ f : FunctionalPartite.Embedding S.system T.system,
-          ∀ α ∈ xs, ∀ e₁ e₂ : Embedding A S.system.toStructure,
+          ∀ α ∈ xs, ∀ e₁ e₂ : Structure.Embedding A S.system.toStructure,
             (∀ x, S.system.part (e₁ x) = α x) →
             (∀ x, S.system.part (e₂ x) = α x) →
             χ (f.toEmbedding.comp e₁) =
@@ -89,10 +89,10 @@ theorem inducedConstruction_preserving
         ∃ S : Stage K D,
           Q S ∧
           ∀ β : Embedding B D,
-            ∃ j : Embedding B S.system.toStructure,
+            ∃ j : Structure.Embedding B S.system.toStructure,
               ∀ x, S.system.part (j x) = β x)
     (hStep :
-      ∀ (S : Stage K D) (α : Embedding A D),
+      ∀ (S : Stage K D) (α : Structure.Embedding A D),
         Q S →
         ∃ R : Stage K D,
           Q R ∧ PictureProperty A S R α κ) :
@@ -102,23 +102,23 @@ theorem inducedConstruction_preserving
   obtain ⟨β₀, _⟩ :=
     hRamsey (fun _ => Classical.choice (inferInstance : Nonempty κ))
   obtain ⟨S, hQS, hCopies⟩ := hInitial β₀
-  letI : Fintype (Embedding A D) := Fintype.ofFinite _
-  let xs : List (Embedding A D) := Finset.univ.toList
+  letI : Fintype (Structure.Embedding A D) := Fintype.ofFinite _
+  let xs : List (Structure.Embedding A D) := Finset.univ.toList
   obtain ⟨T, hQT, hT⟩ :=
     canonicalize_preserving A κ Q hStep S hQS xs
   refine ⟨T, hQT, ?_⟩
   intro χ
   obtain ⟨f, hf⟩ := hT χ
-  let HasCopy (α : Embedding A D) : Prop :=
-    ∃ e : Embedding A S.system.toStructure,
+  let HasCopy (α : Structure.Embedding A D) : Prop :=
+    ∃ e : Structure.Embedding A S.system.toStructure,
       ∀ x, S.system.part (e x) = α x
-  let rep (α : Embedding A D) (h : HasCopy α) :
-      Embedding A S.system.toStructure :=
+  let rep (α : Structure.Embedding A D) (h : HasCopy α) :
+      Structure.Embedding A S.system.toStructure :=
     Classical.choose h
-  have hrep (α : Embedding A D) (h : HasCopy α) :
+  have hrep (α : Structure.Embedding A D) (h : HasCopy α) :
       ∀ x, S.system.part (rep α h x) = α x :=
     Classical.choose_spec h
-  let θ : Embedding A D → κ := fun α =>
+  let θ : Structure.Embedding A D → κ := fun α =>
     if h : HasCopy α then
       χ (f.toEmbedding.comp (rep α h))
     else
@@ -126,7 +126,7 @@ theorem inducedConstruction_preserving
   obtain ⟨β, hβ⟩ := hRamsey θ
   obtain ⟨j, hj⟩ := hCopies β
   refine ⟨f.toEmbedding.comp j, ?_⟩
-  have hcolour (e : Embedding A B) :
+  have hcolour (e : Structure.Embedding A B) :
       θ (β.comp e) =
         χ ((f.toEmbedding.comp j).comp e) := by
     have hp :
