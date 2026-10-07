@@ -57,6 +57,61 @@ theorem root
     exact hxa
 
 
+/-- If a whole side already embeds into the base, it has a relative
+completion rooted at a fresh copy of that same base.
+
+The root may be reducible.  We use two copies of `Base`, identify their
+copies of the source root, and keep the left copy as the distinguished start.
+Exactness of the free amalgam then gives root isolation on the right-hand side.
+This is the canonical rooted witness for the chosen-copy side of a functional
+Picture attachment. -/
+theorem of_embedding_into_base
+    (hBase : Base.Irreducible)
+    (s : Embedding Root Side)
+    (g : Embedding Side Base) :
+    HasTreeExtensionCompletion
+      (Base := Base) (Start := Base)
+      s (fun x => g (s x)) := by
+  classical
+  let q : Embedding Root Base := g.comp s
+  have hq : q.ContainedInIrreducible := by
+    refine ⟨VB, Base, hBase, Embedding.id Base, ?_⟩
+    intro x
+    exact ⟨q x, rfl⟩
+  let h0 : TreeExtension Base Base VB Base :=
+    TreeExtension.refl
+  let hExt :=
+    TreeExtension.attach h0 q q hq hq
+  let Target := FreeAmalgam.amalgam Root Base Base q q
+  let l : Embedding Base Target :=
+    FreeAmalgam.leftEmbedding Root Base Base q q
+  let r : Embedding Base Target :=
+    FreeAmalgam.rightEmbedding Root Base Base q q
+  have hfree : IsFreeAmalgam q q l r :=
+    FreeAmalgam.isFreeAmalgam Root Base Base q q
+  let f : E → _ := r ∘ g
+  have hf : Side.IsHomomorphismEmbedding Target f :=
+    r.isHomomorphismEmbedding.comp g.isHomomorphismEmbedding
+  have hcompat :
+      ∀ d, f (s d) = hExt.startEmbedding (g (s d)) := by
+    intro d
+    change r (q d) = l (q d)
+    exact ((hfree.overlap (q d) (q d)).mpr ⟨d, rfl, rfl⟩).symm
+  have hroot :
+      IsFreeAmalgam.RootIsolated
+        s hExt.startEmbedding (fun x => g (s x)) f := by
+    intro x a hxa
+    change r (g x) = l a at hxa
+    obtain ⟨d, hda, hdx⟩ :=
+      (hfree.overlap a (g x)).mp hxa.symm
+    refine ⟨d, ?_, ?_⟩
+    · apply g.injective
+      change g x = g (s d)
+      simpa [q] using hdx.symm
+    · simpa [q] using hda
+  exact ⟨_, Target, hExt, f, hf, hcompat, hroot⟩
+
+
 /-- Pull a relative completion back along a full source embedding which
 commutes with the distinguished root. -/
 theorem pullback_embedding
