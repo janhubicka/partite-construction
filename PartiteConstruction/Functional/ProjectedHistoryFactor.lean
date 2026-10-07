@@ -128,4 +128,50 @@ theorem HasCommonRootedProjectedHistoryCompletions.of_rootHistory
   · intro d
     exact (hpR d).trans (hfactor d)
 
+/-- The finite projected histories of just one relative side witness
+already force the separator projection to factor through its completed
+root tree.  Thus the separate root-history hypothesis in `of_rootHistory`
+is redundant.
+
+In particular, for a common strict root completion, agreement of the two
+source projections on the separator and a diary containing all singleton
+sets are enough for synchronization. -/
+theorem HasCommonRootedProjectedHistoryCompletions.of_sharedExtensions
+    {L : Language.{u}} {VB E F : Type v}
+    {Base : Structure L VB}
+    {Root : Structure L H}
+    {Left : Structure L E} {Right : Structure L F}
+    {Start : Structure L G}
+    {sL : Embedding Root Left} {sR : Embedding Root Right}
+    [Nonempty P]
+    (hTree : TreeAmalgam Base G Start)
+    (q : H → G) (hq : Root.IsHomomorphismEmbedding Start q)
+    (pL : E → P) (pR : F → P)
+    (hagree : ∀ d, pL (sL d) = pR (sR d))
+    (history : List (Set P))
+    (hSingle : ∀ a : P, Set.singleton a ∈ history)
+    (hL : HasTreeExtensionProjectedHistoryCompletion
+      (Base := Base) (Start := Start) sL q pL history)
+    (hR : HasTreeExtensionProjectedHistoryCompletion
+      (Base := Base) (Start := Start) sR q pR history) :
+    HasCommonRootedProjectedHistoryCompletions
+      (Base := Base) sL sR pL pR history := by
+  have hRootHistory :
+      ∀ K ∈ history, ∀ x y : H,
+        q x = q y →
+          (pL (sL x) ∈ K ↔ pL (sL y) ∈ K) := by
+    obtain ⟨ZL, TL, hExtL, fL, _hfL, hcompatL, _hrootL, hHistL⟩ := hL
+    intro K hK x y hxy
+    apply hHistL K hK (sL x) (sL y)
+    calc
+      fL (sL x) = hExtL.startEmbedding (q x) := hcompatL x
+      _ = hExtL.startEmbedding (q y) :=
+        congrArg hExtL.startEmbedding hxy
+      _ = fL (sL y) := (hcompatL y).symm
+  exact HasCommonRootedProjectedHistoryCompletions.of_rootHistory
+    (Base := Base) hTree q hq
+    (fun d => pL (sL d)) pL pR
+    (fun _ => rfl) (fun d => (hagree d).symm)
+    history hSingle hRootHistory hL hR
+
 end StructuralRamsey.Structure
