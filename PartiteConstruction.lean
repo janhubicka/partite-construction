@@ -259,3 +259,5 @@ import PartiteConstruction.Functional.HistoryZero
 import PartiteConstruction.Functional.PureCoreProjectedHistory
 
 import PartiteConstruction.Functional.InjectiveProjectedGlue
+
+import PartiteConstruction.Functional.EHNDomainFailureDecompose
