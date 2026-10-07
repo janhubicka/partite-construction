@@ -26,9 +26,8 @@ variable {α : RelStructure.ClosedEmbedding A D}
 /-- The U-closed Hales--Jewett Picture preserves the local graph-tree
 completion at level n along with U-transversality and the closed Picture
 colouring property. -/
-/-- The valid closed-alpha induced Picture Lemma with closures. -/
 theorem pictureLemma_withLocal
-    {VB : Type v}
+    {VB : Type v} [Finite VB]
     (Base : RelStructure L.graph VB)
     (hA : A.Irreducible)
     (eAB : RelStructure.Embedding A Base)
