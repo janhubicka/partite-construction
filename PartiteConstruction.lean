@@ -12,7 +12,8 @@ import PartiteConstruction.Functional.ClosedInitial
 import PartiteConstruction.Functional.HalfClosedInitial
 import PartiteConstruction.Functional.HalfClosedConstruction
 import PartiteConstruction.Functional.NonClosedPictureObstruction
-import PartiteConstruction.Functional.ClosedPictureRepair
+import PartiteConstruction.Functional.ClosedPicture
+import PartiteConstruction.Functional.ClosedPictureWeakTree
 import PartiteConstruction.Functional.NestedFlatten
 import PartiteConstruction.Functional.PartPredicates
 import PartiteConstruction.Functional.HalfClosedPartite
@@ -129,6 +130,7 @@ import PartiteConstruction.Iterated.IntersectionStrongProjectedGlue
 import PartiteConstruction.Iterated.ProjectedGlue
 import PartiteConstruction.Iterated.ProjectedCover
 import PartiteConstruction.Relational.Attachment
+import PartiteConstruction.Relational.AttachmentReindex
 import PartiteConstruction.Relational.Order
 import PartiteConstruction.Partite.Operations
 import PartiteConstruction.Partite.Attachment
