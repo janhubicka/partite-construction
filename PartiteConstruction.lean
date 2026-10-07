@@ -188,6 +188,7 @@ import PartiteConstruction.Functional.ProjectedHistoryFactor
 import PartiteConstruction.Functional.TreeExtensionAutoHistoryGlue
 import PartiteConstruction.Functional.EHNClosedAttachmentRootHistory
 import PartiteConstruction.Functional.EHNClosedMixedSize
+import PartiteConstruction.Functional.EHNClosedPullbackRootDichotomy
 import PartiteConstruction.Functional.TreeExtensionWitness
 
 import PartiteConstruction.Functional.FibreSurjectivityObstruction
