@@ -272,6 +272,7 @@ import PartiteConstruction.Functional.BoundaryDiaryCompletion
 import PartiteConstruction.Functional.EHNStageInvariant
 
 import PartiteConstruction.Functional.EHNPictureInvariant
+import PartiteConstruction.Functional.DirectWeakIteration
 
 import PartiteConstruction.Functional.EHNInvariantConstruction
 
