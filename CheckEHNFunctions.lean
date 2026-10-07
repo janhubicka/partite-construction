@@ -183,6 +183,7 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.projectedMap_factors_of_kernel
 #print axioms StructuralRamsey.Structure.projectedMap_factors_of_singletonHistory
 #print axioms StructuralRamsey.Structure.HasCommonRootedProjectedHistoryCompletions.of_rootHistory
+#print axioms StructuralRamsey.Structure.HasCommonRootedProjectedHistoryCompletions.of_sharedExtensions
 #print axioms StructuralRamsey.FunctionalPartite.closedRoot_induction_with_common
 
 #print axioms StructuralRamsey.FunctionalPartite.pureCore_projectedHistory_of_domainReflection
