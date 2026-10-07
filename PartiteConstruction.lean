@@ -183,6 +183,7 @@ import PartiteConstruction.Functional.TreeExtensionGlue
 import PartiteConstruction.Functional.TreeExtensionHistoryGlue
 import PartiteConstruction.Functional.TreeExtensionHistoryWitness
 import PartiteConstruction.Functional.TreeExtensionHistoryInduction
+import PartiteConstruction.Functional.RelativeHistoryRootedWithHistory
 import PartiteConstruction.Functional.TreeExtensionWitness
 
 import PartiteConstruction.Functional.FibreSurjectivityObstruction
