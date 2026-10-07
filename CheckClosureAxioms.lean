@@ -26,3 +26,8 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.Structure.FunctionalHistoryTreeLike.rootedWitness
 #print axioms StructuralRamsey.Structure.LocallyClosedTreeCompletable.freeAmalgam_irreducibleRoot
 #print axioms StructuralRamsey.Structure.HasTreeExtensionCompletion.of_embedding_into_base
+
+#print axioms StructuralRamsey.RelStructure.FunctionClosedHasTreeCompletion.glue
+#print axioms StructuralRamsey.RelStructure.FunctionClosedLocallyTreeCompletable.toFunctional
+#print axioms StructuralRamsey.RelStructure.FunctionClosedLocallyTreeCompletable.of_treeAmalgam
+#print axioms StructuralRamsey.RelStructure.FunctionClosedHasTreeCompletion.of_closedEmbedding
