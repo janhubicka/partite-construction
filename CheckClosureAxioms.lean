@@ -16,3 +16,8 @@ import PartiteConstruction.Functional.QuotientFibreObstruction
 #print axioms StructuralRamsey.Structure.QuotientFibreObstruction.generated_image_exact
 #print axioms StructuralRamsey.Structure.QuotientFibreObstruction.collapse_graph_hom
 #print axioms StructuralRamsey.Structure.QuotientFibreObstruction.collapse_not_full_hom
+
+#print axioms StructuralRamsey.Structure.LocallyGeneratedTreeCompletable.rootedWitness
+#print axioms StructuralRamsey.Structure.FunctionalHistoryTreeLike.rootedWitness
+#print axioms StructuralRamsey.Structure.LocallyClosedTreeCompletable.freeAmalgam_irreducibleRoot
+#print axioms StructuralRamsey.Structure.HasTreeExtensionCompletion.of_embedding_into_base
