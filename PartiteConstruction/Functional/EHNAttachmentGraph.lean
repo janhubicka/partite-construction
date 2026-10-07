@@ -32,7 +32,13 @@ def attachingGraphMap
   injective := f.injective
   map_rel_iff := by
     intro R z
-    exact f.graph.map_rel_iff R z
+    have hInduce :
+        (B.induce S hS).graph.rel R z ↔
+          (B.graph.induce S).rel R z := by
+      cases R with
+      | inl _ => rfl
+      | inr _ => rfl
+    exact (f.graph.map_rel_iff R z).trans hInduce
 
 /-- For a native functional attachment, the canonical fresh-copy vertex
 has exactly the same tag as in the relational graph attachment. -/
@@ -54,6 +60,5 @@ theorem copyMap_graph_eq
   · rw [copyMap_not_mem (f := f) i x hx,
         RelStructure.Attachment.copyMap_not_mem
           (f := fun j => attachingGraphMap B S hS D (f j)) i x hx]
-    rfl
 
 end StructuralRamsey.Structure.Attachment
