@@ -18,6 +18,7 @@ import PartiteConstruction.Functional.PartPredicates
 import PartiteConstruction.Functional.HalfClosedPartite
 import PartiteConstruction.Functional.SingletonExpansion
 import PartiteConstruction.Functional.SingletonReduction
+import PartiteConstruction.Functional.RankedTreeReduct
 import PartiteConstruction.Functional.PartialDomainEncoding
 import PartiteConstruction.Functional.FunctionDomains
 import PartiteConstruction.Functional.SingletonPartite
@@ -154,6 +155,8 @@ import PartiteConstruction.Iterated.ProjectedRelativeLabelledLocalTreeLike
 import PartiteConstruction.Iterated.ProjectedHistoryMixedGlue
 
 import PartiteConstruction.Functional.FreeAmalgamClosed
+import PartiteConstruction.Functional.FreeAmalgamClosedInduce
+import PartiteConstruction.Functional.ClosedLiftEmbedding
 
 import PartiteConstruction.Functional.HalfClosedTheorem
 
@@ -170,11 +173,91 @@ import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 import PartiteConstruction.Functional.TreeTransferObstruction
 
 import PartiteConstruction.Functional.ClosedTreeAmalgam
+import PartiteConstruction.Functional.FunctionClosedLocalTree
+import PartiteConstruction.Functional.FunctionClosedControlCompletion
+import PartiteConstruction.Functional.LooseTreeAmalgam
 
 import PartiteConstruction.Functional.FunctionalTreeAmalgam
+import PartiteConstruction.Functional.TreeExtension
+import PartiteConstruction.Functional.TreeExtensionGlue
+import PartiteConstruction.Functional.TreeExtensionHistoryGlue
+import PartiteConstruction.Functional.TreeExtensionHistoryWitness
+import PartiteConstruction.Functional.TreeExtensionWitness
 
 import PartiteConstruction.Functional.FibreSurjectivityObstruction
 
 import PartiteConstruction.Functional.WeakTreePropertyObstruction
 
 import PartiteConstruction.Functional.FullSparseningObstruction
+
+import PartiteConstruction.Functional.ClosedLocalTreeCompletion
+
+import PartiteConstruction.Functional.FullFreeAmalgam
+
+import PartiteConstruction.Functional.WitnessGlue
+
+import PartiteConstruction.Functional.InitialTreeCompletion
+import PartiteConstruction.Functional.EHNAttachmentPureCases
+import PartiteConstruction.Functional.EHNAttachmentDecompose
+
+import PartiteConstruction.Functional.ClosedGeneratorRank
+
+import PartiteConstruction.Functional.GeneratedTreeCompletion
+import PartiteConstruction.Functional.GeneratedRootedWitness
+import PartiteConstruction.Functional.FibreExactness
+import PartiteConstruction.Functional.EHNTestDecompose
+import PartiteConstruction.Functional.EHNStrongInduction
+import PartiteConstruction.Functional.EHNRootDichotomy
+import PartiteConstruction.Functional.EHNClosedRootInduction
+import PartiteConstruction.Functional.PureCoreDomainReflection
+import PartiteConstruction.Functional.PureCoreDomainDescent
+
+import PartiteConstruction.Functional.ProjectedHistoryTreeCompletion
+
+import PartiteConstruction.Functional.ClosedAttachmentDecompose
+
+import PartiteConstruction.Functional.ControlCompletion
+
+import PartiteConstruction.Functional.HistoryTreeCompletion
+import PartiteConstruction.Functional.HistoryRootedWitness
+import PartiteConstruction.Functional.HistoryIrreducibleRootGlue
+import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
+import PartiteConstruction.Functional.InjectiveHistoryPullback
+import PartiteConstruction.Functional.InjectiveRelativePullback
+
+import PartiteConstruction.Functional.RelativeHistoryTreeCompletion
+
+import PartiteConstruction.Functional.MixedOverlapExactness
+
+import PartiteConstruction.Functional.FreeAmalgamPullback
+import PartiteConstruction.Functional.FreeAmalgamReassociate
+
+import PartiteConstruction.Functional.ProjectedPartialEmbedded
+
+import PartiteConstruction.Functional.IsolatedCommonLabelGlue
+
+import PartiteConstruction.Functional.HistoryMixedGlue
+
+import PartiteConstruction.Functional.ClosedAttachmentHistoryGlue
+
+import PartiteConstruction.Functional.BoundaryDiary
+import PartiteConstruction.Functional.QuotientBoundaryDiary
+import PartiteConstruction.Functional.LabelledIntersectionControl
+import PartiteConstruction.Functional.LabelledHistoryControl
+import PartiteConstruction.Functional.QuotientProjectedHistoryGlue
+
+import PartiteConstruction.Functional.BoundaryDiaryCompletion
+
+import PartiteConstruction.Functional.EHNStageInvariant
+
+import PartiteConstruction.Functional.EHNPictureInvariant
+
+import PartiteConstruction.Functional.EHNInvariantConstruction
+
+import PartiteConstruction.Functional.HistoryZero
+
+import PartiteConstruction.Functional.PureCoreProjectedHistory
+
+import PartiteConstruction.Functional.InjectiveProjectedGlue
+
+import PartiteConstruction.Functional.EHNDomainFailureDecompose

@@ -1,0 +1,949 @@
+import PartiteConstruction.Functional.FullFreeAmalgam
+import PartiteConstruction.Functional.ClosedLocalTreeCompletion
+
+/-! # Gluing full functional tree-completion witnesses
+
+The relational mixed-glue proof needs only homomorphism-embeddings.  For
+set-valued functions, fibre-surjectivity can fail unless the common target root
+has no points unaccounted for by the source overlap.
+
+The hypothesis `Surjective q` records exactly the additional information
+available in the closed-substructure argument: the common target root is the
+image of the whole source overlap.  Injectivity of the two side witnesses then
+prevents a point outside the source overlap from leaking into the target root.
+Under these two hypotheses the compatible lift is again a full
+homomorphism-embedding.
+-/
+
+namespace StructuralRamsey.Structure.IsFreeAmalgam
+
+universe u v
+
+variable {L : Language.{u}}
+variable {H E F C G E₂ F₂ T : Type v}
+variable {D₁ : Structure L H} {A₁ : Structure L E}
+variable {B₁ : Structure L F} {C₁ : Structure L C}
+variable {D₂ : Structure L G} {A₂ : Structure L E₂}
+variable {B₂ : Structure L F₂} {C₂ : Structure L T}
+variable {sA : Embedding D₁ A₁} {sB : Embedding D₁ B₁}
+variable {iA : Embedding A₁ C₁} {iB : Embedding B₁ C₁}
+variable {tA : Embedding D₂ A₂} {tB : Embedding D₂ B₂}
+variable {jA : Embedding A₂ C₂} {jB : Embedding B₂ C₂}
+
+/-- Candidate value of the compatible lift. -/
+def FunctionalLiftOutput
+    (iA : Embedding A₁ C₁) (iB : Embedding B₁ C₁)
+    (jA : Embedding A₂ C₂) (jB : Embedding B₂ C₂)
+    (hA : E → E₂) (hB : F → F₂) (z : C) (w : T) : Prop :=
+  (∃ a : E, z = iA a ∧ w = jA (hA a)) ∨
+  (∃ b : F, z = iB b ∧ w = jB (hB b))
+
+theorem functionalLiftOutput_existsUnique
+    (hSrc : IsFreeAmalgam sA sB iA iB)
+    (hTgt : IsFreeAmalgam tA tB jA jB)
+    (q : H → G) (hA : E → E₂) (hB : F → F₂)
+    (hcompatA : ∀ d, hA (sA d) = tA (q d))
+    (hcompatB : ∀ d, hB (sB d) = tB (q d))
+    (z : C) :
+    ∃! w : T, FunctionalLiftOutput iA iB jA jB hA hB z w := by
+  classical
+  rcases hSrc.covers z with ⟨a, rfl⟩ | ⟨b, rfl⟩
+  · refine ⟨jA (hA a), Or.inl ⟨a, rfl, rfl⟩, ?_⟩
+    intro w hw
+    rcases hw with ⟨a', ha', rfl⟩ | ⟨b, hb, rfl⟩
+    · have haa : a = a' := iA.injective ha'
+      subst a'
+      rfl
+    · obtain ⟨d, had, hbd⟩ := (hSrc.overlap a b).mp hb
+      subst a
+      subst b
+      rw [hcompatA d, hcompatB d]
+      exact ((hTgt.overlap (tA (q d)) (tB (q d))).mpr
+        ⟨q d, rfl, rfl⟩).symm
+  · refine ⟨jB (hB b), Or.inr ⟨b, rfl, rfl⟩, ?_⟩
+    intro w hw
+    rcases hw with ⟨a, ha, rfl⟩ | ⟨b', hb', rfl⟩
+    · obtain ⟨d, had, hbd⟩ := (hSrc.overlap a b).mp ha.symm
+      subst a
+      subst b
+      rw [hcompatA d, hcompatB d]
+      exact (hTgt.overlap (tA (q d)) (tB (q d))).mpr
+        ⟨q d, rfl, rfl⟩
+    · have hbb : b = b' := iB.injective hb'
+      subst b'
+      rfl
+
+noncomputable def functionalLiftMap
+    (hSrc : IsFreeAmalgam sA sB iA iB)
+    (hTgt : IsFreeAmalgam tA tB jA jB)
+    (q : H → G) (hA : E → E₂) (hB : F → F₂)
+    (hcompatA : ∀ d, hA (sA d) = tA (q d))
+    (hcompatB : ∀ d, hB (sB d) = tB (q d)) :
+    C → T :=
+  fun z => Classical.choose
+    (functionalLiftOutput_existsUnique hSrc hTgt q hA hB
+      hcompatA hcompatB z)
+
+theorem functionalLiftMap_left
+    (hSrc : IsFreeAmalgam sA sB iA iB)
+    (hTgt : IsFreeAmalgam tA tB jA jB)
+    (q : H → G) (hA : E → E₂) (hB : F → F₂)
+    (hcompatA : ∀ d, hA (sA d) = tA (q d))
+    (hcompatB : ∀ d, hB (sB d) = tB (q d))
+    (a : E) :
+    functionalLiftMap hSrc hTgt q hA hB hcompatA hcompatB (iA a) =
+      jA (hA a) := by
+  let huniq :=
+    functionalLiftOutput_existsUnique hSrc hTgt q hA hB
+      hcompatA hcompatB (iA a)
+  exact huniq.unique
+    (Classical.choose_spec huniq).1
+    (Or.inl ⟨a, rfl, rfl⟩)
+
+theorem functionalLiftMap_right
+    (hSrc : IsFreeAmalgam sA sB iA iB)
+    (hTgt : IsFreeAmalgam tA tB jA jB)
+    (q : H → G) (hA : E → E₂) (hB : F → F₂)
+    (hcompatA : ∀ d, hA (sA d) = tA (q d))
+    (hcompatB : ∀ d, hB (sB d) = tB (q d))
+    (b : F) :
+    functionalLiftMap hSrc hTgt q hA hB hcompatA hcompatB (iB b) =
+      jB (hB b) := by
+  let huniq :=
+    functionalLiftOutput_existsUnique hSrc hTgt q hA hB
+      hcompatA hcompatB (iB b)
+  exact huniq.unique
+    (Classical.choose_spec huniq).1
+    (Or.inr ⟨b, rfl, rfl⟩)
+
+/-- A side witness is isolated over the target root when every source-side
+point landing in that root already comes from the source overlap, with the
+same root label.  This is the exact condition supplied by projected-history
+bookkeeping in the noninjective mixed case. -/
+def RootIsolated
+    (s : Embedding D₁ A₁) (t : Embedding D₂ A₂)
+    (q : H → G) (h : E → E₂) : Prop :=
+  ∀ a g, h a = t g →
+    ∃ d : H, a = s d ∧ q d = g
+
+/-- Injectivity plus surjectivity of the overlap labelling implies root
+isolation.  This recovers the earlier exact-root special case. -/
+theorem rootIsolated_of_injective_surjective
+    (q : H → G) (hq : Function.Surjective q)
+    (hA : E → E₂)
+    (hcompatA : ∀ d, hA (sA d) = tA (q d))
+    (hinjA : Function.Injective hA) :
+    RootIsolated sA tA q hA := by
+  intro a g hag
+  obtain ⟨d, rfl⟩ := hq g
+  refine ⟨d, ?_, rfl⟩
+  apply hinjA
+  exact hag.trans (hcompatA d).symm
+
+/-- A secondary isolated root carried by the right side remains isolated after
+the compatible functional lift.  This is the persistence fact used when an
+outer attachment boundary lies in the core/rest side of a later mixed split. -/
+theorem functionalLiftMap_preservesRightRoot
+    (hSrc : IsFreeAmalgam sA sB iA iB)
+    (hTgt : IsFreeAmalgam tA tB jA jB)
+    (q : H → G)
+    (hA : E → E₂) (hB : F → F₂)
+    (hcompatA : ∀ d, hA (sA d) = tA (q d))
+    (hcompatB : ∀ d, hB (sB d) = tB (q d))
+    (hrootA : RootIsolated sA tA q hA)
+    {K Q : Type v}
+    {Rsrc : Structure L K} {Rtgt : Structure L Q}
+    (rSrc : Embedding Rsrc B₁)
+    (rTgt : Embedding Rtgt B₂)
+    (ell : K → Q)
+    (hcompatR : ∀ k, hB (rSrc k) = rTgt (ell k))
+    (hrootR : RootIsolated rSrc rTgt ell hB) :
+    let Fmap :=
+      functionalLiftMap hSrc hTgt q hA hB hcompatA hcompatB
+    (∀ k,
+      Fmap ((iB.comp rSrc) k) =
+        (jB.comp rTgt) (ell k)) ∧
+    RootIsolated
+      (iB.comp rSrc) (jB.comp rTgt) ell Fmap := by
+  classical
+  let Fmap :=
+    functionalLiftMap hSrc hTgt q hA hB hcompatA hcompatB
+  have hcompatWhole :
+      ∀ k,
+        Fmap ((iB.comp rSrc) k) =
+          (jB.comp rTgt) (ell k) := by
+    intro k
+    calc
+      Fmap ((iB.comp rSrc) k) =
+          Fmap (iB (rSrc k)) := rfl
+      _ = jB (hB (rSrc k)) :=
+        functionalLiftMap_right
+          hSrc hTgt q hA hB hcompatA hcompatB (rSrc k)
+      _ = jB (rTgt (ell k)) :=
+        congrArg jB (hcompatR k)
+      _ = (jB.comp rTgt) (ell k) := rfl
+  refine ⟨hcompatWhole, ?_⟩
+  intro x u hxu
+  rcases hSrc.covers x with ⟨a, hxa⟩ | ⟨b, hxb⟩
+  · have hcross :
+        jA (hA a) = jB (rTgt u) := by
+      calc
+        jA (hA a) =
+            Fmap (iA a) :=
+          (functionalLiftMap_left
+            hSrc hTgt q hA hB hcompatA hcompatB a).symm
+        _ = Fmap x := congrArg Fmap hxa.symm
+        _ = (jB.comp rTgt) u := hxu
+        _ = jB (rTgt u) := rfl
+    obtain ⟨g, hag, hrg⟩ :=
+      (hTgt.overlap (hA a) (rTgt u)).mp hcross
+    obtain ⟨d, had, hqd⟩ := hrootA a g hag
+    have hright :
+        hB (sB d) = rTgt u := by
+      calc
+        hB (sB d) = tB (q d) := hcompatB d
+        _ = tB g := congrArg tB hqd
+        _ = rTgt u := hrg.symm
+    obtain ⟨k, hsk, hku⟩ := hrootR (sB d) u hright
+    refine ⟨k, ?_, hku⟩
+    calc
+      x = iA a := hxa
+      _ = iA (sA d) := congrArg iA had
+      _ = iB (sB d) :=
+        (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
+      _ = iB (rSrc k) := congrArg iB hsk
+      _ = (iB.comp rSrc) k := rfl
+  · have hright :
+        hB b = rTgt u := by
+      apply jB.injective
+      calc
+        jB (hB b) =
+            Fmap (iB b) :=
+          (functionalLiftMap_right
+            hSrc hTgt q hA hB hcompatA hcompatB b).symm
+        _ = Fmap x := congrArg Fmap hxb.symm
+        _ = (jB.comp rTgt) u := hxu
+        _ = jB (rTgt u) := rfl
+    obtain ⟨k, hbk, hku⟩ := hrootR b u hright
+    refine ⟨k, ?_, hku⟩
+    calc
+      x = iB b := hxb
+      _ = iB (rSrc k) := congrArg iB hbk
+      _ = (iB.comp rSrc) k := rfl
+
+/-- Compatible full homomorphism-embeddings lift across free amalgams when
+both side witnesses are isolated over the common target root.  No global
+injectivity is needed. -/
+theorem functionalLiftMap_isHomomorphismEmbedding
+    (hSrc : IsFreeAmalgam sA sB iA iB)
+    (hTgt : IsFreeAmalgam tA tB jA jB)
+    (q : H → G)
+    (hA : E → E₂) (hB : F → F₂)
+    (hcompatA : ∀ d, hA (sA d) = tA (q d))
+    (hcompatB : ∀ d, hB (sB d) = tB (q d))
+    (hhA : A₁.IsHomomorphismEmbedding A₂ hA)
+    (hhB : B₁.IsHomomorphismEmbedding B₂ hB)
+    (hrootA : RootIsolated sA tA q hA)
+    (hrootB : RootIsolated sB tB q hB) :
+    C₁.IsHomomorphismEmbedding C₂
+      (functionalLiftMap hSrc hTgt q hA hB hcompatA hcompatB) := by
+  classical
+  let Fmap :=
+    functionalLiftMap hSrc hTgt q hA hB hcompatA hcompatB
+  have hhom : C₁.IsHomomorphism C₂ Fmap := by
+    constructor
+    · intro R x hx
+      rcases (hSrc.rel_iff R x).mp hx with
+        ⟨a, ha, hxa⟩ | ⟨b, hb, hxb⟩
+      · have hside : A₂.rel R (hA ∘ a) :=
+          hhA.1.1 R a ha
+        have htgt : C₂.rel R (jA ∘ (hA ∘ a)) :=
+          (jA.map_rel_iff R (hA ∘ a)).2 hside
+        convert htgt using 1
+        funext k
+        have hxk := congrFun hxa k
+        change Fmap (x k) = jA (hA (a k))
+        rw [hxk]
+        exact functionalLiftMap_left hSrc hTgt q hA hB
+          hcompatA hcompatB (a k)
+      · have hside : B₂.rel R (hB ∘ b) :=
+          hhB.1.1 R b hb
+        have htgt : C₂.rel R (jB ∘ (hB ∘ b)) :=
+          (jB.map_rel_iff R (hB ∘ b)).2 hside
+        convert htgt using 1
+        funext k
+        have hxk := congrFun hxb k
+        change Fmap (x k) = jB (hB (b k))
+        rw [hxk]
+        exact functionalLiftMap_right hSrc hTgt q hA hB
+          hcompatA hcompatB (b k)
+    · intro F0 x
+      ext y
+      constructor
+      · rintro ⟨z, hz, rfl⟩
+        rcases (hSrc.func_iff F0 x z).mp hz with
+          ⟨a, b, hb, hxa, hzb⟩ |
+          ⟨a, b, hb, hxa, hzb⟩
+        · apply (hTgt.func_iff F0 (Fmap ∘ x) (Fmap z)).mpr
+          refine Or.inl ⟨hA ∘ a, hA b, ?_, ?_, ?_⟩
+          · have hm :
+                hA b ∈ imageSet hA (A₁.func F0 a) :=
+              ⟨b, hb, rfl⟩
+            rw [hhA.1.2 F0 a] at hm
+            exact hm
+          · funext k
+            have hxk := congrFun hxa k
+            change Fmap (x k) = jA (hA (a k))
+            rw [hxk]
+            exact functionalLiftMap_left hSrc hTgt q hA hB
+              hcompatA hcompatB (a k)
+          · change Fmap z = jA (hA b)
+            rw [hzb]
+            exact functionalLiftMap_left hSrc hTgt q hA hB
+              hcompatA hcompatB b
+        · apply (hTgt.func_iff F0 (Fmap ∘ x) (Fmap z)).mpr
+          refine Or.inr ⟨hB ∘ a, hB b, ?_, ?_, ?_⟩
+          · have hm :
+                hB b ∈ imageSet hB (B₁.func F0 a) :=
+              ⟨b, hb, rfl⟩
+            rw [hhB.1.2 F0 a] at hm
+            exact hm
+          · funext k
+            have hxk := congrFun hxa k
+            change Fmap (x k) = jB (hB (a k))
+            rw [hxk]
+            exact functionalLiftMap_right hSrc hTgt q hA hB
+              hcompatA hcompatB (a k)
+          · change Fmap z = jB (hB b)
+            rw [hzb]
+            exact functionalLiftMap_right hSrc hTgt q hA hB
+              hcompatA hcompatB b
+      · intro hy
+        rcases (hTgt.func_iff F0 (Fmap ∘ x) y).mp hy with
+          ⟨a₂, b₂, hb₂, hargs, hout⟩ |
+          ⟨a₂, b₂, hb₂, hargs, hout⟩
+        · have hex :
+              ∀ k, ∃ a : E, x k = iA a ∧ hA a = a₂ k := by
+            intro k
+            rcases hSrc.covers (x k) with ⟨a, hxa⟩ | ⟨b, hxb⟩
+            · refine ⟨a, hxa, ?_⟩
+              apply jA.injective
+              calc
+                jA (hA a) = Fmap (iA a) :=
+                  (functionalLiftMap_left hSrc hTgt q hA hB
+                    hcompatA hcompatB a).symm
+                _ = Fmap (x k) := congrArg Fmap hxa.symm
+                _ = jA (a₂ k) := congrFun hargs k
+            · have hcross :
+                  jA (a₂ k) = jB (hB b) := by
+                calc
+                  jA (a₂ k) = Fmap (x k) := (congrFun hargs k).symm
+                  _ = Fmap (iB b) := congrArg Fmap hxb
+                  _ = jB (hB b) :=
+                    functionalLiftMap_right hSrc hTgt q hA hB
+                      hcompatA hcompatB b
+              obtain ⟨g, hag, hbg⟩ :=
+                (hTgt.overlap (a₂ k) (hB b)).mp hcross
+              obtain ⟨d, hbEq, hqd⟩ := hrootB b g hbg
+              have hxleft : x k = iA (sA d) := by
+                calc
+                  x k = iB b := hxb
+                  _ = iB (sB d) := congrArg iB hbEq
+                  _ = iA (sA d) :=
+                    ((hSrc.overlap (sA d) (sB d)).mpr
+                      ⟨d, rfl, rfl⟩).symm
+              refine ⟨sA d, hxleft, ?_⟩
+              calc
+                hA (sA d) = tA (q d) := hcompatA d
+                _ = tA g := congrArg tA hqd
+                _ = a₂ k := hag.symm
+          choose a ha hha using hex
+          have hAargs : hA ∘ a = a₂ := funext hha
+          have hb₂' : b₂ ∈ A₂.func F0 (hA ∘ a) := by
+            rw [hAargs]
+            exact hb₂
+          rw [← hhA.1.2 F0 a] at hb₂'
+          rcases hb₂' with ⟨b, hb, hbb⟩
+          refine ⟨iA b, ?_, ?_⟩
+          · apply (hSrc.func_iff F0 x (iA b)).mpr
+            refine Or.inl ⟨a, b, hb, ?_, rfl⟩
+            funext k
+            exact ha k
+          · calc
+              Fmap (iA b) = jA (hA b) :=
+                functionalLiftMap_left hSrc hTgt q hA hB
+                  hcompatA hcompatB b
+              _ = jA b₂ := congrArg jA hbb
+              _ = y := hout.symm
+        · have hex :
+              ∀ k, ∃ b : F, x k = iB b ∧ hB b = a₂ k := by
+            intro k
+            rcases hSrc.covers (x k) with ⟨a, hxa⟩ | ⟨b, hxb⟩
+            · have hcross :
+                  jA (hA a) = jB (a₂ k) := by
+                calc
+                  jA (hA a) =
+                      Fmap (iA a) :=
+                    (functionalLiftMap_left hSrc hTgt q hA hB
+                      hcompatA hcompatB a).symm
+                  _ = Fmap (x k) := congrArg Fmap hxa.symm
+                  _ = jB (a₂ k) := congrFun hargs k
+              obtain ⟨g, hag, hbg⟩ :=
+                (hTgt.overlap (hA a) (a₂ k)).mp hcross
+              obtain ⟨d, haEq, hqd⟩ := hrootA a g hag
+              have hxright : x k = iB (sB d) := by
+                calc
+                  x k = iA a := hxa
+                  _ = iA (sA d) := congrArg iA haEq
+                  _ = iB (sB d) :=
+                    (hSrc.overlap (sA d) (sB d)).mpr
+                      ⟨d, rfl, rfl⟩
+              refine ⟨sB d, hxright, ?_⟩
+              calc
+                hB (sB d) = tB (q d) := hcompatB d
+                _ = tB g := congrArg tB hqd
+                _ = a₂ k := hbg.symm
+            · refine ⟨b, hxb, ?_⟩
+              apply jB.injective
+              calc
+                jB (hB b) = Fmap (iB b) :=
+                  (functionalLiftMap_right hSrc hTgt q hA hB
+                    hcompatA hcompatB b).symm
+                _ = Fmap (x k) := congrArg Fmap hxb.symm
+                _ = jB (a₂ k) := congrFun hargs k
+          choose a ha hha using hex
+          have hBargs : hB ∘ a = a₂ := funext hha
+          have hb₂' : b₂ ∈ B₂.func F0 (hB ∘ a) := by
+            rw [hBargs]
+            exact hb₂
+          rw [← hhB.1.2 F0 a] at hb₂'
+          rcases hb₂' with ⟨b, hb, hbb⟩
+          refine ⟨iB b, ?_, ?_⟩
+          · apply (hSrc.func_iff F0 x (iB b)).mpr
+            refine Or.inr ⟨a, b, hb, ?_, rfl⟩
+            funext k
+            exact ha k
+          · calc
+              Fmap (iB b) = jB (hB b) :=
+                functionalLiftMap_right hSrc hTgt q hA hB
+                  hcompatA hcompatB b
+              _ = jB b₂ := congrArg jB hbb
+              _ = y := hout.symm
+  refine ⟨hhom, ?_⟩
+  intro X R hR e
+  rcases hR hSrc e with hleft | hright
+  · let eA : Embedding R A₁ :=
+      e.factorThroughRange iA hleft
+    obtain ⟨gA, hgA⟩ := hhA.2 R hR eA
+    refine ⟨jA.comp gA, ?_⟩
+    intro x
+    have hex := Classical.choose_spec (hleft x)
+    change jA (gA x) = Fmap (e x)
+    calc
+      jA (gA x) = jA (hA (eA x)) := congrArg jA (hgA x)
+      _ = Fmap (iA (eA x)) :=
+        (functionalLiftMap_left hSrc hTgt q hA hB
+          hcompatA hcompatB (eA x)).symm
+      _ = Fmap (e x) := congrArg Fmap hex.symm
+  · let eB : Embedding R B₁ :=
+      e.factorThroughRange iB hright
+    obtain ⟨gB, hgB⟩ := hhB.2 R hR eB
+    refine ⟨jB.comp gB, ?_⟩
+    intro x
+    have hex := Classical.choose_spec (hright x)
+    change jB (gB x) = Fmap (e x)
+    calc
+      jB (gB x) = jB (hB (eB x)) := congrArg jB (hgB x)
+      _ = Fmap (iB (eB x)) :=
+        (functionalLiftMap_right hSrc hTgt q hA hB
+          hcompatA hcompatB (eB x)).symm
+      _ = Fmap (e x) := congrArg Fmap hex.symm
+
+/-- The same hypotheses also make the compatible lift injective. -/
+theorem functionalLiftMap_injective
+    (hSrc : IsFreeAmalgam sA sB iA iB)
+    (hTgt : IsFreeAmalgam tA tB jA jB)
+    (q : H → G) (hq : Function.Surjective q)
+    (hA : E → E₂) (hB : F → F₂)
+    (hcompatA : ∀ d, hA (sA d) = tA (q d))
+    (hcompatB : ∀ d, hB (sB d) = tB (q d))
+    (hinjA : Function.Injective hA)
+    (hinjB : Function.Injective hB) :
+    Function.Injective
+      (functionalLiftMap hSrc hTgt q hA hB hcompatA hcompatB) := by
+  classical
+  let Fmap :=
+    functionalLiftMap hSrc hTgt q hA hB hcompatA hcompatB
+  have cross
+      (a : E) (b : F)
+      (hab : Fmap (iA a) = Fmap (iB b)) :
+      iA a = iB b := by
+    have hcross : jA (hA a) = jB (hB b) := by
+      calc
+        jA (hA a) = Fmap (iA a) :=
+          (functionalLiftMap_left hSrc hTgt q hA hB
+            hcompatA hcompatB a).symm
+        _ = Fmap (iB b) := hab
+        _ = jB (hB b) :=
+          functionalLiftMap_right hSrc hTgt q hA hB
+            hcompatA hcompatB b
+    obtain ⟨g, hag, hbg⟩ :=
+      (hTgt.overlap (hA a) (hB b)).mp hcross
+    obtain ⟨d, hqd⟩ := hq g
+    have ha : a = sA d := by
+      apply hinjA
+      calc
+        hA a = tA g := hag
+        _ = tA (q d) := congrArg tA hqd.symm
+        _ = hA (sA d) := (hcompatA d).symm
+    have hb : b = sB d := by
+      apply hinjB
+      calc
+        hB b = tB g := hbg
+        _ = tB (q d) := congrArg tB hqd.symm
+        _ = hB (sB d) := (hcompatB d).symm
+    calc
+      iA a = iA (sA d) := congrArg iA ha
+      _ = iB (sB d) :=
+        (hSrc.overlap (sA d) (sB d)).mpr ⟨d, rfl, rfl⟩
+      _ = iB b := congrArg iB hb.symm
+  intro x y hxy
+  rcases hSrc.covers x with ⟨a, hxa⟩ | ⟨b, hxb⟩
+  · rcases hSrc.covers y with ⟨a', hya⟩ | ⟨b, hyb⟩
+    · have haa : a = a' := by
+        apply hinjA
+        apply jA.injective
+        calc
+          jA (hA a) = Fmap (iA a) :=
+            (functionalLiftMap_left hSrc hTgt q hA hB
+              hcompatA hcompatB a).symm
+          _ = Fmap x := congrArg Fmap hxa.symm
+          _ = Fmap y := hxy
+          _ = Fmap (iA a') := congrArg Fmap hya
+          _ = jA (hA a') :=
+            functionalLiftMap_left hSrc hTgt q hA hB
+              hcompatA hcompatB a'
+      calc
+        x = iA a := hxa
+        _ = iA a' := congrArg iA haa
+        _ = y := hya.symm
+    · have hab : Fmap (iA a) = Fmap (iB b) := by
+        calc
+          Fmap (iA a) = Fmap x := congrArg Fmap hxa.symm
+          _ = Fmap y := hxy
+          _ = Fmap (iB b) := congrArg Fmap hyb
+      calc
+        x = iA a := hxa
+        _ = iB b := cross a b hab
+        _ = y := hyb.symm
+  · rcases hSrc.covers y with ⟨a, hya⟩ | ⟨b', hyb⟩
+    · have hab : Fmap (iA a) = Fmap (iB b) := by
+        calc
+          Fmap (iA a) = Fmap y := congrArg Fmap hya.symm
+          _ = Fmap x := hxy.symm
+          _ = Fmap (iB b) := congrArg Fmap hxb
+      calc
+        x = iB b := hxb
+        _ = iA a := (cross a b hab).symm
+        _ = y := hya.symm
+    · have hbb : b = b' := by
+        apply hinjB
+        apply jB.injective
+        calc
+          jB (hB b) = Fmap (iB b) :=
+            (functionalLiftMap_right hSrc hTgt q hA hB
+              hcompatA hcompatB b).symm
+          _ = Fmap x := congrArg Fmap hxb.symm
+          _ = Fmap y := hxy
+          _ = Fmap (iB b') := congrArg Fmap hyb
+          _ = jB (hB b') :=
+            functionalLiftMap_right hSrc hTgt q hA hB
+              hcompatA hcompatB b'
+      calc
+        x = iB b := hxb
+        _ = iB b' := congrArg iB hbb
+        _ = y := hyb.symm
+
+end StructuralRamsey.Structure.IsFreeAmalgam
+
+namespace StructuralRamsey.Structure.LocallyClosedTreeCompletable
+
+universe u v
+variable {L : Language.{u}}
+variable {UA VB H E F C G TE TF : Type v}
+variable {Control : Structure L UA} {Base : Structure L VB}
+variable {Dsrc : Structure L H} {Esrc : Structure L E}
+variable {Fsrc : Structure L F} {Csrc : Structure L C}
+variable {Gov : Structure L G} {ETgt : Structure L TE}
+variable {FTgt : Structure L TF}
+variable {sE : Embedding Dsrc Esrc} {sF : Embedding Dsrc Fsrc}
+variable {iE : Embedding Esrc Csrc} {iF : Embedding Fsrc Csrc}
+variable {tE : Embedding Gov ETgt} {tF : Embedding Gov FTgt}
+
+/-- Glue two functional tree-completion witnesses when projected history
+isolates the common target root on both sides.  This is the noninjective
+functional analogue of the relational mixed witness glue. -/
+theorem glueIsolatedRoot
+    (hSrc : IsFreeAmalgam sE sF iE iF)
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (hcE : tE.ContainedInIrreducible)
+    (hcF : tF.ContainedInIrreducible)
+    (q : H → G)
+    (hE : E → TE) (hF : F → TF)
+    (hcompatE : ∀ d, hE (sE d) = tE (q d))
+    (hcompatF : ∀ d, hF (sF d) = tF (q d))
+    (hhE : Esrc.IsHomomorphismEmbedding ETgt hE)
+    (hhF : Fsrc.IsHomomorphismEmbedding FTgt hF)
+    (hrootE : IsFreeAmalgam.RootIsolated sE tE q hE)
+    (hrootF : IsFreeAmalgam.RootIsolated sF tF q hF) :
+    ∃ (T : Type v) (Target : Structure L T),
+      TreeAmalgam Base T Target ∧
+      ∃ f : C → T,
+        Csrc.IsHomomorphismEmbedding Target f := by
+  classical
+  let Target := FreeAmalgam.amalgam Gov ETgt FTgt tE tF
+  let jE := FreeAmalgam.leftEmbedding Gov ETgt FTgt tE tF
+  let jF := FreeAmalgam.rightEmbedding Gov ETgt FTgt tE tF
+  have hTgt : IsFreeAmalgam tE tF jE jF :=
+    FreeAmalgam.isFreeAmalgam Gov ETgt FTgt tE tF
+  have hTree :
+      TreeAmalgam Base
+        (FreeAmalgam.Vertex Gov ETgt FTgt tE tF) Target :=
+    FreeAmalgam.treeAmalgam Gov ETgt FTgt tE tF Base
+      hTreeE hTreeF hcE hcF
+  let f : C → FreeAmalgam.Vertex Gov ETgt FTgt tE tF :=
+    IsFreeAmalgam.functionalLiftMap hSrc hTgt q hE hF
+      hcompatE hcompatF
+  have hf : Csrc.IsHomomorphismEmbedding Target f :=
+    IsFreeAmalgam.functionalLiftMap_isHomomorphismEmbedding
+      hSrc hTgt q hE hF hcompatE hcompatF
+      hhE hhF hrootE hrootF
+  exact ⟨_, Target, hTree, f, hf⟩
+
+/-- Glue two functional tree-completion witnesses while retaining control of
+every copy of an irreducible control structure.  Compared with the relational
+controlled glue, exact preservation of function fibres is supplied by the
+two root-isolation hypotheses. -/
+theorem glueControlledIsolatedRoot
+    (hControl : Control.Irreducible)
+    (hSrc : IsFreeAmalgam sE sF iE iF)
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (hcE : tE.ContainedInIrreducible)
+    (hcF : tF.ContainedInIrreducible)
+    (q : H → G)
+    (hE : E → TE) (hF : F → TF)
+    (hcompatE : ∀ d, hE (sE d) = tE (q d))
+    (hcompatF : ∀ d, hF (sF d) = tF (q d))
+    (hhE : Esrc.IsHomomorphismEmbedding ETgt hE)
+    (hhF : Fsrc.IsHomomorphismEmbedding FTgt hF)
+    (hrootE : IsFreeAmalgam.RootIsolated sE tE q hE)
+    (hrootF : IsFreeAmalgam.RootIsolated sF tF q hF)
+    (ctrlE : ∀ α : Embedding Control Esrc,
+      ∃ α' : Embedding Control ETgt,
+        ∀ a : UA, ∃ a' : UA, hE (α a) = α' a')
+    (ctrlF : ∀ α : Embedding Control Fsrc,
+      ∃ α' : Embedding Control FTgt,
+        ∀ a : UA, ∃ a' : UA, hF (α a) = α' a') :
+    ∃ (T : Type v) (Target : Structure L T),
+      TreeAmalgam Base T Target ∧
+      ∃ f : C → T,
+        Csrc.IsHomomorphismEmbedding Target f ∧
+        ∀ α : Embedding Control Csrc,
+          ∃ α' : Embedding Control Target,
+            ∀ a : UA, ∃ a' : UA, f (α a) = α' a' := by
+  classical
+  let Target := FreeAmalgam.amalgam Gov ETgt FTgt tE tF
+  let jE := FreeAmalgam.leftEmbedding Gov ETgt FTgt tE tF
+  let jF := FreeAmalgam.rightEmbedding Gov ETgt FTgt tE tF
+  have hTgt : IsFreeAmalgam tE tF jE jF :=
+    FreeAmalgam.isFreeAmalgam Gov ETgt FTgt tE tF
+  have hTree :
+      TreeAmalgam Base
+        (FreeAmalgam.Vertex Gov ETgt FTgt tE tF) Target :=
+    FreeAmalgam.treeAmalgam Gov ETgt FTgt tE tF Base
+      hTreeE hTreeF hcE hcF
+  let f : C → FreeAmalgam.Vertex Gov ETgt FTgt tE tF :=
+    IsFreeAmalgam.functionalLiftMap hSrc hTgt q hE hF
+      hcompatE hcompatF
+  have hf : Csrc.IsHomomorphismEmbedding Target f :=
+    IsFreeAmalgam.functionalLiftMap_isHomomorphismEmbedding
+      hSrc hTgt q hE hF hcompatE hcompatF
+      hhE hhF hrootE hrootF
+  refine ⟨_, Target, hTree, f, hf, ?_⟩
+  intro α
+  rcases hControl hSrc α with hleft | hright
+  · let αE : Embedding Control Esrc :=
+      α.factorThroughRange iE hleft
+    obtain ⟨αT, hαT⟩ := ctrlE αE
+    let α' : Embedding Control Target := jE.comp αT
+    refine ⟨α', ?_⟩
+    intro a
+    obtain ⟨a', ha'⟩ := hαT a
+    refine ⟨a', ?_⟩
+    have hea := Classical.choose_spec (hleft a)
+    change f (α a) = jE (αT a')
+    calc
+      f (α a) = f (iE (αE a)) := congrArg f hea
+      _ = jE (hE (αE a)) :=
+        IsFreeAmalgam.functionalLiftMap_left
+          hSrc hTgt q hE hF hcompatE hcompatF (αE a)
+      _ = jE (αT a') := congrArg jE ha'
+  · let αF : Embedding Control Fsrc :=
+      α.factorThroughRange iF hright
+    obtain ⟨αT, hαT⟩ := ctrlF αF
+    let α' : Embedding Control Target := jF.comp αT
+    refine ⟨α', ?_⟩
+    intro a
+    obtain ⟨a', ha'⟩ := hαT a
+    refine ⟨a', ?_⟩
+    have hea := Classical.choose_spec (hright a)
+    change f (α a) = jF (αT a')
+    calc
+      f (α a) = f (iF (αF a)) := congrArg f hea
+      _ = jF (hF (αF a)) :=
+        IsFreeAmalgam.functionalLiftMap_right
+          hSrc hTgt q hE hF hcompatE hcompatF (αF a)
+      _ = jF (αT a') := congrArg jF ha'
+
+/-- Glue over the source overlap itself.  This is the form used by the
+functional projected-history induction: the two side witnesses already
+contain compatible embedded copies of the closed overlap, and history says
+that those copies are isolated from points outside the overlap. -/
+theorem glueCommonSourceRoot
+    (hSrc : IsFreeAmalgam sE sF iE iF)
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (rE : Embedding Dsrc ETgt)
+    (rF : Embedding Dsrc FTgt)
+    (hcE : rE.ContainedInIrreducible)
+    (hcF : rF.ContainedInIrreducible)
+    (hE : E → TE) (hF : F → TF)
+    (hcompatE : ∀ d, hE (sE d) = rE d)
+    (hcompatF : ∀ d, hF (sF d) = rF d)
+    (hhE : Esrc.IsHomomorphismEmbedding ETgt hE)
+    (hhF : Fsrc.IsHomomorphismEmbedding FTgt hF)
+    (hisoE : ∀ a d, hE a = rE d →
+      ∃ d' : H, a = sE d' ∧ d' = d)
+    (hisoF : ∀ b d, hF b = rF d →
+      ∃ d' : H, b = sF d' ∧ d' = d) :
+    ∃ (T : Type v) (Target : Structure L T),
+      TreeAmalgam Base T Target ∧
+      ∃ f : C → T,
+        Csrc.IsHomomorphismEmbedding Target f := by
+  let q : H → H := id
+  have hrootE :
+      IsFreeAmalgam.RootIsolated sE rE q hE := by
+    intro a d had
+    obtain ⟨d', ha, hd⟩ := hisoE a d had
+    exact ⟨d', ha, hd⟩
+  have hrootF :
+      IsFreeAmalgam.RootIsolated sF rF q hF := by
+    intro b d hbd
+    obtain ⟨d', hb, hd⟩ := hisoF b d hbd
+    exact ⟨d', hb, hd⟩
+  exact glueIsolatedRoot
+    (Base := Base) (Gov := Dsrc)
+    hSrc hTreeE hTreeF hcE hcF q hE hF
+    (fun d => by simpa [q] using hcompatE d)
+    (fun d => by simpa [q] using hcompatF d)
+    hhE hhF hrootE hrootF
+
+/-- Projected-history form of the common-overlap glue.
+
+The boundary set characterizes the source overlap on each side.  Equality in
+each side target remembers membership in that boundary.  Therefore the
+embedded overlap is root-isolated on both sides, and the full functional glue
+theorem applies. -/
+theorem glueRecordedBoundary
+    (hSrc : IsFreeAmalgam sE sF iE iF)
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (rE : Embedding Dsrc ETgt)
+    (rF : Embedding Dsrc FTgt)
+    (hcE : rE.ContainedInIrreducible)
+    (hcF : rF.ContainedInIrreducible)
+    (pE : E → P) (pF : F → P)
+    (Boundary : Set P)
+    (history : List (Set P))
+    (hBoundary : Boundary ∈ history)
+    (hE : E → TE) (hF : F → TF)
+    (hhE : Esrc.IsHomomorphismEmbedding ETgt hE)
+    (hhF : Fsrc.IsHomomorphismEmbedding FTgt hF)
+    (hHistE :
+      ∀ Hset ∈ history, ∀ x y : E,
+        hE x = hE y → (pE x ∈ Hset ↔ pE y ∈ Hset))
+    (hHistF :
+      ∀ Hset ∈ history, ∀ x y : F,
+        hF x = hF y → (pF x ∈ Hset ↔ pF y ∈ Hset))
+    (hcompatE : ∀ d, hE (sE d) = rE d)
+    (hcompatF : ∀ d, hF (sF d) = rF d)
+    (hcharE : ∀ x : E, pE x ∈ Boundary ↔
+      ∃ d : H, x = sE d)
+    (hcharF : ∀ x : F, pF x ∈ Boundary ↔
+      ∃ d : H, x = sF d) :
+    ∃ (T : Type v) (Target : Structure L T),
+      TreeAmalgam Base T Target ∧
+      ∃ f : C → T,
+        Csrc.IsHomomorphismEmbedding Target f := by
+  have hisoE :
+      ∀ x d, hE x = rE d →
+        ∃ d' : H, x = sE d' ∧ d' = d := by
+    intro x d hxd
+    have hEq : hE x = hE (sE d) :=
+      hxd.trans (hcompatE d).symm
+    have hmemRoot : pE (sE d) ∈ Boundary :=
+      (hcharE (sE d)).2 ⟨d, rfl⟩
+    have hmemX : pE x ∈ Boundary :=
+      (hHistE Boundary hBoundary x (sE d) hEq).2 hmemRoot
+    obtain ⟨d', hx⟩ := (hcharE x).1 hmemX
+    refine ⟨d', hx, ?_⟩
+    apply rE.injective
+    calc
+      rE d' = hE (sE d') := (hcompatE d').symm
+      _ = hE x := congrArg hE hx.symm
+      _ = rE d := hxd
+  have hisoF :
+      ∀ x d, hF x = rF d →
+        ∃ d' : H, x = sF d' ∧ d' = d := by
+    intro x d hxd
+    have hEq : hF x = hF (sF d) :=
+      hxd.trans (hcompatF d).symm
+    have hmemRoot : pF (sF d) ∈ Boundary :=
+      (hcharF (sF d)).2 ⟨d, rfl⟩
+    have hmemX : pF x ∈ Boundary :=
+      (hHistF Boundary hBoundary x (sF d) hEq).2 hmemRoot
+    obtain ⟨d', hx⟩ := (hcharF x).1 hmemX
+    refine ⟨d', hx, ?_⟩
+    apply rF.injective
+    calc
+      rF d' = hF (sF d') := (hcompatF d').symm
+      _ = hF x := congrArg hF hx.symm
+      _ = rF d := hxd
+  exact glueCommonSourceRoot
+    (Base := Base) hSrc hTreeE hTreeF
+    rE rF hcE hcF hE hF
+    hcompatE hcompatF hhE hhF hisoE hisoF
+
+/-- Glue two injective functional tree-completion witnesses over a target root
+which is exactly covered by the source overlap. -/
+theorem glueExactRoot
+    (hSrc : IsFreeAmalgam sE sF iE iF)
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (hcE : tE.ContainedInIrreducible)
+    (hcF : tF.ContainedInIrreducible)
+    (q : H → G) (hq : Function.Surjective q)
+    (hE : E → TE) (hF : F → TF)
+    (hcompatE : ∀ d, hE (sE d) = tE (q d))
+    (hcompatF : ∀ d, hF (sF d) = tF (q d))
+    (hhE : Esrc.IsHomomorphismEmbedding ETgt hE)
+    (hhF : Fsrc.IsHomomorphismEmbedding FTgt hF)
+    (hinjE : Function.Injective hE)
+    (hinjF : Function.Injective hF) :
+    ∃ (T : Type v) (Target : Structure L T),
+      TreeAmalgam Base T Target ∧
+      ∃ f : C → T,
+        Csrc.IsHomomorphismEmbedding Target f ∧
+        Function.Injective f := by
+  classical
+  let Target := FreeAmalgam.amalgam Gov ETgt FTgt tE tF
+  let jE := FreeAmalgam.leftEmbedding Gov ETgt FTgt tE tF
+  let jF := FreeAmalgam.rightEmbedding Gov ETgt FTgt tE tF
+  have hTgt : IsFreeAmalgam tE tF jE jF :=
+    FreeAmalgam.isFreeAmalgam Gov ETgt FTgt tE tF
+  have hTree :
+      TreeAmalgam Base
+        (FreeAmalgam.Vertex Gov ETgt FTgt tE tF) Target :=
+    FreeAmalgam.treeAmalgam Gov ETgt FTgt tE tF Base
+      hTreeE hTreeF hcE hcF
+  let f : C → FreeAmalgam.Vertex Gov ETgt FTgt tE tF :=
+    IsFreeAmalgam.functionalLiftMap hSrc hTgt q hE hF
+      hcompatE hcompatF
+  have hrootE : IsFreeAmalgam.RootIsolated sE tE q hE :=
+    IsFreeAmalgam.rootIsolated_of_injective_surjective
+      q hq hE hcompatE hinjE
+  have hrootF : IsFreeAmalgam.RootIsolated sF tF q hF :=
+    IsFreeAmalgam.rootIsolated_of_injective_surjective
+      q hq hF hcompatF hinjF
+  have hf : Csrc.IsHomomorphismEmbedding Target f :=
+    IsFreeAmalgam.functionalLiftMap_isHomomorphismEmbedding
+      hSrc hTgt q hE hF hcompatE hcompatF
+      hhE hhF hrootE hrootF
+  have hinj : Function.Injective f :=
+    IsFreeAmalgam.functionalLiftMap_injective
+      hSrc hTgt q hq hE hF hcompatE hcompatF
+      hinjE hinjF
+  exact ⟨_, Target, hTree, f, hf, hinj⟩
+
+
+namespace HasTreeCompletion
+
+variable {L : Language.{u}}
+variable {VB H E F C TE TF : Type v}
+variable {Base : Structure L VB}
+variable {Dsrc : Structure L H} {Esrc : Structure L E}
+variable {Fsrc : Structure L F} {Csrc : Structure L C}
+variable {sE : Embedding Dsrc Esrc} {sF : Embedding Dsrc Fsrc}
+variable {iE : Embedding Esrc Csrc} {iF : Embedding Fsrc Csrc}
+
+/-- Recursive free-decomposition step for functional tree completions.
+
+The side completion maps may collapse reducible pieces.  The common source
+root is therefore supplied separately as an embedded, irreducibly-contained
+root in each side target, together with the isolation condition saying that
+no point outside the source overlap is sent into that root. -/
+theorem of_freeAmalgam
+    (hSrc : IsFreeAmalgam sE sF iE iF)
+    {ETgt : Structure L TE} {FTgt : Structure L TF}
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (hE : E → TE) (hF : F → TF)
+    (hhE : Esrc.IsHomomorphismEmbedding ETgt hE)
+    (hhF : Fsrc.IsHomomorphismEmbedding FTgt hF)
+    (rE : Embedding Dsrc ETgt)
+    (rF : Embedding Dsrc FTgt)
+    (hcE : rE.ContainedInIrreducible)
+    (hcF : rF.ContainedInIrreducible)
+    (hcompatE : ∀ d, hE (sE d) = rE d)
+    (hcompatF : ∀ d, hF (sF d) = rF d)
+    (hisoE : ∀ x d, hE x = rE d →
+      ∃ d' : H, x = sE d' ∧ d' = d)
+    (hisoF : ∀ x d, hF x = rF d →
+      ∃ d' : H, x = sF d' ∧ d' = d) :
+    HasTreeCompletion Base Csrc := by
+  obtain ⟨T, Target, hTree, f, hf⟩ :=
+    LocallyClosedTreeCompletable.glueCommonSourceRoot
+      (Base := Base) hSrc hTreeE hTreeF
+      rE rF hcE hcF hE hF
+      hcompatE hcompatF hhE hhF hisoE hisoF
+  exact ⟨T, Target, hTree, f, hf⟩
+
+/-- Proper free decompositions are the recursive case of the same lemma. -/
+theorem of_properFreeDecomposition
+    (d : ProperFreeDecomposition Csrc)
+    {ETgt : Structure L TE} {FTgt : Structure L TF}
+    (hTreeE : TreeAmalgam Base TE ETgt)
+    (hTreeF : TreeAmalgam Base TF FTgt)
+    (hE : d.Left → TE) (hF : d.Right → TF)
+    (hhE : d.left.IsHomomorphismEmbedding ETgt hE)
+    (hhF : d.right.IsHomomorphismEmbedding FTgt hF)
+    (rE : Embedding d.common ETgt)
+    (rF : Embedding d.common FTgt)
+    (hcE : rE.ContainedInIrreducible)
+    (hcF : rF.ContainedInIrreducible)
+    (hcompatE : ∀ x, hE (d.toLeft x) = rE x)
+    (hcompatF : ∀ x, hF (d.toRight x) = rF x)
+    (hisoE : ∀ x z, hE x = rE z →
+      ∃ z' : d.Common, x = d.toLeft z' ∧ z' = z)
+    (hisoF : ∀ x z, hF x = rF z →
+      ∃ z' : d.Common, x = d.toRight z' ∧ z' = z) :
+    HasTreeCompletion Base Csrc :=
+  of_freeAmalgam d.free
+    hTreeE hTreeF hE hF hhE hhF
+    rE rF hcE hcF hcompatE hcompatF hisoE hisoF
+
+end HasTreeCompletion
+
+end StructuralRamsey.Structure.LocallyClosedTreeCompletable

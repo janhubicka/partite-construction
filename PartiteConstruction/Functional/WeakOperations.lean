@@ -55,6 +55,16 @@ noncomputable def Embedding.factorThroughClosedRange
   e.factorWithMap j (fun x => Classical.choose (h x))
     (fun x => Classical.choose_spec (h x))
 
+/-- The closed-range factorization composes back to the original embedding. -/
+theorem Embedding.factorThroughClosedRange_spec
+    {A : Structure L U} {B : Structure L V} {C : Structure L W}
+    (e : Embedding A C) (j : Embedding B C)
+    (h : ∀ x, ∃ y, e x = j y) (x : U) :
+    j (e.factorThroughClosedRange j h x) = e x := by
+  change j (Classical.choose (h x)) = e x
+  exact (Classical.choose_spec (h x)).symm
+
+
 /-- Weak maps can also be cancelled through a full target embedding. -/
 theorem Embedding.cancel_weak
     {A : Structure L U} {B : Structure L V} {C : Structure L W}
@@ -109,6 +119,23 @@ noncomputable def weakRestrict :
 noncomputable def weakRestrictInclusion :
     Structure.Embedding (weakRestrict B D hB A α).toStructure B.toStructure :=
   Structure.inclusion _ _ (weak_support_closed B D hB A α)
+
+/-- Because the weak-restriction support is function-closed, restricting to
+it does not change whether a function fibre is empty. -/
+theorem weakRestrict_func_nonempty_iff
+    (F : L.FuncSymbol)
+    (x : Fin (L.funcArity F) → B.support α.toFunctionEmbedding) :
+    ((weakRestrict B D hB A α).toStructure.func F x).Nonempty ↔
+      (B.toStructure.func F (Subtype.val ∘ x)).Nonempty := by
+  constructor
+  · rintro ⟨y, hy⟩
+    exact ⟨y.1, hy⟩
+  · rintro ⟨y, hy⟩
+    have hyS :
+        y ∈ B.support α.toFunctionEmbedding :=
+      weak_support_closed B D hB A α F
+        (Subtype.val ∘ x) (fun i => (x i).2) hy
+    exact ⟨⟨y, hyS⟩, hy⟩
 
 theorem weakRestrict_projection :
     (weakRestrict B D hB A α).toStructure.IsWeakHomomorphism A

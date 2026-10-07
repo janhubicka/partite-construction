@@ -57,6 +57,35 @@ def Irreducible (A : Structure L U) : Prop :=
 
 namespace IsFreeAmalgam
 
+/-- Free-amalgam diagrams are symmetric in their two sides. -/
+theorem swap
+    {H E F C : Type v}
+    {Dsrc : Structure L H} {Esrc : Structure L E}
+    {Fsrc : Structure L F} {Csrc : Structure L C}
+    {sE : Embedding Dsrc Esrc} {sF : Embedding Dsrc Fsrc}
+    {iE : Embedding Esrc Csrc} {iF : Embedding Fsrc Csrc}
+    (hfree : IsFreeAmalgam sE sF iE iF) :
+    IsFreeAmalgam sF sE iF iE := by
+  constructor
+  · intro z
+    rcases hfree.covers z with hleft | hright
+    · exact Or.inr hleft
+    · exact Or.inl hright
+  · intro b a
+    constructor
+    · intro hba
+      obtain ⟨d, ha, hb⟩ :=
+        (hfree.overlap a b).mp hba.symm
+      exact ⟨d, hb, ha⟩
+    · rintro ⟨d, hb, ha⟩
+      exact ((hfree.overlap a b).mpr ⟨d, ha, hb⟩).symm
+  · intro R z
+    rw [hfree.rel_iff]
+    exact or_comm
+  · intro F0 x y
+    rw [hfree.func_iff]
+    exact or_comm
+
 /-- The universal irreducibility predicate gives side localization directly. -/
 theorem irreducible_side
     {A : Structure L U}
