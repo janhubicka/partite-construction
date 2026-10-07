@@ -80,7 +80,7 @@ theorem IsEHNHomomorphismEmbedding.graphHomomorphismEmbedding
       injective := by
         intro x y hxy
         apply Subtype.ext
-        exact congrArg Subtype.val hxy
+        exact congrArg (fun t : HSet => t.1) hxy
       map_rel_iff := by
         intro R z
         cases R with
