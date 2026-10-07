@@ -57,6 +57,8 @@ theorem closedTestPullback_common_EHN
     B.weakRestrict_invariant Douter hB.1 A alpha hB
   have eRoot : Structure.Embedding pb.common WR.toStructure :=
     pb.commonMap
+  change pb.common.IsEHNHomomorphismEmbedding A
+    (WR.part ∘ pb.commonMap)
   exact hWR.comp eRoot.isEHNHomomorphismEmbedding
 
 /-- The actual closed mixed attachment separator either has the full
