@@ -96,3 +96,79 @@ theorem toFullProjectedHistoryCompletion
 end FunctionalProjectedHistoryTreeLike
 
 end StructuralRamsey.Structure
+
+
+namespace StructuralRamsey.Structure.IsFreeAmalgam
+
+universe u v
+
+variable {L : Language.{u}}
+variable {H E F C VB P : Type v}
+variable {Root : Structure L H}
+variable {Left : Structure L E} {Right : Structure L F}
+variable {Whole : Structure L C} {Base : Structure L VB}
+variable {sL : Embedding Root Left} {sR : Embedding Root Right}
+variable {iL : Embedding Left Whole} {iR : Embedding Right Whole}
+
+/-- In the projected-history completion induction, both pure branches
+follow from full history completability of their respective ambient sides.
+The only extra input is the genuinely mixed common-separator lifting step.
+
+This is useful for the functional Picture stage: the old stage and the
+Hales--Jewett core supply the two pure side properties, so no further
+case-specific completion construction is needed there. -/
+theorem finiteHistoryCompletion_of_sides_and_relativeMixed
+    [Fintype P] [Nonempty P]
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (p : C → P)
+    (hSideLeft :
+      HasProjectedHistoryTreeCompletion Base Left (p ∘ iL))
+    (hSideRight :
+      HasProjectedHistoryTreeCompletion Base Right (p ∘ iR))
+    (hMixed :
+      ∀ {X : Type v} [Finite X]
+        (D : Structure L X) (e : Embedding D Whole)
+        (pb : EmbeddingPullback hSrc e),
+        (¬ ∀ x : X, ∃ a : E, e x = iL a) →
+        (¬ ∀ x : X, ∃ b : F, e x = iR b) →
+        HasProjectedHistoryTreeCompletion Base pb.common
+          (p ∘ (e.comp (pb.leftIn.comp pb.toLeft))) →
+        HasProjectedHistoryTreeCompletion Base pb.left
+          (p ∘ (e.comp pb.leftIn)) →
+        HasProjectedHistoryTreeCompletion Base pb.right
+          (p ∘ (e.comp pb.rightIn)) →
+        ∀ history : List (Set P),
+          ∃ (G : Type v) (Start : Structure L G) (q : pb.Common → G),
+            TreeAmalgam Base G Start ∧
+            HasTreeExtensionProjectedHistoryCompletion
+              (Base := Base) (Start := Start)
+              pb.toLeft q ((p ∘ e) ∘ pb.leftIn)
+              (history ++ singletonProjectedHistory P) ∧
+            HasTreeExtensionProjectedHistoryCompletion
+              (Base := Base) (Start := Start)
+              pb.toRight q ((p ∘ e) ∘ pb.rightIn)
+              (history ++ singletonProjectedHistory P)) :
+    ∀ {X : Type v} [Finite X]
+      (D : Structure L X) (e : Embedding D Whole),
+      HasProjectedHistoryTreeCompletion Base D (p ∘ e) := by
+  classical
+  apply finiteHistoryCompletion_of_relativeMixed hSrc p
+  · intro X _ D e hRange
+    let j : Embedding D Left := e.factorThroughRange iL hRange
+    have hproj : ((p ∘ iL) ∘ j) = (p ∘ e) := by
+      funext x
+      change p (iL (j x)) = p (e x)
+      exact congrArg p (Classical.choose_spec (hRange x)).symm
+    rw [← hproj]
+    exact hSideLeft.pullback_embedding j
+  · intro X _ D e hRange
+    let j : Embedding D Right := e.factorThroughRange iR hRange
+    have hproj : ((p ∘ iR) ∘ j) = (p ∘ e) := by
+      funext x
+      change p (iR (j x)) = p (e x)
+      exact congrArg p (Classical.choose_spec (hRange x)).symm
+    rw [← hproj]
+    exact hSideRight.pullback_embedding j
+  · exact hMixed
+
+end StructuralRamsey.Structure.IsFreeAmalgam
