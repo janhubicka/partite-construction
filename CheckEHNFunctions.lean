@@ -15,6 +15,7 @@ import PartiteConstruction.Functional.TreeExtensionAutoHistoryGlue
 import PartiteConstruction.Functional.EHNClosedAttachmentRootHistory
 import PartiteConstruction.Functional.EHNClosedMixedSize
 import PartiteConstruction.Functional.EHNClosedPullbackRootDichotomy
+import PartiteConstruction.Functional.EHNIrreducibleMixedCompletion
 import PartiteConstruction.Functional.PureCoreProjectedHistory
 import PartiteConstruction.Functional.InitialTreeCompletion
 import PartiteConstruction.Functional.HistoryZero
@@ -221,3 +222,5 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTestPullback_common_EHN
 #print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTestPullback_common_embedding_or_decompose
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.projectedHistoryCompletion_of_irreducibleEHN_root
