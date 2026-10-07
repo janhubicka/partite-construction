@@ -87,4 +87,42 @@ theorem projectedMap_factors_of_singletonHistory
   exact projectedMap_factors_of_kernel p q
     (projectedKernel_of_singletonHistory p q history hSingle hHist)
 
+/-- The projected singleton diary supplies the factor map which is
+otherwise an explicit hypothesis of the common-root interface.  Thus a
+completed reducible root and two already synchronized strict side extensions
+form a common rooted projected-history witness, even when the root map is
+noninjective. -/
+theorem HasCommonRootedProjectedHistoryCompletions.of_rootHistory
+    {L : Language.{v}} {VB E F : Type v}
+    {Base : Structure L VB}
+    {Root : Structure L H}
+    {Left : Structure L E} {Right : Structure L F}
+    {Start : Structure L G}
+    {sL : Embedding Root Left} {sR : Embedding Root Right}
+    [Nonempty P]
+    (hTree : TreeAmalgam Base G Start)
+    (q : H → G) (hq : Root.IsHomomorphismEmbedding Start q)
+    (pRoot : H → P) (pL : E → P) (pR : F → P)
+    (hpL : ∀ d, pL (sL d) = pRoot d)
+    (hpR : ∀ d, pR (sR d) = pRoot d)
+    (history : List (Set P))
+    (hSingle : ∀ a : P, Set.singleton a ∈ history)
+    (hRootHistory :
+      ∀ K ∈ history, ∀ x y : H,
+        q x = q y → (pRoot x ∈ K ↔ pRoot y ∈ K))
+    (hL : HasTreeExtensionProjectedHistoryCompletion
+      (Base := Base) (Start := Start) sL q pL history)
+    (hR : HasTreeExtensionProjectedHistoryCompletion
+      (Base := Base) (Start := Start) sR q pR history) :
+    HasCommonRootedProjectedHistoryCompletions
+      (Base := Base) sL sR pL pR history := by
+  obtain ⟨pG, hfactor⟩ :=
+    projectedMap_factors_of_singletonHistory
+      pRoot q history hSingle hRootHistory
+  refine ⟨G, Start, hTree, q, hq, pG, ?_, ?_, hL, hR⟩
+  · intro d
+    exact (hpL d).trans (hfactor d)
+  · intro d
+    exact (hpR d).trans (hfactor d)
+
 end StructuralRamsey.Structure
