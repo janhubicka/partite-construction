@@ -53,6 +53,52 @@ theorem ofTree
       h₁ h₂ f₁ f₂ hc₁ hc₂ i₁ i₂ hfree ih₁ ih₂ =>
       exact .glue ih₁ ih₂ f₁ f₂ i₁ i₂ hfree
 
+
+/-- Every irreducible embedded substructure of a loose functional tree lies
+inside one constituent copy of the base.  No strictness of the gluing roots is
+needed for this localization: it follows directly from the no-crossing
+definition of functional irreducibility. -/
+theorem irreducible_contained_in_copy
+    {Base : Structure L V} {T : Structure L W}
+    (hT : LooseTreeAmalgam Base W T)
+    {A : Structure L U} (hA : A.Irreducible)
+    (e : Embedding A T) :
+    ∃ j : Embedding Base T,
+      ∀ a : U, ∃ b : V, e a = j b := by
+  induction hT with
+  | copy j hsurj =>
+      refine ⟨j, ?_⟩
+      intro a
+      obtain ⟨b, hb⟩ := hsurj (e a)
+      exact ⟨b, hb.symm⟩
+  | @glue W₁ W₂ Z W T₁ T₂ D T
+      h₁ h₂ f₁ f₂ i₁ i₂ hfree ih₁ ih₂ =>
+      rcases hfree.irreducible_side hA e with hleft | hright
+      · let e₁ : Embedding A T₁ :=
+          e.factorThroughRange i₁ hleft
+        obtain ⟨j₁, hj₁⟩ := ih₁ e₁
+        refine ⟨i₁.comp j₁, ?_⟩
+        intro a
+        obtain ⟨b, hb⟩ := hj₁ a
+        refine ⟨b, ?_⟩
+        have hea := Classical.choose_spec (hleft a)
+        change e a = i₁ (j₁ b)
+        calc
+          e a = i₁ (e₁ a) := hea
+          _ = i₁ (j₁ b) := congrArg i₁ hb
+      · let e₂ : Embedding A T₂ :=
+          e.factorThroughRange i₂ hright
+        obtain ⟨j₂, hj₂⟩ := ih₂ e₂
+        refine ⟨i₂.comp j₂, ?_⟩
+        intro a
+        obtain ⟨b, hb⟩ := hj₂ a
+        refine ⟨b, ?_⟩
+        have hea := Classical.choose_spec (hright a)
+        change e a = i₂ (j₂ b)
+        calc
+          e a = i₂ (e₂ a) := hea
+          _ = i₂ (j₂ b) := congrArg i₂ hb
+
 end LooseTreeAmalgam
 
 /-- A full structure embeds into a loose tree of copies of Base. -/
