@@ -1,6 +1,11 @@
 import PartiteConstruction.Functional.FreeAmalgamClosed
 import PartiteConstruction.Functional.HalfClosedTheorem
 import PartiteConstruction.Functional.QuotientFibreObstruction
+import PartiteConstruction.Functional.GeneratedRootedWitness
+import PartiteConstruction.Functional.HistoryRootedWitness
+import PartiteConstruction.Functional.HistoryIrreducibleRootGlue
+import PartiteConstruction.Functional.TreeExtensionWitness
+import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.RelStructure.Embedding.functionClosedSet_preimage
 #print axioms StructuralRamsey.RelStructure.Embedding.functionClosed_iff_range
