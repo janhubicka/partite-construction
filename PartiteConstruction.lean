@@ -275,6 +275,7 @@ import PartiteConstruction.Functional.EHNPictureInvariant
 import PartiteConstruction.Functional.DirectWeakIteration
 import PartiteConstruction.Functional.EHNAttachmentGraph
 import PartiteConstruction.Functional.EHNAttachmentGraphIso
+import PartiteConstruction.Functional.EHNAttachmentGraphIso
 import PartiteConstruction.Functional.EHNProjectionGraphBridge
 import PartiteConstruction.Functional.EHNToRelationalPartite
 
