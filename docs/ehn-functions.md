@@ -92,11 +92,47 @@ Using the unrestricted all-arity witness followed by
 `Structure.orderedRamsey_forbidden_expansions_allArity` directly in the
 original language.  There is no remaining constants reduction outside Lean.
 
+
+## Direct functional iteration versus recursive graph encoding
+
+For an iterated functional partite construction the intermediate systems
+already interpret **genuine set-valued functions**. The correct route is
+`FunctionalPartite.Induced.weak_partiteLemma` and
+`FunctionalPartite.EHN.pictureLemma`, directly in the function language,
+with the weak global projection `System.WeaklyPartiteOver`.
+`System.weak_support_closed` says that the inverse image of a genuinely
+embedded A-copy under this weak projection is function-closed. The actual
+`System.weakRestrict` is therefore a **full induced substructure** and
+all Hales--Jewett letter embeddings and attaching maps are full.
+
+The induction on the sparsening test size must still use **weak**
+substructures on arbitrary vertex sets, retaining only function outputs
+inside the test; `Structure.weakInduce_graph_rel_iff` supplies their exact
+graph representation. This representation is a way to inspect arbitrary
+weak tests, **not a reason to replace the functional Picture by U-closed
+relational pictures**. A full n-pass direct functional weak-size tree
+invariant needs its own geometric proof, using the EHN power and binary
+free attachments. `EHN.pictureLemma_preserving` and
+`EHN.inducedConstruction_preserving` already provide the
+colour/attachment bookkeeping once the corresponding local invariant
+has been shown to persist.
+
+U-closed relational graph embeddings are required instead in the
+**recursive partite construction**: its intermediate relational stages
+need not preserve all the intended functional constraints or closure
+certificates, and therefore require an explicit repair/decoding step.
+The already-checked U-closed n-pass graph theorem is a valid **auxiliary
+route**, but not the intended proof of the direct functional iteration.
+
+Do not identify weak graph-tree completion with the strict full-function
+target conclusion. Function-closed gluing roots and locally full output
+maps remain a separate strengthening to prove.
+
 ## What remains separate
 
 This work does **not** prove a globally fibre-surjective partite projection.
 The checked EHN projection is weak globally/full on irreducibles.
 
 It also does not settle functional iterated sparsening or the stronger
-synchronized ambient-A tree invariant.  Those are separate Appendix A
-obligations.
+synchronized ambient-A tree invariant.  They are optional strengthening questions, not gaps in the fully
+validated printed relational Appendix.
