@@ -140,3 +140,9 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.allStructures_free
 #print axioms StructuralRamsey.Structure.orderedRamsey_forbidden_expansions_allArity
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachList_preserving
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachAll_preserving
+#print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma_preserving
+#print axioms StructuralRamsey.FunctionalPartite.EHN.canonicalize_preserving
+#print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_preserving
