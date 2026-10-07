@@ -239,6 +239,7 @@ The side target is replayed over the larger start.  Exact free-amalgam
 overlap supplied by `replayFree` transports root isolation: any side point
 landing in the new start must already have landed in the old start. -/
 theorem rebase
+    {s : Embedding Root Side}
     {G₂ : Type v} {Start₂ : Structure L G₂}
     (q : H → G)
     (h :
@@ -276,7 +277,7 @@ theorem rebase
     obtain ⟨b, hab, hfb⟩ :=
       (hFree.overlap a (f x)).mp hmeet
     obtain ⟨d, hxd, hdb⟩ :=
-      hroot x b hfb.symm
+      hroot x b hfb
     refine ⟨d, hxd, ?_⟩
     calc
       (hMore.startEmbedding ∘ q) d =
