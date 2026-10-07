@@ -244,3 +244,9 @@ import PartiteConstruction.Functional.LabelledHistoryControl
 import PartiteConstruction.Functional.QuotientProjectedHistoryGlue
 
 import PartiteConstruction.Functional.BoundaryDiaryCompletion
+
+import PartiteConstruction.Functional.EHNStageInvariant
+
+import PartiteConstruction.Functional.EHNPictureInvariant
+
+import PartiteConstruction.Functional.EHNInvariantConstruction
