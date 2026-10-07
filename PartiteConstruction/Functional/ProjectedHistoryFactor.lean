@@ -19,6 +19,20 @@ universe v
 
 variable {H G P : Type v}
 
+/-- The finite history which records every singleton in a finite outer
+projection carrier.  It may be reused at each recursive Picture step. -/
+noncomputable def singletonProjectedHistory (P : Type v) [Fintype P] :
+    List (Set P) :=
+  (Finset.univ : Finset P).toList.map Set.singleton
+
+theorem singleton_mem_singletonProjectedHistory
+    [Fintype P] (a : P) :
+    Set.singleton a ∈ singletonProjectedHistory P := by
+  unfold singletonProjectedHistory
+  apply List.mem_map.mpr
+  exact ⟨a, by simp, rfl⟩
+
+
 /-- Preserving every singleton projected-history set implies that any two
 source vertices identified in the target have equal outer projections. -/
 theorem projectedKernel_of_singletonHistory
