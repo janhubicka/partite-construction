@@ -239,5 +239,5 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.graphHomomorphismEmbedding
 
-#check StructuralRamsey.FunctionalPartite.System.toGraphPartite
+#print axioms StructuralRamsey.FunctionalPartite.System.toGraphPartite
 #print axioms StructuralRamsey.FunctionalPartite.System.toGraphPartite_isPartiteOver
