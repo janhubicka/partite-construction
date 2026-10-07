@@ -31,7 +31,7 @@ canonical weak EHN projection to A through the selected attachment support. -/
 theorem closedTestPullback_common_EHN
     (B : System L P V) (Douter : Structure L P)
     (hB : B.WeaklyPartiteOver Douter)
-    (A : Structure L U) (alpha : Embedding A Douter)
+    (A : Structure L U) (alpha : Structure.Embedding A Douter)
     (Dsys : System L P W)
     (f : FunctionalPartite.Embedding
       (B.induce (B.support alpha.toFunctionEmbedding)
@@ -55,7 +55,7 @@ theorem closedTestPullback_common_EHN
   let WR := B.weakRestrict Douter hB.1 A alpha
   have hWR : WR.WeaklyPartiteOver A :=
     B.weakRestrict_invariant Douter hB.1 A alpha hB
-  have eRoot : Embedding pb.common WR.toStructure :=
+  have eRoot : Structure.Embedding pb.common WR.toStructure :=
     pb.commonMap
   exact hWR.comp eRoot.isEHNHomomorphismEmbedding
 
@@ -65,7 +65,7 @@ The latter is the only case requiring a shared strict separator tree. -/
 theorem closedTestPullback_common_embedding_or_decompose
     (B : System L P V) (Douter : Structure L P)
     (hB : B.WeaklyPartiteOver Douter)
-    (A : Structure L U) (alpha : Embedding A Douter)
+    (A : Structure L U) (alpha : Structure.Embedding A Douter)
     (Dsys : System L P W)
     (f : FunctionalPartite.Embedding
       (B.induce (B.support alpha.toFunctionEmbedding)
@@ -83,7 +83,7 @@ theorem closedTestPullback_common_embedding_or_decompose
     let pb := closedTestPullback B Supp hSupp Dsys f Test hTest
     let q : pb.Common → U :=
       (B.weakRestrict Douter hB.1 A alpha).part ∘ pb.commonMap
-    (∃ g : Embedding pb.common A, ∀ x, g x = q x) ∨
+    (∃ g : Structure.Embedding pb.common A, ∀ x, g x = q x) ∨
       Nonempty (ProperFreeDecomposition pb.common) := by
   let Supp := B.support alpha.toFunctionEmbedding
   let hSupp := B.weak_support_closed Douter hB.1 A alpha
@@ -95,11 +95,11 @@ theorem closedTestPullback_common_embedding_or_decompose
   by_cases hIrr : pb.common.Irreducible
   · left
     obtain ⟨g, hg⟩ :=
-      hp.2 pb.common hIrr (Embedding.id pb.common)
+      hp.2 pb.common hIrr (Structure.Embedding.id pb.common)
     refine ⟨g, ?_⟩
     intro x
     calc
-      g x = q ((Embedding.id pb.common) x) := hg x
+      g x = q ((Structure.Embedding.id pb.common) x) := hg x
       _ = q x := rfl
   · right
     by_contra hnone
