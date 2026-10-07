@@ -75,6 +75,48 @@ namespace FunctionalHistoryTreeLike
 
 variable {p : W → P} {m n : ℕ}
 
+/-- A stage which is already a strict Base-tree carries the full combined
+history invariant at every generator rank, provided every closed
+substructure of the control A is irreducible.
+
+The witness for a closed test is simply its inclusion into the ambient tree.
+Injectivity makes both finite history families automatic, while a requested
+closed partial A-copy is itself irreducible and therefore supplies its own
+irreducible containment certificate. -/
+theorem of_treeAmalgam_of_closedSubstructures_irreducible
+    (hA :
+      ∀ (H : Set U) (hH : A.IsClosed H),
+        (A.induce H hH).Irreducible)
+    (hTree : TreeAmalgam Base W C)
+    (p : W → P) (n : ℕ) :
+    FunctionalHistoryTreeLike
+      (A := A) (D := D) (C := C) (Base := Base) p n := by
+  classical
+  intro S hS hgen projectedHistory sourceHistory
+  let Small := C.induce (↑S : Set W) hS
+  let f : ↥(↑S : Set W) → W :=
+    inclusion C (↑S : Set W) hS
+  have hf : Small.IsHomomorphismEmbedding C f :=
+    (inclusion C (↑S : Set W) hS).isHomomorphismEmbedding
+  have hPart :
+      FunctionalProjectedPartialIntersections
+        (A := A) (D := D) (C := C) (T := C) p S f := by
+    intro beta H hH e hproj hRange
+    let eHT : Embedding (A.induce H hH) C := e
+    refine ⟨eHT, ?_, ?_⟩
+    · intro x
+      rfl
+    · refine ⟨H, A.induce H hH, hA H hH, eHT, ?_⟩
+      intro x
+      exact ⟨x, rfl⟩
+  have hInjective : Function.Injective f :=
+    (inclusion C (↑S : Set W) hS).injective
+  obtain ⟨hProj, hSrc⟩ :=
+    histories_of_injective
+      (p := p) hInjective projectedHistory sourceHistory
+  exact ⟨W, C, hTree, f, hf, hPart, hProj, hSrc⟩
+
+
 /-- Forget source history. -/
 theorem toProjectedHistory
     (h : FunctionalHistoryTreeLike
