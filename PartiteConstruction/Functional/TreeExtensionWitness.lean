@@ -204,64 +204,6 @@ theorem glue
     hSrc hStart q hL hR
 
 
-/-- If the same quotient-labelled root is isolated in two side witnesses, the
-two sides have compatible rooted completions with the fixed Base as common
-start.  The quotient label may be noninjective. -/
-theorem of_isolatedQuotientBoundaries_rootedBase
-    {U F YL YR : Type v}
-    {A : Structure L U}
-    {Right : Structure L F}
-    {TL : Structure L YL} {TR : Structure L YR}
-    {sL : Embedding Root Side} {sR : Embedding Root Right}
-    [Finite VB]
-    (hA : A.Irreducible)
-    (hBase : Base.Irreducible)
-    (eAB : Embedding A Base)
-    (label : H → U)
-    (hTreeL : TreeAmalgam Base YL TL)
-    (hTreeR : TreeAmalgam Base YR TR)
-    (fL : E → YL) (fR : F → YR)
-    (hfL : Side.IsHomomorphismEmbedding TL fL)
-    (hfR : Right.IsHomomorphismEmbedding TR fR)
-    (hIsoL :
-      IsolatedQuotientBoundary
-        (QuotientBoundaryRequest.ofEmbedding (A := A) sL label) TL fL)
-    (hIsoR :
-      IsolatedQuotientBoundary
-        (QuotientBoundaryRequest.ofEmbedding (A := A) sR label) TR fR) :
-    HasCommonRootedCompletions
-      (Base := Base) sL sR := by
-  let rL : QuotientBoundaryRequest A Side :=
-    QuotientBoundaryRequest.ofEmbedding sL label
-  let rR : QuotientBoundaryRequest A Right :=
-    QuotientBoundaryRequest.ofEmbedding sR label
-  let q : H → VB := fun x => eAB (label x)
-  have hLabel :
-      Root.IsHomomorphismEmbedding A label := by
-    simpa [rL] using
-      (IsolatedQuotientBoundary.label_isHomomorphismEmbedding
-        hIsoL hfL)
-  have hq :
-      Root.IsHomomorphismEmbedding Base q := by
-    exact eAB.isHomomorphismEmbedding.comp hLabel
-  have hStart : TreeAmalgam Base VB Base :=
-    TreeAmalgam.copy (Embedding.id Base) (by
-      intro b
-      exact ⟨b, rfl⟩)
-  have hL :
-      HasTreeExtensionCompletion
-        (Base := Base) (Start := Base) sL q := by
-    simpa [rL, q] using
-      (HasTreeExtensionCompletion.of_isolatedQuotientBoundary_rootedBase
-        hA hBase eAB rL hTreeL fL hfL hIsoL)
-  have hR :
-      HasTreeExtensionCompletion
-        (Base := Base) (Start := Base) sR q := by
-    simpa [rR, q] using
-      (HasTreeExtensionCompletion.of_isolatedQuotientBoundary_rootedBase
-        hA hBase eAB rR hTreeR fR hfR hIsoR)
-  exact ⟨VB, Base, hStart, q, hq, hL, hR⟩
-
 end HasCommonRootedCompletions
 
 
@@ -378,6 +320,69 @@ theorem HasTreeExtensionCompletion.of_isolatedQuotientBoundary_rootedBase
     exact hroot1 y b hyb1
 
   exact ⟨Z2, T2, hExt, f2, hf2, hcompat2, hroot2⟩
+
+namespace HasCommonRootedCompletions
+
+/-- If the same quotient-labelled root is isolated in two side witnesses, the
+two sides have compatible rooted completions with the fixed Base as common
+start.  The quotient label may be noninjective. -/
+theorem of_isolatedQuotientBoundaries_rootedBase
+    {U F YL YR : Type v}
+    {A : Structure L U}
+    {Right : Structure L F}
+    {TL : Structure L YL} {TR : Structure L YR}
+    {sL : Embedding Root Side} {sR : Embedding Root Right}
+    [Finite VB]
+    (hA : A.Irreducible)
+    (hBase : Base.Irreducible)
+    (eAB : Embedding A Base)
+    (label : H → U)
+    (hTreeL : TreeAmalgam Base YL TL)
+    (hTreeR : TreeAmalgam Base YR TR)
+    (fL : E → YL) (fR : F → YR)
+    (hfL : Side.IsHomomorphismEmbedding TL fL)
+    (hfR : Right.IsHomomorphismEmbedding TR fR)
+    (hIsoL :
+      IsolatedQuotientBoundary
+        (QuotientBoundaryRequest.ofEmbedding (A := A) sL label) TL fL)
+    (hIsoR :
+      IsolatedQuotientBoundary
+        (QuotientBoundaryRequest.ofEmbedding (A := A) sR label) TR fR) :
+    HasCommonRootedCompletions
+      (Base := Base) sL sR := by
+  let rL : QuotientBoundaryRequest A Side :=
+    QuotientBoundaryRequest.ofEmbedding sL label
+  let rR : QuotientBoundaryRequest A Right :=
+    QuotientBoundaryRequest.ofEmbedding sR label
+  let q : H → VB := fun x => eAB (label x)
+  have hLabel :
+      Root.IsHomomorphismEmbedding A label := by
+    simpa [rL, QuotientBoundaryRequest.ofEmbedding] using
+      (IsolatedQuotientBoundary.label_isHomomorphismEmbedding
+        hIsoL hfL)
+  have hq :
+      Root.IsHomomorphismEmbedding Base q := by
+    exact eAB.isHomomorphismEmbedding.comp hLabel
+  have hStart : TreeAmalgam Base VB Base :=
+    TreeAmalgam.copy (Embedding.id Base) (by
+      intro b
+      exact ⟨b, rfl⟩)
+  have hL :
+      HasTreeExtensionCompletion
+        (Base := Base) (Start := Base) sL q := by
+    simpa [rL, q, QuotientBoundaryRequest.ofEmbedding] using
+      (HasTreeExtensionCompletion.of_isolatedQuotientBoundary_rootedBase
+        hA hBase eAB rL hTreeL fL hfL hIsoL)
+  have hR :
+      HasTreeExtensionCompletion
+        (Base := Base) (Start := Base) sR q := by
+    simpa [rR, q, QuotientBoundaryRequest.ofEmbedding] using
+      (HasTreeExtensionCompletion.of_isolatedQuotientBoundary_rootedBase
+        hA hBase eAB rR hTreeR fR hfR hIsoR)
+  exact ⟨VB, Base, hStart, q, hq, hL, hR⟩
+
+end HasCommonRootedCompletions
+
 
 namespace FunctionalRelativeHistoryTreeLike
 
