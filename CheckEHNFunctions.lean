@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.FreeAmalgamEmbeddedInduction
 import PartiteConstruction.Functional.FreeAmalgamHistoryInduction
+import PartiteConstruction.Functional.PureHistoryTreeCompletion
 import PartiteConstruction.Functional.EHNDomainFailureDecompose
 import PartiteConstruction.Functional.InjectiveProjectedGlue
 import PartiteConstruction.Functional.EHNClosedRootInduction
@@ -205,3 +206,8 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.IsFreeAmalgam.finite_embedded_induction
 
 #print axioms StructuralRamsey.Structure.IsFreeAmalgam.finiteHistoryCompletion_of_relativeMixed
+
+#print axioms StructuralRamsey.Structure.HasProjectedHistoryTreeCompletion.pullback_embedding
+#print axioms StructuralRamsey.Structure.FunctionalProjectedHistoryTreeLike.toFullProjectedHistoryCompletion
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.finiteHistoryCompletion_of_sides_and_relativeMixed
