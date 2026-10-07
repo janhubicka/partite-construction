@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.FreeAmalgamEmbeddedInduction
+import PartiteConstruction.Functional.FreeAmalgamHistoryInduction
 import PartiteConstruction.Functional.EHNDomainFailureDecompose
 import PartiteConstruction.Functional.InjectiveProjectedGlue
 import PartiteConstruction.Functional.EHNClosedRootInduction
