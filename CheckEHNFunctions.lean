@@ -212,3 +212,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.FunctionalProjectedHistoryTreeLike.toFullProjectedHistoryCompletion
 
 #print axioms StructuralRamsey.Structure.IsFreeAmalgam.finiteHistoryCompletion_of_sides_and_relativeMixed
+
+#print axioms StructuralRamsey.Structure.FunctionalHistoryTreeLike.fullProjectedHistory_of_smallEmbedding
