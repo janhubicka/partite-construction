@@ -425,3 +425,10 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Structure.FullFunctionalSparseningObstruction.B_irreducible
 #print axioms StructuralRamsey.Structure.FullFunctionalSparseningObstruction.no_sparse_witness
 #print axioms StructuralRamsey.Structure.FullFunctionalSparseningObstruction.direct_functional_sparsening_false
+
+#print axioms StructuralRamsey.Structure.weakLocallyTreeCompletable_iff
+#print axioms StructuralRamsey.Structure.WeakLocallyTreeCompletable.closedTest_graphCompletion
+#print axioms StructuralRamsey.Structure.WeakLocallyTreeCompletable.ofWeakLocallyTreeLike
+#print axioms StructuralRamsey.Structure.ofGraphGraphEmbedding
+#print axioms StructuralRamsey.Structure.WeakLocallyTreeCompletable.ofGraph
+#print axioms StructuralRamsey.Partite.Induced.inducedConstruction_weakFunctionalTreeCompletable_succ

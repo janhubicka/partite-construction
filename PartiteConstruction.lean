@@ -70,6 +70,7 @@ import PartiteConstruction.Iterated.LooseStrictificationObstruction
 import PartiteConstruction.Iterated.CliqueExpansion
 import PartiteConstruction.Iterated.TreeCompletion
 import PartiteConstruction.Iterated.WeakLocalTreeLike
+import PartiteConstruction.Iterated.WeakFunctionalTreeCompletion
 import PartiteConstruction.Iterated.ControlCompletion
 import PartiteConstruction.Iterated.ControlCompletionCompatible
 import PartiteConstruction.Iterated.ControlCompletionEmbedding
