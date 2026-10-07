@@ -35,7 +35,7 @@ a tree witness whose target root is exact for a prescribed source overlap.
 The hypotheses `hcompatSrc` and `hreflectSrc` say that the displayed
 overlap is exactly the intersection of the side with the ambient root inside
 `Core`. -/
-theorem rootedWitness
+theorem rootedWitness_generated
     [Finite H] [Finite E] [Finite X]
     (hRoot : Root.Irreducible)
     (eRoot : Embedding Root Core)
@@ -47,7 +47,7 @@ theorem rootedWitness
       ∀ x d, eSide x = eRoot d →
         ∃ z : K, x = s z ∧ q z = d)
     (n : ℕ)
-    (hSideCard : Nat.card E ≤ n)
+    (hSideGen : Side.GeneratedByAtMost n)
     (hCore :
       FunctionalHistoryTreeLike
         (A := A) (D := D) (C := Core) (Base := Base)
@@ -62,9 +62,10 @@ theorem rootedWitness
   classical
   letI : Fintype H := Fintype.ofFinite H
   letI : Fintype E := Fintype.ofFinite E
+  rcases hSideGen with ⟨GS, hGScard, hGenSide⟩
 
   let G : Finset X :=
-    (Finset.univ.image eSide) ∪ (Finset.univ.image eRoot)
+    (GS.image eSide) ∪ (Finset.univ.image eRoot)
   let Hset : Set X := Core.functionClosure (↑G : Set X)
   let Hull : Structure L Hset :=
     Core.induce Hset (Core.functionClosure_isClosed (↑G : Set X))
@@ -73,12 +74,23 @@ theorem rootedWitness
 
   have hSideRange : ∀ x : E, ∃ z : Hset, eSide x = inc z := by
     intro x
-    have hxG : eSide x ∈ G := by
-      apply Finset.mem_union_left
-      exact Finset.mem_image.mpr ⟨x, Finset.mem_univ x, rfl⟩
+    have hpre :
+        Side.IsClosed {a : E | eSide a ∈ Hset} :=
+      eSide.preimage_isClosed Hset
+        (Core.functionClosure_isClosed (↑G : Set X))
+    have hGSpre :
+        (↑GS : Set E) ⊆ {a : E | eSide a ∈ Hset} := by
+      intro a ha
+      have haG : eSide a ∈ G := by
+        apply Finset.mem_union_left
+        exact Finset.mem_image.mpr ⟨a, ha, rfl⟩
+      exact Core.subset_functionClosure (↑G : Set X) (by
+        simpa using haG)
+    have hxcl : x ∈ Side.functionClosure (↑GS : Set E) := by
+      rw [hGenSide]
+      simp
     have hxH : eSide x ∈ Hset :=
-      Core.subset_functionClosure (↑G : Set X) (by
-        simpa using hxG)
+      hxcl {a : E | eSide a ∈ Hset} hpre hGSpre
     exact ⟨⟨eSide x, hxH⟩, rfl⟩
 
   have hRootRange : ∀ d : H, ∃ z : Hset, eRoot d = inc z := by
@@ -99,22 +111,19 @@ theorem rootedWitness
   have hGcard : G.card ≤ n + Nat.card H := by
     calc
       G.card ≤
-          (Finset.univ.image eSide).card +
+          (GS.image eSide).card +
             (Finset.univ.image eRoot).card :=
         Finset.card_union_le _ _
-      _ ≤ Fintype.card E + Fintype.card H := by
+      _ ≤ GS.card + Fintype.card H := by
         exact Nat.add_le_add
-          (by
-            simpa using
-              (Finset.card_image_le
-                (s := (Finset.univ : Finset E)) (f := eSide)))
+          Finset.card_image_le
           (by
             simpa using
               (Finset.card_image_le
                 (s := (Finset.univ : Finset H)) (f := eRoot)))
       _ ≤ n + Nat.card H := by
         simpa only [Nat.card_eq_fintype_card] using
-          Nat.add_le_add_right hSideCard (Nat.card H)
+          Nat.add_le_add hGScard (le_refl (Fintype.card H))
 
   have hHullGen :
       Hull.GeneratedByAtMost (n + Nat.card H) := by
@@ -222,5 +231,42 @@ theorem rootedWitness
     exact hqz.trans hdd
 
   exact ⟨Y, T, hTree, fSide, hfSide, tRoot, hcompat, hroot⟩
+
+
+/-- Cardinal-bound wrapper for `rootedWitness_generated`. -/
+theorem rootedWitness
+    [Finite H] [Finite E] [Finite X]
+    (hRoot : Root.Irreducible)
+    (eRoot : Embedding Root Core)
+    (eSide : Embedding Side Core)
+    (s : Embedding Overlap Side)
+    (q : K → H)
+    (hcompatSrc : ∀ z, eSide (s z) = eRoot (q z))
+    (hreflectSrc :
+      ∀ x d, eSide x = eRoot d →
+        ∃ z : K, x = s z ∧ q z = d)
+    (n : ℕ)
+    (hSideCard : Nat.card E ≤ n)
+    (hCore :
+      FunctionalHistoryTreeLike
+        (A := A) (D := D) (C := Core) (Base := Base)
+        p (n + Nat.card H)) :
+    ∃ (Y : Type v) (T : Structure L Y),
+      TreeAmalgam Base Y T ∧
+      ∃ fSide : E → Y,
+        Side.IsHomomorphismEmbedding T fSide ∧
+        ∃ tRoot : Embedding Root T,
+          (∀ z, fSide (s z) = tRoot (q z)) ∧
+          IsFreeAmalgam.RootIsolated s tRoot q fSide := by
+  letI : Fintype E := Fintype.ofFinite E
+  have hgen0 : Side.GeneratedByAtMost (Fintype.card E) :=
+    generatedByAtMost_card Side
+  have hgen : Side.GeneratedByAtMost n := by
+    apply hgen0.mono
+    simpa only [Nat.card_eq_fintype_card] using hSideCard
+  exact rootedWitness_generated
+    (A := A) (D := D) (Base := Base)
+    hRoot eRoot eSide s q hcompatSrc hreflectSrc
+    n hgen hCore
 
 end StructuralRamsey.Structure.FunctionalHistoryTreeLike
