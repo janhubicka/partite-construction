@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.InjectiveProjectedGlue
 import PartiteConstruction.Functional.EHNClosedRootInduction
 import PartiteConstruction.Functional.TreeExtensionHistoryGlue
+import PartiteConstruction.Functional.TreeExtensionHistoryWitness
 import PartiteConstruction.Functional.PureCoreProjectedHistory
 import PartiteConstruction.Functional.InitialTreeCompletion
 import PartiteConstruction.Functional.HistoryZero
