@@ -436,3 +436,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.Attachment.reindexVertex_injective
 #print axioms StructuralRamsey.RelStructure.Attachment.reindexVertex_copy
 #print axioms StructuralRamsey.RelStructure.Attachment.reindexEmbedding
+
+#print axioms StructuralRamsey.Partite.Closed.Picture.toOrdinaryRelEmbedding
+#print axioms StructuralRamsey.Partite.Closed.Picture.locallyTreeCompletable_projectedHistory
