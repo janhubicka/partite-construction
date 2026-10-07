@@ -27,7 +27,7 @@ theorem build_withStrongTree
     (B : RelStructure L.graph V)
     (D : RelStructure L.graph P)
     (S : Stage B D)
-    [Finite U]
+    [Finite U] [Finite P]
     (xs : List (RelevantEmbedding A B D))
     (κ : Type*) [Fintype κ]
     {VB : Type v} [Finite VB]
