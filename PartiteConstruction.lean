@@ -217,6 +217,7 @@ import PartiteConstruction.Functional.ControlCompletion
 
 import PartiteConstruction.Functional.HistoryTreeCompletion
 import PartiteConstruction.Functional.HistoryRootedWitness
+import PartiteConstruction.Functional.HistoryIrreducibleRootGlue
 import PartiteConstruction.Functional.InjectiveHistoryPullback
 import PartiteConstruction.Functional.InjectiveRelativePullback
 
