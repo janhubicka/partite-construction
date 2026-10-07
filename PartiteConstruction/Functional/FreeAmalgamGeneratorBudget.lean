@@ -1,7 +1,7 @@
-import PartiteConstruction.Functional.ClosedGeneratorRank
+import PartiteConstruction.Functional.ClosedgeneratorseratorRank
 import PartiteConstruction.Structure.FreeAmalgam
 
-/-! # Generator budgets for functional free amalgams
+/-! # generatorserator budgets for functional free amalgams
 
 A generated substructure of a free amalgam may use generators from both sides.
 For one fixed side, the generators landing on that side together with the
@@ -41,32 +41,32 @@ theorem left_generatedByAtMost_add_root
   letI : Fintype E := Fintype.ofFinite E
   rcases hgen with ⟨G, hGcard, hGgen⟩
 
-  let GL : Finset E :=
+  let leftGen : Finset E :=
     (Finset.univ : Finset E).filter (fun x => iL x ∈ G)
-  let GR : Finset E :=
+  let rootGen : Finset E :=
     (Finset.univ : Finset H).image sL
-  let Gen : Finset E := GL ∪ GR
+  let generators : Finset E := leftGen ∪ rootGen
 
-  have hGLcard : GL.card ≤ G.card := by
-    let phi : ↥(↑GL : Set E) → ↥(↑G : Set C) :=
+  have hLeftGenCard : leftGen.card ≤ G.card := by
+    let phi : ↥(↑leftGen : Set E) → ↥(↑G : Set C) :=
       fun x => ⟨iL x.1, (Finset.mem_filter.mp x.2).2⟩
     have hphi : Function.Injective phi := by
       intro x y hxy
       apply Subtype.ext
       apply iL.injective
       exact congrArg Subtype.val hxy
-    simpa [GL] using Fintype.card_le_of_injective phi hphi
+    simpa [leftGen] using Fintype.card_le_of_injective phi hphi
 
-  have hGRcard : GR.card ≤ Nat.card H := by
-    simpa only [Nat.card_eq_fintype_card] using
+  have hRootGenCard : rootGen.card ≤ Nat.card H := by
+    simpa [rootGen, Nat.card_eq_fintype_card] using
       (Finset.card_image_le
         (s := (Finset.univ : Finset H)) (f := sL))
 
-  refine ⟨Gen, ?_, ?_⟩
+  refine ⟨generators, ?_, ?_⟩
   · calc
-      Gen.card ≤ GL.card + GR.card := Finset.card_union_le _ _
+      generators.card ≤ leftGen.card + rootGen.card := Finset.card_union_le _ _
       _ ≤ G.card + Nat.card H :=
-        Nat.add_le_add hGLcard hGRcard
+        Nat.add_le_add hLeftGenCard hRootGenCard
       _ ≤ n + Nat.card H :=
         Nat.add_le_add_right hGcard (Nat.card H)
   · ext x
@@ -74,14 +74,14 @@ theorem left_generatedByAtMost_add_root
     · intro _
       simp
     · intro _
-      intro T hT hGenT
+      intro T hT hGeneratorsT
 
       let TWhole : Set C :=
         Set.range iR ∪ iL '' T
 
       have hCommonT : ∀ d : H, sL d ∈ T := by
         intro d
-        apply hGenT
+        apply hGeneratorsT
         apply Finset.mem_union_right
         exact Finset.mem_image.mpr ⟨d, Finset.mem_univ d, rfl⟩
 
@@ -93,8 +93,9 @@ theorem left_generatedByAtMost_add_root
           have haT : ∀ k, a k ∈ T := by
             intro k
             have hk : iL (a k) ∈ TWhole := by
-              rw [← congrFun hargsEq k]
-              exact hargs k
+              have hk0 := hargs k
+              rw [hargsEq] at hk0
+              exact hk0
             rcases hk with hR | hL
             · rcases hR with ⟨r, hr⟩
               obtain ⟨d, had, _⟩ :=
@@ -105,21 +106,21 @@ theorem left_generatedByAtMost_add_root
               have haa : a' = a k := iL.injective ha'eq
               simpa [haa] using ha'T
           have hbT : b ∈ T := hT F0 a haT hb
-          exact Or.inr ⟨b, hbT, hyEq⟩
+          exact Or.inr ⟨b, hbT, hyEq.symm⟩
         · rcases hright with ⟨a, b, hb, hargsEq, hyEq⟩
-          exact Or.inl ⟨b, hyEq⟩
+          exact Or.inl ⟨b, hyEq.symm⟩
 
       have hGTWhole : (↑G : Set C) ⊆ TWhole := by
         intro g hg
         rcases hfree.covers g with ⟨l, hgl⟩ | ⟨r, hgr⟩
-        · have hlGL : l ∈ GL := by
+        · have hlleftGen : l ∈ leftGen := by
             apply Finset.mem_filter.mpr
             exact ⟨Finset.mem_univ l, by simpa [hgl] using hg⟩
           have hlT : l ∈ T := by
-            apply hGenT
-            exact Finset.mem_union_left Gen hlGL
-          exact Or.inr ⟨l, hlT, hgl⟩
-        · exact Or.inl ⟨r, hgr⟩
+            apply hGeneratorsT
+            exact Finset.mem_union_left generators hlleftGen
+          exact Or.inr ⟨l, hlT, hgl.symm⟩
+        · exact Or.inl ⟨r, hgr.symm⟩
 
       have hxWhole : iL x ∈ TWhole := by
         have hxClosure : iL x ∈ Whole.functionClosure (↑G : Set C) := by
