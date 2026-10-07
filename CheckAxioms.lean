@@ -432,3 +432,7 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Structure.ofGraphGraphEmbedding
 #print axioms StructuralRamsey.Structure.WeakLocallyTreeCompletable.ofGraph
 #print axioms StructuralRamsey.Partite.Induced.inducedConstruction_weakFunctionalTreeCompletable_succ
+
+#print axioms StructuralRamsey.RelStructure.Attachment.reindexVertex_injective
+#print axioms StructuralRamsey.RelStructure.Attachment.reindexVertex_copy
+#print axioms StructuralRamsey.RelStructure.Attachment.reindexEmbedding
