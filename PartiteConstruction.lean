@@ -129,6 +129,7 @@ import PartiteConstruction.Iterated.IntersectionStrongProjectedGlue
 import PartiteConstruction.Iterated.ProjectedGlue
 import PartiteConstruction.Iterated.ProjectedCover
 import PartiteConstruction.Relational.Attachment
+import PartiteConstruction.Relational.AttachmentReindex
 import PartiteConstruction.Relational.Order
 import PartiteConstruction.Partite.Operations
 import PartiteConstruction.Partite.Attachment
