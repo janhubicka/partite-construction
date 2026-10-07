@@ -15,7 +15,7 @@ the reducible-root induction.
 
 namespace StructuralRamsey.Structure
 
-universe v
+universe u v
 
 variable {H G P : Type v}
 
@@ -93,7 +93,7 @@ completed reducible root and two already synchronized strict side extensions
 form a common rooted projected-history witness, even when the root map is
 noninjective. -/
 theorem HasCommonRootedProjectedHistoryCompletions.of_rootHistory
-    {L : Language.{v}} {VB E F : Type v}
+    {L : Language.{u}} {VB E F : Type v}
     {Base : Structure L VB}
     {Root : Structure L H}
     {Left : Structure L E} {Right : Structure L F}
