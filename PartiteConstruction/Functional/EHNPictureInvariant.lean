@@ -35,7 +35,7 @@ lemmas, with no duplicated Ramsey bookkeeping. -/
 theorem pictureLemma_preserving
     (hK : Structure.FreeAmalgamationClass K)
     (A : Structure L U) [Finite U] (hA : K A)
-    (B : Stage K D) (α : Embedding A D)
+    (B : Stage K D) (α : Structure.Embedding A D)
     (κ : Type*) [Fintype κ]
     (Q : Stage K D → Prop)
     (hCore :
@@ -127,7 +127,7 @@ theorem pictureLemma_preserving
     weakRestrictCopy B.system D B.isPartite.1 A α e₁ he₁
   let r₂ :=
     weakRestrictCopy B.system D B.isPartite.1 A α e₂ he₂
-  have hcomp (e : Embedding A B.system.toStructure)
+  have hcomp (e : Structure.Embedding A B.system.toStructure)
       (he : ∀ x, B.system.part (e x) = α x) :
       f.toEmbedding.comp e =
         core.toEmbedding.comp
