@@ -62,7 +62,10 @@ theorem finite_free_induction
         by_cases hIrr : E.Irreducible
         · obtain ⟨g, hg⟩ :=
             hq.2 E hIrr (Embedding.id E)
-          exact hembed E q hq ⟨g, fun x => by simpa using hg x⟩
+          exact hembed E q hq ⟨g, fun x => by
+            calc
+              g x = q ((Embedding.id E) x) := hg x
+              _ = q x := rfl⟩
         · have hdec : Nonempty (ProperFreeDecomposition E) := by
             by_contra hn
             exact hIrr
