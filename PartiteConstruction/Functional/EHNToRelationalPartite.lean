@@ -44,7 +44,11 @@ def toGraphPartite
         fun k => ⟨z k, ⟨k, rfl⟩⟩
       refine ⟨R, zz, ix, iy, ?_, ?_, ?_⟩
       · change B.toStructure.graph.rel R (Subtype.val ∘ zz)
-        simpa [zz] using hz
+        have heq : (Subtype.val ∘ zz) = z := by
+          funext k
+          rfl
+        rw [heq]
+        exact hz
       · apply Subtype.ext
         exact hix
       · apply Subtype.ext
