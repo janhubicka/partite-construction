@@ -36,8 +36,8 @@ Hales--Jewett core used by one EHN Picture step. -/
 theorem pureCore_projectedHistory_of_domainReflection
     (hA : A.Irreducible)
     (hE : E.WeaklyPartiteOver A)
-    (eAB : Embedding A Base)
-    (alpha : Embedding A D)
+    (eAB : Structure.Embedding A Base)
+    (alpha : Structure.Embedding A D)
     (S : Finset W)
     (hS : E.toStructure.IsClosed (↑S : Set W))
     (hreflect :
@@ -48,8 +48,7 @@ theorem pureCore_projectedHistory_of_domainReflection
     (history : List (Set P)) :
     let p : W → P := alpha ∘ E.part
     ∃ f : ↥(↑S : Set W) → V,
-      (E.toStructure.induce (↑S : Set W) hS)
-        .IsHomomorphismEmbedding Base f ∧
+      (E.toStructure.induce (↑S : Set W) hS).IsHomomorphismEmbedding Base f ∧
       FunctionalProjectedPartialIntersections
         (A := A) (D := D) (C := E.toStructure) (T := Base)
         p S f ∧
@@ -71,8 +70,8 @@ theorem pureCore_projectedHistory_of_domainReflection
         (A := A) (D := D) (C := E.toStructure) (T := Base)
         p S f := by
     intro beta H hH e hproj hRange
-    let betaH : Embedding (A.induce H hH) D :=
-      beta.comp (inclusion A H hH)
+    let betaH : Structure.Embedding (A.induce H hH) D :=
+      beta.comp (Structure.inclusion A H hH)
     have hbetaRange :
         ∀ x : ↥H, ∃ a : U, betaH x = alpha a := by
       intro x
@@ -81,16 +80,16 @@ theorem pureCore_projectedHistory_of_domainReflection
         betaH x = beta x.1 := rfl
         _ = p (e x) := (hproj x).symm
         _ = alpha (E.part (e x)) := rfl
-    let ell : Embedding (A.induce H hH) A :=
+    let ell : Structure.Embedding (A.induce H hH) A :=
       betaH.factorThroughClosedRange alpha hbetaRange
     have hell (x : ↥H) :
         alpha (ell x) = beta x.1 := by
       calc
         alpha (ell x) = betaH x :=
-          Embedding.factorThroughClosedRange_spec
+          Structure.Embedding.factorThroughClosedRange_spec
             betaH alpha hbetaRange x
         _ = beta x.1 := rfl
-    let eHT : Embedding (A.induce H hH) Base :=
+    let eHT : Structure.Embedding (A.induce H hH) Base :=
       eAB.comp ell
     have heHT :
         ∀ x, eHT x = f ⟨e x, hRange x⟩ := by
@@ -129,8 +128,8 @@ theorem pureCore_projectedHistory_of_domainReflection
 theorem pureCore_projectedHistoryTree_of_domainReflection
     (hA : A.Irreducible)
     (hE : E.WeaklyPartiteOver A)
-    (eAB : Embedding A Base)
-    (alpha : Embedding A D)
+    (eAB : Structure.Embedding A Base)
+    (alpha : Structure.Embedding A D)
     (S : Finset W)
     (hS : E.toStructure.IsClosed (↑S : Set W))
     (hreflect :
@@ -154,7 +153,7 @@ theorem pureCore_projectedHistoryTree_of_domainReflection
     pureCore_projectedHistory_of_domainReflection
       hA hE eAB alpha S hS hreflect history
   have hTree : TreeAmalgam Base V Base :=
-    TreeAmalgam.copy (Embedding.id Base) (by
+    TreeAmalgam.copy (Structure.Embedding.id Base) (by
       intro b
       exact ⟨b, rfl⟩)
   exact ⟨V, Base, hTree, f, hf, hPart, hHist⟩
