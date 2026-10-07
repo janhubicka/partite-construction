@@ -55,11 +55,9 @@ theorem closedTestPullback_common_EHN
   let WR := B.weakRestrict Douter hB.1 A alpha
   have hWR : WR.WeaklyPartiteOver A :=
     B.weakRestrict_invariant Douter hB.1 A alpha hB
-  have eRoot : Structure.Embedding pb.common WR.toStructure :=
-    pb.commonMap
   change pb.common.IsEHNHomomorphismEmbedding A
     (WR.part ∘ pb.commonMap)
-  exact hWR.comp eRoot.isEHNHomomorphismEmbedding
+  exact hWR.comp pb.commonMap.isEHNHomomorphismEmbedding
 
 /-- The actual closed mixed attachment separator either has the full
 prescribed A-label embedding, or splits as a proper full free amalgam.
