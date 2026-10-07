@@ -112,4 +112,128 @@ theorem glueProjectedFull_injectiveProjection
       [] (by intro K hK; simp at hK) (by intro K hK; simp at hK)
   exact ⟨Z, Target, hTree, f, hf⟩
 
+
+/-- History-preserving form of `glueProjectedFull_injectiveProjection`.
+
+Source-side history subsets are encoded by their direct images under the
+injective projection `p`.  The quotient-root functional glue preserves those
+projected subsets, and injectivity of `p` decodes membership back to the
+original source subsets. -/
+theorem glueProjectedFull_injectiveProjection_withHistory
+    [Fintype E] [Fintype F]
+    (hA : A.Irreducible)
+    (eAB : Embedding A Base)
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (p : C → P)
+    (hp : Whole.IsHomomorphismEmbedding D p)
+    (hinj : Function.Injective p)
+    (beta : Embedding A D)
+    (q : H → U)
+    (hprojL : ∀ d, p (iL (sL d)) = beta (q d))
+    (hprojR : ∀ d, p (iR (sR d)) = beta (q d))
+    (m : ℕ)
+    (hD :
+      FunctionalProjectedHistoryTreeLike
+        (A := A) (D := D) (C := D) (Base := Base) id m)
+    (hgenL : Left.GeneratedByAtMost m)
+    (hgenR : Right.GeneratedByAtMost m)
+    (projectedHistory : List (Set P))
+    (sourceHistory : List (Set C)) :
+    ∃ (Z : Type v) (Target : Structure L Z),
+      TreeAmalgam Base Z Target ∧
+      ∃ f : C → Z,
+        Whole.IsHomomorphismEmbedding Target f ∧
+        (∀ K ∈ projectedHistory, ∀ x y : C,
+          f x = f y → (p x ∈ K ↔ p y ∈ K)) ∧
+        (∀ K ∈ sourceHistory, ∀ x y : C,
+          f x = f y → (x ∈ K ↔ y ∈ K)) := by
+  classical
+  let pL : E → P := p ∘ iL
+  let pR : F → P := p ∘ iR
+  have hpL : Left.IsHomomorphismEmbedding D pL :=
+    hp.comp iL.isHomomorphismEmbedding
+  have hpR : Right.IsHomomorphismEmbedding D pR :=
+    hp.comp iR.isHomomorphismEmbedding
+  have hinjL : Function.Injective pL := by
+    intro x y hxy
+    apply iL.injective
+    apply hinj
+    exact hxy
+  have hinjR : Function.Injective pR := by
+    intro x y hxy
+    apply iR.injective
+    apply hinj
+    exact hxy
+  have hrootL : ∀ d, pL (sL d) = beta (q d) := by
+    intro d
+    exact hprojL d
+  have hrootR : ∀ d, pR (sR d) = beta (q d) := by
+    intro d
+    exact hprojR d
+
+  let encodedSource : List (Set P) :=
+    sourceHistory.map (fun K => p '' K)
+  let allHistory : List (Set P) :=
+    projectedHistory ++ encodedSource
+
+  obtain ⟨ZL, TL, hTreeL, fL, hfL, hHistL,
+      targetL, hcompatL, hisoL⟩ :=
+    hD.relativeWitness_of_injective_projection
+      hA eAB hpL hinjL hgenL allHistory sL beta q hrootL
+  obtain ⟨ZR, TR, hTreeR, fR, hfR, hHistR,
+      targetR, hcompatR, hisoR⟩ :=
+    hD.relativeWitness_of_injective_projection
+      hA eAB hpR hinjR hgenR allHistory sR beta q hrootR
+
+  have hcL : targetL.ContainedInIrreducible := by
+    refine ⟨U, A, hA, targetL, ?_⟩
+    intro a
+    exact ⟨a, rfl⟩
+  have hcR : targetR.ContainedInIrreducible := by
+    refine ⟨U, A, hA, targetR, ?_⟩
+    intro a
+    exact ⟨a, rfl⟩
+
+  obtain ⟨Z, Target, hTree, f, hf, hHist⟩ :=
+    glueIsolatedRoot_withProjectedHistory
+      (Base := Base)
+      hSrc hTreeL hTreeR hcL hcR
+      q fL fR hcompatL hcompatR hfL hfR hisoL hisoR
+      p pL pR beta
+      (fun x => rfl) (fun x => rfl)
+      hrootL hrootR
+      allHistory hHistL hHistR
+
+  have hProjected :
+      ∀ K ∈ projectedHistory, ∀ x y : C,
+        f x = f y → (p x ∈ K ↔ p y ∈ K) := by
+    intro K hK x y hxy
+    exact hHist K (by
+      apply List.mem_append.mpr
+      exact Or.inl hK) x y hxy
+
+  have hSource :
+      ∀ K ∈ sourceHistory, ∀ x y : C,
+        f x = f y → (x ∈ K ↔ y ∈ K) := by
+    intro K hK x y hxy
+    have hEnc : p '' K ∈ allHistory := by
+      apply List.mem_append.mpr
+      exact Or.inr (List.mem_map.mpr ⟨K, hK, rfl⟩)
+    have hmem := hHist (p '' K) hEnc x y hxy
+    constructor
+    · intro hx
+      have hpx : p x ∈ p '' K := ⟨x, hx, rfl⟩
+      have hpy : p y ∈ p '' K := hmem.mp hpx
+      rcases hpy with ⟨z, hz, hpzy⟩
+      have hzy : z = y := hinj hpzy
+      simpa [hzy] using hz
+    · intro hy
+      have hpy : p y ∈ p '' K := ⟨y, hy, rfl⟩
+      have hpx : p x ∈ p '' K := hmem.mpr hpy
+      rcases hpx with ⟨z, hz, hpzx⟩
+      have hzx : z = x := hinj hpzx
+      simpa [hzx] using hz
+
+  exact ⟨Z, Target, hTree, f, hf, hProjected, hSource⟩
+
 end StructuralRamsey.Structure.LocallyClosedTreeCompletable
