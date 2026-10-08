@@ -82,7 +82,7 @@ the theorem.
    relational uniform final-support attachment that establishes (3)
    has **not** been proved, and must be kept separate.
 
-The original paper's sentence "let C'' be the structure induced by D on
+A separate local regression in\n`Functional/PublishedProjectionObstruction.lean` shows that the\nprojection of just two disjoint B-copies to a binary-function B is weak\nbut **not full**: a cross-copy input pair has no source value although\nits projected pair has a target value. This explicitly invalidates the\npublished proof's assertion that the successive original part maps are\nfull homomorphism-embeddings, independently of the target gluing problem.\n\nThe original paper's sentence "let C'' be the structure induced by D on
 pi[C']" is only legitimate if `pi[C']` is function-closed; it is not
 guaranteed under an EHN weak projection. For the actual weak induction
 the correct phrase is "the weak substructure induced by the projected
@@ -135,7 +135,7 @@ These distinctions are essential when reviewing the original mixed case.
   `A.graph.HereditarilyIrreducible`. In particular it does *not*
   prove published (1), (2), or (3) verbatim.
 
-The *published* theorem in arbitrary function languages, with original
+For a hereditary free-amalgamation class K containing A and B, the new\n  `sparseningRamsey_functionalWeakGraph_inClass` additionally guarantees\n  `K C`, without separately assuming that A embeds in B; the no-copy\n  case chooses B itself. This is the strongest end-to-end functional\n  Ramsey/class-preserving weak-graph conclusion now formalized.\n\nThe *published* theorem in arbitrary function languages, with original
 full-function (1), strict full-function (2), and (3) simultaneously,
 remains open in this Lean development. It should not be given a green
 validation marker, and its proof should not be described as complete.
