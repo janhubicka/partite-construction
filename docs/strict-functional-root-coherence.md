@@ -29,6 +29,42 @@ require U-closed relational pictures; these belong to the separate recursive
 construction, in whose intermediate stages the function structure may be
 broken.
 
+## Correction: the projected image of a weak test is weak too
+
+For **every** vertex set S in a native functional stage C and its EHN
+projection p:C -> D, the correct source and projected target in the
+n-vertex induction are
+
+    C.weakInduce S             and             D.weakInduce (p '' S).
+
+The target function fibre over a tuple from p[S] is exactly its full
+D-fibre intersected with p[S]. We do **not** generate a function-closed
+substructure of D on p[S], and do **not** enlarge the image to a closure
+hull. Both weak graph encodings are precisely ordinary relational induced
+structures. The restricted map p|S is a **weak graph**
+homomorphism-embedding into this weak target, not in general a full
+homomorphism in the original function language.
+
+In particular, even if S is a genuinely *closed* source substructure, p[S]
+need not be closed in D under a merely weak EHN projection (multi-input
+function domains can fail to reflect). The positive assertion of #111
+that p[S] is closed is **conditional** on the extra assumption that p|S
+is a full function homomorphism-embedding. It must never be substituted
+for the general weak-image step.
+
+The exact weak-image factorization is formalized as
+`IsWeakHomomorphismEmbedding.weakImage` in
+`Functional/ProjectedWeakImage.lean`. The corresponding small-image
+graph-tree statement is
+`WeakLocallyTreeCompletable.completion_of_small_weakImage`:
+if |p[S]| <= m, a level-m weak-tree witness of D completes C|^w S
+at **graph-tree level**, using D|^w p[S]. This does not imply a
+strict full-function B-tree completion for the weak test.
+
+There is therefore no additional root/gluing closure condition needed
+merely to **form the weak image**. Root closure belongs to the distinct
+strict *target tree* problem, not to the source/image vertex-size count.
+
 ## A useful exact reduction: failures of domain reflection
 
 The following assertions are already Lean-proved in
