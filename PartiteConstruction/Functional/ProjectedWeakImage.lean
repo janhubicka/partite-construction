@@ -42,8 +42,8 @@ bound is evaluated on the image's actual vertex set, and no function-closed
 hull or extra vertex enters the proof. The completion target is a relational
 tree of function graphs, not automatically a strict full-function tree. -/
 theorem WeakLocallyTreeCompletable.completion_of_small_weakImage
-    {Base : Structure L V} {C : Structure L V}
-    {D : Structure L W} {p : V → W}
+    {VB : Type v} {Base : Structure L VB}
+    {C : Structure L V} {D : Structure L W} {p : V → W}
     [DecidableEq W] {m : ℕ}
     (hD : WeakLocallyTreeCompletable Base D m)
     (hp : C.IsWeakHomomorphismEmbedding D p)
