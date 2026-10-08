@@ -59,6 +59,7 @@ import PartiteConstruction.Ramsey.AllThoseFiniteModels
 import PartiteConstruction.Ramsey.AllThosePartialFiniteModels
 import PartiteConstruction.Ramsey.CompletionTransfer
 import PartiteConstruction.Ramsey.ClosureDescription2019
+import PartiteConstruction.Ramsey.ClosureEmbeddingRange
 import PartiteConstruction.Ramsey.CopywiseFreeFold
 import PartiteConstruction.Ramsey.StrongAmalgamationTreeCompletion
 import PartiteConstruction.Ramsey.CopywiseTreeHomomorphism
@@ -390,3 +391,6 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.IsUClosed.induce_of_USubstructure
 #print axioms StructuralRamsey.RelStructure.IsUClosed.USubstructure_of_induce
 #print axioms StructuralRamsey.RelStructure.IsUClosed.induce_iff_USubstructure
+
+#print axioms StructuralRamsey.RelStructure.Embedding.range_isUSubstructure
+#print axioms StructuralRamsey.RelStructure.Embedding.range_induce_isUClosed
