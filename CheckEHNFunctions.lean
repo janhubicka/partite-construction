@@ -21,6 +21,7 @@ import PartiteConstruction.Functional.NativePowerConcreteStage
 import PartiteConstruction.Functional.NativePowerFullObstruction
 import PartiteConstruction.Functional.NativePowerInputTree
 import PartiteConstruction.Functional.NativePowerClosedStaircase
+import PartiteConstruction.Functional.NativePowerTwelveBound
 import PartiteConstruction.Functional.QuotientBoundaryDomainObstruction
 import PartiteConstruction.Functional.ProjectedWeakImage
 import PartiteConstruction.Functional.DirectWeakIteration
@@ -339,3 +340,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.actualPower_weaklyPartiteOver
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.staircaseSupport_closed
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.staircaseSupport_no_strictTreeCompletion
+
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.staircaseSupport_card_le_twelve
