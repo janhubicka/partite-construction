@@ -75,8 +75,7 @@ theorem onePointClosure_irreducible
     have hz0 : z.1 ∈ T0 :=
       z.2 T0 hT0 hseed
     exact hz0.2
-  have hGoal : H.Irreducible := by
-    rw [irreducible_iff_noProperFreeDecomposition]
+  have hNoDec : ¬ Nonempty (ProperFreeDecomposition H) := by
     rintro ⟨d⟩
     rcases d.free.covers (q PUnit.unit) with ⟨x, hx⟩ | ⟨x, hx⟩
     · apply d.leftProper
@@ -93,6 +92,8 @@ theorem onePointClosure_irreducible
           have ha : a = PUnit.unit := Subsingleton.elim _ _
           subst a
           exact ⟨x, hx.symm⟩) z
+  have hGoal : H.Irreducible :=
+    (irreducible_iff_noProperFreeDecomposition H).mpr hNoDec
   exact hGoal
 
 /-- For unary functions, an EHN projection preserves complete function fibres
