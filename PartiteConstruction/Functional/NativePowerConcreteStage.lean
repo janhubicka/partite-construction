@@ -43,8 +43,11 @@ def oldSystem : FunctionalPartite.System toyLanguage (Fin 3) (Fin 7) where
   part := oldPart
   relTransversal := by
     intro R xs hrel i j heq
-    have hij : i = j := by
-      fin_cases R <;> fin_cases i <;> fin_cases j <;> rfl
+    have hi : i.val < 1 := by
+      simpa [toyLanguage] using i.isLt
+    have hj : j.val < 1 := by
+      simpa [toyLanguage] using j.isLt
+    have hij : i = j := Fin.ext (by omega)
     exact congrArg xs hij
   funcTransversal := by
     intro F xs y z hy hz heq
