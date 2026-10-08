@@ -58,6 +58,7 @@ import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 import PartiteConstruction.Ramsey.AllThoseFiniteModels
 import PartiteConstruction.Ramsey.AllThosePartialFiniteModels
 import PartiteConstruction.Ramsey.CompletionTransfer
+import PartiteConstruction.Ramsey.ClosureDescription2019
 import PartiteConstruction.Ramsey.ForbiddenFunctions
 import PartiteConstruction.Structure.RootedReduction
 import PartiteConstruction.Structure.RootedFunctor
@@ -368,3 +369,7 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.singletonValued_of_freeAmalgam
 #print axioms StructuralRamsey.Structure.originalPartialModelClass_free
 #print axioms StructuralRamsey.Structure.allThoseRamseyClasses_theorem_2_19_partialFunctions
+
+#print axioms StructuralRamsey.RelStructure.IsUClosed.induce_of_USubstructure
+#print axioms StructuralRamsey.RelStructure.IsUClosed.USubstructure_of_induce
+#print axioms StructuralRamsey.RelStructure.IsUClosed.induce_iff_USubstructure

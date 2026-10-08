@@ -191,6 +191,7 @@ import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 import PartiteConstruction.Ramsey.AllThoseFiniteModels
 import PartiteConstruction.Ramsey.AllThosePartialFiniteModels
 import PartiteConstruction.Ramsey.CompletionTransfer
+import PartiteConstruction.Ramsey.ClosureDescription2019
 
 import PartiteConstruction.Functional.TreeTransferObstruction
 import PartiteConstruction.Functional.ClosedTestGraphTreeObstruction
