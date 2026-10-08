@@ -33,7 +33,7 @@ weak graph-tree local completability at n vertices while retaining
 full function-language Picture canonicalization and class membership. -/
 theorem pictureLemma_weakGraphLocallyTreeLike
     (hK : Structure.FreeAmalgamationClass K)
-    (A : Structure L U) [Finite U] (hKA : K A)
+    (A : Structure L U) [Finite U] [Finite P] (hKA : K A)
     (Base : Structure L V) [Finite V]
     (hA : A.graph.HereditarilyIrreducible)
     (eAB : Structure.Embedding A Base)
@@ -107,8 +107,8 @@ theorem pictureLemma_weakGraphLocallyTreeLike
       intro x hx
       obtain ⟨a, ha⟩ := hx
       exact ⟨a, ha.symm⟩
-    exact T.attach_weakGraphLocallyTreeLike hK A Base D
-      hA eAB Old S hS f α hSupport n hn hD hOld hT
+    exact Stage.attach_weakGraphLocallyTreeLike hK A Base D
+      hA eAB Old T S hS f α hSupport n hn hD hOld hT
   exact pictureLemma_preservingSupport hK A hKA Old α κ Q hCore hAttach
 
 end
