@@ -70,4 +70,40 @@ theorem staircase_noSquare_obstruction
   exact hNoSquare (fx 1) (fx 2) (fy 0) (fy 1)
     hx hy e10 e11 e20 e21
 
+/-- The binary-function domain of the three-edge tree: all pairs except
+(x0,y1) are defined. This is a concrete relation on its X- and Y-parts. -/
+def TreeInputDomain (i j : Fin 2) : Prop :=
+  i = 1 ∨ j = 0
+
+/-- The three selected words 00, 01, 11 in each part of the second
+coordinatewise Hales--Jewett power. -/
+def SelectedWord (i : Fin 3) (k : Fin 2) : Fin 2 :=
+  if i = 0 then 0 else if i = 1 then if k = 0 then 0 else 1 else 1
+
+/-- A binary-function input is defined in the tagged coordinatewise power
+exactly when it is defined in both old coordinates. -/
+def SelectedPowerDomain (i j : Fin 3) : Prop :=
+  ∀ k : Fin 2, TreeInputDomain (SelectedWord i k) (SelectedWord j k)
+
+/-- The computed second-power domain matrix is the staircase 100/110/111.
+Unlike a generated function closure, the tested image here has exactly
+the selected vertices. -/
+theorem selectedPowerDomain_iff_staircase
+    (i j : Fin 3) :
+    SelectedPowerDomain i j ↔ Staircase i j := by
+  fin_cases i <;> fin_cases j <;> decide
+
+/-- The concrete domain matrix of these six power inputs already prohibits
+a full domain-exact map to any square-free target. -/
+theorem selectedPowerDomain_noSquare
+    {X Y : Type v} (R : X → Y → Prop)
+    (hNoSquare : NoSquare R)
+    (fx : Fin 3 → X) (fy : Fin 3 → Y)
+    (hExact : ∀ i j : Fin 3,
+      R (fx i) (fy j) ↔ SelectedPowerDomain i j) :
+    False := by
+  apply staircase_noSquare_obstruction R hNoSquare fx fy
+  intro i j
+  exact (hExact i j).trans (selectedPowerDomain_iff_staircase i j)
+
 end StructuralRamsey.Structure.NativePowerObstruction
