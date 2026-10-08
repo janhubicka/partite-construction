@@ -56,6 +56,11 @@ intended function-structure constraints.
 A strict **function-language target-tree** statement is a different open
 strengthening: graph tree witnesses may have non-closed gluing roots and local
 maps need not preserve the entire target function fibre.
+The necessity of a separate target-side argument is now formally witnessed
+by `FunctionalClosedTestGraphObstruction.closedSource_graphCompletion_not_fullCompletion`
+(merged Lean #109): even an entire closed function source can have a
+strict graph-tree B-completion but no full function-tree B-completion.
+This does not disprove a native-EHN-specific strengthening.
 
 ## Remaining proof obligations
 

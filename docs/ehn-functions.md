@@ -128,6 +128,13 @@ Do not identify weak graph-tree completion with the strict full-function
 target conclusion. Function-closed gluing roots and locally full output
 maps remain a separate strengthening to prove.
 
+The gap persists even for **function-closed source tests**, as the
+checked two-edge unary-function path in
+`FunctionalClosedTestGraphObstruction.closedSource_graphCompletion_not_fullCompletion`
+shows. The path is a relational B-graph tree; no full functional B-tree
+can contain a two-step function chain. This only rules out automatic
+conversion, not special additional invariants of the native EHN stages.
+
 ## What remains separate
 
 This work does **not** prove a globally fibre-surjective partite projection.

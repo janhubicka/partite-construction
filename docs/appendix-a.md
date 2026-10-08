@@ -149,6 +149,29 @@ U-closed n-pass proof is a valid auxiliary result, not the construction used
 here.
 
 
+### Verified closed-source versus full-target obstruction
+
+The exact source/target distinction is not merely a deficiency of notation.
+`Structure.FunctionalClosedTestGraphObstruction.closedSource_graphCompletion_not_fullCompletion`
+(Lean PR #109, successful CI on commit
+`a175a045df4088c2597966e32251420d5e19f2a1`) proves that an
+**entire closed function structure** may have a strict tree completion
+of its function graph without having any full function-language tree
+completion over the same base.
+
+For the unary partial function with F(0)={1} and F(1)=empty, glue
+two B-graphs along the output of one and input of the next, producing
+a directed two-step path. This is a strict relational tree of B-graphs;
+its full decoded source is closed. Every genuine full-function B-tree
+still satisfies F∘F=empty, so the path cannot even map into one by a
+full function homomorphism. The obstacle is the *nonclosed target gluing
+root*, not a function-closure enlargement of the source test.
+
+This rules out an automatic graph-to-full-target conversion for
+arbitrary closed sources. It does **not** refute a potential stronger
+theorem for the special native EHN outputs, provided extra closure
+certificates are constructed. The validated n-pass theorem remains
+graph-level, and the printed relational Appendix remains unchanged.
 ## Validation discipline
 
 CI builds the umbrella and all audit imports, then checks every declaration in
