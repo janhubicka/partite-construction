@@ -108,7 +108,7 @@ respecting every B-copy. The maps need not be global embeddings. -/
 def HasCopywiseCompletion
     (K : RelStructure.StructureClass.{u,v} (L := L))
     (B : RelStructure L V) (C : RelStructure L W) : Prop :=
-  ∃ (X : Type v) (D : RelStructure L X),
+  ∃ (X : Type v) (_ : Finite X) (D : RelStructure L X),
     K D ∧ ∃ f : W → X, CopywiseCompletion B C D f
 
 /-- The final step in the multiamalgamation proof needs no amalgamation
@@ -123,12 +123,12 @@ theorem arrow_of_copywiseCompletion_inClass
     (hRamsey : StructuralRamsey.Arrow A B C κ)
     (hExt : IrreduciblesExtendTo B C)
     (hCompletion : HasCopywiseCompletion K B C) :
-    ∃ (X : Type v) (D : RelStructure L X),
+    ∃ (X : Type v) (_ : Finite X) (D : RelStructure L X),
       K D ∧ StructuralRamsey.Arrow A B D κ := by
-  obtain ⟨X,D,hKD,f,hB⟩ := hCompletion
+  obtain ⟨X,hX,D,hKD,f,hB⟩ := hCompletion
   have hCopiesA : CopywiseCompletion A C D f :=
     hB.of_irreducible_extension hA hExt
-  exact ⟨X,D,hKD,arrow_of_copywiseCompletion hRamsey hCopiesA hB⟩
+  exact ⟨X,hX,D,hKD,arrow_of_copywiseCompletion hRamsey hCopiesA hB⟩
 
 /-- Relational sparsening + copywise local completion criterion. The
 unproved hypothesis in the full multiamalgamation theorem is not a Ramsey
@@ -153,7 +153,7 @@ theorem ramsey_of_sparse_copywise_completion
         LocallyTreeCompletable B C n →
         IrreduciblesExtendTo B C →
         HasCopywiseCompletion K B C) :
-    ∃ (X : Type v) (C : RelStructure L X),
+    ∃ (X : Type v) (_ : Finite X) (C : RelStructure L X),
       K C ∧ StructuralRamsey.Arrow A B C κ := by
   obtain ⟨W,hW,C,hArrowC,p,hp,hLocal,hExt⟩ :=
     StructuralRamsey.Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all
