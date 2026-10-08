@@ -22,6 +22,7 @@ variable {L : Language.{u}}
 variable {VB W P : Type v}
 variable {Base : Structure L VB} {C : Structure L W}
 variable {D : Structure L P}
+variable [DecidableEq P]
 variable {m : ℕ}
 
 /-- A locally full projection of a closed test allows the strict functional
