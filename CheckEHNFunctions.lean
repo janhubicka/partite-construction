@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.EHNClosedTestGraphCorollary
 import PartiteConstruction.Functional.EHNIteratedWeakTree
 import PartiteConstruction.Functional.EHNStageAttachmentGraph
 import PartiteConstruction.Functional.EHNAttachmentGraphIso
@@ -273,3 +274,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.FunctionalPartite.EHN.NativeIteratedWeak.succ
 #print axioms StructuralRamsey.FunctionalPartite.EHN.NativeIteratedWeak.build
 #print axioms StructuralRamsey.Structure.inducedRamsey_directFunctionalWeakGraph
+
+#print axioms StructuralRamsey.Structure.inducedRamsey_directFunctional_closedGraphTests

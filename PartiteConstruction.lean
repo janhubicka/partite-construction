@@ -95,6 +95,7 @@ import PartiteConstruction.Functional.EHNPictureWeakTree
 import PartiteConstruction.Functional.EHNInitialWeakTree
 import PartiteConstruction.Functional.EHNConstructionWeakTree
 import PartiteConstruction.Functional.EHNIteratedWeakTree
+import PartiteConstruction.Functional.EHNClosedTestGraphCorollary
 import PartiteConstruction.Iterated.WeakStepTreeCompletion
 import PartiteConstruction.Iterated.WeakStepProjectedPartial
 import PartiteConstruction.Iterated.WeakTrace
