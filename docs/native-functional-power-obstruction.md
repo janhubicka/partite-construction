@@ -1,11 +1,15 @@
 # An adversarial 12-vertex test in a native functional power
 
-**Research note, 8 October 2026.** This is a self-contained mathematical
-counterexample to a tempting *generic* strict functional tree-invariant for
-the native Hales--Jewett power. It is **not** presently a Lean-verified
-counterexample, and it does **not** disprove the final canonical n-pass
-functional sparsening theorem. A formalized finite regression and a
-separate adversarial check of the target forest induction are still TODO.
+**Research and verification note, 8 October 2026.** The concrete
+seven-vertex stage, its tagged second native power, the exact staircase
+function-domain matrix, the strict full-functional B-tree no-square theorem,
+and the conclusion that the full tagged power has **no strict B-tree
+completion** are Lean-verified (PR #114, proof commit
+`0b0f2c421cf5f07e0608ce3f57f194286f8109d8`, complete build and
+permitted-axiom audit green, workflow `37765314642`). The separate
+seven-vertex input-stage **strict B-tree and EHN projection certificate**
+and the sharper **12-vertex closed-test** certificate are still not formalized.
+This does **not** disprove the final canonical n-pass theorem.
 
 The already-verified positive result
 `Structure.inducedRamsey_directFunctionalWeakGraph` remains unaffected:
@@ -42,9 +46,10 @@ z00,z10,z11. Its only defined fibres are
 Interpret unary sorts as their names indicate; the binary relation "<"
 is the union of the three orders inherited from these hyperedges.
 The three hyperedges (x0,y0,z00), (x1,y0,z10), (x1,y1,z11) form a
-**genuine full functional strict B-tree**: glue along {y0}, then
-along {x1}. Both singleton overlaps are function-closed and lie in an
-irreducible B-copy.
+**genuine full functional strict B-tree** in the mathematical diagram:
+glue along {y0}, then along {x1}. Both singleton overlaps are
+function-closed and lie in an irreducible B-copy. This source-stage
+diagram has not yet been reconstructed as a Lean `TreeAmalgam` proof.
 
 The part projection p:E -> A sends all xi to x, all yj to y, and all
 zij to z. It preserves every function incidence forward. Every
@@ -83,6 +88,10 @@ tuple. All six outputs are distinct:
     (z10,z10), (z10,z11), (z11,z11).
 
 The resulting 12-vertex set S is genuinely function-closed in E^2.
+The whole tagged power has only 17 vertices (4 X-words, 4 Y-words and
+9 Z-words); its entire carrier is closed. Thus the checked
+`actualPower_not_locallyStrictTreeCompletable` gives a finite-rank
+obstruction without requiring the 12-vertex test to be assembled in Lean.
 There are no other defined input tuples among these vertices. In
 particular its full induced functional structure H is a legitimate
 closed test on exactly 12 vertices; taking its closure adds **zero**
@@ -167,13 +176,14 @@ expected weak graph-tree completion.
 
 ## Recommended verification and alternatives
 
-* Formalize B, E, their weak EHN partite structure, E^2 and the
-  12-vertex closed subtype in Lean. Audit each input-domain entry,
-  absence of all other outputs, and all six Z values.
-* Prove the domain-forest invariant for full B-tree targets (or first
-  a weaker no-4-cycle statement), then derive the contradiction from
-  the row/column distinguishing test. No `sorry` or green manuscript
-  marker before the full proof and axiom audit.
+* The reduced three-role B-template, concrete E, actual tagged E^2,
+  exact staircase matrix and finite-rank no-full-tree obstruction are
+  now proved and axiom-audited in Lean. Formalize the remaining strict
+  source-tree/EHN projection certificate and the 12-vertex closed subtype.
+* The needed **no-4-cycle** invariant for genuine strict B-trees,
+  and its combination with the tagged-power matrix, are now Lean
+  proved (`strictTree_squareFree`, `actualPower_no_fullStrictTreeHom`).
+  The stronger general forest assertion remains a separate optional claim.
 * Check the actual canonical EHN Picture supports. A plausible
   strengthening is a special invariant of **selected closed
   A-supports**, not a universal strict-local-tree assertion about
@@ -184,3 +194,10 @@ expected weak graph-tree completion.
   `IsWeakHomomorphismEmbedding.weakImage`: replacing the weak image
   by a generated closed hull destroys the vertex-size accounting
   and does not resolve the domain obstruction.
+
+**Hypothesis caution.** The checked Lean template has three unary role
+relations and one binary set-valued function. Its function graph is not
+hereditarily irreducible on arbitrary vertex subsets. To apply the exact
+hypotheses of the iterated n-pass theorem, the extra binary pairwise-order
+relation mentioned above should be added and its transport checked in Lean.
+This is separate from the no-square obstruction for the reduced language.
