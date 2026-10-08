@@ -1,4 +1,5 @@
 import PartiteConstruction.Iterated.SparseningStrictBaseIrreducible
+import PartiteConstruction.Relational.FreeAmalgamationClass
 
 /-! # Ramsey transfer through completion on copies
 
@@ -105,7 +106,7 @@ theorem arrow_of_copywiseCompletion
 Theorem 2.18: a member of K together with a single vertex map
 respecting every B-copy. The maps need not be global embeddings. -/
 def HasCopywiseCompletion
-    (K : StructureClass.{u,v} (L := L))
+    (K : RelStructure.StructureClass.{u,v} (L := L))
     (B : RelStructure L V) (C : RelStructure L W) : Prop :=
   ∃ (X : Type v) (D : RelStructure L X),
     K D ∧ ∃ f : W → X, CopywiseCompletion B C D f
@@ -115,7 +116,7 @@ assumptions: if a sparse Ramsey witness has its irreducibles covered by
 B-copies and admits a K-completion on those copies, the completion is
 already a Ramsey witness in K. -/
 theorem arrow_of_copywiseCompletion_inClass
-    {K : StructureClass.{u,v} (L := L)}
+    {K : RelStructure.StructureClass.{u,v} (L := L)}
     {A : RelStructure L U} {B : RelStructure L V}
     {C : RelStructure L W} {κ : Type*}
     (hA : A.Irreducible)
@@ -138,7 +139,7 @@ This criterion requires less than K being freely amalgamating, but is
 strictly stronger than assuming the published local-completion axiom
 without yet proving that it applies to this sparse witness. -/
 theorem ramsey_of_sparse_copywise_completion
-    (K : StructureClass.{u,v} (L := L))
+    (K : RelStructure.StructureClass.{u,v} (L := L))
     (A : RelStructure L U) (B : RelStructure L V)
     (D : RelStructure L P)
     [Finite U] [Finite V] [Finite P]
