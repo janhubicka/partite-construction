@@ -118,17 +118,35 @@ does yield genuine strict functional tree completions **once** the graph
 tree's gluing roots and local test map are function-closed.  The n-pass
 weak-vertex theorem alone does not supply these additional certificates.
 
-The direct functional version should use `FunctionalPartite.EHN.pictureLemma`
-and `FunctionalPartite.EHN.inducedConstruction_preserving` on genuine
-functions. Its selected supports are already function-closed by
-`System.weak_support_closed`, so it requires no U-closed relational graph
-expansion. The verified n-pass **U-closed** route above is an optional
-representation theorem; it should not be confused with the native
-function-language induction still to be established. U-closed graph
-embeddings serve the separately checked recursive construction, whose
-intermediate graph stages need repair to restore intended functions.
-This is the precise remaining issue for an optional stronger functional
-sparsening theorem; it is not a gap in the relational Appendix theorem.
+### Direct genuine-function weak-vertex iteration: completed
+
+The intended native iteration is now Lean-verified in the original function
+language (merged PR #104, green CI workflow 37738639824).
+`RelStructure.Attachment.locallyTreeLike_of_projected_support` handles
+the generic mixed/pure projected free-attachment step;
+`FunctionalPartite.EHN.Stage.attach_weakGraphLocallyTreeLike` transports
+that invariant through a **full** functional attachment;
+`FunctionalPartite.EHN.pictureLemma_weakGraphLocallyTreeLike` handles
+the genuine Hales--Jewett core and its canonical support;
+`FunctionalPartite.EHN.initial_weakGraphLocallyTreeLike` handles the full
+initial B-copy picture; and
+`FunctionalPartite.EHN.inducedConstruction_weakGraphLocallyTreeLike`
+carries the invariant through one complete Ramsey pass.
+
+After n passes, `Structure.inducedRamsey_directFunctionalWeakGraph` gives
+a full functional Ramsey witness in the same free-amalgamation class,
+with the controlled graph-tree completion bound for **all weak vertex tests**
+of size at most n, and a weak EHN projection to the original witness.
+This proves the graph-level conclusion for every genuinely function-closed
+substructure of that size. Function-closed gluing roots and full target
+function-fibre preservation remain separate requirements for any
+**strict full-function tree-target** strengthening.
+
+This argument does not use U-closed relational graph expansions: those
+are needed only in the recursive partite construction, whose intermediate
+graph stages may lack the full function-structure constraints. The older
+U-closed n-pass proof is a valid auxiliary result, not the construction used
+here.
 
 
 ## Validation discipline
