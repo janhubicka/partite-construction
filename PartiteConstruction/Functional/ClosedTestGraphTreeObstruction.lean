@@ -34,10 +34,8 @@ open StructuralRamsey.Structure.FunctionalTreeTransferObstruction
 
 noncomputable section
 
-universe v
-
 /-- A function structure has no nontrivial directed chain of two values. -/
-def NoTwoStep {X : Type v} (T : Structure language X) : Prop :=
+def NoTwoStep {X : Type} (T : Structure language X) : Prop :=
   ∀ (a b c : X),
     b ∈ T.func () (fun _ : Fin 1 => a) →
     c ∈ T.func () (fun _ : Fin 1 => b) → False
@@ -53,7 +51,7 @@ theorem base_noTwoStep : NoTwoStep base := by
 function embeddings; this uses only the covering clause of free
 amalgamation and equality of function-image fibres under embeddings. -/
 theorem noTwoStep_of_full_cover
-    {X Y Z : Type v}
+    {X Y Z : Type}
     {L : Structure language X}
     {R : Structure language Y}
     {T : Structure language Z}
@@ -73,7 +71,8 @@ theorem noTwoStep_of_full_cover
     have hz : z ∈ Structure.imageSet iL
         (L.func () (fun _ : Fin 1 => b)) := by
       rw [iL.map_func () (fun _ : Fin 1 => b)]
-      simpa only [← hby] using hyz
+      rw [← hby] at hyz
+      simpa [Function.comp_def] using hyz
     obtain ⟨c, hc, _⟩ := hz
     exact hL a b c hb hc
   · subst x
@@ -85,14 +84,15 @@ theorem noTwoStep_of_full_cover
     have hz : z ∈ Structure.imageSet iR
         (R.func () (fun _ : Fin 1 => b)) := by
       rw [iR.map_func () (fun _ : Fin 1 => b)]
-      simpa only [← hby] using hyz
+      rw [← hby] at hyz
+      simpa [Function.comp_def] using hyz
     obtain ⟨c, hc, _⟩ := hz
     exact hR a b c hb hc
 
 /-- Every genuine full-function tree amalgam of copies of base has no
 two-step function chain. -/
 theorem fullTree_noTwoStep
-    {X : Type v} {T : Structure language X}
+    {X : Type} {T : Structure language X}
     (hTree : Structure.TreeAmalgam base X T) :
     NoTwoStep T := by
   induction hTree with
@@ -157,7 +157,7 @@ theorem middle_eq : left true = right false := by
     root base.graph base.graph outputRootEmbedding rootEmbedding ()
 
 theorem embedded_edge
-    {X : Type v} {T : RelStructure language.graph X}
+    {X : Type} {T : RelStructure language.graph X}
     (e : RelStructure.Embedding base.graph T) :
     T.rel (.inr ())
       (Structure.funcTuple (fun _ : Fin 1 => e false) (e true)) := by
@@ -168,8 +168,13 @@ theorem embedded_edge
   have htuple :=
     Structure.comp_funcTuple
       (fun b : Bool => e b) (fun _ : Fin 1 => false) true
-  simpa only [Function.comp_const] using
-    (Eq.mp (congrArg (fun t => T.rel (.inr ()) t) htuple) h)
+  have heq :
+      ((fun b : Bool => e b) ∘ (fun _ : Fin 1 => false)) =
+        (fun _ : Fin 1 => e false) := by
+    funext i
+    rfl
+  rw [heq] at htuple
+  exact Eq.mp (congrArg (fun t => T.rel (.inr ()) t) htuple) h
 
 theorem path_first_edge :
     left true ∈ (Structure.ofGraph pathGraph).func ()
@@ -203,7 +208,7 @@ theorem path_no_fullTreeCompletion :
     ¬ Structure.HasTreeCompletion base
         (Structure.ofGraph pathGraph) := by
   rintro ⟨X, T, hTree, f, hf⟩
-  have hchain := fullTree_noTwoStep hTree
+  have hchain : NoTwoStep T := fullTree_noTwoStep hTree
   have h01 :
       f (left true) ∈ T.func ()
         (fun _ : Fin 1 => f (left false)) := by
