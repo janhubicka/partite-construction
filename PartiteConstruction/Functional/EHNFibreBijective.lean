@@ -55,7 +55,7 @@ theorem IsEHNHomomorphismEmbedding.injOn_func_of_nonempty
     calc
       g (⟨y, hyH⟩ : Hset) = p y := hg _
       _ = p z := heq
-      _ = g (⟨z, hzH⟩ : Hset) := (hg _).symm
+      _ = g (⟨z, hzH⟩ : Hset) := (hg (⟨z, hzH⟩ : Hset)).symm
   exact congrArg Subtype.val (g.injective hgeq)
 
 /-- For a defined input, an EHN projection maps the entire function fibre
