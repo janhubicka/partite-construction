@@ -52,6 +52,8 @@ import PartiteConstruction.Functional.EHNPictureInvariant
 import PartiteConstruction.Functional.EHNStageInvariant
 import PartiteConstruction.Ramsey.FreeAmalgamationFunctionsAllArity
 import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
+import PartiteConstruction.Ramsey.AllThoseFiniteModels
+import PartiteConstruction.Ramsey.CompletionTransfer
 import PartiteConstruction.Ramsey.ForbiddenFunctions
 import PartiteConstruction.Structure.RootedReduction
 import PartiteConstruction.Structure.RootedFunctor
@@ -339,3 +341,9 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.actualPower_weaklyPartiteOver
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.staircaseSupport_closed
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.staircaseSupport_no_strictTreeCompletion
+
+#print axioms StructuralRamsey.Structure.allThoseRamseyClasses_theorem_2_19
+#print axioms StructuralRamsey.RelStructure.CopywiseCompletion.of_irreducible_extension
+#print axioms StructuralRamsey.RelStructure.arrow_of_copywiseCompletion
+#print axioms StructuralRamsey.RelStructure.arrow_of_copywiseCompletion_inClass
+#print axioms StructuralRamsey.RelStructure.ramsey_of_sparse_copywise_completion
