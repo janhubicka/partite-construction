@@ -92,6 +92,7 @@ import PartiteConstruction.Iterated.GenericProjectedAttachmentStep
 import PartiteConstruction.Iterated.IsoTransport
 import PartiteConstruction.Functional.EHNStageAttachmentGraph
 import PartiteConstruction.Functional.EHNWeakAttachmentStep
+import PartiteConstruction.Functional.EHNPictureWeakTree
 import PartiteConstruction.Iterated.WeakStepTreeCompletion
 import PartiteConstruction.Iterated.WeakStepProjectedPartial
 import PartiteConstruction.Iterated.WeakTrace
