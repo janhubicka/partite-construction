@@ -2,6 +2,7 @@ import PartiteConstruction.Functional.ClosedTestGraphTreeObstruction
 import PartiteConstruction.Functional.ProjectedClosedTreePullback
 import PartiteConstruction.Functional.EHNClosedTestGraphCorollary
 import PartiteConstruction.Functional.PublishedSparseningScope
+import PartiteConstruction.Functional.PublishedSparseningUnary
 import PartiteConstruction.Functional.PublishedSparseningTarget
 import PartiteConstruction.Functional.PublishedProjectionObstruction
 import PartiteConstruction.Functional.EHNIteratedWeakTree
@@ -325,3 +326,6 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.sparseningRamsey_functionalWeakGraph_inClass
 
 #print axioms StructuralRamsey.Structure.PublishedFunctionalProjectionObstruction.projection_not_full
+
+#print axioms StructuralRamsey.Structure.sparseningRamsey_unary_fullProjection_inClass
+#print axioms StructuralRamsey.Structure.sparseningRamsey_unary_strictIfOriginalLocallyCompletable
