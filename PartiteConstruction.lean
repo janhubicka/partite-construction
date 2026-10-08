@@ -192,6 +192,7 @@ import PartiteConstruction.Ramsey.AllThoseFiniteModels
 import PartiteConstruction.Ramsey.AllThosePartialFiniteModels
 import PartiteConstruction.Ramsey.CompletionTransfer
 import PartiteConstruction.Ramsey.ClosureDescription2019
+import PartiteConstruction.Ramsey.ClosureEmbeddingRange
 import PartiteConstruction.Ramsey.CopywiseFreeFold
 import PartiteConstruction.Ramsey.StrongAmalgamationTreeCompletion
 import PartiteConstruction.Ramsey.CopywiseTreeHomomorphism
