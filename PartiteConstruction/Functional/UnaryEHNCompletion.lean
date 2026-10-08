@@ -38,19 +38,19 @@ is closed, hence it contains the whole generated hull. -/
 theorem onePointClosure_irreducible
     (C : Structure L W) (c : W) :
     (C.induce
-      (C.functionClosure (Set.range (fun _ : PUnit.{v} => c)))
+      (C.functionClosure (Set.range (fun _ : PUnit.{v+1} => c)))
       (C.functionClosure_isClosed
-        (Set.range (fun _ : PUnit.{v} => c)))).Irreducible := by
+        (Set.range (fun _ : PUnit.{v+1} => c)))).Irreducible := by
   classical
   let S : Set W :=
-    C.functionClosure (Set.range (fun _ : PUnit.{v} => c))
+    C.functionClosure (Set.range (fun _ : PUnit.{v+1} => c))
   have hS : C.IsClosed S :=
-    C.functionClosure_isClosed (Set.range (fun _ : PUnit.{v} => c))
+    C.functionClosure_isClosed (Set.range (fun _ : PUnit.{v+1} => c))
   let H : Structure L S := C.induce S hS
-  let q : PUnit.{v} → S :=
+  let q : PUnit.{v+1} → S :=
     fun _ => ⟨c,
       C.subset_functionClosure
-        (Set.range (fun _ : PUnit.{v} => c)) ⟨PUnit.unit, rfl⟩⟩
+        (Set.range (fun _ : PUnit.{v+1} => c)) ⟨PUnit.unit, rfl⟩⟩
   have hgen : H.Generates q := by
     intro T hT hqT z
     let T0 : Set W :=
@@ -68,7 +68,7 @@ theorem onePointClosure_irreducible
       exact ⟨hyS, hyT⟩
     have hcT0 : c ∈ T0 := by
       exact ⟨(q PUnit.unit).2, hqT PUnit.unit⟩
-    have hseed : Set.range (fun _ : PUnit.{v} => c) ⊆ T0 := by
+    have hseed : Set.range (fun _ : PUnit.{v+1} => c) ⊆ T0 := by
       rintro _ ⟨a, rfl⟩
       have ha : a = PUnit.unit := Subsingleton.elim _ _
       simpa [ha] using hcT0
