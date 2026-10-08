@@ -384,3 +384,4 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.IrreduciblesExtendTo.mem_irreducibles
 
 #print axioms StructuralRamsey.RelStructure.ramsey_of_emptyClosure_multiamalgamation
+#print axioms StructuralRamsey.RelStructure.emptyClosure_multiamalgamation_isRamsey
