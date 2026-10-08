@@ -1,5 +1,14 @@
 # A checked full-functional alternative to the published sparsening theorem
 
+> **Semantics note (8 October 2026):** This correction addresses the
+> 2026 survey's *total set-valued function* definition of homomorphism,
+> which reflects empty fibres. Under the genuinely partial-function
+> homomorphism convention of *All those Ramsey classes* (2019), our
+> EHN weak projections are already full homomorphisms **on defined
+> inputs**, in exactly the required original sense. The total-fibre
+> and partial-function conclusions must not be conflated; see
+> `docs/original-partial-homomorphism-audit.md`.
+
 ## Status and scope
 
 The literal published statement with a full global homomorphism-embedding is false; see `PublishedTotalBinaryObstruction.lean` and `docs/published-total-binary-obstruction.md`. Its clauses (1) and (3) already contradict a three-point pigeonhole example. Consequently changing the local tree condition alone cannot repair the general theorem.

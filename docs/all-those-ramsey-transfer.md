@@ -1,5 +1,13 @@
 # How the verified constructions relate to *All those Ramsey classes* (2019)
 
+> **8 October semantic audit:** The original 2019 paper treats function
+> symbols as **partial** maps; its homomorphisms need not reflect undefined
+> inputs. Our checked EHN weak projections are in fact original-style
+> partial homomorphism-embeddings by `originalPartialHE_iff_EHN`.
+> The 2026 full-total-fibre sparsening counterexample and the native-power
+> no-full-fibre theorem must **not** be treated as counterexamples to the
+> 2019 theorems. See `docs/original-partial-homomorphism-audit.md`.
+
 ## Exact target statements
 
 Hubička--Nešetřil, *All those Ramsey classes (Ramsey classes with

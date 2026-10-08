@@ -1,5 +1,15 @@
 # An adversarial 12-vertex test in a native functional power
 
+> **Important semantic correction (8 October 2026):** The obstruction in this
+> note is to the **total-fibre full homomorphism** used by the 2026 survey.
+> Under the original 2019 *partial-function* homomorphism-embedding convention,
+> the *same proper closed staircase test does have a strict one-copy B-tree
+> completion*, via its EHN part projection. This affirmative statement and
+> its contrast with the total-fibre negative theorem are now Lean-verified:
+> `NativePowerOriginalPartialCompletion.staircase_originalPartial_yes_totalFibre_no`.
+> See `docs/original-partial-homomorphism-audit.md`. Do not use this note to
+> claim the original 2019 theorem is refuted.
+
 **Research and verification note, 8 October 2026.** The concrete
 seven-vertex stage, its tagged second native power, the exact staircase
 function-domain matrix, the strict full-functional B-tree no-square theorem,
