@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.EHNIteratedWeakTree
 import PartiteConstruction.Functional.EHNInitialWeakTree
 import PartiteConstruction.Functional.EHNPictureWeakTree
 import PartiteConstruction.Functional.EHNWeakAttachmentStep
@@ -267,3 +268,9 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.FunctionalPartite.EHN.base_weakGraphLocallyTreeLike
 #print axioms StructuralRamsey.FunctionalPartite.EHN.initialList_weakGraphLocallyTreeLike
 #print axioms StructuralRamsey.FunctionalPartite.EHN.initial_weakGraphLocallyTreeLike
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_weakGraphLocallyTreeLike
+#print axioms StructuralRamsey.FunctionalPartite.EHN.NativeIteratedWeak.first
+#print axioms StructuralRamsey.FunctionalPartite.EHN.NativeIteratedWeak.succ
+#print axioms StructuralRamsey.FunctionalPartite.EHN.NativeIteratedWeak.build
+#print axioms StructuralRamsey.Structure.inducedRamsey_directFunctionalWeakGraph
