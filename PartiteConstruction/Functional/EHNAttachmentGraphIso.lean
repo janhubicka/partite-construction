@@ -67,21 +67,42 @@ noncomputable def graphAttachmentIso
             ⟨i, a, b, hb, ha, hout⟩
           · refine Or.inl ⟨Structure.funcTuple a b, ?_, ?_⟩
             · exact (Structure.graph_func_snoc D F a b).mpr hb
-            · funext k
-              refine Fin.lastCases ?_ (fun l => ?_) k
-              · simpa only [Function.comp_apply, Structure.funcTuple_last]
-                  using hout
-              · simpa only [Function.comp_apply, Structure.funcTuple_castSucc]
-                  using congrFun ha l
+            · have hargs :
+                  (fun k : Fin (L.funcArity F) => z k.castSucc) =
+                    Sum.inl ∘ a := by
+                funext k
+                exact congrFun ha k
+              calc
+                z = Structure.funcTuple
+                      (fun k : Fin (L.funcArity F) => z k.castSucc)
+                      (z (Fin.last (L.funcArity F))) :=
+                  (Structure.funcTuple_eta z).symm
+                _ = Structure.funcTuple (Sum.inl ∘ a) (Sum.inl b) := by
+                  rw [hargs, hout]
+                _ = Sum.inl ∘ Structure.funcTuple a b :=
+                  (Structure.comp_funcTuple Sum.inl a b).symm
           · refine Or.inr ⟨i, Structure.funcTuple a b, ?_, ?_⟩
             · exact (Structure.graph_func_snoc B F a b).mpr hb
-            · funext k
-              refine Fin.lastCases ?_ (fun l => ?_) k
-              · simpa only [Function.comp_apply, Structure.funcTuple_last]
-                  using hout.trans (copyMap_graph_eq B S hS D f i b)
-              · simpa only [Function.comp_apply, Structure.funcTuple_castSucc]
-                  using (congrFun ha l).trans
-                    (copyMap_graph_eq B S hS D f i (a l))
+            · let q : V → RelStructure.Attachment.Vertex S (W := W) (I := I) :=
+                RelStructure.Attachment.copyMap B.graph S D.graph
+                  (fun j => attachingGraphMap B S hS D (f j)) i
+              have hargs :
+                  (fun k : Fin (L.funcArity F) => z k.castSucc) =
+                    q ∘ a := by
+                funext k
+                exact (congrFun ha k).trans
+                  (copyMap_graph_eq B S hS D f i (a k))
+              have hout' : z (Fin.last (L.funcArity F)) = q b :=
+                hout.trans (copyMap_graph_eq B S hS D f i b)
+              calc
+                z = Structure.funcTuple
+                      (fun k : Fin (L.funcArity F) => z k.castSucc)
+                      (z (Fin.last (L.funcArity F))) :=
+                  (Structure.funcTuple_eta z).symm
+                _ = Structure.funcTuple (q ∘ a) (q b) := by
+                  rw [hargs, hout']
+                _ = q ∘ Structure.funcTuple a b :=
+                  (Structure.comp_funcTuple q a b).symm
         · intro hz
           rcases hz with ⟨t, ht, heq⟩ | ⟨i, t, ht, heq⟩
           · have ht' : t (Fin.last (L.funcArity F)) ∈
