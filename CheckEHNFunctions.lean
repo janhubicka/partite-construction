@@ -298,3 +298,4 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.bijOn_func_of_nonempty
 
 #print axioms StructuralRamsey.Structure.IsolatedQuotientBoundary.false_of_domainFailure
+#print axioms StructuralRamsey.Structure.QuotientBoundaryRequest.fullLabel_iff_isolatedOneCopy
