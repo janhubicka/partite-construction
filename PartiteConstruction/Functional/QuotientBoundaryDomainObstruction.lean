@@ -46,4 +46,34 @@ theorem IsolatedQuotientBoundary.false_of_domainFailure
   obtain ⟨z, hz, _⟩ := hImage
   exact hSource ⟨z, hz⟩
 
+/-- Exact criterion for realizing the **root itself** inside one isolated
+full A-copy in one B-copy: the proposed label map must be a full
+homomorphism-embedding. This does not assert that arbitrary larger sides
+have extensions relative to the same root; that is the remaining
+reducible-separator problem. -/
+theorem QuotientBoundaryRequest.fullLabel_iff_isolatedOneCopy
+    {H VB : Type v}
+    (Root : Structure L H) (A : Structure L U)
+    (Base : Structure L VB)
+    (q : H → U) (eAB : Embedding A Base) :
+    Root.IsHomomorphismEmbedding A q ↔
+      ∃ f : H → VB,
+        Root.IsHomomorphismEmbedding Base f ∧
+        IsolatedQuotientBoundary
+          (QuotientBoundaryRequest.ofEmbedding (Embedding.id Root) q)
+          Base f := by
+  constructor
+  · intro hq
+    let f : H → VB := eAB ∘ q
+    have hf : Root.IsHomomorphismEmbedding Base f :=
+      eAB.isHomomorphismEmbedding.comp hq
+    refine ⟨f, hf, eAB, ?_, ?_⟩
+    · intro x
+      rfl
+    · intro x a hxa
+      refine ⟨x, rfl, ?_⟩
+      exact eAB.injective hxa
+  · rintro ⟨f, hf, hIso⟩
+    exact hIso.label_isHomomorphismEmbedding hf
+
 end StructuralRamsey.Structure
