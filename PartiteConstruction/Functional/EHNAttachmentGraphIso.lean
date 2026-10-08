@@ -69,23 +69,19 @@ noncomputable def graphAttachmentIso
             · exact (Structure.graph_func_snoc D F a b).mpr hb
             · funext k
               refine Fin.lastCases ?_ (fun l => ?_) k
-              · change z (Fin.last (L.funcArity F)) = Sum.inl b
-                exact hout
-              · change z l.castSucc = Sum.inl (a l)
-                exact congrFun ha l
+              · simpa only [Function.comp_apply, Structure.funcTuple_last]
+                  using hout
+              · simpa only [Function.comp_apply, Structure.funcTuple_castSucc]
+                  using congrFun ha l
           · refine Or.inr ⟨i, Structure.funcTuple a b, ?_, ?_⟩
             · exact (Structure.graph_func_snoc B F a b).mpr hb
             · funext k
               refine Fin.lastCases ?_ (fun l => ?_) k
-              · change z (Fin.last (L.funcArity F)) =
-                    RelStructure.Attachment.copyMap B.graph S D.graph
-                      (fun j => attachingGraphMap B S hS D (f j)) i b
-                exact hout.trans (copyMap_graph_eq B S hS D f i b)
-              · change z l.castSucc =
-                    RelStructure.Attachment.copyMap B.graph S D.graph
-                      (fun j => attachingGraphMap B S hS D (f j)) i (a l)
-                exact (congrFun ha l).trans
-                  (copyMap_graph_eq B S hS D f i (a l))
+              · simpa only [Function.comp_apply, Structure.funcTuple_last]
+                  using hout.trans (copyMap_graph_eq B S hS D f i b)
+              · simpa only [Function.comp_apply, Structure.funcTuple_castSucc]
+                  using (congrFun ha l).trans
+                    (copyMap_graph_eq B S hS D f i (a l))
         · intro hz
           rcases hz with ⟨t, ht, heq⟩ | ⟨i, t, ht, heq⟩
           · have ht' : t (Fin.last (L.funcArity F)) ∈
