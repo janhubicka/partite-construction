@@ -93,7 +93,7 @@ theorem onePointClosure_irreducible
           have ha : a = PUnit.unit := Subsingleton.elim _ _
           subst a
           exact ⟨x, hx.symm⟩) z
-  simpa [H, S, hS] using hGoal
+  exact hGoal
 
 /-- For unary functions, an EHN projection preserves complete function fibres
 onto the target, hence is a full homomorphism. -/
@@ -117,21 +117,20 @@ theorem IsEHNHomomorphismEmbedding.isHomomorphism_of_unary
     change i.val = 0
     omega
   let c : W := x i0
-  let q0 : W → W := fun _ => c
+  let q0 : PUnit.{v+1} → W := fun _ => c
   let Hset : Set W := C.functionClosure (Set.range q0)
   have hHirr :
       (C.induce Hset
-        (C.functionClosure_isClosed (Set.range q0))).Irreducible := by
-    simpa [Hset, q0, c] using
-      (onePointClosure_irreducible C c)
+        (C.functionClosure_isClosed (Set.range q0))).Irreducible :=
+    onePointClosure_irreducible C c
   let H : Structure L Hset :=
     C.induce Hset (C.functionClosure_isClosed (Set.range q0))
   let inc : Embedding H C :=
     inclusion C Hset (C.functionClosure_isClosed (Set.range q0))
-  obtain ⟨g, hg⟩ := hp.2 H (by simpa [H] using hHirr) inc
+  obtain ⟨g, hg⟩ := hp.2 H hHirr inc
   have hcH : c ∈ Hset := by
     apply C.subset_functionClosure (Set.range q0)
-    exact ⟨c, rfl⟩
+    exact ⟨PUnit.unit, rfl⟩
   let cH : Hset := ⟨c, hcH⟩
   let xH : Fin (L.funcArity F) → Hset := fun _ => cH
   have hxC : Subtype.val ∘ xH = x := by
