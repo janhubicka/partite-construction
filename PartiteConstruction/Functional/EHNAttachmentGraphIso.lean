@@ -55,47 +55,50 @@ noncomputable def graphAttachmentIso
             funext k
             exact (copyMap_graph_eq B S hS D f i (a k)).symm
     | inr F =>
+        change
+          z (Fin.last (L.funcArity F)) ∈
+            (attach B S hS D f).func F
+              (fun k : Fin (L.funcArity F) => z k.castSucc) ↔
+          (RelStructure.Attachment.attach B.graph S D.graph
+            (fun i => attachingGraphMap B S hS D (f i))).rel (.inr F) z
         constructor
         · intro hz
           rcases hz with ⟨a, b, hb, ha, hout⟩ |
             ⟨i, a, b, hb, ha, hout⟩
-          · refine Or.inl ⟨Structure.funcTuple a b, hb, ?_⟩
-            funext k
-            refine Fin.lastCases ?_ (fun l => ?_) k
-            · simpa only [Structure.funcTuple_last, Function.comp_apply] using hout
-            · simpa only [Structure.funcTuple_castSucc, Function.comp_apply]
-                using congrFun ha l
-          · refine Or.inr ⟨i, Structure.funcTuple a b, hb, ?_⟩
-            funext k
-            refine Fin.lastCases ?_ (fun l => ?_) k
-            · calc
-                z (Fin.last (L.funcArity F)) =
-                    copyMap B S hS D f i b := hout
-                _ = RelStructure.Attachment.copyMap B.graph S D.graph
-                        (fun j => attachingGraphMap B S hS D (f j))
-                        i b := copyMap_graph_eq B S hS D f i b
-                _ = (RelStructure.Attachment.copyMap B.graph S D.graph
-                        (fun j => attachingGraphMap B S hS D (f j))
-                        i ∘ Structure.funcTuple a b)
-                        (Fin.last (L.funcArity F)) := rfl
-            · calc
-                z l.castSucc = copyMap B S hS D f i (a l) :=
-                  congrFun ha l
-                _ = RelStructure.Attachment.copyMap B.graph S D.graph
-                        (fun j => attachingGraphMap B S hS D (f j))
-                        i (a l) := copyMap_graph_eq B S hS D f i (a l)
-                _ = (RelStructure.Attachment.copyMap B.graph S D.graph
-                        (fun j => attachingGraphMap B S hS D (f j))
-                        i ∘ Structure.funcTuple a b) l.castSucc := rfl
+          · refine Or.inl ⟨Structure.funcTuple a b, ?_, ?_⟩
+            · exact (Structure.graph_func_snoc D F a b).mpr hb
+            · funext k
+              refine Fin.lastCases ?_ (fun l => ?_) k
+              · change z (Fin.last (L.funcArity F)) = Sum.inl b
+                exact hout
+              · change z l.castSucc = Sum.inl (a l)
+                exact congrFun ha l
+          · refine Or.inr ⟨i, Structure.funcTuple a b, ?_, ?_⟩
+            · exact (Structure.graph_func_snoc B F a b).mpr hb
+            · funext k
+              refine Fin.lastCases ?_ (fun l => ?_) k
+              · change z (Fin.last (L.funcArity F)) =
+                    RelStructure.Attachment.copyMap B.graph S D.graph
+                      (fun j => attachingGraphMap B S hS D (f j)) i b
+                exact hout.trans (copyMap_graph_eq B S hS D f i b)
+              · change z l.castSucc =
+                    RelStructure.Attachment.copyMap B.graph S D.graph
+                      (fun j => attachingGraphMap B S hS D (f j)) i (a l)
+                exact (congrFun ha l).trans
+                  (copyMap_graph_eq B S hS D f i (a l))
         · intro hz
           rcases hz with ⟨t, ht, heq⟩ | ⟨i, t, ht, heq⟩
-          · refine Or.inl ⟨(fun k => t k.castSucc),
-                t (Fin.last (L.funcArity F)), ht, ?_, ?_⟩
+          · have ht' : t (Fin.last (L.funcArity F)) ∈
+                D.func F (fun k => t k.castSucc) := ht
+            refine Or.inl ⟨(fun k => t k.castSucc),
+              t (Fin.last (L.funcArity F)), ht', ?_, ?_⟩
             · funext k
               exact congrFun heq k.castSucc
             · exact congrFun heq (Fin.last (L.funcArity F))
-          · refine Or.inr ⟨i, (fun k => t k.castSucc),
-                t (Fin.last (L.funcArity F)), ht, ?_, ?_⟩
+          · have ht' : t (Fin.last (L.funcArity F)) ∈
+                B.func F (fun k => t k.castSucc) := ht
+            refine Or.inr ⟨i, (fun k => t k.castSucc),
+              t (Fin.last (L.funcArity F)), ht', ?_, ?_⟩
             · funext k
               calc
                 z k.castSucc =
