@@ -88,7 +88,7 @@ def FiniteRamseyClass
   ∀ {U V : Type v} [Finite U] [Finite V]
     (A : RelStructure L U) (B : RelStructure L V),
     R A → R B →
-    ∀ (κ : Type*) [Fintype κ] [Nonempty κ],
+    ∀ (κ : Type) [Fintype κ] [Nonempty κ],
       ∃ (X : Type v) (_ : Finite X) (C : RelStructure L X),
         R C ∧ StructuralRamsey.Arrow A B C κ
 
