@@ -2,7 +2,7 @@
 
 ## Source and semantic check
 
-The arXiv postprint of Hubička–Konečný, *A survey on structural Ramsey theory and topological dynamics with the Kechris–Pestov–Todorčević correspondence*, arXiv:2501.17293v5, explicitly identifies itself as a postprint of the Computer Science Review article. Its Definition 2.2 requires preservation of complete function fibres, without a nonempty-domain exception. The free-amalgam definition excludes mixed function incidences as well as mixed relation tuples. Theorem 6.11 is the statement called `thm:sparseningRamsey` in the TeX source; Appendix A.3 proves it.
+The arXiv postprint of Hubička–Konečný, *Twenty years of Nešetřil’s classification programme of Ramsey classes*, arXiv:2501.17293v5, explicitly identifies itself as a postprint of the Computer Science Review article. Section 2.1 defines homomorphisms by preservation of complete function fibres, without a nonempty-domain exception. The free-amalgam definition excludes mixed function incidences as well as mixed relation tuples. Theorem 6.11 is the statement called `thm:sparseningRamsey` in the TeX source; Appendix A.3 gives its proof.
 
 Source: https://arxiv.org/html/2501.17293v5
 
@@ -49,7 +49,7 @@ This second argument does not use clause (3).
 - `not_publishedSparseningConclusion_all`: the exact `PublishedSparseningConclusion A B D (Fin 2) n` fails for every n;
 - `published_functional_counterexample`: all assumptions and the negated conclusion together.
 
-The substantive proof passed the full build and permitted-axiom audit at commit `6cfcfbc25eaf24738a2b5966d931f381f315c2d0`, workflow `37780235492`. The dedicated `CheckPublishedSparsening.lean` is included in CI's build and axiom checks. No `sorry`, custom axiom, or unchecked computation is used.
+The substantive proof passed the full build and permitted-axiom audit at commit `6cfcfbc25eaf24738a2b5966d931f381f315c2d0`, workflow `37780235492`. The expanded audit and note also passed at `ae065f7d4dfc455f74dd10ecb1d779d129db5ce3`, workflow `37781414762`. The dedicated `CheckPublishedSparsening.lean` is included in CI's build and axiom checks. No `sorry`, custom axiom, or unchecked computation is used.
 
 ## Consequences for the revision
 
