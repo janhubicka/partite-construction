@@ -194,6 +194,7 @@ import PartiteConstruction.Ramsey.CompletionTransfer
 import PartiteConstruction.Ramsey.CopywiseFreeFold
 import PartiteConstruction.Ramsey.StrongAmalgamationTreeCompletion
 import PartiteConstruction.Ramsey.CopywiseTreeHomomorphism
+import PartiteConstruction.Ramsey.EmptyClosureMultiamalgamation
 
 import PartiteConstruction.Functional.TreeTransferObstruction
 import PartiteConstruction.Functional.ClosedTestGraphTreeObstruction
