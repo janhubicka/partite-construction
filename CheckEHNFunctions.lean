@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.ClosedTestGraphTreeObstruction
 import PartiteConstruction.Functional.ProjectedClosedTreePullback
 import PartiteConstruction.Functional.EHNClosedTestGraphCorollary
+import PartiteConstruction.Functional.PublishedSparseningScope
 import PartiteConstruction.Functional.EHNIteratedWeakTree
 import PartiteConstruction.Functional.EHNStageAttachmentGraph
 import PartiteConstruction.Functional.EHNAttachmentGraphIso
@@ -317,3 +318,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.actualPower_no_fullStrictTreeHom
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.actualPower_no_fullTreeCompletion
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.actualPower_not_locallyStrictTreeCompletable
+
+#print axioms StructuralRamsey.Structure.sparseningRamsey_functionalWeakGraph
