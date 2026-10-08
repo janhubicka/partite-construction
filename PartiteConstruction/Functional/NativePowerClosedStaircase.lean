@@ -25,7 +25,10 @@ X-input, a Y-input and a Z-output. -/
 theorem oldOutput_all_roles
     (a b c : Fin 7) (h : oldOutput a b = some c) :
     oldPart a = 0 ∧ oldPart b = 1 ∧ oldPart c = 2 := by
-  fin_cases a <;> fin_cases b <;> fin_cases c <;> decide
+  have hc : ∀ (x y z : Fin 7),
+      oldOutput x y = some z →
+      oldPart x = 0 ∧ oldPart y = 1 ∧ oldPart z = 2 := by decide
+  exact hc a b c h
 
 theorem actualPower_output_roles
     (a b c : PowerVertex)
