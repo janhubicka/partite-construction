@@ -256,3 +256,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.FunctionalPartite.System.weakRestrictGraphIso
 
 #print axioms StructuralRamsey.Structure.Attachment.graphAttachmentIso
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma_preservingSupport
