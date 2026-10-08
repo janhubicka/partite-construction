@@ -7,7 +7,7 @@ each complete partite pass uses the native full-function Hales--Jewett
 lemma, closed support restriction, and full free attachments.
 No U-closed intermediate relational construction occurs.
 
-The *weakTree test* is nevertheless an arbitrary weak induced substructure
+The *local test* is nevertheless an arbitrary weak induced substructure
 on at most n vertices; this is exactly graph induction, without taking
 its function closure. A native EHN pass raises n by one while preserving
 the original full function-language Ramsey arrow and the weak
@@ -77,7 +77,7 @@ theorem first
   exact ⟨W⟩
 
 /-- A subsequent full native functional EHN pass raises the weak graph
-weakTree-tree vertex bound from n to n+1 and composes the weak projection
+local-tree vertex bound from n to n+1 and composes the weak projection
 back to the original control structure D. -/
 theorem succ
     (K : Structure.StructureClass (L := L))
