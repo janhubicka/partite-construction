@@ -97,16 +97,16 @@ theorem TreeAmalgam.copywiseCompletion_inStrongClass
     HasCopywiseCompletion K Base T := by
   classical
   induction hTree with
-  | copy hIso =>
-      let h : Embedding Base T := hIso.toEmbedding
-      have hrange : ∀ t : W, ∃ b : VB,
-          (Embedding.id T) t = h b := by
+  | @copy Wcopy Tcopy hIso =>
+      let h : Embedding Base Tcopy := hIso.toEmbedding
+      have hrange : ∀ t : Wcopy, ∃ b : VB,
+          (Embedding.id Tcopy) t = h b := by
         intro t
         refine ⟨hIso.toEquiv.symm t, ?_⟩
         change t = hIso.toEquiv (hIso.toEquiv.symm t)
         exact (hIso.toEquiv.apply_symm_apply t).symm
-      let eInv : Embedding T Base :=
-        (Embedding.id T).factorThroughRange h hrange
+      let eInv : Embedding Tcopy Base :=
+        (Embedding.id Tcopy).factorThroughRange h hrange
       refine ⟨VB,inferInstance,Base,hB,eInv,?_⟩
       intro β
       exact ⟨eInv.comp β,fun _ => rfl⟩
