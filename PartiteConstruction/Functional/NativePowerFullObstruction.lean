@@ -83,10 +83,10 @@ theorem actualPower_no_fullStrictTreeHom
       trivial trivial trivial trivial
   let fx : Fin 3 → XRole :=
     fun i => ⟨f (powerX i), by
-      exact hf.1 0 (fun _ => powerX i) (powerX_hasRole i)⟩
+      exact hf.1 (0 : Fin 3) (fun _ => powerX i) (powerX_hasRole i)⟩
   let fy : Fin 3 → YRole :=
     fun j => ⟨f (powerY j), by
-      exact hf.1 1 (fun _ => powerY j) (powerY_hasRole j)⟩
+      exact hf.1 (1 : Fin 3) (fun _ => powerY j) (powerY_hasRole j)⟩
   apply actualPower_noSquareTarget R hNoSquare fx fy
   intro i j
   exact domain_fullHom_iff hf (powerX i) (powerY j)
