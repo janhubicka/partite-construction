@@ -1,3 +1,4 @@
+import PartiteConstruction.Iterated.IsoTransport
 import PartiteConstruction
 
 #print axioms StructuralRamsey.HalesJewett.finite
@@ -449,3 +450,6 @@ import PartiteConstruction
 #print axioms StructuralRamsey.Partite.Closed.IteratedWeak.succ
 #print axioms StructuralRamsey.Partite.Closed.IteratedWeak.build
 #print axioms StructuralRamsey.Structure.inducedRamsey_iteratedWeakGraph
+
+#print axioms StructuralRamsey.RelStructure.Iso.toInverseEmbedding
+#print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.transportIso
