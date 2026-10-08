@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.EHNAttachmentGraphIso
 import PartiteConstruction.Functional.EHNRestrictionGraph
 import PartiteConstruction.Functional.EHNAttachmentGraph
 import PartiteConstruction.Functional.EHNPowerGraph
@@ -253,3 +254,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.Attachment.copyMap_graph_eq
 
 #print axioms StructuralRamsey.FunctionalPartite.System.weakRestrictGraphIso
+
+#print axioms StructuralRamsey.Structure.Attachment.graphAttachmentIso
