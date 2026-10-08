@@ -72,8 +72,8 @@ theorem canonicalStep_locallyTreeLike
       (RelStructure.Attachment.attach
         C₀.toRelStructure Supp Core.toRelStructure maps).IsHomomorphismEmbedding
           D C₁.part := by
-    simpa [C₁, Partite.Picture.build, Partite.Attachment.attach,
-      Supp, maps] using hC₁Partite
+    change C₁.toRelStructure.IsHomomorphismEmbedding D C₁.part at hC₁Partite
+    exact hC₁Partite
   have hSupport :
       ∀ (i : Partite.Embedding R E) (x : X), x ∈ Supp →
         ∃ a : U,
@@ -88,11 +88,9 @@ theorem canonicalStep_locallyTreeLike
           (RelStructure.Attachment.copyMap
             C₀.toRelStructure Supp Core.toRelStructure maps i x) =
           C₀.part x := by
-            simpa [C₁, Partite.Picture.build, Partite.Attachment.attach,
-              Supp, maps] using
-              (Partite.Attachment.part_copyMap C₀
-                (C₀.support αf) Core
-                (Partite.Picture.attachingMap C₀ αf E) i x)
+            exact Partite.Attachment.part_copyMap C₀
+              (C₀.support αf) Core
+              (Partite.Picture.attachingMap C₀ αf E) i x
       _ = α a := ha.symm
   have hGeneric :
       RelStructure.LocallyTreeLike A B
