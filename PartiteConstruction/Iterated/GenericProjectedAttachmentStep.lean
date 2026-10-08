@@ -1,4 +1,4 @@
-import PartiteConstruction.Iterated.WeakStep
+import PartiteConstruction.Partite.InducedPicture
 import PartiteConstruction.Iterated.AttachmentDecompose
 import PartiteConstruction.Iterated.ProjectedGlue
 import PartiteConstruction.Iterated.ControlCompletion
