@@ -152,7 +152,14 @@ theorem firstStage_free :
         (∃ a : Fin 2 → Fin 3, ∃ b : Fin 3,
           (a 0 = 0 ∧ a 1 = 1 ∧ b = 2) ∧
           x = secondCopyMap ∘ a ∧ y = secondCopyMap b)
-    decide
+    intro F x y
+    have hx : x = ![x (0 : Fin 2), x (1 : Fin 2)] := by
+      funext i
+      fin_cases i <;> rfl
+    generalize h₀ : x (0 : Fin 2) = a at hx ⊢
+    generalize h₁ : x (1 : Fin 2) = b at hx ⊢
+    rw [hx]
+    fin_cases a <;> fin_cases b <;> fin_cases y <;> decide
 
 theorem firstStage_strictTree :
     TreeAmalgam toyBase (Fin 5) firstStage := by
