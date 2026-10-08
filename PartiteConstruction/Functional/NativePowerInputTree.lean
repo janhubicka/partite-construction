@@ -137,16 +137,22 @@ theorem firstStage_free :
     fin_cases z <;> decide
   · intro a b
     fin_cases a <;> fin_cases b <;> decide
-  · intro R x
-    letI : Fintype toyLanguage.RelSymbol := (inferInstance : Fintype (Fin 3))
-    fin_cases R
-    all_goals
-      generalize h : x (0 : Fin 1) = a
-      fin_cases a <;> decide
-  · intro F x y
-    generalize h₀ : x (0 : Fin 2) = a
-    generalize h₁ : x (1 : Fin 2) = b
-    fin_cases a <;> fin_cases b <;> fin_cases y <;> decide
+  · change ∀ (R : Fin 3) (x : Fin 1 → Fin 5),
+        (firstStagePart (x 0) = R) ↔
+        (∃ a : Fin 1 → Fin 3,
+          a 0 = R ∧ x = firstCopyMap ∘ a) ∨
+        (∃ a : Fin 1 → Fin 3,
+          a 0 = R ∧ x = secondCopyMap ∘ a)
+    decide
+  · change ∀ (_F : Unit) (x : Fin 2 → Fin 5) (y : Fin 5),
+        (firstStageOutput (x 0) (x 1) = some y) ↔
+        (∃ a : Fin 2 → Fin 3, ∃ b : Fin 3,
+          (a 0 = 0 ∧ a 1 = 1 ∧ b = 2) ∧
+          x = firstCopyMap ∘ a ∧ y = firstCopyMap b) ∨
+        (∃ a : Fin 2 → Fin 3, ∃ b : Fin 3,
+          (a 0 = 0 ∧ a 1 = 1 ∧ b = 2) ∧
+          x = secondCopyMap ∘ a ∧ y = secondCopyMap b)
+    decide
 
 theorem firstStage_strictTree :
     TreeAmalgam toyBase (Fin 5) firstStage := by
