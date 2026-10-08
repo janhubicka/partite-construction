@@ -1,3 +1,4 @@
+import PartiteConstruction.Iterated.GenericProjectedAttachmentStep
 import PartiteConstruction.Iterated.IsoTransport
 import PartiteConstruction
 
@@ -453,3 +454,5 @@ import PartiteConstruction
 
 #print axioms StructuralRamsey.RelStructure.Iso.toInverseEmbedding
 #print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.transportIso
+
+#print axioms StructuralRamsey.RelStructure.Attachment.locallyTreeLike_of_projected_support

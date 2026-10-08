@@ -89,6 +89,7 @@ import PartiteConstruction.Iterated.PureCoreProjectedCompatible
 import PartiteConstruction.Iterated.PureCopyGeometry
 import PartiteConstruction.Iterated.PowerCoordinateEmbedding
 import PartiteConstruction.Iterated.WeakStep
+import PartiteConstruction.Iterated.GenericProjectedAttachmentStep
 import PartiteConstruction.Iterated.WeakStepTreeCompletion
 import PartiteConstruction.Iterated.WeakStepProjectedPartial
 import PartiteConstruction.Iterated.WeakTrace
