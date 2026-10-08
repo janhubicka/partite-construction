@@ -1,5 +1,10 @@
 import PartiteConstruction.Functional.ProjectedIrreducibleCover
+import PartiteConstruction.Functional.ProjectedLooseCompletion
 
 #print axioms StructuralRamsey.Structure.ProjectsIrreduciblesInto.precomp_weak
 #print axioms StructuralRamsey.Structure.ProjectsIrreduciblesInto.of_freeAmalgam
 #print axioms StructuralRamsey.Structure.IsFreeAmalgam.exists_EHN_projection
+#print axioms StructuralRamsey.Structure.ProjectsIrreduciblesInto.projectedLooseCompletion
+#print axioms StructuralRamsey.Structure.LooseTreeAmalgam.irreduciblesExtendTo
+#print axioms StructuralRamsey.Structure.LooseTreeAmalgam.mem_freeAmalgamationClass
+#print axioms StructuralRamsey.Structure.ProjectsIrreduciblesInto.completeRamsey_loose
