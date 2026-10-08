@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.ClosedTestGraphTreeObstruction
 import PartiteConstruction.Functional.EHNIteratedWeakTree
 import PartiteConstruction.Functional.EHNStageAttachmentGraph
 import PartiteConstruction.Functional.EHNAttachmentGraphIso
@@ -273,3 +274,9 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.FunctionalPartite.EHN.NativeIteratedWeak.succ
 #print axioms StructuralRamsey.FunctionalPartite.EHN.NativeIteratedWeak.build
 #print axioms StructuralRamsey.Structure.inducedRamsey_directFunctionalWeakGraph
+
+#print axioms StructuralRamsey.Structure.FunctionalClosedTestGraphObstruction.fullTree_noTwoStep
+#print axioms StructuralRamsey.Structure.FunctionalClosedTestGraphObstruction.pathGraph_tree
+#print axioms StructuralRamsey.Structure.FunctionalClosedTestGraphObstruction.pathGraph_hasTreeCompletion
+#print axioms StructuralRamsey.Structure.FunctionalClosedTestGraphObstruction.path_no_fullTreeCompletion
+#print axioms StructuralRamsey.Structure.FunctionalClosedTestGraphObstruction.closedSource_graphCompletion_not_fullCompletion
