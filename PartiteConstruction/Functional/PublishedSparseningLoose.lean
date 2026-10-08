@@ -1,18 +1,18 @@
-import PartiteConstruction.Functional.EHNProjectedCover
+import PartiteConstruction.Functional.EHNProjectedCoverAllArity
 import PartiteConstruction.Functional.ProjectedLooseCompletion
 
 /-! # A corrected full-function alternative to the published sparsening theorem
 
 All Ramsey embeddings, free amalgams, local embeddings, and final B-copy
-extensions remain in the genuine function language. Two changes from the
-literal published statement are explicit:
-* the global projection is EHN weak, not fibre-surjective on undefined inputs;
-* the functional B-tree has arbitrary closed gluing roots (the loose notion).
+extensions remain in the genuine function language, with arbitrary arities
+including constants. Two changes from the literal published statement are
+explicit: the global projection is EHN weak, and the functional B-tree has
+arbitrary closed gluing roots (the loose notion).
 
-One native induced pass followed by the original free-decomposition/final
-completion idea suffices. The entire final witness is a finite loose B-tree,
-so every closed local test has a full embedding into such a tree. This is
-not the strict local n-pass sparsening theorem.
+One native induced pass followed by full free-decomposition completion
+suffices. The entire final witness is a finite loose B-tree, so all closed
+local tests fully embed into such a tree. This is not a strict n-pass
+sparsening theorem, and does not redefine the published strict tree notion.
 -/
 
 namespace StructuralRamsey.Structure
@@ -22,12 +22,12 @@ variable {L : Language.{u}} {U V P : Type v}
 
 /-- Genuine functional Ramsey witnesses with weak projected maps, full
 loose-tree targets, and the original irreducible-extension conclusion.
-No irreducibility or hereditary graph-irreducibility assumption is used. -/
+No arity, irreducibility or graph-irreducibility assumption is used. -/
 theorem sparseningRamsey_functional_looseFullTrees_inClass
     (K : StructureClass (L := L)) (hK : FreeAmalgamationClass K)
     (A : Structure L U) (B : Structure L V) (D : Structure L P)
     [Finite U] [Finite V] [Finite P]
-    (hA : K A) (hB : K B) (hpos : L.PositiveFuncArity)
+    (hA : K A) (hB : K B)
     (κ : Type*) [Fintype κ] [Nonempty κ]
     (hArrow : Arrow A B D κ) :
     ∃ (W : Type v) (_ : Finite W) (C : Structure L W),
@@ -36,11 +36,12 @@ theorem sparseningRamsey_functional_looseFullTrees_inClass
       LooseTreeAmalgam B W C ∧ IrreduciblesExtendTo B C ∧
       ∀ n : ℕ, LocallyClosedLooseTreeEmbeddable B C n := by
   obtain ⟨S, hCov, hRamsey⟩ :=
-    FunctionalPartite.EHN.inducedConstruction_projectedCover
-      hK A B D hA hB hpos κ hArrow
+    FunctionalPartite.EHN.inducedConstruction_allArity_projectedCover
+      hK A B D hA hB κ hArrow
   letI : Finite S.Carrier := S.finiteCarrier
+  have hCovS : ProjectsIrreduciblesInto B S.system.toStructure D S.system.part := hCov
   obtain ⟨W, hW, C, hTree, e, p, hp, _hCommute⟩ :=
-    hCov.projectedLooseCompletion S.isPartite
+    hCovS.projectedLooseCompletion S.isPartite
   have hMem : K C := hTree.mem_freeAmalgamationClass hK hB
   have hArrowC : Arrow A B C κ := by
     intro χ
@@ -51,12 +52,11 @@ theorem sparseningRamsey_functional_looseFullTrees_inClass
   intro n S _hSize hS
   exact ⟨W, C, hTree, ⟨inclusion C (↑S : Set W) hS⟩⟩
 
-/-- The class-free form has the original finite function-language input
-syntax, but explicitly uses an EHN weak global map and loose full trees. -/
+/-- Class-free form for every relation/function language, using an EHN
+weak global projection and genuine loose full-function B-tree targets. -/
 theorem sparseningRamsey_functional_looseFullTrees
     (A : Structure L U) (B : Structure L V) (D : Structure L P)
     [Finite U] [Finite V] [Finite P]
-    (hpos : L.PositiveFuncArity)
     (κ : Type*) [Fintype κ] [Nonempty κ]
     (hArrow : Arrow A B D κ) :
     ∃ (W : Type v) (_ : Finite W) (C : Structure L W),
@@ -71,7 +71,7 @@ theorem sparseningRamsey_functional_looseFullTrees
   }
   obtain ⟨W, hW, C, _hMem, hArrowC, hp, hTree, hExt, hLocal⟩ :=
     sparseningRamsey_functional_looseFullTrees_inClass
-      K hK A B D trivial trivial hpos κ hArrow
+      K hK A B D trivial trivial κ hArrow
   exact ⟨W, hW, C, hArrowC, hp, hTree, hExt, hLocal⟩
 
 end StructuralRamsey.Structure
