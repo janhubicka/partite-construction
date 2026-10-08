@@ -280,6 +280,7 @@ import PartiteConstruction.Functional.EHNRestrictionGraph
 import PartiteConstruction.Functional.EHNPowerGraph
 import PartiteConstruction.Functional.EHNAttachmentGraph
 import PartiteConstruction.Functional.EHNAttachmentGraphIso
+import PartiteConstruction.Functional.EHNStageAttachmentGraph
 
 import PartiteConstruction.Functional.EHNInvariantConstruction
 
