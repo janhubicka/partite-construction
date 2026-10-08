@@ -43,7 +43,9 @@ def oldSystem : FunctionalPartite.System toyLanguage (Fin 3) (Fin 7) where
   part := oldPart
   relTransversal := by
     intro R xs hrel i j heq
-    exact congrArg xs (Subsingleton.elim i j)
+    have hij : i = j := by
+      fin_cases R <;> fin_cases i <;> fin_cases j <;> rfl
+    exact congrArg xs hij
   funcTransversal := by
     intro F xs y z hy hz heq
     change oldOutput (xs (0 : Fin 2)) (xs (1 : Fin 2)) = some y at hy
@@ -57,7 +59,6 @@ theorem oldOutput_role (x y z : Fin 7)
   split_ifs at h
   all_goals
     try (cases h; decide)
-  cases h
 
 /-- The three selected words in the X and Y roles. -/
 def xWord (i : Fin 3) (k : Fin 2) : Fin 7 :=
