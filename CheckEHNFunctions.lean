@@ -19,6 +19,7 @@ import PartiteConstruction.Functional.NoSquareFreeGluing
 import PartiteConstruction.Functional.NativePowerTreeSquare
 import PartiteConstruction.Functional.NativePowerConcreteStage
 import PartiteConstruction.Functional.NativePowerFullObstruction
+import PartiteConstruction.Functional.NativePowerInputTree
 import PartiteConstruction.Functional.QuotientBoundaryDomainObstruction
 import PartiteConstruction.Functional.ProjectedWeakImage
 import PartiteConstruction.Functional.DirectWeakIteration
@@ -329,3 +330,6 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.sparseningRamsey_unary_fullProjection_inClass
 #print axioms StructuralRamsey.Structure.sparseningRamsey_unary_strictIfOriginalLocallyCompletable
+
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.firstStage_strictTree
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.firstStage_projection
