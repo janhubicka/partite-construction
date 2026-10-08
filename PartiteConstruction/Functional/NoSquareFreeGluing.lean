@@ -97,7 +97,7 @@ theorem squareFree_of_freeUnion
           hLy₁ hRy₁ hLy₂ hRy₂)
     · exact hRight x x' y₁ y₂ hX hX' hy₁ hy₂ hxx' hyy
         he₁ he₂ he'₁ he'₂ hR hx'R hRy₁ hRy₂
-  rcases hCover x₁ with hx₁L | hx₁R
+  by_cases hx₁L : Left x₁
   · by_cases hx₁R : Right x₁
     · rcases hCover x₂ with hx₂L | hx₂R
       · by_cases hx₂R : Right x₂
@@ -112,7 +112,8 @@ theorem squareFree_of_freeUnion
             h₂₁ h₂₂ h₁₁ h₁₂ hx₂R hx₂L
     · exact exclusiveLeft x₁ x₂ hx₁ hx₂ hxx
         h₁₁ h₁₂ h₂₁ h₂₂ hx₁L hx₁R
-  · exact exclusiveRight x₁ x₂ hx₁ hx₂ hxx
+  · have hx₁R : Right x₁ := (hCover x₁).resolve_left hx₁L
+    exact exclusiveRight x₁ x₂ hx₁ hx₂ hxx
       h₁₁ h₁₂ h₂₁ h₂₂ hx₁R hx₁L
 
 end StructuralRamsey.Structure.NativePowerObstruction
