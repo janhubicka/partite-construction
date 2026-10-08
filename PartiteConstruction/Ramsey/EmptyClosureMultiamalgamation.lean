@@ -81,4 +81,45 @@ theorem ramsey_of_emptyClosure_multiamalgamation
     hn C ⟨p,hProj⟩ hIrred hSmall
   exact arrow_of_copywiseCompletion_inClass hA hArrow hExt hC
 
+/-- Ramsey class interface for finite relational structures using
+embeddings of A and B and arbitrary nonempty finite colour sets. -/
+def FiniteRamseyClass
+    (R : StructureClass.{u,v} (L := L)) : Prop :=
+  ∀ {U V : Type v} [Finite U] [Finite V]
+    (A : RelStructure L U) (B : RelStructure L V),
+    R A → R B →
+    ∀ (κ : Type*) [Fintype κ] [Nonempty κ],
+      ∃ (X : Type v) (_ : Finite X) (C : RelStructure L X),
+        R C ∧ StructuralRamsey.Arrow A B C κ
+
+/-- **Theorem 2.18, empty-closure case.**
+For a Ramsey class R of finite irreducible relational structures,
+every subclass K with hereditary strong amalgamation and the 2019
+locally finite completion property at U=empty is Ramsey.
+
+The proof does not assume that K is free-amalgamating. Its use of the
+strict relational tree invariant is confined to giving all small tests
+genuine K-completions via strong target amalgamation. -/
+theorem emptyClosure_multiamalgamation_isRamsey
+    (R K : StructureClass.{u,v} (L := L))
+    (hR : FiniteRamseyClass R)
+    (hRIrr : ∀ {W : Type v} (C : RelStructure L W),
+      R C → C.Irreducible)
+    (hSubset : ∀ {W : Type v} (C : RelStructure L W),
+      K C → R C)
+    (hK : FiniteStrongAmalgamationClass K)
+    (hLoc : ∀ {V P : Type v} [Finite V] [Finite P]
+      (B : RelStructure L V) (C₀ : RelStructure L P),
+      K B → R C₀ → EmptyClosureLocalFiniteness K B C₀) :
+    FiniteRamseyClass K := by
+  intro U V hU hV A B hA hB κ hκ hκNonempty
+  have hRA : R A := hSubset A hA
+  have hRB : R B := hSubset B hB
+  obtain ⟨P,hP,C₀,hRC₀,hRamsey⟩ :=
+    hR A B hRA hRB κ
+  letI : Finite P := hP
+  exact ramsey_of_emptyClosure_multiamalgamation K hK A B C₀
+    (hRIrr A hRA) (hRIrr B hRB) hB κ hRamsey
+    (hLoc B C₀ hB hRC₀)
+
 end StructuralRamsey.RelStructure
