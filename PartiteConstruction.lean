@@ -70,6 +70,7 @@ import PartiteConstruction.Partite.InducedBased
 import PartiteConstruction.Partite.InducedStep
 import PartiteConstruction.Partite.InducedConstruction
 import PartiteConstruction.Iterated.LocalTreeLike
+import PartiteConstruction.Iterated.IsoTransport
 import PartiteConstruction.Iterated.LooseTreeAmalgam
 import PartiteConstruction.Iterated.LooseStrictificationObstruction
 import PartiteConstruction.Iterated.CliqueExpansion
