@@ -108,8 +108,8 @@ theorem initialList_weakGraphLocallyTreeLike
             RelStructure.LocallyTreeLike A.graph B.graph
               QStage.system.toStructure.graph n :=
           base_weakGraphLocallyTreeLike A B n
-        exact T.attach_weakGraphLocallyTreeLike
-          hK A B D hA eAB QStage ∅ hS f (β₀.comp eAB)
+        exact Stage.attach_weakGraphLocallyTreeLike
+          hK A B D hA eAB QStage T ∅ hS f (β₀.comp eAB)
           hSupport n hn hD hBase hT
       let j : FunctionalPartite.Embedding T.system R.system :=
         FunctionalPartite.Attachment.coreEmbedding
