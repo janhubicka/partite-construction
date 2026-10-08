@@ -54,6 +54,7 @@ import PartiteConstruction.Functional.EHNStageInvariant
 import PartiteConstruction.Ramsey.FreeAmalgamationFunctionsAllArity
 import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 import PartiteConstruction.Ramsey.AllThoseFiniteModels
+import PartiteConstruction.Ramsey.AllThosePartialFiniteModels
 import PartiteConstruction.Ramsey.CompletionTransfer
 import PartiteConstruction.Ramsey.ForbiddenFunctions
 import PartiteConstruction.Structure.RootedReduction
@@ -350,3 +351,8 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.arrow_of_copywiseCompletion
 #print axioms StructuralRamsey.RelStructure.arrow_of_copywiseCompletion_inClass
 #print axioms StructuralRamsey.RelStructure.ramsey_of_sparse_copywise_completion
+
+#print axioms StructuralRamsey.Structure.singletonValued_of_embedding
+#print axioms StructuralRamsey.Structure.singletonValued_of_freeAmalgam
+#print axioms StructuralRamsey.Structure.originalPartialModelClass_free
+#print axioms StructuralRamsey.Structure.allThoseRamseyClasses_theorem_2_19_partialFunctions
