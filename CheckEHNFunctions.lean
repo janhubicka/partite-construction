@@ -392,5 +392,6 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.IsUClosed.USubstructure_of_induce
 #print axioms StructuralRamsey.RelStructure.IsUClosed.induce_iff_USubstructure
 
+#print axioms StructuralRamsey.RelStructure.Embedding.factorThroughRangeHeterogeneous
 #print axioms StructuralRamsey.RelStructure.Embedding.range_isUSubstructure
 #print axioms StructuralRamsey.RelStructure.Embedding.range_induce_isUClosed
