@@ -75,8 +75,9 @@ theorem domain_embedding_iff
     fin_cases i <;> rfl
   constructor
   · rintro ⟨z, hz⟩
-    have hzT : z ∈ T.func () (e ∘ ![x, y]) := by
-      simpa only [htuple] using hz
+    have hzT : z ∈ T.func () (e ∘ ![x, y]) :=
+      Eq.mp (congrArg
+        (fun a : Fin 2 → W => z ∈ T.func () a) htuple.symm) hz
     rw [← e.map_func () ![x, y]] at hzT
     rcases hzT with ⟨w, hw, _⟩
     exact ⟨w, hw⟩
@@ -85,7 +86,8 @@ theorem domain_embedding_iff
       ⟨w, hw, rfl⟩
     rw [e.map_func () ![x, y]] at hImage
     refine ⟨e w, ?_⟩
-    simpa only [htuple] using hImage
+    exact Eq.mp (congrArg
+      (fun a : Fin 2 → W => e w ∈ T.func () a) htuple) hImage
 
 /-- Square-freeness of one side, as read in the ambient structure through
 a full embedding. -/
