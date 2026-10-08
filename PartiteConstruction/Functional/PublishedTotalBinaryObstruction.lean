@@ -5,20 +5,18 @@ import PartiteConstruction.Functional.RankedTreeReduct
 
 Let F(x,y)={x} on finite sets. Every injection is a full embedding, and
 three points are Ramsey for two points under two-colourings of singletons.
-The one-, two-, and three-point structures are all functionally irreducible.
+A FULL homomorphism to this total binary algebra forces its source to be
+functionally irreducible.
 
-A FULL homomorphism to the three-point structure forces every binary input
-of its source to have a value. This makes the source irreducible, so a full
-homomorphism-embedding into the three-point structure is injective. At local
-rank 3 the whole source must complete into a strict tree of two-point bases.
-Irreducibility localizes its embedded image to one two-point base copy.
-But no structure embedding into two points is Ramsey for a monochromatic
-pair of singletons.
+Two independent contradictions result. Published clauses (1) and (2) at
+rank 3 force the whole source to embed into one two-point tree constituent.
+Alternatively, clauses (1) and (3) alone force it into a two-point base,
+for every rank and without any local-tree assumption. Neither can support
+the required monochromatic-pair Ramsey arrow.
 
-Thus the original existential conclusion, not merely the canonical proof,
-fails under the survey's literal full-fibre homomorphism definition. Clause
-(3) is not used in the contradiction. This does not concern the verified
-relational theorem, or a version with a weak EHN global projection.
+This refutes the exact existential full-functional statement, not just
+one canonical construction. It does not refute the relational theorem,
+or the variant with a weak EHN global projection.
 -/
 
 namespace StructuralRamsey.Structure.PublishedTotalBinaryObstruction
@@ -138,11 +136,11 @@ theorem three_ramsey_two : Arrow A B D (Fin 2) := by
     rfl
   rw [hcomp e₁, hcomp e₂]
   change colour (f (e₁ 0)) = colour (f (e₂ 0))
-  fin_cases h₁ : e₁ 0 <;> fin_cases h₂ : e₂ 0
-  · rfl
-  · exact hcol
-  · exact hcol.symm
-  · rfl
+  have hconst (a : Fin 2) : colour (f a) = colour i := by
+    fin_cases a
+    · rfl
+    · exact hcol.symm
+  exact (hconst (e₁ 0)).trans (hconst (e₂ 0)).symm
 
 /-- A witness embedding into B cannot be Ramsey for a monochromatic pair:
 colour a singleton by its image in the two-point carrier. -/
@@ -177,7 +175,53 @@ theorem no_full_projection_and_local_trees
   let eB : Embedding C B := eT.factorThroughRange baseCopy hContained
   exact no_ramsey_with_embedding_into_two hArrow eB
 
-/-- Negation of the exact published three-clause target. -/
+/-- Clauses (1) and (3) alone are inconsistent with the Ramsey arrow.
+Even a full homomorphism (without the embedding-on-irreducibles clause)
+forces irreducibility, so the full carrier must fit inside a B-copy. -/
+theorem no_full_projection_and_irreducible_extension
+    {V : Type} (C : Structure language V)
+    (hArrow : Arrow A B C (Fin 2))
+    (p : V → Fin 3) (hp : C.IsHomomorphism D p)
+    (hExtend : IrreduciblesExtendTo B C) : False := by
+  have hIrr : C.Irreducible := total_irreducible (total_of_full_projection hp)
+  have hAll : C.IsClosed Set.univ := by
+    intro F x hx y hy
+    trivial
+  let All := C.induce Set.univ hAll
+  let eAll : Embedding C All := {
+    toFun := fun x => ⟨x, Set.mem_univ x⟩
+    injective := by
+      intro x y h
+      exact congrArg Subtype.val h
+    map_rel_iff := fun _ _ => Iff.rfl
+    map_func := by
+      intro F x
+      ext y
+      constructor
+      · rintro ⟨z, hz, rfl⟩
+        exact hz
+      · intro hy
+        exact ⟨y.1, hy, Subtype.ext rfl⟩
+  }
+  have hSurj : Function.Surjective eAll := by
+    intro x
+    exact ⟨x.1, Subtype.ext rfl⟩
+  have hAllIrr : All.Irreducible :=
+    hIrr.of_surjective_homomorphism eAll.isHomomorphism hSurj
+  obtain ⟨eB, hCover⟩ := hExtend Set.univ hAll hAllIrr
+  have hRange : ∀ x : V, ∃ b : Fin 2, (Embedding.id C) x = eB b := by
+    intro x
+    exact hCover ⟨x, Set.mem_univ x⟩
+  let j : Embedding C B := (Embedding.id C).factorThroughRange eB hRange
+  exact no_ramsey_with_embedding_into_two hArrow j
+
+/-- The exact published conclusion fails for every local size bound. -/
+theorem not_publishedSparseningConclusion_all (n : ℕ) :
+    ¬ PublishedSparseningConclusion A B D (Fin 2) n := by
+  rintro ⟨V, hV, C, hArrow, p, hp, _hLocal, hExtend⟩
+  exact no_full_projection_and_irreducible_extension C hArrow p hp.1 hExtend
+
+/-- Independently, the rank-three local clause suffices without clause (3). -/
 theorem not_publishedSparseningConclusion :
     ¬ PublishedSparseningConclusion A B D (Fin 2) 3 := by
   rintro ⟨V, hV, C, hArrow, p, hp, hLocal, _hExtend⟩
@@ -189,11 +233,12 @@ a positive-arity, singleton-valued, total function. -/
 theorem published_functional_counterexample :
     language.PositiveFuncArity ∧ A.Irreducible ∧ B.Irreducible ∧
     Arrow A B D (Fin 2) ∧
-    ¬ PublishedSparseningConclusion A B D (Fin 2) 3 := by
+    (∀ n : ℕ, ¬ PublishedSparseningConclusion A B D (Fin 2) n) := by
   refine ⟨?_, total_irreducible (algebra_total _),
     total_irreducible (algebra_total _), three_ramsey_two,
-    not_publishedSparseningConclusion⟩
+    not_publishedSparseningConclusion_all⟩
   intro F
+  change 0 < 2
   decide
 
 end StructuralRamsey.Structure.PublishedTotalBinaryObstruction
