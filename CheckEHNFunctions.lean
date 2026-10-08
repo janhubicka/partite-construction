@@ -10,6 +10,7 @@ import PartiteConstruction.Functional.EHNPowerGraph
 import PartiteConstruction.Functional.EHNToRelationalPartite
 import PartiteConstruction.Functional.EHNProjectionGraphBridge
 import PartiteConstruction.Functional.EHNFibreBijective
+import PartiteConstruction.Functional.NativePowerStaircase
 import PartiteConstruction.Functional.QuotientBoundaryDomainObstruction
 import PartiteConstruction.Functional.ProjectedWeakImage
 import PartiteConstruction.Functional.DirectWeakIteration
@@ -299,3 +300,5 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.IsolatedQuotientBoundary.false_of_domainFailure
 #print axioms StructuralRamsey.Structure.QuotientBoundaryRequest.fullLabel_iff_isolatedOneCopy
+
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.staircase_noSquare_obstruction
