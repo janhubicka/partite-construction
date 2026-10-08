@@ -50,7 +50,7 @@ domain reflection, and every defect has a reducible input hull. This is an
 argument about EHN projections, **not** about arbitrary graph completion maps
 and **not** about target gluing roots.
 
-### Proposed small-image full-functional transfer lemma (to formalize)
+### Checked small-image full-functional transfer lemma (PR #111)
 
 Let p:C -> D be EHN, S a finite **closed** vertex set of C. Assume the
 restricted map p|S reflects nonempty function domains:
@@ -69,9 +69,14 @@ Then:
    completion too, by composition. No injectivity of p and no closure hull of
    the tested S are required.
 
-Parts (1) and the fibre calculation are already formalized. Items (2)-(3)
-are elementary new *proposed derived endpoints*; they are not claimed
-Lean-verified yet. This addresses the `|p[S]| <= n-1` case in an n-pass
+The full pullback, including image closedness, local full map on the image
+and final composition into the strict target tree, is checked in
+`Functional/ProjectedClosedTreePullback.lean`:
+`LocallyClosedTreeCompletable.pullback_localFull_closedImage` and
+`LocallyClosedTreeCompletable.pullback_EHN_closedImage_of_domainReflection`.
+The full build and theorem-axiom check passed on proof commit
+`2839ba4560364d0293002244c6c6be0413c45923`
+(workflow `37745840826`). This covers the `|p[S]| <= n-1` case in an n-pass
 **strict** induction *when* the restricted projection reflects domains.
 Without that hypothesis it does not address even this case.
 
@@ -168,7 +173,7 @@ attempting to convert an arbitrary completed relational graph tree at the end.
   local completion map, and a target function-closed gluing root.
 - Do not modify the frozen circulation text of the survey. New hypotheses
   and unproved branches belong in optional TODOs, not green Lean markers.
-- For new Lean work, first formalize the small-image transfer; then
+- For new Lean work, reuse the now-checked small-image transfer; then
   test the reducible-root relative witness on finite unary examples
   and on the existing two-step-path regression before claiming a
   general result.
