@@ -32,7 +32,7 @@ The somewhat explicit `hCore` hypothesis deliberately exposes the exact core
 stage constructed by the ordinary functional Picture proof.  This keeps the
 future local-tree theorem focused on the geometric core and binary-attachment
 lemmas, with no duplicated Ramsey bookkeeping. -/
-theorem pictureLemma_preserving
+theorem pictureLemma_preservingSupport
     (hK : Structure.FreeAmalgamationClass K)
     (A : Structure L U) [Finite U] (hA : K A)
     (B : Stage K D) (α : Structure.Embedding A D)
@@ -60,12 +60,14 @@ theorem pictureLemma_preserving
         Q T)
     (hAttach :
       ∀ (T : Stage K D)
-        (S : Set B.Carrier)
-        (hS : B.system.toStructure.IsClosed S)
         (f : FunctionalPartite.Embedding
-          (B.system.induce S hS) T.system),
+          (B.system.induce (B.system.support α.toFunctionEmbedding)
+            (B.system.weak_support_closed D B.isPartite.1 A α))
+          T.system),
         Q T →
-        Q (T.attach hK B.system B.isPartite B.mem S hS f)) :
+        Q (T.attach hK B.system B.isPartite B.mem
+          (B.system.support α.toFunctionEmbedding)
+          (B.system.weak_support_closed D B.isPartite.1 A α) f)) :
     ∃ C : Stage K D,
       Q C ∧ PictureProperty A B C α κ := by
   classical
@@ -111,7 +113,7 @@ theorem pictureLemma_preserving
         Q T0 →
         Q (T0.attach hK B.system B.isPartite B.mem S hS f0) := by
     intro T0 f0 hQT0
-    exact hAttach T0 S hS f0 hQT0
+    exact hAttach T0 f0 hQT0
   obtain ⟨C, hQC, core, hcopies⟩ :=
     attachAll_preserving
       hK B.system B.isPartite B.mem S hS
@@ -139,5 +141,48 @@ theorem pictureLemma_preserving
     exact hf ⟨e x, x, (he x).symm⟩
   rw [hcomp e₁ he₁, hcomp e₂ he₂]
   exact hg r₁ r₂
+
+/-- Backwards-compatible auxiliary invariant lemma allowing arbitrary closed
+supports. The actual EHN Picture always attaches over its canonical
+function-closed A-support, so the weaker `pictureLemma_preservingSupport`
+is the preferred hypothesis for local-tree arguments. -/
+theorem pictureLemma_preserving
+    (hK : Structure.FreeAmalgamationClass K)
+    (A : Structure L U) [Finite U] (hA : K A)
+    (B : Stage K D) (α : Structure.Embedding A D)
+    (κ : Type*) [Fintype κ]
+    (Q : Stage K D → Prop)
+    (hCore :
+      ∀ (N : ℕ) (hN : 0 < N),
+        let R := B.system.weakRestrict D B.isPartite.1 A α
+        let hR : R.WeaklyPartiteOver A :=
+          B.system.weakRestrict_invariant
+            D B.isPartite.1 A α B.isPartite
+        let E := Induced.power R N
+        let hPower : E.WeaklyPartiteOver A :=
+          Induced.power_weaklyPartiteOver hR hN
+        let ER := E.relabel α.toFunctionEmbedding
+        let hER : ER.WeaklyPartiteOver D :=
+          α.isEHNHomomorphismEmbedding.comp hPower
+        let T : Stage K D := {
+          Carrier := Induced.Vertex R N
+          finiteCarrier := inferInstance
+          system := ER
+          isPartite := hER
+          mem := mem_of_weaklyPartiteOver hK E hPower hA
+        }
+        Q T)
+    (hAttach :
+      ∀ (T : Stage K D)
+        (S : Set B.Carrier)
+        (hS : B.system.toStructure.IsClosed S)
+        (f : FunctionalPartite.Embedding
+          (B.system.induce S hS) T.system),
+        Q T →
+        Q (T.attach hK B.system B.isPartite B.mem S hS f)) :
+    ∃ C : Stage K D,
+      Q C ∧ PictureProperty A B C α κ := by
+  exact pictureLemma_preservingSupport hK A hA B α κ Q hCore
+    (fun T f hf => hAttach T _ _ f hf)
 
 end StructuralRamsey.FunctionalPartite.EHN
