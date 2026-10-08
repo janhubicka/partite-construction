@@ -61,6 +61,7 @@ import PartiteConstruction.Ramsey.CompletionTransfer
 import PartiteConstruction.Ramsey.CopywiseFreeFold
 import PartiteConstruction.Ramsey.StrongAmalgamationTreeCompletion
 import PartiteConstruction.Ramsey.CopywiseTreeHomomorphism
+import PartiteConstruction.Ramsey.EmptyClosureMultiamalgamation
 import PartiteConstruction.Ramsey.ForbiddenFunctions
 import PartiteConstruction.Structure.RootedReduction
 import PartiteConstruction.Structure.RootedFunctor
@@ -381,3 +382,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.CopywiseCompletion.toHomomorphismEmbedding_of_strictTree
 #print axioms StructuralRamsey.RelStructure.HasTreeCompletion.toKCompletion
 #print axioms StructuralRamsey.RelStructure.IrreduciblesExtendTo.mem_irreducibles
+
+#print axioms StructuralRamsey.RelStructure.ramsey_of_emptyClosure_multiamalgamation
