@@ -45,6 +45,8 @@ theorem powerZ_is_output (k : Fin 6) :
     powerZ k ∈ actualPower.func ()
       ![powerX (zSourceX k),powerY (zSourceY k)] := by
   intro i
+  change oldOutput (xWord (zSourceX k) i)
+      (yWord (zSourceY k) i) = some (zWord k i)
   fin_cases k <;> fin_cases i <;> decide
 
 theorem powerZ_mem_support (k : Fin 6) :
