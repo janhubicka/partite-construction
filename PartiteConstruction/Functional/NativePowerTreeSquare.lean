@@ -29,8 +29,8 @@ def toyLanguage : Language where
 
 /-- A single binary-function hyperedge. -/
 def toyBase : Structure toyLanguage (Fin 3) where
-  rel R x := x 0 = R
-  func _ x := {y | x 0 = 0 ∧ x 1 = 1 ∧ y = 2}
+  rel R x := x (0 : Fin 1) = R
+  func _ x := {y | x (0 : Fin 2) = 0 ∧ x (1 : Fin 2) = 1 ∧ y = 2}
 
 def Role {W : Type} (T : Structure toyLanguage W)
     (r : Fin 3) (x : W) : Prop :=
@@ -76,8 +76,7 @@ theorem domain_embedding_iff
   constructor
   · rintro ⟨z, hz⟩
     have hzT : z ∈ T.func () (e ∘ ![x, y]) := by
-      rw [htuple]
-      exact hz
+      simpa only [htuple] using hz
     rw [← e.map_func () ![x, y]] at hzT
     rcases hzT with ⟨w, hw, _⟩
     exact ⟨w, hw⟩
@@ -86,7 +85,7 @@ theorem domain_embedding_iff
       ⟨w, hw, rfl⟩
     rw [e.map_func () ![x, y]] at hImage
     refine ⟨e w, ?_⟩
-    rwa [htuple] at hImage
+    simpa only [htuple] using hImage
 
 /-- Square-freeness of one side, as read in the ambient structure through
 a full embedding. -/
@@ -164,7 +163,7 @@ theorem strictTree_squareFree
     (hTree : TreeAmalgam toyBase W T) : SquareFree T := by
   induction hTree with
   | copy e hsurj =>
-      have hRange : ∀ z : W, ∃ a : Fin 3, z = e a := by
+      have hRange : ∀ z, ∃ a : Fin 3, z = e a := by
         intro z
         obtain ⟨a, ha⟩ := hsurj z
         exact ⟨a, ha.symm⟩
@@ -187,11 +186,11 @@ theorem strictTree_squareFree
           ⟨args, out, hval, heq, hout⟩ |
           ⟨args, out, hval, heq, hout⟩
         · left
-          exact ⟨⟨args 0, congrFun heq 0⟩,
-            ⟨args 1, congrFun heq 1⟩⟩
+          exact ⟨⟨args (0 : Fin 2), congrFun heq (0 : Fin 2)⟩,
+            ⟨args (1 : Fin 2), congrFun heq (1 : Fin 2)⟩⟩
         · right
-          exact ⟨⟨args 0, congrFun heq 0⟩,
-            ⟨args 1, congrFun heq 1⟩⟩
+          exact ⟨⟨args (0 : Fin 2), congrFun heq (0 : Fin 2)⟩,
+            ⟨args (1 : Fin 2), congrFun heq (1 : Fin 2)⟩⟩
       have hShared (z : W) (hl : Left z) (hr : Right z) :
           ∃ d : Z, z = i₁ (f₁ d) := by
         obtain ⟨a, ha⟩ := hl
