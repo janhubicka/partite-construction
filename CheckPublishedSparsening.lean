@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.PublishedTotalBinaryObstruction
+
+#print axioms StructuralRamsey.Structure.PublishedTotalBinaryObstruction.total_irreducible
+#print axioms StructuralRamsey.Structure.PublishedTotalBinaryObstruction.three_ramsey_two
+#print axioms StructuralRamsey.Structure.PublishedTotalBinaryObstruction.no_full_projection_and_local_trees
+#print axioms StructuralRamsey.Structure.PublishedTotalBinaryObstruction.published_functional_counterexample
