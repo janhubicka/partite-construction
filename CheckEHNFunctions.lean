@@ -58,6 +58,8 @@ import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 import PartiteConstruction.Ramsey.AllThoseFiniteModels
 import PartiteConstruction.Ramsey.AllThosePartialFiniteModels
 import PartiteConstruction.Ramsey.CompletionTransfer
+import PartiteConstruction.Ramsey.CopywiseFreeFold
+import PartiteConstruction.Ramsey.StrongAmalgamationTreeCompletion
 import PartiteConstruction.Ramsey.ForbiddenFunctions
 import PartiteConstruction.Structure.RootedReduction
 import PartiteConstruction.Structure.RootedFunctor
@@ -368,3 +370,7 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.singletonValued_of_freeAmalgam
 #print axioms StructuralRamsey.Structure.originalPartialModelClass_free
 #print axioms StructuralRamsey.Structure.allThoseRamseyClasses_theorem_2_19_partialFunctions
+
+#print axioms StructuralRamsey.RelStructure.CopywiseCompletion.fold_free
+#print axioms StructuralRamsey.RelStructure.CopywiseCompletion.on_strictRoot
+#print axioms StructuralRamsey.RelStructure.TreeAmalgam.copywiseCompletion_inStrongClass
