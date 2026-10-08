@@ -110,12 +110,12 @@ substructures on arbitrary vertex sets, retaining only function outputs
 inside the test; `Structure.weakInduce_graph_rel_iff` supplies their exact
 graph representation. This representation is a way to inspect arbitrary
 weak tests, **not a reason to replace the functional Picture by U-closed
-relational pictures**. A full n-pass direct functional weak-size tree
-invariant needs its own geometric proof, using the EHN power and binary
-free attachments. `EHN.pictureLemma_preserving` and
-`EHN.inducedConstruction_preserving` already provide the
-colour/attachment bookkeeping once the corresponding local invariant
-has been shown to persist.
+relational pictures**. The direct n-pass weak-size tree invariant
+is now proved as `Structure.inducedRamsey_directFunctionalWeakGraph`.
+It uses the EHN power and genuine binary functional attachments, with
+the existing `EHN.pictureLemma_preservingSupport` and
+`EHN.inducedConstruction_preserving` providing the finite
+colour/attachment and Ramsey-pass bookkeeping.
 
 U-closed relational graph embeddings are required instead in the
 **recursive partite construction**: its intermediate relational stages
@@ -133,6 +133,9 @@ maps remain a separate strengthening to prove.
 This work does **not** prove a globally fibre-surjective partite projection.
 The checked EHN projection is weak globally/full on irreducibles.
 
-It also does not settle functional iterated sparsening or the stronger
-synchronized ambient-A tree invariant.  They are optional strengthening questions, not gaps in the fully
-validated printed relational Appendix.
+The native weak-vertex-size functional iteration is complete at the
+**graph-tree** level, including its full function-language Ramsey arrow.
+It does not assert a strict function-language tree target: this requires
+function-closed graph-tree gluing roots and complete local function output
+preservation. The stronger synchronized ambient-A tree invariant remains
+separate and is not a gap in the printed relational Appendix.
