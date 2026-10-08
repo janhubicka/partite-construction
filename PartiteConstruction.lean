@@ -89,6 +89,9 @@ import PartiteConstruction.Iterated.PureCopyGeometry
 import PartiteConstruction.Iterated.PowerCoordinateEmbedding
 import PartiteConstruction.Iterated.WeakStep
 import PartiteConstruction.Iterated.GenericProjectedAttachmentStep
+import PartiteConstruction.Iterated.IsoTransport
+import PartiteConstruction.Functional.EHNStageAttachmentGraph
+import PartiteConstruction.Functional.EHNWeakAttachmentStep
 import PartiteConstruction.Iterated.WeakStepTreeCompletion
 import PartiteConstruction.Iterated.WeakStepProjectedPartial
 import PartiteConstruction.Iterated.WeakTrace
