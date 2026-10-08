@@ -60,7 +60,7 @@ theorem QuotientBoundaryRequest.fullLabel_iff_isolatedOneCopy
       ∃ f : H → VB,
         Root.IsHomomorphismEmbedding Base f ∧
         IsolatedQuotientBoundary
-          (QuotientBoundaryRequest.ofEmbedding (Embedding.id Root) q)
+          (QuotientBoundaryRequest.ofEmbedding (A := A) (Embedding.id Root) q)
           Base f := by
   constructor
   · intro hq
