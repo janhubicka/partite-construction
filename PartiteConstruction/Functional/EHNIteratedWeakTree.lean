@@ -7,7 +7,7 @@ each complete partite pass uses the native full-function Hales--Jewett
 lemma, closed support restriction, and full free attachments.
 No U-closed intermediate relational construction occurs.
 
-The *local test* is nevertheless an arbitrary weak induced substructure
+The *weakTree test* is nevertheless an arbitrary weak induced substructure
 on at most n vertices; this is exactly graph induction, without taking
 its function closure. A native EHN pass raises n by one while preserving
 the original full function-language Ramsey arrow and the weak
@@ -36,7 +36,7 @@ structure Witness
   arrow : Structure.Arrow A B C κ
   projection : Carrier → P
   projected : C.IsEHNHomomorphismEmbedding D projection
-  local : RelStructure.LocallyTreeLike A.graph B.graph C.graph n
+  weakTree : RelStructure.LocallyTreeLike A.graph B.graph C.graph n
 
 attribute [instance] Witness.finiteCarrier
 
@@ -72,12 +72,12 @@ theorem first
     arrow := hArrow
     projection := T.system.part
     projected := T.isPartite
-    local := hLocal
+    weakTree := hLocal
   }
   exact ⟨W⟩
 
 /-- A subsequent full native functional EHN pass raises the weak graph
-local-tree vertex bound from n to n+1 and composes the weak projection
+weakTree-tree vertex bound from n to n+1 and composes the weak projection
 back to the original control structure D. -/
 theorem succ
     (K : Structure.StructureClass (L := L))
@@ -96,7 +96,7 @@ theorem succ
   have hD' :
       RelStructure.LocallyTreeLike A.graph B.graph W.C.graph
         ((n + 1) - 1) := by
-    simpa using W.local
+    simpa using W.weakTree
   obtain ⟨T, hLocal, hArrow⟩ :=
     inducedConstruction_weakGraphLocallyTreeLike
       hK A B W.C hKA hKB hpos κ W.arrow
@@ -109,7 +109,7 @@ theorem succ
     arrow := hArrow
     projection := W.projection ∘ T.system.part
     projected := W.projected.comp T.isPartite
-    local := hLocal
+    weakTree := hLocal
   }
   exact ⟨W'⟩
 
@@ -178,6 +178,6 @@ theorem inducedRamsey_directFunctionalWeakGraph
     FunctionalPartite.EHN.NativeIteratedWeak.build
       K hK A B D hKA hKB hpos κ hRamsey hA eAB n hn
   exact ⟨W.Carrier, W.finiteCarrier, W.C, W.mem, W.arrow,
-    W.local, W.projection, W.projected⟩
+    W.weakTree, W.projection, W.projected⟩
 
 end StructuralRamsey.Structure
