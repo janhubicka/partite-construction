@@ -91,4 +91,29 @@ theorem actualPower_no_fullStrictTreeHom
   intro i j
   exact domain_fullHom_iff hf (powerX i) (powerY j)
 
+
+/-- The entire concrete native second power already has no strict full B-tree
+completion. It is a genuine finite function structure, so the full carrier
+is automatically a function-closed test. -/
+theorem actualPower_no_fullTreeCompletion :
+    ¬ Structure.HasTreeCompletion toyBase actualPower := by
+  rintro ⟨W, T, hTree, f, hf⟩
+  exact actualPower_no_fullStrictTreeHom hTree f hf.1
+
+/-- A finite-rank obstruction to a generic strict functional sparsening
+invariant. The rank is the cardinal of the concrete tagged second power;
+the separately exhibited twelve-vertex closed test sharpens this bound. -/
+theorem actualPower_not_locallyStrictTreeCompletable :
+    ¬ Structure.LocallyClosedTreeCompletable toyBase actualPower
+        (Nat.card (FunctionalPartite.Induced.Vertex oldSystem 2)) := by
+  intro hLocal
+  letI : Fintype (FunctionalPartite.Induced.Vertex oldSystem 2) :=
+    Fintype.ofFinite _
+  have hcard :
+      Fintype.card (FunctionalPartite.Induced.Vertex oldSystem 2) ≤
+        Nat.card (FunctionalPartite.Induced.Vertex oldSystem 2) := by
+    simp only [Nat.card_eq_fintype_card]
+    exact Nat.le_refl _
+  exact actualPower_no_fullTreeCompletion (hLocal.fullWitness hcard)
+
 end StructuralRamsey.Structure.NativePowerObstruction
