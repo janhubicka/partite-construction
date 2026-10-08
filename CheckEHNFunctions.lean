@@ -10,6 +10,7 @@ import PartiteConstruction.Functional.EHNPowerGraph
 import PartiteConstruction.Functional.EHNToRelationalPartite
 import PartiteConstruction.Functional.EHNProjectionGraphBridge
 import PartiteConstruction.Functional.EHNFibreBijective
+import PartiteConstruction.Functional.QuotientBoundaryDomainObstruction
 import PartiteConstruction.Functional.ProjectedWeakImage
 import PartiteConstruction.Functional.DirectWeakIteration
 import PartiteConstruction.Functional.FreeAmalgamEmbeddedInduction
@@ -295,3 +296,5 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.injOn_func_of_nonempty
 #print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.bijOn_func_of_nonempty
+
+#print axioms StructuralRamsey.Structure.IsolatedQuotientBoundary.false_of_domainFailure
