@@ -38,37 +38,58 @@ def firstStage : Structure toyLanguage (Fin 5) where
   func _ x := {y |
     firstStageOutput (x (0 : Fin 2)) (x (1 : Fin 2)) = some y}
 
+/-- Explicit vertex maps for two full copies of the template. -/
+def firstCopyMap (i : Fin 3) : Fin 5 :=
+  if i = 0 then 0 else if i = 1 then 2 else 3
+
+def secondCopyMap (i : Fin 3) : Fin 5 :=
+  if i = 0 then 1 else if i = 1 then 2 else 4
+
+theorem firstCopyMap_part (i : Fin 3) :
+    firstStagePart (firstCopyMap i) = i := by
+  fin_cases i <;> decide
+
+theorem secondCopyMap_part (i : Fin 3) :
+    firstStagePart (secondCopyMap i) = i := by
+  fin_cases i <;> decide
+
 /-- Full embeddings of the first and second base copies into the two-edge stage. -/
 def firstCopy : Embedding toyBase firstStage where
-  toFun := fun i => if i = 0 then 0 else if i = 1 then 2 else 3
+  toFun := firstCopyMap
   injective := by decide
   map_rel_iff := by
     intro R x
-    letI : Fintype toyLanguage.RelSymbol := (inferInstance : Fintype (Fin 3))
-    fin_cases R
-    all_goals
-      generalize h : x (0 : Fin 1) = a
-      fin_cases a <;> decide
+    change firstStagePart (firstCopyMap (x (0 : Fin 1))) = R ↔
+      x (0 : Fin 1) = R
+    rw [firstCopyMap_part]
   map_func := by
     intro F x
     ext y
+    change (∃ z : Fin 3,
+        (x (0 : Fin 2) = 0 ∧ x (1 : Fin 2) = 1 ∧ z = 2) ∧
+          firstCopyMap z = y) ↔
+      firstStageOutput (firstCopyMap (x (0 : Fin 2)))
+        (firstCopyMap (x (1 : Fin 2))) = some y
     generalize h₀ : x (0 : Fin 2) = a
     generalize h₁ : x (1 : Fin 2) = b
     fin_cases a <;> fin_cases b <;> fin_cases y <;> decide
 
 def secondCopy : Embedding toyBase firstStage where
-  toFun := fun i => if i = 0 then 1 else if i = 1 then 2 else 4
+  toFun := secondCopyMap
   injective := by decide
   map_rel_iff := by
     intro R x
-    letI : Fintype toyLanguage.RelSymbol := (inferInstance : Fintype (Fin 3))
-    fin_cases R
-    all_goals
-      generalize h : x (0 : Fin 1) = a
-      fin_cases a <;> decide
+    change firstStagePart (secondCopyMap (x (0 : Fin 1))) = R ↔
+      x (0 : Fin 1) = R
+    rw [secondCopyMap_part]
   map_func := by
     intro F x
     ext y
+    change (∃ z : Fin 3,
+        (x (0 : Fin 2) = 0 ∧ x (1 : Fin 2) = 1 ∧ z = 2) ∧
+          secondCopyMap z = y) ↔
+      firstStageOutput (secondCopyMap (x (0 : Fin 2)))
+        (secondCopyMap (x (1 : Fin 2))) = some y
     generalize h₀ : x (0 : Fin 2) = a
     generalize h₁ : x (1 : Fin 2) = b
     fin_cases a <;> fin_cases b <;> fin_cases y <;> decide
