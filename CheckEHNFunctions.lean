@@ -9,6 +9,7 @@ import PartiteConstruction.Functional.EHNAttachmentGraph
 import PartiteConstruction.Functional.EHNPowerGraph
 import PartiteConstruction.Functional.EHNToRelationalPartite
 import PartiteConstruction.Functional.EHNProjectionGraphBridge
+import PartiteConstruction.Functional.EHNFibreBijective
 import PartiteConstruction.Functional.ProjectedWeakImage
 import PartiteConstruction.Functional.DirectWeakIteration
 import PartiteConstruction.Functional.FreeAmalgamEmbeddedInduction
@@ -291,3 +292,6 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.IsWeakHomomorphismEmbedding.weakImage
 #print axioms StructuralRamsey.Structure.WeakLocallyTreeCompletable.completion_of_small_weakImage
+
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.injOn_func_of_nonempty
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.bijOn_func_of_nonempty
