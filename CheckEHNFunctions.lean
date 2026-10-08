@@ -55,6 +55,7 @@ import PartiteConstruction.Ramsey.FreeAmalgamationFunctionsAllArity
 import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 import PartiteConstruction.Ramsey.AllThoseFiniteModels
 import PartiteConstruction.Ramsey.CompletionTransfer
+import PartiteConstruction.Ramsey.CopywiseFreeFold
 import PartiteConstruction.Ramsey.ForbiddenFunctions
 import PartiteConstruction.Structure.RootedReduction
 import PartiteConstruction.Structure.RootedFunctor
@@ -350,3 +351,7 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.arrow_of_copywiseCompletion
 #print axioms StructuralRamsey.RelStructure.arrow_of_copywiseCompletion_inClass
 #print axioms StructuralRamsey.RelStructure.ramsey_of_sparse_copywise_completion
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.compatibleFold_left
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.compatibleFold_right
+#print axioms StructuralRamsey.RelStructure.CopywiseCompletion.fold_free
