@@ -52,20 +52,21 @@ theorem WeakLocallyTreeCompletable.completion_of_small_weakImage
       (C.weakInduce (↑S : Set V)).graph := by
   classical
   let I : Finset W := S.image p
-  have hImageSet : p '' (↑S : Set V) = (↑I : Set W) := by
-    ext y
-    constructor
-    · rintro ⟨x, hx, rfl⟩
-      exact Finset.mem_image.mpr ⟨x, hx, rfl⟩
-    · intro hy
-      obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hy
-      exact ⟨x, hx, rfl⟩
   let pS : ↥(↑S : Set V) → ↥(↑I : Set W) :=
     fun x => ⟨p x.1, Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩⟩
+  have hSource :
+      (C.weakInduce (↑S : Set V)).graph.IsHomomorphismEmbedding D.graph
+        (p ∘ Subtype.val) :=
+    hp.comp (weakInclusion C (↑S : Set V)).isHomomorphismEmbedding
+  have hImage :
+      (C.weakInduce (↑S : Set V)).graph.IsHomomorphismEmbedding
+        (D.graph.induce (↑I : Set W)) pS :=
+    hSource.codRestrict (↑I : Set W)
+      (fun x => Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩)
   have hProjection :
       (C.weakInduce (↑S : Set V)).graph.IsHomomorphismEmbedding
-        (D.weakInduce (↑I : Set W)).graph pS := by
-    simpa only [hImageSet] using hp.weakImage (↑S : Set V)
+        (D.weakInduce (↑I : Set W)).graph pS :=
+    (weakGraphFromInduce D (↑I : Set W)).isHomomorphismEmbedding.comp hImage
   obtain ⟨Z, T, hTree, f, hf⟩ :=
     hD I (by simpa [I] using hSize)
   have hfWeak :
