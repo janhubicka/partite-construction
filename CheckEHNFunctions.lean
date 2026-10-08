@@ -58,6 +58,10 @@ import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 import PartiteConstruction.Ramsey.AllThoseFiniteModels
 import PartiteConstruction.Ramsey.AllThosePartialFiniteModels
 import PartiteConstruction.Ramsey.CompletionTransfer
+import PartiteConstruction.Ramsey.CopywiseFreeFold
+import PartiteConstruction.Ramsey.StrongAmalgamationTreeCompletion
+import PartiteConstruction.Ramsey.CopywiseTreeHomomorphism
+import PartiteConstruction.Ramsey.EmptyClosureMultiamalgamation
 import PartiteConstruction.Ramsey.ForbiddenFunctions
 import PartiteConstruction.Structure.RootedReduction
 import PartiteConstruction.Structure.RootedFunctor
@@ -368,3 +372,16 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.singletonValued_of_freeAmalgam
 #print axioms StructuralRamsey.Structure.originalPartialModelClass_free
 #print axioms StructuralRamsey.Structure.allThoseRamseyClasses_theorem_2_19_partialFunctions
+
+#print axioms StructuralRamsey.RelStructure.CopywiseCompletion.fold_free
+#print axioms StructuralRamsey.RelStructure.CopywiseCompletion.on_strictRoot
+#print axioms StructuralRamsey.RelStructure.TreeAmalgam.copywiseCompletion_inStrongClass
+
+#print axioms StructuralRamsey.RelStructure.relationTuple_range_irreducible
+#print axioms StructuralRamsey.RelStructure.CopywiseCompletion.on_irreducible_of_strictTree
+#print axioms StructuralRamsey.RelStructure.CopywiseCompletion.toHomomorphismEmbedding_of_strictTree
+#print axioms StructuralRamsey.RelStructure.HasTreeCompletion.toKCompletion
+#print axioms StructuralRamsey.RelStructure.IrreduciblesExtendTo.mem_irreducibles
+
+#print axioms StructuralRamsey.RelStructure.ramsey_of_emptyClosure_multiamalgamation
+#print axioms StructuralRamsey.RelStructure.emptyClosure_multiamalgamation_isRamsey
