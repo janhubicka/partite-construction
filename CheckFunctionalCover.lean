@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.ProjectedIrreducibleCover
 import PartiteConstruction.Functional.ProjectedLooseCompletion
 import PartiteConstruction.Functional.EHNProjectedCover
+import PartiteConstruction.Functional.EHNProjectedCoverAllArity
 import PartiteConstruction.Functional.PublishedSparseningLoose
 
 #print axioms StructuralRamsey.Structure.ProjectsIrreduciblesInto.precomp_weak
@@ -14,5 +15,7 @@ import PartiteConstruction.Functional.PublishedSparseningLoose
 #print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma_projectedCover
 #print axioms StructuralRamsey.FunctionalPartite.EHN.initialList_projectedCover
 #print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_projectedCover
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initialList_allArity_projectedCover
+#print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_allArity_projectedCover
 #print axioms StructuralRamsey.Structure.sparseningRamsey_functional_looseFullTrees_inClass
 #print axioms StructuralRamsey.Structure.sparseningRamsey_functional_looseFullTrees
