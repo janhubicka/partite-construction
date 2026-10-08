@@ -77,8 +77,9 @@ theorem noTwoStep_of_full_cover
             (fun _ : Fin 1 => iL b) := by
         funext k
         rfl
-      rw [harg]
-      exact hyz
+      exact Eq.mp
+        (congrArg (fun args : Fin 1 → Z => z ∈ T.func () args) harg.symm)
+        hyz
     obtain ⟨c, hc, _⟩ := hz
     exact hL a b c hb hc
   · subst x
@@ -96,8 +97,9 @@ theorem noTwoStep_of_full_cover
             (fun _ : Fin 1 => iR b) := by
         funext k
         rfl
-      rw [harg]
-      exact hyz
+      exact Eq.mp
+        (congrArg (fun args : Fin 1 → Z => z ∈ T.func () args) harg.symm)
+        hyz
     obtain ⟨c, hc, _⟩ := hz
     exact hR a b c hb hc
 
