@@ -75,12 +75,10 @@ theorem staircase_originalPartialTreeCompletion :
       actualPower :=
     inclusion actualPower StaircaseSupport staircaseSupport_closed
   have hp :
-      (actualPower.induce StaircaseSupport staircaseSupport_closed).
-        IsEHNHomomorphismEmbedding toyBase
+      (actualPower.induce StaircaseSupport staircaseSupport_closed).IsEHNHomomorphismEmbedding toyBase
           ((FunctionalPartite.Induced.power oldSystem 2).part ∘ Subtype.val) := by
     change
-      (actualPower.induce StaircaseSupport staircaseSupport_closed).
-        IsEHNHomomorphismEmbedding toyBase
+      (actualPower.induce StaircaseSupport staircaseSupport_closed).IsEHNHomomorphismEmbedding toyBase
           ((FunctionalPartite.Induced.power oldSystem 2).part ∘ inc)
     exact actualPower_weaklyPartiteOver.comp
       inc.isEHNHomomorphismEmbedding
