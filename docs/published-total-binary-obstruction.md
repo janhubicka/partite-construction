@@ -1,5 +1,14 @@
 # The original full-functional sparsening conclusion is false
 
+> **Scope correction (8 October 2026):** The counterexample refutes the
+> *literal 2026 survey* sparsening theorem with its **total set-valued
+> functions** and equality of entire fibres at **every** input. It does
+> **not** refute the original **2019 partial-function homomorphism**:
+> that definition imposes equality only on defined source inputs, without
+> reflecting missing domains. The proof below uses the stronger total-fibre
+> convention at its central `total_of_full_projection` step. See
+> `docs/original-partial-homomorphism-audit.md`.
+
 ## Source and semantic check
 
 The arXiv postprint of Hubička–Konečný, *Twenty years of Nešetřil’s classification programme of Ramsey classes*, arXiv:2501.17293v5, explicitly identifies itself as a postprint of the Computer Science Review article. Section 2.1 defines homomorphisms by preservation of complete function fibres, without a nonempty-domain exception. The free-amalgam definition excludes mixed function incidences as well as mixed relation tuples. Theorem 6.11 is the statement called `thm:sparseningRamsey` in the TeX source; Appendix A.3 gives its proof.
