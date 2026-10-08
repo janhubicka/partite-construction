@@ -31,17 +31,31 @@ Strict relational sparsening with B irreducible and arbitrary A is checked
 through the complete binary-relation expansion and does not depend on the
 stronger synchronized tree invariant.
 
-### Optional direct functional iteration
+### Completed direct functional iteration
 
-Implement the iterated weak-substructure size bound directly on genuine
-`FunctionalPartite.EHN` systems. The selected part support is closed under
-actual function values by `System.weak_support_closed`, and
-`System.weakRestrict` is a genuine full substructure. Use
-`Structure.weakInduce` for arbitrary small weak tests, without taking
-a closure hull or importing the recursive U-closed graph construction.
-The already-verified U-closed n-pass theorem is a separate auxiliary
-graph-level route. The remaining target-side issue for a strict functional
-tree statement is closure of gluing roots and local completion maps.
+The positive-arity native EHN iteration with weak-substructure size control
+is fully verified as
+`Structure.inducedRamsey_directFunctionalWeakGraph` (merged #104, successful
+build and axiom audit on proof head
+`9bd2c03388a3c778b84a6f344b7464c32b8c9088`).
+
+Every stage carries genuine set-valued functions. The weak EHN projection
+makes the selected A-support function-closed, so the Hales--Jewett power and
+full free attachments proceed directly in the function language.
+The controlled local tree invariant is tested on arbitrary **weak**
+substructures, of at most n vertices, without enlarging tests to their
+function-closed hulls. One whole induced Ramsey pass raises the rank by one.
+The result preserves class membership, the full functional Ramsey arrow, and
+a weak EHN projection back to the original witness D.
+
+The older U-closed n-pass graph theorem remains a correct auxiliary route
+but is unnecessary for this iteration. U-closed relational stages belong to
+the separately checked recursive construction, which temporarily lacks the
+intended function-structure constraints.
+
+A strict **function-language target-tree** statement is a different open
+strengthening: graph tree witnesses may have non-closed gluing roots and local
+maps need not preserve the entire target function fibre.
 
 ## Remaining proof obligations
 
