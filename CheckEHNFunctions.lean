@@ -315,3 +315,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.actualPower_noSquareTarget
 
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.actualPower_no_fullStrictTreeHom
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.actualPower_no_fullTreeCompletion
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.actualPower_not_locallyStrictTreeCompletable
