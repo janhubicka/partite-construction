@@ -72,7 +72,13 @@ theorem noTwoStep_of_full_cover
         (L.func () (fun _ : Fin 1 => b)) := by
       rw [iL.map_func () (fun _ : Fin 1 => b)]
       rw [← hby] at hyz
-      simpa [Function.comp_def] using hyz
+      have harg :
+          (iL.toFun ∘ (fun _ : Fin 1 => b)) =
+            (fun _ : Fin 1 => iL b) := by
+        funext k
+        rfl
+      rw [harg]
+      exact hyz
     obtain ⟨c, hc, _⟩ := hz
     exact hL a b c hb hc
   · subst x
@@ -85,7 +91,13 @@ theorem noTwoStep_of_full_cover
         (R.func () (fun _ : Fin 1 => b)) := by
       rw [iR.map_func () (fun _ : Fin 1 => b)]
       rw [← hby] at hyz
-      simpa [Function.comp_def] using hyz
+      have harg :
+          (iR.toFun ∘ (fun _ : Fin 1 => b)) =
+            (fun _ : Fin 1 => iR b) := by
+        funext k
+        rfl
+      rw [harg]
+      exact hyz
     obtain ⟨c, hc, _⟩ := hz
     exact hR a b c hb hc
 
@@ -98,7 +110,9 @@ theorem fullTree_noTwoStep
   induction hTree with
   | copy e hsurj =>
       exact noTwoStep_of_full_cover base_noTwoStep base_noTwoStep
-        e e (fun z => Or.inl (hsurj z))
+        e e (fun z => Or.inl (by
+          obtain ⟨a, ha⟩ := hsurj z
+          exact ⟨a, ha.symm⟩))
   | @glue X Y Z W L R H T hL hR fL fR hcL hcR iL iR
       hfree ihL ihR =>
       exact noTwoStep_of_full_cover ihL ihR iL iR hfree.covers
