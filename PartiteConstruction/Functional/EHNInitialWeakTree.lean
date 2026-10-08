@@ -51,7 +51,7 @@ invariant and still represents every specified full B-placement. -/
 theorem initialList_weakGraphLocallyTreeLike
     (hK : Structure.FreeAmalgamationClass K)
     (A : Structure L U) [Finite U]
-    (B : Structure L V) [Finite V]
+    (B : Structure L V) [Finite V] [Finite P]
     (hmB : K B)
     (hA : A.graph.HereditarilyIrreducible)
     (eAB : Structure.Embedding A B)
