@@ -290,3 +290,4 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.LocallyClosedTreeCompletable.pullback_EHN_closedImage_of_domainReflection
 
 #print axioms StructuralRamsey.Structure.IsWeakHomomorphismEmbedding.weakImage
+#print axioms StructuralRamsey.Structure.WeakLocallyTreeCompletable.completion_of_small_weakImage
