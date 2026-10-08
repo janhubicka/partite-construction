@@ -185,6 +185,7 @@ import PartiteConstruction.Ramsey.FreeAmalgamationFunctionsAllArity
 import PartiteConstruction.Ramsey.ForbiddenFunctionsAllArity
 
 import PartiteConstruction.Functional.TreeTransferObstruction
+import PartiteConstruction.Functional.ClosedTestGraphTreeObstruction
 
 import PartiteConstruction.Functional.ClosedTreeAmalgam
 import PartiteConstruction.Functional.FunctionClosedLocalTree
