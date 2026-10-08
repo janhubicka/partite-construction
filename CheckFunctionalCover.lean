@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.ProjectedIrreducibleCover
+
+#print axioms StructuralRamsey.Structure.ProjectsIrreduciblesInto.precomp_weak
+#print axioms StructuralRamsey.Structure.ProjectsIrreduciblesInto.of_freeAmalgam
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.exists_EHN_projection
