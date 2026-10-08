@@ -27,6 +27,9 @@ universe u v
 and the three selected Y-parts. -/
 def Staircase (i j : Fin 3) : Prop := j.val ≤ i.val
 
+instance staircaseDecidable (i j : Fin 3) : Decidable (Staircase i j) :=
+  inferInstanceAs (Decidable (j.val ≤ i.val))
+
 /-- No induced/undirected 4-cycle among the two distinguished input roles.
 For the template with one binary-function hyperedge, this condition is
 satisfied by any full strict B-tree (the independent tree induction is
@@ -75,6 +78,9 @@ theorem staircase_noSquare_obstruction
 def TreeInputDomain (i j : Fin 2) : Prop :=
   i = 1 ∨ j = 0
 
+instance treeInputDomainDecidable (i j : Fin 2) : Decidable (TreeInputDomain i j) :=
+  inferInstanceAs (Decidable (i = 1 ∨ j = 0))
+
 /-- The three selected words 00, 01, 11 in each part of the second
 coordinatewise Hales--Jewett power. -/
 def SelectedWord (i : Fin 3) (k : Fin 2) : Fin 2 :=
@@ -84,6 +90,9 @@ def SelectedWord (i : Fin 3) (k : Fin 2) : Fin 2 :=
 exactly when it is defined in both old coordinates. -/
 def SelectedPowerDomain (i j : Fin 3) : Prop :=
   ∀ k : Fin 2, TreeInputDomain (SelectedWord i k) (SelectedWord j k)
+
+instance selectedPowerDomainDecidable (i j : Fin 3) : Decidable (SelectedPowerDomain i j) :=
+  inferInstanceAs (Decidable (∀ k : Fin 2, TreeInputDomain (SelectedWord i k) (SelectedWord j k)))
 
 /-- The computed second-power domain matrix is the staircase 100/110/111.
 Unlike a generated function closure, the tested image here has exactly
