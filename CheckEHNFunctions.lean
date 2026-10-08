@@ -322,5 +322,6 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.actualPower_not_locallyStrictTreeCompletable
 
 #print axioms StructuralRamsey.Structure.sparseningRamsey_functionalWeakGraph
+#print axioms StructuralRamsey.Structure.sparseningRamsey_functionalWeakGraph_inClass
 
 #print axioms StructuralRamsey.Structure.PublishedFunctionalProjectionObstruction.projection_not_full
