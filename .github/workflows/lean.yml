@@ -38,7 +38,7 @@ jobs:
       - name: Build all project modules
         run: |
           set -euo pipefail
-          mapfile -t targets < <(sed -n 's/^import //p' CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean | sort -u)
+          mapfile -t targets < <(sed -n 's/^import //p' CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean CheckPublishedSparsening.lean | sort -u)
           if ! lake build PartiteConstruction "${targets[@]}" > build.log 2>&1; then
             sed -n '/error:/,$p' build.log
             exit 1
@@ -48,10 +48,10 @@ jobs:
         run: |
           set -euo pipefail
           : > axioms.log
-          for source in CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean; do
+          for source in CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean CheckPublishedSparsening.lean; do
             if ! lake env lean "$source" >> axioms.log 2>&1; then
               tail -100 axioms.log
               exit 1
             fi
           done
-          python3 scripts/check_axioms.py axioms.log CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean
+          python3 scripts/check_axioms.py axioms.log CheckAxioms.lean CheckClosureAxioms.lean CheckEHNFunctions.lean CheckPublishedSparsening.lean
