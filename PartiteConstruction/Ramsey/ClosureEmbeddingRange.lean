@@ -36,20 +36,13 @@ theorem Embedding.range_isUSubstructure
   have hrange : ∀ i : Fin rule.rootSize, ∃ a : U,
       rootB i = e a := by
     intro i
-    exact hRootRange i ▸ hRootB i ▸
-      (hRootRange i)
+    rw [← hRootB i]
+    exact hRootRange i
   let rootA : Embedding rule.root A :=
-    rootB.factorThroughRange e (by
-      intro i
-      rw [← hRootB i]
-      exact hRootRange i)
+    rootB.factorThroughRange e hrange
   have hrootA (i : Fin rule.rootSize) :
       rootB i = e (rootA i) :=
-    Classical.choose_spec (by
-      have hz : rootB i ∈ Set.range e := by
-        rw [← hRootB i]
-        exact hRootRange i
-      exact hz)
+    Classical.choose_spec (hrange i)
   obtain ⟨tA,htA,_hUniqueA⟩ := (hA rule hrule).2 rootA
   have htB : B.rel rule.symbol (e ∘ tA) :=
     (e.map_rel_iff rule.symbol tA).mpr htA.1
@@ -58,9 +51,7 @@ theorem Embedding.range_isUSubstructure
     intro i
     change e (tA (i.castLE rule.rootLE)) = rootB i
     rw [htA.2 i]
-    exact (Classical.choose_spec (by
-      rw [← hRootB i]
-      exact hRootRange i)).symm
+    exact (hrootA i).symm
   obtain ⟨q,hq,hUniqueB⟩ := (hB rule hrule).2 rootB
   have htq : t = q := hUniqueB t ⟨ht,hRootB⟩
   have heq : (e ∘ tA) = q :=
