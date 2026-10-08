@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.EHNPictureWeakTree
 import PartiteConstruction.Functional.EHNWeakAttachmentStep
 import PartiteConstruction.Functional.EHNAttachmentGraphIso
 import PartiteConstruction.Functional.EHNRestrictionGraph
@@ -259,3 +260,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.Attachment.graphAttachmentIso
 
 #print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.attach_weakGraphLocallyTreeLike
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma_weakGraphLocallyTreeLike
