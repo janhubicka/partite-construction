@@ -5,8 +5,9 @@ import PartiteConstruction.Functional.EHNInvariantConstruction
 /-! # The published projected-coverage invariant for genuine functions
 
 Every irreducible of a picture projects into a B-copy in the original
-witness. The proof uses the native Hales--Jewett power and full closed
-support attachments, with the correct EHN weak global projection.
+witness. The core and attachment lemmas below use the actual native
+Hales--Jewett power and full closed supports. The initial picture and full
+pass, with arbitrary function arities, are in EHNProjectedCoverAllArity.
 -/
 
 namespace StructuralRamsey.FunctionalPartite.EHN
@@ -74,74 +75,5 @@ theorem pictureLemma_projectedCover
       (B.system.restrictedPart_spec alpha.toFunctionEmbedding (z.coord i0))
   · intro T S hS f hT
     exact T.attach_projectedCover hK Base B.system B.isPartite B.mem S hS f hT hB
-
-/-- The disjoint initial picture, retaining every placed B-copy. -/
-theorem initialList_projectedCover
-    (hK : Structure.FreeAmalgamationClass K)
-    (Base : Structure L V) [Finite V]
-    (hBase : K Base) (hpos : L.PositiveFuncArity)
-    (beta0 : Structure.Embedding Base D)
-    (xs : List (Structure.Embedding Base D)) :
-    ∃ T : Stage K D, T.ProjectedCover Base ∧
-      ∃ _root : Structure.Embedding Base T.system.toStructure,
-        ∀ beta ∈ xs, ∃ e : Structure.Embedding Base T.system.toStructure,
-          ∀ x, T.system.part (e x) = beta x := by
-  induction xs with
-  | nil =>
-    let T : Stage K D := {
-      Carrier := V
-      finiteCarrier := inferInstance
-      system := placed Base beta0
-      isPartite := placed_over Base beta0
-      mem := hBase
-    }
-    exact ⟨T, Structure.ProjectsIrreduciblesInto.base beta0,
-      Structure.Embedding.id Base, fun _ h => (List.not_mem_nil h).elim⟩
-  | cons beta xs ih =>
-    obtain ⟨T, hT, root, hcopies⟩ := ih
-    let B := placed Base beta
-    have hS : B.toStructure.IsClosed ∅ := empty_closed Base hpos
-    let f : FunctionalPartite.Embedding (B.induce ∅ hS) T.system := {
-      toEmbedding := root.comp (Structure.inclusion Base ∅ hS)
-      map_part := fun x => x.2.elim
-    }
-    let R := T.attach hK B (placed_over Base beta) hBase ∅ hS f
-    have hR : R.ProjectedCover Base :=
-      T.attach_projectedCover hK Base B (placed_over Base beta) hBase
-        ∅ hS f hT (Structure.ProjectsIrreduciblesInto.base beta)
-    let j : FunctionalPartite.Embedding T.system R.system :=
-      FunctionalPartite.Attachment.coreEmbedding
-        B ∅ hS T.system (fun _ : PUnit.{v+1} => f)
-    let b : FunctionalPartite.Embedding B R.system :=
-      FunctionalPartite.Attachment.copyEmbedding
-        B ∅ hS T.system (fun _ : PUnit.{v+1} => f) PUnit.unit
-    refine ⟨R, hR, j.toEmbedding.comp root, ?_⟩
-    intro gamma hgamma
-    rcases List.mem_cons.mp hgamma with rfl | hgamma
-    · exact ⟨b.toEmbedding, b.map_part⟩
-    · obtain ⟨e, he⟩ := hcopies gamma hgamma
-      exact ⟨j.toEmbedding.comp e, fun x => (j.map_part (e x)).trans (he x)⟩
-
-/-- One genuine-function Ramsey pass retains the projected-coverage
-conclusion required by the final-extension argument. -/
-theorem inducedConstruction_projectedCover
-    (hK : Structure.FreeAmalgamationClass K)
-    (A : Structure L U) (Base : Structure L V) (D : Structure L P)
-    [Finite U] [Finite V] [Finite P]
-    (hA : K A) (hBase : K Base) (hpos : L.PositiveFuncArity)
-    (κ : Type*) [Fintype κ] [Nonempty κ]
-    (hArrow : Structure.Arrow A Base D κ) :
-    ∃ T : Stage K D,
-      T.ProjectedCover Base ∧ Structure.Arrow A Base T.system.toStructure κ := by
-  classical
-  apply inducedConstruction_preserving A Base D κ hArrow
-    (fun T => T.ProjectedCover Base)
-  · intro beta0
-    letI : Fintype (Structure.Embedding Base D) := Fintype.ofFinite _
-    obtain ⟨T, hT, _root, hcopies⟩ :=
-      initialList_projectedCover hK Base hBase hpos beta0 Finset.univ.toList
-    exact ⟨T, hT, fun beta => hcopies beta (by simp)⟩
-  · intro T alpha hT
-    exact pictureLemma_projectedCover hK A hA Base T hT alpha κ
 
 end StructuralRamsey.FunctionalPartite.EHN
