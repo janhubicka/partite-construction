@@ -44,28 +44,38 @@ def firstCopy : Embedding toyBase firstStage where
   injective := by decide
   map_rel_iff := by
     intro R x
-    fin_cases R <;> fin_cases (x (0 : Fin 1)) <;> decide
+    letI : Fintype toyLanguage.RelSymbol := (inferInstance : Fintype (Fin 3))
+    fin_cases R
+    all_goals
+      generalize h : x (0 : Fin 1) = a
+      fin_cases a <;> decide
   map_func := by
     intro F x
     ext y
-    fin_cases (x (0 : Fin 2)) <;>
-      fin_cases (x (1 : Fin 2)) <;> fin_cases y <;> decide
+    generalize h₀ : x (0 : Fin 2) = a
+    generalize h₁ : x (1 : Fin 2) = b
+    fin_cases a <;> fin_cases b <;> fin_cases y <;> decide
 
 def secondCopy : Embedding toyBase firstStage where
   toFun := fun i => if i = 0 then 1 else if i = 1 then 2 else 4
   injective := by decide
   map_rel_iff := by
     intro R x
-    fin_cases R <;> fin_cases (x (0 : Fin 1)) <;> decide
+    letI : Fintype toyLanguage.RelSymbol := (inferInstance : Fintype (Fin 3))
+    fin_cases R
+    all_goals
+      generalize h : x (0 : Fin 1) = a
+      fin_cases a <;> decide
   map_func := by
     intro F x
     ext y
-    fin_cases (x (0 : Fin 2)) <;>
-      fin_cases (x (1 : Fin 2)) <;> fin_cases y <;> decide
+    generalize h₀ : x (0 : Fin 2) = a
+    generalize h₁ : x (1 : Fin 2) = b
+    fin_cases a <;> fin_cases b <;> fin_cases y <;> decide
 
 /-- The Y-vertex singleton has no defined binary function values. -/
 def yRoot : Structure toyLanguage Unit where
-  rel R _ := R = 1
+  rel R _ := R = (1 : Fin 3)
   func _ _ := ∅
 
 def yRootBase : Embedding yRoot toyBase where
@@ -73,11 +83,13 @@ def yRootBase : Embedding yRoot toyBase where
   injective := fun _ _ _ => Subsingleton.elim _ _
   map_rel_iff := by
     intro R x
-    fin_cases R <;> decide
+    change (1 : Fin 3) = R ↔ R = (1 : Fin 3)
+    exact eq_comm
   map_func := by
     intro F x
     ext y
-    change False ↔ False
+    change (∃ z : Unit, False ∧ (1 : Fin 3) = y) ↔
+      ((1 : Fin 3) = 0 ∧ (1 : Fin 3) = 1 ∧ y = 2)
     simp
 
 /-- The three-vertex base is irreducible in the full function language. -/
@@ -86,7 +98,8 @@ theorem toyBase_irreducible : toyBase.Irreducible := by
   intro a b hab
   refine ⟨.inr (), (fun i : Fin 3 => i), a, b, ?_, rfl, rfl⟩
   change (2 : Fin 3) ∈ toyBase.func () ![0, 1]
-  decide
+  change (0 : Fin 3) = 0 ∧ (1 : Fin 3) = 1 ∧ (2 : Fin 3) = 2
+  exact ⟨rfl, rfl, rfl⟩
 
 theorem yRootBase_contained :
     yRootBase.ContainedInIrreducible := by
@@ -104,11 +117,15 @@ theorem firstStage_free :
   · intro a b
     fin_cases a <;> fin_cases b <;> decide
   · intro R x
-    fin_cases R <;> fin_cases (x (0 : Fin 1)) <;> decide
+    letI : Fintype toyLanguage.RelSymbol := (inferInstance : Fintype (Fin 3))
+    fin_cases R
+    all_goals
+      generalize h : x (0 : Fin 1) = a
+      fin_cases a <;> decide
   · intro F x y
-    fin_cases (x (0 : Fin 2)) <;>
-      fin_cases (x (1 : Fin 2)) <;>
-        fin_cases y <;> decide
+    generalize h₀ : x (0 : Fin 2) = a
+    generalize h₁ : x (1 : Fin 2) = b
+    fin_cases a <;> fin_cases b <;> fin_cases y <;> decide
 
 theorem firstStage_strictTree :
     TreeAmalgam toyBase (Fin 5) firstStage := by
