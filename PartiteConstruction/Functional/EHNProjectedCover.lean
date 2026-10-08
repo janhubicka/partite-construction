@@ -4,10 +4,9 @@ import PartiteConstruction.Functional.EHNInvariantConstruction
 
 /-! # The published projected-coverage invariant for genuine functions
 
-The original induced construction promises that every irreducible of a
-picture projects into a B-copy in the original witness. We retain that
-assertion with the correct EHN weak projection, using the actual native
-Hales--Jewett power and full closed-support free attachments.
+Every irreducible of a picture projects into a B-copy in the original
+witness. The proof uses the native Hales--Jewett power and full closed
+support attachments, with the correct EHN weak global projection.
 -/
 
 namespace StructuralRamsey.FunctionalPartite.EHN
@@ -17,12 +16,11 @@ universe u v
 variable {L : Language.{u}} {U V W P : Type v}
 variable {K : Structure.StructureClass (L := L)} {D : Structure L P}
 
-/-- The intermediate projected-copy invariant, not yet final extension
-inside the current picture. -/
+/-- Intermediate projected coverage, not final extension inside the picture. -/
 def Stage.ProjectedCover (Base : Structure L V) (T : Stage K D) : Prop :=
   Structure.ProjectsIrreduciblesInto Base T.system.toStructure D T.system.part
 
-/-- A binary native attachment preserves projected irreducible coverage. -/
+/-- Binary native attachments preserve projected irreducible coverage. -/
 theorem Stage.attach_projectedCover
     (hK : Structure.FreeAmalgamationClass K)
     (Base : Structure L V) (T : Stage K D)
@@ -42,8 +40,8 @@ theorem Stage.attach_projectedCover
     exact FunctionalPartite.Attachment.part_copyMap
       B S hS T.system (fun _ : PUnit.{v+1} => f) PUnit.unit x
 
-/-- Projected coverage of the exact coordinatewise core follows by taking
-one weak coordinate and localizing its irreducible image in the old picture. -/
+/-- One weak coordinate localizes every full irreducible of the exact
+power core to an irreducible hull in the old picture. -/
 theorem pictureLemma_projectedCover
     (hK : Structure.FreeAmalgamationClass K)
     (A : Structure L U) [Finite U] (hA : K A)
@@ -64,7 +62,10 @@ theorem pictureLemma_projectedCover
     have hR : Structure.ProjectsIrreduciblesInto Base R.toStructure D
         (B.system.part ∘ inc) := hB.precomp_weak inc.isWeakHomomorphism
     let i0 : Fin N := ⟨0, hN⟩
-    have hPower := hR.precomp_weak (Induced.coordinateWeak (B := R) i0)
+    have hPower : Structure.ProjectsIrreduciblesInto Base
+        (Induced.power R N).toStructure D
+        ((B.system.part ∘ inc) ∘ (fun z => z.coord i0)) :=
+      hR.precomp_weak (Induced.coordinateWeak (B := R) i0)
     change Structure.ProjectsIrreduciblesInto Base
       (Induced.power R N).toStructure D (fun z => alpha z.part)
     apply hPower.congr
@@ -74,7 +75,7 @@ theorem pictureLemma_projectedCover
   · intro T S hS f hT
     exact T.attach_projectedCover hK Base B.system B.isPartite B.mem S hS f hT hB
 
-/-- The disjoint initial picture, carrying the actual projected B-copies. -/
+/-- The disjoint initial picture, retaining every placed B-copy. -/
 theorem initialList_projectedCover
     (hK : Structure.FreeAmalgamationClass K)
     (Base : Structure L V) [Finite V]
@@ -82,7 +83,7 @@ theorem initialList_projectedCover
     (beta0 : Structure.Embedding Base D)
     (xs : List (Structure.Embedding Base D)) :
     ∃ T : Stage K D, T.ProjectedCover Base ∧
-      ∃ root : Structure.Embedding Base T.system.toStructure,
+      ∃ _root : Structure.Embedding Base T.system.toStructure,
         ∀ beta ∈ xs, ∃ e : Structure.Embedding Base T.system.toStructure,
           ∀ x, T.system.part (e x) = beta x := by
   induction xs with
@@ -121,8 +122,8 @@ theorem initialList_projectedCover
     · obtain ⟨e, he⟩ := hcopies gamma hgamma
       exact ⟨j.toEmbedding.comp e, fun x => (j.map_part (e x)).trans (he x)⟩
 
-/-- One genuine-function induced pass, retaining the projected-coverage
-conclusion required by the published final-extension argument. -/
+/-- One genuine-function Ramsey pass retains the projected-coverage
+conclusion required by the final-extension argument. -/
 theorem inducedConstruction_projectedCover
     (hK : Structure.FreeAmalgamationClass K)
     (A : Structure L U) (Base : Structure L V) (D : Structure L P)
