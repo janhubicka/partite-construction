@@ -16,8 +16,38 @@ replace a weak image by its generated closure. -/
 
 namespace StructuralRamsey.RelStructure
 
-universe u v
+universe u v w
 variable {L : RelLanguage.{u}} {U V : Type v}
+
+/-- Factor an embedding through the closed range of another embedding,
+allowing the source root to live in a different universe. This is
+necessary for arbitrary finite root carriers `Fin n : Type 0` when
+ambient structures live in `Type v`. -/
+noncomputable def Embedding.factorThroughRangeHeterogeneous
+    {X : Type w} {Root : RelStructure L X}
+    {A : RelStructure L U} {B : RelStructure L V}
+    (e : Embedding Root B) (i : Embedding A B)
+    (h : ∀ x : X, ∃ a : U, e x = i a) :
+    Embedding Root A where
+  toFun := fun x => Classical.choose (h x)
+  injective := by
+    intro x y hxy
+    apply e.injective
+    calc
+      e x = i (Classical.choose (h x)) := Classical.choose_spec (h x)
+      _ = i (Classical.choose (h y)) := congrArg i hxy
+      _ = e y := (Classical.choose_spec (h y)).symm
+  map_rel_iff := by
+    intro R xs
+    let q : X → U := fun x => Classical.choose (h x)
+    have heq : i ∘ (q ∘ xs) = e ∘ xs := by
+      funext k
+      exact (Classical.choose_spec (h (xs k))).symm
+    calc
+      A.rel R (q ∘ xs) ↔ B.rel R (i ∘ (q ∘ xs)) :=
+        (i.map_rel_iff R (q ∘ xs)).symm
+      _ ↔ B.rel R (e ∘ xs) := by rw [heq]
+      _ ↔ Root.rel R xs := e.map_rel_iff R xs
 
 /-- The image of a full embedding between U-closed relational
 structures is a vertex-exact U-substructure. The proof only uses
@@ -36,10 +66,10 @@ theorem Embedding.range_isUSubstructure
   have hrange : ∀ i : Fin rule.rootSize, ∃ a : U,
       rootB i = e a := by
     intro i
-    rw [← hRootB i]
-    exact hRootRange i
+    obtain ⟨a,ha⟩ := hRootRange i
+    exact ⟨a, (hRootB i).symm.trans ha.symm⟩
   let rootA : Embedding rule.root A :=
-    rootB.factorThroughRange e hrange
+    rootB.factorThroughRangeHeterogeneous e hrange
   have hrootA (i : Fin rule.rootSize) :
       rootB i = e (rootA i) :=
     Classical.choose_spec (hrange i)
