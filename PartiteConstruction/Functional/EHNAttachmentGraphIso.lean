@@ -67,20 +67,23 @@ noncomputable def graphAttachmentIso
             ⟨i, a, b, hb, ha, hout⟩
           · refine Or.inl ⟨Structure.funcTuple a b, ?_, ?_⟩
             · exact (Structure.graph_func_snoc D F a b).mpr hb
-            · have hargs :
+            · let core : W → RelStructure.Attachment.Vertex S (W := W) (I := I) :=
+                Sum.inl
+              have hargs :
                   (fun k : Fin (L.funcArity F) => z k.castSucc) =
-                    Sum.inl ∘ a := by
+                    core ∘ a := by
                 funext k
                 exact congrFun ha k
-              calc
-                z = Structure.funcTuple
-                      (fun k : Fin (L.funcArity F) => z k.castSucc)
-                      (z (Fin.last (L.funcArity F))) :=
-                  (Structure.funcTuple_eta z).symm
-                _ = Structure.funcTuple (Sum.inl ∘ a) (Sum.inl b) := by
-                  rw [hargs, hout]
-                _ = Sum.inl ∘ Structure.funcTuple a b :=
-                  (Structure.comp_funcTuple Sum.inl a b).symm
+              have hmid :
+                  Structure.funcTuple
+                    (fun k : Fin (L.funcArity F) => z k.castSucc)
+                    (z (Fin.last (L.funcArity F))) =
+                  Structure.funcTuple (core ∘ a) (core b) := by
+                rw [hargs, hout]
+              have hend : Structure.funcTuple (core ∘ a) (core b) =
+                  core ∘ Structure.funcTuple a b :=
+                (Structure.comp_funcTuple core a b).symm
+              exact (Structure.funcTuple_eta z).symm.trans (hmid.trans hend)
           · refine Or.inr ⟨i, Structure.funcTuple a b, ?_, ?_⟩
             · exact (Structure.graph_func_snoc B F a b).mpr hb
             · let q : V → RelStructure.Attachment.Vertex S (W := W) (I := I) :=
@@ -94,15 +97,16 @@ noncomputable def graphAttachmentIso
                   (copyMap_graph_eq B S hS D f i (a k))
               have hout' : z (Fin.last (L.funcArity F)) = q b :=
                 hout.trans (copyMap_graph_eq B S hS D f i b)
-              calc
-                z = Structure.funcTuple
-                      (fun k : Fin (L.funcArity F) => z k.castSucc)
-                      (z (Fin.last (L.funcArity F))) :=
-                  (Structure.funcTuple_eta z).symm
-                _ = Structure.funcTuple (q ∘ a) (q b) := by
-                  rw [hargs, hout']
-                _ = q ∘ Structure.funcTuple a b :=
-                  (Structure.comp_funcTuple q a b).symm
+              have hmid :
+                  Structure.funcTuple
+                    (fun k : Fin (L.funcArity F) => z k.castSucc)
+                    (z (Fin.last (L.funcArity F))) =
+                  Structure.funcTuple (q ∘ a) (q b) := by
+                rw [hargs, hout']
+              have hend : Structure.funcTuple (q ∘ a) (q b) =
+                  q ∘ Structure.funcTuple a b :=
+                (Structure.comp_funcTuple q a b).symm
+              exact (Structure.funcTuple_eta z).symm.trans (hmid.trans hend)
         · intro hz
           rcases hz with ⟨t, ht, heq⟩ | ⟨i, t, ht, heq⟩
           · have ht' : t (Fin.last (L.funcArity F)) ∈
