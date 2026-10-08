@@ -333,3 +333,6 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.firstStage_strictTree
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.firstStage_projection
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.oldStage_strictTree
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.oldStage_projection
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.actualPower_weaklyPartiteOver
