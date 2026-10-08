@@ -40,9 +40,9 @@ theorem relationTuple_range_irreducible
     rw [ht]
     exact h
   · apply Subtype.ext
-    exact hi.symm
+    exact hi
   · apply Subtype.ext
-    exact hj.symm
+    exact hj
 
 /-- Preserving all B-copies of a strict B-tree also preserves any
 embedded *irreducible* structure. -/
@@ -96,7 +96,9 @@ theorem CopywiseCompletion.toHomomorphismEmbedding_of_strictTree
       fun i => ⟨xs i,⟨i,rfl⟩⟩
     have hSource : (T.induce S).rel R args := by
       change T.rel R (Subtype.val ∘ args)
-      simpa only [Function.comp_apply] using hx
+      have ht : Subtype.val ∘ args = xs := rfl
+      rw [ht]
+      exact hx
     have hTarget : Target.rel R (g ∘ args) :=
       (g.map_rel_iff R args).mpr hSource
     have hargs : g ∘ args = f ∘ xs := by
