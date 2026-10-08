@@ -233,6 +233,7 @@ import PartiteConstruction.Functional.FibreExactness
 import PartiteConstruction.Functional.EHNFibreBijective
 import PartiteConstruction.Functional.NativePowerStaircase
 import PartiteConstruction.Functional.NoSquareFreeGluing
+import PartiteConstruction.Functional.NativePowerTreeSquare
 import PartiteConstruction.Functional.QuotientBoundaryDomainObstruction
 import PartiteConstruction.Functional.ProjectedClosedTreePullback
 import PartiteConstruction.Functional.EHNTestDecompose
