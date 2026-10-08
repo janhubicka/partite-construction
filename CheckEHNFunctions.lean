@@ -259,3 +259,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.Attachment.graphAttachmentIso
 
 #print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.attachGraphIso
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma_preservingSupport
