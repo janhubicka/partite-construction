@@ -12,6 +12,7 @@ import PartiteConstruction.Functional.EHNProjectionGraphBridge
 import PartiteConstruction.Functional.EHNFibreBijective
 import PartiteConstruction.Functional.NativePowerStaircase
 import PartiteConstruction.Functional.NoSquareFreeGluing
+import PartiteConstruction.Functional.NativePowerTreeSquare
 import PartiteConstruction.Functional.QuotientBoundaryDomainObstruction
 import PartiteConstruction.Functional.ProjectedWeakImage
 import PartiteConstruction.Functional.DirectWeakIteration
@@ -305,3 +306,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.staircase_noSquare_obstruction
 
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.squareFree_of_freeUnion
+
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.strictTree_squareFree
