@@ -1,4 +1,5 @@
 import PartiteConstruction.Ramsey.ClosureWeakTestIntrinsicObstruction
+import PartiteConstruction.Relational.FreeAmalgamationClass
 
 /-! # A non-vacuity obstruction in the literal 2019 local-finiteness axiom
 
