@@ -1,3 +1,5 @@
+import PartiteConstruction.Ramsey.ClosureHomomorphicImageHull
+import PartiteConstruction.Ramsey.ClosurePowerProtected
 import PartiteConstruction.Ramsey.ClosureLocalFinitenessNoGo2019
 import PartiteConstruction.Ramsey.ClosureFiniteSeedObstruction
 import PartiteConstruction.Ramsey.ClosurePowerIrreducibleSeed
@@ -173,3 +175,8 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.RelStructure.IsUClosed.exists_nonclosed_Uirreducible_test
 #print axioms StructuralRamsey.RelStructure.not_all_intrinsic_Uirred_tests_in_closed_class
+
+#print axioms StructuralRamsey.RelStructure.IsUClosed.uIrreducible_of_homomorphic_generators
+#print axioms StructuralRamsey.RelStructure.IsUClosed.homomorphic_image_hull_isUIrreducible
+#print axioms StructuralRamsey.Partite.Induced.part_embedding_on_closed_uIrreducible_test
+#print axioms StructuralRamsey.Partite.Induced.power_part_protected
