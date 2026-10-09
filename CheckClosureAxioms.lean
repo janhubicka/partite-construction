@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureProjectedCompletion
 import PartiteConstruction.Ramsey.ClosureProjectedBoundary
 import PartiteConstruction.Ramsey.CompatibleClassCompletion
 import PartiteConstruction.Ramsey.CopywiseRamseyTransfer
@@ -9,7 +10,7 @@ import PartiteConstruction.Functional.HalfClosedTheorem
 import PartiteConstruction.Functional.QuotientFibreObstruction
 import PartiteConstruction.Functional.GeneratedRootedWitness
 import PartiteConstruction.Functional.HistoryRootedWitness
-import PartiteConstruction.Functional.HistoryIrreducibleRootGlue
+import PartiteConstruction.Functional.IrreducibleRootGlue
 import PartiteConstruction.Functional.TreeExtensionWitness
 import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
@@ -63,3 +64,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.closedHull_in_class_of_subset_copy
 #print axioms StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.common_boundary_embeddings
 #print axioms StructuralRamsey.RelStructure.HasCopywiseCompletion.of_independent_projected_completions
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closed_test_factor
+#print axioms StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.fold_free
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_independent_projected_completions
