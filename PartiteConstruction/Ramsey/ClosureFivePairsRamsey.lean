@@ -49,7 +49,7 @@ private def outputCopy (i : Fin 5) : Embedding One FivePairs where
       decide
     | true =>
       change (true = false ∧ true = true ∧ i = i) ↔ False
-      decide
+      simp
 
 /-- A finite combinatorial statement independent of the structures:
 any Boolean labelling of five points has three pairwise distinct
@@ -85,8 +85,8 @@ private def placedFour (i j k : Fin 5)
       change
         (placedVertex i j k (x (0 : Fin 1))).2 = false ↔
         x (0 : Fin 1) = 0
-      fin_cases hx : x (0 : Fin 1) <;>
-        simp [hx, placedVertex]
+      fin_cases (x (0 : Fin 1)) <;>
+        simp [placedVertex]
     | true =>
       change
         ((placedVertex i j k (x (0 : Fin 2))).2 = false ∧
@@ -94,9 +94,9 @@ private def placedFour (i j k : Fin 5)
          (placedVertex i j k (x (0 : Fin 2))).1 =
            (placedVertex i j k (x (1 : Fin 2))).1) ↔
         (x (0 : Fin 2) = 0 ∧ x (1 : Fin 2) = 1)
-      fin_cases hx : x (0 : Fin 2) <;>
-        fin_cases hy : x (1 : Fin 2) <;>
-        simp_all [placedVertex]
+      fin_cases (x (0 : Fin 2)) <;>
+        fin_cases (x (1 : Fin 2)) <;>
+        simp_all [placedVertex, hij, hik, hjk]
 
 private theorem oneNonRoot (e : Embedding One Four) :
     e 0 ≠ 0 := by
@@ -119,13 +119,13 @@ private theorem placedOneCopy
     ((placedFour i j k hij hik hjk).comp e =
       outputCopy k) := by
   have hne := oneNonRoot e
-  fin_cases h : e 0
-  · exact False.elim (hne h)
+  fin_cases (e 0)
+  · exact False.elim (hne rfl)
   · left
     apply Embedding.ext
     intro a
     fin_cases a
-    simp [placedFour, placedVertex, outputCopy, h]
+    simp [placedFour, placedVertex, outputCopy]
   · right
     left
     apply Embedding.ext
@@ -220,13 +220,19 @@ theorem fivePairs_isUClosed : IsUClosed rules FivePairs := by
     · intro s hs
       funext k
       fin_cases k
-      · exact hs.2 (0 : Fin 1)
+      · have hsroot : s 0 = e 0 := hs.2 (0 : Fin 1)
+        have he0 : t 0 = e 0 := by
+          change (i, false) = e 0
+          apply Prod.ext
+          · rfl
+          · exact hp.symm
+        exact hsroot.trans he0.symm
       · have hsroot : s 0 = e 0 := hs.2 (0 : Fin 1)
         have hsR : (s 0).2 = false ∧
             (s 1).2 = true ∧ (s 0).1 = (s 1).1 := hs.1
         apply Prod.ext
         · change (s 1).1 = i
-          exact hsR.2.2.symm.trans (congrArg Prod.fst hsroot).symm
+          exact hsR.2.2.symm.trans (congrArg Prod.fst hsroot)
         · exact hsR.2.1
 
 /-- The A-copies, being U-closed, are all U-substructures of this
