@@ -109,7 +109,8 @@ theorem IsUClosed.homomorphic_image_hull_isUIrreducible
   have hGen : IsUGenerating rules (Target.induce T) (Set.range g) := by
     rw [hRange]
     exact UClosureHull_induce_generated rules Target S
+  intro H E F Root Left Right sL sR iL iR hLeft hRight hFree
   exact (hTarget.induce_UClosureHull S).uIrreducible_of_homomorphic_generators
-    hSource hIrred hg hGen
+    hSource hIrred hg hGen hLeft hRight hFree
 
 end StructuralRamsey.RelStructure
