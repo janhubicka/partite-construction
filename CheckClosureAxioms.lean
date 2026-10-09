@@ -1,3 +1,7 @@
+import PartiteConstruction.Ramsey.ClosureNativePicture
+import PartiteConstruction.Ramsey.ClosurePartitePower
+import PartiteConstruction.Ramsey.ClosureAttachmentClosed
+import PartiteConstruction.Ramsey.ClosureRootCover
 import PartiteConstruction.Ramsey.ClosurePictureCoordinate
 import PartiteConstruction.Ramsey.ClosureAttachmentSubhistory
 import PartiteConstruction.Ramsey.ClosurePictureRetraction
@@ -128,3 +132,16 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.Partite.Induced.coordinate_lineMap_parameter
 #print axioms StructuralRamsey.Partite.Induced.completion_of_common_generator_coordinate
 #print axioms StructuralRamsey.Partite.Induced.no_monochromatic_line_with_fixed_parameter
+
+#print axioms StructuralRamsey.RelStructure.isUClosed_of_closed_root_cover
+#print axioms StructuralRamsey.RelStructure.Attachment.core_mem_copy_range_iff
+#print axioms StructuralRamsey.RelStructure.Attachment.core_range_isUSubstructure
+#print axioms StructuralRamsey.RelStructure.Attachment.copy_range_isUSubstructure
+#print axioms StructuralRamsey.RelStructure.Attachment.attach_isUClosed
+#print axioms StructuralRamsey.Partite.Induced.coordinate_isHomomorphismEmbedding
+#print axioms StructuralRamsey.Partite.Induced.power_isUClosed
+#print axioms StructuralRamsey.Partite.Induced.support_isUSubstructure_of_closed_part_copy
+#print axioms StructuralRamsey.Partite.Induced.picture_build_power_isUClosed
+#print axioms StructuralRamsey.Partite.Induced.pictureLemma_isUClosed
+#print axioms StructuralRamsey.Partite.Induced.line_attachment_isUClosed
+#print axioms StructuralRamsey.Partite.Induced.completion_of_common_coordinate_from_closed_pieces
