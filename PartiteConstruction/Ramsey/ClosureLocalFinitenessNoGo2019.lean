@@ -53,8 +53,8 @@ theorem IsUClosed.exists_nonclosed_Uirreducible_test
     have hsu : s = u := hUnique s ⟨hs, hsRoot⟩
     have hst : s = t := hsu.trans htu.symm
     refine ⟨j, ?_⟩
-    change s j = t j
-    exact congrFun hst j
+    intro hne
+    exact hne (congrFun hst j)
   have hIrred : IsUIrreducible rules (C.induce S) :=
     IsUIrreducible.of_missing_tuple_in_weak_test
       rule hrule e S hRoot hMissing
