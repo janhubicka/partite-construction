@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureProtectedPictureLemma
 import PartiteConstruction.Ramsey.ClosureHomomorphicImageHull
 import PartiteConstruction.Ramsey.ClosurePowerProtected
 import PartiteConstruction.Ramsey.ClosureLocalFinitenessNoGo2019
@@ -180,3 +181,4 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.IsUClosed.homomorphic_image_hull_isUIrreducible
 #print axioms StructuralRamsey.Partite.Induced.part_embedding_on_closed_uIrreducible_test
 #print axioms StructuralRamsey.Partite.Induced.power_part_protected
+#print axioms StructuralRamsey.Partite.Induced.pictureLemma_protected
