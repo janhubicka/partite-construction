@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureUIrreducibleFreeAmalgam
 import PartiteConstruction.Ramsey.ClosureUIrreducible2019
 import PartiteConstruction.Functional.ClosedTestGraphTreeObstruction
 import PartiteConstruction.Functional.ProjectedClosedTreePullback
@@ -471,3 +472,9 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.IsUHomomorphismEmbedding.embeddingOnUSubstructure
 #print axioms StructuralRamsey.RelStructure.Embedding.isUHomomorphismEmbedding
 #print axioms StructuralRamsey.RelStructure.IsStrongUCompletion.isUCompletion
+
+#print axioms StructuralRamsey.RelStructure.IsUSubstructure.preimage_embedding
+#print axioms StructuralRamsey.RelStructure.IsUSubstructure.inter
+#print axioms StructuralRamsey.RelStructure.IsUClosed.induce_preimage_embedding
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.uIrreducible_side
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.mixed_not_uIrreducible
