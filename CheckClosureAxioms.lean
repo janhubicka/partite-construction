@@ -1,3 +1,5 @@
+import PartiteConstruction.Ramsey.ClosureAttachmentFold
+import PartiteConstruction.Ramsey.ClosureClosedCover
 import PartiteConstruction.Ramsey.ClosureRelativeGeneratorDrop
 import PartiteConstruction.Ramsey.ClosureRankOneBase
 import PartiteConstruction.Ramsey.ClosureIrreducibleHulls
@@ -105,3 +107,9 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.left_generator_drop_over_root
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.right_generator_drop_over_root
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.both_generator_budgets_over_root
+
+#print axioms StructuralRamsey.RelStructure.IsUIrreducible.closed_cover
+#print axioms StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.of_comp_homomorphisms
+#print axioms StructuralRamsey.RelStructure.Attachment.rest_isUSubstructure
+#print axioms StructuralRamsey.RelStructure.Attachment.closed_test_core_or_copy
+#print axioms StructuralRamsey.RelStructure.Attachment.fold_isClosedUHomomorphismEmbedding
