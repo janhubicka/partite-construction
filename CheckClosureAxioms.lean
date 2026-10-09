@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureDescription2019
 import PartiteConstruction.Functional.FreeAmalgamClosed
 import PartiteConstruction.Functional.FunctionClosedLocalTree
 import PartiteConstruction.Functional.HalfClosedTheorem
@@ -32,3 +33,5 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.FunctionClosedLocallyTreeCompletable.toFunctional
 #print axioms StructuralRamsey.RelStructure.FunctionClosedLocallyTreeCompletable.of_treeAmalgam
 #print axioms StructuralRamsey.RelStructure.FunctionClosedHasTreeCompletion.of_closedEmbedding
+
+#print axioms StructuralRamsey.RelStructure.ClosureRule.rootLE
