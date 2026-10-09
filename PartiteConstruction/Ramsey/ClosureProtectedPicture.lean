@@ -116,6 +116,11 @@ theorem picture_build_isClosedPartiteOver
   have hFold := RelStructure.Attachment.fold_isClosedUHomomorphismEmbedding
     B.toRelStructure S (E.relabel af).toRelStructure maps
     hB hSupport hWhole D pCore pCopy hCore (fun _ => hBPart) hCompat
+  have hMapEq : (RelStructure.Attachment.fold pCore pCopy) =
+      (Picture.build B alpha.toFunctionEmbedding E).part := by
+    funext z
+    cases z <;> rfl
+  rw [← hMapEq]
   exact hFold
 
 /-- Protected tests in the real closed Picture are covered by the old B,
