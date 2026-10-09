@@ -71,6 +71,7 @@ import PartiteConstruction.Ramsey.ClosureDescription2019
 import PartiteConstruction.Ramsey.ClosureEmbeddingRange
 import PartiteConstruction.Ramsey.ClosureFreeAmalgam
 import PartiteConstruction.Ramsey.ClosureFreeAmalgamCompletion
+import PartiteConstruction.Ramsey.ClosureSemiClosed2019
 import PartiteConstruction.Ramsey.CopywiseFreeFold
 import PartiteConstruction.Ramsey.StrongAmalgamationTreeCompletion
 import PartiteConstruction.Ramsey.CopywiseTreeHomomorphism
@@ -446,3 +447,11 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closureTuple_inLeft_of_root_inLeft
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closureTuple_existsUnique_left
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.isUClosed
+
+#print axioms StructuralRamsey.RelStructure.ClosureRule.IsClosed.isSemiClosed
+#print axioms StructuralRamsey.RelStructure.ClosureRule.IsSemiClosed.induce
+#print axioms StructuralRamsey.RelStructure.ClosureRule.IsSemiClosed.isClosed_of_exists
+#print axioms StructuralRamsey.RelStructure.IsUClosed.isUSemiClosed
+#print axioms StructuralRamsey.RelStructure.IsUSemiClosed.induce
+#print axioms StructuralRamsey.RelStructure.IsUClosed.induce_isUSemiClosed
+#print axioms StructuralRamsey.RelStructure.IsUSemiClosed.isUClosed_of_exists
