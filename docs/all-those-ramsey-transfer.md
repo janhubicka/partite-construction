@@ -162,6 +162,41 @@ induced subsets localize.
 These facts were compared with the publisher's Definition 2.15:
 https://www.sciencedirect.com/science/article/pii/S0001870819304098
 
+### Relative U-substructures in arbitrary weak tests (9 October)
+
+The published Definition 2.22 distinguishes a **U-substructure of B**
+(closure tuples of B rooted in it do not leave it) from a structure
+that is intrinsically U-closed.  These conditions agree for
+substructures of a U-closed ambient structure by Lemma 2.23(1), but
+can differ for an arbitrary nonclosed weak induced test.
+
+The two candidate notions of U-irreducibility therefore need an
+explicit semantic comparison:
+
+- `IsUIrreducible` (PR #149) prohibits free decompositions whose
+  two sides are *intrinsically U-closed*.
+- `IsURelativelyIrreducible` (PR #155) prohibits free decompositions
+  into two proper *U-substructures of the tested structure*, in the
+  relative sense of Definition 2.22.
+
+The relative version has the useful weak-test theorem
+`IsFreeAmalgam.uRelativeIrreducible_weak_side`. It applies to **every**
+induced vertex set in a free amalgam of U-semi-closed structures
+over a U-closed common root, with no assumption that the tested set
+or its projected image is U-closed. It relies on the verified
+relative side-range lemmas from PR #154 and the exact weak-amalgam
+restriction from PR #150.
+
+**TODO (definitional fidelity):** Determine whether the printed
+phrase "proper U-closed substructures" in Definition 2.15 means
+intrinsically U-closed structures or subsets closed relative to the
+ambient structure. Do not silently identify the two, and do not
+use the new weak-test theorem to claim Lemma 2.28 or 2.31 complete.
+For a U-closed ambient structure, prove the equivalence of the two
+notions to make either interpretation safe in the partite induction.
+The lemma has to be Lean-checked and must be reviewed against the
+source before this TODO can be closed.
+
 ## Gaps to obtain exactly Theorem 2.18
 
 1. **Closure description (PARTLY COMPLETED)**: the general relational
