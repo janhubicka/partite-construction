@@ -1,4 +1,5 @@
 import PartiteConstruction.Ramsey.ClosureEmbeddedSourceClosed
+import PartiteConstruction.Ramsey.ClosureUSize2019
 import PartiteConstruction.Ramsey.ClosureUIrreducibleEquivalence
 import PartiteConstruction.Ramsey.ClosureRelativeIrreducibleWeakTest
 import PartiteConstruction.Ramsey.ClosureRelativeSideRange
@@ -501,3 +502,15 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.RelStructure.IsUIrreducible.of_missing_closureTuple
 #print axioms StructuralRamsey.RelStructure.IsUClosed.uIrreducible_iff_relative
+
+#print axioms StructuralRamsey.RelStructure.subset_UClosureHull
+#print axioms StructuralRamsey.RelStructure.UClosureHull_isUSubstructure
+#print axioms StructuralRamsey.RelStructure.UClosureHull_minimal
+#print axioms StructuralRamsey.RelStructure.UClosureHull_mono
+#print axioms StructuralRamsey.RelStructure.UClosureHull_eq_iff
+#print axioms StructuralRamsey.RelStructure.UClosureHull_idempotent
+#print axioms StructuralRamsey.RelStructure.UClosureHull_univ
+#print axioms StructuralRamsey.RelStructure.IsUClosed.induce_UClosureHull
+#print axioms StructuralRamsey.RelStructure.exists_UGenerating_card
+#print axioms StructuralRamsey.RelStructure.USize_spec
+#print axioms StructuralRamsey.RelStructure.USize_le_card
