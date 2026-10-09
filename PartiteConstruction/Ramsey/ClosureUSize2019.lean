@@ -133,8 +133,9 @@ U-closure and from the cardinality of any arbitrary weak test. -/
 noncomputable def USize
     [Fintype V]
     (rules : ClosureDescription L)
-    (A : RelStructure L V) : ℕ :=
-  Nat.find (exists_UGenerating_card rules A)
+    (A : RelStructure L V) : ℕ := by
+  classical
+  exact Nat.find (exists_UGenerating_card rules A)
 
 /-- A finite structure has a generating support attaining its U-size. -/
 theorem USize_spec
@@ -143,8 +144,9 @@ theorem USize_spec
     (A : RelStructure L V) :
     ∃ S : Finset V,
       S.card = USize rules A ∧
-        IsUGenerating rules A (↑S : Set V) :=
-  Nat.find_spec (exists_UGenerating_card rules A)
+        IsUGenerating rules A (↑S : Set V) := by
+  classical
+  exact Nat.find_spec (exists_UGenerating_card rules A)
 
 /-- U-size never exceeds the number of vertices. This bound does not
 replace the original tested vertex set by a larger U-closure hull. -/
