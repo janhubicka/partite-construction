@@ -1,6 +1,7 @@
 import PartiteConstruction.Ramsey.ClosureEmbeddedSourceClosed
 import PartiteConstruction.Ramsey.ClosureRelativeSideRange
 import PartiteConstruction.Ramsey.ClosureUHomWeakImage
+import PartiteConstruction.Ramsey.ClosureUIrreducibleMissingRoot
 import PartiteConstruction.Ramsey.ClosureUIrreducibleFreeAmalgam
 import PartiteConstruction.Ramsey.ClosureUIrreducible2019
 import PartiteConstruction.Functional.ClosedTestGraphTreeObstruction
@@ -490,3 +491,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.IsUSubstructure.induce_inter
 
 #print axioms StructuralRamsey.RelStructure.Embedding.source_isUClosed_of_range_USubstructure
+
+#print axioms StructuralRamsey.RelStructure.IsUIrreducible.of_missing_closureTuple
