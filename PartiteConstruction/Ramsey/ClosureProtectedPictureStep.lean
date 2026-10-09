@@ -1,4 +1,5 @@
 import PartiteConstruction.Ramsey.ClosurePowerOneProtected
+import PartiteConstruction.Ramsey.ClosureIrreducibleHulls
 
 /-! # Conditional complete local Ramsey/protected Picture step
 
