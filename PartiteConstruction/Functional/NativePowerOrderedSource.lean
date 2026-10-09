@@ -26,13 +26,20 @@ def firstStageOrder (a b : Fin 5) : Prop :=
   (∃ i j : Fin 3, i < j ∧
       a = secondCopyMap i ∧ b = secondCopyMap j)
 
+instance firstStageOrderDecidable (a b : Fin 5) :
+    Decidable (firstStageOrder a b) := by
+  unfold firstStageOrder
+  infer_instance
+
 /-- Full functional structure on the *same five source vertices*,
 expanding only the relation language. -/
 def firstStageOrdered :
     Structure toyLanguage.withLinearOrder (Fin 5) where
-  rel R z := match R with
-    | .inl r => firstStage.rel r z
-    | .inr _ => firstStageOrder (z 0) (z 1)
+  rel R := by
+    cases R with
+    | inl r => exact firstStage.rel r
+    | inr _ => exact fun (z : Fin 2 → Fin 5) =>
+        firstStageOrder (z 0) (z 1)
   func := firstStage.func
 
 theorem firstStageOrder_firstCopy :
@@ -73,9 +80,10 @@ def secondCopyOrdered : Embedding toyBaseOrdered firstStageOrdered where
 
 /-- The singleton Y-root has no order tuples and no function values. -/
 def yRootOrdered : Structure toyLanguage.withLinearOrder Unit where
-  rel R z := match R with
-    | .inl r => yRoot.rel r z
-    | .inr _ => False
+  rel R := by
+    cases R with
+    | inl r => exact yRoot.rel r
+    | inr _ => exact fun (_ : Fin 2 → Unit) => False
   func := yRoot.func
 
 def yRootBaseOrdered : Embedding yRootOrdered toyBaseOrdered where
