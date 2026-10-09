@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureIrreducibleHulls
 import PartiteConstruction.Ramsey.ClosureFreeAmalgamGenerators
 import PartiteConstruction.Ramsey.ClosureProjectedRankGlue
 import PartiteConstruction.Ramsey.ClosureProjectedGenerators
@@ -34,7 +35,7 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.Structure.LocallyGeneratedTreeCompletable.rootedWitness
 #print axioms StructuralRamsey.Structure.FunctionalHistoryTreeLike.rootedWitness
-#print axioms StructuralRamsey.Structure.LocallyClosedTreeCompletable.freeAmalgam_irreducibleRoot
+#print axioms StructuralRamsey.Structure.LocallyClosedTreeCompletable.freeAmalgam_irreducibleRootGlue
 #print axioms StructuralRamsey.Structure.HasTreeExtensionCompletion.of_embedding_into_base
 
 #print axioms StructuralRamsey.RelStructure.FunctionClosedHasTreeCompletion.glue
@@ -87,3 +88,11 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.left_projection_mem_hull
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.right_projection_mem_hull
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_whole_generated_projection_supports
+
+#print axioms StructuralRamsey.RelStructure.IsUClosed.uIrreducible_of_irreducible_generators
+#print axioms StructuralRamsey.RelStructure.IsUClosed.irreducibleSeed_hull_isUIrreducible
+#print axioms StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.on_irreducibleSeed_hull
+#print axioms StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.toHomomorphismEmbedding_of_closed
+#print axioms StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.injOn_irreducibleSeed_hull
+#print axioms StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.image_irreducibleSeed_hull_eq
+#print axioms StructuralRamsey.RelStructure.IsUClosed.singleton_hull_isUIrreducible
