@@ -78,14 +78,42 @@ receives a K-valued B-copywise completion. This is a **sufficient**
 completion criterion, not a restatement of Definition 2.17 and not
 proof of the full Theorem 2.18.
 
+## Fully checked relational closure lemmas
+
+The following are checked on an immutable Lean proof head
+`70f7376667b8313d830a08cc262cc0005d530ef0` (GitHub Actions
+`37881982179`, full build and permitted-axiom audit successful):
+
+- `IsUClosed.induce_iff_USubstructure` — Lemma 2.23(1), without
+  enlarging the induced vertex set;
+- `Embedding.range_isUSubstructure` — images of full embeddings
+  between U-closed structures are exact U-substructures;
+- `IsFreeAmalgam.closureTuple_hasRoot_all` — no improper
+  closure-relation tuple appears in a free amalgam;
+- `IsFreeAmalgam.isUClosed` — Lemma 2.23(2), including existence
+  and uniqueness of the closure tuple over every irreducible root.
+
+The common overlap must **itself** be U-closed. If the overlap only
+contains the inputs of a closure relation, the two sides may supply
+different outputs, so the free amalgam need not be U-closed.
+The result cannot be applied directly to an arbitrary weak projected
+image.
+
 ## Gaps to obtain exactly Theorem 2.18
 
-1. **Closure description**: add a general relational `U`-closure
-   encoding, including the prescribed irreducible root patterns,
-   allowed outdegrees, U-closed and U-semi-closed structures, and
-   U-homomorphism-embeddings. Existing `Structure.UClosed` is the
-   special graph-of-functions case and is not a declaration of the
-   general 2019 closure-description signature.
+1. **Closure description (PARTLY COMPLETED)**: the general relational
+   `ClosureRule`, `ClosureDescription`, `IsUClosed`, and vertex-exact
+   `IsUSubstructure` are formalized in `ClosureDescription2019.lean`.
+   Lemma 2.23(1) is proved: induced U-closedness is exactly the
+   U-substructure condition on the existing set. Full embeddings have
+   U-closed images (`ClosureEmbeddingRange.lean`). **Lemma 2.23(2) is
+   also complete:** `IsFreeAmalgam.isUClosed` in
+   `ClosureFreeAmalgamCompletion.lean` proves that a free amalgam of
+   U-closed structures over a U-closed common root remains U-closed,
+   including unique closure tuples. The proof does not take any weak
+   image's closure hull. Still required here: the further U-semi-closed
+   and U-homomorphism-embedding interfaces needed by the general
+   2019 Ramsey witness and completion induction.
 2. **Lemma 2.28 interface**: produce a U-closed Ramsey witness with
    U-homomorphism-embedding to C0. The native function proof should
    be reused *via* the closure relational encoding, but without
