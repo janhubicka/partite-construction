@@ -116,10 +116,12 @@ theorem staircaseSupport_closed :
 
 /-- The *closed induced substructure* of the native power already
 obstructs every strict full-functional B-tree completion. -/
-theorem staircaseSupport_no_strictTreeCompletion :
-    ¬ HasTreeCompletion toyBase
-      (actualPower.induce StaircaseSupport staircaseSupport_closed) := by
-  rintro ⟨W,T,hTree,f,hf⟩
+theorem staircaseSupport_no_fullTreeHom
+    {W : Type} {T : Structure toyLanguage W}
+    (hTree : TreeAmalgam toyBase W T)
+    (f : StaircaseSupport → W)
+    (hf : (actualPower.induce StaircaseSupport staircaseSupport_closed).IsHomomorphism T f) :
+    False := by
   let Small := actualPower.induce StaircaseSupport staircaseSupport_closed
   let sx (i : Fin 3) : StaircaseSupport :=
     ⟨powerX i,powerX_mem_support i⟩
@@ -130,7 +132,7 @@ theorem staircaseSupport_no_strictTreeCompletion :
     calc
       Domain T (f (sx i)) (f (sy j)) ↔
           Domain Small (sx i) (sy j) :=
-        domain_fullHom_iff hf.1 (sx i) (sy j)
+        domain_fullHom_iff hf (sx i) (sy j)
       _ ↔ Domain actualPower (powerX i) (powerY j) := by
         constructor
         · rintro ⟨z,hz⟩
@@ -159,11 +161,19 @@ theorem staircaseSupport_no_strictTreeCompletion :
   let fx : Fin 3 → XRole := fun i =>
     ⟨f (sx i), by
       have hi : Role Small 0 (sx i) := powerX_hasRole i
-      exact hf.1.1 (0 : Fin 3) (fun _ => sx i) hi⟩
+      exact hf.1 (0 : Fin 3) (fun _ => sx i) hi⟩
   let fy : Fin 3 → YRole := fun j =>
     ⟨f (sy j), by
       have hj : Role Small 1 (sy j) := powerY_hasRole j
-      exact hf.1.1 (1 : Fin 3) (fun _ => sy j) hj⟩
+      exact hf.1 (1 : Fin 3) (fun _ => sy j) hj⟩
   exact staircase_noSquare_obstruction R hNoSquare fx fy hDomain
+
+/-- The original strict total-fibre tree-completion obstruction is the
+  direct corollary of the stronger full-homomorphism obstruction. -/
+theorem staircaseSupport_no_strictTreeCompletion :
+    ¬ HasTreeCompletion toyBase
+      (actualPower.induce StaircaseSupport staircaseSupport_closed) := by
+  rintro ⟨W,T,hTree,f,hf⟩
+  exact staircaseSupport_no_fullTreeHom hTree f hf.1
 
 end StructuralRamsey.Structure.NativePowerObstruction
