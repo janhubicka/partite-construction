@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureEmbeddedSourceClosed
 import PartiteConstruction.Ramsey.ClosureRelativeSideRange
 import PartiteConstruction.Ramsey.ClosureUHomWeakImage
 import PartiteConstruction.Ramsey.ClosureUIrreducibleFreeAmalgam
@@ -487,3 +488,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.left_range_isUSubstructure
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.right_range_isUSubstructure
 #print axioms StructuralRamsey.RelStructure.IsUSubstructure.induce_inter
+
+#print axioms StructuralRamsey.RelStructure.Embedding.source_isUClosed_of_range_USubstructure
