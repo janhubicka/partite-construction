@@ -25,6 +25,7 @@ import PartiteConstruction.Functional.NativePowerTwelveBound
 import PartiteConstruction.Functional.NativePowerExactTwelve
 import PartiteConstruction.Functional.NativePowerOrderedTarget
 import PartiteConstruction.Functional.NativePowerOrderedSource
+import PartiteConstruction.Functional.NativePowerOrderedThird
 import PartiteConstruction.Functional.OriginalPartialSemantics
 import PartiteConstruction.Functional.NativePowerOriginalPartialCompletion
 import PartiteConstruction.Functional.QuotientBoundaryDomainObstruction
@@ -412,3 +413,6 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.firstStageOrdered_strictTree
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.firstStageOrdered_projection
+
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.oldStageOrdered_strictTree
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.oldStageOrdered_projection
