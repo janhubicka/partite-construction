@@ -31,6 +31,7 @@ import PartiteConstruction.Functional.NativePowerOrderedTwelve
 import PartiteConstruction.Functional.OriginalPartialSemantics
 import PartiteConstruction.Functional.OriginalPartialWeakImage
 import PartiteConstruction.Functional.OriginalPartialWeakRank
+import PartiteConstruction.Functional.OriginalPartialWeakTestObstruction
 import PartiteConstruction.Functional.NativePowerOriginalPartialCompletion
 import PartiteConstruction.Functional.QuotientBoundaryDomainObstruction
 import PartiteConstruction.Functional.ProjectedWeakImage
@@ -438,3 +439,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.HasOriginalPartialTreeCompletion.of_closed_EHN_weakImage
 
 #print axioms StructuralRamsey.Structure.HasOriginalPartialTreeCompletion.of_closed_EHN_smallWeakImage
+
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.weakOrderedXY_no_originalPartialTreeCompletion
