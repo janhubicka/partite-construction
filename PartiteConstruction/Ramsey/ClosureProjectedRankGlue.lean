@@ -153,30 +153,30 @@ theorem HasClosedUKCompletion.of_common_projection_generators
     (a : Embedding A D) (p : C → V)
     (hp : IsClosedUHomomorphismEmbedding rules Whole D p)
     (hSeparator : ∀ r : H, p (iL (sL r)) ∈ Set.range a)
-    (GL : Finset E) (GR : Finset F)
-    (hGL : IsUGenerating rules Left (↑GL : Set E))
-    (hGR : IsUGenerating rules Right (↑GR : Set F))
+    (GLeft : Finset E) (GRight : Finset F)
+    (hGL : IsUGenerating rules Left (↑GLeft : Set E))
+    (hGR : IsUGenerating rules Right (↑GRight : Set F))
     (j : ℕ)
-    (hBudgetL : (GL.image (p ∘ iL)).card ≤ j)
-    (hBudgetR : (GR.image (p ∘ iR)).card ≤ j)
+    (hBudgetL : (GLeft.image (p ∘ iL)).card ≤ j)
+    (hBudgetR : (GRight.image (p ∘ iR)).card ≤ j)
     (hRank : ∀ (T : Set V) [Fintype T],
       IsUClosed rules (D.induce T) →
       USize rules (D.induce T) ≤ j →
         HasClosedUKCompletion K rules (D.induce T)) :
     HasClosedUKCompletion K rules Whole := by
   have hRangeL (x : E) : p (iL x) ∈
-      UClosureHull rules D (↑(GL.image (p ∘ iL)) : Set V) := by
+      UClosureHull rules D (↑(GLeft.image (p ∘ iL)) : Set V) := by
     simpa only [Finset.coe_image] using
       (hp.precomp_embedding iL).1.range_subset_generatedHull
-        (↑GL : Set E) hGL ⟨x, rfl⟩
+        (↑GLeft : Set E) hGL ⟨x, rfl⟩
   have hRangeR (x : F) : p (iR x) ∈
-      UClosureHull rules D (↑(GR.image (p ∘ iR)) : Set V) := by
+      UClosureHull rules D (↑(GRight.image (p ∘ iR)) : Set V) := by
     simpa only [Finset.coe_image] using
       (hp.precomp_embedding iR).1.range_subset_generatedHull
-        (↑GR : Set F) hGR ⟨x, rfl⟩
+        (↑GRight : Set F) hGR ⟨x, rfl⟩
   exact HasClosedUKCompletion.of_common_projection_supports
     rules hK hHereditary hKIrr hSrc hRoot hLeft hRight hKA hA hD
-    a p hp hSeparator (GL.image (p ∘ iL)) (GR.image (p ∘ iR))
+    a p hp hSeparator (GLeft.image (p ∘ iL)) (GRight.image (p ∘ iR))
     j hBudgetL hBudgetR hRangeL hRangeR hRank
 
 end StructuralRamsey.RelStructure
