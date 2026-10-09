@@ -53,8 +53,10 @@ theorem part_embedding_on_closed_uIrreducible_test
     let H : Set V := UClosureHull rules B.toRelStructure (Set.range f)
     have hHClosed : IsUClosed rules (B.toRelStructure.induce H) :=
       hBClosed.induce_UClosureHull (Set.range f)
-    have hHIrred : IsUIrreducible rules (B.toRelStructure.induce H) :=
-      hTestClosed.homomorphic_image_hull_isUIrreducible hTestIrred hBClosed hf
+    have hHIrred : IsUIrreducible rules (B.toRelStructure.induce H) := by
+      intro RootV LeftV RightV Root Left Right sL sR iL iR hLeft hRight hFree
+      exact hTestClosed.homomorphic_image_hull_isUIrreducible
+        hTestIrred hBClosed hf hLeft hRight hFree
     obtain ⟨dH, hdH⟩ := hBPart.on_test
       (B.toRelStructure.induce H) hHClosed hHIrred
       (inclusion B.toRelStructure H)
