@@ -87,7 +87,7 @@ theorem part_embedding_on_irreducibly_generated_test
       have hAT : A.rel R (dH ∘ (dTest ∘ z)) := by
         convert hA using 1
         funext j
-        exact (hPart (z j)).symm
+        exact hPart (z j)
       have hBT : (B.toRelStructure.induce H).rel R (dTest ∘ z) :=
         (dH.map_rel_iff R (dTest ∘ z)).mp hAT
       exact hBT
