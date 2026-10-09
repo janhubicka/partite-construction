@@ -68,8 +68,8 @@ full embedding.  The induced set S can omit closure outputs. -/
 theorem IsUSubstructure.weakInduce_embeddingRange
     {A : RelStructure L U} {B : RelStructure L V}
     {rules : ClosureDescription L}
-    (e : Embedding A B)
     (hRange : IsUSubstructure rules B (Set.range e))
+    (e : Embedding A B)
     (S : Set V)
     (j : Embedding (A.induce (e ⁻¹' S)) (B.induce S))
     (hj : ∀ a : (e ⁻¹' S), (j a).1 = e a.1) :
