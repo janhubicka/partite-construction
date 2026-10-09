@@ -166,12 +166,12 @@ theorem HasClosedUKCompletion.of_common_projection_generators
     HasClosedUKCompletion K rules Whole := by
   have hRangeL (x : E) : p (iL x) ∈
       UClosureHull rules D (↑(GLeft.image (p ∘ iL)) : Set V) := by
-    simpa only [Finset.coe_image] using
+    simpa only [Finset.coe_image, Function.comp_apply] using
       (hp.precomp_embedding iL).1.range_subset_generatedHull
         (↑GLeft : Set E) hGL ⟨x, rfl⟩
   have hRangeR (x : F) : p (iR x) ∈
       UClosureHull rules D (↑(GRight.image (p ∘ iR)) : Set V) := by
-    simpa only [Finset.coe_image] using
+    simpa only [Finset.coe_image, Function.comp_apply] using
       (hp.precomp_embedding iR).1.range_subset_generatedHull
         (↑GRight : Set F) hGR ⟨x, rfl⟩
   exact HasClosedUKCompletion.of_common_projection_supports
