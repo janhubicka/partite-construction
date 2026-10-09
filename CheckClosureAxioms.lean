@@ -1,3 +1,6 @@
+import PartiteConstruction.Ramsey.ClosureProtectedInitial
+import PartiteConstruction.Ramsey.ClosureRelativeControlPicture
+import PartiteConstruction.Ramsey.ClosureRelativeControlRamsey
 import PartiteConstruction.Ramsey.ClosureProtectedPass
 import PartiteConstruction.Ramsey.ClosureRelativeMapGlue
 import PartiteConstruction.Ramsey.ClosureClosedLocalFiniteness
@@ -198,3 +201,16 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.ramsey_of_closedLocalCompletionAt_rank_and_coverage
 #print axioms StructuralRamsey.Partite.Induced.protected_pass
 #print axioms StructuralRamsey.Partite.Induced.protected_pass_with_rank_one
+
+#print axioms StructuralRamsey.Partite.Induced.Initial.index_fibres_isUSubstructure
+#print axioms StructuralRamsey.Partite.Induced.Initial.closed_test_same_index
+#print axioms StructuralRamsey.Partite.Induced.Initial.closed_test_factor_copy
+#print axioms StructuralRamsey.Partite.Induced.Initial.picture_isUClosed
+#print axioms StructuralRamsey.Partite.Induced.Initial.picture_isClosedPartiteOver
+#print axioms StructuralRamsey.Partite.Induced.picture_build_protected_of_closed_support
+#print axioms StructuralRamsey.Partite.Induced.pictureLemma_protected_of_closed_support
+#print axioms StructuralRamsey.Partite.Induced.protected_pass_of_relative_profiles
+#print axioms StructuralRamsey.Partite.Induced.arrow_of_initial_canonical
+#print axioms StructuralRamsey.Partite.Induced.closed_ramsey_of_relative_A_copies
+#print axioms StructuralRamsey.Partite.Induced.closed_ramsey_of_closed_control
+#print axioms StructuralRamsey.Partite.Induced.ramsey_of_closedLocalCompletion_cutoff_one
