@@ -104,10 +104,11 @@ This definition asserts no construction or Ramsey implication. -/
 structure ClosedUMultiamalgamationClass
     (R K : StructureClass.{u,v} (L := L)) (rules : ClosureDescription L) : Prop where
   subset : ∀ {X : Type v} (C : RelStructure L X), K C → R C
+  finite : ∀ {X : Type v} (C : RelStructure L X), K C → Finite X
   closed : ∀ {X : Type v} (C : RelStructure L X), K C → IsUClosed rules C
   hereditary : ClosedUHereditary K rules
   strong : HasFiniteStrongAmalgamation K
-  local : ∀ {X Y : Type v} [Finite X] [Finite Y]
+  localCompletion : ∀ {X Y : Type v} [Finite X] [Finite Y]
     (B : RelStructure L X) (C0 : RelStructure L Y),
     K B → R C0 → ∃ n : ℕ, ClosedULocalCompletionAt K rules B C0 n
 
@@ -156,6 +157,7 @@ theorem ramsey_of_closedLocalCompletionAt_rank_and_coverage
     ∃ (X : Type v) (_ : Finite X) (D : RelStructure L X),
       K D ∧ StructuralRamsey.Arrow A B D κ := by
   exact arrow_of_BCopywiseCompletion_inClass hArrow
-    (hLocal.of_rank_and_coverage B C0 C n hHer hB hC hC0 p hp hCover hRank)
+    (ClosedULocalCompletionAt.of_rank_and_coverage B C0 C n
+      hLocal hHer hB hC hC0 p hp hCover hRank)
 
 end StructuralRamsey.RelStructure
