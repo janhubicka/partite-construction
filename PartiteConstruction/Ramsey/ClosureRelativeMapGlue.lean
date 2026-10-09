@@ -43,10 +43,8 @@ theorem IsFreeAmalgam.closed_test_factor_of_relative_ranges
   classical
   let LS : Set X := e ⁻¹' Set.range iL
   let RS : Set X := e ⁻¹' Set.range iR
-  have hLS : IsUSubstructure rules Test LS :=
-    hL.preimage_homomorphism e.isHomomorphismEmbedding.1
-  have hRS : IsUSubstructure rules Test RS :=
-    hR.preimage_homomorphism e.isHomomorphismEmbedding.1
+  have hLS : IsUSubstructure rules Test LS := hL.preimage_embedding e
+  have hRS : IsUSubstructure rules Test RS := hR.preimage_embedding e
   have hCover : ∀ x : X, x ∈ LS ∨ x ∈ RS := by
     intro x
     rcases hSrc.covers (e x) with ⟨a, ha⟩ | ⟨b, hb⟩
@@ -81,8 +79,7 @@ theorem relative_ranges_on_weak_test
     (hT : IsUSubstructure rules Ambient T) :
     IsUSubstructure rules Test (e ⁻¹' S) ∧
       IsUSubstructure rules Test (e ⁻¹' T) :=
-  ⟨hS.preimage_homomorphism e.isHomomorphismEmbedding.1,
-   hT.preimage_homomorphism e.isHomomorphismEmbedding.1⟩
+  ⟨hS.preimage_embedding e, hT.preimage_embedding e⟩
 
 /-- Compatible maps protecting closed tests glue across relative sides.
 The target can add relations; only the SOURCE amalgam must be free. -/
