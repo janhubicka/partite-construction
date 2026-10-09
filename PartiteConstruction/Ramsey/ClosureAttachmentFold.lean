@@ -153,7 +153,7 @@ theorem fold_isClosedUHomomorphismEmbedding
     (hCompat : ∀ i (x : S), pCore (maps i x) = pCopy i x.1) :
     IsClosedUHomomorphismEmbedding rules (attach Base S Core maps)
       Target (fold pCore pCopy) := by
-  let F := fold pCore pCopy
+  let F : Vertex S (W := W) (I := I) → Y := fold pCore pCopy
   constructor
   · intro R z hz
     rcases hz with ⟨xs, hxs, heq⟩ | ⟨i, xs, hxs, heq⟩
