@@ -49,7 +49,8 @@ theorem pictureLemma_protected_of_power
   let af := alpha.toFunctionEmbedding
   let R := B.restrict af
   have hOldOrdinary : B.IsPartiteOver D :=
-    hBPart.toHomomorphismEmbedding_of_closed hB
+    StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.toHomomorphismEmbedding_of_closed
+      hBPart hB
   have hRPart : R.IsPartiteOver A :=
     restrict_isPartiteOver D B A hOldOrdinary alpha
   obtain ⟨N, hN, hArrow⟩ :=
