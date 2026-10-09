@@ -59,32 +59,72 @@ private abbrev rootInFirst : Embedding Root TwoCopies where
   injective := by
     intro x y _
     exact Subsingleton.elim x y
-  map_rel_iff := by decide
+  map_rel_iff := by
+    intro R x
+    cases R with
+    | false =>
+      change (∃ side : Bool,
+        (∀ i : Fin 1, false = side) ∧ (0 : Fin 2) = 0) ↔ True
+      constructor
+      · intro _; trivial
+      · intro _; exact ⟨false, (fun _ => rfl), rfl⟩
+    | true =>
+      change (∃ side : Bool,
+        (∀ i : Fin 2, false = side) ∧
+          ((0 : Fin 2) = 0 ∧ (0 : Fin 2) = 1)) ↔ False
+      constructor
+      · rintro ⟨_, _, h⟩
+        exact (by decide : (0 : Fin 2) ≠ 1) h.2
+      · exact False.elim
 
 private abbrev leftCopy : Embedding Base TwoCopies where
   toFun := fun x => (false, x)
   injective := by
     intro x y h
     exact congrArg Prod.snd h
-  map_rel_iff := by decide
+  map_rel_iff := by
+    intro R x
+    change (∃ side : Bool,
+      (∀ i : Fin (Lang.arity R), false = side) ∧ Base.rel R x) ↔
+      Base.rel R x
+    constructor
+    · rintro ⟨_, _, h⟩
+      exact h
+    · intro h
+      exact ⟨false, (fun _ => rfl), h⟩
 
 private abbrev rightCopy : Embedding Base TwoCopies where
   toFun := fun x => (true, x)
   injective := by
     intro x y h
     exact congrArg Prod.snd h
-  map_rel_iff := by decide
+  map_rel_iff := by
+    intro R x
+    change (∃ side : Bool,
+      (∀ i : Fin (Lang.arity R), true = side) ∧ Base.rel R x) ↔
+      Base.rel R x
+    constructor
+    · rintro ⟨_, _, h⟩
+      exact h
+    · intro h
+      exact ⟨true, (fun _ => rfl), h⟩
 
 private abbrev badSet : Set (Bool × Fin 2) :=
   {z | z.1 = true ∨ z = (false, 0)}
 
-private instance : Fintype badSet :=
-  Fintype.subtype (fun z : Bool × Fin 2 =>
-    z.1 = true ∨ z = (false, 0))
+private def selected : Fin 3 → badSet
+  | 0 => ⟨(false, 0), Or.inr rfl⟩
+  | 1 => ⟨(true, 0), Or.inl rfl⟩
+  | 2 => ⟨(true, 1), Or.inl rfl⟩
+
+private theorem selected_injective : Function.Injective selected := by
+  intro i j h
+  fin_cases i <;> fin_cases j <;> simp_all [selected]
 
 private theorem bad_root_in :
     ∀ k : Fin rule.rootSize, rootInFirst k ∈ badSet := by
-  decide
+  intro k
+  exact Or.inr rfl
 
 private theorem bad_missing :
     ∀ t : Fin (Lang.arity rule.symbol) → (Bool × Fin 2),
@@ -92,7 +132,24 @@ private theorem bad_missing :
       (∀ k : Fin rule.rootSize,
          t (k.castLE rule.rootLE) = rootInFirst k) →
       ∃ j : Fin (Lang.arity rule.symbol), t j ∉ badSet := by
-  decide
+  intro t ht hAlign
+  obtain ⟨side, hUniform, hRel⟩ := ht
+  have ht0 : t (0 : Fin 2) = (false, 0) := by
+    simpa [rule, rootInFirst, Lang] using hAlign (0 : Fin 1)
+  have hside : side = false := by
+    calc
+      side = (t 0).1 := (hUniform 0).symm
+      _ = false := congrArg Prod.fst ht0
+  have hout : (t (1 : Fin 2)).2 = (1 : Fin 2) := by
+    change (t 0).2 = (0 : Fin 2) ∧
+      (t 1).2 = (1 : Fin 2) at hRel
+    exact hRel.2
+  have ht1 : t (1 : Fin 2) = (false, 1) := by
+    apply Prod.ext
+    · exact (hUniform 1).trans hside
+    · exact hout
+  refine ⟨1, ?_⟩
+  simp [badSet, ht1]
 
 /-- Fully finite intrinsic U-irreducibility of the three-vertex
 weak induced test: it has a P-root but omits its R-output. -/
@@ -112,16 +169,28 @@ theorem two_induced_B_copies :
 theorem weakTest_crosses_both_copies :
     (¬ ∀ z : badSet, ∃ x : Fin 2, z.1 = leftCopy x) ∧
       (¬ ∀ z : badSet, ∃ x : Fin 2, z.1 = rightCopy x) := by
-  decide
+  constructor
+  · intro h
+    obtain ⟨x, hx⟩ := h ⟨(true, 0), Or.inl rfl⟩
+    have hbad : true = false := congrArg Prod.fst hx
+    cases hbad
+  · intro h
+    obtain ⟨x, hx⟩ := h ⟨(false, 0), Or.inr rfl⟩
+    have hbad : false = true := congrArg Prod.fst hx
+    cases hbad
 
 /-- The literal 'every U-irreducible weak test is contained in a
 B-copy' property fails already in a two-copy picture. -/
 theorem twoCopies_not_all_intrinsic_tests_in_B :
     ¬ AllIntrinsicUIrreducibleTestsEmbed rules TwoCopies Base := by
-  apply not_allIntrinsicUIrreducibleTestsEmbed_of_large_missing_test
+  classical
+  letI : Fintype badSet := Fintype.ofFinite badSet
+  have hLarge : Fintype.card (Fin 2) < Fintype.card badSet := by
+    have h3 : 3 ≤ Fintype.card badSet := by
+      simpa using (Fintype.card_le_of_injective selected selected_injective)
+    exact lt_of_lt_of_le (by decide : 2 < 3) h3
+  exact not_allIntrinsicUIrreducibleTestsEmbed_of_large_missing_test
     rule (by simp [rules]) rootInFirst badSet
-  · exact bad_root_in
-  · exact bad_missing
-  · decide
+    bad_root_in bad_missing hLarge
 
 end StructuralRamsey.RelStructure.TwoCopyIntrinsicObstruction
