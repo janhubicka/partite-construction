@@ -193,4 +193,119 @@ theorem twoCopies_not_all_intrinsic_tests_in_B :
     rule (by simp [rules]) rootInFirst badSet
     bad_root_in bad_missing hLarge
 
+
+/-- The singleton closure root embeds at the distinguished P-vertex. -/
+private abbrev rootInBase : Embedding Root Base where
+  toFun := fun _ => 0
+  injective := by
+    intro x y _
+    exact Subsingleton.elim x y
+  map_rel_iff := by
+    intro R x
+    cases R with
+    | false =>
+      change ((0 : Fin 2) = 0) ↔ True
+      simp
+    | true =>
+      change (((0 : Fin 2) = 0) ∧ ((0 : Fin 2) = 1)) ↔ False
+      simp
+
+/-- Each B-copy is genuinely U-closed. -/
+theorem base_isUClosed : IsUClosed rules Base := by
+  intro r hr
+  have hrule : r = rule := by
+    simpa [rules] using hr
+  subst r
+  constructor
+  · intro t ht
+    refine ⟨rootInBase, ?_⟩
+    intro k
+    fin_cases k
+    exact ht.1
+  · intro e
+    have he : e = rootInBase := by
+      apply Embedding.ext
+      intro k
+      fin_cases k
+      have hp : Base.rel false
+          (e ∘ (fun _ : Fin 1 => (0 : Fin 1))) :=
+        (e.map_rel_iff false (fun _ : Fin 1 => 0)).mpr (by decide)
+      change e 0 = (0 : Fin 2) at hp
+      exact hp
+    rw [he]
+    refine ⟨![0, 1], ⟨?_, ?_⟩, ?_⟩
+    · decide
+    · intro k
+      fin_cases k
+      rfl
+    · intro t ht
+      funext j
+      fin_cases j
+      · exact ht.1.1
+      · exact ht.1.2
+
+private abbrev Empty : RelStructure Lang (Fin 0) where
+  rel _ _ := False
+
+private abbrev emptyToBase : Embedding Empty Base where
+  toFun := fun x => x.elim0
+  injective := by
+    intro x
+    exact x.elim0
+  map_rel_iff := by
+    intro R x
+    cases R with
+    | false => exact (x 0).elim0
+    | true => exact (x 0).elim0
+
+private theorem empty_isUClosed : IsUClosed rules Empty := by
+  intro r _
+  constructor
+  · intro t ht
+    exact False.elim ht
+  · intro e
+    exact (e ⟨0, r.rootPositive⟩).elim0
+
+/-- The actual picture is a free amalgam of two copies of the
+U-closed structure B over the empty (and U-closed) common root. -/
+theorem twoCopies_isFreeAmalgam :
+    IsFreeAmalgam emptyToBase emptyToBase leftCopy rightCopy := by
+  constructor
+  · rintro ⟨side, x⟩
+    cases side with
+    | false => exact Or.inl ⟨x, rfl⟩
+    | true => exact Or.inr ⟨x, rfl⟩
+  · intro a b
+    constructor
+    · intro h
+      have hbad : false = true := congrArg Prod.fst h
+      cases hbad
+    · rintro ⟨d, _, _⟩
+      exact d.elim0
+  · intro R t
+    constructor
+    · rintro ⟨side, hUniform, hRel⟩
+      cases side with
+      | false =>
+        refine Or.inl ⟨(fun i => (t i).2), hRel, ?_⟩
+        funext i
+        apply Prod.ext
+        · exact hUniform i
+        · rfl
+      | true =>
+        refine Or.inr ⟨(fun i => (t i).2), hRel, ?_⟩
+        funext i
+        apply Prod.ext
+        · exact hUniform i
+        · rfl
+    · rintro (⟨x, hx, rfl⟩ | ⟨x, hx, rfl⟩)
+      · exact ⟨false, (fun _ => rfl), hx⟩
+      · exact ⟨true, (fun _ => rfl), hx⟩
+
+/-- The two-copy picture is U-closed, despite containing a
+non-U-closed weak test which is intrinsically U-irreducible. -/
+theorem twoCopies_isUClosed : IsUClosed rules TwoCopies :=
+  twoCopies_isFreeAmalgam.isUClosed
+    empty_isUClosed base_isUClosed base_isUClosed
+
 end StructuralRamsey.RelStructure.TwoCopyIntrinsicObstruction
