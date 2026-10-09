@@ -459,3 +459,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.Attachment.locallyTreeLike_of_projected_support
 
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.weakInduce
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.weakInduce_withMaps
