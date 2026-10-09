@@ -1,3 +1,4 @@
+import PartiteConstruction.Iterated.WeakFreeAmalgamInduce
 import PartiteConstruction.Iterated.GenericProjectedAttachmentStep
 import PartiteConstruction.Iterated.IsoTransport
 import PartiteConstruction
@@ -456,3 +457,5 @@ import PartiteConstruction
 #print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.transportIso
 
 #print axioms StructuralRamsey.RelStructure.Attachment.locallyTreeLike_of_projected_support
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.weakInduce
