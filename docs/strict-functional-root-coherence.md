@@ -1,5 +1,20 @@
 # Strict functional tree targets: reduced proof obligation (8 October 2026)
 
+> **Scope correction (9 October 2026).** This file records a *conditional*
+> attempt to obtain strict B-tree targets while preserving **all** function
+> fibres on every tuple, including empty fibres. Such a generic invariant
+> is now **disproved** for the actual tagged native Hales--Jewett power:
+> the exact 12-vertex closed test persists with a hereditarily
+> irreducible graph-base; see `native-functional-power-obstruction.md`
+> and the axiom-checked `NativePowerOrderedTwelve.lean`.
+> This does **not** refute the original 2019 theory: its partial-function
+> homomorphism-embeddings preserve fibres only on defined source tuples,
+> and the *same* test has a strict one-copy completion in that sense.
+> Future strict-root arguments intended for the 2019 theorem should use
+> `IsOriginalPartialHomomorphismEmbedding` and must not require
+> reflection of missing source function domains. The verified weak
+> graph-tree induction remains unchanged.
+>
 **Status:** research/verification note, not an additional Lean theorem. The
 printed relational Appendix A and the verified direct native n-pass theorem
 remain unchanged. Do not mark any strict full-function iteration proved.
