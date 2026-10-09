@@ -528,3 +528,7 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.TwoCopyIntrinsicObstruction.two_induced_B_copies
 #print axioms StructuralRamsey.RelStructure.TwoCopyIntrinsicObstruction.weakTest_crosses_both_copies
 #print axioms StructuralRamsey.RelStructure.TwoCopyIntrinsicObstruction.twoCopies_not_all_intrinsic_tests_in_B
+
+#print axioms StructuralRamsey.RelStructure.TwoCopyIntrinsicObstruction.base_isUClosed
+#print axioms StructuralRamsey.RelStructure.TwoCopyIntrinsicObstruction.twoCopies_isFreeAmalgam
+#print axioms StructuralRamsey.RelStructure.TwoCopyIntrinsicObstruction.twoCopies_isUClosed
