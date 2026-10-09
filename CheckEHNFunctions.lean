@@ -1,5 +1,6 @@
 import PartiteConstruction.Ramsey.ClosureRelativeSideRange
 import PartiteConstruction.Ramsey.ClosureUHomWeakImage
+import PartiteConstruction.Ramsey.ClosureUIrreducibleMissingRoot
 import PartiteConstruction.Ramsey.ClosureUIrreducibleFreeAmalgam
 import PartiteConstruction.Ramsey.ClosureUIrreducible2019
 import PartiteConstruction.Functional.ClosedTestGraphTreeObstruction
@@ -487,3 +488,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.left_range_isUSubstructure
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.right_range_isUSubstructure
 #print axioms StructuralRamsey.RelStructure.IsUSubstructure.induce_inter
+
+#print axioms StructuralRamsey.RelStructure.IsUIrreducible.of_missing_closureTuple
