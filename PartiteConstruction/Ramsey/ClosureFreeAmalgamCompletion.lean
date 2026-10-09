@@ -78,7 +78,7 @@ theorem IsFreeAmalgam.closureTuple_inLeft_of_root_inLeft
           _ = iR (b (k.castLE rule.rootLE)) := congrFun hEq _
       obtain ⟨d, _hda, hdb⟩ :=
         (hFree.overlap a (b (k.castLE rule.rootLE))).mp heq
-      exact ⟨d, hdb⟩
+      exact ⟨d, hdb.symm⟩
     have hAllRange :=
       hOverlapClosed rule hrule b hb hRootRange
     intro j
@@ -86,7 +86,7 @@ theorem IsFreeAmalgam.closureTuple_inLeft_of_root_inLeft
     have hglue : iL (sL d) = iR (sR d) :=
       (hFree.overlap (sL d) (sR d)).mpr ⟨d, rfl, rfl⟩
     exact ⟨sL d, (congrFun hEq j).trans
-      ((congrArg iR hd).trans hglue.symm)⟩
+      ((congrArg iR hd).symm.trans hglue.symm)⟩
 
 /-- Symmetric form of the closure tuple range lemma. -/
 theorem IsFreeAmalgam.closureTuple_inRight_of_root_inRight
