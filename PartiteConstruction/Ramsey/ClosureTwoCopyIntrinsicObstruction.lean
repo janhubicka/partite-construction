@@ -64,18 +64,19 @@ private abbrev rootInFirst : Embedding Root TwoCopies where
     cases R with
     | false =>
       change (∃ side : Bool,
-        (∀ i : Fin 1, false = side) ∧ (0 : Fin 2) = 0) ↔ True
+        (∀ i : Fin 1, false = side) ∧ (0 : Fin 2) = 0) ↔ (false = false)
       constructor
-      · intro _; trivial
+      · intro _; rfl
       · intro _; exact ⟨false, (fun _ => rfl), rfl⟩
     | true =>
       change (∃ side : Bool,
         (∀ i : Fin 2, false = side) ∧
-          ((0 : Fin 2) = 0 ∧ (0 : Fin 2) = 1)) ↔ False
+          ((0 : Fin 2) = 0 ∧ (0 : Fin 2) = 1)) ↔ (true = false)
       constructor
       · rintro ⟨_, _, h⟩
-        exact (by decide : (0 : Fin 2) ≠ 1) h.2
-      · exact False.elim
+        exact False.elim ((by decide : (0 : Fin 2) ≠ 1) h.2)
+      · intro h
+        cases h
 
 private abbrev leftCopy : Embedding Base TwoCopies where
   toFun := fun x => (false, x)
