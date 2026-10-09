@@ -34,7 +34,6 @@ private def TupleCover (S T : Finset Vert) : Prop :=
 /-- Exhaustive calculation: no two proper closed vertex sets freely
 cover all five closure triples. Does not assert semantic U-irreducibility
 until the higher-level encoding bridge is proved. -/
-set_option maxHeartbeats 5000000 in
 theorem no_closed_two_side_cover :
     ∀ (S T : Finset Vert), Closed S → Closed T →
       S ∪ T = all → TupleCover S T → S = all ∨ T = all := by
@@ -44,9 +43,14 @@ theorem no_closed_two_side_cover :
         (3 : Vert) ∈ S ∧ (4 : Vert) ∈ S) ∨
        ((0 : Vert) ∈ T ∧ (1 : Vert) ∈ T ∧ (2 : Vert) ∈ T ∧
         (3 : Vert) ∈ T ∧ (4 : Vert) ∈ T)) := by
-    dsimp [Closed] at hS hT
-    dsimp [TupleCover] at hTuples
-    tauto
+    rcases hS with ⟨hs01, hs02, hs13, hs24, hs34⟩
+    rcases hT with ⟨ht01, ht02, ht13, ht24, ht34⟩
+    rcases hTuples with ⟨hX, hY, hZ, hW⟩
+    rcases hX with hX | hX <;>
+      rcases hY with hY | hY <;>
+      rcases hZ with hZ | hZ <;>
+      rcases hW with hW | hW <;>
+      tauto
   rcases hall with h | h
   · left
     apply Finset.eq_univ_of_forall
@@ -74,16 +78,22 @@ private def IsIrreducibleSeed (S : Finset Vert) : Prop :=
 /-- No ordinary irreducible induced seed generates all five vertices. -/
 private theorem mem_step_three (S : Finset Vert) :
     (3 : Vert) ∈ step S ↔ (3 : Vert) ∈ S := by
-  simp [step]
+  classical
+  simp only [step, Finset.mem_union]
+  split_ifs <;> simp_all
 
 private theorem mem_step_four (S : Finset Vert) :
     (4 : Vert) ∈ step S ↔ (4 : Vert) ∈ S := by
-  simp [step]
+  classical
+  simp only [step, Finset.mem_union]
+  split_ifs <;> simp_all
 
 private theorem no12_step (S : Finset Vert)
     (h1 : (1 : Vert) ∉ S) (h2 : (2 : Vert) ∉ S) :
     (1 : Vert) ∉ step S ∧ (2 : Vert) ∉ step S := by
-  simp [step, h1, h2]
+  classical
+  simp only [step, Finset.mem_union]
+  split_ifs <;> simp_all [h1, h2]
 
 theorem irreducible_seed_not_generating :
     ∀ S : Finset Vert, IsIrreducibleSeed S → hull S ≠ all := by
