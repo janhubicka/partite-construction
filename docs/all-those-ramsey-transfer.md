@@ -202,6 +202,36 @@ test**, and do not use the new weak-test theorem to claim Lemma 2.28
 or 2.31 complete.  The closed-ambient equivalence does not settle
 this remaining interpretation question.
 
+### The correct finite induction parameter: U-size (Definition 2.25)
+
+The published Lemma 2.30 is a **j to j+1 induction on U-size**,
+not an induction on the cardinality of arbitrary weak image tests.
+U-size is the least cardinality of a vertex set whose U-closure is
+the entire structure.  Its source-relative closure hull and rank are
+now defined in `Ramsey/ClosureUSize2019.lean`:
+
+- `UClosureHull`: intersection of all ambient-relative U-substructures
+  containing the specified set;
+- `UClosureHull_isUSubstructure`, `UClosureHull_minimal` and
+  `UClosureHull_idempotent`: the closure operator's basic properties;
+- `IsUClosed.induce_UClosureHull`: the induced hull is U-closed when
+  the ambient structure is U-closed;
+- `USize`, `USize_spec` and `USize_le_card`: the minimal generating
+  rank for finite structures and its elementary cardinal bound.
+
+This is deliberately NOT an instruction to close a projected test
+p[S]. Weak projected images remain induced on precisely p[S].
+Lemma 2.31 finishes by taking n passes on U-size and observing that
+every U-substructure with at most n vertices has U-size at most n.
+The U-size induction and the finite-vertex conclusion therefore need
+separate transport lemmas.
+
+**TODO:** Formalize the actual Lemma 2.30 step with U-size, preserving
+the exact weak-image cardinalities needed during one Picture pass;
+then derive Lemma 2.31 with n iterations. Neither is proven by the
+closure-rank API alone. Only mark the above declarations validated
+after a full Lean build and axiom audit on their PR head.
+
 ## Gaps to obtain exactly Theorem 2.18
 
 1. **Closure description (PARTLY COMPLETED)**: the general relational
