@@ -22,6 +22,7 @@ import PartiteConstruction.Functional.NativePowerFullObstruction
 import PartiteConstruction.Functional.NativePowerInputTree
 import PartiteConstruction.Functional.NativePowerClosedStaircase
 import PartiteConstruction.Functional.NativePowerTwelveBound
+import PartiteConstruction.Functional.NativePowerExactTwelve
 import PartiteConstruction.Functional.OriginalPartialSemantics
 import PartiteConstruction.Functional.NativePowerOriginalPartialCompletion
 import PartiteConstruction.Functional.QuotientBoundaryDomainObstruction
@@ -399,3 +400,6 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closureTuple_hasRoot
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closureTuple_hasRoot_all
+
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.supportCover_injective
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.staircaseSupport_card_eq_twelve
