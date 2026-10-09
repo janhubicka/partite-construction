@@ -36,20 +36,19 @@ theorem IsFreeAmalgam.left_generator_drop_over_root
   classical
   letI : Fintype E := Fintype.ofFinite E
   let S : Finset E := Finset.univ.filter (fun a => iL a ∈ G)
-  let phi : (↑S : Set E) → (↑(G.erase z) : Set C) := fun a =>
-    ⟨iL a.1, by
-      apply Finset.mem_erase.mpr
-      constructor
-      · intro he
-        exact hOutside ⟨a.1, he⟩
-      · exact (Finset.mem_filter.mp a.2).2⟩
-  have hPhi : Function.Injective phi := by
-    intro a b h
-    apply Subtype.ext
-    apply iL.injective
-    exact congrArg (fun x : (↑(G.erase z) : Set C) => x.1) h
+  have hImage : S.image iL ⊆ G.erase z := by
+    intro x hx
+    obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp hx
+    apply Finset.mem_erase.mpr
+    constructor
+    · intro he
+      exact hOutside ⟨a, he⟩
+    · exact (Finset.mem_filter.mp ha).2
   have hBound : S.card ≤ (G.erase z).card := by
-    simpa using Fintype.card_le_of_injective phi hPhi
+    calc
+      S.card = (S.image iL).card :=
+        (Finset.card_image_of_injective S iL.injective).symm
+      _ ≤ (G.erase z).card := Finset.card_le_card hImage
   have hErase := Finset.card_erase_of_mem hz
   have hPositive : 0 < G.card := Finset.card_pos.mpr ⟨z, hz⟩
   have hSmall : S.card < G.card := by omega
