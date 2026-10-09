@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureLocalFinitenessNoGo2019
 import PartiteConstruction.Ramsey.ClosureFiniteSeedObstruction
 import PartiteConstruction.Ramsey.ClosurePowerIrreducibleSeed
 import PartiteConstruction.Ramsey.ClosureProtectedPictureStep
@@ -169,3 +170,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.FiniteSeedObstruction.irreducible_seed_not_generating
 #print axioms StructuralRamsey.RelStructure.FiniteSeedObstruction.generating_support_card_ge_three
 #print axioms StructuralRamsey.RelStructure.FiniteSeedObstruction.two_three_vertex_generators
+
+#print axioms StructuralRamsey.RelStructure.IsUClosed.exists_nonclosed_Uirreducible_test
+#print axioms StructuralRamsey.RelStructure.not_all_intrinsic_Uirred_tests_in_closed_class
