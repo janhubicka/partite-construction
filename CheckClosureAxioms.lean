@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureProtectedPass
 import PartiteConstruction.Ramsey.ClosureRelativeMapGlue
 import PartiteConstruction.Ramsey.ClosureClosedLocalFiniteness
 import PartiteConstruction.Ramsey.ClosureProtectedPictureLemma
@@ -195,3 +196,5 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.ClosedULocalCompletionAt.mono
 #print axioms StructuralRamsey.RelStructure.ClosedULocalCompletionAt.of_rank_and_coverage
 #print axioms StructuralRamsey.RelStructure.ramsey_of_closedLocalCompletionAt_rank_and_coverage
+#print axioms StructuralRamsey.Partite.Induced.protected_pass
+#print axioms StructuralRamsey.Partite.Induced.protected_pass_with_rank_one
