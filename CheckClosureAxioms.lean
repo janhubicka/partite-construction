@@ -1,3 +1,6 @@
+import PartiteConstruction.Ramsey.ClosureProtectedPass
+import PartiteConstruction.Ramsey.ClosureRelativeMapGlue
+import PartiteConstruction.Ramsey.ClosureClosedLocalFiniteness
 import PartiteConstruction.Ramsey.ClosureProtectedPictureLemma
 import PartiteConstruction.Ramsey.ClosureHomomorphicImageHull
 import PartiteConstruction.Ramsey.ClosurePowerProtected
@@ -182,3 +185,16 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.Partite.Induced.part_embedding_on_closed_uIrreducible_test
 #print axioms StructuralRamsey.Partite.Induced.power_part_protected
 #print axioms StructuralRamsey.Partite.Induced.pictureLemma_protected
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closed_test_factor_of_relative_ranges
+#print axioms StructuralRamsey.RelStructure.relative_ranges_on_weak_test
+#print axioms StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.fold_free_of_relative_ranges
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_independent_projected_completions_relative
+#print axioms StructuralRamsey.RelStructure.ClosedUIrreduciblesIn.of_copy_coverage
+#print axioms StructuralRamsey.RelStructure.ClosedUIrreduciblesIn.of_mem
+#print axioms StructuralRamsey.RelStructure.ClosedUIrreduciblesIn.pullback_embedding
+#print axioms StructuralRamsey.RelStructure.ClosedULocalCompletionAt.mono
+#print axioms StructuralRamsey.RelStructure.ClosedULocalCompletionAt.of_rank_and_coverage
+#print axioms StructuralRamsey.RelStructure.ramsey_of_closedLocalCompletionAt_rank_and_coverage
+#print axioms StructuralRamsey.Partite.Induced.protected_pass
+#print axioms StructuralRamsey.Partite.Induced.protected_pass_with_rank_one
