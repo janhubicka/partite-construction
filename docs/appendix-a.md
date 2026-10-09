@@ -138,9 +138,14 @@ a full functional Ramsey witness in the same free-amalgamation class,
 with the controlled graph-tree completion bound for **all weak vertex tests**
 of size at most n, and a weak EHN projection to the original witness.
 This proves the graph-level conclusion for every genuinely function-closed
-substructure of that size. Function-closed gluing roots and full target
-function-fibre preservation remain separate requirements for any
-**strict full-function tree-target** strengthening.
+substructure of that size. A generic strengthening to strict
+**total-fibre** functional B-tree targets is **false**: the actual tagged
+native power has a verified function-closed test of exactly twelve
+vertices that has no such completion, even with a hereditarily
+irreducible base graph. Its completion *does* exist under the
+original 2019 partial-function homomorphism convention. The two
+completion notions must not be conflated; the positive weak graph-tree
+induction remains unchanged.
 
 This argument does not use U-closed relational graph expansions: those
 are needed only in the recursive partite construction, whose intermediate
