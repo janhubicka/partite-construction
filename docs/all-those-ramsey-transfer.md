@@ -106,8 +106,12 @@ for the 2019 transfer; they do **not** by themselves prove Lemma 2.28,
 Lemma 2.31, or Theorem 2.18:
 
 - PR #149: `IsUIrreducible`, `IsUHomomorphismEmbedding`,
-  `IsUCompletion` and their basic embeddings. The U-homomorphism
-  interface tests exact U-closed, U-irreducible induced substructures.
+  `IsUCompletion` and their basic embeddings. **Correction after
+  checking the 2019 published Definition 2.15:** the original
+  interface incorrectly required an induced test to be both U-closed
+  and U-irreducible. Definition 2.15 only requires U-irreducibility.
+  This branch removes the extra condition; the old #149 definition
+  must not be cited as a complete verification.
 - PR #150: `IsFreeAmalgam.weakInduce` restricts an arbitrary
   relational free-amalgam to a given vertex set and its exact
   inverse-image side/root sets. No closure assumptions or added
@@ -127,9 +131,10 @@ Lemma 2.31, or Theorem 2.18:
   **codomain** result; it does not assert that a U-homomorphism-
   embedding restricts to arbitrary weak *source* tests.
 
-The first three patches passed complete Lean builds and permitted-axiom
-audits before merging. The fourth is included in the corresponding PR
-and must pass the same checks before being marked validated.
+PRs #149--152 passed complete Lean builds and permitted-axiom audits,
+  but build success alone did not certify fidelity to the published
+  definitions. The present semantic correction is separately checked
+  against Definition 2.15 and must pass a new full build and audit.
 
 **TODO — next actual proof step.** In the 2019 partite Picture
 construction, supply the U-homomorphism-embedding projection and the
@@ -141,6 +146,21 @@ original vertex bound and explicitly produce any simultaneous relative
 extension certificates required by a mixed attachment. Neither
 independent completions nor replacement by generated closure hulls
 suffice.
+
+### Definition 2.15 semantic correction (9 October)
+
+The printed 2019 definition of a U-homomorphism-embedding requires a
+homomorphism to restrict to an embedding on **any U-irreducible
+substructure**. The former #149 predicate quantified only over
+U-closed U-irreducible substructures, hence was too weak. In the
+updated `IsUHomomorphismEmbedding`, `embeddingOn`, and
+`ClosureUHomWeakImage`, U-irreducibility is the sole test hypothesis.
+The previously checked U-irreducible localization lemma (#151)
+remains valid only for U-substructures; it does not assert all weak
+induced subsets localize.
+
+These facts were compared with the publisher's Definition 2.15:
+https://www.sciencedirect.com/science/article/pii/S0001870819304098
 
 ## Gaps to obtain exactly Theorem 2.18
 
@@ -157,7 +177,9 @@ suffice.
    image's closure hull. U-semi-closedness and the basic U-homomorphism-
    embedding interface are now formalized. What remains here is their
    application to the full 2019 Ramsey-witness and completion induction,
-   especially the not-necessarily-U-closed small tests.
+   especially the not-necessarily-U-closed small tests. Definition 2.15
+   must be represented WITHOUT an additional closedness hypothesis
+   on U-irreducible source tests.
 2. **Lemma 2.28 interface**: produce a U-closed Ramsey witness with
    U-homomorphism-embedding to C0. The native function proof should
    be reused *via* the closure relational encoding, but without
