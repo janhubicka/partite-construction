@@ -1,4 +1,5 @@
 import PartiteConstruction.Ramsey.ClosureEmbeddedSourceClosed
+import PartiteConstruction.Ramsey.ClosureUIrreducibleEquivalence
 import PartiteConstruction.Ramsey.ClosureRelativeIrreducibleWeakTest
 import PartiteConstruction.Ramsey.ClosureRelativeSideRange
 import PartiteConstruction.Ramsey.ClosureUHomWeakImage
@@ -496,3 +497,5 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.IsUSubstructure.weakInduce_embeddingRange
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.uRelativeIrreducible_weak_side
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.mixed_weak_not_uRelativeIrreducible
+
+#print axioms StructuralRamsey.RelStructure.IsUClosed.uIrreducible_iff_relative
