@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureProjectedGenerators
 import PartiteConstruction.Ramsey.ClosureProjectedCompletion
 import PartiteConstruction.Ramsey.ClosureProjectedBoundary
 import PartiteConstruction.Ramsey.CompatibleClassCompletion
@@ -67,3 +68,13 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closed_test_factor
 #print axioms StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.fold_free
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_independent_projected_completions
+
+#print axioms StructuralRamsey.RelStructure.IsUSubstructure.preimage_homomorphism
+#print axioms StructuralRamsey.RelStructure.IsHomomorphism.image_UClosureHull_subset
+#print axioms StructuralRamsey.RelStructure.IsHomomorphism.range_subset_generatedHull
+#print axioms StructuralRamsey.RelStructure.IsHomomorphism.generatedHull_eq_rangeHull
+#print axioms StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.to_generatedHull
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.precomp_closedMap
+#print axioms StructuralRamsey.RelStructure.projected_generator_card_lt
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_projected_generators
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_generator_collision
