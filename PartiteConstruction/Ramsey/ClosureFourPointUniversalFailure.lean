@@ -180,8 +180,9 @@ private theorem removedOutput_irreducible
     refine ⟨1, ?_⟩
     simpa [S, hto]
   have hRule : rule ∈ rules := by simp [rules]
-  exact IsUIrreducible.of_missing_tuple_in_weak_test
-    rule hRule e S hr hMissing
+  intro H E F Root Left Right sL sR iL iR hL hR hFree
+  exact (IsUIrreducible.of_missing_tuple_in_weak_test
+    rule hRule e S hr hMissing) hL hR hFree
 
 /-- No A-copy can meet the unique P-root of an embedded B-copy:
 full embeddings reflect the P predicate. -/
