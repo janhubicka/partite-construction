@@ -1,179 +1,167 @@
 # Positive proof plan for Theorem 2.18
 
-Date: 9 October 2026.
+Updated: 9 October 2026.
 Primary source: Hubicka--Nesetril, *All those Ramsey classes*,
 arXiv:1606.07979v4, Sections 2.1.2 and 2.3--2.6;
 https://arxiv.org/html/1606.07979v4 .
 
-**Target:** a verified multiamalgamation implication, not another
-conditional strict-functional-tree theorem. Existing counterexample
-branches remain separate. No circulation manuscript text is changed.
+**Target:** a verified multiamalgamation implication. Counterexample
+branches remain separate. No circulation manuscript prose is changed.
 
-## 0. Fix the exact theorem contract before declaring success
+## 0. Exact theorem contract and semantic boundary
 
-For finite A,B in K, first obtain C0 in R with C0 -> (B)^A_k from
-R's Ramsey property. Then choose n = n(B,C0) from local finiteness.
-The construction must produce a finite C with:
+For finite A,B in K, choose C0 in R with C0 -> (B)^A_k, then fix
+n=n(B,C0). The construction must produce a finite C with:
 
-1. C is U-closed and C -> (B)^A_k;
-2. the specified completion/projection C -> C0;
-3. exactly the irreducible-test membership required by the local axiom;
-4. a K-valued completion for every induced weak vertex test S of size <= n.
+1. U-closedness and C -> (B)^A_k;
+2. the specified completion/projection to the ORIGINAL C0;
+3. precisely the test-membership condition of the local-finiteness axiom;
+4. K-completions of all induced weak tests on at most n vertices.
 
-Local finiteness then supplies ONE map C -> D, D in K, preserving
-all B-copies simultaneously. This map, not a strict B-tree target,
-is the endpoint needed for the Ramsey transfer.
+Local finiteness then supplies ONE map C -> D, D in K, preserving all
+B-copies. A strict full-functional B-tree is not the required endpoint.
 
-### Semantic gate (still open)
+**Semantic boundary:** `IsUHomomorphismEmbedding` and `IsUIrreducible`
+from the literal 2019 audit remain unchanged. The positive construction
+now has an explicitly named working map `IsClosedUHomomorphismEmbedding`,
+which protects embedded intrinsically U-closed U-irreducible tests.
+`HasClosedUKCompletion` supplies a finite irreducible K-target for such a
+map. These are candidate repaired conventions, not asserted equivalents
+of the unrestricted printed definition.
 
-The current intrinsic `IsUIrreducible` and its obstruction modules are
-not silently redefined. A working closed-test repair would protect
-intrinsically U-closed U-irreducible source substructures in the global
-projection and class-membership invariants. On those tests the existing
-intrinsic/relative equivalence is applicable. Another possibility is a
-relative irreducibility convention, but this is not automatically the
-same theorem.
+The bridge must be checked in BOTH Definition 2.15 and Definition
+2.17(4). Altering tests in (4b) changes the antecedent of local finiteness.
+Prove that the original hypotheses imply the working axiom, or explicitly
+state the corrected theorem hypothesis. Do not silently relabel a theorem
+under that corrected hypothesis as the literal published Theorem 2.18.
 
-This must be audited in **both Definition 2.15 and Definition 2.17(4)**,
-not just in the auxiliary Lemma 2.29. In particular, changing the tests
-in (4b) changes the antecedent of the local-completion axiom. One must
-prove that the given hypotheses imply the working axiom, or explicitly
-state a corrected theorem hypothesis. A proof with a repaired (4b) is
-NOT by itself a proof of the literal published formulation. Relative
-irreducibility alone does not make a weak root-only test intrinsically
-U-closed or a member of K.
+## 1. Completed foundation: transfer and generating rank
 
-The formal work in the first patch below is independent of this gate.
+PR #170 passed the full build and permitted-axiom audit on proof head
+0b1fdecbb0e35593283f03b1a484c5ca45ee6d74 (workflow 37931903527),
+and is merged.
 
-## 1. Finish the end of the proof first
+`CopywiseRamseyTransfer.lean` proves that B-copywise preservation ALONE
+transfers the Ramsey arrow. Non-liftable A-copies receive a default
+colour; all A-copies in the final B-copy lift. No irreducibility or
+all-A-copy coverage assumption is needed for this final colour transfer.
+This does not remove condition (4b) from local finiteness.
 
-Prove Ramsey transfer using only B-copywise preservation. For a colouring
-of A-embeddings into D, colour an A-embedding a into C by its image under
-the completion map when this image is an embedding; otherwise choose a
-fixed default colour. In the B-copy produced by the Ramsey property,
-every A-subcopy is in the first case. Thus D -> (B)^A_k.
+`ClosureGeneratedHullRank.lean` proves that S generates its induced
+ambient closure H, and USize(C induced on H) <= |S|. The hull can have
+more than |S| vertices. Neither hull-cardinality bounds nor equality
+between the weak-test and hull U-sizes are asserted.
 
-This removes the `IrreduciblesExtendTo B C` and irreducibility assumptions
-from the *colour-transfer* lemma. It does NOT remove test-membership (4b)
-from local finiteness. It also avoids requiring all A-copies in C to lie
-in B-copies merely for the last colouring step.
+## 2. Working completion maps and weak-test extraction
 
-Implementation: `Ramsey/CopywiseRamseyTransfer.lean`:
-`arrow_of_BCopywiseCompletion` and its class-valued version.
+`ClosureClosedMap.lean` represents protected tests by full embeddings
+of their own structures. This proves composition, source restriction
+along ANY full relational embedding, exact induced codomain restriction,
+and the weak-to-weak map from S to f[S]. No image hull is generated.
 
-## 2. Map calculus and one complete closure-respecting Ramsey pass
+A source restriction need not be U-closed: any protected closed test in
+that restriction is still the same embedded protected test in the larger
+source. This proves the necessary restriction property rather than
+assuming it. This statement concerns relational induced structures,
+not weak functional restrictions pretending to be full function embeddings.
 
-Establish for the explicitly chosen test convention:
+`ClosureClosedCompletionRank.lean` proves that the SAME finite K-target
+completes an embedded weak test. Its `of_closed_USize` theorem discharges
+the hereditary/restriction premise of the earlier generic rank bridge:
+closed rank-n completion control gives completions of exact weak
+n-vertex tests, under the explicitly named working convention.
 
-- invariance under full relational isomorphisms;
-- composition of the relevant homomorphism-embeddings;
-- restriction along full embeddings, including arbitrary induced weak
-  source tests when used for local completions;
-- restriction of the codomain to the exact image, without closing it;
-- closure of selected A-supports in the native Picture construction.
+## 3. Revised mixed-case argument: a fixed projected boundary
 
-Use the existing finite Hales--Jewett and Picture combinatorics, but prove
-the general relational closure-rule interface. Do not identify arbitrary
-closure descriptions with graph encodings of functions without a proved
-encoding equivalence. Keep the intermediate semi-closed and final closed
-structures distinct. Reuse the checked free-amalgam closure calculus and
-closed-test side-localization lemmas.
+The original plan demanded simultaneous relative completions too early.
+There is a usable, more precise case in which independent completions
+already supply their compatibility.
 
-Deliverable: an actual finite Ramsey witness with the selected projection
-and protected-test coverage, constructed from A,B,C0, not supplied as an
-oracle. Its dependency closure must not assume Theorem 2.18 itself.
+Let F=E amalgam_R F2 be the source free amalgam. Suppose there are
+projected side sources DL,DR, source projection maps pL,pR, and ONE fixed
+closed Q in K with embeddings rL:Q->DL and rR:Q->DR such that
 
-## 3. Prove the rank-increment lemma directly with K-completions
+    pL restricted to R = rL composed with q,
+    pR restricted to R = rR composed with q
 
-At outer rank j, assume every closed substructure of U-size <= j has the
-specified K-completion. One complete induced Ramsey pass must raise this
-to j+1, while retaining the Ramsey arrow and original C0 projection.
+for a map q:R->Q. Choose K-completions cL:DL->TL and cR:DR->TR
+INDEPENDENTLY. Since Q is closed and K consists of ordinary irreducibles,
+each completion restricts to a full embedding eL:Q->TL or eR:Q->TR.
+These embeddings agree with cL rL and cR rR on the ORIGINAL Q carrier.
+Strongly amalgamate TL,TR over these embeddings of Q. The resulting
+side maps agree on R, even when q is not injective.
 
-Retain a generator set G, |G| <= j+1, and the concrete construction
-history. In the small projected-support case, use the exact weak image
-p[G], whose cardinality drops when labels collide, and the closure/rank
-transport lemmas. Never infer that p[G] itself is closed. The closure may
-be used to invoke a rank invariant, not to assert a false vertex bound.
+Where does Q come from? If the projected separator vertices lie in a
+closed A-copy a(A) in a closed ambient D, their closure Q in D still
+embeds into A. Closed hereditariness of K puts Q in K, and THEN Q is
+irreducible. Containment in an irreducible A alone would not suffice.
+`closedHull_factor_closed_copy` and `closedHull_in_class_of_subset_copy`
+formalize these assertions.
 
-### The central mixed-attachment obligation
+`ClosureClosedMapGlue.lean` proves that compatible side maps glue to a
+positive map preserving ALL protected closed tests. It pulls the side
+ranges back into each test's own carrier; those preimages are closed,
+so intrinsic irreducibility forces the test into one side. Source sides
+need only be U-semi-closed and their common root must be U-closed.
+The target is not required to be a free amalgam.
 
-For a source free amalgam E amalgam_R F, build a finite *compatible*
-completion diagram:
+`ClosureProjectedCompletion.lean` combines these facts into
+`HasClosedUKCompletion.of_independent_projected_completions`.
+This constructs a full closed-test K-completion, not merely a B-copywise
+map. Its premise supplies independent side completions, NOT a shared
+completion diagram or relative-extension oracle. The earlier B-copywise
+version remains in `ClosureProjectedBoundary.lean`.
 
-    R --q--> Q in K
-    |        | eE                | eF
-    E --fE-> KE in K       F --fF-> KF in K
+**Scope:** this removes the compatibility obstacle when the fixed common
+closed K-member Q embeds in both projected sources. It does not make
+arbitrary independently completed reducible separators compatible.
 
-Here fE and fF agree on R through the SAME q, and eE,eF are full
-embeddings of Q. Apply K's strong amalgamation to eE,eF, then fold the
-source map into the resulting K-target. The protected tests that localize
-to one side remain embeddings there.
+## 4. Remaining construction and rank obligations
 
-The existence of these compatible diagrams is the hard lemma. Independent
-completions of E,F,R do not supply it. Nor may strong amalgamation be
-applied over a reducible separator that has not been realised in K.
-Construct the diagram by replaying the selected Picture/Hales--Jewett
-history with a common boundary completion; prove its existence and all
-compatibility equations before using it as a stage invariant. If that
-invariant is too strong, revise the construction rather than assuming an
-unproved relative-extension oracle.
+The next actual Lemma 2.30 work is to produce the hypotheses of the
+mixed theorem from the concrete Picture geometry:
 
-No strict full-functional B-tree conclusion is required for this route.
-Target-side amalgamation happens in K, which need not freely amalgamate.
+- construct the displayed projections preserving protected tests;
+- prove the projected separator's closure lies in the selected A-copy;
+- embed the SAME Q into both projected side closures;
+- prove each projected side closure has U-size <= j, not merely that
+  its source has fewer vertices or that its hull has bounded cardinality.
 
-## 4. Convert closed rank control to the exact weak local tests
+For a generator set G of size at most j+1, a collision in p[G] supplies
+a strict cardinal drop in the exact weak projected support. Its closure
+may then be used to invoke the rank invariant. In the injective-label
+case, the cut must be chosen so that both sides lose a generator after
+projection. This must be proved; minimal counterexample language alone
+does not supply the two rank inequalities.
 
-For a weak induced test on a finite S in C, put H = cl_U^C(S). The
-inequality actually needed is
+The full closure-respecting Hales--Jewett/Picture pass is still required.
+Use the existing finite combinatorics but prove the general relational
+closure-rule interface. Keep intermediate semi-closed and final closed
+structures distinct. Do not import full hereditariness of K or hereditary
+graph-irreducibility of A as hidden assumptions.
 
-    USize(C induced on H) <= |S|,
+## 5. Iterate, invoke local finiteness, and transport the language
 
-NOT equality of weak-test and hull U-sizes, and NOT |H| <= |S|.
-C is U-closed, so its induced H is U-closed. Complete H by the rank
-invariant, then restrict that completion map to the original induced S.
-The test used by local finiteness is still exactly S.
+Handle zero rank and the empty structure explicitly. After a proved
+j-to-j+1 step, iterate n times and compose maps to the original C0.
+Use the working weak-test extraction from Section 2. Resolve the semantic
+boundary, verify all three local-finiteness conditions with one fixed
+n(B,C0), and apply the B-only colour transfer from Section 1.
 
-The first patch implements the generating-rank argument in
-`ClosureGeneratedHullRank.lean`, and the general extraction theorem
-`local_property_of_closed_USize` in `ClosureLocalCompletionRank.lean`.
-The latter has an explicit hereditary-under-embeddings premise. Proving
-that premise for the chosen completion notion belongs to Step 2; it is
-not assumed to follow from a change of terminology.
+Transport the relational result to genuine partial functions only through
+a separately verified Proposition 2.20 interface, preserving finite weak
+tests and completion hypotheses. Current positive modules are relational.
 
-This use of a temporary source hull does not change the separate rule
-that projected images in the Picture argument are weakly induced on
-exactly their original image vertices.
+## Validation discipline
 
-## 5. Iterate and apply the actual local-finiteness axiom
+PR #171 adds the closed-test calculus, boundary construction, and gluing
+modules. All seventeen new theorem declarations have individual axiom
+checks in CheckClosureAxioms; every previous audit line is retained.
+The first fourteen declarations passed workflow 37935674006 at head
+1fae63a8a231bb745fcc44c9ead5031a59e18563. The final combined head must
+pass its own build/audit before merge; consult the PR for that status.
 
-Handle rank zero and the empty structure explicitly. Iterate the proved
-rank step n times; compose the projections back to the ORIGINAL C0, not
-just to the most recent stage. Derive weak local completions via Step 4.
-Verify all of (4a), (4b), (4c) with their precise quantifiers and one fixed
-choice n(B,C0). Invoke the axiom, then use Step 1.
-
-Finally transport the relational proof to languages with genuine partial
-functions through a separately checked version of Proposition 2.20.
-Preserve full embeddings, source-domain semantics, finite vertex tests,
-and the class/local-completion hypotheses. The current first patch is
-relational; it is not the arbitrary-language theorem.
-
-## Validation and immediate next patch
-
-The current branch adds actual proofs of the B-only transfer, relative
-closure transitivity, the induced-hull generating property, the generator
-bound, and the hereditary closed-rank-to-weak-test bridge. Each declaration
-is listed in `CheckClosureAxioms.lean`. No `sorry`, new axioms, or provisional
-main-theorem validation markers are introduced.
-
-Immediate next patch: implement the chosen completion map calculus and
-state the exact compatible K-completion diagram with its commuting maps.
-Then prove the free-gluing preservation theorem for such a diagram before
-attempting the simultaneous-existence part of Step 3. Keep the semantic
-bridge and the unproved construction theorem visibly separate.
-
-A full build certifies the submitted Lean statements, not their fidelity
-to an unsettled interpretation of the paper. Theorem 2.18 remains open in
-the coverage table until the semantic gate, witness construction, rank
-increment, local-finiteness application and language transport are all
-closed by checked proofs.
+No theorem identified as Theorem 2.18 or Lemma 2.30 is marked validated.
+Remaining obligations are the actual source geometry/rank step, full
+Ramsey pass, literal-hypothesis bridge, and language transport. No
+circulation manuscript text has been modified.
