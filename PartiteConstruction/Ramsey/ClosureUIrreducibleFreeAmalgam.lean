@@ -47,17 +47,17 @@ theorem IsFreeAmalgam.uIrreducible_side
     hLeft.induce_preimage_embedding hS iL
   have hRS : IsUClosed rules (Right.induce Rset) :=
     hRight.induce_preimage_embedding hS iR
-  obtain ⟨mL, mR, jL, jR, hRestricted⟩ :=
-    hFree.weakInduce S
+  obtain ⟨mL, mR, jL, jR, hRestricted, hjL, hjR⟩ :=
+    hFree.weakInduce_withMaps S
   rcases hIrred hLS hRS hRestricted with hSurjL | hSurjR
   · left
     intro z
     obtain ⟨a, ha⟩ := hSurjL z
-    exact ⟨a.1, (congrArg Subtype.val ha).symm⟩
+    exact ⟨a.1, (congrArg Subtype.val ha).symm.trans (hjL a)⟩
   · right
     intro z
     obtain ⟨b, hb⟩ := hSurjR z
-    exact ⟨b.1, (congrArg Subtype.val hb).symm⟩
+    exact ⟨b.1, (congrArg Subtype.val hb).symm.trans (hjR b)⟩
 
 /-- If a U-substructure test meets both exclusive sides of a free
 amalgam with U-closed sides, it cannot be U-irreducible. -/
