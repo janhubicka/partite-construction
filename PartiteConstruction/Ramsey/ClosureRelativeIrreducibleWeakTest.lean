@@ -68,8 +68,8 @@ full embedding.  The induced set S can omit closure outputs. -/
 theorem IsUSubstructure.weakInduce_embeddingRange
     {A : RelStructure L U} {B : RelStructure L V}
     {rules : ClosureDescription L}
-    (hRange : IsUSubstructure rules B (Set.range e))
     (e : Embedding A B)
+    (hRange : IsUSubstructure rules B (Set.range e))
     (S : Set V)
     (j : Embedding (A.induce (e ⁻¹' S)) (B.induce S))
     (hj : ∀ a : (e ⁻¹' S), (j a).1 = e a.1) :
@@ -129,10 +129,12 @@ theorem IsFreeAmalgam.uRelativeIrreducible_weak_side
     hFree.weakInduce_withMaps S
   have hSmallLeft :
       IsUSubstructure rules (Whole.induce S) (Set.range jL) :=
-    hWholeLeft.weakInduce_embeddingRange iL S jL hjL
+    IsUSubstructure.weakInduce_embeddingRange
+      iL hWholeLeft S jL hjL
   have hSmallRight :
       IsUSubstructure rules (Whole.induce S) (Set.range jR) :=
-    hWholeRight.weakInduce_embeddingRange iR S jR hjR
+    IsUSubstructure.weakInduce_embeddingRange
+      iR hWholeRight S jR hjR
   rcases hIrred hRestricted hSmallLeft hSmallRight with
       hSurjL | hSurjR
   · left
