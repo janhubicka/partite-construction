@@ -88,8 +88,9 @@ theorem IsUClosed.irreducibleSeed_hull_isUIrreducible
   have hGen : IsUGenerating rules (A.induce T) (Set.range e) := by
     rw [hRange]
     exact UClosureHull_induce_generated rules A S
+  intro H E F Root Left Right sL sR iL iR hLeft hRight hFree
   exact (hA.induce_UClosureHull S).uIrreducible_of_irreducible_generators
-    hS e hGen
+    hS e hGen hLeft hRight hFree
 
 /-- A working map is a full embedding on the entire closure of an
 ordinary irreducible seed, even when that seed omits closure outputs. -/
