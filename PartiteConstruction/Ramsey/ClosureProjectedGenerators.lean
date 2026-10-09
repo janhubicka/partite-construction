@@ -153,17 +153,18 @@ theorem HasClosedUKCompletion.of_projected_generators
     (hBudget : (G.image f).card ≤ n) :
     HasClosedUKCompletion K rules A := by
   classical
-  letI : Fintype V := Fintype.ofFinite V
-  let T : Set V := UClosureHull rules B (f '' (↑G : Set U))
+  let T : Set V := UClosureHull rules B (↑(G.image f) : Set V)
   letI : Fintype T := Fintype.ofFinite T
   have hT : IsUClosed rules (B.induce T) :=
-    hB.induce_UClosureHull (f '' (↑G : Set U))
-  have hSize : USize rules (B.induce T) ≤ (G.image f).card := by
-    simpa only [Finset.coe_image] using
-      USize_induce_UClosureHull_le rules B (G.image f)
+    hB.induce_UClosureHull (↑(G.image f) : Set V)
+  have hSize : USize rules (B.induce T) ≤ (G.image f).card :=
+    USize_induce_UClosureHull_le rules B (G.image f)
   have hCT := hRank T hT (hSize.trans hBudget)
-  obtain ⟨p, hp, _⟩ := hf.to_generatedHull (↑G : Set U) hGen
-  exact hCT.precomp_closedMap hp
+  have hRange (x : U) : f x ∈ T := by
+    change f x ∈ UClosureHull rules B (↑(G.image f) : Set V)
+    rw [Finset.coe_image]
+    exact hf.1.range_subset_generatedHull (↑G : Set U) hGen ⟨x, rfl⟩
+  exact hCT.precomp_closedMap (hf.codRestrict T hRange)
 
 /-- The collision branch of the j-to-j+1 argument: a generating set
 of size at most j+1 with two identified generators maps into a closed
