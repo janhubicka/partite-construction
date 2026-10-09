@@ -37,7 +37,11 @@ theorem arrow_of_initial_canonical
   let P0 := (initialStage B D).system
   let lift (alpha : RelStructure.Embedding A D) (ha : Relevant A B D alpha) :
       ProjectedEmbedding A P0 alpha.toFunctionEmbedding := by
-    obtain ⟨beta, e, he⟩ := ha
+    let beta : RelStructure.Embedding B D := Classical.choose ha
+    have hRest : ∃ e : RelStructure.Embedding A B, alpha = beta.comp e :=
+      Classical.choose_spec ha
+    let e : RelStructure.Embedding A B := Classical.choose hRest
+    have he : alpha = beta.comp e := Classical.choose_spec hRest
     refine ⟨(Partite.Initial.copyEmbedding B
       (fun gamma : RelStructure.Embedding B D => gamma.toFunctionEmbedding) beta).comp e, ?_⟩
     intro x
