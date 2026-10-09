@@ -90,7 +90,6 @@ def Embedding.codRestrictWeak
       rw [e.map_func F x] at himage
       have hval : y.1 = e a := congrArg Subtype.val hya.symm
       change y.1 ∈ B.func F (e ∘ x)
-      change y.1 ∈ B.func F (f ∘ x)
       rw [hval]
       exact himage
     · intro hy
@@ -122,6 +121,7 @@ theorem IsOriginalPartialHomomorphismEmbedding.codRestrictWeak
       have himage : f a ∈ imageSet f (A.func F x) := ⟨a, ha, rfl⟩
       rw [hF] at himage
       have hval : y.1 = f a := congrArg Subtype.val hya.symm
+      change y.1 ∈ B.func F (f ∘ x)
       rw [hval]
       exact himage
     · intro hy
@@ -130,7 +130,7 @@ theorem IsOriginalPartialHomomorphismEmbedding.codRestrictWeak
       obtain ⟨a, ha, hea⟩ := hyB
       refine ⟨a, ha, ?_⟩
       apply Subtype.ext
-      exact hea.symm
+      exact hea
   · intro Z E hE e
     obtain ⟨g, hg⟩ := hf.2 E hE e
     have hgrange : ∀ x, g x ∈ S := by
