@@ -52,12 +52,14 @@ theorem IsOriginalPartialHomomorphismEmbedding.comp
       rw [hBC] at hbc
       exact hbc
     · intro hz
-      rw [← hBC] at hz
-      obtain ⟨b, hb, hgb⟩ := hz
+      have hz' : z ∈ C.func F (g ∘ (f ∘ x)) := by
+        simpa only [Function.comp_assoc] using hz
+      rw [← hBC] at hz'
+      obtain ⟨b, hb, hgb⟩ := hz'
       rw [← hAB] at hb
       obtain ⟨a, ha, hfa⟩ := hb
       exact ⟨a, ha, (congrArg g hfa).trans hgb⟩
-  · intro E hE e
+  · intro Z E hE e
     obtain ⟨eb, heb⟩ := hf.2 E hE e
     obtain ⟨ec, hec⟩ := hg.2 E hE eb
     exact ⟨ec, fun x => (hec x).trans (congrArg g (heb x))⟩
@@ -87,6 +89,8 @@ def Embedding.codRestrictWeak
       have himage : e a ∈ imageSet e (A.func F x) := ⟨a, ha, rfl⟩
       rw [e.map_func F x] at himage
       have hval : y.1 = e a := congrArg Subtype.val hya.symm
+      change y.1 ∈ B.func F (e ∘ x)
+      change y.1 ∈ B.func F (f ∘ x)
       rw [hval]
       exact himage
     · intro hy
@@ -95,7 +99,7 @@ def Embedding.codRestrictWeak
       obtain ⟨a, ha, hea⟩ := hval
       refine ⟨a, ha, ?_⟩
       apply Subtype.ext
-      exact hea.symm
+      exact hea
 
 /-- Restrict the *codomain* of a 2019-style partial
 homomorphism-embedding to any weak vertex set containing its image.
@@ -127,7 +131,7 @@ theorem IsOriginalPartialHomomorphismEmbedding.codRestrictWeak
       refine ⟨a, ha, ?_⟩
       apply Subtype.ext
       exact hea.symm
-  · intro E hE e
+  · intro Z E hE e
     obtain ⟨g, hg⟩ := hf.2 E hE e
     have hgrange : ∀ x, g x ∈ S := by
       intro x
