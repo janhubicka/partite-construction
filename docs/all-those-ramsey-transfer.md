@@ -272,6 +272,25 @@ A concrete finite counterexample to the **full stated Lemma 2.29**
 still requires instantiating A,B,C0 and their Ramsey assumptions.
 Do not claim that theorem refuted solely from the conditional test.
 
+### Safe closed-test localization across semi-closed Picture gluing
+
+`IsFreeAmalgam.uIrreducible_closedTest_side` and
+`IsFreeAmalgam.uIrreducible_closedTest_factor` make the side
+localization completely explicit for an **intrinsically U-closed**
+and intrinsically U-irreducible induced test.  The ambient free
+amalgam and its sides may be only U-semi-closed, provided the
+common gluing structure is U-closed.  The factor theorem produces
+a full embedding into one original side that commutes with the
+specified side inclusion.
+
+This is a safe 2019 Picture-step interface: it uses the verified
+equivalence of intrinsic and relative irreducibility *on the closed
+test itself*.  It must NOT be extended to arbitrary nonclosed
+intrinsic U-irreducibles, by the separately proved missing-output
+obstruction.  Lemma 2.28 still requires the full Hales--Jewett
+refinement, copying history and the actual definition-level
+resolution of which tests enter the projection invariant.
+
 ## Gaps to obtain exactly Theorem 2.18
 
 1. **Closure description (PARTLY COMPLETED)**: the general relational
