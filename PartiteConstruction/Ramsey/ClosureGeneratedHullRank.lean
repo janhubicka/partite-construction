@@ -98,7 +98,8 @@ theorem USize_induce_UClosureHull_le
     toFun := fun x => ⟨x.1, subset_UClosureHull rules A (↑S : Set V) x.2⟩
     inj' := by
       intro x y h
-      exact Subtype.ext (congrArg Subtype.val h)
+      apply Subtype.ext
+      exact congrArg (fun z : T => z.1) h
   }
   let G : Finset T := S.attach.map inc
   have hG : (↑G : Set T) = {x : T | x.1 ∈ (↑S : Set V)} := by
@@ -106,7 +107,7 @@ theorem USize_induce_UClosureHull_le
     constructor
     · intro hx
       obtain ⟨y, _, hy⟩ := Finset.mem_map.mp hx
-      have hyx : y.1 = x.1 := congrArg Subtype.val hy
+      have hyx : y.1 = x.1 := congrArg (fun z : T => z.1) hy
       change x.1 ∈ S
       rw [← hyx]
       exact y.2
