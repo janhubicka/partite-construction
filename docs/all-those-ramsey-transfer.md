@@ -232,6 +232,46 @@ then derive Lemma 2.31 with n iterations. Neither is proven by the
 closure-rank API alone. Only mark the above declarations validated
 after a full Lean build and axiom audit on their PR head.
 
+### Adversarial 2019 Lemma 2.29 weak-test audit
+
+Definition 2.15, taken literally with decomposition into **intrinsically
+U-closed** sides, has a surprising consequence: if a weak induced test
+contains a valid closure root but omits every closure tuple over that
+root, the test is automatically U-irreducible, even if it has many
+other unrelated vertices. This is `IsUIrreducible.of_missing_closureTuple`
+(PR #162), strengthened for **arbitrary induced weak tests** by
+`IsUIrreducible.of_missing_tuple_in_weak_test`.
+
+The cardinal obstruction
+`not_allIntrinsicUIrreducibleTestsEmbed_of_large_missing_test`
+says that if such a weak test has more vertices than B, then it is
+impossible that *every* intrinsic U-irreducible induced substructure
+embed into B. It does not require generated closure or additional
+assumptions about the ambient root's missing outputs.
+
+This directly challenges the **unqualified** invariant in the proof
+of Lemma 2.29, which says that the initial disjoint union of B-copies
+and later free amalgamations introduce no new U-irreducibles.
+For example, in an ambient U-closed structure with a unary closure
+root r and distinct output o, a weak test containing r but not o can
+also contain vertices from multiple B-copies. Its intrinsic
+U-irreducibility follows from the missing-output principle; its
+localization to a single B-copy does NOT follow from the existing
+intrinsic definition.
+
+**TODO — priority semantic decision:** Check the proof against the
+published Definition 2.15 and determine whether 'U-irreducible
+substructure' must mean a U-closed substructure, or indecomposability
+into *relative* U-substructures (Definition 2.22), for the asserted
+copy-coverage invariant. The equivalent notions for U-closed
+structures (PR #162) do not resolve nonclosed weak tests. Until this
+is repaired, do not label Lemma 2.29, 2.28 or 2.30 as validated.
+
+The new intrinsic obstruction theorem is deliberately conditional.
+A concrete finite counterexample to the **full stated Lemma 2.29**
+still requires instantiating A,B,C0 and their Ramsey assumptions.
+Do not claim that theorem refuted solely from the conditional test.
+
 ## Gaps to obtain exactly Theorem 2.18
 
 1. **Closure description (PARTLY COMPLETED)**: the general relational
