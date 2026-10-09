@@ -70,6 +70,7 @@ import PartiteConstruction.Ramsey.CompletionTransfer
 import PartiteConstruction.Ramsey.ClosureDescription2019
 import PartiteConstruction.Ramsey.ClosureEmbeddingRange
 import PartiteConstruction.Ramsey.ClosureFreeAmalgam
+import PartiteConstruction.Ramsey.ClosureFreeAmalgamCompletion
 import PartiteConstruction.Ramsey.CopywiseFreeFold
 import PartiteConstruction.Ramsey.StrongAmalgamationTreeCompletion
 import PartiteConstruction.Ramsey.CopywiseTreeHomomorphism
@@ -441,3 +442,7 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.Structure.HasOriginalPartialTreeCompletion.of_closed_EHN_smallWeakImage
 
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.weakOrderedXY_no_originalPartialTreeCompletion
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closureTuple_inLeft_of_root_inLeft
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closureTuple_existsUnique_left
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.isUClosed
