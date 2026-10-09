@@ -35,9 +35,17 @@ structure ClosureRule (L : RelLanguage.{u}) where
   symbol : L.Symbol
   rootSize : ℕ
   rootPositive : 0 < rootSize
-  rootLE : rootSize ≤ L.arity symbol
+  -- Published Definition 2.12 requires a nonempty *proper* root tuple.
+  -- Keep the weak inequality as a derived lemma for Fin.castLE users.
+  rootStrict : rootSize < L.arity symbol
   root : RelStructure L (Fin rootSize)
   rootIrreducible : root.Irreducible
+
+/-- Compatibility accessor for the initial-segment root coordinates.
+The stricter published arity condition is stored in `rootStrict`. -/
+theorem ClosureRule.rootLE (rule : ClosureRule L) :
+    rule.rootSize ≤ L.arity rule.symbol :=
+  rule.rootStrict.le
 
 /-- A relational closure description, allowing several rules. -/
 abbrev ClosureDescription (L : RelLanguage.{u}) :=
