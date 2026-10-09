@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureProtectedPictureStep
 import PartiteConstruction.Ramsey.ClosurePowerOneProtected
 import PartiteConstruction.Ramsey.ClosureProtectedPicture
 import PartiteConstruction.Ramsey.ClosureNativePicture
@@ -155,3 +156,5 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.Partite.Induced.powerOneEmbedding
 #print axioms StructuralRamsey.Partite.Induced.power_one_isClosedPartiteOver
+
+#print axioms StructuralRamsey.Partite.Induced.pictureLemma_protected_of_power
