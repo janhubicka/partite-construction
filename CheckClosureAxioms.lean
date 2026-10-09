@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureRelativeGeneratorDrop
 import PartiteConstruction.Ramsey.ClosureRankOneBase
 import PartiteConstruction.Ramsey.ClosureIrreducibleHulls
 import PartiteConstruction.Ramsey.ClosureFreeAmalgamGenerators
@@ -101,3 +102,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.closed_rank_one_completions_of_protected_coverage
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.ordinary_pullback_from_closed
 #print axioms StructuralRamsey.RelStructure.ordinary_weak_completions_of_closed_USize
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.left_generator_drop_over_root
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.right_generator_drop_over_root
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.both_generator_budgets_over_root
