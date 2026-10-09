@@ -37,7 +37,24 @@ until the higher-level encoding bridge is proved. -/
 theorem no_closed_two_side_cover :
     ∀ (S T : Finset Vert), Closed S → Closed T →
       S ∪ T = all → TupleCover S T → S = all ∨ T = all := by
-  decide
+  intro S T hS hT _ hTuples
+  have hall :
+      (((0 : Vert) ∈ S ∧ (1 : Vert) ∈ S ∧ (2 : Vert) ∈ S ∧
+        (3 : Vert) ∈ S ∧ (4 : Vert) ∈ S) ∨
+       ((0 : Vert) ∈ T ∧ (1 : Vert) ∈ T ∧ (2 : Vert) ∈ T ∧
+        (3 : Vert) ∈ T ∧ (4 : Vert) ∈ T)) := by
+    dsimp [Closed] at hS hT
+    dsimp [TupleCover] at hTuples
+    tauto
+  rcases hall with h | h
+  · left
+    apply Finset.eq_univ_of_forall
+    intro x
+    fin_cases x <;> tauto
+  · right
+    apply Finset.eq_univ_of_forall
+    intro x
+    fin_cases x <;> tauto
 
 private def step (S : Finset Vert) : Finset Vert :=
   S ∪ (if (0 : Vert) ∈ S ∧ (1 : Vert) ∈ S then {2} else ∅) ∪
@@ -56,7 +73,23 @@ private def IsIrreducibleSeed (S : Finset Vert) : Prop :=
 /-- No ordinary irreducible induced seed generates all five vertices. -/
 theorem irreducible_seed_not_generating :
     ∀ S : Finset Vert, IsIrreducibleSeed S → hull S ≠ all := by
-  decide
+  intro S hSeed hFull
+  have h3 : (3 : Vert) ∈ S := by
+    have h : (3 : Vert) ∈ hull S := by rw [hFull]; simp [all]
+    simpa [hull, step] using h
+  have h4 : (4 : Vert) ∈ S := by
+    have h : (4 : Vert) ∈ hull S := by rw [hFull]; simp [all]
+    simpa [hull, step] using h
+  have h1 : (1 : Vert) ∉ S := by
+    intro h
+    exact hSeed.1 ⟨h, h4⟩
+  have h2 : (2 : Vert) ∉ S := by
+    intro h
+    exact hSeed.2 ⟨h, h3⟩
+  have h : (1 : Vert) ∈ hull S := by rw [hFull]; simp [all]
+  simp only [hull, step, Finset.mem_union, Finset.mem_ite,
+    Finset.mem_singleton, Finset.not_mem_empty] at h
+  simp_all
 
 theorem generating_support_card_ge_three :
     ∀ S : Finset Vert, hull S = all → 3 ≤ S.card := by
