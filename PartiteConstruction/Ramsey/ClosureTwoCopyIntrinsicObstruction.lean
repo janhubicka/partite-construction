@@ -205,10 +205,10 @@ private abbrev rootInBase : Embedding Root Base where
     intro R x
     cases R with
     | false =>
-      change ((0 : Fin 2) = 0) ↔ True
+      change ((0 : Fin 2) = 0) ↔ (false = false)
       simp
     | true =>
-      change (((0 : Fin 2) = 0) ∧ ((0 : Fin 2) = 1)) ↔ False
+      change (((0 : Fin 2) = 0) ∧ ((0 : Fin 2) = 1)) ↔ (true = false)
       simp
 
 /-- Each B-copy is genuinely U-closed. -/
