@@ -1,5 +1,6 @@
 import PartiteConstruction.Ramsey.ClosureEmbeddedSourceClosed
 import PartiteConstruction.Ramsey.ClosureUSize2019
+import PartiteConstruction.Ramsey.ClosureClosedTestSide
 import PartiteConstruction.Ramsey.ClosureUIrreducibleEquivalence
 import PartiteConstruction.Ramsey.ClosureRelativeIrreducibleWeakTest
 import PartiteConstruction.Ramsey.ClosureRelativeSideRange
@@ -518,3 +519,6 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.RelStructure.IsUIrreducible.of_missing_tuple_in_weak_test
 #print axioms StructuralRamsey.RelStructure.not_allIntrinsicUIrreducibleTestsEmbed_of_large_missing_test
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.uIrreducible_closedTest_side
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.uIrreducible_closedTest_factor
