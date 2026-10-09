@@ -10,16 +10,28 @@
 > See `docs/original-partial-homomorphism-audit.md`. Do not use this note to
 > claim the original 2019 theorem is refuted.
 
-**Research and verification note, 8 October 2026.** The concrete
-seven-vertex stage, its tagged second native power, the exact staircase
-function-domain matrix, the strict full-functional B-tree no-square theorem,
-and the conclusion that the full tagged power has **no strict B-tree
-completion** are Lean-verified (PR #114, proof commit
-`0b0f2c421cf5f07e0608ce3f57f194286f8109d8`, complete build and
-permitted-axiom audit green, workflow `37765314642`). The separate
-seven-vertex input-stage **strict B-tree and EHN projection certificate**
-and the sharper **12-vertex closed-test** certificate are still not formalized.
-This does **not** disprove the final canonical n-pass theorem.
+**Updated verified status, 9 October 2026.** The native input stage is
+certified as a genuine seven-vertex strict full-functional B-tree with an
+EHN projection (PR #119), and its true tagged second power contains
+an **exactly 12-vertex function-closed test** with no strict tree completion
+for **full total-fibre** homomorphisms (PRs #121 and #134).
+The same obstruction survives after adding a pairwise relation making
+the three-vertex base's function graph **hereditarily irreducible**,
+with a strict seven-vertex EHN input and exactly the same closed
+12-vertex test (PRs #135–#139, especially #139; proof head
+`3ad86b7a637cbc3d357848ff727b119316773454`,
+workflow `37872340885`, build and axiom audit green).
+
+The original 2019 partial-function convention, however, admits a
+**strict one-copy completion of the identical ordered 12-vertex test**.
+Both assertions are checked together as
+`NativePowerObstruction.orderedStaircase_originalPartial_yes_totalFibre_no`.
+This refutes an unrestricted *generic full-total-fibre power-invariance*
+claim, **not** the original 2019 partial-homomorphism theorem or the
+verified weak graph-tree n-pass construction. The pairwise relation on
+the source is inherited from B-copies and need not be a **global linear
+order** on the seven-vertex stage; no stronger ordered-class conclusion
+is claimed.
 
 The already-verified positive result
 `Structure.inducedRamsey_directFunctionalWeakGraph` remains unaffected:
@@ -58,8 +70,9 @@ is the union of the three orders inherited from these hyperedges.
 The three hyperedges (x0,y0,z00), (x1,y0,z10), (x1,y1,z11) form a
 **genuine full functional strict B-tree** in the mathematical diagram:
 glue along {y0}, then along {x1}. Both singleton overlaps are
-function-closed and lie in an irreducible B-copy. This source-stage
-diagram has not yet been reconstructed as a Lean `TreeAmalgam` proof.
+function-closed and lie in an irreducible B-copy. The two
+free-amalgam steps and the EHN projection are fully reconstructed as Lean `TreeAmalgam` and `IsEHNHomomorphismEmbedding` proofs in
+`NativePowerInputTree.lean` (PR #119).
 
 The part projection p:E -> A sends all xi to x, all yj to y, and all
 zij to z. It preserves every function incidence forward. Every
@@ -99,9 +112,9 @@ tuple. All six outputs are distinct:
 
 The resulting 12-vertex set S is genuinely function-closed in E^2.
 The whole tagged power has only 17 vertices (4 X-words, 4 Y-words and
-9 Z-words); its entire carrier is closed. Thus the checked
-`actualPower_not_locallyStrictTreeCompletable` gives a finite-rank
-obstruction without requiring the 12-vertex test to be assembled in Lean.
+9 Z-words); its entire carrier is closed. The stronger, exactly-12-vertex bound is checked in Lean by
+`staircaseSupport_closed`, `staircaseSupport_no_strictTreeCompletion`,
+and `staircaseSupport_card_eq_twelve` (PRs #121 and #134).
 There are no other defined input tuples among these vertices. In
 particular its full induced functional structure H is a legitimate
 closed test on exactly 12 vertices; taking its closure adds **zero**
@@ -186,10 +199,10 @@ expected weak graph-tree completion.
 
 ## Recommended verification and alternatives
 
-* The reduced three-role B-template, concrete E, actual tagged E^2,
-  exact staircase matrix and finite-rank no-full-tree obstruction are
-  now proved and axiom-audited in Lean. Formalize the remaining strict
-  source-tree/EHN projection certificate and the 12-vertex closed subtype.
+* **Verified:** strict source-tree/EHN certificates, tagged second power,
+  exact twelve-vertex closed subtype, and hereditary graph irreducibility
+  of the expanded base. The paired 2019-positive/2026-negative theorem
+  is checked on that very same ordered test.
 * The needed **no-4-cycle** invariant for genuine strict B-trees,
   and its combination with the tagged-power matrix, are now Lean
   proved (`strictTree_squareFree`, `actualPower_no_fullStrictTreeHom`).
@@ -205,9 +218,10 @@ expected weak graph-tree completion.
   by a generated closed hull destroys the vertex-size accounting
   and does not resolve the domain obstruction.
 
-**Hypothesis caution.** The checked Lean template has three unary role
-relations and one binary set-valued function. Its function graph is not
-hereditarily irreducible on arbitrary vertex subsets. To apply the exact
-hypotheses of the iterated n-pass theorem, the extra binary pairwise-order
-relation mentioned above should be added and its transport checked in Lean.
-This is separate from the no-square obstruction for the reduced language.
+**Hypothesis and semantics caution.** The pairwise binary relation has
+now been added and checked in Lean, making the *base* function graph
+hereditarily irreducible; the seven-vertex stage carries only copy-local
+instances and need not be globally linearly ordered. The negative
+statement is about total-fibre homomorphisms, not the original 2019
+partial-domain maps. In particular, it does not disprove a theorem
+whose completion maps use the 2019 convention.
