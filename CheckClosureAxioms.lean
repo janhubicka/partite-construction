@@ -1,3 +1,8 @@
+import PartiteConstruction.Ramsey.ClosurePictureCoordinate
+import PartiteConstruction.Ramsey.ClosureAttachmentSubhistory
+import PartiteConstruction.Ramsey.ClosurePictureRetraction
+import PartiteConstruction.Ramsey.ClosureAttachmentFold
+import PartiteConstruction.Ramsey.ClosureClosedCover
 import PartiteConstruction.Ramsey.ClosureRelativeGeneratorDrop
 import PartiteConstruction.Ramsey.ClosureRankOneBase
 import PartiteConstruction.Ramsey.ClosureIrreducibleHulls
@@ -105,3 +110,21 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.left_generator_drop_over_root
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.right_generator_drop_over_root
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.both_generator_budgets_over_root
+
+#print axioms StructuralRamsey.RelStructure.IsUIrreducible.closed_cover
+#print axioms StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.of_comp_homomorphisms
+#print axioms StructuralRamsey.RelStructure.Attachment.rest_isUSubstructure
+#print axioms StructuralRamsey.RelStructure.Attachment.closed_test_core_or_copy
+#print axioms StructuralRamsey.RelStructure.Attachment.fold_isClosedUHomomorphismEmbedding
+#print axioms StructuralRamsey.RelStructure.Attachment.protected_retraction_to_old
+#print axioms StructuralRamsey.RelStructure.Attachment.completion_from_old_rank_via_retraction
+#print axioms StructuralRamsey.RelStructure.Attachment.protected_coverage_of_retraction
+#print axioms StructuralRamsey.RelStructure.Attachment.subfamily_range_isUSubstructure
+#print axioms StructuralRamsey.RelStructure.Attachment.subfamily_isUClosed
+#print axioms StructuralRamsey.RelStructure.Attachment.exterior_index_from_generator
+#print axioms StructuralRamsey.RelStructure.Attachment.factor_through_generator_subfamily
+#print axioms StructuralRamsey.Partite.Induced.coordinate_homomorphism
+#print axioms StructuralRamsey.Partite.Induced.coordinate_closedMap
+#print axioms StructuralRamsey.Partite.Induced.coordinate_lineMap_parameter
+#print axioms StructuralRamsey.Partite.Induced.completion_of_common_generator_coordinate
+#print axioms StructuralRamsey.Partite.Induced.no_monochromatic_line_with_fixed_parameter
