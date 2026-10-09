@@ -10,7 +10,7 @@ import PartiteConstruction.Functional.HalfClosedTheorem
 import PartiteConstruction.Functional.QuotientFibreObstruction
 import PartiteConstruction.Functional.GeneratedRootedWitness
 import PartiteConstruction.Functional.HistoryRootedWitness
-import PartiteConstruction.Functional.IrreducibleRootGlue
+import PartiteConstruction.Functional.HistoryIrreducibleRootGlue
 import PartiteConstruction.Functional.TreeExtensionWitness
 import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
