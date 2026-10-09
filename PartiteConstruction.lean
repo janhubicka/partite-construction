@@ -194,6 +194,7 @@ import PartiteConstruction.Ramsey.AllThosePartialFiniteModels
 import PartiteConstruction.Ramsey.CompletionTransfer
 import PartiteConstruction.Ramsey.ClosureDescription2019
 import PartiteConstruction.Ramsey.ClosureEmbeddingRange
+import PartiteConstruction.Ramsey.ClosureEmbeddedSourceClosed
 import PartiteConstruction.Ramsey.ClosureFreeAmalgam
 import PartiteConstruction.Ramsey.ClosureFreeAmalgamCompletion
 import PartiteConstruction.Ramsey.ClosureSemiClosed2019
