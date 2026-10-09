@@ -99,6 +99,49 @@ different outputs, so the free amalgam need not be U-closed.
 The result cannot be applied directly to an arbitrary weak projected
 image.
 
+## 9 October: exact weak tests and U-irreducible localization
+
+The new declarations form a strictly limited, proof-checked interface
+for the 2019 transfer; they do **not** by themselves prove Lemma 2.28,
+Lemma 2.31, or Theorem 2.18:
+
+- PR #149: `IsUIrreducible`, `IsUHomomorphismEmbedding`,
+  `IsUCompletion` and their basic embeddings. The U-homomorphism
+  interface tests exact U-closed, U-irreducible induced substructures.
+- PR #150: `IsFreeAmalgam.weakInduce` restricts an arbitrary
+  relational free-amalgam to a given vertex set and its exact
+  inverse-image side/root sets. No closure assumptions or added
+  vertices occur. The stronger
+  `IsFreeAmalgam.weakInduce_withMaps` also records the pointwise
+  formulas for the canonical side embeddings.
+- PR #151: `IsUSubstructure.preimage_embedding`,
+  `IsUClosed.induce_preimage_embedding`, and
+  `IsFreeAmalgam.uIrreducible_side` show that a U-irreducible test
+  **whose tested set is a U-substructure** of a free amalgam of
+  U-closed sides lies in one of the sides. The theorem does not
+  require the common gluing root to be U-closed.
+- The exact U-homomorphism-embedding codomain factorization is
+  `IsUHomomorphismEmbedding.weakImage` in
+  `ClosureUHomWeakImage.lean`: the induced codomain is on precisely
+  `Set.range f`, not the generated U-closure. This is only a
+  **codomain** result; it does not assert that a U-homomorphism-
+  embedding restricts to arbitrary weak *source* tests.
+
+The first three patches passed complete Lean builds and permitted-axiom
+audits before merging. The fourth is included in the corresponding PR
+and must pass the same checks before being marked validated.
+
+**TODO — next actual proof step.** In the 2019 partite Picture
+construction, supply the U-homomorphism-embedding projection and the
+U-closed witness invariant using the above exact-image and
+U-irreducible-side lemmas. Check the nonclosed weak source tests
+separately; the side localization hypothesis is not automatic for
+them. For Lemma 2.31, provide K-valued local completions at the
+original vertex bound and explicitly produce any simultaneous relative
+extension certificates required by a mixed attachment. Neither
+independent completions nor replacement by generated closure hulls
+suffice.
+
 ## Gaps to obtain exactly Theorem 2.18
 
 1. **Closure description (PARTLY COMPLETED)**: the general relational
@@ -111,9 +154,10 @@ image.
    `ClosureFreeAmalgamCompletion.lean` proves that a free amalgam of
    U-closed structures over a U-closed common root remains U-closed,
    including unique closure tuples. The proof does not take any weak
-   image's closure hull. Still required here: the further U-semi-closed
-   and U-homomorphism-embedding interfaces needed by the general
-   2019 Ramsey witness and completion induction.
+   image's closure hull. U-semi-closedness and the basic U-homomorphism-
+   embedding interface are now formalized. What remains here is their
+   application to the full 2019 Ramsey-witness and completion induction,
+   especially the not-necessarily-U-closed small tests.
 2. **Lemma 2.28 interface**: produce a U-closed Ramsey witness with
    U-homomorphism-embedding to C0. The native function proof should
    be reused *via* the closure relational encoding, but without
