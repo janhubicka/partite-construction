@@ -34,6 +34,8 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.functionClosedSet_iff
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.left_preimage_right_range
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.right_preimage_left_range
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.left_closed_iff
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.right_closed_iff
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.sides_closed_iff
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.common_image_closed_iff
 #print axioms StructuralRamsey.Partite.HalfClosed.ramseyPartiteWitness
