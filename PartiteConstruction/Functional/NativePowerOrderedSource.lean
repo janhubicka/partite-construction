@@ -61,6 +61,7 @@ def firstCopyOrdered : Embedding toyBaseOrdered firstStageOrdered where
     | inl R => exact firstCopy.map_rel_iff R x
     | inr u =>
         cases u
+        change (Fin 2 → Fin 3) at x
         change firstStageOrder (firstCopyMap (x (0 : Fin 2)))
             (firstCopyMap (x (1 : Fin 2))) ↔
               x (0 : Fin 2) < x (1 : Fin 2)
@@ -76,6 +77,7 @@ def secondCopyOrdered : Embedding toyBaseOrdered firstStageOrdered where
     | inl R => exact secondCopy.map_rel_iff R x
     | inr u =>
         cases u
+        change (Fin 2 → Fin 3) at x
         change firstStageOrder (secondCopyMap (x (0 : Fin 2)))
             (secondCopyMap (x (1 : Fin 2))) ↔
               x (0 : Fin 2) < x (1 : Fin 2)
@@ -139,6 +141,7 @@ theorem firstStageOrdered_free :
         exact firstStage_free.rel_iff R x
     | inr u =>
         cases u
+        change (Fin 2 → Fin 5) at x
         change firstStageOrder (x (0 : Fin 2)) (x (1 : Fin 2)) ↔
           (∃ a : Fin 2 → Fin 3,
               a 0 < a 1 ∧ x = firstCopyMap ∘ a) ∨
