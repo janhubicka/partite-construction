@@ -49,7 +49,8 @@ theorem IsFreeAmalgam.left_generated_over_root
           xs (k.castLE rule.rootLE) ∈ T := by
         intro k
         have hk : iL (xs (k.castLE rule.rootLE)) ∈ TW := by
-          rw [← congrFun heq (k.castLE rule.rootLE)]
+          change (iL ∘ xs) (k.castLE rule.rootLE) ∈ TW
+          rw [← heq]
           exact hRoot k
         rcases hk with hR | hL
         · obtain ⟨r, hr⟩ := hR
