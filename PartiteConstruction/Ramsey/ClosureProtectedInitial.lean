@@ -112,12 +112,29 @@ theorem picture_isUClosed
   · intro rule hrule e
     obtain ⟨i, hi⟩ := irreducible_same_index B beta (Set.range e)
       (rule.rootIrreducible.range_embedding e)
-    have hRange (x : Fin rule.rootSize) : ∃ y : V, e x = c i y :=
-      ⟨(e x).2, Prod.ext (hi ⟨e x, ⟨x, rfl⟩⟩) rfl⟩
-    let r : RelStructure.Embedding rule.root B := e.factorThroughRange (c i) hRange
+    have hIndex (x : Fin rule.rootSize) : (e x).1 = i :=
+      hi ⟨e x, ⟨x, rfl⟩⟩
+    let r : RelStructure.Embedding rule.root B := {
+      toFun := fun x => (e x).2
+      injective := by
+        intro x y hxy
+        apply e.injective
+        exact Prod.ext ((hIndex x).trans (hIndex y).symm) hxy
+      map_rel_iff := by
+        intro R z
+        have hEq : c i ∘ (fun k => (e (z k)).2) = e ∘ z := by
+          funext k
+          exact Prod.ext (hIndex (z k)).symm rfl
+        calc
+          B.rel R (fun k => (e (z k)).2) ↔
+              C.rel R (c i ∘ (fun k => (e (z k)).2)) :=
+            ((c i).map_rel_iff R _).symm
+          _ ↔ C.rel R (e ∘ z) := by rw [hEq]
+          _ ↔ rule.root.rel R z := e.map_rel_iff R z
+    }
     refine ⟨i, r, ?_⟩
     intro x
-    exact (Classical.choose_spec (hRange x)).symm
+    exact Prod.ext (hIndex x).symm rfl
 
 /-- Full base embeddings give a protected initial part projection even
 when the control is nonclosed. Closedness of a test, not of the control,
