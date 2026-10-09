@@ -122,8 +122,8 @@ the hereditary graph-irreducibility hypothesis**. Lean PRs #119,
 strict full-functional B-tree with EHN part projection; an inherited
 binary relation makes the expanded base graph hereditarily
 irreducible; and the genuine tagged power has an *exactly twelve-vertex,
-function-closed* test with no strict B-tree completion for **all-fibres-
-equal** homomorphisms. The source's added binary relation is inherited
+function-closed* test with no strict B-tree completion for
+**full total-fibre** homomorphisms. The source's added binary relation is inherited
 inside the constituent B-copies, **not required to be a global linear
 order**. This does NOT refute the original 2019 partial-function
 convention: the same ordered twelve-vertex test has a strict one-copy
