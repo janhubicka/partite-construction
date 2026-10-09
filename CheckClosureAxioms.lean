@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureFiniteSeedObstruction
 import PartiteConstruction.Ramsey.ClosurePowerIrreducibleSeed
 import PartiteConstruction.Ramsey.ClosureProtectedPictureStep
 import PartiteConstruction.Ramsey.ClosurePowerOneProtected
@@ -163,3 +164,8 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.Partite.Induced.part_embedding_on_irreducibly_generated_test
 #print axioms StructuralRamsey.Partite.Induced.part_embedding_on_singleton_generated_test
 #print axioms StructuralRamsey.Partite.Induced.power_part_protected_of_irreducible_generators
+
+#print axioms StructuralRamsey.RelStructure.FiniteSeedObstruction.no_closed_two_side_cover
+#print axioms StructuralRamsey.RelStructure.FiniteSeedObstruction.irreducible_seed_not_generating
+#print axioms StructuralRamsey.RelStructure.FiniteSeedObstruction.generating_support_card_ge_three
+#print axioms StructuralRamsey.RelStructure.FiniteSeedObstruction.two_three_vertex_generators
