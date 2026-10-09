@@ -73,6 +73,7 @@ import PartiteConstruction.Ramsey.ClosureFreeAmalgam
 import PartiteConstruction.Ramsey.ClosureFreeAmalgamCompletion
 import PartiteConstruction.Ramsey.ClosureSemiClosed2019
 import PartiteConstruction.Ramsey.ClosureSemiClosedRange
+import PartiteConstruction.Ramsey.ClosureSemiClosedFreeAmalgam
 import PartiteConstruction.Ramsey.CopywiseFreeFold
 import PartiteConstruction.Ramsey.StrongAmalgamationTreeCompletion
 import PartiteConstruction.Ramsey.CopywiseTreeHomomorphism
@@ -458,3 +459,7 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.IsUSemiClosed.isUClosed_of_exists
 
 #print axioms StructuralRamsey.RelStructure.Embedding.range_isUSubstructure_of_semiClosed
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closureTuple_inLeft_of_root_inLeft_semi
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closureTuple_inRight_of_root_inRight_semi
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.isUSemiClosed
