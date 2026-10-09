@@ -34,6 +34,7 @@ private def TupleCover (S T : Finset Vert) : Prop :=
 /-- Exhaustive calculation: no two proper closed vertex sets freely
 cover all five closure triples. Does not assert semantic U-irreducibility
 until the higher-level encoding bridge is proved. -/
+set_option maxHeartbeats 5000000 in
 theorem no_closed_two_side_cover :
     ∀ (S T : Finset Vert), Closed S → Closed T →
       S ∪ T = all → TupleCover S T → S = all ∨ T = all := by
@@ -71,25 +72,43 @@ private def IsIrreducibleSeed (S : Finset Vert) : Prop :=
   ¬ ((2 : Vert) ∈ S ∧ (3 : Vert) ∈ S)
 
 /-- No ordinary irreducible induced seed generates all five vertices. -/
+private theorem mem_step_three (S : Finset Vert) :
+    (3 : Vert) ∈ step S ↔ (3 : Vert) ∈ S := by
+  simp [step]
+
+private theorem mem_step_four (S : Finset Vert) :
+    (4 : Vert) ∈ step S ↔ (4 : Vert) ∈ S := by
+  simp [step]
+
+private theorem no12_step (S : Finset Vert)
+    (h1 : (1 : Vert) ∉ S) (h2 : (2 : Vert) ∉ S) :
+    (1 : Vert) ∉ step S ∧ (2 : Vert) ∉ step S := by
+  simp [step, h1, h2]
+
 theorem irreducible_seed_not_generating :
     ∀ S : Finset Vert, IsIrreducibleSeed S → hull S ≠ all := by
   intro S hSeed hFull
   have h3 : (3 : Vert) ∈ S := by
     have h : (3 : Vert) ∈ hull S := by rw [hFull]; simp [all]
-    simpa [hull, step] using h
+    simpa only [hull, mem_step_three] using h
   have h4 : (4 : Vert) ∈ S := by
     have h : (4 : Vert) ∈ hull S := by rw [hFull]; simp [all]
-    simpa [hull, step] using h
+    simpa only [hull, mem_step_four] using h
   have h1 : (1 : Vert) ∉ S := by
     intro h
     exact hSeed.1 ⟨h, h4⟩
   have h2 : (2 : Vert) ∉ S := by
     intro h
     exact hSeed.2 ⟨h, h3⟩
-  have h : (1 : Vert) ∈ hull S := by rw [hFull]; simp [all]
-  simp only [hull, step, Finset.mem_union, Finset.mem_ite,
-    Finset.mem_singleton, Finset.not_mem_empty] at h
-  simp_all
+  have ha := no12_step S h1 h2
+  have hb := no12_step (step S) ha.1 ha.2
+  have hc := no12_step (step (step S)) hb.1 hb.2
+  have hd := no12_step (step (step (step S))) hc.1 hc.2
+  have he := no12_step (step (step (step (step S)))) hd.1 hd.2
+  have hNo : (1 : Vert) ∉ hull S := he.1
+  apply hNo
+  rw [hFull]
+  simp [all]
 
 theorem generating_support_card_ge_three :
     ∀ S : Finset Vert, hull S = all → 3 ≤ S.card := by
