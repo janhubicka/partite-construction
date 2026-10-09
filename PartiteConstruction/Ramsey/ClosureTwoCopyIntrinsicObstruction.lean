@@ -22,27 +22,27 @@ namespace StructuralRamsey.RelStructure.TwoCopyIntrinsicObstruction
 
 open StructuralRamsey.RelStructure
 
-private def Lang : RelLanguage where
+private abbrev Lang : RelLanguage where
   Symbol := Bool
   arity
     | false => 1
     | true => 2
 
-private def Root : RelStructure Lang (Fin 1) where
+private abbrev Root : RelStructure Lang (Fin 1) where
   rel R _ := R = false
 
-private def Base : RelStructure Lang (Fin 2) where
+private abbrev Base : RelStructure Lang (Fin 2) where
   rel
-    | false, t => t 0 = 0
-    | true, t => t 0 = 0 ∧ t 1 = 1
+    | false, t => t ⟨0, by decide⟩ = 0
+    | true, t => t ⟨0, by decide⟩ = 0 ∧ t ⟨1, by decide⟩ = 1
 
-private def TwoCopies : RelStructure Lang (Bool × Fin 2) where
+private abbrev TwoCopies : RelStructure Lang (Bool × Fin 2) where
   rel R t :=
     ∃ side : Bool,
       (∀ i : Fin (Lang.arity R), (t i).1 = side) ∧
         Base.rel R (fun i => (t i).2)
 
-private def rule : ClosureRule Lang where
+private abbrev rule : ClosureRule Lang where
   symbol := true
   rootSize := 1
   rootPositive := by decide
@@ -52,31 +52,35 @@ private def rule : ClosureRule Lang where
     intro x y hxy
     exact (hxy (Subsingleton.elim x y)).elim
 
-private def rules : ClosureDescription Lang := {rule}
+private abbrev rules : ClosureDescription Lang := {rule}
 
-private def rootInFirst : Embedding Root TwoCopies where
+private abbrev rootInFirst : Embedding Root TwoCopies where
   toFun := fun _ => (false, 0)
   injective := by
     intro x y _
     exact Subsingleton.elim x y
   map_rel_iff := by decide
 
-private def leftCopy : Embedding Base TwoCopies where
+private abbrev leftCopy : Embedding Base TwoCopies where
   toFun := fun x => (false, x)
   injective := by
     intro x y h
     exact congrArg Prod.snd h
   map_rel_iff := by decide
 
-private def rightCopy : Embedding Base TwoCopies where
+private abbrev rightCopy : Embedding Base TwoCopies where
   toFun := fun x => (true, x)
   injective := by
     intro x y h
     exact congrArg Prod.snd h
   map_rel_iff := by decide
 
-private def badSet : Set (Bool × Fin 2) :=
+private abbrev badSet : Set (Bool × Fin 2) :=
   {z | z.1 = true ∨ z = (false, 0)}
+
+private instance : Fintype badSet :=
+  Fintype.subtype (fun z : Bool × Fin 2 =>
+    z.1 = true ∨ z = (false, 0))
 
 private theorem bad_root_in :
     ∀ k : Fin rule.rootSize, rootInFirst k ∈ badSet := by
