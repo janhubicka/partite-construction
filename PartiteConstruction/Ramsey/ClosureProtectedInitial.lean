@@ -45,11 +45,13 @@ theorem closed_test_same_index
     let S : Set X := {x | (e x).1 = i}
     let T : Set X := {x | (e x).1 ≠ i}
     have hS : IsUSubstructure rules Test S := by
-      simpa only [Set.mem_singleton_iff] using
-        (index_fibres_isUSubstructure rules B beta ({i} : Set I)).preimage_embedding e
+      intro rule hrule t ht hRoot j
+      exact index_fibres_isUSubstructure rules B beta ({i} : Set I)
+        rule hrule (e ∘ t) ((e.map_rel_iff rule.symbol t).mpr ht) hRoot j
     have hT : IsUSubstructure rules Test T := by
-      simpa only [Set.mem_compl_iff, Set.mem_singleton_iff] using
-        (index_fibres_isUSubstructure rules B beta (({i} : Set I)ᶜ)).preimage_embedding e
+      intro rule hrule t ht hRoot j
+      exact index_fibres_isUSubstructure rules B beta (({i} : Set I)ᶜ)
+        rule hrule (e ∘ t) ((e.map_rel_iff rule.symbol t).mpr ht) hRoot j
     have hCover : ∀ x : X, x ∈ S ∨ x ∈ T := fun x => em ((e x).1 = i)
     have hTuples : ∀ R (z : Fin (L.arity R) → X), Test.rel R z →
         (∀ k, z k ∈ S) ∨ (∀ k, z k ∈ T) := by
@@ -112,8 +114,10 @@ theorem picture_isUClosed
       (rule.rootIrreducible.range_embedding e)
     have hRange (x : Fin rule.rootSize) : ∃ y : V, e x = c i y :=
       ⟨(e x).2, Prod.ext (hi ⟨e x, ⟨x, rfl⟩⟩) rfl⟩
-    exact ⟨i, e.factorThroughRange (c i) hRange,
-      fun x => (Classical.choose_spec (hRange x)).symm⟩
+    let r : RelStructure.Embedding rule.root B := e.factorThroughRange (c i) hRange
+    refine ⟨i, r, ?_⟩
+    intro x
+    exact (Classical.choose_spec (hRange x)).symm
 
 /-- Full base embeddings give a protected initial part projection even
 when the control is nonclosed. Closedness of a test, not of the control,
