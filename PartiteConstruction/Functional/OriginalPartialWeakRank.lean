@@ -25,6 +25,7 @@ variable {L : Language.{u}}
 variable {VB U V : Type v}
 variable {Base : Structure L VB}
 variable {C : Structure L U} {D : Structure L V}
+variable [DecidableEq V]
 variable {m : ℕ}
 
 /-- A bounded original-partial strict-tree transfer when the
