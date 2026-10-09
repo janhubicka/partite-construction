@@ -38,7 +38,7 @@ theorem weakOrderedXY_graph_irreducible :
     weakOrderedXY.graph.Irreducible := by
   intro x y hxy
   obtain ⟨R,z,i,j,hz,hxi,hyj⟩ :=
-    (toyBaseOrdered_graph_hereditarilyIrreducible weakOrderedXYSet) x y hxy
+    (toyBaseOrdered_graph_hereditarilyIrreducible weakOrderedXYSet) hxy
   refine ⟨R,z,i,j,?_,hxi,hyj⟩
   exact (weakInduce_graph_rel_iff toyBaseOrdered weakOrderedXYSet R z).mpr hz
 
