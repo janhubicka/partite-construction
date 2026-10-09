@@ -43,7 +43,9 @@ theorem IsUClosed.uIrreducible_of_homomorphic_generators
   have hCover : ∀ x : U,
       x ∈ f ⁻¹' Set.range iL ∨ x ∈ f ⁻¹' Set.range iR := by
     intro x
-    exact hFree.1 (f x)
+    rcases hFree.covers (f x) with ⟨a, ha⟩ | ⟨b, hb⟩
+    · exact Or.inl ⟨a, ha.symm⟩
+    · exact Or.inr ⟨b, hb.symm⟩
   have hTuples : ∀ R (z : Fin (L.arity R) → U), Source.rel R z →
       (∀ k, z k ∈ f ⁻¹' Set.range iL) ∨
       (∀ k, z k ∈ f ⁻¹' Set.range iR) := by
