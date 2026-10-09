@@ -1,3 +1,6 @@
+import PartiteConstruction.Ramsey.CompatibleClassCompletion
+import PartiteConstruction.Ramsey.CopywiseRamseyTransfer
+import PartiteConstruction.Ramsey.ClosureLocalCompletionRank
 import PartiteConstruction.Ramsey.ClosureDescription2019
 import PartiteConstruction.Functional.FreeAmalgamClosed
 import PartiteConstruction.Functional.FunctionClosedLocalTree
@@ -35,3 +38,12 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.FunctionClosedHasTreeCompletion.of_closedEmbedding
 
 #print axioms StructuralRamsey.RelStructure.ClosureRule.rootLE
+
+#print axioms StructuralRamsey.RelStructure.arrow_of_BCopywiseCompletion
+#print axioms StructuralRamsey.RelStructure.arrow_of_BCopywiseCompletion_inClass
+#print axioms StructuralRamsey.RelStructure.IsUSubstructure.image_inclusion
+#print axioms StructuralRamsey.RelStructure.UClosureHull_induce_generated
+#print axioms StructuralRamsey.RelStructure.USize_le_of_generating
+#print axioms StructuralRamsey.RelStructure.USize_induce_UClosureHull_le
+#print axioms StructuralRamsey.RelStructure.local_property_of_closed_USize
+#print axioms StructuralRamsey.RelStructure.HasCopywiseCompletion.of_compatible_class_diagram
