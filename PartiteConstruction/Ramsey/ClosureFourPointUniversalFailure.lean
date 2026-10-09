@@ -32,10 +32,10 @@ open StructuralRamsey.RelStructure.TwoCopyIntrinsicObstruction
 
 universe v
 
-private abbrev One : RelStructure Lang (Fin 1) where
+abbrev One : RelStructure Lang (Fin 1) where
   rel _ _ := False
 
-private abbrev Four : RelStructure Lang (Fin 4) where
+abbrev Four : RelStructure Lang (Fin 4) where
   rel
     | false, t => t ⟨0, by decide⟩ = 0
     | true, t => t ⟨0, by decide⟩ = 0 ∧ t ⟨1, by decide⟩ = 1
