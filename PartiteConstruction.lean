@@ -198,6 +198,7 @@ import PartiteConstruction.Ramsey.ClosureFreeAmalgamCompletion
 import PartiteConstruction.Ramsey.ClosureSemiClosed2019
 import PartiteConstruction.Ramsey.ClosureSemiClosedRange
 import PartiteConstruction.Ramsey.ClosureSemiClosedFreeAmalgam
+import PartiteConstruction.Ramsey.ClosureUIrreducible2019
 import PartiteConstruction.Ramsey.CopywiseFreeFold
 import PartiteConstruction.Ramsey.StrongAmalgamationTreeCompletion
 import PartiteConstruction.Ramsey.CopywiseTreeHomomorphism

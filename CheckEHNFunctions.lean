@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureUIrreducible2019
 import PartiteConstruction.Functional.ClosedTestGraphTreeObstruction
 import PartiteConstruction.Functional.ProjectedClosedTreePullback
 import PartiteConstruction.Functional.EHNClosedTestGraphCorollary
@@ -463,3 +464,10 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closureTuple_inLeft_of_root_inLeft_semi
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.closureTuple_inRight_of_root_inRight_semi
 #print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.isUSemiClosed
+
+#print axioms StructuralRamsey.RelStructure.Irreducible.isUIrreducible
+#print axioms StructuralRamsey.RelStructure.IsUHomomorphismEmbedding.map_rel
+#print axioms StructuralRamsey.RelStructure.IsUHomomorphismEmbedding.embeddingOn
+#print axioms StructuralRamsey.RelStructure.IsUHomomorphismEmbedding.embeddingOnUSubstructure
+#print axioms StructuralRamsey.RelStructure.Embedding.isUHomomorphismEmbedding
+#print axioms StructuralRamsey.RelStructure.IsStrongUCompletion.isUCompletion
