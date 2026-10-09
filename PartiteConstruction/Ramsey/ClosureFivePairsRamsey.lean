@@ -85,8 +85,8 @@ private def placedFour (i j k : Fin 5)
       change
         (placedVertex i j k (x (0 : Fin 1))).2 = false ↔
         x (0 : Fin 1) = 0
-      fin_cases (x (0 : Fin 1)) <;>
-        simp [placedVertex]
+      generalize hv : x (0 : Fin 1) = v
+      fin_cases v <;> simp_all [placedVertex]
     | true =>
       change
         ((placedVertex i j k (x (0 : Fin 2))).2 = false ∧
@@ -94,8 +94,9 @@ private def placedFour (i j k : Fin 5)
          (placedVertex i j k (x (0 : Fin 2))).1 =
            (placedVertex i j k (x (1 : Fin 2))).1) ↔
         (x (0 : Fin 2) = 0 ∧ x (1 : Fin 2) = 1)
-      fin_cases (x (0 : Fin 2)) <;>
-        fin_cases (x (1 : Fin 2)) <;>
+      generalize hv0 : x (0 : Fin 2) = v0
+      generalize hv1 : x (1 : Fin 2) = v1
+      fin_cases v0 <;> fin_cases v1 <;>
         simp_all [placedVertex, hij, hik, hjk]
 
 private theorem oneNonRoot (e : Embedding One Four) :
@@ -119,25 +120,26 @@ private theorem placedOneCopy
     ((placedFour i j k hij hik hjk).comp e =
       outputCopy k) := by
   have hne := oneNonRoot e
-  fin_cases (e 0)
-  · exact False.elim (hne rfl)
+  generalize hv : e (0 : Fin 1) = v
+  fin_cases v
+  · exact False.elim (hne hv)
   · left
     apply Embedding.ext
     intro a
     fin_cases a
-    simp [placedFour, placedVertex, outputCopy]
+    simp [placedFour, placedVertex, outputCopy, hv]
   · right
     left
     apply Embedding.ext
     intro a
     fin_cases a
-    simp [placedFour, placedVertex, outputCopy, h]
+    simp [placedFour, placedVertex, outputCopy, hv]
   · right
     right
     apply Embedding.ext
     intro a
     fin_cases a
-    simp [placedFour, placedVertex, outputCopy, h]
+    simp [placedFour, placedVertex, outputCopy, hv]
 
 /-- The promised explicit Ramsey witness with five root/output pairs. -/
 theorem fivePairs_arrow :
