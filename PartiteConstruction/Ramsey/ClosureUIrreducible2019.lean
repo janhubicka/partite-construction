@@ -8,11 +8,14 @@ Hubička--Nešetřil, *All those Ramsey classes*.
 U-irreducibility excludes free decompositions into two **proper U-closed
 substructures**; it is not ordinary Gaifman irreducibility.  A
 U-homomorphism-embedding is globally only a positive homomorphism and
-restricts to a full embedding on U-closed U-irreducible substructures.
+restricts to a full embedding on **every** U-irreducible induced
+substructure, including those that are not U-closed.  This last clause
+is essential in published Definition 2.15: the source test must not
+be assumed U-closed just because the ambient source is U-closed.
 
-An arbitrary vertex subset of a U-closed structure need not itself be
-U-closed.  Such weak tests are treated separately by the existing
-U-semi-closedness interface and are never replaced by a closure hull here.
+The resulting embedding-on-tests assertion is stronger than the
+older, closed-tests-only experimental interface.  Vertex sets
+are always induced exactly, with no U-closure hull.
 -/
 
 namespace StructuralRamsey.RelStructure
@@ -58,16 +61,18 @@ theorem Irreducible.isUIrreducible
     exact ⟨b, hb.symm⟩
 
 /-- A U-homomorphism-embedding in the 2019 relational sense.
-The target need not be U-closed; the source tests are precisely the
-vertex-exact *U-closed* induced substructures.  In particular there is
-no global reflection of undefined function or closure roots. -/
+The target need not be U-closed.  We quantify over *every*
+U-irreducible induced substructure of the source, not only U-closed
+ones; the distinction is required by Definition 2.15 (2019).
+There is no global reflection requirement on arbitrary reducible
+tests, but the map must reflect relation tuples on every
+U-irreducible test, whether or not that test is U-closed. -/
 def IsUHomomorphismEmbedding
     (rules : ClosureDescription L)
     (A : RelStructure L U) (B : RelStructure L V)
     (f : U → V) : Prop :=
   A.IsHomomorphism B f ∧
     ∀ (S : Set U),
-      IsUClosed rules (A.induce S) →
       IsUIrreducible rules (A.induce S) →
       ∃ e : Embedding (A.induce S) B,
         ∀ x, e x = f x.1
@@ -86,19 +91,21 @@ theorem map_rel
     B.rel R (f ∘ x) :=
   h.1 R x hx
 
-/-- The defining embedding on an exact U-closed U-irreducible test. -/
+/-- The defining embedding on an exact U-irreducible test, even when
+this induced test is not U-closed. -/
 theorem embeddingOn
     (h : IsUHomomorphismEmbedding rules A B f)
     (S : Set U)
-    (hClosed : IsUClosed rules (A.induce S))
     (hIrred : IsUIrreducible rules (A.induce S)) :
     ∃ e : Embedding (A.induce S) B,
       ∀ x, e x = f x.1 :=
-  h.2 S hClosed hIrred
+  h.2 S hIrred
 
-/-- When the ambient source is U-closed, a U-substructure is already
-U-closed on its exact vertex set, so the local embedding applies
-without generating any new vertices. -/
+/-- Convenience corollary for a U-substructure of a U-closed source.
+Unlike the defining embedding-on-tests lemma, it retains the
+U-closed/U-substructure parameters for callers using the older
+closure-localized interface.  These hypotheses are not needed for
+the published U-homomorphism-embedding condition. -/
 theorem embeddingOnUSubstructure
     (h : IsUHomomorphismEmbedding rules A B f)
     (hA : IsUClosed rules A)
@@ -107,7 +114,7 @@ theorem embeddingOnUSubstructure
     (hIrred : IsUIrreducible rules (A.induce S)) :
     ∃ e : Embedding (A.induce S) B,
       ∀ x, e x = f x.1 :=
-  h.embeddingOn S (hA.induce_of_USubstructure S hS) hIrred
+  h.embeddingOn S hIrred
 
 end IsUHomomorphismEmbedding
 
@@ -120,7 +127,7 @@ theorem Embedding.isUHomomorphismEmbedding
   constructor
   · intro R x hx
     exact (e.map_rel_iff R x).mpr hx
-  · intro S _ _
+  · intro S _
     exact ⟨e.comp (inclusion A S), fun _ => rfl⟩
 
 /-- Published Definition 2.15: a U-completion has an ordinary

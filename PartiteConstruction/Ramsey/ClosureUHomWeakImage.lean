@@ -8,9 +8,10 @@ itself: it is not generally a U-substructure, and taking its U-closure
 would destroy the tested vertex bound.
 
 This is a codomain statement only.  Restriction of a U-homomorphism-
-embedding to an arbitrary weak *source* restriction would require
-additional work because a previously missing root output can make a
-new small source U-irreducible.  No such source restriction is asserted.
+embedding to an arbitrary weak *source* restriction is not justified:
+a previously missing root output may make a new small source
+U-irreducible.  Because Definition 2.15 tests ALL U-irreducible
+substructures, such new tests cannot be dismissed as non-U-closed.
 -/
 
 namespace StructuralRamsey.RelStructure
@@ -36,8 +37,8 @@ theorem codRestrict
   · intro R x hx
     change B.rel R (f ∘ x)
     exact h.map_rel hx
-  · intro T hTClosed hTUIrred
-    obtain ⟨e, he⟩ := h.embeddingOn T hTClosed hTUIrred
+  · intro T hTUIrred
+    obtain ⟨e, he⟩ := h.embeddingOn T hTUIrred
     let eS : Embedding (A.induce T) (B.induce S) := {
       toFun := fun x => ⟨e x, by
         rw [he x]
