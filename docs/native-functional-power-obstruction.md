@@ -70,8 +70,8 @@ is the union of the three orders inherited from these hyperedges.
 The three hyperedges (x0,y0,z00), (x1,y0,z10), (x1,y1,z11) form a
 **genuine full functional strict B-tree** in the mathematical diagram:
 glue along {y0}, then along {x1}. Both singleton overlaps are
-function-closed and lie in an irreducible B-copy. The two free-amalgam steps and the EHN projection are fully reconstructed
-as Lean `TreeAmalgam` and `IsEHNHomomorphismEmbedding` proofs in
+function-closed and lie in an irreducible B-copy. The two
+free-amalgam steps and the EHN projection are fully reconstructed as Lean `TreeAmalgam` and `IsEHNHomomorphismEmbedding` proofs in
 `NativePowerInputTree.lean` (PR #119).
 
 The part projection p:E -> A sends all xi to x, all yj to y, and all
