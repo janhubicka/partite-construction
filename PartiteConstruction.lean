@@ -202,6 +202,7 @@ import PartiteConstruction.Ramsey.ClosureSemiClosedFreeAmalgam
 import PartiteConstruction.Ramsey.ClosureUIrreducible2019
 import PartiteConstruction.Ramsey.ClosureUSubstructurePreimage
 import PartiteConstruction.Ramsey.ClosureUIrreducibleFreeAmalgam
+import PartiteConstruction.Ramsey.ClosureRelativeSideRange
 import PartiteConstruction.Ramsey.ClosureUHomWeakImage
 import PartiteConstruction.Ramsey.CopywiseFreeFold
 import PartiteConstruction.Ramsey.StrongAmalgamationTreeCompletion
