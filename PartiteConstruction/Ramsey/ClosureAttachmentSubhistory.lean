@@ -125,14 +125,14 @@ theorem factor_through_generator_subfamily
   let emb := subfamilyEmbedding Old S Core maps J
   have hRange (x : X) : ∃ y, e x = emb y := by
     cases hVal : e x with
-    | inl w => exact ⟨Sum.inl w, hVal⟩
+    | inl w => exact ⟨Sum.inl w, rfl⟩
     | inr pair =>
       have hOut : OutsideAt (W := W) (I := I) S pair.1 (e x) :=
         ⟨pair.2, hVal⟩
       obtain ⟨g, hg, hgOut⟩ := exterior_index_from_generator
         Old S Core maps hS Test e G hGen pair.1 x hOut
       have hi : pair.1 ∈ J := hSelected g hg pair.1 hgOut
-      exact ⟨Sum.inr (⟨pair.1, hi⟩, pair.2), hVal⟩
+      exact ⟨Sum.inr (⟨pair.1, hi⟩, pair.2), rfl⟩
   exact ⟨e.factorThroughRange emb hRange,
     fun x => (Classical.choose_spec (hRange x)).symm⟩
 
