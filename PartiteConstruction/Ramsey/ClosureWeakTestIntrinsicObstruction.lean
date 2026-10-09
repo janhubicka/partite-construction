@@ -64,8 +64,9 @@ theorem IsUIrreducible.of_missing_tuple_in_weak_test
       exact congrArg Subtype.val (hte k)
     obtain ⟨j, hj⟩ := hMissing (Subtype.val ∘ t) htA htRoot
     exact hj (t j).2
-  exact IsUIrreducible.of_missing_closureTuple
-    rule hrule eS hNoTuple
+  intro H E F Root Left Right sL sR iL iR hLeft hRight hFree
+  exact (IsUIrreducible.of_missing_closureTuple
+    rule hrule eS hNoTuple) hLeft hRight hFree
 
 /-- Intrinsic U-irreducible induced tests of A all embed into B.
 This is the literal 'every U-irreducible substructure is a
