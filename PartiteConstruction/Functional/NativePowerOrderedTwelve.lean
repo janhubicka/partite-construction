@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.NativePowerOrderedPower
+import PartiteConstruction.Functional.OriginalPartialSemantics
 
 /-! # The exact closed twelve-vertex test in the ordered native power
 
@@ -141,5 +142,52 @@ theorem orderedStaircaseSupport_no_strictTreeCompletion :
           (f ∘ e) :=
     hfRed.comp e.isHomomorphism
   exact staircaseSupport_no_fullTreeHom hTreeRed (f ∘ e) hfOld
+
+/-- In the original 2019 partial-function sense the same ordered
+closed twelve-vertex test *does* have a strict one-copy tree completion:
+the native EHN part map, restricted to the closed induced test. -/
+theorem orderedStaircase_originalPartialTreeCompletion :
+    HasOriginalPartialTreeCompletion toyBaseOrdered
+      (actualOrderedPower.induce OrderedStaircaseSupport
+        orderedStaircaseSupport_closed) := by
+  let part : OrderedPowerVertex → Fin 3 :=
+    (FunctionalPartite.Induced.power oldOrderedSystem 2).part
+  have hp : actualOrderedPower.IsEHNHomomorphismEmbedding
+      toyBaseOrdered part :=
+    actualOrderedPower_weaklyPartiteOver
+  let inc : Embedding
+      (actualOrderedPower.induce OrderedStaircaseSupport
+        orderedStaircaseSupport_closed)
+      actualOrderedPower :=
+    inclusion actualOrderedPower OrderedStaircaseSupport
+      orderedStaircaseSupport_closed
+  have hpSmall :
+      (actualOrderedPower.induce OrderedStaircaseSupport
+        orderedStaircaseSupport_closed).IsEHNHomomorphismEmbedding
+        toyBaseOrdered (part ∘ Subtype.val) := by
+    change
+      (actualOrderedPower.induce OrderedStaircaseSupport
+        orderedStaircaseSupport_closed).IsEHNHomomorphismEmbedding
+        toyBaseOrdered (part ∘ inc)
+    exact hp.comp inc.isEHNHomomorphismEmbedding
+  exact HasOriginalPartialTreeCompletion.ofEHN_to_base
+    toyBaseOrdered
+    (actualOrderedPower.induce OrderedStaircaseSupport
+      orderedStaircaseSupport_closed)
+    (part ∘ Subtype.val) hpSmall
+
+/-- The semantic distinction survives all additional hypotheses:
+the very same hereditarily-irreducible-base, 12-vertex closed test
+is *positive* for the original partial homomorphisms and *negative*
+for the later stronger all-fibres-equal homomorphisms. -/
+theorem orderedStaircase_originalPartial_yes_totalFibre_no :
+    HasOriginalPartialTreeCompletion toyBaseOrdered
+      (actualOrderedPower.induce OrderedStaircaseSupport
+        orderedStaircaseSupport_closed) ∧
+    ¬ HasTreeCompletion toyBaseOrdered
+      (actualOrderedPower.induce OrderedStaircaseSupport
+        orderedStaircaseSupport_closed) :=
+  ⟨orderedStaircase_originalPartialTreeCompletion,
+    orderedStaircaseSupport_no_strictTreeCompletion⟩
 
 end StructuralRamsey.Structure.NativePowerObstruction
