@@ -125,8 +125,15 @@ The already-checked U-closed n-pass graph theorem is a valid **auxiliary
 route**, but not the intended proof of the direct functional iteration.
 
 Do not identify weak graph-tree completion with the strict full-function
-target conclusion. Function-closed gluing roots and locally full output
-maps remain a separate strengthening to prove.
+target conclusion. With **total-fibre** homomorphism maps as defined in
+the 2026 survey, generic strict-functional tree invariance through the
+native Hales--Jewett power is now **refuted**, even for a base whose
+graph is hereditarily irreducible and a closed test of exactly twelve
+vertices. The target-root and output-closure observations remain
+conditionally correct, but they cannot prove this false generic
+strengthening. Under the **original 2019 partial-function** maps the
+same test has a strict one-copy completion; that different general
+induction still requires its own proof.
 
 The gap persists even for **function-closed source tests**, as the
 checked two-edge unary-function path in
