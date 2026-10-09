@@ -23,6 +23,7 @@ import PartiteConstruction.Functional.NativePowerInputTree
 import PartiteConstruction.Functional.NativePowerClosedStaircase
 import PartiteConstruction.Functional.NativePowerTwelveBound
 import PartiteConstruction.Functional.NativePowerExactTwelve
+import PartiteConstruction.Functional.NativePowerOrderedTarget
 import PartiteConstruction.Functional.OriginalPartialSemantics
 import PartiteConstruction.Functional.NativePowerOriginalPartialCompletion
 import PartiteConstruction.Functional.QuotientBoundaryDomainObstruction
@@ -403,3 +404,7 @@ import PartiteConstruction.Structure.NullaryRoot
 
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.supportCover_injective
 #print axioms StructuralRamsey.Structure.NativePowerObstruction.staircaseSupport_card_eq_twelve
+
+#print axioms StructuralRamsey.Structure.TreeAmalgam.linearOrderReduct
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.toyBaseOrdered_graph_hereditarilyIrreducible
+#print axioms StructuralRamsey.Structure.NativePowerObstruction.actualPower_no_fullOrderedStrictTreeHom
