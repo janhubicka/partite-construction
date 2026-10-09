@@ -4,6 +4,7 @@ import PartiteConstruction.Ramsey.ClosureUIrreducibleEquivalence
 import PartiteConstruction.Ramsey.ClosureRelativeIrreducibleWeakTest
 import PartiteConstruction.Ramsey.ClosureRelativeSideRange
 import PartiteConstruction.Ramsey.ClosureUHomWeakImage
+import PartiteConstruction.Ramsey.ClosureWeakTestIntrinsicObstruction
 import PartiteConstruction.Ramsey.ClosureUIrreducibleMissingRoot
 import PartiteConstruction.Ramsey.ClosureUIrreducibleFreeAmalgam
 import PartiteConstruction.Ramsey.ClosureUIrreducible2019
@@ -514,3 +515,6 @@ import PartiteConstruction.Structure.NullaryRoot
 #print axioms StructuralRamsey.RelStructure.exists_UGenerating_card
 #print axioms StructuralRamsey.RelStructure.USize_spec
 #print axioms StructuralRamsey.RelStructure.USize_le_card
+
+#print axioms StructuralRamsey.RelStructure.IsUIrreducible.of_missing_tuple_in_weak_test
+#print axioms StructuralRamsey.RelStructure.not_allIntrinsicUIrreducibleTestsEmbed_of_large_missing_test
