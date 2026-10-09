@@ -57,7 +57,10 @@ private abbrev rootInFour : Embedding Root Four where
 
 /-- A has no embedded P-roots and is U-closed. -/
 theorem one_isUClosed : IsUClosed rules One := by
-  intro r _
+  intro r hr
+  have hrule : r = rule := by
+    simpa [rules] using hr
+  subst r
   constructor
   · intro t ht
     exact False.elim ht
@@ -128,7 +131,7 @@ private theorem bit_noThree (i j k : Fin 4)
   fin_cases i <;> fin_cases j <;> fin_cases k <;>
     simp_all [bit]
 
-variable {W : Type v} {C : RelStructure Lang W}
+variable {W : Type} {C : RelStructure Lang W}
 
 /-- A copied root in a U-closed C has a unique existing R-output.
 Removing that output yields an intrinsically U-irreducible weak test,
@@ -176,8 +179,9 @@ private theorem removedOutput_irreducible
         _ = b 1 := rfl
     refine ⟨1, ?_⟩
     simpa [S, hto]
+  have hRule : rule ∈ rules := by simp [rules]
   exact IsUIrreducible.of_missing_tuple_in_weak_test
-    rule (by simp [rules]) e S hr hMissing
+    rule hRule e S hr hMissing
 
 /-- No A-copy can meet the unique P-root of an embedded B-copy:
 full embeddings reflect the P predicate. -/
