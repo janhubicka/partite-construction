@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureProjectedRankGlue
 import PartiteConstruction.Ramsey.ClosureProjectedGenerators
 import PartiteConstruction.Ramsey.ClosureProjectedCompletion
 import PartiteConstruction.Ramsey.ClosureProjectedBoundary
@@ -78,3 +79,5 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.projected_generator_card_lt
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_projected_generators
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_generator_collision
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_common_projection_supports
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_common_projection_generators
