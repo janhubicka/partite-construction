@@ -46,11 +46,25 @@ theorem no_closed_two_side_cover :
     rcases hS with ⟨hs01, hs02, hs13, hs24, hs34⟩
     rcases hT with ⟨ht01, ht02, ht13, ht24, ht34⟩
     rcases hTuples with ⟨hX, hY, hZ, hW⟩
-    rcases hX with hX | hX <;>
-      rcases hY with hY | hY <;>
-      rcases hZ with hZ | hZ <;>
-      rcases hW with hW | hW <;>
-      tauto
+    rcases hX with ⟨sx0, sx1, sx2⟩ | ⟨tx0, tx1, tx2⟩
+    · rcases hW with ⟨sw0, sw3, sw4⟩ | ⟨tw0, tw3, tw4⟩
+      · exact Or.inl ⟨sx0, sx1, sx2, sw3, sw4⟩
+      · rcases hY with ⟨sy0, sy1, sy3⟩ | ⟨ty0, ty1, ty3⟩
+        · rcases hZ with ⟨sz0, sz2, sz4⟩ | ⟨tz0, tz2, tz4⟩
+          · exact Or.inl ⟨sx0, sx1, sx2, sy3, sz4⟩
+          · exact Or.inr ⟨tw0, ht02 tw0 tz2, tz2, tw3, tw4⟩
+        · rcases hZ with ⟨sz0, sz2, sz4⟩ | ⟨tz0, tz2, tz4⟩
+          · exact Or.inr ⟨tw0, ty1, ht01 tw0 ty1, tw3, tw4⟩
+          · exact Or.inr ⟨ty0, ty1, tz2, ty3, tz4⟩
+    · rcases hW with ⟨sw0, sw3, sw4⟩ | ⟨tw0, tw3, tw4⟩
+      · rcases hY with ⟨sy0, sy1, sy3⟩ | ⟨ty0, ty1, ty3⟩
+        · rcases hZ with ⟨sz0, sz2, sz4⟩ | ⟨tz0, tz2, tz4⟩
+          · exact Or.inl ⟨sy0, sy1, sz2, sy3, sz4⟩
+          · exact Or.inl ⟨sw0, sy1, hs01 sw0 sy1, sw3, sw4⟩
+        · rcases hZ with ⟨sz0, sz2, sz4⟩ | ⟨tz0, tz2, tz4⟩
+          · exact Or.inl ⟨sw0, hs02 sw0 sz2, sz2, sw3, sw4⟩
+          · exact Or.inr ⟨tx0, tx1, tx2, ty3, tz4⟩
+      · exact Or.inr ⟨tx0, tx1, tx2, tw3, tw4⟩
   rcases hall with h | h
   · left
     apply Finset.eq_univ_of_forall
