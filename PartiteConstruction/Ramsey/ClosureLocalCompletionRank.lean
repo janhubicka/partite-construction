@@ -48,7 +48,8 @@ theorem local_property_of_closed_USize
       ⟨x.1, subset_UClosureHull rules A (↑S : Set V) x.2⟩
     injective := by
       intro x y h
-      exact Subtype.ext (congrArg Subtype.val h)
+      apply Subtype.ext
+      exact congrArg (fun z : T => z.1) h
     map_rel_iff := fun _ _ => Iff.rfl
   }
   exact hRestrict (A.induce (↑S : Set V)) (A.induce T) e hQT
