@@ -3,7 +3,7 @@
 9 October 2026. This is an adversarial audit of a proposed shortcut in
 the positive 2019 multiamalgamation proof. It is **not** a counterexample
 to Theorem 2.18, Lemma 2.27, or protected coordinate powers themselves.
-It has a finite computational check but no Lean proof of U-irreducibility.
+Its finite combinatorial core now has a Lean formalization, but the bridge to the full structure-level U-irreducibility predicate is not yet formalized.
 
 ## Model
 
@@ -57,8 +57,12 @@ Run:
 The program checks the full root/closure relation, all 32 induced
 vertex subsets, all 1024 ordered pairs of candidate free-amalgam sides,
 all ordinary irreducible induced seeds, and the minimum generating rank.
-It passed locally. This is an exhaustive finite computational
-certificate, not a Lean theorem.
+It passed locally. A companion Lean file,
+PartiteConstruction/Ramsey/ClosureFiniteSeedObstruction.lean, certifies
+the finite propositional closure/cover calculation, the nonexistence of
+an irreducible generating seed, and rank three. The Lean propositions
+encode the explicit five closure dependencies; they do not yet instantiate
+the full RelStructure IsUIrreducible predicates.
 
 ## Impact on the positive proof
 
