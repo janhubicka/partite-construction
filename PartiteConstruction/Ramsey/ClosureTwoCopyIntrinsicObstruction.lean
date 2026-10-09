@@ -22,13 +22,13 @@ namespace StructuralRamsey.RelStructure.TwoCopyIntrinsicObstruction
 
 open StructuralRamsey.RelStructure
 
-private abbrev Lang : RelLanguage where
+abbrev Lang : RelLanguage where
   Symbol := Bool
   arity
     | false => 1
     | true => 2
 
-private abbrev Root : RelStructure Lang (Fin 1) where
+abbrev Root : RelStructure Lang (Fin 1) where
   rel R _ := R = false
 
 private abbrev Base : RelStructure Lang (Fin 2) where
@@ -42,7 +42,7 @@ private abbrev TwoCopies : RelStructure Lang (Bool × Fin 2) where
       (∀ i : Fin (Lang.arity R), (t i).1 = side) ∧
         Base.rel R (fun i => (t i).2)
 
-private abbrev rule : ClosureRule Lang where
+abbrev rule : ClosureRule Lang where
   symbol := true
   rootSize := 1
   rootPositive := by decide
@@ -52,7 +52,7 @@ private abbrev rule : ClosureRule Lang where
     intro x y hxy
     exact (hxy (Subsingleton.elim x y)).elim
 
-private abbrev rules : ClosureDescription Lang := {rule}
+abbrev rules : ClosureDescription Lang := {rule}
 
 private abbrev rootInFirst : Embedding Root TwoCopies where
   toFun := fun _ => (false, 0)
