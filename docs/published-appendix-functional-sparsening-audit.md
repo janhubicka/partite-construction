@@ -116,13 +116,21 @@ that the full finite tagged native power has **no strict functional
 B-tree completion**. This refutes an *unconditional stability claim for
 that power*, not the existence of another canonical Ramsey witness.
 
-For a complete generic-power counterexample under the precise input
-assumptions, the simple seven-vertex input stage must still be
-formalized as a genuine strict B-tree with EHN part projection, and
-hereditary irreducibility of A.graph may require an auxiliary complete
-relation. The stronger twelve-vertex closed subtype is currently an
-explicit mathematical witness, not yet its own Lean theorem.
-These distinctions are essential when reviewing the original mixed case.
+This **generic total-fibre power counterexample is now complete under
+the hereditary graph-irreducibility hypothesis**. Lean PRs #119,
+#121, #134 and #135–#139 verify that the seven-vertex input stage is a
+strict full-functional B-tree with EHN part projection; an inherited
+binary relation makes the expanded base graph hereditarily
+irreducible; and the genuine tagged power has an *exactly twelve-vertex,
+function-closed* test with no strict B-tree completion for **all-fibres-
+equal** homomorphisms. The source's added binary relation is inherited
+inside the constituent B-copies, **not required to be a global linear
+order**. This does NOT refute the original 2019 partial-function
+convention: the same ordered twelve-vertex test has a strict one-copy
+completion by the restricted EHN part map, proved jointly with the
+negative statement in `orderedStaircase_originalPartial_yes_totalFibre_no`.
+Do not apply the full-fibre obstruction to the 2019 mixed-step theorem
+without first accounting for this categorical distinction.
 
 ## Strongest *currently proved* forms (not conjectures)
 
