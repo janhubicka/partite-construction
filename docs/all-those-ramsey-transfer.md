@@ -187,15 +187,20 @@ or its projected image is U-closed. It relies on the verified
 relative side-range lemmas from PR #154 and the exact weak-amalgam
 restriction from PR #150.
 
-**TODO (definitional fidelity):** Determine whether the printed
-phrase "proper U-closed substructures" in Definition 2.15 means
-intrinsically U-closed structures or subsets closed relative to the
-ambient structure. Do not silently identify the two, and do not
-use the new weak-test theorem to claim Lemma 2.28 or 2.31 complete.
-For a U-closed ambient structure, prove the equivalence of the two
-notions to make either interpretation safe in the partite induction.
-The lemma has to be Lean-checked and must be reviewed against the
-source before this TODO can be closed.
+**Definitional fidelity:** The equivalence
+`IsUClosed.uIrreducible_iff_relative` is now formalized for a
+**U-closed ambient structure**.  It uses the new reverse closure
+transport for exact embedded U-substructure ranges (PR #157) and
+the previous range-closure lemma; mark it validated only once its
+own full build and axiom audit have passed.
+
+**TODO (nonclosed tests):** Determine whether the printed phrase
+"proper U-closed substructures" in Definition 2.15 means intrinsically
+U-closed structures or subsets closed relative to the ambient
+structure. Do not silently identify the two **on a non-U-closed weak
+test**, and do not use the new weak-test theorem to claim Lemma 2.28
+or 2.31 complete.  The closed-ambient equivalence does not settle
+this remaining interpretation question.
 
 ## Gaps to obtain exactly Theorem 2.18
 
