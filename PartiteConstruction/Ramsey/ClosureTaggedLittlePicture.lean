@@ -98,7 +98,7 @@ theorem taggedRelativeCopies_of_selected
     e.forgetTaggedClosureParts
   have hSelectedParts (x : Q) :
       O.part (eOld x) ∈ Set.range alpha :=
-    ⟨x, e.tagged_preserves_part x⟩
+    ⟨x, (e.tagged_preserves_part x).symm⟩
   have hOld : IsUSubstructure rules O.toRelStructure (Set.range eOld) :=
     hSelected A hA eOld hSelectedParts
   have hTag :=
