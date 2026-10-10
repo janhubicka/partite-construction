@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureTransverseLineRootLetters
 import PartiteConstruction.Ramsey.ClosureWeakIrreducibleCoverage
 import PartiteConstruction.Ramsey.ClosureWeakRankDichotomy
 import PartiteConstruction.Ramsey.ClosureMaximalWeakRank
@@ -357,3 +358,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.RelStructure.weak_irreducible_embeds_base_of_closed_coverage
 #print axioms StructuralRamsey.RelStructure.weak_irreducible_completion_of_closed_coverage
+
+#print axioms StructuralRamsey.Partite.Induced.transverse_lines_common_preimages_are_letters
+#print axioms StructuralRamsey.Partite.Induced.transverse_lines_compatible_root_parts
