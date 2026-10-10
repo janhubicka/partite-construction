@@ -85,21 +85,21 @@ theorem HasClosedUKCompletion.of_two_small_side_projections
     HasClosedUKCompletion K rules Whole := by
   classical
   letI : Fintype V := Fintype.ofFinite V
-  let GL : Finset V := Finset.univ.image pL
-  let GR : Finset V := Finset.univ.image pR
-  let TL : Set V := UClosureHull rules D (↑GL : Set V)
-  let TR : Set V := UClosureHull rules D (↑GR : Set V)
+  let gensL : Finset V := Finset.univ.image pL
+  let gensR : Finset V := Finset.univ.image pR
+  let TL : Set V := UClosureHull rules D (↑gensL : Set V)
+  let TR : Set V := UClosureHull rules D (↑gensR : Set V)
   letI : Fintype TL := Fintype.ofFinite TL
   letI : Fintype TR := Fintype.ofFinite TR
   have hRangeL (x : E) : pL x ∈ TL :=
-    subset_UClosureHull rules D (↑GL : Set V)
+    subset_UClosureHull rules D (↑gensL : Set V)
       (Finset.mem_image.mpr ⟨x, Finset.mem_univ x, rfl⟩)
   have hRangeR (x : F) : pR x ∈ TR :=
-    subset_UClosureHull rules D (↑GR : Set V)
+    subset_UClosureHull rules D (↑gensR : Set V)
       (Finset.mem_image.mpr ⟨x, Finset.mem_univ x, rfl⟩)
   have hQRangeL (x : P) : aL x ∈ TL := by
     have hClosedTL : IsUSubstructure rules D TL :=
-      UClosureHull_isUSubstructure rules D (↑GL : Set V)
+      UClosureHull_isUSubstructure rules D (↑gensL : Set V)
     have hPre : IsUSubstructure rules Q (aL ⁻¹' TL) :=
       hClosedTL.preimage_embedding aL
     have hQSeeds : Set.range q ⊆ aL ⁻¹' TL := by
@@ -112,7 +112,7 @@ theorem HasClosedUKCompletion.of_two_small_side_projections
     exact UClosureHull_minimal rules Q hPre hQSeeds hx
   have hQRangeR (x : P) : aR x ∈ TR := by
     have hClosedTR : IsUSubstructure rules D TR :=
-      UClosureHull_isUSubstructure rules D (↑GR : Set V)
+      UClosureHull_isUSubstructure rules D (↑gensR : Set V)
     have hPre : IsUSubstructure rules Q (aR ⁻¹' TR) :=
       hClosedTR.preimage_embedding aR
     have hQSeeds : Set.range q ⊆ aR ⁻¹' TR := by
@@ -141,26 +141,26 @@ theorem HasClosedUKCompletion.of_two_small_side_projections
       intro R z
       exact aR.map_rel_iff R z
   }
-  have hGL : GL.card ≤ j := by
+  have hGL : gensL.card ≤ j := by
     calc
-      GL.card ≤ (Finset.univ : Finset E).card :=
+      gensL.card ≤ (Finset.univ : Finset E).card :=
         Finset.card_image_le
       _ = Fintype.card E := Finset.card_univ
       _ ≤ j := hCardL
-  have hGR : GR.card ≤ j := by
+  have hGR : gensR.card ≤ j := by
     calc
-      GR.card ≤ (Finset.univ : Finset F).card :=
+      gensR.card ≤ (Finset.univ : Finset F).card :=
         Finset.card_image_le
       _ = Fintype.card F := Finset.card_univ
       _ ≤ j := hCardR
   have hTLC : IsUClosed rules (D.induce TL) :=
-    hDClosed.induce_UClosureHull (↑GL : Set V)
+    hDClosed.induce_UClosureHull (↑gensL : Set V)
   have hTRC : IsUClosed rules (D.induce TR) :=
-    hDClosed.induce_UClosureHull (↑GR : Set V)
+    hDClosed.induce_UClosureHull (↑gensR : Set V)
   have hTLRank : USize rules (D.induce TL) ≤ j :=
-    (USize_induce_UClosureHull_le rules D GL).trans hGL
+    (USize_induce_UClosureHull_le rules D gensL).trans hGL
   have hTRRank : USize rules (D.induce TR) ≤ j :=
-    (USize_induce_UClosureHull_le rules D GR).trans hGR
+    (USize_induce_UClosureHull_le rules D gensR).trans hGR
   have hTLCpl : HasClosedUKCompletion K rules (D.induce TL) :=
     hRank TL hTLC hTLRank
   have hTRCpl : HasClosedUKCompletion K rules (D.induce TR) :=
