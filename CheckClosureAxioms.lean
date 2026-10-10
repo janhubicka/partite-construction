@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureWeakProjectedRankGlue
 import PartiteConstruction.Ramsey.ClosureWeakRestrictionPower
 import PartiteConstruction.Ramsey.ClosureSemiClosedLines
 import PartiteConstruction.Ramsey.ClosureSemiClosedAttachment
@@ -228,3 +229,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.Attachment.closed_core_test_range_isUSubstructure
 #print axioms StructuralRamsey.RelStructure.Attachment.closed_profile_range_isUSubstructure
 #print axioms StructuralRamsey.Partite.Induced.closed_profile_in_native_line_attachment
+
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_common_projection_supports_relative
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_common_projection_generators_relative
