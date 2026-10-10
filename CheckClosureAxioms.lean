@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureTaggedOuterProtected
 import PartiteConstruction.Ramsey.ClosureTaggedOuterDescent
 import PartiteConstruction.Ramsey.ClosureTaggedWitnessNormalization
 import PartiteConstruction.Ramsey.ClosureTaggedLittlePicture
@@ -309,3 +310,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.Partite.Induced.taggedWitnessOuterSystem
 #print axioms StructuralRamsey.Partite.Induced.taggedWitnessOuterSystem_isUClosed
 #print axioms StructuralRamsey.Partite.Induced.taggedWitnessOuterSystem_isPartiteOver
+
+#print axioms StructuralRamsey.Partite.Induced.taggedWitnessOuter_closedTest_in_old
+#print axioms StructuralRamsey.Partite.Induced.taggedWitnessOuter_protected
