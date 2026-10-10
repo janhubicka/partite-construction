@@ -54,7 +54,7 @@ theorem disjoint_parameter_lines_overlap_in_word
       obtain ⟨x, hx⟩ := hz
       obtain ⟨y, hy⟩ := hz'
       have hxy : NonInduced.lineMap W x =
-          NonInduced.lineMap W' y := hx.symm.trans hy
+          NonInduced.lineMap W' y := hx.trans hy.symm
       have hCoordinate := congrArg
         (fun v : Vertex B N => v.coord k) hxy
       have he : x = e (B.part y) := by
@@ -94,7 +94,9 @@ theorem disjoint_lines_overlap_in_closed_word
     disjoint_parameter_lines_overlap_in_word A B W W' hDisjoint
   refine ⟨e, ?_, ?_⟩
   · intro z hz
-    rcases hz with ⟨x, hx⟩, ⟨y, hy⟩
+    rcases hz with ⟨hzW, hzW'⟩
+    obtain ⟨x, hx⟩ := hzW
+    obtain ⟨y, hy⟩ := hzW'
     obtain ⟨p, hp⟩ := he z ⟨x, hx⟩ ⟨y, hy⟩
     refine ⟨p, ?_⟩
     calc
@@ -103,8 +105,7 @@ theorem disjoint_lines_overlap_in_closed_word
         exact (wordEmbedding_apply hPart W.length_pos (W.eval e) p).symm
   · have hCore : IsUSemiClosed rules (power B N).toRelStructure :=
       power_isUSemiClosed B hB W.length_pos
-    exact
-      ((wordEmbedding hPart W.length_pos (W.eval e)).toEmbedding)
-        .range_isUSubstructure_of_semiClosed hA hCore
+    exact Embedding.range_isUSubstructure_of_semiClosed
+      hA hCore ((wordEmbedding hPart W.length_pos (W.eval e)).toEmbedding)
 
 end StructuralRamsey.Partite.Induced
