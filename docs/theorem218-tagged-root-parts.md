@@ -81,8 +81,8 @@ tagged-language transport.
 
 This patch does not assert Theorem 2.18, Lemma 2.28 or a full
 closed-test multiamalgamation theorem. Together, the two modules
-introduce eight checked declarations (seven definitions/auxiliary
-lemmas and two main iff statements are counted explicitly in the
+introduce eight audited declarations (six definitions/auxiliary
+lemmas and two main equivalences are counted explicitly in the
 audit). Consult PR #188 for the FINAL full-project build and
 permitted-axiom audit; earlier successful partial builds do not
 certify the last source revision. No independent referee process
