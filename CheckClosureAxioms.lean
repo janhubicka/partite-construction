@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosurePartPredicates
 import PartiteConstruction.Ramsey.ClosureWeakProjectedRankGlue
 import PartiteConstruction.Ramsey.ClosureWeakRestrictionPower
 import PartiteConstruction.Ramsey.ClosureSemiClosedLines
@@ -232,3 +233,15 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_common_projection_supports_relative
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_common_projection_generators_relative
+
+#print axioms StructuralRamsey.RelStructure.Embedding.expandPartPredicates
+#print axioms StructuralRamsey.RelStructure.Embedding.forgetPartPredicates
+#print axioms StructuralRamsey.RelStructure.Embedding.expanded_preserves_part
+#print axioms StructuralRamsey.RelStructure.Embedding.forget_expandPartPredicates
+#print axioms StructuralRamsey.RelStructure.Embedding.expand_forgetPartPredicates
+#print axioms StructuralRamsey.RelStructure.Irreducible.expandPartPredicates
+#print axioms StructuralRamsey.RelStructure.Irreducible.forgetPartPredicates_of_expanded
+#print axioms StructuralRamsey.Partite.Embedding.expandPartPredicates
+#print axioms StructuralRamsey.Partite.Embedding.ofExpandedPartPredicates
+#print axioms StructuralRamsey.Partite.Embedding.ofExpanded_expandPartPredicates
+#print axioms StructuralRamsey.Partite.Embedding.expand_ofExpandedPartPredicates
