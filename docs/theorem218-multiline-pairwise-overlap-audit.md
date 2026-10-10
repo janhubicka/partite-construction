@@ -47,8 +47,8 @@ The standard-library executable regression
 full induced edge reflection for e0,e1, all word embeddings,
 all three native line embeddings, both disjointness conditions,
 the exact two intersections and the failure of one-word coverage
-for their union. The finite computation was executed before
-recording the script. It has no effect on the Lean kernel.
+for their union. An equivalent direct Python calculation passed; the exact committed
+script is supplied for reproduction and has no effect on the Lean kernel.
 
 ## Mathematical consequences for the rank increment
 
