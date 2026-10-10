@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureBoundaryBudgetAccounting
 import PartiteConstruction.Ramsey.ClosureDisjointLineOverlap
 import PartiteConstruction.Ramsey.ClosureWeakHullUSize
 import PartiteConstruction.Ramsey.ClosureBoundaryKGlue
@@ -339,3 +340,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.Partite.Induced.disjoint_parameter_lines_overlap_in_word
 #print axioms StructuralRamsey.Partite.Induced.disjoint_lines_overlap_in_closed_word
+
+#print axioms StructuralRamsey.RelStructure.IsHomomorphism.range_in_hull_of_relative_generators
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_boundary_and_relative_generator_budgets
