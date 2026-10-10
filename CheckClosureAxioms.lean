@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureWeakIrreducibleCoverage
 import PartiteConstruction.Ramsey.ClosureMaximalWeakRank
 import PartiteConstruction.Ramsey.ClosureBoundaryBudgetAccounting
 import PartiteConstruction.Ramsey.ClosureDisjointLineOverlap
@@ -349,3 +350,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.IsUIrreducible.irreducible_of_all_subsets_relative
 #print axioms StructuralRamsey.RelStructure.closed_test_irreducible_of_max_USize
 #print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.toClosedMap_of_max_USize
+
+#print axioms StructuralRamsey.RelStructure.weak_irreducible_embeds_base_of_closed_coverage
+#print axioms StructuralRamsey.RelStructure.weak_irreducible_completion_of_closed_coverage
