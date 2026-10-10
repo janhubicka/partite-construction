@@ -27,8 +27,8 @@ def Embedding.expandTaggedClosureParts
     {A : RelStructure L V} {B : RelStructure L W}
     (e : Embedding A B) (partA : V → P) (partB : W → P)
     (hPart : ∀ x, partB (e x) = partA x) :
-    Embedding (expandTaggedClosureParts rules A partA)
-      (expandTaggedClosureParts rules B partB) where
+    Embedding (RelStructure.expandTaggedClosureParts rules A partA)
+      (RelStructure.expandTaggedClosureParts rules B partB) where
   toFun := e
   injective := e.injective
   map_rel_iff := by
@@ -61,8 +61,8 @@ def Embedding.forgetTaggedClosureParts
     {rules : ClosureDescription L}
     {A : RelStructure L V} {B : RelStructure L W}
     {partA : V → P} {partB : W → P}
-    (e : Embedding (expandTaggedClosureParts rules A partA)
-      (expandTaggedClosureParts rules B partB)) :
+    (e : Embedding (RelStructure.expandTaggedClosureParts rules A partA)
+      (RelStructure.expandTaggedClosureParts rules B partB)) :
     Embedding A B where
   toFun := e
   injective := e.injective
@@ -73,12 +73,12 @@ theorem Embedding.tagged_preserves_part
     {rules : ClosureDescription L}
     {A : RelStructure L V} {B : RelStructure L W}
     {partA : V → P} {partB : W → P}
-    (e : Embedding (expandTaggedClosureParts rules A partA)
-      (expandTaggedClosureParts rules B partB)) (x : V) :
+    (e : Embedding (RelStructure.expandTaggedClosureParts rules A partA)
+      (RelStructure.expandTaggedClosureParts rules B partB)) (x : V) :
     partB (e x) = partA x := by
   have h := (e.map_rel_iff (.inr (.inr (partA x)))
     (fun _ : Fin 1 => x)).mpr
-    (show (expandTaggedClosureParts rules A partA).rel
+    (show (RelStructure.expandTaggedClosureParts rules A partA).rel
       (.inr (.inr (partA x))) (fun _ : Fin 1 => x) from rfl)
   exact h
 
@@ -90,7 +90,7 @@ theorem isUClosed_iff_taggedParts
     (A : RelStructure L V) (part : V → P) :
     IsUClosed rules A ↔
       IsUClosed (rules.withTaggedClosureParts P)
-        (expandTaggedClosureParts rules A part) := by
+        (RelStructure.expandTaggedClosureParts rules A part) := by
   constructor
   · intro hA newRule hNew
     obtain ⟨tag, rfl⟩ := hNew
@@ -124,7 +124,7 @@ theorem isUClosed_iff_taggedParts
         rootParts := fun i => part (t (i.castLE rule.rootLE))
       }
       have htTag :
-          (expandTaggedClosureParts rules A part).rel tag.liftRule.symbol t :=
+          (RelStructure.expandTaggedClosureParts rules A part).rel tag.liftRule.symbol t :=
         ⟨ht, fun _ => rfl⟩
       obtain ⟨eExp, he⟩ :=
         (hExp tag.liftRule tag.liftRule_mem).1 t htTag
@@ -136,14 +136,14 @@ theorem isUClosed_iff_taggedParts
         rootParts := fun i => part (e i)
       }
       let eExp : Embedding tag.liftRule.root
-          (expandTaggedClosureParts rules A part) :=
+          (RelStructure.expandTaggedClosureParts rules A part) :=
         e.expandTaggedClosureParts tag.rootParts part (fun _ => rfl)
       obtain ⟨t, ht, hUnique⟩ :=
         (hExp tag.liftRule tag.liftRule_mem).2 eExp
       refine ⟨t, ⟨ht.1.1, ht.2⟩, ?_⟩
       intro s hs
       have hsTag :
-          (expandTaggedClosureParts rules A part).rel tag.liftRule.symbol s := by
+          (RelStructure.expandTaggedClosureParts rules A part).rel tag.liftRule.symbol s := by
         refine ⟨hs.1, ?_⟩
         intro i
         rw [hs.2 i]
