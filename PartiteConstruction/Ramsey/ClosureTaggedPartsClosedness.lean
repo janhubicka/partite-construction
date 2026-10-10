@@ -111,8 +111,8 @@ theorem isUClosed_iff_taggedParts
       obtain ⟨t, ht, hUnique⟩ := (hA tag.rule tag.rule_mem).2 e
       refine ⟨t, ⟨⟨ht.1, ?_⟩, ht.2⟩, ?_⟩
       · intro i
-        rw [ht.2 i]
-        exact hPart i
+        change part (t (i.castLE tag.rule.rootLE)) = tag.rootParts i
+        exact (congrArg part (ht.2 i)).trans (hPart i)
       · intro s hs
         exact hUnique s ⟨hs.1.1, hs.2⟩
   · intro hExp rule hrule
@@ -146,8 +146,8 @@ theorem isUClosed_iff_taggedParts
           (RelStructure.expandTaggedClosureParts rules A part).rel tag.liftRule.symbol s := by
         refine ⟨hs.1, ?_⟩
         intro i
-        rw [hs.2 i]
-        rfl
+        change part (s (i.castLE rule.rootLE)) = tag.rootParts i
+        exact congrArg part (hs.2 i)
       exact hUnique s ⟨hsTag, hs.2⟩
 
 end StructuralRamsey.RelStructure
