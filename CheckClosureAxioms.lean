@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureDisjointLineOverlap
 import PartiteConstruction.Ramsey.ClosureWeakHullUSize
 import PartiteConstruction.Ramsey.ClosureBoundaryKGlue
 import PartiteConstruction.Ramsey.ClosureRankSingleLine
@@ -335,3 +336,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.RelStructure.UClosureHull_of_induce_generators_eq
 #print axioms StructuralRamsey.RelStructure.USize_induce_ambient_hull_le_weak
+
+#print axioms StructuralRamsey.Partite.Induced.disjoint_parameter_lines_overlap_in_word
+#print axioms StructuralRamsey.Partite.Induced.disjoint_lines_overlap_in_closed_word
