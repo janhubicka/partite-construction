@@ -60,8 +60,9 @@ theorem line_subfamily_coordinate_homomorphismEmbedding
     let S := Old.support alpha
     let Core := (power R N).toRelStructure
     let maps := closureLineMaps Old alpha A hRestricted lines
-    (RelStructure.Attachment.attach Old.toRelStructure S Core maps)
-      .IsHomomorphismEmbedding Old.toRelStructure
+    RelStructure.IsHomomorphismEmbedding
+      (RelStructure.Attachment.attach Old.toRelStructure S Core maps)
+      Old.toRelStructure
       (RelStructure.Attachment.fold
         (fun z : Vertex R N => (z.coord k).1)
         (fun _ : I => id)) := by
@@ -70,8 +71,9 @@ theorem line_subfamily_coordinate_homomorphismEmbedding
   let Core := (power R N).toRelStructure
   let maps := closureLineMaps Old alpha A hRestricted lines
   let coreMap : Vertex R N → V := fun z => (z.coord k).1
-  let oldCopies : I → Embedding Old.toRelStructure Old.toRelStructure :=
-    fun _ => Embedding.id Old.toRelStructure
+  let oldCopies : I →
+      RelStructure.Embedding Old.toRelStructure Old.toRelStructure :=
+    fun _ => RelStructure.Embedding.id Old.toRelStructure
   have hCoreHE : Core.IsHomomorphismEmbedding Old.toRelStructure coreMap :=
     (inclusion Old.toRelStructure S).isHomomorphismEmbedding.comp
       (coordinate_isHomomorphismEmbedding R hRestricted k)
