@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureLinePictureRamsey
 import PartiteConstruction.Ramsey.ClosureTaggedRank
 import PartiteConstruction.Ramsey.ClosureTaggedClosedMap
 import PartiteConstruction.Ramsey.ClosureTaggedPositive
@@ -277,3 +278,10 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.UClosureHull_taggedParts_eq
 #print axioms StructuralRamsey.RelStructure.isUGenerating_taggedParts_iff
 #print axioms StructuralRamsey.RelStructure.USize_taggedParts_eq
+
+#print axioms StructuralRamsey.Partite.Induced.familyPicture
+#print axioms StructuralRamsey.Partite.Induced.familyCopyEmbedding
+#print axioms StructuralRamsey.Partite.Induced.familyCoreLetter
+#print axioms StructuralRamsey.Partite.Induced.familyCopy_comp_restrict
+#print axioms StructuralRamsey.Partite.Induced.familyPictureProperty
+#print axioms StructuralRamsey.Partite.Induced.semiClosed_familyPictureProperty
