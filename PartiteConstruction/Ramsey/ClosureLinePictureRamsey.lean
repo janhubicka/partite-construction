@@ -123,7 +123,7 @@ theorem semiClosed_familyPictureProperty
           (fun line : Line (Letter A (Old.restrict alpha)) N =>
             lineEmbedding hRestricted line)) Color := by
   have hR : IsUSemiClosed rules (Old.restrict alpha).toRelStructure :=
-    hOld.induce_isUSemiClosed (Old.support alpha)
+    hOld.induce (Old.support alpha)
   obtain ⟨N, hN, _, _, hLine⟩ :=
     semiClosed_partiteLemma_lines (Old.restrict alpha) hRestricted hR Color
   refine ⟨N, hN, ?_⟩
