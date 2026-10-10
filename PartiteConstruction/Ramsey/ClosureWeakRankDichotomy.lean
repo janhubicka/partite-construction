@@ -85,7 +85,6 @@ theorem weak_test_complete_or_maximal_independent
           IsUSubstructure rules (C.induce (↑S : Set V)) T) := by
   classical
   letI : Fintype V := Fintype.ofFinite V
-  letI : Fintype (↑S : Set V) := Fintype.ofFinite (↑S : Set V)
   have hCardS : Fintype.card (↑S : Set V) = S.card := by simp
   rcases weak_rank_le_or_maximal_independent rules
       (C.induce (↑S : Set V)) j (by simpa [hCardS] using hCard) with
