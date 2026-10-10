@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureMaximalWeakRank
 import PartiteConstruction.Ramsey.ClosureBoundaryBudgetAccounting
 import PartiteConstruction.Ramsey.ClosureDisjointLineOverlap
 import PartiteConstruction.Ramsey.ClosureWeakHullUSize
@@ -343,3 +344,8 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.RelStructure.IsHomomorphism.range_in_hull_of_relative_generators
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_boundary_and_relative_generator_budgets
+
+#print axioms StructuralRamsey.RelStructure.all_subsets_relative_of_USize_eq_card
+#print axioms StructuralRamsey.RelStructure.IsUIrreducible.irreducible_of_all_subsets_relative
+#print axioms StructuralRamsey.RelStructure.closed_test_irreducible_of_max_USize
+#print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.toClosedMap_of_max_USize
