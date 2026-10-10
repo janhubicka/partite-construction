@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureUnrestrictedRamseyPass
 import PartiteConstruction.Ramsey.ClosureUnrestrictedPictureStep
 import PartiteConstruction.Ramsey.ClosureTaggedOuterProtected
 import PartiteConstruction.Ramsey.ClosureTaggedOuterDescent
@@ -316,3 +317,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.Partite.Induced.taggedWitnessOuter_protected
 
 #print axioms StructuralRamsey.Partite.Induced.pictureLemma_protected_unrestricted
+
+#print axioms StructuralRamsey.Partite.Induced.unrestricted_protected_pass
+#print axioms StructuralRamsey.Partite.Induced.closed_ramsey_unrestricted
