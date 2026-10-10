@@ -113,7 +113,7 @@ theorem IsUIrreducible.irreducible_of_all_subsets_relative
       intro k
       change z k ≠ y
       by_contra hzk
-      have hzy : z k = y := not_ne_iff.mp hzk
+      have hzy : z k = y := hzk
       exact hNo ⟨R, z, i, k, hz, hzi, hzy⟩
   rcases hIrred.closed_cover hClosed S T
     (hAll S) (hAll T) hCover hTuples with hS | hT
