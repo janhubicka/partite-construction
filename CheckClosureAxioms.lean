@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureTaggedWitnessNormalization
 import PartiteConstruction.Ramsey.ClosureTaggedLittlePicture
 import PartiteConstruction.Ramsey.ClosureLittlePictureSelected
 import PartiteConstruction.Ramsey.ClosureLinePictureRamsey
@@ -295,3 +296,9 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.Partite.Induced.taggedArrow_of_pictureProperty
 #print axioms StructuralRamsey.Partite.Induced.taggedRelativeCopies_of_selected
 #print axioms StructuralRamsey.Partite.Induced.taggedRepair_of_littlePicture
+
+#print axioms StructuralRamsey.RelStructure.relationTuple_support_irreducible
+#print axioms StructuralRamsey.RelStructure.unaryTuple_support_irreducible
+#print axioms StructuralRamsey.RelStructure.tagged_source_normalizes_of_homomorphismEmbedding
+#print axioms StructuralRamsey.RelStructure.tagged_closed_source_normalizes_of_protected
+#print axioms StructuralRamsey.RelStructure.tagged_closed_reduct_of_protected
