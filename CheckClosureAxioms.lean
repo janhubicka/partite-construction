@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureTaggedParts
 import PartiteConstruction.Ramsey.ClosurePartPredicates
 import PartiteConstruction.Ramsey.ClosureWeakProjectedRankGlue
 import PartiteConstruction.Ramsey.ClosureWeakRestrictionPower
@@ -245,3 +246,8 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.Partite.Embedding.ofExpandedPartPredicates
 #print axioms StructuralRamsey.Partite.Embedding.ofExpanded_expandPartPredicates
 #print axioms StructuralRamsey.Partite.Embedding.expand_ofExpandedPartPredicates
+
+#print axioms StructuralRamsey.RelStructure.ClosurePartTag.liftRule
+#print axioms StructuralRamsey.RelStructure.ClosureDescription.withTaggedClosureParts
+#print axioms StructuralRamsey.RelStructure.ClosurePartTag.liftRule_mem
+#print axioms StructuralRamsey.RelStructure.isUSubstructure_iff_taggedParts
