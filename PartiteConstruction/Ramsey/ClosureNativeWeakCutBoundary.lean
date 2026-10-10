@@ -1,4 +1,5 @@
 import PartiteConstruction.Iterated.AttachmentDecompose
+import PartiteConstruction.Iterated.AttachmentProjection
 
 /-!
 # The common boundary of an actual native attachment cut lies in its core
