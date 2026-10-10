@@ -147,7 +147,7 @@ theorem closed_profile_range_isUSubstructure
   let c := coreEmbedding Base S Core maps
   have hRange (x : X) : ∃ w : W, e x = c w := by
     cases hx : e x with
-    | inl w => exact ⟨w, hx⟩
+    | inl w => exact ⟨w, rfl⟩
     | inr z =>
         have hp : p z.2.1 ∈ J := by simpa only [hx, fold] using hProfile x
         exact False.elim (z.2.2 ((hSupport z.2.1).mpr hp))
