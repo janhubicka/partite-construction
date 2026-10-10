@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureWeakRankDichotomy
 import PartiteConstruction.Ramsey.ClosureMaximalWeakRank
 import PartiteConstruction.Ramsey.ClosureBoundaryBudgetAccounting
 import PartiteConstruction.Ramsey.ClosureDisjointLineOverlap
@@ -349,3 +350,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.IsUIrreducible.irreducible_of_all_subsets_relative
 #print axioms StructuralRamsey.RelStructure.closed_test_irreducible_of_max_USize
 #print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.toClosedMap_of_max_USize
+
+#print axioms StructuralRamsey.RelStructure.weak_rank_le_or_maximal_independent
+#print axioms StructuralRamsey.RelStructure.weak_test_complete_or_maximal_independent
