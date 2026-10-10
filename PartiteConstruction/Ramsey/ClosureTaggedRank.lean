@@ -33,7 +33,20 @@ theorem expandTaggedClosureParts_induce
     (RelStructure.expandTaggedClosureParts rules A part).induce S =
       RelStructure.expandTaggedClosureParts rules (A.induce S)
         (fun x : S => part x.1) := by
-  rfl
+  have hRel :
+      ((RelStructure.expandTaggedClosureParts rules A part).induce S).rel =
+        (RelStructure.expandTaggedClosureParts rules (A.induce S)
+          (fun x : S => part x.1)).rel := by
+    funext R z
+    cases R with
+    | inl R => rfl
+    | inr R =>
+      cases R with
+      | inl tag => rfl
+      | inr p => rfl
+  exact congrArg (fun rel =>
+    (RelStructure.mk rel :
+      RelStructure (L.withTaggedClosureParts rules P) S)) hRel
 
 /-- Exact equality of closure operators on the original vertex set.
 The source need not be closed. In particular root-tagging introduces
