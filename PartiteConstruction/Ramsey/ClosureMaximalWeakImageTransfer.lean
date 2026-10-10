@@ -69,4 +69,34 @@ theorem HasClosedUKCompletion.of_maximal_rank_ordinaryHE_weakImage
   exact hImageCompletion.precomp_closedMap
     (hProtected.codRestrict (↑S : Set V) hRange)
 
+
+/-- In particular the older CLOSED-rank-n completion invariant of Old
+implies the weak-n-vertex completion hypothesis required above, by
+completing the ambient hull of each exact weak image and restricting
+the same completion map back to its original vertex carrier. This
+requires Old to be U-closed, but not the source of the ordinary HE. -/
+theorem HasClosedUKCompletion.of_maximal_rank_ordinaryHE_closedRank
+    {K : StructureClass.{u,v} (L := L)}
+    {rules : ClosureDescription L}
+    {Source : RelStructure L U} {Old : RelStructure L V}
+    [Fintype U] [Finite V]
+    (hOldClosed : IsUClosed rules Old)
+    (f : U → V)
+    (hf : Source.IsHomomorphismEmbedding Old f)
+    (hMax : USize rules Source = Fintype.card U)
+    (n : ℕ)
+    (hCard : Fintype.card U ≤ n)
+    (hOldRank : ∀ (T : Set V) [Fintype T],
+      IsUClosed rules (Old.induce T) →
+      USize rules (Old.induce T) ≤ n →
+        HasClosedUKCompletion K rules (Old.induce T)) :
+    HasClosedUKCompletion K rules Source := by
+  classical
+  letI : Fintype V := Fintype.ofFinite V
+  apply HasClosedUKCompletion.of_maximal_rank_ordinaryHE_weakImage
+    (rules := rules) (K := K) f hf hMax n hCard
+  intro S hS
+  exact HasClosedUKCompletion.of_closed_USize
+    rules Old hOldClosed n hOldRank S hS
+
 end StructuralRamsey.RelStructure
