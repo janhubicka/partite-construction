@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureTaggedOuterDescent
 import PartiteConstruction.Ramsey.ClosureTaggedWitnessNormalization
 import PartiteConstruction.Ramsey.ClosureTaggedLittlePicture
 import PartiteConstruction.Ramsey.ClosureLittlePictureSelected
@@ -302,3 +303,9 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.tagged_source_normalizes_of_homomorphismEmbedding
 #print axioms StructuralRamsey.RelStructure.tagged_closed_source_normalizes_of_protected
 #print axioms StructuralRamsey.RelStructure.tagged_closed_reduct_of_protected
+
+#print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.forgetTaggedOriginal
+#print axioms StructuralRamsey.Partite.Induced.pictureProperty_of_taggedArrow
+#print axioms StructuralRamsey.Partite.Induced.taggedWitnessOuterSystem
+#print axioms StructuralRamsey.Partite.Induced.taggedWitnessOuterSystem_isUClosed
+#print axioms StructuralRamsey.Partite.Induced.taggedWitnessOuterSystem_isPartiteOver
