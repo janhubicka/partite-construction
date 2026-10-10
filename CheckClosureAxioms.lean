@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureWeakSmallFreeCut
 import PartiteConstruction.Ramsey.ClosureWeakIrreducibleCoverage
 import PartiteConstruction.Ramsey.ClosureWeakRankDichotomy
 import PartiteConstruction.Ramsey.ClosureMaximalWeakRank
@@ -357,3 +358,5 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.RelStructure.weak_irreducible_embeds_base_of_closed_coverage
 #print axioms StructuralRamsey.RelStructure.weak_irreducible_completion_of_closed_coverage
+
+#print axioms StructuralRamsey.RelStructure.weak_test_complete_or_small_relative_free_cut
