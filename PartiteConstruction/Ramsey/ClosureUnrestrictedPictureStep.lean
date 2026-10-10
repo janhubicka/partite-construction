@@ -84,7 +84,15 @@ theorem pictureLemma_protected_unrestricted
   letI : Finite (Old.support af) :=
     Finite.of_injective Subtype.val Subtype.val_injective
   letI : Finite (Letter A R) := inferInstance
-  letI : Finite (LineSymbol (Letter A R)) := inferInstance
+  letI : Finite (LineSymbol (Letter A R)) :=
+    Finite.of_injective
+      (fun s : LineSymbol (Letter A R) =>
+        match s with
+        | .parameter => (none : Option (Letter A R))
+        | .const a => some a)
+      (by
+        intro x y h
+        cases x <;> cases y <;> simp_all)
   letI : Finite Index :=
     Finite.of_injective (fun line : Index => line.symbol) (by
       intro x y h
