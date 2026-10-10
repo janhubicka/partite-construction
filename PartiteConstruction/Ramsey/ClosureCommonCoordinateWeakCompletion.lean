@@ -63,7 +63,9 @@ theorem completion_of_maximal_weak_common_coordinate_subattachment
   let F := RelStructure.Attachment.attach Old.toRelStructure
     (Old.support alpha) (power (Old.restrict alpha) N).toRelStructure
     (closureLineMaps Old alpha A hRestricted lines)
-  let rho : F → V :=
+  let rho :
+      RelStructure.Attachment.Vertex (Old.support alpha)
+        (W := Vertex (Old.restrict alpha) N) (I := I) → V :=
     RelStructure.Attachment.fold
       (fun z : Vertex (Old.restrict alpha) N => (z.coord k).1)
       (fun _ : I => id)
@@ -74,6 +76,6 @@ theorem completion_of_maximal_weak_common_coordinate_subattachment
       (rho ∘ e) := hRho.comp e.isHomomorphismEmbedding
   exact HasClosedUKCompletion.of_maximal_rank_ordinaryHE_weakImage
     (rules := rules) (K := K) (Old := Old.toRelStructure)
-    (f := rho ∘ e) hTestOld hMax n hCard hOldWeak
+    (rho ∘ e) hTestOld hMax n hCard hOldWeak
 
 end StructuralRamsey.Partite.Induced
