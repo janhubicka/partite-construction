@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureLineSubfamilyWeakRetraction
 import PartiteConstruction.Ramsey.ClosureWeakRankDichotomy
 import PartiteConstruction.Ramsey.ClosureMaximalWeakRank
 import PartiteConstruction.Ramsey.ClosureBoundaryBudgetAccounting
@@ -353,3 +354,5 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.RelStructure.weak_rank_le_or_maximal_independent
 #print axioms StructuralRamsey.RelStructure.weak_test_complete_or_maximal_independent
+
+#print axioms StructuralRamsey.Partite.Induced.line_subfamily_coordinate_homomorphismEmbedding
