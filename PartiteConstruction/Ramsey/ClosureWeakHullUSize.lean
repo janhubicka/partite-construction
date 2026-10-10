@@ -68,7 +68,8 @@ original weak vertices: a minimum intrinsic generating set suffices. -/
 theorem USize_induce_ambient_hull_le_weak
     [Fintype V]
     (rules : ClosureDescription L)
-    (A : RelStructure L V) (S : Set V) :
+    (A : RelStructure L V) (S : Set V)
+    [Fintype S] [Fintype (UClosureHull rules A S)] :
     USize rules (A.induce (UClosureHull rules A S)) ≤
       USize rules (A.induce S) := by
   classical
@@ -80,7 +81,8 @@ theorem USize_induce_ambient_hull_le_weak
     toFun := fun s => ⟨s.1, subset_UClosureHull rules A S s.2⟩
     inj' := by
       intro x y hxy
-      exact Subtype.ext (congrArg Subtype.val hxy)
+      apply Subtype.ext
+      exact congrArg (fun z : H => z.1) hxy
   }
   let GH : Finset H := G.map e
   have hHullEq : UClosureHull rules A
