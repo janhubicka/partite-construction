@@ -1,3 +1,6 @@
+import PartiteConstruction.Ramsey.ClosureWeakRestrictionPower
+import PartiteConstruction.Ramsey.ClosureSemiClosedLines
+import PartiteConstruction.Ramsey.ClosureSemiClosedAttachment
 import PartiteConstruction.Ramsey.ClosureProtectedInitial
 import PartiteConstruction.Ramsey.ClosureRelativeControlPicture
 import PartiteConstruction.Ramsey.ClosureRelativeControlRamsey
@@ -101,8 +104,8 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.IsUSubstructure.preimage_homomorphism
 #print axioms StructuralRamsey.RelStructure.IsHomomorphism.image_UClosureHull_subset
 #print axioms StructuralRamsey.RelStructure.IsHomomorphism.range_subset_generatedHull
-#print axioms StructuralRamsey.RelStructure.IsHomomorphism.generatedHull_eq_rangeHull
 #print axioms StructuralRamsey.RelStructure.IsClosedUHomomorphismEmbedding.to_generatedHull
+#print axioms StructuralRamsey.RelStructure.IsHomomorphism.generatedHull_eq_rangeHull
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.precomp_closedMap
 #print axioms StructuralRamsey.RelStructure.projected_generator_card_lt
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_projected_generators
@@ -214,3 +217,12 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.Partite.Induced.closed_ramsey_of_relative_A_copies
 #print axioms StructuralRamsey.Partite.Induced.closed_ramsey_of_closed_control
 #print axioms StructuralRamsey.Partite.Induced.ramsey_of_closedLocalCompletion_cutoff_one
+
+#print axioms StructuralRamsey.Partite.Induced.restrictedPowerEmbedding
+#print axioms StructuralRamsey.Partite.Induced.restricted_power_part_protected
+#print axioms StructuralRamsey.Partite.Induced.power_isUSemiClosed
+#print axioms StructuralRamsey.Partite.Induced.line_range_isUSubstructure_of_semiClosed
+#print axioms StructuralRamsey.Partite.Induced.semiClosed_partiteLemma_lines
+#print axioms StructuralRamsey.RelStructure.Attachment.closureTuple_rootMatches
+#print axioms StructuralRamsey.RelStructure.Attachment.closureTuple_eq_core_of_core_witness
+#print axioms StructuralRamsey.RelStructure.Attachment.closed_core_test_range_isUSubstructure
