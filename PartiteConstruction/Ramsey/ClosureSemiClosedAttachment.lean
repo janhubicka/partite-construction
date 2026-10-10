@@ -1,4 +1,6 @@
 import PartiteConstruction.Ramsey.ClosureSemiClosedRange
+import PartiteConstruction.Ramsey.ClosureSemiClosedLines
+import PartiteConstruction.Ramsey.ClosurePictureCoordinate
 import PartiteConstruction.Iterated.AttachmentProjection
 
 /-! # Closed core tests in the temporarily nonfunctional attachment
@@ -11,7 +13,8 @@ have multiple outputs above some roots and is not asserted semi-closed.
 Nevertheless, any root that already has a closure tuple in the core has
 that SAME unique tuple in the whole attachment. Thus every closed test
 embedded entirely in the core remains relatively closed in the whole.
-This is the local safety fact needed before the recursive repair.
+The final two results identify selected-profile copies by their actual
+labels and instantiate this for the native Hales--Jewett line attachment.
 -/
 
 namespace StructuralRamsey.RelStructure.Attachment
@@ -121,9 +124,83 @@ theorem closed_core_test_range_isUSubstructure
     calc
       t (k.castLE rule.rootLE) = r k := hr k
       _ = eO (rT k) := hrT k
-      _ = Sum.inl ((e ∘ a) (k.castLE rule.rootLE)) := by rw [ha.2 k]; rfl
+      _ = Sum.inl ((e ∘ a) (k.castLE rule.rootLE)) :=
+        congrArg (fun x => Sum.inl (e x)) (ha.2 k).symm
   have hEq := closureTuple_eq_core_of_core_witness Base S Core maps
     hBase hCore hMaps rule hrule t ht (e ∘ a) hCoreTuple hRoot
   exact ⟨a j, (congrFun hEq j).symm⟩
 
+/-- Selected labels force the test into the core; closedness then
+makes its range a relative substructure of the whole little picture.
+The old support is the EXACT inverse image of those labels. -/
+theorem closed_profile_range_isUSubstructure
+    {rules : ClosureDescription L} {P : Type v}
+    (hBase : IsUSemiClosed rules Base) (hCore : IsUSemiClosed rules Core)
+    (hMaps : ∀ i, IsUSubstructure rules Core (Set.range (maps i)))
+    (p : V → P) (q : W → P) (J : Set P)
+    (hSupport : ∀ x, x ∈ S ↔ p x ∈ J)
+    (Test : RelStructure L X) (hTest : IsUClosed rules Test)
+    (e : Embedding Test (attach Base S Core maps))
+    (hProfile : ∀ x, fold q (fun _ : I => p) (e x) ∈ J) :
+    IsUSubstructure rules (attach Base S Core maps) (Set.range e) := by
+  classical
+  let c := coreEmbedding Base S Core maps
+  have hRange (x : X) : ∃ w : W, e x = c w := by
+    cases hx : e x with
+    | inl w => exact ⟨w, hx⟩
+    | inr z =>
+        have hp : p z.2.1 ∈ J := by simpa only [hx, fold] using hProfile x
+        exact False.elim (z.2.2 ((hSupport z.2.1).mpr hp))
+  let g : Embedding Test Core := e.factorThroughRange c hRange
+  have hEq : c.comp g = e := by
+    apply Embedding.ext
+    intro x
+    exact (Classical.choose_spec (hRange x)).symm
+  have h := closed_core_test_range_isUSubstructure Base S Core maps
+    hBase hCore hMaps Test hTest g
+  rw [hEq] at h
+  exact h
+
 end StructuralRamsey.RelStructure.Attachment
+
+namespace StructuralRamsey.Partite.Induced
+
+open RelStructure HalesJewett SuccessorTree
+universe u v
+variable {L : RelLanguage.{u}} {P Q V I X : Type v} {N : ℕ}
+
+/-- Actual native line attachment: ALL closed selected-profile copies
+are relative U-substructures. No closed control, closed support, or
+semi-closed whole attachment is assumed. This is the input for the
+recursive relative-copy theorem after naming the parts. -/
+theorem closed_profile_in_native_line_attachment
+    {rules : ClosureDescription L}
+    (Old : System L P V) (alpha : Q ↪ P) (A : RelStructure L Q)
+    (hRestricted : (Old.restrict alpha).IsPartiteOver A)
+    (hOld : IsUClosed rules Old.toRelStructure) (hN : 0 < N)
+    (lines : I → Line (Letter A (Old.restrict alpha)) N)
+    (Test : RelStructure L X) (hTest : IsUClosed rules Test)
+    (e : RelStructure.Embedding Test
+      (RelStructure.Attachment.attach Old.toRelStructure (Old.support alpha)
+        (power (Old.restrict alpha) N).toRelStructure
+        (closureLineMaps Old alpha A hRestricted lines)))
+    (hProfile : ∀ x, RelStructure.Attachment.fold
+      (fun z : Vertex (Old.restrict alpha) N => alpha z.part)
+      (fun _ : I => Old.part) (e x) ∈ Set.range alpha) :
+    IsUSubstructure rules
+      (RelStructure.Attachment.attach Old.toRelStructure (Old.support alpha)
+        (power (Old.restrict alpha) N).toRelStructure
+        (closureLineMaps Old alpha A hRestricted lines)) (Set.range e) := by
+  have hR : IsUSemiClosed rules (Old.restrict alpha).toRelStructure :=
+    hOld.induce_isUSemiClosed (Old.support alpha)
+  apply RelStructure.Attachment.closed_profile_range_isUSubstructure
+    Old.toRelStructure (Old.support alpha)
+    (power (Old.restrict alpha) N).toRelStructure
+    (closureLineMaps Old alpha A hRestricted lines)
+    hOld.isUSemiClosed (power_isUSemiClosed (Old.restrict alpha) hR hN)
+    (fun i => line_range_isUSubstructure_of_semiClosed
+      (Old.restrict alpha) hRestricted hR (lines i))
+    Old.part (fun z => alpha z.part) (Set.range alpha) (fun _ => Iff.rfl)
+    Test hTest e hProfile
+
+end StructuralRamsey.Partite.Induced
