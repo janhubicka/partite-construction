@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureUnrestrictedRankOne
 import PartiteConstruction.Ramsey.ClosureUnrestrictedRamseyPass
 import PartiteConstruction.Ramsey.ClosureUnrestrictedPictureStep
 import PartiteConstruction.Ramsey.ClosureTaggedOuterProtected
@@ -320,3 +321,5 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.Partite.Induced.unrestricted_protected_pass
 #print axioms StructuralRamsey.Partite.Induced.closed_ramsey_unrestricted
+
+#print axioms StructuralRamsey.Partite.Induced.ramsey_of_closedLocalCompletion_cutoff_one_unrestricted
