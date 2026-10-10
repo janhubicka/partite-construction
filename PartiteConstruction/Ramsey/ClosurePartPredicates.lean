@@ -43,6 +43,12 @@ def withPartPredicates (L : RelLanguage.{u}) (P : Type v) :
     (L : RelLanguage.{u}) (P : Type v) (p : P) :
     (L.withPartPredicates P).arity (.inr p) = 1 := rfl
 
+/-- The unique coordinate of any unary part relation. -/
+def withPartPredicates_partIndex
+    (L : RelLanguage.{u}) (P : Type v) (p : P) :
+    Fin ((L.withPartPredicates P).arity (.inr p)) :=
+  ⟨0, by simp⟩
+
 end RelLanguage
 
 namespace RelStructure
@@ -57,7 +63,8 @@ def expandPartPredicates (A : RelStructure L V) (part : V → P) :
     RelStructure (L.withPartPredicates P) V where
   rel
     | .inl R, xs => A.rel R xs
-    | .inr p, xs => part (xs 0) = p
+    | .inr p, xs =>
+        part (xs (RelLanguage.withPartPredicates_partIndex L P p)) = p
 
 /-- Forget only the unary part predicates. -/
 def forgetPartPredicates
@@ -86,7 +93,8 @@ def Embedding.expandPartPredicates
     cases R with
     | inl R => exact e.map_rel_iff R xs
     | inr p =>
-        change (partB (e (xs 0)) = p) ↔ (partA (xs 0) = p)
+        change (partB (e (xs (RelLanguage.withPartPredicates_partIndex L P p))) = p) ↔
+          (partA (xs (RelLanguage.withPartPredicates_partIndex L P p)) = p)
         rw [hPart]
 
 /-- Forgetting part predicates recovers an ordinary full embedding. -/
@@ -155,6 +163,10 @@ theorem Irreducible.forgetPartPredicates_of_expanded
   cases R with
   | inl R => exact ⟨R, t, i, j, ht, hi, hj⟩
   | inr p =>
+      have hOne : Subsingleton (Fin ((L.withPartPredicates P).arity (.inr p))) := by
+        change Subsingleton (Fin 1)
+        infer_instance
+      letI := hOne
       have hij : i = j := Subsingleton.elim i j
       exact False.elim (hxy (hi.symm.trans (hij ▸ hj)))
 
@@ -190,7 +202,7 @@ def Embedding.ofExpandedPartPredicates
 @[simp] theorem Embedding.ofExpanded_expandPartPredicates
     {B : System L P V} {C : System L P W}
     (e : Embedding B C) :
-    (e.expandPartPredicates).ofExpandedPartPredicates = e := by
+    Embedding.ofExpandedPartPredicates (e.expandPartPredicates) = e := by
   ext x
   rfl
 
@@ -198,7 +210,7 @@ def Embedding.ofExpandedPartPredicates
     {B : System L P V} {C : System L P W}
     (e : RelStructure.Embedding B.expandPartPredicates
       C.expandPartPredicates) :
-    (e.ofExpandedPartPredicates).expandPartPredicates = e := by
+    (Embedding.ofExpandedPartPredicates e).expandPartPredicates = e := by
   apply RelStructure.Embedding.ext
   intro x
   rfl
