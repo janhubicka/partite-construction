@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureTaggedClosedMap
 import PartiteConstruction.Ramsey.ClosureTaggedPositive
 import PartiteConstruction.Ramsey.ClosureTaggedIrreducibility
 import PartiteConstruction.Ramsey.ClosureTaggedPartsClosedness
@@ -268,3 +269,5 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.IsHomomorphism.tagged_preserves_part
 #print axioms StructuralRamsey.RelStructure.isHomomorphism_tagged_iff
 #print axioms StructuralRamsey.RelStructure.tagged_embedded_test_eq_expansion
+
+#print axioms StructuralRamsey.RelStructure.isClosedUHomomorphismEmbedding_tagged_iff
