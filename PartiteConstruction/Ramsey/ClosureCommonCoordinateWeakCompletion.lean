@@ -78,4 +78,41 @@ theorem completion_of_maximal_weak_common_coordinate_subattachment
     (rules := rules) (K := K) (Old := Old.toRelStructure)
     (rho ∘ e) hTestOld hMax n hCard hOldWeak
 
+
+/-- An actual native common-coordinate subattachment also preserves
+the MAXIMAL weak-source completion branch under the standard
+previous CLOSED rank-n invariant of the old U-closed picture.
+Here the exact weak-image completion premise is discharged using
+ambient hull restriction, not assumed as another class axiom. -/
+theorem completion_of_maximal_weak_common_coordinate_closedRank
+    {K : StructureClass.{u,v} (L := L)}
+    {rules : ClosureDescription L}
+    (Old : System L P V) (alpha : Q ↪ P)
+    (A : RelStructure L Q)
+    (hRestricted : (Old.restrict alpha).IsPartiteOver A)
+    (lines : I → Line (Letter A (Old.restrict alpha)) N)
+    (k : Fin N)
+    (hVariable : ∀ i : I, (lines i).symbol k = .parameter)
+    [Fintype X] [Fintype V]
+    (Test : RelStructure L X)
+    (e : RelStructure.Embedding Test
+      (RelStructure.Attachment.attach Old.toRelStructure (Old.support alpha)
+        (power (Old.restrict alpha) N).toRelStructure
+        (closureLineMaps Old alpha A hRestricted lines)))
+    (hMax : USize rules Test = Fintype.card X)
+    (n : ℕ) (hCard : Fintype.card X ≤ n)
+    (hOldClosed : IsUClosed rules Old.toRelStructure)
+    (hOldRank : ∀ (T : Set V) [Fintype T],
+      IsUClosed rules (Old.toRelStructure.induce T) →
+      USize rules (Old.toRelStructure.induce T) ≤ n →
+        HasClosedUKCompletion K rules
+          (Old.toRelStructure.induce T)) :
+    HasClosedUKCompletion K rules Test := by
+  apply completion_of_maximal_weak_common_coordinate_subattachment
+    Old alpha A hRestricted lines k hVariable
+    Test e hMax n hCard
+  intro S hS
+  exact HasClosedUKCompletion.of_closed_USize
+    rules Old.toRelStructure hOldClosed n hOldRank S hS
+
 end StructuralRamsey.Partite.Induced
