@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureLittlePictureSelected
 import PartiteConstruction.Ramsey.ClosureLinePictureRamsey
 import PartiteConstruction.Ramsey.ClosureTaggedRank
 import PartiteConstruction.Ramsey.ClosureTaggedClosedMap
@@ -285,3 +286,7 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.Partite.Induced.familyCopy_comp_restrict
 #print axioms StructuralRamsey.Partite.Induced.familyPictureProperty
 #print axioms StructuralRamsey.Partite.Induced.semiClosed_familyPictureProperty
+
+#print axioms StructuralRamsey.Partite.Induced.restrictedPartite_of_closedProtected
+#print axioms StructuralRamsey.Partite.Induced.familyPicture_isPartiteOver
+#print axioms StructuralRamsey.Partite.Induced.semiClosed_littlePicture_selected_relative
