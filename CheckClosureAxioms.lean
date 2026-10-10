@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureSmallProperACut
 import PartiteConstruction.Ramsey.ClosureMaximalWeakRankHereditary
 import PartiteConstruction.Ramsey.ClosureWeakSmallFreeCut
 import PartiteConstruction.Ramsey.ClosureWeakIrreducibleCoverage
@@ -366,3 +367,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.USize_eq_card_of_all_subsets_relative
 #print axioms StructuralRamsey.RelStructure.induced_USize_eq_card_of_max_USize
 #print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.toClosedMap_induced_of_max_USize
+
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_small_proper_projected_A_cut
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_maximal_weak_projected_A_cut
