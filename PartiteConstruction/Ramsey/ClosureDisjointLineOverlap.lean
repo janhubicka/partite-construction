@@ -100,9 +100,10 @@ theorem disjoint_lines_overlap_in_closed_word
     obtain ⟨p, hp⟩ := he z ⟨x, hx⟩ ⟨y, hy⟩
     refine ⟨p, ?_⟩
     calc
-      z = NonInduced.wordMap (W.eval e) p := hp
-      _ = (wordEmbedding hPart W.length_pos (W.eval e)).toEmbedding p := by
-        exact (wordEmbedding_apply hPart W.length_pos (W.eval e) p).symm
+      (wordEmbedding hPart W.length_pos (W.eval e)).toEmbedding p =
+          NonInduced.wordMap (W.eval e) p :=
+        wordEmbedding_apply hPart W.length_pos (W.eval e) p
+      _ = z := hp.symm
   · have hCore : IsUSemiClosed rules (power B N).toRelStructure :=
       power_isUSemiClosed B hB W.length_pos
     exact Embedding.range_isUSubstructure_of_semiClosed
