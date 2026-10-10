@@ -104,6 +104,7 @@ theorem HasClosedUKCompletion.of_two_small_side_projections
       hClosedTL.preimage_embedding aL
     have hQSeeds : Set.range q ⊆ aL ⁻¹' TL := by
       rintro y ⟨r, rfl⟩
+      change aL (q r) ∈ TL
       rw [← hRootL r]
       exact hRangeL (sL r)
     have hx : x ∈ UClosureHull rules Q (Set.range q) := by
@@ -117,6 +118,7 @@ theorem HasClosedUKCompletion.of_two_small_side_projections
       hClosedTR.preimage_embedding aR
     have hQSeeds : Set.range q ⊆ aR ⁻¹' TR := by
       rintro y ⟨r, rfl⟩
+      change aR (q r) ∈ TR
       rw [← hRootR r]
       exact hRangeR (sR r)
     have hx : x ∈ UClosureHull rules Q (Set.range q) := by
