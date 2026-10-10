@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureRankSingleLine
 import PartiteConstruction.Ramsey.ClosureUnrestrictedRankOne
 import PartiteConstruction.Ramsey.ClosureUnrestrictedRamseyPass
 import PartiteConstruction.Ramsey.ClosureUnrestrictedPictureStep
@@ -323,3 +324,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.Partite.Induced.closed_ramsey_unrestricted
 
 #print axioms StructuralRamsey.Partite.Induced.ramsey_of_closedLocalCompletion_cutoff_one_unrestricted
+
+#print axioms StructuralRamsey.Partite.Induced.completion_of_single_generator_line
+#print axioms StructuralRamsey.Partite.Induced.completion_of_no_generator_lines
