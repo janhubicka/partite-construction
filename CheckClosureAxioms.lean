@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureSmallProperACut
 import PartiteConstruction.Ramsey.ClosureWeakSmallFreeCut
 import PartiteConstruction.Ramsey.ClosureWeakIrreducibleCoverage
 import PartiteConstruction.Ramsey.ClosureWeakRankDichotomy
@@ -360,3 +361,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.weak_irreducible_completion_of_closed_coverage
 
 #print axioms StructuralRamsey.RelStructure.weak_test_complete_or_small_relative_free_cut
+
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_small_proper_projected_A_cut
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_maximal_weak_projected_A_cut
