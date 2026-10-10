@@ -55,10 +55,8 @@ theorem HasClosedUKCompletion.glue_over_closed_K_root_relative
     Root hRootK hRootClosed
     Left Right
     (fun x : E => x) (fun x : F => x)
-    (Embedding.id Left).isClosedUHomomorphismEmbedding
-      rules
-    (Embedding.id Right).isClosedUHomomorphismEmbedding
-      rules
+    ((Embedding.id Left).isClosedUHomomorphismEmbedding rules)
+    ((Embedding.id Right).isClosedUHomomorphismEmbedding rules)
     (fun x : H => x) sL sR
     (fun _ => rfl) (fun _ => rfl)
     hLeft hRight
