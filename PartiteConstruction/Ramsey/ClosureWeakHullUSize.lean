@@ -74,8 +74,6 @@ theorem USize_induce_ambient_hull_le_weak
       USize rules (A.induce S) := by
   classical
   let H : Set V := UClosureHull rules A S
-  letI : Fintype S := Fintype.ofFinite S
-  letI : Fintype H := Fintype.ofFinite H
   obtain ⟨G, hGCard, hGGen⟩ := USize_spec rules (A.induce S)
   let e : S ↪ H := {
     toFun := fun s => ⟨s.1, subset_UClosureHull rules A S s.2⟩
