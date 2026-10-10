@@ -1,3 +1,6 @@
+import PartiteConstruction.Ramsey.ClosureLineSubfamilyWeakRetraction
+import PartiteConstruction.Ramsey.ClosureMaximalWeakImageTransfer
+import PartiteConstruction.Ramsey.ClosureCommonCoordinateWeakCompletion
 import PartiteConstruction.Ramsey.ClosureSmallProperACut
 import PartiteConstruction.Ramsey.ClosureTwoSideSmallProjection
 import PartiteConstruction.Ramsey.ClosureNativeWeakCutBoundary
@@ -379,3 +382,7 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_two_small_side_projections
 #print axioms StructuralRamsey.RelStructure.Attachment.overlap_vertex_is_core
 #print axioms StructuralRamsey.RelStructure.Attachment.overlap_fold_in_selected
+
+#print axioms StructuralRamsey.Partite.Induced.line_subfamily_coordinate_homomorphismEmbedding
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_maximal_rank_ordinaryHE_weakImage
+#print axioms StructuralRamsey.Partite.Induced.completion_of_maximal_weak_common_coordinate_subattachment
