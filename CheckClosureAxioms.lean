@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureWeakHullUSize
 import PartiteConstruction.Ramsey.ClosureBoundaryKGlue
 import PartiteConstruction.Ramsey.ClosureRankSingleLine
 import PartiteConstruction.Ramsey.ClosureUnrestrictedRankOne
@@ -331,3 +332,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.glue_over_closed_K_root_relative
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.bad_side_of_bad_free_amalgam
+
+#print axioms StructuralRamsey.RelStructure.UClosureHull_of_induce_generators_eq
+#print axioms StructuralRamsey.RelStructure.USize_induce_ambient_hull_le_weak
