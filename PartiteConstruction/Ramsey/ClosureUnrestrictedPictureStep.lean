@@ -81,6 +81,10 @@ theorem pictureLemma_protected_unrestricted
       ∀ e : RelStructure.Embedding Test O.toRelStructure,
         (∀ x, O.part (e x) ∈ Set.range af) →
         IsUSubstructure rules O.toRelStructure (Set.range e) := hOSelected
+  letI : Finite (Old.support af) :=
+    Finite.of_injective Subtype.val Subtype.val_injective
+  letI : Finite (Letter A R) := inferInstance
+  letI : Finite (LineSymbol (Letter A R)) := inferInstance
   letI : Finite Index :=
     Finite.of_injective (fun line : Index => line.symbol) (by
       intro x y h
