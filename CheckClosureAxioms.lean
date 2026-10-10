@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureTransverseLineRootLetters
 import PartiteConstruction.Ramsey.ClosureMaximalWeakRankHereditary
 import PartiteConstruction.Ramsey.ClosureWeakSmallFreeCut
 import PartiteConstruction.Ramsey.ClosureWeakIrreducibleCoverage
@@ -366,3 +367,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.USize_eq_card_of_all_subsets_relative
 #print axioms StructuralRamsey.RelStructure.induced_USize_eq_card_of_max_USize
 #print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.toClosedMap_induced_of_max_USize
+
+#print axioms StructuralRamsey.Partite.Induced.transverse_lines_common_preimages_are_letters
+#print axioms StructuralRamsey.Partite.Induced.transverse_lines_compatible_root_parts
