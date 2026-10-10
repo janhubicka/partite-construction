@@ -104,7 +104,7 @@ theorem disjoint_lines_overlap_in_closed_word
   · have hCore : IsUSemiClosed rules (power B N).toRelStructure :=
       power_isUSemiClosed B hB W.length_pos
     exact
-      (wordEmbedding hPart W.length_pos (W.eval e)).toEmbedding
-        |>.range_isUSubstructure_of_semiClosed hA hCore
+      ((wordEmbedding hPart W.length_pos (W.eval e)).toEmbedding)
+        .range_isUSubstructure_of_semiClosed hA hCore
 
 end StructuralRamsey.Partite.Induced
