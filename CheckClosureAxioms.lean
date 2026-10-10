@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureNativeWeakCutBoundary
 import PartiteConstruction.Ramsey.ClosureTransverseLineRootLetters
 import PartiteConstruction.Ramsey.ClosureMaximalWeakRankHereditary
 import PartiteConstruction.Ramsey.ClosureWeakSmallFreeCut
@@ -370,3 +371,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.Partite.Induced.transverse_lines_common_preimages_are_letters
 #print axioms StructuralRamsey.Partite.Induced.transverse_lines_compatible_root_parts
+
+#print axioms StructuralRamsey.RelStructure.Attachment.overlap_vertex_is_core
+#print axioms StructuralRamsey.RelStructure.Attachment.overlap_fold_in_selected
