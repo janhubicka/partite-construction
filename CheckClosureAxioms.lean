@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureMaximalWeakOrdinarySides
 import PartiteConstruction.Ramsey.ClosureSmallProperACut
 import PartiteConstruction.Ramsey.ClosureTwoSideSmallProjection
 import PartiteConstruction.Ramsey.ClosureNativeWeakCutBoundary
@@ -379,3 +380,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_two_small_side_projections
 #print axioms StructuralRamsey.RelStructure.Attachment.overlap_vertex_is_core
 #print axioms StructuralRamsey.RelStructure.Attachment.overlap_fold_in_selected
+
+#print axioms StructuralRamsey.RelStructure.Embedding.USize_eq_card_of_embedding_into_maximal
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_maximal_weak_two_ordinary_side_maps
