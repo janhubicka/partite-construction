@@ -1,4 +1,5 @@
 import PartiteConstruction.Ramsey.ClosurePictureCoordinate
+import PartiteConstruction.Ramsey.ClosurePartitePower
 import PartiteConstruction.Iterated.AttachmentProjection
 
 /-!
@@ -83,6 +84,6 @@ theorem line_subfamily_coordinate_homomorphismEmbedding
     change ((NonInduced.lineMap (lines i) x).coord k).1 = x.1
     rw [coordinate_lineMap_parameter (lines i) k (hVariable i) x]
   exact RelStructure.Attachment.fold_isHomomorphismEmbedding
-    Old.toRelStructure S Core maps coreMap oldCopies hCompat hCoreHE
+    coreMap oldCopies hCompat hCoreHE
 
 end StructuralRamsey.Partite.Induced
