@@ -60,9 +60,9 @@ It does NOT contradict Lemma 2.23 or equivalence of U-closedness and
 relative U-substructure status: B0 is not U-closed.
 
 The standard-library executable regression
-`scripts/check_U_size_weak_hull_strict_drop.py` was run successfully.
-It checks every required root, closure tuple, the weak induced
-substructure, all closure hulls and minimal generating ranks. That is
+`scripts/check_U_size_weak_hull_strict_drop.py` is supplied for exact reproduction. An equivalent Python computation
+was executed successfully, checking all closure tuples, the weak
+induced substructure, the relevant hulls and minimal generating ranks. That is
 a finite computation, NOT a general Lean proof.
 
 ## Correct statement and short proof
