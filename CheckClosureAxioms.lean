@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureBoundaryBudgetAccounting
 import PartiteConstruction.Ramsey.ClosureWeakHullUSize
 import PartiteConstruction.Ramsey.ClosureBoundaryKGlue
 import PartiteConstruction.Ramsey.ClosureRankSingleLine
@@ -335,3 +336,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.RelStructure.UClosureHull_of_induce_generators_eq
 #print axioms StructuralRamsey.RelStructure.USize_induce_ambient_hull_le_weak
+
+#print axioms StructuralRamsey.RelStructure.IsHomomorphism.range_in_hull_of_relative_generators
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_boundary_and_relative_generator_budgets
