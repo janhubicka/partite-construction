@@ -1,6 +1,94 @@
 # Positive proof plan for Theorem 2.18
 
-Updated: 9 October 2026.
+Updated: 10 October 2026.
+
+## Current validation checkpoint — 10 October 2026
+
+This section supersedes the outdated **future-work** status descriptions
+below, which remain as a chronological proof-planning record. All
+original/published TeX remains frozen. **The full repaired Theorem 2.18
+is NOT yet validated.**
+
+### Verified and merged
+
+- PRs #181 and #183–#185: closed-test protection, semi-closed powers,
+  canonical native line ranges, and relative U-closure of selected
+  closed-profile copies in the ACTUAL temporarily conflicting Picture.
+- PRs #186–#193: weak-source free-cut completion gluing and exact
+  root-tagged part-language transport (embeddings, U-closedness,
+  closed U-irreducibility, corrected protected maps, closure hulls and
+  intrinsic U-generating rank).
+- PRs #194–#201: genuine canonical-line little Picture Ramsey property,
+  its selected-profile relative closure, ACTUAL tagged recursive repair,
+  normalization and descent to an ordinary U-closed protected
+  outer D-partite picture, a full finite pass, and the global Ramsey
+  witness over an ARBITRARY, possibly non-U-closed Ramsey control D.
+- PR #202: repaired class-valued Ramsey implication at original local
+  completion cutoff n(B,D) <= 1, with no relative-copy hypothesis.
+- PRs #203–#204 and #206, #209, #211–#212, #215, #218:
+  the valid source-coordinate retraction cases, weak-free K-boundary
+  gluing, the TRUE one-sided intrinsic-weak-to-ambient-hull U-size
+  inequality, exact boundary-plus-side generator arithmetic,
+  maximal-rank weak-test closure independence, low-rank weak
+  completion, ordinary irreducible weak completion, and the
+  properly sized relatively closed free-cut trichotomy.
+- PR #207: pairwise overlap of disjoint-parameter native HJ lines
+  is contained in one U-closed A-word copy. PR #210 records the
+  counterexample to combining a FAMILY of such pairwise overlaps
+  into a SINGLE word copy.
+
+### Corrected semantic contract
+
+Use **embedded CLOSED U-irreducible tests** for both working
+protected completion maps and the repaired local-finiteness
+membership clause. Its weak-test size clause continues to range
+over ALL induced vertex subsets, whether closed or not. This
+strengthens the substantive local-finiteness hypothesis relative
+to a literal vacuity reading of the printed Definition 2.17;
+equivalence to the printed theorem has NOT been shown. The
+paired-equivalence class in the literal-definitions audit is
+NOT locally finite under this repaired convention.
+
+### The outstanding rank increment
+
+Published Lemma 2.30 requires completing arbitrary **closed** tests
+of intrinsic U-size j+1. Such tests may have MANY more than j+1
+vertices. The validated source-cardinality dichotomy completes
+an exact weak test on <=j+1 vertices or produces a proper free
+decomposition into TWO relatively U-closed weak sides, each of <=j
+vertices. It DOES NOT by itself complete the possibly much larger
+closed rank-(j+1) test.
+
+To complete the weaker exact-size branch in the ACTUAL HJ attachment,
+the needed remaining geometry is: a protected map of the weak test
+into one U-closed old picture (or independent compatible side maps),
+AND a true proper free cut whose separator maps into a closed
+K-boundary contained in a selected A-copy. Strong K-amalgamation
+then handles the target completion without falsely setting the
+boundary generating cost to zero.
+
+See draft/live follow-ups #216 (ordinary coordinate retractions with
+nonclosed support), #217 (two distinct small side projections and
+abstract generated boundary), #219/#223 (two transverse old
+preimages via A-letters), #220 (merged hereditary maximal weak rank),
+#221/#224 (complete small proper cuts with a projected A-boundary),
+and #222 (literal native weak-cut overlap lies in its core). **Only
+merge after the exact source head passes full Lean build and axiom
+audit; do not count green prior patches as certification of a
+changed branch.**
+
+### Published supporting sentence needing correction
+
+PR #205 gives a three-vertex counterexample to the published
+assertion that an arbitrary weak induced substructure and its ambient
+U-closure have equal intrinsic U-size. PR #206 proves the correct
+one-sided inequality, USize(cl(B0)) <= USize(B0), which may be strict.
+A localized manuscript wording correction is documented but NOT
+applied to the frozen TeX.
+
+---
+
+
 Primary source: Hubicka--Nesetril, *All those Ramsey classes*,
 arXiv:1606.07979v4, Sections 2.1.2 and 2.3--2.6;
 https://arxiv.org/html/1606.07979v4 .
