@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureTaggedIrreducibility
 import PartiteConstruction.Ramsey.ClosureTaggedPartsClosedness
 import PartiteConstruction.Ramsey.ClosureTaggedParts
 import PartiteConstruction.Ramsey.ClosurePartPredicates
@@ -257,3 +258,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.Embedding.forgetTaggedClosureParts
 #print axioms StructuralRamsey.RelStructure.Embedding.tagged_preserves_part
 #print axioms StructuralRamsey.RelStructure.isUClosed_iff_taggedParts
+
+#print axioms StructuralRamsey.RelStructure.IsUClosed.uIrreducible_of_closed_cover
+#print axioms StructuralRamsey.RelStructure.isUIrreducible_iff_taggedParts_of_closed
