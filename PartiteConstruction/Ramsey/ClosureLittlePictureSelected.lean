@@ -109,6 +109,19 @@ theorem semiClosed_littlePicture_selected_relative
           (fun _ : Line (Letter A (Old.restrict alpha.toFunctionEmbedding)) N =>
             Old.part) (e x) ∈ Set.range alpha.toFunctionEmbedding := by
       intro x
+      have hPartEq :
+          (familyPicture Old alpha.toFunctionEmbedding
+            (power (Old.restrict alpha.toFunctionEmbedding) N)
+            (fun line : Line (Letter A (Old.restrict alpha.toFunctionEmbedding)) N =>
+              lineEmbedding hR line)).part =
+            RelStructure.Attachment.fold
+              (fun z : Vertex (Old.restrict alpha.toFunctionEmbedding) N =>
+                alpha.toFunctionEmbedding z.part)
+              (fun _ : Line (Letter A (Old.restrict alpha.toFunctionEmbedding)) N =>
+                Old.part) := by
+        funext z
+        cases z <;> rfl
+      rw [← hPartEq]
       exact hSel x
     exact closed_profile_in_native_line_attachment Old
       alpha.toFunctionEmbedding A hR hOld hN
