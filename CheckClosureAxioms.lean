@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureNonclosedSupportRestObstruction
 import PartiteConstruction.Ramsey.ClosureSmallProperACut
 import PartiteConstruction.Ramsey.ClosureTwoSideSmallProjection
 import PartiteConstruction.Ramsey.ClosureNativeWeakCutBoundary
@@ -379,3 +380,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_two_small_side_projections
 #print axioms StructuralRamsey.RelStructure.Attachment.overlap_vertex_is_core
 #print axioms StructuralRamsey.RelStructure.Attachment.overlap_fold_in_selected
+
+#print axioms StructuralRamsey.RelStructure.Attachment.core_range_not_USubstructure_of_nonclosed_support
+#print axioms StructuralRamsey.RelStructure.Attachment.rest_not_USubstructure_of_nonclosed_support
