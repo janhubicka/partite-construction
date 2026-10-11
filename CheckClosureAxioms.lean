@@ -383,3 +383,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 
 #print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.factorThroughEmbeddingRange
 #print axioms StructuralRamsey.RelStructure.Attachment.closed_source_piece_factors_old_copy
+
+#print axioms StructuralRamsey.RelStructure.Attachment.ordinary_source_piece_factors_old_copy
+#print axioms StructuralRamsey.RelStructure.Attachment.maximal_weak_piece_protected_in_old_copy
