@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureMaximalWeakOrdinaryABoundary
 import PartiteConstruction.Ramsey.ClosureMinimalGeneratorIndependence
 import PartiteConstruction.Ramsey.ClosureLineSubfamilyWeakRetraction
 import PartiteConstruction.Ramsey.ClosureMaximalWeakImageTransfer
@@ -396,3 +397,5 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.Embedding.USize_eq_card_of_embedding_into_maximal
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_maximal_weak_two_ordinary_side_maps
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_two_small_side_projections_via_A
+
+#print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_maximal_weak_two_ordinary_side_maps_via_A
