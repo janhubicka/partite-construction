@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureMinimumGeneratorEssential
 import PartiteConstruction.Ramsey.ClosureMaximalWeakOrdinaryABoundary
 import PartiteConstruction.Ramsey.ClosureMinimalGeneratorIndependence
 import PartiteConstruction.Ramsey.ClosureLineSubfamilyWeakRetraction
@@ -399,3 +400,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_two_small_side_projections_via_A
 
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_maximal_weak_two_ordinary_side_maps_via_A
+
+#print axioms StructuralRamsey.RelStructure.minimum_generator_not_in_erase_hull
+#print axioms StructuralRamsey.RelStructure.minimum_generator_excluded_from_saturated_side
