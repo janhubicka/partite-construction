@@ -1,4 +1,5 @@
 import PartiteConstruction.Ramsey.ClosureIrreducibleHulls
+import PartiteConstruction.Ramsey.ClosureMaximalWeakRankHereditary
 import PartiteConstruction.Relational.Attachment
 
 /-!
@@ -78,6 +79,62 @@ namespace StructuralRamsey.RelStructure.Attachment
 universe u v
 variable {L : RelLanguage.{u}}
 variable {U V W I : Type v}
+
+/-- Any ordinary homomorphism-embedding of an arbitrary WEAK source
+into the real attachment restricts to an ordinary map of a chosen
+exact source piece into Old, whenever its image stays inside one
+selected attached-copy range. No intrinsic source closedness
+or global map injectivity is assumed. -/
+theorem ordinary_source_piece_factors_old_copy
+    (Source : RelStructure L U) (Old : RelStructure L V)
+    (Support : Set V) (Core : RelStructure L W)
+    (maps : I → Embedding (Old.induce Support) Core)
+    (p : U → Vertex Support (W := W) (I := I))
+    (hp : Source.IsHomomorphismEmbedding
+      (attach Old Support Core maps) p)
+    (S : Set U) (i : I)
+    (hInCopy : ∀ x : S,
+      ∃ y : V, p x.1 = copyEmbedding Old Support Core maps i y) :
+    ∃ g : S → V,
+      (Source.induce S).IsHomomorphismEmbedding Old g ∧
+      ∀ x : S,
+        p x.1 = copyEmbedding Old Support Core maps i (g x) := by
+  let f : S → Vertex Support (W := W) (I := I) :=
+    fun x => p x.1
+  have hf : (Source.induce S).IsHomomorphismEmbedding
+      (attach Old Support Core maps) f :=
+    hp.comp (inclusion Source S).isHomomorphismEmbedding
+  exact hf.factorThroughEmbeddingRange
+    (copyEmbedding Old Support Core maps i) hInCopy
+
+/-- In particular, for a MAXIMAL-RANK WEAK source the resulting
+old-copy piece map protects all embedded CLOSED U-irreducible tests,
+even though the source piece need not be intrinsically U-closed.
+This is the exact type of small-side projection accepted by the
+checked generated-A-boundary gluing criterion. -/
+theorem maximal_weak_piece_protected_in_old_copy
+    {rules : ClosureDescription L}
+    (Source : RelStructure L U) (Old : RelStructure L V)
+    [Fintype U]
+    (hMax : USize rules Source = Fintype.card U)
+    (Support : Set V) (Core : RelStructure L W)
+    (maps : I → Embedding (Old.induce Support) Core)
+    (p : U → Vertex Support (W := W) (I := I))
+    (hp : Source.IsHomomorphismEmbedding
+      (attach Old Support Core maps) p)
+    (S : Set U) [Fintype S] (i : I)
+    (hInCopy : ∀ x : S,
+      ∃ y : V, p x.1 = copyEmbedding Old Support Core maps i y) :
+    ∃ g : S → V,
+      IsClosedUHomomorphismEmbedding rules (Source.induce S) Old g ∧
+      ∀ x : S,
+        p x.1 = copyEmbedding Old Support Core maps i (g x) := by
+  obtain ⟨g, hg, hFact⟩ :=
+    ordinary_source_piece_factors_old_copy
+      Source Old Support Core maps p hp S i hInCopy
+  have hMaxS : USize rules (Source.induce S) = Fintype.card S :=
+    induced_USize_eq_card_of_max_USize rules Source hMax S
+  exact ⟨g, hg.toClosedMap_of_max_USize hMaxS, hFact⟩
 
 /-- Let T be U-closed with its actual protected POSITIVE map p into
 a native Hales--Jewett little Picture (possibly non-semi-closed).
