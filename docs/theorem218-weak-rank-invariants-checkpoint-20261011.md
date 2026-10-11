@@ -51,6 +51,18 @@ tests the **exact induced vertex carrier**.
    Importantly, Root itself is allowed to be reducible,
    nonclosed and noninjectively mapped to Q.
 
+5. **Combined ordinary sides with a canonical A-boundary.**
+   The theorem `HasClosedUKCompletion.of_maximal_weak_two_ordinary_side_maps_via_A`
+   packages items (3) and (4). Under maximal weak U-rank,
+   small proper free sides, two ordinary side homomorphism-embeddings
+   into the SAME closed Old picture, and compatibility of their
+   root images through two embeddings of one closed A∈K, it
+   produces a corrected K-completion. Both protection of the
+   side maps and the common closed K boundary are DERIVED,
+   not independent assumptions. Existence of the two side maps
+   and their root factorization remains a genuine
+   native-history obligation.
+
 ## Remaining proof boundary
 
 These results do not assert a single coordinate variable on ALL
@@ -69,7 +81,7 @@ A-root projections. Merely completing the exact weak
 j+1-vertex generating set is insufficient: it may disregard
 closure tuples prescribed on vertices outside the support.
 
-This clean combined branch adds six new Lean modules and ten
+This clean combined branch adds seven new Lean modules and eleven
 individually audited declarations without changing any earlier
 axiom checks. The source was successfully elaborated on earlier
 branches separately. **Do not certify the combined branch
