@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosurePositiveFreeCoverPullback
 import PartiteConstruction.Ramsey.ClosureSmallProperACut
 import PartiteConstruction.Ramsey.ClosureTwoSideSmallProjection
 import PartiteConstruction.Ramsey.ClosureNativeWeakCutBoundary
@@ -379,3 +380,7 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_two_small_side_projections
 #print axioms StructuralRamsey.RelStructure.Attachment.overlap_vertex_is_core
 #print axioms StructuralRamsey.RelStructure.Attachment.overlap_fold_in_selected
+#print axioms StructuralRamsey.RelStructure.IsHomomorphism.pullback_free_cover
+#print axioms StructuralRamsey.RelStructure.IsHomomorphism.pullback_closed_sides
+#print axioms StructuralRamsey.RelStructure.IsHomomorphism.pullback_closed_free_pieces
+#print axioms StructuralRamsey.RelStructure.IsUIrreducible.positive_image_in_one_free_side
