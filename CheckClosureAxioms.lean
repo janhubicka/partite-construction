@@ -1,3 +1,4 @@
+import PartiteConstruction.Ramsey.ClosurePositiveOldCopyFactor
 import PartiteConstruction.Ramsey.ClosureSmallProperACut
 import PartiteConstruction.Ramsey.ClosureTwoSideSmallProjection
 import PartiteConstruction.Ramsey.ClosureNativeWeakCutBoundary
@@ -379,3 +380,6 @@ import PartiteConstruction.Functional.FreeAmalgamGeneratorBudget
 #print axioms StructuralRamsey.RelStructure.HasClosedUKCompletion.of_two_small_side_projections
 #print axioms StructuralRamsey.RelStructure.Attachment.overlap_vertex_is_core
 #print axioms StructuralRamsey.RelStructure.Attachment.overlap_fold_in_selected
+
+#print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.factorThroughEmbeddingRange
+#print axioms StructuralRamsey.RelStructure.Attachment.closed_source_piece_factors_old_copy
