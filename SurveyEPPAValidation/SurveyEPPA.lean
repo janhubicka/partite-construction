@@ -1,5 +1,6 @@
 import AllThoseEPPA.MainTheorems
 import AllThoseEPPA.TreeLikeIrreducibleExtensionLift
+import AllThoseEPPA.TreeLikeInfiniteCopiesInterfaceAuto
 
 /-!
 # EPPA statements in the Ramsey classification survey
@@ -336,5 +337,103 @@ theorem locallyFiniteCoherentEPPA_surveyCriterion
       act A (hIrr A hKA) K.toAmalgamationClass hKA
       B₀ ψ (c.isEPPAWitness act) (hLocal A B₀ hKA hEB)
   exact ⟨Z, hZ, C, ι, hKC, hCoherentTransfer ⟨c⟩⟩
+
+/-! ## EPPA + joint embedding implies amalgamation
+
+This verifies the survey's Observation `obs:eppaamalgamation` without assuming
+amalgamation in the class interface. Crucially, when language symbols can
+be permuted, the two amalgamating maps must agree on both vertices AND their
+combined language permutations.
+-/
+
+/-- Joint embedding for an arbitrary predicate on finite Γ-structures.
+We do not assume an amalgamation-class interface. -/
+def HasJointEmbedding
+    (act : L.Action Γ)
+    (E : {V : Type (max u v)} → Structure L V → Prop) : Prop :=
+  ∀ {α β : Type (max u v)} [Finite α] [Finite β]
+    (B₁ : Structure L α) (B₂ : Structure L β),
+    E B₁ → E B₂ →
+    ∃ (γ : Type (max u v)) (_ : Finite γ)
+      (C : Structure L γ)
+      (j₁ : Structure.Embedding act B₁ C)
+      (j₂ : Structure.Embedding act B₂ C), E C
+
+/-- The ordinary amalgamation property, expressed with actual embeddings and
+agreement on every vertex AND the Γ-language part. -/
+def HasAmalgamation
+    (act : L.Action Γ)
+    (E : {V : Type (max u v)} → Structure L V → Prop) : Prop :=
+  ∀ {α β₁ β₂ : Type (max u v)}
+    [Finite α] [Finite β₁] [Finite β₂]
+    (A : Structure L α)
+    (B₁ : Structure L β₁) (B₂ : Structure L β₂),
+    E A → E B₁ → E B₂ →
+    (i₁ : Structure.Embedding act A B₁) →
+    (i₂ : Structure.Embedding act A B₂) →
+    ∃ (δ : Type (max u v)) (_ : Finite δ)
+      (D : Structure L δ)
+      (j₁ : Structure.Embedding act B₁ D)
+      (j₂ : Structure.Embedding act B₂ D),
+      E D ∧
+      (j₁.comp i₁).lang = (j₂.comp i₂).lang ∧
+      (∀ a, (j₁.comp i₁) a = (j₂.comp i₂) a)
+
+/-- Survey Observation: EPPA plus joint embedding implies amalgamation.
+The proof works for the paper's genuine Γ-morphisms and set-valued functions.
+Given a joint embedding, its two interface embeddings yield a partial
+automorphism via the library's exact closed-image construction; EPPA
+extends it to an automorphism of the ambient witness. -/
+theorem eppa_and_jointEmbedding_imply_amalgamation
+    (act : L.Action Γ)
+    (E : {V : Type (max u v)} → Structure L V → Prop)
+    (hJEP : HasJointEmbedding act E)
+    (hEPPA : TreeLike.FiniteClassHasEPPA act E) :
+    HasAmalgamation act E := by
+  classical
+  intro α β₁ β₂ hα hβ₁ hβ₂
+    A B₁ B₂ _hA hB₁ hB₂ i₁ i₂
+  obtain ⟨γ, hγ, C, j₁, j₂, hC⟩ :=
+    hJEP B₁ B₂ hB₁ hB₂
+  letI : Finite γ := hγ
+  obtain ⟨δ, hδ, D, ψ, hD, hD_EPPA⟩ := hEPPA C hC
+  let e₁ : Structure.Embedding act A C := j₁.comp i₁
+  let e₂ : Structure.Embedding act A C := j₂.comp i₂
+  let p : Structure.PartialAutomorphism act C :=
+    TreeLike.interfacePartialAutomorphism act e₁ e₂
+  obtain ⟨g, hg⟩ := hD_EPPA p
+  let gEmb : Structure.Embedding act D D := automorphismAsEmbedding act g
+  let k₁ : Structure.Embedding act B₁ D := (gEmb.comp ψ).comp j₁
+  let k₂ : Structure.Embedding act B₂ D := ψ.comp j₂
+  refine ⟨δ, hδ, D, k₁, k₂, hD, ?_, ?_⟩
+  · have hp : p.lang = e₂.lang * e₁.lang⁻¹ :=
+      TreeLike.interfacePartialAutomorphism_lang act e₁ e₂
+    have h : (g.lang * ψ.lang) * e₁.lang = ψ.lang * e₂.lang := by
+      calc
+        (g.lang * ψ.lang) * e₁.lang =
+            (ψ.lang * p.lang) * e₁.lang := by rw [hg.1]
+        _ = ψ.lang * e₂.lang := by simp [hp, mul_assoc]
+    change ((g.lang * ψ.lang) * j₁.lang) * i₁.lang =
+      (ψ.lang * j₂.lang) * i₂.lang
+    calc
+      ((g.lang * ψ.lang) * j₁.lang) * i₁.lang =
+        (g.lang * ψ.lang) * e₁.lang := by
+          change ((g.lang * ψ.lang) * j₁.lang) * i₁.lang =
+            (g.lang * ψ.lang) * (j₁.lang * i₁.lang)
+          simp [mul_assoc]
+      _ = ψ.lang * e₂.lang := h
+      _ = (ψ.lang * j₂.lang) * i₂.lang := by
+        change ψ.lang * (j₂.lang * i₂.lang) =
+          (ψ.lang * j₂.lang) * i₂.lang
+        simp [mul_assoc]
+  · intro a
+    have hMem : e₁ a ∈ p.source := by
+      rw [TreeLike.interfacePartialAutomorphism_source]
+      exact ⟨a, rfl⟩
+    have hpApply : p (e₁ a) = e₂ a :=
+      TreeLike.interfacePartialAutomorphism_apply act e₁ e₂ a
+    have ha := hg.2 (e₁ a) hMem
+    change g (ψ (e₁ a)) = ψ (e₂ a)
+    simpa [hpApply] using ha
 
 end SurveyEPPA
