@@ -1,0 +1,12 @@
+import SurveyEPPA
+
+-- Concrete consumer theorems, not axioms or sorry placeholders.
+#print axioms SurveyEPPA.paperHomEmbedding_exactFunctionFibres
+#print axioms SurveyEPPA.paperHomEmbedding_iff_surveyHomEmbedding
+#print axioms SurveyEPPA.unrestrictedFaithfulCoherentEPPA_forTrivialFiniteAction
+#print axioms SurveyEPPA.restrictedEPPA_withSurveyFunctionSemantics
+#print axioms SurveyEPPA.generalizedHerwigLascar_withAmbient
+#print axioms SurveyEPPA.faithful_irreduciblesExtendInside
+#print axioms SurveyEPPA.restrictedEPPA_inSurveyLocallyFiniteClass
+#print axioms SurveyEPPA.locallyFiniteEPPA_surveyCriterion
+#print axioms SurveyEPPA.locallyFiniteCoherentEPPA_surveyCriterion
