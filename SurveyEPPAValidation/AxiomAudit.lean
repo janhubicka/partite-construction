@@ -10,3 +10,5 @@ import SurveyEPPA
 #print axioms SurveyEPPA.restrictedEPPA_inSurveyLocallyFiniteClass
 #print axioms SurveyEPPA.locallyFiniteEPPA_surveyCriterion
 #print axioms SurveyEPPA.locallyFiniteCoherentEPPA_surveyCriterion
+
+#print axioms SurveyEPPA.eppa_and_jointEmbedding_imply_amalgamation
