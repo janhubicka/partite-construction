@@ -1,4 +1,5 @@
 import SurveyEPPA
+import SurveyEPPAAmalgamation
 import SurveyEPPACompletion
 import SurveyEPPANullary
 import SurveyEPPAClassNullary
@@ -31,3 +32,6 @@ import SurveyEPPAClassNullaryDirect
 #print axioms SurveyEPPA.fullClassCoherentEPPA_implies_eachSliceCoherentEPPA
 #print axioms SurveyEPPA.locallyFiniteEPPA_fullClass_withFixedNullaries
 #print axioms SurveyEPPA.locallyFiniteCoherentEPPA_fullClass_withFixedNullaries
+
+#print axioms SurveyEPPA.embedding_eq_of_lang_and_apply
+#print axioms SurveyEPPA.eppa_and_jointEmbedding_imply_exactAmalgamation
