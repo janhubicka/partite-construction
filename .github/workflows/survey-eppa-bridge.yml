@@ -40,7 +40,7 @@ jobs:
         run: lake exe cache get
 
       - name: Build the survey EPPA bridge
-        run: lake build SurveyEPPA SurveyEPPAAmalgamation SurveyEPPACompletion SurveyEPPANullary SurveyEPPAClassNullary SurveyEPPAClassNullaryDirect
+        run: lake build SurveyEPPA SurveyEPPAAmalgamation SurveyEPPACompletion SurveyEPPANullary SurveyEPPAClassNullary SurveyEPPAClassNullaryDirect SurveyEPPAForbidden SurveyEPPAForbiddenNullary SurveyEPPATree SurveyEPPAForbiddenArbitrary
 
       - name: Axiom audit (no sorry)
         run: |

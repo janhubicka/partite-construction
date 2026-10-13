@@ -4,6 +4,10 @@ import SurveyEPPACompletion
 import SurveyEPPANullary
 import SurveyEPPAClassNullary
 import SurveyEPPAClassNullaryDirect
+import SurveyEPPAForbidden
+import SurveyEPPAForbiddenNullary
+import SurveyEPPATree
+import SurveyEPPAForbiddenArbitrary
 
 -- Concrete consumer theorems, not axioms or sorry placeholders.
 #print axioms SurveyEPPA.paperHomEmbedding_exactFunctionFibres
@@ -35,3 +39,27 @@ import SurveyEPPAClassNullaryDirect
 
 #print axioms SurveyEPPA.embedding_eq_of_lang_and_apply
 #print axioms SurveyEPPA.eppa_and_jointEmbedding_imply_exactAmalgamation
+
+-- Irreducible forbidden classes: embeddings versus homomorphism-embeddings.
+#print axioms SurveyEPPA.IrreducibleForb.faithful_preserves_irreducible_forbidden_embeddings
+#print axioms SurveyEPPA.IrreducibleForb.avoidsEmbeddings_iff_avoidsHomomorphismEmbeddings
+#print axioms SurveyEPPA.IrreducibleForb.faithfulCoherentEPPA_preserves_irreducible_forbidden
+#print axioms SurveyEPPA.IrreducibleForb.irreducibleForbiddenClass_hasCoherentEPPA
+#print axioms SurveyEPPA.IrreducibleForb.irreducibleForbiddenClass_hasCoherentEPPA_trivialAction
+
+#print axioms SurveyEPPA.IrreducibleForb.avoidsEmbeddingsWithNullaries_iff_homEmbeddingAvoidance
+#print axioms SurveyEPPA.IrreducibleForb.irreducibleForbiddenClass_withNullaries_hasCoherentEPPA
+#print axioms SurveyEPPA.IrreducibleForb.irreducibleForbiddenClass_withNullaries_hasCoherentEPPA_trivialAction
+
+-- Distinct survey/paper recursive tree-amalgamation conventions.
+#print axioms SurveyEPPA.fullCopyTree_isSurveyTree
+#print axioms SurveyEPPA.restrictedEPPA_withSurveyTreeAmalgam
+#print axioms SurveyEPPA.restrictedEPPA_withFixedNullaries_andSurveyTree
+
+-- Arbitrary (possibly infinite) forbidden families of irreducibles.
+#print axioms SurveyEPPA.IrreducibleForb.faithful_preserves_arbitrary_irreducible_family
+#print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleFree_faithfulCoherentEPPA
+#print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleForbiddenClass_hasCoherentEPPA
+#print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleForbiddenClass_hasCoherentEPPA_trivialAction
+#print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleForbidden_withNullaries_hasCoherentEPPA
+#print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleForbidden_withNullaries_hasCoherentEPPA_trivialAction
