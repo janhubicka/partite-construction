@@ -2,6 +2,7 @@ import SurveyEPPA
 import SurveyEPPACompletion
 import SurveyEPPANullary
 import SurveyEPPAClassNullary
+import SurveyEPPAClassNullaryDirect
 
 -- Concrete consumer theorems, not axioms or sorry placeholders.
 #print axioms SurveyEPPA.paperHomEmbedding_exactFunctionFibres
@@ -25,3 +26,8 @@ import SurveyEPPAClassNullary
 
 #print axioms SurveyEPPA.locallyFiniteEPPA_withFixedNullaryRelations
 #print axioms SurveyEPPA.locallyFiniteCoherentEPPA_withFixedNullaryRelations
+
+#print axioms SurveyEPPA.fullClassEPPA_implies_eachSliceEPPA
+#print axioms SurveyEPPA.fullClassCoherentEPPA_implies_eachSliceCoherentEPPA
+#print axioms SurveyEPPA.locallyFiniteEPPA_fullClass_withFixedNullaries
+#print axioms SurveyEPPA.locallyFiniteCoherentEPPA_fullClass_withFixedNullaries
