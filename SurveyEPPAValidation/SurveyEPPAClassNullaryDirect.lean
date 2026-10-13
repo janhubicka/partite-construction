@@ -62,6 +62,8 @@ structure FullFixedNullaryStrongAmalgamationClass
 
 namespace FullFixedNullaryStrongAmalgamationClass
 
+variable {act : L.Action Γ}
+
 /-- Extract the ordinary positive-arity hereditary strong-amalgamation
 class at exactly the specified interpretation of nullary predicates. -/
 def slice
