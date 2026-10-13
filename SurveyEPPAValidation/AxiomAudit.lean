@@ -7,6 +7,7 @@ import SurveyEPPAClassNullaryDirect
 import SurveyEPPAForbidden
 import SurveyEPPAForbiddenNullary
 import SurveyEPPATree
+import SurveyEPPAForbiddenArbitrary
 
 -- Concrete consumer theorems, not axioms or sorry placeholders.
 #print axioms SurveyEPPA.paperHomEmbedding_exactFunctionFibres
@@ -54,3 +55,11 @@ import SurveyEPPATree
 #print axioms SurveyEPPA.fullCopyTree_isSurveyTree
 #print axioms SurveyEPPA.restrictedEPPA_withSurveyTreeAmalgam
 #print axioms SurveyEPPA.restrictedEPPA_withFixedNullaries_andSurveyTree
+
+-- Arbitrary (possibly infinite) forbidden families of irreducibles.
+#print axioms SurveyEPPA.IrreducibleForb.faithful_preserves_arbitrary_irreducible_family
+#print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleFree_faithfulCoherentEPPA
+#print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleForbiddenClass_hasCoherentEPPA
+#print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleForbiddenClass_hasCoherentEPPA_trivialAction
+#print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleForbidden_withNullaries_hasCoherentEPPA
+#print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleForbidden_withNullaries_hasCoherentEPPA_trivialAction
