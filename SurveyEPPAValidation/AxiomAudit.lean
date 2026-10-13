@@ -1,3 +1,6 @@
+import SurveyEPPADirectClasses
+import SurveyEPPACorrectedHerwigLascar
+import SurveyEPPAMetricInteger
 import SurveyEPPA
 import SurveyEPPAAmalgamation
 import SurveyEPPACompletion
@@ -63,3 +66,15 @@ import SurveyEPPAForbiddenArbitrary
 #print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleForbiddenClass_hasCoherentEPPA_trivialAction
 #print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleForbidden_withNullaries_hasCoherentEPPA
 #print axioms SurveyEPPA.IrreducibleForb.arbitraryIrreducibleForbidden_withNullaries_hasCoherentEPPA_trivialAction
+
+-- Direct consequences of the verified EPPA paper and its metric API.
+
+#print axioms SurveyEPPA.allFiniteUnaryStructures_coherentEPPA_of_finiteOrbit
+#print axioms SurveyEPPA.allFiniteUnaryStructures_coherentEPPA_finiteAction
+#print axioms SurveyEPPA.allFiniteUnaryStructures_withFixedNullaries_coherentEPPA
+#print axioms SurveyEPPA.ordinaryEPPA_of_automorphismPreservingStrongCompletion
+#print axioms SurveyEPPA.coherentEPPA_of_automorphismPreservingStrongCompletion
+#print axioms SurveyEPPA.generalizedHerwigLascar_withFixedNullaries
+#print axioms SurveyEPPA.generalizedHerwigLascar_withFixedNullaries_trivialAction
+#print axioms SurveyEPPA.Metric.allFiniteBoundedIntegerMetrics_haveEPPA
+#print axioms SurveyEPPA.Metric.allFiniteBoundedIntegerMetrics_preserveUnitClique
