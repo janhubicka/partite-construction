@@ -5,6 +5,7 @@ import SurveyEPPANullary
 import SurveyEPPAClassNullary
 import SurveyEPPAClassNullaryDirect
 import SurveyEPPAForbidden
+import SurveyEPPAForbiddenNullary
 
 -- Concrete consumer theorems, not axioms or sorry placeholders.
 #print axioms SurveyEPPA.paperHomEmbedding_exactFunctionFibres
@@ -43,3 +44,7 @@ import SurveyEPPAForbidden
 #print axioms SurveyEPPA.IrreducibleForb.faithfulCoherentEPPA_preserves_irreducible_forbidden
 #print axioms SurveyEPPA.IrreducibleForb.irreducibleForbiddenClass_hasCoherentEPPA
 #print axioms SurveyEPPA.IrreducibleForb.irreducibleForbiddenClass_hasCoherentEPPA_trivialAction
+
+#print axioms SurveyEPPA.IrreducibleForb.avoidsEmbeddingsWithNullaries_iff_homEmbeddingAvoidance
+#print axioms SurveyEPPA.IrreducibleForb.irreducibleForbiddenClass_withNullaries_hasCoherentEPPA
+#print axioms SurveyEPPA.IrreducibleForb.irreducibleForbiddenClass_withNullaries_hasCoherentEPPA_trivialAction
