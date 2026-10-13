@@ -18,11 +18,11 @@ lake build
 lake env lean AxiomAudit.lean
 ```
 
-The independent GitHub workflow builds all nine modules and audits named
+The independent GitHub workflow builds all ten modules and audits named
 theorems for `sorryAx`. The exact compilation status is attached to each
 run; do not infer that one green revision verifies subsequent edits.
 
-**Green at the nine-module code revision**
+**Green at the ten-module code revision**
 `cf97666437e82fabaf77533cb8c291cb6fc71501`:
 [Lean build + axiom audit run 38424354094](https://github.com/janhubicka/partite-construction/actions/runs/38424354094).
 
