@@ -71,7 +71,7 @@ theorem allFiniteUnaryStructures_withFixedNullaries_coherentEPPA
         (_ : WithFixedNullaryRelations L Z α) => True) := by
   intro α hα A _hA
   obtain ⟨β, hβ, B, ι, hCoherent, _hFaith⟩ :=
-    unrestrictedEPPA_withNullaries_trivialAction A
+    unrestrictedEPPA_withNullaries_trivialAction (Γ := Γ) A
   exact ⟨β, hβ, B, ι, True.intro, hCoherent⟩
 
 /-- A genuinely automorphism-preserving strong completion transports
