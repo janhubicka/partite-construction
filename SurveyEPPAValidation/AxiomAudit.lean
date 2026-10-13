@@ -78,3 +78,7 @@ import SurveyEPPAForbiddenArbitrary
 #print axioms SurveyEPPA.generalizedHerwigLascar_withFixedNullaries_trivialAction
 #print axioms SurveyEPPA.Metric.allFiniteBoundedIntegerMetrics_haveEPPA
 #print axioms SurveyEPPA.Metric.allFiniteBoundedIntegerMetrics_preserveUnitClique
+
+#print axioms SurveyEPPA.coherentEPPAWitness_implies_EPPA
+#print axioms SurveyEPPA.coherentEPPAClass_implies_EPPA
+#print axioms SurveyEPPA.coherentEPPAFullNullaryClass_implies_EPPA
