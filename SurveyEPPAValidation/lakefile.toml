@@ -1,6 +1,6 @@
 name = "SurveyEPPAValidation"
 version = "0.1.0"
-defaultTargets = ["SurveyEPPA", "SurveyEPPAAmalgamation", "SurveyEPPACompletion", "SurveyEPPANullary", "SurveyEPPAClassNullary", "SurveyEPPAClassNullaryDirect", "SurveyEPPAForbidden", "SurveyEPPAForbiddenNullary", "SurveyEPPATree", "SurveyEPPAForbiddenArbitrary"]
+defaultTargets = ["SurveyEPPA", "SurveyEPPAAmalgamation", "SurveyEPPACompletion", "SurveyEPPANullary", "SurveyEPPAClassNullary", "SurveyEPPAClassNullaryDirect", "SurveyEPPAForbidden", "SurveyEPPAForbiddenNullary", "SurveyEPPATree", "SurveyEPPAForbiddenArbitrary", "SurveyEPPADirectClasses", "SurveyEPPACorrectedHerwigLascar", "SurveyEPPAMetricInteger"]
 
 [leanOptions]
 pp.unicode.fun = true
@@ -41,3 +41,12 @@ name = "SurveyEPPATree"
 
 [[lean_lib]]
 name = "SurveyEPPAForbiddenArbitrary"
+
+[[lean_lib]]
+name = "SurveyEPPADirectClasses"
+
+[[lean_lib]]
+name = "SurveyEPPACorrectedHerwigLascar"
+
+[[lean_lib]]
+name = "SurveyEPPAMetricInteger"
