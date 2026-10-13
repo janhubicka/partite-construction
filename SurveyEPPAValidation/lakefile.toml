@@ -1,6 +1,6 @@
 name = "SurveyEPPAValidation"
 version = "0.1.0"
-defaultTargets = ["SurveyEPPA", "SurveyEPPACompletion", "SurveyEPPANullary"]
+defaultTargets = ["SurveyEPPA", "SurveyEPPACompletion", "SurveyEPPANullary", "SurveyEPPAClassNullary"]
 
 [leanOptions]
 pp.unicode.fun = true
@@ -20,3 +20,6 @@ name = "SurveyEPPACompletion"
 
 [[lean_lib]]
 name = "SurveyEPPANullary"
+
+[[lean_lib]]
+name = "SurveyEPPAClassNullary"
