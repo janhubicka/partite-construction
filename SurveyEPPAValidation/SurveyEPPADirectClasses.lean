@@ -106,4 +106,53 @@ theorem coherentEPPA_of_automorphismPreservingStrongCompletion
   exact c.preservesCoherentEPPA_of_irreducible
     ι hIrr hCoherent
 
+/-! ## Coherence really implies EPPA
+
+The survey's current definition of a coherent witness inadvertently omits
+the requirement that the selected automorphisms extend the partial maps.
+The EPPA library's coherent-extension structure includes that requirement,
+and the corresponding implication is now exposed at both witness and
+full-class levels. This is *not* derivable from the printed coherence
+composition equation alone.
+-/
+
+/-- A genuine coherent extension of every partial automorphism is in
+particular an ordinary EPPA extension. -/
+theorem coherentEPPAWitness_implies_EPPA
+    {α β : Type (max u v)}
+    (act : L.Action Γ)
+    {A : Structure L α} {B : Structure L β}
+    (ι : Structure.Embedding act A B)
+    (h : Structure.IsCoherentEPPAWitness act ι) :
+    Structure.IsEPPAWitness act ι := by
+  obtain ⟨c⟩ := h
+  exact c.isEPPAWitness act
+
+/-- Coherent EPPA of any class implies its ordinary EPPA. This uses
+the full extension-specification field, not just the compatibility
+equation for coherent triples. -/
+theorem coherentEPPAClass_implies_EPPA
+    (act : L.Action Γ)
+    (E : {α : Type (max u v)} → Structure L α → Prop)
+    (hE : TreeLike.FiniteClassHasCoherentEPPA act E) :
+    TreeLike.FiniteClassHasEPPA act E := by
+  intro α hα A hA
+  obtain ⟨β, hβ, B, ι, hEB, hCoherent⟩ := hE A hA
+  exact ⟨β, hβ, B, ι, hEB,
+    coherentEPPAWitness_implies_EPPA act ι hCoherent⟩
+
+/-- Same implication for arbitrary fixed nullary-relational profiles,
+even when class membership depends on the complete profile. -/
+theorem coherentEPPAFullNullaryClass_implies_EPPA
+    (act : L.Action Γ)
+    (E : {α : Type (max u v)} →
+      WithFixedNullaryRelations L Z α → Prop)
+    (hE : FullFixedNullaryClassHasCoherentEPPA act E) :
+    FullFixedNullaryClassHasEPPA act E := by
+  intro α hα A hA
+  obtain ⟨β, hβ, B, ι, hEB, hCoherent⟩ := hE A hA
+  exact ⟨β, hβ, B, ι, hEB,
+    coherentEPPAWitness_implies_EPPA
+      act ι.positive hCoherent⟩
+
 end SurveyEPPA
