@@ -18,13 +18,15 @@ lake build
 lake env lean AxiomAudit.lean
 ```
 
-The independent GitHub workflow builds all ten modules and audits named
+The independent GitHub workflow builds all thirteen modules and audits named
 theorems for `sorryAx`. The exact compilation status is attached to each
 run; do not infer that one green revision verifies subsequent edits.
 
-**Green at the ten-module code revision**
-`cf97666437e82fabaf77533cb8c291cb6fc71501`:
-[Lean build + axiom audit run 38424354094](https://github.com/janhubicka/partite-construction/actions/runs/38424354094).
+**Green at the thirteen-module code revision**
+`3013ed49450d6775c1f2f08dd9c0aa3623bc7e1b`:
+[Lean build + axiom audit run 38484199019](https://github.com/janhubicka/partite-construction/actions/runs/38484199019).
+Merged in [PR #243](https://github.com/janhubicka/partite-construction/pull/243)
+as commit `bbb4512318021e65512e85e83757cfd4460dd98a`.
 
 ## Reusable survey theorem interfaces
 
@@ -54,8 +56,20 @@ run; do not infer that one green revision verifies subsequent edits.
   of forbidden irreducibles, without finiteness of the family, including
   fixed-nullary profile dependence.
 
-There are **ten** source modules listed above, including the new arbitrary
-family theorem. The workflow build target list is authoritative.
+- **`SurveyEPPADirectClasses.lean`**: direct class-level coherent EPPA
+  for unary set-valued functions, finite language actions and fixed nullary
+  symbols; coherent implies ordinary EPPA; and ordinary/coherent EPPA
+  transport under *automorphism-preserving strong completions*.
+- **`SurveyEPPACorrectedHerwigLascar.lean`**: the **conditional**
+  generalized Herwig–Lascar theorem with fixed nullary relations,
+  requiring a forbidden-free ambient extension of partial automorphisms
+  and forbidding homomorphism-embeddings.
+- **`SurveyEPPAMetricInteger.lean`**: ordinary EPPA for finite bounded
+  integer-valued metrics and preservation of the maximum unit-distance
+  clique cardinality, using the upstream metric API.
+
+There are **thirteen** source modules listed above, including the direct
+corollaries. The workflow build target list is authoritative.
 
 ## Cautions about manuscript scope
 
