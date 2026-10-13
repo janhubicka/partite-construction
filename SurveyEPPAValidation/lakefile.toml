@@ -1,6 +1,6 @@
 name = "SurveyEPPAValidation"
 version = "0.1.0"
-defaultTargets = ["SurveyEPPA", "SurveyEPPAAmalgamation", "SurveyEPPACompletion", "SurveyEPPANullary", "SurveyEPPAClassNullary", "SurveyEPPAClassNullaryDirect", "SurveyEPPAForbidden", "SurveyEPPAForbiddenNullary"]
+defaultTargets = ["SurveyEPPA", "SurveyEPPAAmalgamation", "SurveyEPPACompletion", "SurveyEPPANullary", "SurveyEPPAClassNullary", "SurveyEPPAClassNullaryDirect", "SurveyEPPAForbidden", "SurveyEPPAForbiddenNullary", "SurveyEPPATree"]
 
 [leanOptions]
 pp.unicode.fun = true
@@ -35,3 +35,6 @@ name = "SurveyEPPAForbidden"
 
 [[lean_lib]]
 name = "SurveyEPPAForbiddenNullary"
+
+[[lean_lib]]
+name = "SurveyEPPATree"
