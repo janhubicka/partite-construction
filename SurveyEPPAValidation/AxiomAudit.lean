@@ -1,0 +1,37 @@
+import SurveyEPPA
+import SurveyEPPAAmalgamation
+import SurveyEPPACompletion
+import SurveyEPPANullary
+import SurveyEPPAClassNullary
+import SurveyEPPAClassNullaryDirect
+
+-- Concrete consumer theorems, not axioms or sorry placeholders.
+#print axioms SurveyEPPA.paperHomEmbedding_exactFunctionFibres
+#print axioms SurveyEPPA.paperHomEmbedding_iff_surveyHomEmbedding
+#print axioms SurveyEPPA.unrestrictedFaithfulCoherentEPPA_forTrivialFiniteAction
+#print axioms SurveyEPPA.restrictedEPPA_withSurveyFunctionSemantics
+#print axioms SurveyEPPA.generalizedHerwigLascar_withAmbient
+#print axioms SurveyEPPA.faithful_irreduciblesExtendInside
+#print axioms SurveyEPPA.restrictedEPPA_inSurveyLocallyFiniteClass
+#print axioms SurveyEPPA.locallyFiniteEPPA_surveyCriterion
+#print axioms SurveyEPPA.locallyFiniteCoherentEPPA_surveyCriterion
+
+#print axioms SurveyEPPA.eppa_and_jointEmbedding_imply_amalgamation
+
+#print axioms SurveyEPPA.surveyCompletion_iff_paperCompletion
+#print axioms SurveyEPPA.surveyStrongCompletion_iff_paperStrongCompletion
+#print axioms SurveyEPPA.surveyCompletion_iff_strong
+#print axioms SurveyEPPA.unrestrictedEPPA_withFixedNullaryRelations
+#print axioms SurveyEPPA.unrestrictedEPPA_withNullaries_trivialAction
+#print axioms SurveyEPPA.restrictedEPPA_withFixedNullaryRelations
+
+#print axioms SurveyEPPA.locallyFiniteEPPA_withFixedNullaryRelations
+#print axioms SurveyEPPA.locallyFiniteCoherentEPPA_withFixedNullaryRelations
+
+#print axioms SurveyEPPA.fullClassEPPA_implies_eachSliceEPPA
+#print axioms SurveyEPPA.fullClassCoherentEPPA_implies_eachSliceCoherentEPPA
+#print axioms SurveyEPPA.locallyFiniteEPPA_fullClass_withFixedNullaries
+#print axioms SurveyEPPA.locallyFiniteCoherentEPPA_fullClass_withFixedNullaries
+
+#print axioms SurveyEPPA.embedding_eq_of_lang_and_apply
+#print axioms SurveyEPPA.eppa_and_jointEmbedding_imply_exactAmalgamation
