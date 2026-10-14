@@ -128,8 +128,8 @@ theorem closedTest_originalPartial_oneCopy_of_compatible_side_lifts
   obtain ⟨p, hp, _hpL, _hpR⟩ :=
     pb.free.exists_EHN_projection gLeft gRight hL hR hcompat
   have hToBase :
-      ((UnitAttachD B Supp hSupp Dsys f).toStructure.induce Test hTest)
-        .IsEHNHomomorphismEmbedding Base (eAB ∘ p) :=
+      (((UnitAttachD B Supp hSupp Dsys f).toStructure.induce Test hTest)
+        ).IsEHNHomomorphismEmbedding Base (eAB ∘ p) :=
     eAB.isEHNHomomorphismEmbedding.comp hp
   exact HasOriginalPartialTreeCompletion.ofEHN_to_base
     Base ((UnitAttachD B Supp hSupp Dsys f).toStructure.induce Test hTest)
@@ -172,6 +172,8 @@ theorem closedTestPullback_core_root_agrees_of_labelledCore
   let pb := closedTestPullback B Supp hSupp Dsys f Test hTest
   let q : pb.Common → U :=
     (B.weakRestrict Douter hB.1 A alpha).part ∘ pb.commonMap
+  change ∀ x : pb.Common,
+    gCore (pb.leftMap (pb.toLeft x)) = q x
   intro x
   apply alpha.injective
   calc
