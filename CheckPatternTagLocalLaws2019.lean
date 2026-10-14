@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.PatternTagLocalLaws2019
+
+#print axioms StructuralRamsey.RelStructure.patternTag_normal_canonical
+#print axioms StructuralRamsey.RelStructure.patternTag_valid_canonical
+#print axioms StructuralRamsey.RelStructure.PatternTagNormal.of_embedding
+#print axioms StructuralRamsey.RelStructure.PatternTagGraphRootValid.of_embedding
