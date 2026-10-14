@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.OriginalPartialSmallImageGeneratorHull
+
+#print axioms StructuralRamsey.Structure.IsOriginalPartialHomomorphismEmbedding.codRestrictClosed
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.closedTestToHullRank
+#print axioms StructuralRamsey.Structure.HasOriginalPartialTreeCompletion.of_closed_EHN_smallImage_generatorRank
