@@ -55,7 +55,7 @@ theorem Stage.attach_weakTree_and_projectedCover
       R.system.toStructure.graph n ∧
     R.ProjectedCover Base := by
   constructor
-  · exact T.attach_weakGraphLocallyTreeLike
+  · exact Stage.attach_weakGraphLocallyTreeLike
       hK A Base D hA eAB Old T S hS f α hSupport
       n hn hD hOldTree hCoreTree
   · exact T.attach_projectedCover
