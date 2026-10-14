@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.PartialFunctionPatternDecode2019
+
+#print axioms StructuralRamsey.Structure.patternDecode_patternGraph_rel
+#print axioms StructuralRamsey.Structure.patternDecode_patternGraph_func
