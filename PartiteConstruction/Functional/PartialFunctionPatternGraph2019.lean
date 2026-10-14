@@ -77,21 +77,17 @@ theorem patternGraph_domain_of_nonempty
     (F : L.FuncSymbol)
     (x : Fin (L.funcArity F) → V)
     (hx : (A.func F x).Nonempty) :
-    ∃ (p : Language.FunctionInputPattern L)
-      (e : Fin p.rootSize → V),
+    ∃ (m : ℕ) (r : Fin (L.funcArity F) → Fin m)
+      (hSurj : Function.Surjective r) (e : Fin m → V),
       Function.Injective e ∧
-      (∀ i, x i = e (p.argMap i)) ∧
-      (A.patternGraph).rel (.inr (.inl p)) e := by
+      (∀ i, x i = e (r i)) ∧
+      (A.patternGraph).rel (.inr (.inl
+        ({ symbol := F, rootSize := m, argMap := r, onto := hSurj } :
+          Language.FunctionInputPattern L))) e := by
   classical
   obtain ⟨m, r, e, hSurj, hInj, hFact, _hExact⟩ :=
     exists_tuple_equality_pattern_exact x
-  let p : Language.FunctionInputPattern L := {
-    symbol := F
-    rootSize := m
-    argMap := r
-    onto := hSurj
-  }
-  refine ⟨p, e, hInj, hFact, ?_⟩
+  refine ⟨m, r, hSurj, e, hInj, hFact, ?_⟩
   change Function.Injective e ∧
     (A.func F (e ∘ r)).Nonempty
   refine ⟨hInj, ?_⟩
