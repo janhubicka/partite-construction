@@ -189,4 +189,52 @@ theorem closedTest_originalPartial_strictTree_of_rooted_sideCompletions
     TL TR hTL hTR rootL rootR hRootL hRootR
     pL pR hL hR hLiftL hLiftR
 
+
+/-- Actual native mixed test over a REDUCIBLE common separator.
+
+Start is a strict B-tree completion of the common separator, and q is
+its (possibly noninjective) original-partial completion map. Each
+proper tested side must have an EHN completion into a STRICT
+extension of this SAME Start, agreeing on q. The abstract mergeFree
+lemma then supplies one strict full-functional B-tree completion of
+the original exact closed test.
+
+This is a conditional formulation of the remaining mathematical
+obligation in the published two-case induction. It no longer needs
+root isolation for the original-partial homomorphism notion, but it
+still needs existence of compatible strict side extensions. -/
+theorem closedTest_originalPartial_strictTree_of_commonTreeExtensions
+    {G : Type v}
+    (B : System L P V)
+    (S : Set V) (hS : B.toStructure.IsClosed S)
+    (D : System L P W)
+    (f : FunctionalPartite.Embedding (B.induce S hS) D)
+    (Test : Set (Structure.Attachment.Vertex S
+      (W := W) (I := PUnit.{v+1})))
+    (hTest : (UnitAttachD B S hS D f).toStructure.IsClosed Test)
+    (Base : Structure L VB)
+    (Start : Structure L G)
+    (hStart : TreeAmalgam Base G Start)
+    (q : (closedTestPullback B S hS D f Test hTest).Common → G)
+    (TL : Structure L YL) (TR : Structure L YR)
+    (hExtL : TreeExtension Base Start YL TL)
+    (hExtR : TreeExtension Base Start YR TR)
+    (pL : (closedTestPullback B S hS D f Test hTest).Left → YL)
+    (pR : (closedTestPullback B S hS D f Test hTest).Right → YR)
+    (hL : ((closedTestPullback B S hS D f Test hTest).left)
+      .IsEHNHomomorphismEmbedding TL pL)
+    (hR : ((closedTestPullback B S hS D f Test hTest).right)
+      .IsEHNHomomorphismEmbedding TR pR)
+    (hLiftL : ∀ x : (closedTestPullback B S hS D f Test hTest).Common,
+      pL ((closedTestPullback B S hS D f Test hTest).toLeft x)
+        = hExtL.startEmbedding (q x))
+    (hLiftR : ∀ x : (closedTestPullback B S hS D f Test hTest).Common,
+      pR ((closedTestPullback B S hS D f Test hTest).toRight x)
+        = hExtR.startEmbedding (q x)) :
+    HasOriginalPartialTreeCompletion Base
+      ((UnitAttachD B S hS D f).toStructure.induce Test hTest) := by
+  let pb := closedTestPullback B S hS D f Test hTest
+  exact pb.free.originalPartialTreeCompletion_glue_commonTree
+    Base hStart q TL TR hExtL hExtR pL pR hL hR hLiftL hLiftR
+
 end StructuralRamsey.FunctionalPartite.Attachment
