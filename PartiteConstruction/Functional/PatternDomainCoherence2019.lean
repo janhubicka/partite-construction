@@ -98,4 +98,46 @@ theorem patternTag_domain_injective_of_canonical_coverage
     (patternTagExpansion Base.patternGraph) hC
     (patternTag_domain_injective_canonical Base) hCover p root hDom
 
+/-- The ambient U-closure of an active old domain root is U-irreducible.
+The root domain relation makes its exact induced support ordinarily
+irreducible, and closure preserves that protected seed. -/
+theorem patternTag_domainHull_uIrreducible
+    (C : RelStructure (L.patternTag) V)
+    (hC : IsUClosed L.patternClosureRules C)
+    (p : Language.FunctionInputPattern L)
+    (root : Fin p.rootSize → V)
+    (hDom : C.rel (.inl (.inr (.inl p))) root) :
+    IsUIrreducible L.patternClosureRules
+      (C.induce (UClosureHull L.patternClosureRules C
+        (Set.range root))) := by
+  have hSeed : (C.induce (Set.range root)).Irreducible :=
+    relationTuple_range_irreducible C (.inl (.inr (.inl p))) root hDom
+  exact hC.irreducibleSeed_hull_isUIrreducible
+    (Set.range root) hSeed
+
+/-- The closure of every active OLD domain root embeds FULLY into
+canonical tagged B under the same protected-copy-coverage hypothesis.
+This is the common target for comparing outputs from differing equality
+patterns of a single original primitive input. -/
+theorem patternTag_domainHull_embeds_canonical_base
+    (C : RelStructure (L.patternTag) V) (Base : Structure L W)
+    (hC : IsUClosed L.patternClosureRules C)
+    (hCover : ∀ {X : Type v} (Test : RelStructure (L.patternTag) X),
+      IsUClosed L.patternClosureRules Test →
+      IsUIrreducible L.patternClosureRules Test →
+      Embedding Test C →
+      Nonempty (Embedding Test (patternTagExpansion Base.patternGraph)))
+    (p : Language.FunctionInputPattern L)
+    (root : Fin p.rootSize → V)
+    (hDom : C.rel (.inl (.inr (.inl p))) root) :
+    Nonempty (Embedding
+      (C.induce (UClosureHull L.patternClosureRules C
+        (Set.range root)))
+      (patternTagExpansion Base.patternGraph)) := by
+  let S : Set V := Set.range root
+  exact hCover (C.induce (UClosureHull L.patternClosureRules C S))
+    (hC.induce_UClosureHull S)
+    (patternTag_domainHull_uIrreducible C hC p root hDom)
+    (inclusion C (UClosureHull L.patternClosureRules C S))
+
 end StructuralRamsey.RelStructure
