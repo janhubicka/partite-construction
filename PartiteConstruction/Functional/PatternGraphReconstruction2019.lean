@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.PatternDecodedInducedMap2019
 import PartiteConstruction.Ramsey.ClosureWeakIrreducibleCoverage
+import PartiteConstruction.Ramsey.CopywiseTreeHomomorphism
 
 /-!
 # Reconstruct every OLD output relation of an induced decoded function
@@ -72,8 +73,7 @@ theorem patternGraph_output_of_decoded_covered
     have h0 : root0 (r i) ∈ S := by
       refine ⟨Fin.castSucc (r i), ?_⟩
       simp only [S, t0, Structure.funcTuple_castSucc]
-    rw [hFact i]
-    exact h0
+    exact (hFact i).symm ▸ h0
   have hyS : y ∈ S := by
     refine ⟨Fin.last m, ?_⟩
     simp only [S, t0, Structure.funcTuple_last]
