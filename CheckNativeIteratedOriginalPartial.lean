@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.NativeIteratedOriginalPartial
+
+#print axioms StructuralRamsey.Structure.inducedRamsey_nativeFunctionalIteration_originalPartial
