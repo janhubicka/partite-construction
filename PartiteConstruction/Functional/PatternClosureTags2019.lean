@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.PartialFunctionPatternDecode2019
 import PartiteConstruction.Ramsey.ClosureDescription2019
+import PartiteConstruction.Iterated.LocalTreeLike
 
 /-!
 # Fresh closure symbols for FULL partial-function root patterns
@@ -79,6 +80,69 @@ def patternTagReduct
   rel R xs := E.rel (.inl R)
 
 end RelStructure
+
+namespace RelStructure.Embedding
+
+variable {L : Language.{u}} {V W : Type v}
+variable {E : RelStructure (L.patternGraph) V}
+variable {F : RelStructure (L.patternGraph) W}
+
+/-- Canonical full pattern-root tags preserve and REFLECT full
+embeddings of the old relational structures. Reflection works
+because every root vertex of a tag is one of the displayed prefix
+vertices, hence already lies in the embedded source image. -/
+noncomputable def patternTag (f : Embedding E F) :
+    Embedding (RelStructure.patternTagExpansion E)
+      (RelStructure.patternTagExpansion F) where
+  toFun := f
+  injective := f.injective
+  map_rel_iff := by
+    intro R xs
+    rcases R with R | p
+    · exact f.map_rel_iff R xs
+    · change
+        (F.rel (.inr (.inr p.input)) (f ∘ xs) ∧
+          ∃ g : Embedding p.root F,
+            ∀ i : Fin p.input.rootSize,
+              (f ∘ xs) i.castSucc = g i) ↔
+        (E.rel (.inr (.inr p.input)) xs ∧
+          ∃ g : Embedding p.root E,
+            ∀ i : Fin p.input.rootSize,
+              xs i.castSucc = g i)
+      constructor
+      · rintro ⟨hOldF, gF, hPrefixF⟩
+        have hOldE : E.rel (.inr (.inr p.input)) xs :=
+          (f.map_rel_iff (.inr (.inr p.input)) xs).mp hOldF
+        have hImage : ∀ i : Fin p.input.rootSize,
+            ∃ x : V, gF i = f x := by
+          intro i
+          exact ⟨xs i.castSucc, (hPrefixF i).symm⟩
+        let gE : Embedding p.root E := gF.factorThroughRange f hImage
+        refine ⟨hOldE, gE, ?_⟩
+        intro i
+        apply f.injective
+        change f (xs i.castSucc) = f (Classical.choose (hImage i))
+        exact (hPrefixF i).trans (Classical.choose_spec (hImage i))
+      · rintro ⟨hOldE, gE, hPrefixE⟩
+        have hOldF : F.rel (.inr (.inr p.input)) (f ∘ xs) :=
+          (f.map_rel_iff (.inr (.inr p.input)) xs).mpr hOldE
+        refine ⟨hOldF, f.comp gE, ?_⟩
+        intro i
+        exact congrArg f (hPrefixE i)
+
+/-- Forget the fresh closure tags from a full embedding, retaining
+all the old domain and output graph relations. -/
+def patternTagReduct
+    {A : RelStructure (L.patternTag) V}
+    {B : RelStructure (L.patternTag) W}
+    (f : Embedding A B) :
+    Embedding (RelStructure.patternTagReduct A)
+      (RelStructure.patternTagReduct B) where
+  toFun := f
+  injective := f.injective
+  map_rel_iff := fun R xs => f.map_rel_iff (.inl R) xs
+
+end RelStructure.Embedding
 
 namespace Language.FunctionRootPattern
 
