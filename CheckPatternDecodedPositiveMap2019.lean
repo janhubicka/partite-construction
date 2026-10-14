@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PatternDecodedPositiveMap2019
+
+#print axioms StructuralRamsey.RelStructure.Embedding.map_patternDecode_func
