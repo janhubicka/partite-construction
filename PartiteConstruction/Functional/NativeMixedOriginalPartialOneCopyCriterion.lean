@@ -135,4 +135,72 @@ theorem closedTest_originalPartial_oneCopy_of_compatible_side_lifts
     Base ((UnitAttachD B Supp hSupp Dsys f).toStructure.induce Test hTest)
       (eAB ∘ p) hToBase
 
+/-- It is enough to extend the prescribed common root on the COPIED old
+side when the new core already has an EHN map to the selected control A.
+
+This is the form directly applicable to a genuine Hales--Jewett core,
+whose canonical part projection is an EHN map into A. The remaining
+copy-side lift is a genuine additional hypothesis: the old copy may
+contain vertices with projected parts outside the selected A-placement.
+In that situation one needs more general strict B-tree extensions. -/
+theorem closedTest_originalPartial_oneCopy_of_core_and_copy_lifts
+    (B : System L P V) (Douter : Structure L P)
+    (hB : B.WeaklyPartiteOver Douter)
+    (A : Structure L U) (Base : Structure L VB)
+    (eAB : Structure.Embedding A Base)
+    (alpha : Structure.Embedding A Douter)
+    (Dsys : System L P W)
+    (f : FunctionalPartite.Embedding
+      (B.induce (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)) Dsys)
+    (Test : Set
+      (Structure.Attachment.Vertex
+        (B.support alpha.toFunctionEmbedding)
+        (W := W) (I := PUnit.{v+1})))
+    (hTest :
+      (UnitAttachD B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f).toStructure.IsClosed Test)
+    (coreMap : W → U)
+    (hCore : Dsys.toStructure.IsEHNHomomorphismEmbedding A coreMap)
+    (copyMap :
+      (closedTestPullback B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f Test hTest).Right → U)
+    (hCopy :
+      let pb := closedTestPullback B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f Test hTest
+      pb.right.IsEHNHomomorphismEmbedding A copyMap)
+    (hCoreRoot :
+      let pb := closedTestPullback B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f Test hTest
+      let q : pb.Common → U :=
+        (B.weakRestrict Douter hB.1 A alpha).part ∘ pb.commonMap
+      ∀ x : pb.Common,
+        coreMap (pb.leftMap (pb.toLeft x)) = q x)
+    (hCopyRoot :
+      let pb := closedTestPullback B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f Test hTest
+      let q : pb.Common → U :=
+        (B.weakRestrict Douter hB.1 A alpha).part ∘ pb.commonMap
+      ∀ x : pb.Common,
+        copyMap (pb.toRight x) = q x) :
+    HasOriginalPartialTreeCompletion Base
+      ((UnitAttachD B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f).toStructure.induce Test hTest) := by
+  let Supp := B.support alpha.toFunctionEmbedding
+  let hSupp := B.weak_support_closed Douter hB.1 A alpha
+  let pb := closedTestPullback B Supp hSupp Dsys f Test hTest
+  have hLeft : pb.left.IsEHNHomomorphismEmbedding A
+      (coreMap ∘ pb.leftMap) :=
+    hCore.comp pb.leftMap.isEHNHomomorphismEmbedding
+  exact closedTest_originalPartial_oneCopy_of_compatible_side_lifts
+    B Douter hB A Base eAB alpha Dsys f Test hTest
+    (coreMap ∘ pb.leftMap) copyMap hLeft hCopy
+    (fun x => ⟨hCoreRoot x, hCopyRoot x⟩)
+
 end StructuralRamsey.FunctionalPartite.Attachment
