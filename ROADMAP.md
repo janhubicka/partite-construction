@@ -53,6 +53,32 @@ but is unnecessary for this iteration. U-closed relational stages belong to
 the separately checked recursive construction, which temporarily lacks the
 intended function-structure constraints.
 
+### Stronger native functional final sparsening (14 October 2026)
+
+The actual published-style final B-copy attachment is now combined with
+the native n-pass graph-tree result, without running any new recursive
+partite construction:
+`Structure.sparseningRamsey_nativeFunctional_graphStrict_withBCover`.
+The theorem gives the Ramsey arrow, a global original-2019 partial-function
+homomorphism-embedding (equivalently EHN), exact n-vertex controlled strict
+**function-graph** B-tree tests, class membership, and genuine full B-copy
+extension of every irreducible source substructure. It also returns a loose
+full-functional B-tree of which the final C is an instance. All assertions
+were built and axiom-audited in GitHub Actions for PR #271, then merged;
+the combined main build passed in run 38642478038.
+
+The native Hales--Jewett power core itself has a strict full-functional
+one-copy completion in the original partial-map convention. This extends
+to its genuinely closed tests, **not** arbitrary weak tests. The actual
+closed mixed separator also has a strict one-copy completion, even if
+reducible, by
+`FunctionalPartite.Attachment.native_closed_separator_originalPartial_oneCopy`
+(merged PR #267). The remaining strict functional theorem requires two
+root-isolated relative extensions of that same completed reducible root,
+compatible with their projected histories. Independent completions cannot
+simply be glued. Do not confuse the verified strict function-GRAPH target
+with the unproved strict full-FUNCTION target.
+
 A strict **function-language target-tree** statement is a different open
 strengthening: graph tree witnesses may have non-closed gluing roots and local
 maps need not preserve the entire target function fibre.

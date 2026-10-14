@@ -24,6 +24,9 @@ Historical TODOs in that log are not current proof obligations.
 | Rooted unrestricted functional EHN | `Rooted.Structure.FreeAmalgamationClass.orderedRamsey_allArity` | Hereditary full free-amalgamation class; arbitrary set-valued function arities; constants included |
 | Exact ordered forbidden-pattern theorem, `thm:HN` | `Structure.orderedRamsey_forbidden_expansions_allArity` | Arbitrary function arities; forbidden structures may specify orders; only their reducts must be irreducible |
 | Strict relational sparsening | `Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all` | B irreducible; A arbitrary; independent of the unresolved stronger synchronized invariant |
+| Native functional n-pass iteration | `Structure.inducedRamsey_nativeFunctionalIteration_originalPartial_all` | Positive function arity, free amalgamation K, graph-hereditarily irreducible A, finite nonempty colours; exact weak vertex tests and original 2019 partial projection |
+| Native functional graph-tree sparsening **with final B-coverage** | `Structure.sparseningRamsey_nativeFunctional_graphStrict_withBCover` | Preserves the same Ramsey arrow, original-partial projection, strict *relational function-graph* local trees, and extension of every irreducible to a genuine B-copy; NOT a strict functional local-tree theorem |
+| Native closed mixed separator | `FunctionalPartite.Attachment.native_closed_separator_originalPartial_oneCopy` | One-copy strict original-partial completion for the actual common closed separator, even if reducible; compatible root-isolated side extensions remain open |
 | Function-closed tree amalgam interface | `RelStructure.FunctionClosedTreeAmalgam.irreducible_contained_in_full_copy` | Strict relational tree geometry plus closed gluing roots; side embeddings stay closed and constituent copies decode to full function embeddings |
 
 The all-arity endpoints are in

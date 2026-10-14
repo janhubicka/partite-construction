@@ -44,6 +44,19 @@ A is
 `Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all`.
 It bypasses the stronger synchronized tree invariant rather than proving it.
 
+The **direct positive-arity functional n-pass construction** (without U-closed
+relational stages or repeated recursive Ramsey work) is
+`Structure.inducedRamsey_nativeFunctionalIteration_originalPartial_all`.
+The stronger **corrected functional sparsening with final B-copy coverage**
+is `Structure.sparseningRamsey_nativeFunctional_graphStrict_withBCover` in
+`Functional/NativeIteratedFinalBCover.lean`. It preserves the full Ramsey
+arrow, the original 2019 partial-function (EHN) global projection, strict
+**relational function-graph** B-tree completions on every n-vertex weak test,
+and extension of every irreducible to a genuine full B-copy. It does **not**
+assert strict full-functional local B-trees. The native closed common
+separator has a one-copy strict original-partial completion, but compatible
+relative extensions over the same reducible separator remain to be proved.
+
 ## Map conventions
 
 `Structure.IsHomomorphism` retains equality of complete function-value
