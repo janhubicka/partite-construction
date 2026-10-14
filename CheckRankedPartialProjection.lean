@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.RankedPartialProjection
+
+#print axioms StructuralRamsey.Structure.IsWeakHomomorphism.rankReduct
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.rankReduct_map_func_of_nonempty
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.rankReduct_partialHomomorphism
