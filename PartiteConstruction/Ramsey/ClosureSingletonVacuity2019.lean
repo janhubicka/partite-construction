@@ -31,7 +31,8 @@ theorem singleton_isUIrreducible
     apply Subtype.ext
     exact (Set.mem_singleton_iff.mp a.2).trans
       (Set.mem_singleton_iff.mp b.2).symm
-  exact h.isUIrreducible rules
+  intro H E F Root Left Right sL sR iL iR hL hR hfree
+  exact h.isUIrreducible rules hL hR hfree
 
 /-- With no singleton in K, literal (4b) admits only empty candidates. -/
 theorem isEmpty_of_intrinsic_tests_mem_of_no_singletons
