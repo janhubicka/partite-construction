@@ -99,8 +99,9 @@ theorem PatternTagNormal.same_root_output_unique
             (Structure.funcTuple root y)
               (Fin.castSucc (show Fin p.rootSize from i)) :=
           congrArg (Structure.funcTuple root y) hCast
-        _ = root i := by
-          simp only [Structure.funcTuple_castSucc]
+        _ = root (show Fin p.rootSize from i) :=
+          Structure.funcTuple_castSucc root y
+            (show Fin p.rootSize from i)
         _ = eRoot i := (heRoot i).symm
     exact (congrArg (Structure.funcTuple root y) hIdx).trans hValue
   have hPreZ : ∀ i : Fin q.closureRule.rootSize,
@@ -123,8 +124,9 @@ theorem PatternTagNormal.same_root_output_unique
             (Structure.funcTuple root z)
               (Fin.castSucc (show Fin p.rootSize from i)) :=
           congrArg (Structure.funcTuple root z) hCast
-        _ = root i := by
-          simp only [Structure.funcTuple_castSucc]
+        _ = root (show Fin p.rootSize from i) :=
+          Structure.funcTuple_castSucc root z
+            (show Fin p.rootSize from i)
         _ = eRoot i := (heRoot i).symm
     exact (congrArg (Structure.funcTuple root z) hIdx).trans hValue
   obtain ⟨t, ht, htunique⟩ :=
