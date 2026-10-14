@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.OriginalPartialSemantics
 import PartiteConstruction.Functional.ProjectedIrreducibleCover
 import PartiteConstruction.Functional.FullFreeAmalgam
+import PartiteConstruction.Functional.EHNClosedAttachmentRootHistory
 
 /-!
 # Strict full-functional B-tree gluing under ORIGINAL partial maps
@@ -119,9 +120,9 @@ theorem closedTest_originalPartial_strictTree_of_rooted_sideCompletions
     (hRootR : rootR.ContainedInIrreducible)
     (pL : (closedTestPullback B S hS D f Test hTest).Left → YL)
     (pR : (closedTestPullback B S hS D f Test hTest).Right → YR)
-    (hL : (closedTestPullback B S hS D f Test hTest).left
+    (hL : ((closedTestPullback B S hS D f Test hTest).left)
         .IsEHNHomomorphismEmbedding TL pL)
-    (hR : (closedTestPullback B S hS D f Test hTest).right
+    (hR : ((closedTestPullback B S hS D f Test hTest).right)
         .IsEHNHomomorphismEmbedding TR pR)
     (hLiftL : ∀ x : (closedTestPullback B S hS D f Test hTest).Common,
       pL ((closedTestPullback B S hS D f Test hTest).toLeft x) = rootL x)
