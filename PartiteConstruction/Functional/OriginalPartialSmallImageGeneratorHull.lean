@@ -28,6 +28,7 @@ namespace StructuralRamsey.Structure
 
 universe u v
 variable {L : Language.{u}} {U V VB : Type v}
+variable [DecidableEq V]
 
 /-- Original-partial homomorphism-embeddings restrict their codomain to any
 CLOSED set containing the entire vertex image. Weak and genuine
