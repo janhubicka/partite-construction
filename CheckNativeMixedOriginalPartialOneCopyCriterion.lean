@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.NativeMixedOriginalPartialOneCopyCriterion
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.originalPartial_oneCopy_of_compatible_EHN_sides
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTest_originalPartial_oneCopy_of_compatible_side_lifts
