@@ -155,4 +155,30 @@ theorem LocallyGeneratedOriginalPartialTreeCompletable.pullback_closed_smallImag
   exact HasOriginalPartialTreeCompletion.of_closed_EHN_smallImage_generatorRank
     hp S hS k hImage hD
 
+
+/-- The desired VERTEX-count local strict full-functional conclusion,
+restricted to genuinely function-closed tests and homomorphism-embeddings
+in the original 2019 partial-function convention. -/
+def LocallyClosedOriginalPartialTreeCompletable
+    (Base : Structure L VB) (C : Structure L U) (n : ℕ) : Prop :=
+  ∀ (S : Finset U), S.card ≤ n →
+    ∀ hS : C.IsClosed (↑S : Set U),
+      HasOriginalPartialTreeCompletion Base (C.induce (↑S : Set U) hS)
+
+/-- An arbitrary EHN projection to a rank-n strict target already implies
+the desired vertex-n strict local property in the SOURCE. In particular,
+this works through the final full-functional B-copy attachment, once the
+n-pass preceding picture has the stronger generator-rank invariant. -/
+theorem LocallyGeneratedOriginalPartialTreeCompletable.pullback_closed_vertexRank
+    {Base : Structure L VB} {C : Structure L U}
+    {D : Structure L V} {p : U → V} {n : ℕ}
+    (hD : LocallyGeneratedOriginalPartialTreeCompletable Base D n)
+    (hp : C.IsEHNHomomorphismEmbedding D p) :
+    LocallyClosedOriginalPartialTreeCompletable Base C n := by
+  intro S hCard hS
+  have hImage : (S.image p).card ≤ n :=
+    (Finset.card_image_le).trans hCard
+  exact hD.pullback_closed_smallImage hp S hS hImage
+
+
 end StructuralRamsey.Structure
