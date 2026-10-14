@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.PatternDomainCompletion2019
+
+#print axioms StructuralRamsey.RelStructure.PatternTagNormal.old_domain_has_output_tuple
+#print axioms StructuralRamsey.RelStructure.PatternTagNormal.old_domain_has_output
