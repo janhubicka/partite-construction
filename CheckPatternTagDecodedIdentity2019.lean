@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.PatternTagDecodedIdentity2019
+
+#print axioms StructuralRamsey.RelStructure.patternGraph_to_decodedEmbedding
+#print axioms StructuralRamsey.RelStructure.patternGraph_from_decodedEmbedding
+#print axioms StructuralRamsey.RelStructure.patternTag_to_decodedEmbedding
+#print axioms StructuralRamsey.RelStructure.patternTag_from_decodedEmbedding
