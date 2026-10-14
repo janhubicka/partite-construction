@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.OriginalPartialSmallImageGeneratorHull
 import PartiteConstruction.Functional.InitialTreeCompletion
+import PartiteConstruction.Functional.EHNPowerOriginalPartialTree
 
 /-!
 # Published initial Picture for strict original-partial generator-rank tests
@@ -49,5 +50,32 @@ theorem initial_originalPartial_generatorRank
     Structure.LocallyGeneratedOriginalPartialTreeCompletable.of_tree
       hTree k,
     hCopies⟩
+
+
+/-- The ENTIRE genuine native Hales--Jewett core has a strict one-copy
+original-partial B-tree completion. Consequently every function-closed
+test in that core, at any generator rank, has a strict partial
+completion by restricting the same EHN projection. No weak test
+or artificially enlarged closure hull is used. -/
+theorem power_originalPartial_generatorRank
+    {VB : Type v}
+    (A : Structure L P)
+    (R : System L P V)
+    (hR : R.WeaklyPartiteOver A)
+    (Base : Structure L VB)
+    (eAB : Structure.Embedding A Base)
+    (N : ℕ) (hN : 0 < N) (k : ℕ) :
+    Structure.LocallyGeneratedOriginalPartialTreeCompletable
+      Base (Induced.power R N).toStructure k := by
+  have hCore : Structure.HasOriginalPartialTreeCompletion
+      Base (Induced.power R N).toStructure :=
+    FunctionalPartite.Induced.power_hasOriginalPartialTreeCompletion
+      A R hR Base eAB N hN
+  intro H hH _
+  let e : Structure.Embedding
+      ((Induced.power R N).toStructure.induce H hH)
+      (Induced.power R N).toStructure :=
+    Structure.inclusion (Induced.power R N).toStructure H hH
+  exact hCore.pullback e.isEHNHomomorphismEmbedding.toOriginalPartial
 
 end StructuralRamsey.FunctionalPartite.EHN
