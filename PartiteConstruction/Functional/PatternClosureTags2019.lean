@@ -28,7 +28,7 @@ namespace StructuralRamsey
 
 open StructuralRamsey.RelStructure
 
-universe u v
+universe u v w
 
 namespace Language
 
@@ -83,7 +83,7 @@ end RelStructure
 
 namespace RelStructure.Embedding
 
-variable {L : Language.{u}} {V W : Type v}
+variable {L : Language.{u}} {V : Type v} {W : Type w}
 variable {E : RelStructure (L.patternGraph) V}
 variable {F : RelStructure (L.patternGraph) W}
 
