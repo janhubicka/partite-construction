@@ -112,8 +112,9 @@ theorem patternTag_domainHull_uIrreducible
         (Set.range root))) := by
   have hSeed : (C.induce (Set.range root)).Irreducible :=
     relationTuple_range_irreducible C (.inl (.inr (.inl p))) root hDom
-  exact hC.irreducibleSeed_hull_isUIrreducible
-    (Set.range root) hSeed
+  intro H E F Root Left Right sL sR iL iR hLeft hRight hFree
+  exact (hC.irreducibleSeed_hull_isUIrreducible
+    (Set.range root) hSeed) hLeft hRight hFree
 
 /-- The closure of every active OLD domain root embeds FULLY into
 canonical tagged B under the same protected-copy-coverage hypothesis.
