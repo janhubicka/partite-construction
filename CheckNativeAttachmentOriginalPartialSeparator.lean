@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.NativeAttachmentOriginalPartialSeparator
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.native_closed_separator_originalPartial_oneCopy
