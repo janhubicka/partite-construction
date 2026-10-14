@@ -58,19 +58,34 @@ def ofPatternGraph [Finite V]
         e z ∈ B.func F (e ∘ x) := by
       have hGraphA : A.patternGraph.rel (.inr (.inr pat))
           (Structure.funcTuple root z) := by
-        change Function.Injective root ∧ z ∈ A.func F (root ∘ r)
-        refine ⟨hinj, ?_⟩
-        rw [hInput]
-        exact hz
+        change Function.Injective
+            (fun i : Fin m => (Structure.funcTuple root z) i.castSucc) ∧
+          (Structure.funcTuple root z) (Fin.last m) ∈
+            A.func F
+              ((fun i : Fin m => (Structure.funcTuple root z) i.castSucc) ∘ r)
+        simpa only [Structure.funcTuple_castSucc, Structure.funcTuple_last,
+          hInput] using
+          (show Function.Injective root ∧ z ∈ A.func F x from ⟨hinj, hz⟩)
       have hGraphB :=
         (e.map_rel_iff (.inr (.inr pat))
           (Structure.funcTuple root z)).mpr hGraphA
       have hComp := Structure.comp_funcTuple e root z
-      rw [hComp] at hGraphB
-      change Function.Injective (e ∘ root) ∧
-        e z ∈ B.func F ((e ∘ root) ∘ r) at hGraphB
-      rw [hInputTarget] at hGraphB
-      exact hGraphB.2
+      have hGraphB' : B.patternGraph.rel (.inr (.inr pat))
+          (Structure.funcTuple (e ∘ root) (e z)) :=
+        hComp ▸ hGraphB
+      have hVal : e z ∈ B.func F ((e ∘ root) ∘ r) := by
+        have hGraphB0 :
+            Function.Injective
+              (fun i : Fin m =>
+                (Structure.funcTuple (e ∘ root) (e z)) i.castSucc) ∧
+            (Structure.funcTuple (e ∘ root) (e z)) (Fin.last m) ∈
+              B.func F
+                ((fun i : Fin m =>
+                  (Structure.funcTuple (e ∘ root) (e z)) i.castSucc) ∘ r) :=
+          hGraphB'
+        simpa only [Structure.funcTuple_castSucc,
+          Structure.funcTuple_last] using hGraphB0.2
+      exact hInputTarget ▸ hVal
     have hDefined (hTarget : (B.func F (e ∘ x)).Nonempty) :
         (A.func F x).Nonempty := by
       have hDomB : B.patternGraph.rel (.inr (.inl pat))
