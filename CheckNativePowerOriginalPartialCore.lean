@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.NativePowerOriginalPartialCore
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.nativePower_originalPartial_oneCopy
+#print axioms StructuralRamsey.FunctionalPartite.EHN.nativePower_closedTest_originalPartial_oneCopy
