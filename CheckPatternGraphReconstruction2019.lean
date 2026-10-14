@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PatternGraphReconstruction2019
+
+#print axioms StructuralRamsey.RelStructure.patternGraph_output_of_decoded_covered
