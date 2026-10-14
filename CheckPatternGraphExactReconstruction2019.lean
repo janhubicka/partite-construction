@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PatternGraphExactReconstruction2019
+
+#print axioms StructuralRamsey.RelStructure.patternGraph_reconstruction_rel_iff
