@@ -72,7 +72,7 @@ theorem core_range_not_USubstructure_of_nonclosed_support
     copyMap_not_mem i (t j) hOutside
   have hcore : tc j = Sum.inl w := hw.symm
   rw [hout] at hcore
-  exact Sum.noConfusion hcore
+  cases hcore
 
 /-- More specifically, the REST of one attached copy (all vertices
 except that copy's private exterior) is NOT relatively U-closed
