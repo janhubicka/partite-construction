@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.OriginalPartialRankFinalBCover
+
+#print axioms StructuralRamsey.Structure.sparseningRamsey_originalPartial_strictClosed_from_generatorRank
