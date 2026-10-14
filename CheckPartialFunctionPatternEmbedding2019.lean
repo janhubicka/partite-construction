@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.PartialFunctionPatternEmbedding2019
+
+#print axioms StructuralRamsey.Structure.Embedding.ofPatternGraph
+#print axioms StructuralRamsey.Structure.Embedding.patternGraphEquiv
