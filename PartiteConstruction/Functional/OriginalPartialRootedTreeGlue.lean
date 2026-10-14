@@ -81,3 +81,57 @@ theorem IsFreeAmalgam.originalPartialTreeCompletion_glue_rooted
   exact ⟨_, Target, hTree, p, hp.toOriginalPartial⟩
 
 end StructuralRamsey.Structure
+
+
+namespace StructuralRamsey.FunctionalPartite.Attachment
+
+open StructuralRamsey.Structure
+
+universe u v
+variable {L : Language.{u}}
+variable {P V W VB YL YR : Type v}
+
+/-- Apply the original-partial strict rooted-tree gluing theorem to the
+ACTUAL closed test in a genuine native binary EHN attachment.
+
+The exact full-functional pullback provides the two side embeddings
+and the common root. The two side target trees and their full embedded
+root are inputs; their compatibility cannot be replaced by unrelated
+unrooted local completions. This isolates the one remaining mixed case
+of the published two-case iteration without adding closure vertices. -/
+theorem closedTest_originalPartial_strictTree_of_rooted_sideCompletions
+    (B : System L P V)
+    (S : Set V) (hS : B.toStructure.IsClosed S)
+    (D : System L P W)
+    (f : FunctionalPartite.Embedding (B.induce S hS) D)
+    (Test : Set (Structure.Attachment.Vertex S
+      (W := W) (I := PUnit.{v+1})))
+    (hTest : (UnitAttachD B S hS D f).toStructure.IsClosed Test)
+    (Base : Structure L VB)
+    (TL : Structure L YL) (TR : Structure L YR)
+    (hTL : TreeAmalgam Base YL TL)
+    (hTR : TreeAmalgam Base YR TR)
+    (rootL : Structure.Embedding
+      (closedTestPullback B S hS D f Test hTest).common TL)
+    (rootR : Structure.Embedding
+      (closedTestPullback B S hS D f Test hTest).common TR)
+    (hRootL : rootL.ContainedInIrreducible)
+    (hRootR : rootR.ContainedInIrreducible)
+    (pL : (closedTestPullback B S hS D f Test hTest).Left → YL)
+    (pR : (closedTestPullback B S hS D f Test hTest).Right → YR)
+    (hL : (closedTestPullback B S hS D f Test hTest).left
+        .IsEHNHomomorphismEmbedding TL pL)
+    (hR : (closedTestPullback B S hS D f Test hTest).right
+        .IsEHNHomomorphismEmbedding TR pR)
+    (hLiftL : ∀ x : (closedTestPullback B S hS D f Test hTest).Common,
+      pL ((closedTestPullback B S hS D f Test hTest).toLeft x) = rootL x)
+    (hLiftR : ∀ x : (closedTestPullback B S hS D f Test hTest).Common,
+      pR ((closedTestPullback B S hS D f Test hTest).toRight x) = rootR x) :
+    HasOriginalPartialTreeCompletion Base
+      ((UnitAttachD B S hS D f).toStructure.induce Test hTest) := by
+  let pb := closedTestPullback B S hS D f Test hTest
+  exact pb.free.originalPartialTreeCompletion_glue_rooted Base
+    TL TR hTL hTR rootL rootR hRootL hRootR
+    pL pR hL hR hLiftL hLiftR
+
+end StructuralRamsey.FunctionalPartite.Attachment
