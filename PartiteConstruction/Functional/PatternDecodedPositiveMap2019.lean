@@ -48,9 +48,20 @@ theorem map_patternDecode_func
   have hTuple := Structure.comp_funcTuple e root y
   have hTarget' : Base.patternGraph.rel (.inr (.inr p))
       (Structure.funcTuple (e ∘ root) (e y)) := hTuple ▸ hTarget
+  have hExpanded :
+      Function.Injective
+        (fun i : Fin m =>
+          (Structure.funcTuple (e ∘ root) (e y)) i.castSucc) ∧
+      (Structure.funcTuple (e ∘ root) (e y)) (Fin.last m) ∈
+        Base.func F
+          ((fun i : Fin m =>
+            (Structure.funcTuple (e ∘ root) (e y)) i.castSucc) ∘ r) :=
+    hTarget'
   have hGraphTarget :
       Function.Injective (e ∘ root) ∧
-        e y ∈ Base.func F ((e ∘ root) ∘ r) := hTarget'
+        e y ∈ Base.func F ((e ∘ root) ∘ r) := by
+    simpa only [Structure.funcTuple_castSucc,
+      Structure.funcTuple_last] using hExpanded
   have hArgs : (e ∘ root) ∘ r = e ∘ x := by
     funext i
     exact congrArg e (hFact i).symm
