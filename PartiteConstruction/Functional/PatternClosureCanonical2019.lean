@@ -39,7 +39,7 @@ theorem patternTagExpansion_isUClosed
     change
       (A.patternGraph).rel (.inr (.inr p.input)) t ∧
       ∃ e : Embedding p.root A.patternGraph,
-        ∀ i : Fin p.input.rootSize, t i.castSucc = e i at ht
+        ∀ i : Fin p.input.rootSize, t (Fin.castSucc i) = e i at ht
     obtain ⟨_, e, he⟩ := ht
     exact ⟨e.patternTag, he⟩
   · intro e
@@ -59,12 +59,12 @@ theorem patternTagExpansion_isUClosed
         (patternTagExpansion A.patternGraph).rel (.inr p) xs := by
       change (A.patternGraph).rel (.inr (.inr p.input)) xs ∧
         ∃ g : Embedding p.root A.patternGraph,
-          ∀ i : Fin p.input.rootSize, xs i.castSucc = g i
+          ∀ i : Fin p.input.rootSize, xs (Fin.castSucc i) = g i
       constructor
-      · change Function.Injective (fun i => xs i.castSucc) ∧
+      · change Function.Injective (fun i => xs (Fin.castSucc i)) ∧
           xs (Fin.last p.input.rootSize) ∈
             A.func p.input.symbol
-              ((fun i => xs i.castSucc) ∘ p.input.argMap)
+              ((fun i => xs (Fin.castSucc i)) ∘ p.input.argMap)
         simpa only [xs, Structure.funcTuple_castSucc,
           Structure.funcTuple_last] using
           (show Function.Injective root ∧
@@ -72,17 +72,18 @@ theorem patternTagExpansion_isUClosed
                 (root ∘ p.input.argMap) from ⟨hinj, hy⟩)
       · refine ⟨old, ?_⟩
         intro i
-        rfl
+        simp only [xs, Structure.funcTuple_castSucc]
     have hPrefix :
         ∀ i : Fin p.input.rootSize,
-          xs i.castSucc = e i := by
+          xs (Fin.castSucc i) = e i := by
       intro i
+      simp only [xs, Structure.funcTuple_castSucc]
       rfl
     refine ⟨xs, ⟨hTag, hPrefix⟩, ?_⟩
     intro ys hyValid
     have hPrefixY :
         ∀ i : Fin p.input.rootSize,
-          ys i.castSucc = root i := by
+          ys (Fin.castSucc i) = root i := by
       intro i
       exact hyValid.2 i
     have hOutput :
@@ -91,12 +92,12 @@ theorem patternTagExpansion_isUClosed
       have hOld : (A.patternGraph).rel
           (.inr (.inr p.input)) ys := hyValid.1.1
       change
-        Function.Injective (fun i => ys i.castSucc) ∧
+        Function.Injective (fun i => ys (Fin.castSucc i)) ∧
         ys (Fin.last p.input.rootSize) ∈
           A.func p.input.symbol
-            ((fun i => ys i.castSucc) ∘ p.input.argMap) at hOld
+            ((fun i => ys (Fin.castSucc i)) ∘ p.input.argMap) at hOld
       have hEq :
-          (fun i : Fin p.input.rootSize => ys i.castSucc) = root := by
+          (fun i : Fin p.input.rootSize => ys (Fin.castSucc i)) = root := by
         funext i
         exact hPrefixY i
       rw [hEq] at hOld
