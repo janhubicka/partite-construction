@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PatternSameRootUniqueness2019
+
+#print axioms StructuralRamsey.RelStructure.PatternTagNormal.same_root_output_unique
