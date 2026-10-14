@@ -356,3 +356,8 @@ import PartiteConstruction.Functional.PureCoreProjectedHistory
 import PartiteConstruction.Functional.InjectiveProjectedGlue
 
 import PartiteConstruction.Functional.EHNDomainFailureDecompose
+
+-- Corrected published weak-vertex iteration, simultaneous Picture invariants,
+-- and class-free functional graph-tree sparsening with B-extension.
+import PartiteConstruction.Functional.EHNCombinedConstructionWeakTreeCover
+import PartiteConstruction.Functional.NativePublishedWeakSparseningClassFree

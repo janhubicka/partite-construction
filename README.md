@@ -57,6 +57,17 @@ assert strict full-functional local B-trees. The native closed common
 separator has a one-copy strict original-partial completion, but compatible
 relative extensions over the same reducible separator remain to be proved.
 
+The published Appendix A Picture induction is now available on one genuine
+functional witness, not as independent existence proofs:
+`FunctionalPartite.EHN.initial_weakTree_and_projectedCover`,
+`FunctionalPartite.EHN.pictureLemma_weakTree_and_projectedCover`, and
+`FunctionalPartite.EHN.inducedConstruction_weakTree_and_projectedCover`.
+These are covered by the CI/axiom-verified merged PR #273. The exported
+`Structure.sparseningRamsey_nativeFunctional_graphStrict_withBCover_unrestricted`
+removes the ambient free-amalgamation class parameter. All four preserve the
+exact weak-substructure vertex budget and concern strict **function-graph**
+B-tree targets, not unproved strict full-functional local B-trees.
+
 ## Map conventions
 
 `Structure.IsHomomorphism` retains equality of complete function-value
