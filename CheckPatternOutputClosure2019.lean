@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PatternOutputClosure2019
+
+#print axioms StructuralRamsey.RelStructure.PatternTagNormal.old_output_mem_generatedHull
