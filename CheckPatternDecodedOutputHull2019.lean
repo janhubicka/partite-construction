@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.PatternDecodedOutputHull2019
+
+#print axioms StructuralRamsey.RelStructure.equalityPattern_range_eq
+#print axioms StructuralRamsey.RelStructure.PatternTagNormal.decoded_output_mem_inputHull
