@@ -77,7 +77,7 @@ domain and output-graph symbols. -/
 def patternTagReduct
     (E : RelStructure (L.patternTag) V) :
     RelStructure (L.patternGraph) V where
-  rel R xs := E.rel (.inl R)
+  rel R xs := E.rel (.inl R) xs
 
 end RelStructure
 
@@ -113,16 +113,29 @@ noncomputable def patternTag (f : Embedding E F) :
       · rintro ⟨hOldF, gF, hPrefixF⟩
         have hOldE : E.rel (.inr (.inr p.input)) xs :=
           (f.map_rel_iff (.inr (.inr p.input)) xs).mp hOldF
-        have hImage : ∀ i : Fin p.input.rootSize,
-            ∃ x : V, gF i = f x := by
-          intro i
-          exact ⟨xs i.castSucc, (hPrefixF i).symm⟩
-        let gE : Embedding p.root E := gF.factorThroughRange f hImage
-        refine ⟨hOldE, gE, ?_⟩
-        intro i
-        apply f.injective
-        change f (xs i.castSucc) = f (Classical.choose (hImage i))
-        exact (hPrefixF i).trans (Classical.choose_spec (hImage i))
+        let q : Fin p.input.rootSize → V :=
+          fun i => xs i.castSucc
+        let gE : Embedding p.root E := {
+          toFun := q
+          injective := by
+            intro i j hij
+            apply gF.injective
+            calc
+              gF i = f (q i) := (hPrefixF i).symm
+              _ = f (q j) := congrArg f hij
+              _ = gF j := hPrefixF j
+          map_rel_iff := by
+            intro S ys
+            have hEq : f ∘ (q ∘ ys) = gF ∘ ys := by
+              funext i
+              exact hPrefixF (ys i)
+            calc
+              E.rel S (q ∘ ys) ↔ F.rel S (f ∘ (q ∘ ys)) :=
+                (f.map_rel_iff S (q ∘ ys)).symm
+              _ ↔ F.rel S (gF ∘ ys) := by rw [hEq]
+              _ ↔ p.root.rel S ys := gF.map_rel_iff S ys
+        }
+        exact ⟨hOldE, gE, fun _ => rfl⟩
       · rintro ⟨hOldE, gE, hPrefixE⟩
         have hOldF : F.rel (.inr (.inr p.input)) (f ∘ xs) :=
           (f.map_rel_iff (.inr (.inr p.input)) xs).mpr hOldE
