@@ -65,8 +65,8 @@ theorem IsEHNHomomorphismEmbedding.closedTestToHullRank
     fun x => ⟨p x.1,
       D.subset_functionClosure (↑Image : Set V)
         (Finset.mem_image.mpr ⟨x.1, x.2, rfl⟩)⟩
-  have hpSmall : (C.induce (↑S : Set U) hS)
-      .IsEHNHomomorphismEmbedding D (p ∘ Subtype.val) :=
+  have hpSmall : (C.induce (↑S : Set U) hS).IsEHNHomomorphismEmbedding
+      D (p ∘ Subtype.val) :=
     hp.comp (inclusion C (↑S : Set U) hS).isEHNHomomorphismEmbedding
   have hpHull : IsOriginalPartialHomomorphismEmbedding
       (C.induce (↑S : Set U) hS) (D.induce H hH) pH :=
