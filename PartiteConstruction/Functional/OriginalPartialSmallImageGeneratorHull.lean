@@ -43,6 +43,44 @@ theorem IsOriginalPartialHomomorphismEmbedding.codRestrictClosed
     A (B.weakInduce T) (fun a => (⟨f a, hRange a⟩ : T))
   exact hf.codRestrictWeak T hRange
 
+/-- Generator-rank local strict-tree invariant in the ORIGINAL
+partial-function homomorphism-embedding convention. Unlike a vertex
+cardinality bound, this counts generators of the entire CLOSED hull. -/
+def LocallyGeneratedOriginalPartialTreeCompletable
+    (Base : Structure L VB) (D : Structure L V) (k : ℕ) : Prop :=
+  ∀ (H : Set V) (hH : D.IsClosed H),
+    (D.induce H hH).GeneratedByAtMost k →
+    HasOriginalPartialTreeCompletion Base (D.induce H hH)
+
+namespace LocallyGeneratedOriginalPartialTreeCompletable
+
+/-- Restricting the permissible generator count preserves the invariant. -/
+theorem mono {Base : Structure L VB} {D : Structure L V}
+    {m n : ℕ}
+    (h : LocallyGeneratedOriginalPartialTreeCompletable Base D n)
+    (hmn : m ≤ n) :
+    LocallyGeneratedOriginalPartialTreeCompletable Base D m := by
+  intro H hH hGen
+  exact h H hH (hGen.mono hmn)
+
+/-- Every strict functional B-tree satisfies the rank-based local
+completion property at EVERY generator rank, via full inclusion. -/
+theorem of_tree {Base : Structure L VB} {D : Structure L V}
+    (hTree : TreeAmalgam Base V D) (k : ℕ) :
+    LocallyGeneratedOriginalPartialTreeCompletable Base D k := by
+  intro H hH _
+  let e : Embedding (D.induce H hH) D := inclusion D H hH
+  exact ⟨V, D, hTree, e, e.isEHNHomomorphismEmbedding.toOriginalPartial⟩
+
+/-- In particular the unmodified Base itself satisfies the initial
+rank-zero invariant, without any closure cardinality bound. -/
+theorem base (Base : Structure L VB) (k : ℕ) :
+    LocallyGeneratedOriginalPartialTreeCompletable Base Base k := by
+  exact of_tree (TreeAmalgam.copy (Embedding.id Base)
+    (fun b => ⟨b, rfl⟩)) k
+
+end LocallyGeneratedOriginalPartialTreeCompletable
+
 /-- Every closed source test has an original-partial EHN map into the
 GENUINE closed hull of its exact projected vertex set. Crucially this
 hull has a generator bound equal to the cardinality of the raw image,
@@ -100,5 +138,20 @@ theorem HasOriginalPartialTreeCompletion.of_closed_EHN_smallImage_generatorRank
   obtain ⟨H,hH,pH,hpHull,hRank⟩ :=
     hp.closedTestToHullRank S hS k hImage
   exact (hD H hH hRank).pullback hpHull
+
+/-- Repackaging of the verified strict small-image transfer in the
+explicit generator-rank local-invariant language. The mixed Picture
+preservation of this invariant is still the outstanding step. -/
+theorem LocallyGeneratedOriginalPartialTreeCompletable.pullback_closed_smallImage
+    {Base : Structure L VB} {C : Structure L U}
+    {D : Structure L V} {p : U → V}
+    {k : ℕ}
+    (hD : LocallyGeneratedOriginalPartialTreeCompletable Base D k)
+    (hp : C.IsEHNHomomorphismEmbedding D p)
+    (S : Finset U) (hS : C.IsClosed (↑S : Set U))
+    (hImage : (S.image p).card ≤ k) :
+    HasOriginalPartialTreeCompletion Base (C.induce (↑S : Set U) hS) := by
+  exact HasOriginalPartialTreeCompletion.of_closed_EHN_smallImage_generatorRank
+    hp S hS k hImage hD
 
 end StructuralRamsey.Structure
