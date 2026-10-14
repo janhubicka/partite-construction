@@ -83,7 +83,7 @@ theorem PatternTagNormal.of_embedding
   intro p xs
   let fOld : Embedding (patternTagReduct A) (patternTagReduct B) :=
     f.patternTagReduct
-  have hfTag : Embedding
+  let hfTag : Embedding
       (patternTagExpansion (patternTagReduct A))
       (patternTagExpansion (patternTagReduct B)) :=
     fOld.patternTag
