@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PatternCrossRootSingleton2019
+
+#print axioms StructuralRamsey.RelStructure.PatternTagNormal.decoded_output_unique_of_covered
