@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.PatternClosureTags2019
+
+#print axioms StructuralRamsey.Language.FunctionRootPattern.closureRule
+#print axioms StructuralRamsey.Language.patternClosureRules
