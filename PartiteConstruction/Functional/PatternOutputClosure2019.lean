@@ -58,12 +58,9 @@ theorem PatternTagNormal.old_output_mem_generatedHull
     have hMem : root i ∈ H :=
       subset_UClosureHull L.patternClosureRules C (Set.range root)
         ⟨i, rfl⟩
-    have hIdx :
-        i.castLE q.closureRule.rootLE = Fin.castSucc i := by
-      apply Fin.ext
-      rfl
-    rw [hIdx]
-    exact hMem
+    simpa [q, Language.FunctionRootPattern.closureRule,
+      Language.FunctionRootPattern.ofActiveDomain, Language.patternTag,
+      root, Fin.castLE, Fin.castSucc] using hMem
   exact (UClosureHull_isUSubstructure L.patternClosureRules C
     (Set.range root))
       q.closureRule ⟨q, rfl⟩ t hTag hRoot
