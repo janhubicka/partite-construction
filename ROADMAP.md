@@ -53,6 +53,20 @@ but is unnecessary for this iteration. U-closed relational stages belong to
 the separately checked recursive construction, which temporarily lacks the
 intended function-structure constraints.
 
+### Published two-case native proof, combined invariants (15 October 2026)
+
+The author-uploaded published Appendix A proof uses initial pictures, a
+two-case induction on the exact projected vertex test, n complete passes,
+and final B-attachments. In merged PR #273, the initial Picture, Hales–Jewett
+Picture step, and one entire pass now retain weak function-GRAPH tree control
+and projected B-copy coverage on the **same** genuine functional stage.
+See `EHNCombinedInitialWeakTreeCover`, `EHNCombinedPictureWeakTreeCover`
+and `EHNCombinedConstructionWeakTreeCover`. The unrestricted corrected
+endpoint `sparseningRamsey_nativeFunctional_graphStrict_withBCover_unrestricted`
+is also exported. Full build and axioms passed in Actions run 38648195271.
+The strong strict full-FUNCTION local tree gluing of reducible mixed roots
+remains unproved; do not conflate it with the function-GRAPH conclusion.
+
 ### Stronger native functional final sparsening (14 October 2026)
 
 The actual published-style final B-copy attachment is now combined with
