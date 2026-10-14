@@ -39,10 +39,10 @@ def patternDecode (E : RelStructure (L.patternGraph) V) :
       Function.Injective root ∧
       (∀ i, x i = root (r i)) ∧
       E.rel (.inr (.inl
-        ({ symbol := F, rootSize := m, repeat := r, onto := hr } :
+        ({ symbol := F, rootSize := m, argMap := r, onto := hr } :
           Language.FunctionInputPattern L))) root ∧
       E.rel (.inr (.inr
-        ({ symbol := F, rootSize := m, repeat := r, onto := hr } :
+        ({ symbol := F, rootSize := m, argMap := r, onto := hr } :
           Language.FunctionInputPattern L)))
         (funcTuple root y)}
 
