@@ -81,6 +81,60 @@ theorem IsFreeAmalgam.originalPartialTreeCompletion_glue_rooted
       (jL ∘ pL) (jR ∘ pR) hMapL hMapR hMatch
   exact ⟨_, Target, hTree, p, hp.toOriginalPartial⟩
 
+
+/-- The reducible-root form closer to the actual 2019 mixed induction.
+
+The common root is first completed by a possibly NONINJECTIVE original
+partial map q into a genuine strict B-tree Start. The two side witnesses
+need only be EHN maps into strict *tree extensions of this same Start*,
+whose root maps agree with q after the canonical start embeddings.
+No root isolation or full-fibre reflection is required to combine these
+maps. The merge of the two target extensions is still a genuine strict
+functional B-tree.
+
+The remaining geometric step is to obtain these compatible side
+extensions from the smaller-test predecessor hypothesis. -/
+theorem IsFreeAmalgam.originalPartialTreeCompletion_glue_commonTree
+    {G : Type v} {Start : Structure L G}
+    {Root : Structure L H}
+    {Left : Structure L E} {Right : Structure L F}
+    {Whole : Structure L Z}
+    {sL : Embedding Root Left} {sR : Embedding Root Right}
+    {iL : Embedding Left Whole} {iR : Embedding Right Whole}
+    (hSource : IsFreeAmalgam sL sR iL iR)
+    (Base : Structure L VB)
+    (hStart : TreeAmalgam Base G Start)
+    (q : H → G)
+    (TL : Structure L VL) (TR : Structure L VR)
+    (hExtL : TreeExtension Base Start VL TL)
+    (hExtR : TreeExtension Base Start VR TR)
+    (pL : E → VL) (pR : F → VR)
+    (hpL : Left.IsEHNHomomorphismEmbedding TL pL)
+    (hpR : Right.IsEHNHomomorphismEmbedding TR pR)
+    (hLiftL : ∀ x : H,
+      pL (sL x) = hExtL.startEmbedding (q x))
+    (hLiftR : ∀ x : H,
+      pR (sR x) = hExtR.startEmbedding (q x)) :
+    HasOriginalPartialTreeCompletion Base Whole := by
+  obtain ⟨G2, Target, hAll, eL, eR, _hFree, hStartL, hStartR⟩ :=
+    hExtL.mergeFree hExtR
+  have hTree : TreeAmalgam Base G2 Target := hAll.toTree hStart
+  have hMapL : Left.IsEHNHomomorphismEmbedding Target (eL ∘ pL) :=
+    eL.isEHNHomomorphismEmbedding.comp hpL
+  have hMapR : Right.IsEHNHomomorphismEmbedding Target (eR ∘ pR) :=
+    eR.isEHNHomomorphismEmbedding.comp hpR
+  have hAgree : ∀ x : H,
+      (eL ∘ pL) (sL x) = (eR ∘ pR) (sR x) := by
+    intro x
+    change eL (pL (sL x)) = eR (pR (sR x))
+    rw [hLiftL x, hLiftR x]
+    exact (hStartL (q x)).trans (hStartR (q x)).symm
+  obtain ⟨p, hp, _hl, _hr⟩ :=
+    hSource.exists_EHN_projection
+      (eL ∘ pL) (eR ∘ pR) hMapL hMapR hAgree
+  exact ⟨G2, Target, hTree, p, hp.toOriginalPartial⟩
+
+
 end StructuralRamsey.Structure
 
 
