@@ -50,11 +50,10 @@ theorem Stage.attach_weakTree_and_projectedCover
       A.graph Base.graph T.system.toStructure.graph n)
     (hOldCover : Old.ProjectedCover Base)
     (hCoreCover : T.ProjectedCover Base) :
+    let R := T.attach hK Old.system Old.isPartite Old.mem S hS f
     RelStructure.LocallyTreeLike A.graph Base.graph
-      (T.attach hK Old.system Old.isPartite Old.mem S hS f)
-        .system.toStructure.graph n ∧
-    (T.attach hK Old.system Old.isPartite Old.mem S hS f)
-      .ProjectedCover Base := by
+      R.system.toStructure.graph n ∧
+    R.ProjectedCover Base := by
   constructor
   · exact T.attach_weakGraphLocallyTreeLike
       hK A Base D hA eAB Old T S hS f α hSupport
