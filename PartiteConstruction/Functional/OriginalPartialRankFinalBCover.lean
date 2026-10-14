@@ -58,4 +58,35 @@ theorem sparseningRamsey_originalPartial_strictClosed_from_generatorRank
   exact ⟨W, hW, C, hCK, hCArrow, ⟨p, hp.toOriginalPartial⟩,
     hLocal, hCover, hLoose⟩
 
+
+/-- Class-free corrected strict ORIGINAL-PARTIAL functional conclusion,
+conditional only on the predecessor generator-rank local-tree
+invariant (and its Ramsey arrow). This is the natural endpoint for the
+published Appendix A once the outstanding mixed Picture rank increment
+has been supplied. -/
+theorem sparseningRamsey_originalPartial_strictClosed_from_generatorRank_unrestricted
+    (A : Structure L U) (B : Structure L V) (D : Structure L P)
+    [Finite U] [Finite V] [Finite P]
+    (κ : Type*) [Fintype κ] [Nonempty κ]
+    (hArrow : Arrow A B D κ)
+    (n : ℕ)
+    (hRank : LocallyGeneratedOriginalPartialTreeCompletable B D n) :
+    ∃ (W : Type v) (_ : Finite W) (C : Structure L W),
+      Arrow A B C κ ∧
+      (∃ p : W → P, IsOriginalPartialHomomorphismEmbedding C D p) ∧
+      LocallyClosedOriginalPartialTreeCompletable B C n ∧
+      IrreduciblesExtendTo B C ∧
+      LooseTreeAmalgam B W C := by
+  let K : StructureClass (L := L) := fun _ => True
+  have hK : FreeAmalgamationClass K := {
+    hereditary := by intro V W A B hB e; trivial
+    free := by intro H E F C D A B Cstr sA sB iA iB hA hB hfree; trivial
+  }
+  obtain ⟨W, hW, C, _hMem, hCArrow, hProj, hLocal,
+      hCover, hLoose⟩ :=
+    sparseningRamsey_originalPartial_strictClosed_from_generatorRank
+      K hK A B D trivial trivial κ hArrow n hRank
+  exact ⟨W, hW, C, hCArrow, hProj, hLocal, hCover, hLoose⟩
+
+
 end StructuralRamsey.Structure
