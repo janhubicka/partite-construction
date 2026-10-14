@@ -251,4 +251,60 @@ theorem closedTest_originalPartial_oneCopy_of_core_and_copy_lifts
     (coreMap ∘ pb.leftMap) copyMap hLeft hCopy
     (fun x => ⟨hCoreRoot x, hCopyRoot x⟩)
 
+/-- In an actual A-labelled functional core, the canonical common-root
+compatibility is AUTOMATIC. A single remaining original-partial EHN
+extension of the copied old side into A, prescribed on the common root,
+is enough to complete the entire closed mixed test inside one full B.
+
+This is the sharp sufficient special case of the strict mixed-root
+obligation. It is not universally applicable: the old side may project
+outside the selected A, in which case B-tree side extensions are needed. -/
+theorem closedTest_originalPartial_oneCopy_of_labelled_core_and_copy_lift
+    (B : System L P V) (Douter : Structure L P)
+    (hB : B.WeaklyPartiteOver Douter)
+    (A : Structure L U) (Base : Structure L VB)
+    (eAB : Structure.Embedding A Base)
+    (alpha : Structure.Embedding A Douter)
+    (Dsys : System L P W)
+    (f : FunctionalPartite.Embedding
+      (B.induce (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)) Dsys)
+    (Test : Set
+      (Structure.Attachment.Vertex
+        (B.support alpha.toFunctionEmbedding)
+        (W := W) (I := PUnit.{v+1})))
+    (hTest :
+      (UnitAttachD B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f).toStructure.IsClosed Test)
+    (coreMap : W → U)
+    (hCore : Dsys.toStructure.IsEHNHomomorphismEmbedding A coreMap)
+    (hCoreLabel : ∀ w : W, Dsys.part w = alpha (coreMap w))
+    (copyMap :
+      (closedTestPullback B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f Test hTest).Right → U)
+    (hCopy :
+      let pb := closedTestPullback B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f Test hTest
+      pb.right.IsEHNHomomorphismEmbedding A copyMap)
+    (hCopyRoot :
+      let pb := closedTestPullback B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f Test hTest
+      let q : pb.Common → U :=
+        (B.weakRestrict Douter hB.1 A alpha).part ∘ pb.commonMap
+      ∀ x : pb.Common, copyMap (pb.toRight x) = q x) :
+    HasOriginalPartialTreeCompletion Base
+      ((UnitAttachD B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f).toStructure.induce Test hTest) := by
+  have hCoreRoot :=
+    closedTestPullback_core_root_agrees_of_labelledCore
+      B Douter hB A alpha Dsys f coreMap hCoreLabel Test hTest
+  exact closedTest_originalPartial_oneCopy_of_core_and_copy_lifts
+    B Douter hB A Base eAB alpha Dsys f Test hTest
+    coreMap hCore copyMap hCopy hCoreRoot hCopyRoot
+
 end StructuralRamsey.FunctionalPartite.Attachment
