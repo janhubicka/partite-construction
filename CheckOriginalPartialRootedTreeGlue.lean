@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.OriginalPartialRootedTreeGlue
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.originalPartialTreeCompletion_glue_rooted
