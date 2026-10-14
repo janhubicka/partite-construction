@@ -1,4 +1,4 @@
-# 2019 U-irreducible weak tests: two-copy regression and candidate lemma counterexample
+# 2019 U-irreducible weak tests: Lean-verified counterexample and local-axiom obstruction
 
 **Scope:** semantic audit of the *literal* Definition 2.15 and the
 'unqualified U-irreducibles' invariants in Lemmas 2.28--2.30 of
@@ -34,12 +34,11 @@ intrinsically U-irreducible by
 `IsUIrreducible.of_missing_closureTuple` (merged #162). Since
 |S|=3>|B|=2, S cannot embed in B. It meets both distinct B-copies.
 
-The explicit Lean model is
-`Ramsey/ClosureTwoCopyIntrinsicObstruction.lean` (PR #167), while the
-general no-large-test criterion is
+The explicit finite model is Lean-verified in
+`Ramsey/ClosureTwoCopyIntrinsicObstruction.lean` (merged PR #167).
+The general no-large-test criterion is
 `not_allIntrinsicUIrreducibleTestsEmbed_of_large_missing_test`
-(merged #165). The finite-model declaration should only be marked
-Lean-verified after #167's complete build and permitted-axiom audit.
+(merged #165). Both the model and its axiom audit passed CI.
 
 **Consequence:** on the literal interpretation, the claim in the
 initial-picture proof of Lemma 2.29 that a disjoint union of B-copies
@@ -47,11 +46,13 @@ has *every* U-irreducible induced substructure contained in a B-copy
 does not hold. This refutes that proof invariant; it does not yet,
 by itself, refute the existential conclusion of Lemma 2.29.
 
-## Candidate counterexample to the existential Lemma 2.29 (not yet Lean-checked)
+## Counterexample to the full existential Lemma 2.29 — Lean verified
 
-A slight enlargement appears to refute the lemma's **unqualified
-intrinsic weak-test conclusion**, not just its stated proof invariant.
-This argument must be independently reviewed and then formalized:
+The next finite construction refutes the **literal published**
+Lemma 2.29, not merely the initial-picture proof invariant. Its Ramsey
+input and universal nonexistence result are checked against the exact
+`IsUClosed`, `IsUIrreducible` and embedding definitions in Lean.
+The printed text has no ordinary-irreducibility assumption on B.
 
 1. Let A be a singleton with no P. Let B have one P-vertex r and
    three non-P vertices o,a,b, with R(r,o) and no other R-tuples.
@@ -75,20 +76,54 @@ This argument must be independently reviewed and then formalized:
    It has at least four remaining non-P vertices plus r, so
    |S| >= 5 > |B| = 4, contradiction.
 
-Adding a genuine linear-order relation preserves this argument:
-put B's root before the three non-P vertices, and in C_0 put all
-P-roots before all outputs, each block ordered. From a monochromatic
-triple choose its *first* output as the designated R-output, its
-P-root as r, and the next two outputs as a,b. B becomes ordinarily
-irreducible (the order links all distinct vertices), so this tests
-even the irreducible-B setting.
+**Possible ordered strengthening (not Lean-verified):** adding a
+linear-order relation and ordering the selected root before the three
+non-root vertices may extend the argument to ordinarily irreducible B.
+The required ordered finite Ramsey witness and the universal obstruction
+must be checked before citing this as a verified stronger statement.
+The present full counterexample already refutes Lemma 2.29, which does
+not assume B is ordinarily irreducible.
 
-**Validation boundary:** the two-copy finite obstruction is the Lean
-target in #167. The larger A,B,C_0 Ramsey calculation and universal
-no-C argument have not yet been encoded end to end in Lean and remain
-a candidate refutation pending adversarial review. Do not mark
-published Lemma 2.29 or 2.28 as refuted in the formal coverage table
-until that check is complete.
+**Lean validation boundary:**
+`Ramsey/ClosureFourPointUniversalFailure.lean` (merged PR #168)
+proves that no closed C can simultaneously satisfy the Ramsey arrow
+and coverage of all intrinsic U-irreducible induced substructures by B.
+`Ramsey/ClosureFivePairsRamsey.lean` (merged PR #169) constructs five
+closure pairs C0, proves C0 → (B)^A_2 and closure of all A-copy ranges,
+and combines the facts into
+`lemma229_intrinsic_formulation_false`. PR #169 passed a complete Lean
+build and permitted-axiom audit at head `163ae4a`, before its squash
+merge `7d213b3`. No full Theorem 2.18 counterexample is claimed.
+
+## Generic obstruction to Definition 2.17(4b) — Lean verified
+
+Published Definition 2.17(1) says every member of K is intrinsically
+U-closed, and (4b) requires **every U-irreducible substructure of C**
+to belong to K. These two conditions cannot be simultaneously invoked
+on a closed C containing a genuine closure output outside its root.
+
+Indeed, if C is closed, e:Root → C is an embedded closure root,
+t its unique closure tuple, and t(j) is not a root vertex, take the
+exact weak induced test S=C minus the vertex t(j). The root survives
+but its unique output does not. The source test S is intrinsically
+U-irreducible by the existing missing-output theorem and it is not
+U-closed. Therefore S cannot belong to K.
+
+This is the generic Lean theorem pair
+`IsUClosed.exists_nonclosed_Uirreducible_test` and
+`not_all_intrinsic_Uirred_tests_in_closed_class` in
+`ClosureLocalFinitenessNoGo2019.lean` (merged PR #179, CI checked).
+It diagnoses **possible vacuity of the locally finite completion
+antecedent**, not by itself failure of Theorem 2.18 as an implication.
+It applies to any rule with an actual output vertex outside its root,
+not just the unary P/R example.
+
+The mismatch is therefore in the statements, not merely the old
+Picture proof. Even replacing the decomposition test by a relative
+U-substructure version does not alone make (4b) coherent with (1).
+The intended correction must specify precisely which **closed tests**
+are required to be members of K and which weak tests receive
+completions in (4c).
 
 ## Plausible repairs requiring editorial decisions
 
@@ -97,11 +132,13 @@ until that check is complete.
   substructures**. The closed-test side localization is Lean-checked
   in merged PR #166. But the transfer to Lemma 2.31 and its original
   locally finite completion hypothesis must be rechecked.
-- Alternatively, define irreducibility relative to U-substructures
-  of the tested structure (Definition 2.22). Exact side localization
-  for arbitrary weak tests is Lean-checked in PR #159. The resulting
-  relative U-homomorphism-embedding notion needs its own composition,
-  Picture refinement and completion-transfer proofs.
+- Alternatively, use relative U-irreducibility in the test itself.
+  Exact weak-test side localization was Lean-verified in PR #159.
+  **This alone does not fix Definition 2.17(4b):** a nonclosed singleton
+  closure root is still relatively irreducible, so the class-membership
+  requirement remains impossible in the presence of genuine outputs.
+  The tested family in (4b) must also be restricted or otherwise amended,
+  and completion-map and local-finiteness implications reverified.
 
 Do not silently change Definition 2.15. Keep the 2019 source
 frozen and track proposed corrections as explicit TODOs.

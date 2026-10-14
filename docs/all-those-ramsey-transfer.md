@@ -133,8 +133,8 @@ Lemma 2.31, or Theorem 2.18:
 
 PRs #149--152 passed complete Lean builds and permitted-axiom audits,
   but build success alone did not certify fidelity to the published
-  definitions. The present semantic correction is separately checked
-  against Definition 2.15 and must pass a new full build and audit.
+  definitions. PR #153 corrected Definition 2.15's overrestricted test
+  predicate and itself passed full build and permitted-axiom audit.
 
 **TODO — next actual proof step.** In the 2019 partite Picture
 construction, supply the U-homomorphism-embedding projection and the
@@ -175,7 +175,7 @@ explicit semantic comparison:
 
 - `IsUIrreducible` (PR #149) prohibits free decompositions whose
   two sides are *intrinsically U-closed*.
-- `IsURelativelyIrreducible` (PR #155) prohibits free decompositions
+- `IsURelativelyIrreducible` (merged PR #159, superseding #155) prohibits free decompositions
   into two proper *U-substructures of the tested structure*, in the
   relative sense of Definition 2.22.
 
@@ -259,18 +259,22 @@ U-irreducibility follows from the missing-output principle; its
 localization to a single B-copy does NOT follow from the existing
 intrinsic definition.
 
-**TODO — priority semantic decision:** Check the proof against the
-published Definition 2.15 and determine whether 'U-irreducible
-substructure' must mean a U-closed substructure, or indecomposability
-into *relative* U-substructures (Definition 2.22), for the asserted
-copy-coverage invariant. The equivalent notions for U-closed
-structures (PR #162) do not resolve nonclosed weak tests. Until this
-is repaired, do not label Lemma 2.29, 2.28 or 2.30 as validated.
+**TODO — required theorem repair:** The published Definition 2.15
+and Lemma 2.29 use unqualified intrinsic U-irreducible tests. The
+finite PR #169 counterexample refutes Lemma 2.29 as printed. Proposed
+corrections must specify closed-test coverage and a compatible notion
+of completion/projection, then redo Lemmas 2.28--2.31 and Definition
+2.17(4) consistently. The equivalence for closed structures (PR #162)
+does NOT justify silently changing nonclosed weak tests. Do not mark
+any full theorem proved by the positive closed-test program yet.
 
-The new intrinsic obstruction theorem is deliberately conditional.
-A concrete finite counterexample to the **full stated Lemma 2.29**
-still requires instantiating A,B,C0 and their Ramsey assumptions.
-Do not claim that theorem refuted solely from the conditional test.
+The intrinsic missing-output criterion alone was conditional, but the
+**full published Lemma 2.29 now has an explicit Lean-verified
+counterexample**: merged PR #168 proves the universal no-C obstruction,
+and merged PR #169 verifies both the finite five-pair C0 → (B)^A_2
+hypotheses and the resulting existential refutation.
+See `docs/2019-u-irreducible-weak-test-audit.md`. This does not by
+itself refute the full Theorem 2.18.
 
 ### Safe closed-test localization across semi-closed Picture gluing
 
@@ -290,6 +294,34 @@ intrinsic U-irreducibles, by the separately proved missing-output
 obstruction.  Lemma 2.28 still requires the full Hales--Jewett
 refinement, copying history and the actual definition-level
 resolution of which tests enter the projection invariant.
+
+### Independent Definition 2.17(4b) obstruction (merged PR #179)
+
+Lean now proves a generic no-go for the published antecedent of local
+finiteness. Every K-member is U-closed under Definition 2.17(1),
+but (4b) requires every U-irreducible induced substructure of C to
+belong to K. If a closed C contains a closure tuple with a genuine
+output outside the prescribed root, deleting that output produces an
+intrinsically U-irreducible induced weak test that is **not U-closed**.
+Hence (4b) cannot hold for C. This is checked by
+`IsUClosed.exists_nonclosed_Uirreducible_test` and
+`not_all_intrinsic_Uirred_tests_in_closed_class` in
+`ClosureLocalFinitenessNoGo2019.lean`.
+
+This does not refute the implication Theorem 2.18, but it prevents the
+original local-finiteness axiom from being invoked on the intended
+nontrivial closure witnesses unless the tested family in (4b), or the
+definitions used to interpret it, is corrected. The working program
+using `HasClosedUKCompletion` proves results under a *different*
+convention and must not be passed off as a proof from the literal
+2019 antecedent.
+
+**Editorial TODO:** formulate the minimal corrected `(4a)-(4c)`
+together, rather than altering isolated occurrences of U-irreducible.
+Prove that the corrected construction satisfies the precise class
+membership, projection, and exact weak-local-completion conditions.
+Any claim that the original hypotheses imply the amended ones
+requires an independent implication proof; it is not automatic.
 
 ## Gaps to obtain exactly Theorem 2.18
 
