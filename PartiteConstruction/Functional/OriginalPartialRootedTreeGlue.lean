@@ -190,9 +190,38 @@ theorem precomp
     hp.comp j.isEHNHomomorphismEmbedding.toOriginalPartial
   refine ⟨Y,T,hExt,p₁,hp₁,?_⟩
   intro x
-  change p (j (s₁ x)) = hExt.startEmbedding _
+  change p (j (s₁ x)) = hExt.startEmbedding (q x)
   rw [hj x]
   exact hRoot x
+
+
+/-- Rebase an original-partial relative completion over a further
+strict B-tree extension of its common Start. The canonical target
+embedding is full, so original-partial fibre preservation composes;
+no root isolation or projected-history assumption is needed. -/
+theorem rebase
+    {G G₂ : Type v}
+    {Start : Structure L G} {Start₂ : Structure L G₂}
+    {Root : Structure L H} {Side : Structure L E}
+    {Base : Structure L VB}
+    (s : Embedding Root Side) (q : H → G)
+    (h : HasOriginalPartialTreeExtensionCompletion
+      (Start := Start) Base s q)
+    (more : TreeExtension Base Start G₂ Start₂) :
+    HasOriginalPartialTreeExtensionCompletion
+      (Start := Start₂) Base s (more.startEmbedding ∘ q) := by
+  obtain ⟨Y,T,ext,p,hp,hRoot⟩ := h
+  obtain ⟨Z,Target,newExt,e,_hFree,hComm⟩ :=
+    ext.replayFree more.startEmbedding
+  have hpNew : IsOriginalPartialHomomorphismEmbedding
+      Side Target (e ∘ p) :=
+    e.isEHNHomomorphismEmbedding.toOriginalPartial.comp hp
+  refine ⟨Z,Target,newExt,e ∘ p,hpNew,?_⟩
+  intro x
+  change e (p (s x)) = newExt.startEmbedding (more.startEmbedding (q x))
+  rw [hRoot x]
+  exact hComm (q x)
+
 
 end HasOriginalPartialTreeExtensionCompletion
 
