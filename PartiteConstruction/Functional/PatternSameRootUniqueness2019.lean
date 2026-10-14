@@ -58,27 +58,53 @@ theorem PatternTagNormal.same_root_output_unique
   have hRelY :
       C.rel (.inr q) (Structure.funcTuple root y) := by
     apply (hNormal q (Structure.funcTuple root y)).2
+    have hi : Function.Injective
+        (fun i : Fin p.rootSize =>
+          (Structure.funcTuple root y) i.castSucc) := by
+      simpa only [Structure.funcTuple_castSucc] using hinj
+    have hd : E.rel (.inr (.inl p))
+        (fun i : Fin p.rootSize =>
+          (Structure.funcTuple root y) i.castSucc) := by
+      simpa only [Structure.funcTuple_castSucc] using hDom
     exact patternTagExpansion_tag_of_valid_old_output
-      E p hpos (Structure.funcTuple root y) hy hinj hDom
+      E p hpos (Structure.funcTuple root y) hy hi hd
   have hRelZ :
       C.rel (.inr q) (Structure.funcTuple root z) := by
     apply (hNormal q (Structure.funcTuple root z)).2
+    have hi : Function.Injective
+        (fun i : Fin p.rootSize =>
+          (Structure.funcTuple root z) i.castSucc) := by
+      simpa only [Structure.funcTuple_castSucc] using hinj
+    have hd : E.rel (.inr (.inl p))
+        (fun i : Fin p.rootSize =>
+          (Structure.funcTuple root z) i.castSucc) := by
+      simpa only [Structure.funcTuple_castSucc] using hDom
     exact patternTagExpansion_tag_of_valid_old_output
-      E p hpos (Structure.funcTuple root z) hz hinj hDom
+      E p hpos (Structure.funcTuple root z) hz hi hd
   have heRoot (i : Fin p.rootSize) : eRoot i = root i := by
     rfl
   have hPreY : ∀ i : Fin q.closureRule.rootSize,
       (Structure.funcTuple root y)
         (i.castLE q.closureRule.rootLE) = eRoot i := by
     intro i
-    change (Structure.funcTuple root y) i.castSucc = eRoot i
-    rw [Structure.funcTuple_castSucc, heRoot]
+    have hIdx :
+        i.castLE q.closureRule.rootLE =
+          Fin.castSucc (show Fin p.rootSize from i) := by
+      apply Fin.ext
+      rfl
+    rw [hIdx]
+    simpa only [Structure.funcTuple_castSucc] using (heRoot i).symm
   have hPreZ : ∀ i : Fin q.closureRule.rootSize,
       (Structure.funcTuple root z)
         (i.castLE q.closureRule.rootLE) = eRoot i := by
     intro i
-    change (Structure.funcTuple root z) i.castSucc = eRoot i
-    rw [Structure.funcTuple_castSucc, heRoot]
+    have hIdx :
+        i.castLE q.closureRule.rootLE =
+          Fin.castSucc (show Fin p.rootSize from i) := by
+      apply Fin.ext
+      rfl
+    rw [hIdx]
+    simpa only [Structure.funcTuple_castSucc] using (heRoot i).symm
   obtain ⟨t, ht, htunique⟩ :=
     (hC q.closureRule ⟨q, rfl⟩).2 eRoot
   have hyT : Structure.funcTuple root y = t :=
