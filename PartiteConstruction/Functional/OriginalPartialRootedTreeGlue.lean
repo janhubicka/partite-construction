@@ -2,6 +2,7 @@ import PartiteConstruction.Functional.OriginalPartialSemantics
 import PartiteConstruction.Functional.ProjectedIrreducibleCover
 import PartiteConstruction.Functional.FullFreeAmalgam
 import PartiteConstruction.Functional.EHNClosedAttachmentRootHistory
+import PartiteConstruction.Functional.OriginalPartialWeakImage
 
 /-!
 # Strict full-functional B-tree gluing under ORIGINAL partial maps
@@ -150,6 +151,50 @@ def HasOriginalPartialTreeExtensionCompletion
     (p : E → Y),
       IsOriginalPartialHomomorphismEmbedding Side Target p ∧
       ∀ x : H, p (s x) = hExt.startEmbedding (q x)
+
+namespace HasOriginalPartialTreeExtensionCompletion
+
+/-- A prescribed partial completion of the whole source root is a relative
+witness without attaching any new B-copy. The root map need not be
+injective, and only the original partial-function semantics are required. -/
+theorem root
+    {G : Type v} {Start : Structure L G}
+    {Root : Structure L H}
+    (Base : Structure L VB)
+    (q : H → G)
+    (hq : IsOriginalPartialHomomorphismEmbedding Root Start q) :
+    HasOriginalPartialTreeExtensionCompletion (Start := Start)
+      Base (Embedding.id Root) q := by
+  exact ⟨G, Start, TreeExtension.refl, q, hq, fun _ => rfl⟩
+
+/-- Exact full source restrictions preserve relative strict partial
+completions without generating a closure hull or changing the root. -/
+theorem precomp
+    {G E₁ : Type v}
+    {Start : Structure L G}
+    {Root : Structure L H}
+    {Side : Structure L E} {Side₁ : Structure L E₁}
+    {Base : Structure L VB}
+    {s : Embedding Root Side}
+    (q : H → G)
+    (h : HasOriginalPartialTreeExtensionCompletion
+      (Start := Start) Base s q)
+    (j : Embedding Side₁ Side)
+    (s₁ : Embedding Root Side₁)
+    (hj : ∀ x, j (s₁ x) = s x) :
+    HasOriginalPartialTreeExtensionCompletion (Start := Start)
+      Base s₁ q := by
+  obtain ⟨Y,T,hExt,p,hp,hRoot⟩ := h
+  let p₁ : E₁ → Y := p ∘ j
+  have hp₁ : IsOriginalPartialHomomorphismEmbedding Side₁ T p₁ :=
+    hp.comp j.isEHNHomomorphismEmbedding.toOriginalPartial
+  refine ⟨Y,T,hExt,p₁,hp₁,?_⟩
+  intro x
+  change p (j (s₁ x)) = hExt.startEmbedding _
+  rw [hj x]
+  exact hRoot x
+
+end HasOriginalPartialTreeExtensionCompletion
 
 /-- Two original-partial strict side completions over the SAME strict
 possibly reducible root tree glue to an original-partial strict
