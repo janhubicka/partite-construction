@@ -101,5 +101,91 @@ theorem patternGraph_domain_of_nonempty
   rw [heq]
   exact hx
 
+
+namespace Embedding
+
+variable {W : Type v} {A : Structure L V} {B : Structure L W}
+
+/-- Reflection of membership in a named complete source function
+fibre follows from full fibre equality and injectivity. -/
+theorem patternFibre_mem_iff
+    (e : Embedding A B) (F : L.FuncSymbol)
+    (x : Fin (L.funcArity F) → V) (y : V) :
+    e y ∈ B.func F (e ∘ x) ↔ y ∈ A.func F x := by
+  constructor
+  · intro hy
+    rw [← e.map_func F x] at hy
+    obtain ⟨z, hz, heq⟩ := hy
+    have hzy : z = y := e.injective heq
+    rwa [hzy] at hz
+  · intro hy
+    rw [← e.map_func F x]
+    exact ⟨y, hy, rfl⟩
+
+/-- Full primitive-function embeddings lift to induced relational
+embeddings of the equality-pattern domain-and-graph language.
+In particular, output reflection is not weakened to inclusion
+of function graphs. -/
+def patternGraph (e : Embedding A B) :
+    RelStructure.Embedding A.patternGraph B.patternGraph where
+  toFun := e
+  injective := e.injective
+  map_rel_iff := by
+    intro R xs
+    rcases R with R | P
+    · exact e.map_rel_iff R xs
+    · rcases P with pat | pat
+      · let args : Fin (L.funcArity pat.symbol) → V :=
+          xs ∘ pat.repeat
+        have hInj : Function.Injective (e ∘ xs) ↔
+            Function.Injective xs := by
+          constructor
+          · intro he i j hij
+            exact he (congrArg e hij)
+          · intro hx i j hij
+            exact hx (e.injective hij)
+        have hDom :
+            (B.func pat.symbol (e ∘ args)).Nonempty ↔
+              (A.func pat.symbol args).Nonempty := by
+          constructor
+          · rintro ⟨z, hz⟩
+            rw [← e.map_func pat.symbol args] at hz
+            obtain ⟨y, hy, _⟩ := hz
+            exact ⟨y, hy⟩
+          · rintro ⟨y, hy⟩
+            refine ⟨e y, ?_⟩
+            rw [← e.map_func pat.symbol args]
+            exact ⟨y, hy, rfl⟩
+        change
+          (Function.Injective (e ∘ xs) ∧
+            (B.func pat.symbol (e ∘ args)).Nonempty) ↔
+          (Function.Injective xs ∧
+            (A.func pat.symbol args).Nonempty)
+        exact and_congr hInj hDom
+      · let root : Fin pat.rootSize → V :=
+          fun i => xs (Fin.castSucc i)
+        let args : Fin (L.funcArity pat.symbol) → V :=
+          root ∘ pat.repeat
+        let output : V := xs (Fin.last pat.rootSize)
+        have hInj : Function.Injective (e ∘ root) ↔
+            Function.Injective root := by
+          constructor
+          · intro he i j hij
+            exact he (congrArg e hij)
+          · intro hx i j hij
+            exact hx (e.injective hij)
+        have hVal :
+            e output ∈ B.func pat.symbol (e ∘ args) ↔
+              output ∈ A.func pat.symbol args :=
+          e.patternFibre_mem_iff pat.symbol args output
+        change
+          (Function.Injective (e ∘ root) ∧
+            e output ∈ B.func pat.symbol (e ∘ args)) ↔
+          (Function.Injective root ∧
+            output ∈ A.func pat.symbol args)
+        exact and_congr hInj hVal
+
+end Embedding
+
 end Structure
 end StructuralRamsey
