@@ -109,11 +109,9 @@ theorem pictureLemma_weakTree_and_projectedCover
       intro z
       exact (congrArg α (z.belongs i0)).symm.trans
         (Old.system.restrictedPart_spec α.toFunctionEmbedding (z.coord i0))
-    simpa [Q, Stage.ProjectedCover, FunctionalPartite.System.relabel] using
-      (show RelStructure.LocallyTreeLike A.graph Base.graph
-          E.toStructure.graph n ∧
-          Structure.ProjectsIrreduciblesInto Base
-            E.toStructure D (fun z => α.toFunctionEmbedding z.part) from ⟨hLTL, hCover⟩)
+    constructor
+    · exact hLTL
+    · exact hCover
   have hAttach :
       ∀ (T : Stage K D)
         (f : FunctionalPartite.Embedding
