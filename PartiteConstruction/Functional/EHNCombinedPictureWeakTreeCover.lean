@@ -104,7 +104,7 @@ theorem pictureLemma_weakTree_and_projectedCover
         ((Old.system.part ∘ inc) ∘ (fun z => z.coord i0)) :=
       hRootCov.precomp_weak (Induced.coordinateWeak (B := R) i0)
     have hCover : Structure.ProjectsIrreduciblesInto Base
-        E.toStructure D (fun z => α z.part) := by
+        E.toStructure D (fun z => α.toFunctionEmbedding z.part) := by
       apply hPowerCov.congr
       intro z
       exact (congrArg α (z.belongs i0)).symm.trans
@@ -113,7 +113,7 @@ theorem pictureLemma_weakTree_and_projectedCover
       (show RelStructure.LocallyTreeLike A.graph Base.graph
           E.toStructure.graph n ∧
           Structure.ProjectsIrreduciblesInto Base
-            E.toStructure D (fun z => α z.part) from ⟨hLTL, hCover⟩)
+            E.toStructure D (fun z => α.toFunctionEmbedding z.part) from ⟨hLTL, hCover⟩)
   have hAttach :
       ∀ (T : Stage K D)
         (f : FunctionalPartite.Embedding
