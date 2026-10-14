@@ -36,7 +36,7 @@ theorem power_hasOriginalPartialTreeCompletion
     (R : System L P V)
     (hR : R.WeaklyPartiteOver A)
     (Base : Structure L VB)
-    (eAB : Embedding A Base)
+    (eAB : Structure.Embedding A Base)
     (N : ℕ) (hN : 0 < N) :
     HasOriginalPartialTreeCompletion Base (power R N).toStructure := by
   have hPower :
