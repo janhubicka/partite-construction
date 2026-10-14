@@ -93,7 +93,9 @@ theorem PatternTagNormal.of_embedding
     _ ↔ (patternTagExpansion (patternTagReduct B)).rel
         (.inr p) (f ∘ xs) := hB p (f ∘ xs)
     _ ↔ (patternTagExpansion (patternTagReduct A)).rel
-        (.inr p) xs := hfTag.map_rel_iff (.inr p) xs
+        (.inr p) xs := by
+          have hFun : hfTag.toFun = f.toFun := rfl
+          simpa only [hFun] using (hfTag.map_rel_iff (.inr p) xs)
 
 /-- A full tagged embedding also reflects the old output-root
 validity law. The exact input prefix is transported, unchanged in
