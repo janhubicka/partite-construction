@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.PatternTagIdentity2019
+
+#print axioms StructuralRamsey.RelStructure.PatternTagNormal.canonicalEmbedding
+#print axioms StructuralRamsey.RelStructure.PatternTagNormal.toCanonicalEmbedding

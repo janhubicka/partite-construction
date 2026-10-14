@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.PatternDomainCoherence2019
+
+#print axioms StructuralRamsey.RelStructure.patternTag_domain_injective_of_closed_coverage
+#print axioms StructuralRamsey.RelStructure.patternTag_domain_injective_of_canonical_coverage
+
+#print axioms StructuralRamsey.RelStructure.patternTag_domainHull_uIrreducible
+#print axioms StructuralRamsey.RelStructure.patternTag_domainHull_embeds_canonical_base
