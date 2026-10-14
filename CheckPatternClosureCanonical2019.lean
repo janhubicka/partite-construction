@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PatternClosureCanonical2019
+
+#print axioms StructuralRamsey.RelStructure.patternTagExpansion_isUClosed
