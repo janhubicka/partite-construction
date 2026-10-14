@@ -70,15 +70,18 @@ theorem patternDecode_mem_induce
       ({ symbol := F, rootSize := m, argMap := r, onto := hr } :
         Language.FunctionInputPattern L)))) (Subtype.val ∘ rootS)
     have hRootEq : Subtype.val ∘ rootS = root := rfl
-    rw [hRootEq]
-    exact hDom
+    have hDomC : C.rel (.inl (.inr (.inl
+        ({ symbol := F, rootSize := m, argMap := r, onto := hr } :
+          Language.FunctionInputPattern L)))) root := hDom
+    exact hRootEq.symm ▸ hDomC
   have hTuple :
       Subtype.val ∘ Structure.funcTuple rootS yS =
         Structure.funcTuple root y := by
-    funext j
-    refine Fin.lastCases ?_ (fun k => ?_) j
-    · rfl
-    · rfl
+    calc
+      Subtype.val ∘ Structure.funcTuple rootS yS =
+          Structure.funcTuple (Subtype.val ∘ rootS) (Subtype.val yS) :=
+        Structure.comp_funcTuple Subtype.val rootS yS
+      _ = Structure.funcTuple root y := rfl
   have hGraphS :
       (RelStructure.patternTagReduct (C.induce S)).rel
         (.inr (.inr
@@ -89,8 +92,11 @@ theorem patternDecode_mem_induce
       ({ symbol := F, rootSize := m, argMap := r, onto := hr } :
         Language.FunctionInputPattern L))))
       (Subtype.val ∘ Structure.funcTuple rootS yS)
-    rw [hTuple]
-    exact hGraph
+    have hGraphC : C.rel (.inl (.inr (.inr
+        ({ symbol := F, rootSize := m, argMap := r, onto := hr } :
+          Language.FunctionInputPattern L))))
+        (Structure.funcTuple root y) := hGraph
+    exact hTuple.symm ▸ hGraphC
   exact ⟨m, r, hr, rootS, hInjS, hFactS, hDomS, hGraphS⟩
 
 /-- An arbitrary decoded output of the ambient OLD graph, restricted
