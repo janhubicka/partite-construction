@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.PatternDecodedInducedMap2019
+
+#print axioms StructuralRamsey.RelStructure.Embedding.patternDecode_mem_induce
+#print axioms StructuralRamsey.RelStructure.Embedding.map_patternDecode_of_induced_tag_embedding
