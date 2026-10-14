@@ -35,7 +35,7 @@ def PatternTagNormal.canonicalEmbedding
     intro R xs
     rcases R with R | p
     · exact Iff.rfl
-    · exact (h p xs).symm
+    · simpa only [Function.id_comp] using h p xs
 
 /-- Conversely, a normal tagged structure embeds fully back into its
 canonical expansion with the identical vertex map. -/
@@ -49,6 +49,6 @@ def PatternTagNormal.toCanonicalEmbedding
     intro R xs
     rcases R with R | p
     · exact Iff.rfl
-    · exact h p xs
+    · simpa only [Function.id_comp] using (h p xs).symm
 
 end StructuralRamsey.RelStructure
