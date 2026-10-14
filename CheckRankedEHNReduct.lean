@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.RankedEHNReduct
+
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.rankReduct
