@@ -167,8 +167,8 @@ theorem IsFreeAmalgam.originalPartialTreeCompletion_glue_relative
     (Base : Structure L VB)
     (hStart : TreeAmalgam Base G Start)
     (q : H → G)
-    (hL : HasOriginalPartialTreeExtensionCompletion Base sL q)
-    (hR : HasOriginalPartialTreeExtensionCompletion Base sR q) :
+    (hL : HasOriginalPartialTreeExtensionCompletion (Start := Start) Base sL q)
+    (hR : HasOriginalPartialTreeExtensionCompletion (Start := Start) Base sR q) :
     HasOriginalPartialTreeCompletion Base Whole := by
   obtain ⟨YL, TL, hExtL, pL, hpL, hcL⟩ := hL
   obtain ⟨YR, TR, hExtR, pR, hpR, hcR⟩ := hR
@@ -216,10 +216,8 @@ theorem closedTest_originalPartial_strictTree_of_rooted_sideCompletions
     (hRootR : rootR.ContainedInIrreducible)
     (pL : (closedTestPullback B S hS D f Test hTest).Left → YL)
     (pR : (closedTestPullback B S hS D f Test hTest).Right → YR)
-    (hL : ((closedTestPullback B S hS D f Test hTest).left)
-        .IsEHNHomomorphismEmbedding TL pL)
-    (hR : ((closedTestPullback B S hS D f Test hTest).right)
-        .IsEHNHomomorphismEmbedding TR pR)
+    (hL : ((closedTestPullback B S hS D f Test hTest).left).IsEHNHomomorphismEmbedding TL pL)
+    (hR : ((closedTestPullback B S hS D f Test hTest).right).IsEHNHomomorphismEmbedding TR pR)
     (hLiftL : ∀ x : (closedTestPullback B S hS D f Test hTest).Common,
       pL ((closedTestPullback B S hS D f Test hTest).toLeft x) = rootL x)
     (hLiftR : ∀ x : (closedTestPullback B S hS D f Test hTest).Common,
@@ -263,10 +261,8 @@ theorem closedTest_originalPartial_strictTree_of_commonTreeExtensions
     (hExtR : TreeExtension Base Start YR TR)
     (pL : (closedTestPullback B S hS D f Test hTest).Left → YL)
     (pR : (closedTestPullback B S hS D f Test hTest).Right → YR)
-    (hL : ((closedTestPullback B S hS D f Test hTest).left)
-      .IsEHNHomomorphismEmbedding TL pL)
-    (hR : ((closedTestPullback B S hS D f Test hTest).right)
-      .IsEHNHomomorphismEmbedding TR pR)
+    (hL : ((closedTestPullback B S hS D f Test hTest).left).IsEHNHomomorphismEmbedding TL pL)
+    (hR : ((closedTestPullback B S hS D f Test hTest).right).IsEHNHomomorphismEmbedding TR pR)
     (hLiftL : ∀ x : (closedTestPullback B S hS D f Test hTest).Common,
       pL ((closedTestPullback B S hS D f Test hTest).toLeft x)
         = hExtL.startEmbedding (q x))
