@@ -1,3 +1,5 @@
 import PartiteConstruction.Functional.TupleEqualityPattern2019
 
 #print axioms StructuralRamsey.Structure.exists_tuple_equality_pattern
+
+#print axioms StructuralRamsey.Structure.exists_tuple_equality_pattern_exact
