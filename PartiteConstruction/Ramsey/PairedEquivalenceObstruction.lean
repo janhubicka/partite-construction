@@ -19,7 +19,13 @@ open StructuralRamsey
 
 inductive Symbol where
   | lt | equiv | mate
-  deriving DecidableEq, Fintype
+  deriving DecidableEq
+
+instance : Fintype Symbol where
+  elems := {Symbol.lt, Symbol.equiv, Symbol.mate}
+  complete := by
+    intro x
+    cases x <;> simp
 
 abbrev Lang : RelLanguage where
   Symbol := Symbol
@@ -56,6 +62,7 @@ abbrev B : RelStructure Lang (Fin 6) where
     | .mate, t => (t 0).val / 2 = (t 1).val / 2 ∧ t 0 ≠ t 1
 
 theorem A_mem : pairedClass A := by
+  classical
   constructor
   · decide
   · decide
@@ -67,6 +74,7 @@ theorem A_mem : pairedClass A := by
   · decide
 
 theorem B_mem : pairedClass B := by
+  classical
   constructor
   · decide
   · decide
@@ -82,9 +90,11 @@ def first : Embedding A B where
   toFun x := ⟨x.val, by omega⟩
   injective := by
     intro x y h
-    apply Fin.ext
-    exact congrArg Fin.val h
-  map_rel_iff := by decide
+    apply Fin.val_injective
+    simpa only [Fin.val_mk] using congrArg Fin.val h
+  map_rel_iff := by
+    classical
+    decide
 
 /-- The last two matched pairs form A, in the reversed E-class order. -/
 def last : Embedding A B where
@@ -92,10 +102,12 @@ def last : Embedding A B where
   injective := by
     intro x y h
     have hh := congrArg Fin.val h
-    apply Fin.ext
+    apply Fin.val_injective
     change x.val + 2 = y.val + 2 at hh
     omega
-  map_rel_iff := by decide
+  map_rel_iff := by
+    classical
+    decide
 
 /-- Finite equivalence relations admit natural-number class labels.
 No order or matching hypothesis is needed for this fact. -/
@@ -111,6 +123,7 @@ theorem exists_class_labels {V : Type} [Finite V]
   intro x y
   constructor
   · intro h
+    change s.r x y
     apply Quotient.exact
     apply (Fintype.equivFin (Quotient s)).injective
     exact Fin.ext h
@@ -130,12 +143,21 @@ theorem not_arrow_of_class_labels {V : Type}
   obtain ⟨b, hMono⟩ := hArrow colour
   have h04 : q (b 0) = q (b 4) := by
     apply (hq _ _).mpr
-    exact (b.map_rel_iff .equiv ![0, 4]).mpr (by decide)
+    have hb : C.rel .equiv (b ∘ ![0, 4]) :=
+      (b.map_rel_iff .equiv ![0, 4]).mpr (by decide)
+    change C.rel .equiv ![b 0, b 4]
+    convert hb using 1
+    funext i
+    fin_cases i <;> rfl
   have h02 : q (b 0) ≠ q (b 2) := by
     intro h
     have he : edge C .equiv (b 0) (b 2) := (hq _ _).mp h
+    have he' : C.rel .equiv (b ∘ ![0, 2]) := by
+      convert he using 1
+      funext i
+      fin_cases i <;> rfl
     have hf : B.rel .equiv ![0, 2] :=
-      (b.map_rel_iff .equiv ![0, 2]).mp he
+      (b.map_rel_iff .equiv ![0, 2]).mp he'
     exact (by decide : ¬ B.rel .equiv ![0, 2]) hf
   have hm := hMono first last
   change decide (q (b 0) < q (b 2)) = decide (q (b 2) < q (b 4)) at hm
