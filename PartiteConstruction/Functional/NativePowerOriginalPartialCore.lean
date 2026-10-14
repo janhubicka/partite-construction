@@ -38,7 +38,7 @@ theorem nativePower_originalPartial_oneCopy
     (Base : Structure L VB)
     (R : System L P V)
     (hR : R.WeaklyPartiteOver A)
-    (eAB : Embedding A Base)
+    (eAB : Structure.Embedding A Base)
     (N : ℕ) (hN : 0 < N) :
     HasOriginalPartialTreeCompletion Base
       (Induced.power R N).toStructure := by
@@ -59,7 +59,7 @@ theorem nativePower_closedTest_originalPartial_oneCopy
     (Base : Structure L VB)
     (R : System L P V)
     (hR : R.WeaklyPartiteOver A)
-    (eAB : Embedding A Base)
+    (eAB : Structure.Embedding A Base)
     (N : ℕ) (hN : 0 < N)
     (S : Set (Induced.Vertex R N))
     (hS : (Induced.power R N).toStructure.IsClosed S) :
@@ -68,7 +68,7 @@ theorem nativePower_closedTest_originalPartial_oneCopy
   let E := Induced.power R N
   have hE : E.WeaklyPartiteOver A :=
     Induced.power_weaklyPartiteOver hR hN
-  let incl : Embedding (E.toStructure.induce S hS) E.toStructure :=
+  let incl : Structure.Embedding (E.toStructure.induce S hS) E.toStructure :=
     inclusion E.toStructure S hS
   have hp : (E.toStructure.induce S hS).IsEHNHomomorphismEmbedding
       Base ((eAB ∘ E.part) ∘ incl) :=
