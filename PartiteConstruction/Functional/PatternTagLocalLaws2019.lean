@@ -83,7 +83,7 @@ theorem PatternTagNormal.of_embedding
   intro p xs
   let fOld : Embedding (patternTagReduct A) (patternTagReduct B) :=
     f.patternTagReduct
-  have hfTag : Embedding
+  let hfTag : Embedding
       (patternTagExpansion (patternTagReduct A))
       (patternTagExpansion (patternTagReduct B)) :=
     fOld.patternTag
@@ -94,7 +94,10 @@ theorem PatternTagNormal.of_embedding
         (.inr p) (f ∘ xs) := hB p (f ∘ xs)
     _ ↔ (patternTagExpansion (patternTagReduct A)).rel
         (.inr p) xs := by
-          have hFun : hfTag.toFun = f.toFun := rfl
+          have hFun : hfTag.toFun = f.toFun := by
+            funext x
+            dsimp [hfTag, fOld, Embedding.patternTag,
+              Embedding.patternTagReduct]
           simpa only [hFun] using (hfTag.map_rel_iff (.inr p) xs)
 
 /-- A full tagged embedding also reflects the old output-root
