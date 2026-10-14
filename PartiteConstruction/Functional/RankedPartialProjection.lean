@@ -92,8 +92,7 @@ theorem IsEHNHomomorphismEmbedding.rankReduct_map_func_of_nonempty
     change ∃ j : Fin n, y ∈ B.func (F, j) (p ∘ x) at hy
     obtain ⟨j, hj⟩ := hy
     have hj' : y ∈ B.func (F, j) (g ∘ q) := by
-      rw [hgArgs]
-      exact hj
+      exact hgArgs.symm ▸ hj
     have himage : y ∈ imageSet g (H.func (F, j) q) := by
       rw [g.map_func (F, j) q]
       exact hj'
@@ -102,7 +101,7 @@ theorem IsEHNHomomorphismEmbedding.rankReduct_map_func_of_nonempty
     · change ∃ k : Fin n, z.1 ∈ A.func (F, k) x
       refine ⟨j, ?_⟩
       change z.1 ∈ A.func (F, j) (Subtype.val ∘ q) at hz
-      rwa [hqA] at hz
+      exact hqA ▸ hz
     · calc
         p z.1 = g z := (hg z).symm
         _ = y := hzy

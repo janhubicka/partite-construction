@@ -5,10 +5,10 @@ import PartiteConstruction.Functional.TupleEqualityPattern2019
 
 The 2019 closure description needs one graph/domain relation for EACH
 equality pattern of an input tuple. The coordinates of its closure
-root are distinct even when the original function arguments repeat.
+root are distinct even when the original function arguments argMap.
 
 An input pattern consists of a function symbol F, a finite root Fin m
-and a surjective repeat map Fin(arity F) -> Fin m. The old relational
+and a surjective argMap map Fin(arity F) -> Fin m. The old relational
 language has separate domain and graph symbols for each pattern.
 
 The canonical interpretation only accepts injective root enumerations.
@@ -34,8 +34,8 @@ root of a partially defined function. -/
 structure FunctionInputPattern (L : Language.{u}) where
   symbol : L.FuncSymbol
   rootSize : ℕ
-  repeat : Fin (L.funcArity symbol) → Fin rootSize
-  onto : Function.Surjective repeat
+  argMap : Fin (L.funcArity symbol) → Fin rootSize
+  onto : Function.Surjective argMap
 
 /-- Original relations, one domain relation and one graph relation
 for each function symbol and each possible input equality pattern. -/
@@ -61,37 +61,33 @@ def patternGraph (A : Structure L V) :
   rel
     | .inl R, x => A.rel R x
     | .inr (.inl p), x =>
-        Function.Injective x ∧ (A.func p.symbol (x ∘ p.repeat)).Nonempty
+        Function.Injective x ∧ (A.func p.symbol (x ∘ p.argMap)).Nonempty
     | .inr (.inr p), x =>
         Function.Injective
           (fun i : Fin p.rootSize => x (Fin.castSucc i)) ∧
         x (Fin.last p.rootSize) ∈
           A.func p.symbol
-            ((fun i : Fin p.rootSize => x (Fin.castSucc i)) ∘ p.repeat)
+            ((fun i : Fin p.rootSize => x (Fin.castSucc i)) ∘ p.argMap)
 
 /-- Every nonempty source fibre has a domain witness on the EXACT
-distinct-input root. The repeat map preserves all repeated
+distinct-input root. The argMap map preserves all repeated
 argument positions. No function-generated closure hull is added. -/
 theorem patternGraph_domain_of_nonempty
     (A : Structure L V) [Finite V]
     (F : L.FuncSymbol)
     (x : Fin (L.funcArity F) → V)
     (hx : (A.func F x).Nonempty) :
-    ∃ (p : Language.FunctionInputPattern L)
-      (e : Fin p.rootSize → V),
+    ∃ (m : ℕ) (r : Fin (L.funcArity F) → Fin m)
+      (hSurj : Function.Surjective r) (e : Fin m → V),
       Function.Injective e ∧
-      (∀ i, x i = e (p.repeat i)) ∧
-      (A.patternGraph).rel (.inr (.inl p)) e := by
+      (∀ i, x i = e (r i)) ∧
+      (A.patternGraph).rel (.inr (.inl
+        ({ symbol := F, rootSize := m, argMap := r, onto := hSurj } :
+          Language.FunctionInputPattern L))) e := by
   classical
   obtain ⟨m, r, e, hSurj, hInj, hFact, _hExact⟩ :=
     exists_tuple_equality_pattern_exact x
-  let p : Language.FunctionInputPattern L := {
-    symbol := F
-    rootSize := m
-    repeat := r
-    onto := hSurj
-  }
-  refine ⟨p, e, hInj, hFact, ?_⟩
+  refine ⟨m, r, hSurj, e, hInj, hFact, ?_⟩
   change Function.Injective e ∧
     (A.func F (e ∘ r)).Nonempty
   refine ⟨hInj, ?_⟩
@@ -136,7 +132,7 @@ def patternGraph (e : Embedding A B) :
     · exact e.map_rel_iff R xs
     · rcases P with pat | pat
       · let args : Fin (L.funcArity pat.symbol) → V :=
-          xs ∘ pat.repeat
+          xs ∘ pat.argMap
         have hInj : Function.Injective (e ∘ xs) ↔
             Function.Injective xs := by
           constructor
@@ -165,7 +161,7 @@ def patternGraph (e : Embedding A B) :
       · let root : Fin pat.rootSize → V :=
           fun i => xs (Fin.castSucc i)
         let args : Fin (L.funcArity pat.symbol) → V :=
-          root ∘ pat.repeat
+          root ∘ pat.argMap
         let output : V := xs (Fin.last pat.rootSize)
         have hInj : Function.Injective (e ∘ root) ↔
             Function.Injective root := by

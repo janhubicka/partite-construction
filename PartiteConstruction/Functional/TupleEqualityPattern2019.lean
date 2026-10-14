@@ -46,7 +46,7 @@ theorem exists_tuple_equality_pattern
     refine ⟨i, ?_⟩
     change equiv ⟨x i, ⟨i, rfl⟩⟩ = j
     have heq : (⟨x i, ⟨i, rfl⟩⟩ : S) = equiv.symm j :=
-      Subtype.ext hi.symm
+      Subtype.ext hi
     rw [heq]
     exact equiv.apply_symm_apply j
   · intro i j hij
