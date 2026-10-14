@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PartialFunctionPatternGraph2019
+
+#print axioms StructuralRamsey.Structure.patternGraph_domain_of_nonempty
