@@ -1,3 +1,4 @@
 import PartiteConstruction.Functional.OriginalPartialRootedTreeGlue
 
 #print axioms StructuralRamsey.Structure.IsFreeAmalgam.originalPartialTreeCompletion_glue_rooted
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTest_originalPartial_strictTree_of_rooted_sideCompletions
