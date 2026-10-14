@@ -42,7 +42,7 @@ U-essential. No U-closedness of the ambient structure is
 required, and the result uses the intrinsic relative closure
 operator on the exact ambient carrier. -/
 theorem minimum_generator_not_in_erase_hull
-    [Fintype V]
+    [Fintype V] [DecidableEq V]
     (rules : ClosureDescription L) (A : RelStructure L V)
     (G : Finset V)
     (hGen : IsUGenerating rules A (↑G : Set V))
@@ -75,15 +75,16 @@ theorem minimum_generator_not_in_erase_hull
       hGsubset hGenHull
   have hBound : USize rules A ≤ (G.erase x).card :=
     USize_le_of_generating rules A (G.erase x) hEGen
-  have hCard : (G.erase x).card + 1 = G.card := by
-    simpa using Finset.card_erase_of_mem hx
+  have hPos : 0 < G.card := Finset.card_pos.mpr ⟨x, hx⟩
+  have hErase : (G.erase x).card = G.card - 1 :=
+    Finset.card_erase_of_mem hx
   omega
 
 /-- Closure saturation of any seed already contained in the
 hull of the OTHER minimum generators remains proper: it
 cannot absorb their missing essential generator. -/
 theorem minimum_generator_excluded_from_saturated_side
-    [Fintype V]
+    [Fintype V] [DecidableEq V]
     (rules : ClosureDescription L) (A : RelStructure L V)
     (G : Finset V)
     (hGen : IsUGenerating rules A (↑G : Set V))
