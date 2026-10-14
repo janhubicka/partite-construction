@@ -135,6 +135,48 @@ theorem IsFreeAmalgam.originalPartialTreeCompletion_glue_commonTree
   exact ⟨G2, Target, hTree, p, hp.toOriginalPartial⟩
 
 
+
+/-- A side has a strict full-functional B-tree completion RELATIVE to
+a fixed strict completed common root, in the original 2019 partial-HE
+semantics. Unlike the total-fibre version, there is NO artificial
+root-isolation condition. The root map q may be noninjective. -/
+def HasOriginalPartialTreeExtensionCompletion
+    {G : Type v} {Start : Structure L G}
+    {Root : Structure L H} {Side : Structure L E}
+    (Base : Structure L VB)
+    (s : Embedding Root Side) (q : H → G) : Prop :=
+  ∃ (Y : Type v) (Target : Structure L Y)
+    (hExt : TreeExtension Base Start Y Target)
+    (p : E → Y),
+      IsOriginalPartialHomomorphismEmbedding Side Target p ∧
+      ∀ x : H, p (s x) = hExt.startEmbedding (q x)
+
+/-- Two original-partial strict side completions over the SAME strict
+possibly reducible root tree glue to an original-partial strict
+completion of the free source amalgam. The proof merely composes
+the checked 2019-to-EHN semantic equivalence with the concrete
+strict TreeExtension.mergeFree argument. No separate root-isolation
+axiom is needed. -/
+theorem IsFreeAmalgam.originalPartialTreeCompletion_glue_relative
+    {G : Type v} {Start : Structure L G}
+    {Root : Structure L H} {Left : Structure L E}
+    {Right : Structure L F} {Whole : Structure L Z}
+    {sL : Embedding Root Left} {sR : Embedding Root Right}
+    {iL : Embedding Left Whole} {iR : Embedding Right Whole}
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (Base : Structure L VB)
+    (hStart : TreeAmalgam Base G Start)
+    (q : H → G)
+    (hL : HasOriginalPartialTreeExtensionCompletion Base sL q)
+    (hR : HasOriginalPartialTreeExtensionCompletion Base sR q) :
+    HasOriginalPartialTreeCompletion Base Whole := by
+  obtain ⟨YL, TL, hExtL, pL, hpL, hcL⟩ := hL
+  obtain ⟨YR, TR, hExtR, pR, hpR, hcR⟩ := hR
+  exact hSrc.originalPartialTreeCompletion_glue_commonTree
+    Base hStart q TL TR hExtL hExtR pL pR
+    hpL.toEHN hpR.toEHN hcL hcR
+
+
 end StructuralRamsey.Structure
 
 
