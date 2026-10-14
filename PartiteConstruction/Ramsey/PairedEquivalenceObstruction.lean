@@ -62,7 +62,6 @@ abbrev B : RelStructure Lang (Fin 6) where
     | .mate, t => (t 0).val / 2 = (t 1).val / 2 ∧ t 0 ≠ t 1
 
 theorem A_mem : pairedClass A := by
-  classical
   constructor
   · decide
   · decide
@@ -74,7 +73,6 @@ theorem A_mem : pairedClass A := by
   · decide
 
 theorem B_mem : pairedClass B := by
-  classical
   constructor
   · decide
   · decide
@@ -92,9 +90,7 @@ def first : Embedding A B where
     intro x y h
     apply Fin.val_injective
     simpa only [Fin.val_mk] using congrArg Fin.val h
-  map_rel_iff := by
-    classical
-    decide
+  map_rel_iff := by decide
 
 /-- The last two matched pairs form A, in the reversed E-class order. -/
 def last : Embedding A B where
@@ -105,9 +101,7 @@ def last : Embedding A B where
     apply Fin.val_injective
     change x.val + 2 = y.val + 2 at hh
     omega
-  map_rel_iff := by
-    classical
-    decide
+  map_rel_iff := by decide
 
 /-- Finite equivalence relations admit natural-number class labels.
 No order or matching hypothesis is needed for this fact. -/
