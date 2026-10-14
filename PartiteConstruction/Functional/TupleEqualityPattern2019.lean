@@ -56,4 +56,32 @@ theorem exists_tuple_equality_pattern
     change x i = (equiv.symm (equiv ⟨x i, ⟨i, rfl⟩⟩)).1
     rw [equiv.symm_apply_apply]
 
+
+/-- The factorization records EXACTLY the equality pattern:
+two original argument positions agree iff their root labels agree.
+This is the form used to index distinct closure symbols for
+non-injective partial-function inputs. -/
+theorem exists_tuple_equality_pattern_exact
+    {a : ℕ} [Finite V] (x : Fin a → V) :
+    ∃ (m : ℕ) (r : Fin a → Fin m) (e : Fin m → V),
+      Function.Surjective r ∧ Function.Injective e ∧
+      (∀ i : Fin a, x i = e (r i)) ∧
+      (∀ i j : Fin a, x i = x j ↔ r i = r j) := by
+  obtain ⟨m, r, e, hSurj, hInj, hFact⟩ :=
+    exists_tuple_equality_pattern x
+  refine ⟨m, r, e, hSurj, hInj, hFact, ?_⟩
+  intro i j
+  constructor
+  · intro h
+    apply hInj
+    calc
+      e (r i) = x i := (hFact i).symm
+      _ = x j := h
+      _ = e (r j) := hFact j
+  · intro h
+    calc
+      x i = e (r i) := hFact i
+      _ = e (r j) := congrArg e h
+      _ = x j := (hFact j).symm
+
 end StructuralRamsey.Structure
