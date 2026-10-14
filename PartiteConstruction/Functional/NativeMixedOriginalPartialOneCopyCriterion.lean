@@ -135,6 +135,54 @@ theorem closedTest_originalPartial_oneCopy_of_compatible_side_lifts
     Base ((UnitAttachD B Supp hSupp Dsys f).toStructure.induce Test hTest)
       (eAB ∘ p) hToBase
 
+/-- The new Hales--Jewett core's part map into A agrees on the ACTUAL
+closed separator with the old support's canonical projection to A.
+
+Only the equality of their two outer D-part labels is used: since
+alpha:A ↪ D is injective, no independent choice of a root label is needed.
+This identifies the root on which a compatible copy-side extension
+would have to agree in the original published mixed induction. -/
+theorem closedTestPullback_core_root_agrees_of_labelledCore
+    (B : System L P V) (Douter : Structure L P)
+    (hB : B.WeaklyPartiteOver Douter)
+    (A : Structure L U) (alpha : Structure.Embedding A Douter)
+    (Dsys : System L P W)
+    (f : FunctionalPartite.Embedding
+      (B.induce (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)) Dsys)
+    (gCore : W → U)
+    (hCoreLabel : ∀ w : W, Dsys.part w = alpha (gCore w))
+    (Test : Set
+      (Structure.Attachment.Vertex
+        (B.support alpha.toFunctionEmbedding)
+        (W := W) (I := PUnit.{v+1})))
+    (hTest :
+      (UnitAttachD B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f).toStructure.IsClosed Test) :
+    let pb := closedTestPullback B (B.support alpha.toFunctionEmbedding)
+      (B.weak_support_closed Douter hB.1 A alpha)
+      Dsys f Test hTest
+    let q : pb.Common → U :=
+      (B.weakRestrict Douter hB.1 A alpha).part ∘ pb.commonMap
+    ∀ x : pb.Common,
+      gCore (pb.leftMap (pb.toLeft x)) = q x := by
+  let Supp := B.support alpha.toFunctionEmbedding
+  let hSupp := B.weak_support_closed Douter hB.1 A alpha
+  let pb := closedTestPullback B Supp hSupp Dsys f Test hTest
+  let q : pb.Common → U :=
+    (B.weakRestrict Douter hB.1 A alpha).part ∘ pb.commonMap
+  intro x
+  apply alpha.injective
+  calc
+    alpha (gCore (pb.leftMap (pb.toLeft x))) =
+        Dsys.part (pb.leftMap (pb.toLeft x)) := (hCoreLabel _).symm
+    _ = Dsys.part (f.toEmbedding (pb.commonMap x)) :=
+      congrArg Dsys.part (pb.common_left x)
+    _ = B.part (pb.commonMap x) := f.map_part (pb.commonMap x)
+    _ = alpha (q x) := (B.restrictedPart_spec alpha.toFunctionEmbedding
+        (pb.commonMap x)).symm
+
 /-- It is enough to extend the prescribed common root on the COPIED old
 side when the new core already has an EHN map to the selected control A.
 
