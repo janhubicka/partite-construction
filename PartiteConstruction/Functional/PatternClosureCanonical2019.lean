@@ -73,6 +73,7 @@ theorem patternTagExpansion_isUClosed
       · refine ⟨old, ?_⟩
         intro i
         simp only [xs, Structure.funcTuple_castSucc]
+        rfl
     have hPrefix :
         ∀ i : Fin p.input.rootSize,
           xs (Fin.castSucc i) = e i := by
