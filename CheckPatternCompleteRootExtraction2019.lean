@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.PatternCompleteRootExtraction2019
+
+#print axioms StructuralRamsey.Language.FunctionRootPattern.ofActiveDomain_embedding
+#print axioms StructuralRamsey.Language.FunctionRootPattern.ofActiveDomain_tagEmbedding
+#print axioms StructuralRamsey.RelStructure.patternTagExpansion_tag_of_valid_old_output
