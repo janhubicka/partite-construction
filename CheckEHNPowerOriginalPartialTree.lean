@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNPowerOriginalPartialTree
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.power_hasOriginalPartialTreeCompletion
