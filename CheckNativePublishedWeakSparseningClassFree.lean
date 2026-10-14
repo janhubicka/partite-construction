@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.NativePublishedWeakSparseningClassFree
+
+#print axioms StructuralRamsey.Structure.sparseningRamsey_nativeFunctional_graphStrict_withBCover_unrestricted

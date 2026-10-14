@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNCombinedConstructionWeakTreeCover
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_weakTree_and_projectedCover

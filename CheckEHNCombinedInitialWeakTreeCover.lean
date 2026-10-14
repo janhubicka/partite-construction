@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNCombinedInitialWeakTreeCover
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initialList_weakTree_and_projectedCover
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initial_weakTree_and_projectedCover
