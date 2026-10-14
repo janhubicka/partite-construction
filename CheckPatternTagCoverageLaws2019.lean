@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PatternTagCoverageLaws2019
+
+#print axioms StructuralRamsey.RelStructure.patternTag_local_laws_of_closed_coverage
