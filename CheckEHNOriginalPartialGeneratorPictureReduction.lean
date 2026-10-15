@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNOriginalPartialGeneratorPictureReduction
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma_originalPartial_generatorRank_of_attachment
+#print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_originalPartial_generatorRank_of_attachment
