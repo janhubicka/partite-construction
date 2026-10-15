@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNInitialOriginalPartialGeneratorTree
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initial_originalPartial_generatorRank
+#print axioms StructuralRamsey.FunctionalPartite.EHN.power_originalPartial_generatorRank

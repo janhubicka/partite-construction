@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNNativeOriginalPartialMaximalMixedReduction
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.nativeAttach_generatorRank_of_maximal_mixed_extensions
