@@ -460,3 +460,7 @@ import PartiteConstruction.Functional.OriginalPartialSharedRootObstruction
 -- Concrete function-free EHN forest carriers and their full selected
 -- A-support partite embedding for the maximal C5 hard-root audit.
 import PartiteConstruction.Functional.MaximalHardRootFiveCycleFixture
+
+-- Literal finite Old/Core forest carriers and full selected support
+-- embedding for a maximal hard-root graph five-cycle fixture.
+import PartiteConstruction.Functional.HardRootFiveCycleFixture
