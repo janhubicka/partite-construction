@@ -86,4 +86,57 @@ theorem SingletonValued.weakInclusion_originalPartial
       subst z
       exact ⟨y, hy, rfl⟩
 
+
+/-- A source-defined partial map with singleton-valued source
+continues to preserve its FULL surviving weak fibre even after the
+target is restricted to ANY vertex set containing the source image.
+It is particularly useful with the exact finite projected weak image,
+without requiring target-domain reflection or multivaluedness of the
+target. -/
+theorem IsOriginalPartialHomomorphism.weakImage_singleton_toSet
+    {A : Structure L U} {B : Structure L V} {p : U → V}
+    (hp : IsOriginalPartialHomomorphism A B p)
+    (hSingle : A.SingletonValued)
+    (S : Set U) (I : Set V)
+    (hRange : ∀ x : S, p x.1 ∈ I) :
+    IsOriginalPartialHomomorphism
+      (A.weakInduce S) (B.weakInduce I)
+      (fun x : S => (⟨p x.1, hRange x⟩ : I)) := by
+  let pS : S → I := fun x => ⟨p x.1, hRange x⟩
+  change IsOriginalPartialHomomorphism
+    (A.weakInduce S) (B.weakInduce I) pS
+  constructor
+  · intro R x hx
+    change B.rel R (p ∘ (Subtype.val ∘ x))
+    exact hp.1 R (Subtype.val ∘ x) hx
+  · intro F x hNonempty
+    obtain ⟨y₀, hy₀⟩ := hNonempty
+    have hDefined : (A.func F (Subtype.val ∘ x)).Nonempty :=
+      ⟨y₀.1, hy₀⟩
+    have hFull :
+        imageSet p (A.func F (Subtype.val ∘ x)) =
+          B.func F (p ∘ (Subtype.val ∘ x)) :=
+      hp.2 F (Subtype.val ∘ x) hDefined
+    ext z
+    constructor
+    · rintro ⟨y, hy, hEq⟩
+      change z.1 ∈ B.func F (p ∘ (Subtype.val ∘ x))
+      have hIn : p y.1 ∈ B.func F (p ∘ (Subtype.val ∘ x)) := by
+        rw [← hFull]
+        exact ⟨y.1, hy, rfl⟩
+      have heq : z.1 = p y.1 :=
+        (congrArg Subtype.val hEq).symm
+      rw [heq]
+      exact hIn
+    · intro hz
+      have hzB : z.1 ∈ B.func F (p ∘ (Subtype.val ∘ x)) := hz
+      rw [← hFull] at hzB
+      obtain ⟨y, hy, hEq⟩ := hzB
+      have hUnique : y = y₀.1 :=
+        hSingle F (Subtype.val ∘ x) y y₀.1 hy hy₀
+      refine ⟨y₀, hy₀, ?_⟩
+      apply Subtype.ext
+      change p y₀.1 = z.1
+      exact (congrArg p hUnique.symm).trans hEq
+
 end StructuralRamsey.Structure
