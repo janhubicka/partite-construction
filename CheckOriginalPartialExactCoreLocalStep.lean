@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.OriginalPartialExactCoreLocalStep
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.hasExactCoreAnchoredOriginalPartialCompletions_attach
