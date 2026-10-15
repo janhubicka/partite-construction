@@ -26,6 +26,7 @@ namespace StructuralRamsey.Structure
 universe u v
 variable {L : Language.{u}}
 variable {U V VB : Type v}
+variable [DecidableEq V]
 
 /-- Maximal projected generator rank forces injectivity of the
 projection on the CHOSEN generating set G, not on the possibly much
@@ -55,7 +56,9 @@ theorem projected_generator_collision_rank_drop
   classical
   have hNotEq : (G.image p).card ≠ G.card := by
     intro hEq
-    exact hxy ((Finset.card_image_iff.mp hEq) x hx y hy hproj)
+    have hInj : ∀ a ∈ G, ∀ b ∈ G, p a = p b → a = b :=
+      Finset.card_image_iff.mp hEq
+    exact hxy (hInj x hx y hy hproj)
   have hLe : (G.image p).card ≤ G.card := Finset.card_image_le
   omega
 
