@@ -61,9 +61,9 @@ theorem weakValue_of_subset
       some {y : S | y.1 ∈ T} := by
   classical
   by_cases hNonempty : T.Nonempty
-  · obtain ⟨y, hy⟩ := hNonempty
-    have hMeet : (T ∩ S).Nonempty :=
-      ⟨y, hy, hT hy⟩
+  · have hMeet : (T ∩ S).Nonempty := by
+      obtain ⟨y, hy⟩ := hNonempty
+      exact ⟨y, hy, hT hy⟩
     simp [weakValue, hNonempty, hMeet]
   · have hEmpty : T = ∅ := by
       ext y
@@ -101,7 +101,7 @@ theorem weakInduce_closed_func
       simp [hv, weakValue]
   | some T =>
       have hSubset : T ⊆ S :=
-        hS F (Subtype.val ∘ x) (fun i => (x i).property) T hv
+        hS F (Subtype.val ∘ x) T (fun i => (x i).property) hv
       simpa [hv] using weakValue_of_subset S T hSubset
 
 /-- Full inclusion of the closed induced structure. In contrast to
@@ -125,7 +125,7 @@ def closedInclusion
     | none => simp [hv]
     | some T =>
         have hSubset : T ⊆ S :=
-          hS F (Subtype.val ∘ x) (fun i => (x i).property) T hv
+          hS F (Subtype.val ∘ x) T (fun i => (x i).property) hv
         simp only [hv, Option.map_some]
         congr 1
         ext y
