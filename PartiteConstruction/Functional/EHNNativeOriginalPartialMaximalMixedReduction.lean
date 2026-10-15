@@ -98,17 +98,17 @@ theorem nativeAttach_generatorRank_of_maximal_mixed_extensions
   let C := UnitAttachD B S hS D f
   let Whole := C.toStructure
   let Small := Whole.induce Test hTest
-  let inc : Embedding Small Whole := inclusion Whole Test hTest
-  let iCore : Embedding D.toStructure Whole :=
+  let inc : Structure.Embedding Small Whole := inclusion Whole Test hTest
+  let iCore : Structure.Embedding D.toStructure Whole :=
     unitCoreEmbedding B S hS D f
-  let iCopy : Embedding B.toStructure Whole :=
+  let iCopy : Structure.Embedding B.toStructure Whole :=
     unitCopyEmbedding B S hS D f
   by_cases hInCore : ∀ x : Test, ∃ w : W, inc x = iCore w
-  · let eCore : Embedding Small D.toStructure :=
+  · let eCore : Structure.Embedding Small D.toStructure :=
       inc.factorThroughRange iCore hInCore
     exact hCore.completion_of_embedding Small hGen eCore
   · by_cases hInCopy : ∀ x : Test, ∃ v : V, inc x = iCopy v
-    · let eCopy : Embedding Small B.toStructure :=
+    · let eCopy : Structure.Embedding Small B.toStructure :=
         inc.factorThroughRange iCopy hInCopy
       exact hCopy.completion_of_embedding Small hGen eCopy
     · obtain ⟨G, hCard, hGGen⟩ := hGen
