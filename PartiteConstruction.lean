@@ -443,3 +443,7 @@ import PartiteConstruction.Functional.OriginalPartialAnchorPresentation
 -- Exact original Hales--Jewett core-anchored strict 2019 partial-function
 -- n-vertex local invariant, conditional only on the incoming copy witness.
 import PartiteConstruction.Functional.OriginalPartialExactCoreLocalStep
+
+-- The genuine relabelled HJ core has the exact strict original-partial
+-- anchor invariant for every n, with no extra tree attachments.
+import PartiteConstruction.Functional.OriginalPartialExactCoreInitialPower
