@@ -147,6 +147,42 @@ For the exact survey theorem, particular ordered forbidden structures are not
 replaced by all orderings of their reducts.  `OrderTotalOnIrreducibles`
 ensures that final order completion creates no new forbidden embedding.
 
+## The false uniform fixed-root strengthening (15 October 2026)
+
+The strict original-2019 partial-function route cannot use a
+*globally fixed* Hales--Jewett A-to-Base root map on every small
+closed test. An independent hand audit gives two explicit graph
+counterexamples, documented in
+[fixed-core-root-invariant-counterexample.md](fixed-core-root-invariant-counterexample.md):
+
+* a 3-edge path with its endpoints forced to the same K₂ vertex,
+  an impossible odd closed walk (projected-size drop);
+* a 2-edge path with its endpoints forced to opposite K₂ vertices,
+  impossible by bipartiteness **even with maximal projected
+  cardinality**.
+
+The finite-star fixed-root wrapper proposed in PR #311 was therefore
+closed unmerged. The sound geometric reductions in #308–#310 are
+conditional or initial-core results; they do not imply that the
+uniform incoming-copy relative extensions exist.
+
+For the actual strict functional theorem, use the verified
+`EHNNativeOriginalPartialMaximalMixedReduction` and
+`EHNMaximalMixedHardRootReduction`. The projected image of a
+finite set of **generators**, not the cardinality of its full
+function-closed hull, determines the rank drop. At maximal rank
+the projection is injective on the chosen generators alone.
+Any remaining hard-root completion must choose a **shared target
+root tree and map per test**, as the current `MaximalMixedHardRootSchemaFromTwo`
+already permits. The root must not be forced to the original
+A-label map. A full proof of that hard-root schema and the
+ambient A-copy histories is still open.
+
+The small graph counterexamples above are **hand proofs, not
+Lean-certified refutations**. The named Lean declarations and
+axiom audits apply only to their explicitly stated conditional
+lemmas and to the corrected generator-rank dichotomy.
+
 ## Appendix A manuscript status
 
 There are no remaining proof obligations for the current Appendix A

@@ -21,6 +21,29 @@ All sides and roots are genuinely function closed, and the test
 cardinality is not enlarged.  Existence of the copied-side
 relative witness for hard mixed multi-generated separators is
 still a mathematical hypothesis.
+
+ADVERSARIAL SCOPE WARNING: the *uniform* incoming-copy relative
+witness is not merely unproved: it is FALSE for arbitrary tests,
+already for relational graphs (B=K₂ and an old three-edge path with
+both endpoints in the selected one-vertex A-support). Its two
+endpoints are forced to the same original-core B-vertex, which would
+produce an odd closed walk in a strict K₂-tree. See
+docs/fixed-core-root-invariant-counterexample.md.
+
+There is also a maximal projected example with A=B=K₂: an old
+two-edge path on labels 0,1,2, plus a separate selected A-edge
+on labels 0,2. The three-vertex mixed test has all THREE
+distinct projected labels, yet its even path cannot be mapped
+to a strict K₂-tree with the two core endpoints forced to
+opposite Base vertices by fixed A-labels. A flexible root
+completion (possibly collapsing those nonadjacent endpoints)
+is essential. Both examples are detailed in the documentation.
+
+Therefore this conditional theorem is a geometric API, NOT a
+standalone route to unconditional sparsening. The published induction
+handles smaller projected image/generator rank separately and, at
+maximal mixed rank, must permit a test-dependent SHARED root tree and
+root map. Fixed canonical A-labels are an over-strong requirement.
 -/
 
 namespace StructuralRamsey.Structure

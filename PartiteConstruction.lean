@@ -447,3 +447,7 @@ import PartiteConstruction.Functional.OriginalPartialExactCoreLocalStep
 -- The genuine relabelled HJ core has the exact strict original-partial
 -- anchor invariant for every n, with no extra tree attachments.
 import PartiteConstruction.Functional.OriginalPartialExactCoreInitialPower
+
+-- The published two-case functional iteration must count projected
+-- GENERATORS; maximality yields injection only on those generators.
+import PartiteConstruction.Functional.ProjectedGeneratorDichotomy
