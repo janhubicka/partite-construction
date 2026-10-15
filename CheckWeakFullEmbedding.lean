@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakFullEmbedding
+
+#print axioms StructuralRamsey.Structure.Embedding.weakRestrictToPreimage

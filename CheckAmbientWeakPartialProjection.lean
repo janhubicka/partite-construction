@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.AmbientWeakPartialProjection
+
+#print axioms StructuralRamsey.Structure.IsAmbientWeakOriginalPartialHE.toOriginalPartialHE_of_closed
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.ambientWeakImage_singleton

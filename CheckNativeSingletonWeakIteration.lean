@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.NativeSingletonWeakIteration
+
+#print axioms StructuralRamsey.Structure.sparseningRamsey_nativeSingleton_graphStrict_weakProjection
