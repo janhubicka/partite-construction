@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.MixedSmallRootGeneratorBudget
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.left_generatedByAtMost_of_mixed_small_root
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.sides_generatedByAtMost_of_mixed_small_root
