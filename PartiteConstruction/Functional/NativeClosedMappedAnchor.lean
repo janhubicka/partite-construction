@@ -71,8 +71,8 @@ theorem EmbeddingPullback.common_factors_through_closed_anchor_with_map
     have hx : pb.leftMap x.1 ∈ Set.range j := by
       change (x : pb.Left) ∈ T
       exact x.property
-    change pb.leftMap x.1 ∈ Set.range j
-    exact hx
+    rcases hx with ⟨y, hy⟩
+    exact ⟨y, hy.symm⟩
   let toOriginal : Embedding (pb.left.induce T hT) Anchor :=
     (pb.leftMap.comp iT).factorThroughRange j hAnchorRange
   have hCommonRange :
