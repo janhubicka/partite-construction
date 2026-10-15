@@ -378,3 +378,24 @@ import PartiteConstruction.Functional.OriginalPartialRankZero
 import PartiteConstruction.Functional.OneGeneratorFreeAmalgam
 import PartiteConstruction.Functional.EHNOriginalPartialStrictIteratedRank
 import PartiteConstruction.Functional.EHNNativeOriginalPartialRankOne
+
+-- Further checked strict functional Appendix A reductions: rank one without
+-- A->B, exact rooted side budgets, irreducible/one-generated separators,
+-- and the conditional hard-root schema. Higher-rank multi-generated mixed
+-- separator relative extensions are still a mathematical hypothesis.
+import PartiteConstruction.Functional.EHNNativeOriginalPartialRankOneAll
+import PartiteConstruction.Functional.EHNOriginalPartialMaximalMixedFromTwo
+import PartiteConstruction.Functional.OriginalPartialIrreducibleRootRelativeWitness
+import PartiteConstruction.Functional.EHNIrreducibleRootOriginalPartialCompletion
+import PartiteConstruction.Functional.EmptyRootGeneratorBudget
+import PartiteConstruction.Functional.EHNNativeOriginalPartialEmptyRoot
+import PartiteConstruction.Functional.MixedSmallRootGeneratorBudget
+import PartiteConstruction.Functional.SmallRootIrreducible
+import PartiteConstruction.Functional.MixedOneGeneratedRootBudget
+import PartiteConstruction.Functional.OneGeneratedRootRelativeCompletion
+import PartiteConstruction.Functional.EHNNativeOriginalPartialOneGeneratedRoot
+import PartiteConstruction.Functional.MixedExteriorGeneratorBudget
+import PartiteConstruction.Functional.EHNMaximalMixedHardRootReduction
+import PartiteConstruction.Functional.EHNOriginalPartialHardRootSchema
+import PartiteConstruction.Functional.EHNStrictIteratedNoACopy
+import PartiteConstruction.Functional.MixedExteriorRelativeWitnesses
