@@ -28,6 +28,29 @@ iteration is entirely discharged under its existing side rank-n
 invariants. A nonempty reducible root is still not treated.
 -/
 
+namespace StructuralRamsey.Structure
+
+universe u v
+variable {L : Language.{u}}
+variable {C D VB : Type v}
+
+/-- The strict original-partial generator-rank local-tree invariant
+pulls back along a FULL embedding, without enlarging any source
+closed test or changing its generator-size budget. -/
+theorem LocallyGeneratedOriginalPartialTreeCompletable.pullback_embedding
+    {Base : Structure L VB} {Old : Structure L D}
+    {New : Structure L C} {n : ℕ}
+    (hOld : LocallyGeneratedOriginalPartialTreeCompletable Base Old n)
+    (e : Embedding New Old) :
+    LocallyGeneratedOriginalPartialTreeCompletable Base New n := by
+  intro S hS hGen
+  let inc : Embedding (New.induce S hS) New :=
+    inclusion New S hS
+  exact hOld.completion_of_embedding
+    (New.induce S hS) hGen (e.comp inc)
+
+end StructuralRamsey.Structure
+
 namespace StructuralRamsey.Structure.IsFreeAmalgam
 
 universe u v
@@ -168,9 +191,15 @@ theorem native_closedTest_emptyRoot_compatibleRelativeCompletions
   obtain ⟨qA, _hQA⟩ :=
     hRootEHN.2 pb.common hRoot (Structure.Embedding.id pb.common)
   let q : Structure.Embedding pb.common Base := eAB.comp qA
+  have hCoreSmall : LocallyGeneratedOriginalPartialTreeCompletable
+      Base pb.left n :=
+    hCore.pullback_embedding pb.leftMap
+  have hCopySmall : LocallyGeneratedOriginalPartialTreeCompletable
+      Base pb.right n :=
+    hCopy.pullback_embedding pb.rightMap
   obtain ⟨hLeft, hRight⟩ :=
     pb.free.compatibleOriginalPartialRelativeCompletions_empty_root
-      Base hBase q n hWholeGen hCore hCopy
+      Base hBase q n hWholeGen hCoreSmall hCopySmall
   have hTree : TreeAmalgam Base VB Base :=
     TreeAmalgam.copy (Structure.Embedding.id Base)
       (fun x => ⟨x, rfl⟩)
