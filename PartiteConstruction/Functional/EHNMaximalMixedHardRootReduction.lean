@@ -1,5 +1,5 @@
 import PartiteConstruction.Functional.EHNNativeOriginalPartialOneGeneratedRoot
-import PartiteConstruction.Functional.EHNOriginalPartialMaximalMixedReduction
+import PartiteConstruction.Functional.EHNNativeOriginalPartialMaximalMixedReduction
 
 /-!
 # The precise remaining maximal mixed-root obligation
