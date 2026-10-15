@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OriginalPartialProjectedHistoryInitial
+
+#print axioms StructuralRamsey.Structure.FunctionalOriginalPartialProjectedHistoryTreeLike.of_tree
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initial_originalPartial_projectedHistory
