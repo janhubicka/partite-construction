@@ -58,6 +58,58 @@ attached to the target. It is not caused by missing function-image
 closure (this example has no function symbols), nor by the later
 survey's stronger, already invalid total-fibre projection.
 
+## A maximal-projection obstruction to **fixed A-label roots**
+
+The small-projection example above is not the only reason a globally
+fixed A-to-Base root map is too strong. There is also a three-vertex
+**maximal** test. Again take Base=B=K₂ and D=K₃, but now take A=K₂
+embedded into D on labels 0 and 2. The old D-partite stage is the
+disjoint union of:
+
+* a path `v0--v1--v2` with projected labels `0,1,2`, and
+* an edge `u0--u2` with projected labels `0,2`.
+
+The stage is a forest, hence already a strict B-tree, and all three
+edges project to full B-copies of D. The selected A-support on labels
+0,2 contains `v0,v2,u0,u2`: the edge `u0--u2` makes the selected
+A-placement genuinely active, while `v0,v2` remain nonadjacent.
+
+Choose a full line embedding of this support into its genuine
+Hales--Jewett power core. Let the images of `v0,v2` be distinct core
+vertices `c0,c2`. Attaching the old stage produces the exact
+closed test
+
+```text
+      c0 -------- w1 -------- c2
+part:  0           1           2
+       \_____________________/
+       both endpoints lie in
+       the original HJ core
+```
+
+This test has **three vertices and three distinct projected labels**;
+it is maximal for `n=3`. Its actual common root consists of the two
+nonadjacent core vertices and needs two generators.
+
+Nevertheless the globally fixed selected A-to-Base map sends `c0`
+and `c2` to the **opposite** endpoints of Base=K₂. No strict
+K₂-tree extension can accommodate the two-edge path while retaining
+those prescribed images: every target is a bipartite forest, and an
+even path must have endpoints in the same bipartition class.
+
+Importantly, the CORRECT conditional maximal-mixed relative-extension
+schema is not contradicted. It allows the two sides to choose a
+**shared root completion** `Start` and map `q` for this particular
+test. For example, both nonadjacent root vertices can be mapped to
+one Base vertex, allowing the two-edge path to fold onto one edge.
+This map is not the fixed part-label embedding, and that flexibility
+is precisely what the false anchored invariant suppressed.
+
+Thus **even maximal projected cardinality** does not justify the
+fixed original-core root labels. Generator maximality is a
+necessary guard on the two-case induction, not a sufficient
+root-compatibility theorem.
+
 ## Why the actual published induction avoids it
 
 The projected test is `{0,1,2}`, of cardinality **3**, whereas the
