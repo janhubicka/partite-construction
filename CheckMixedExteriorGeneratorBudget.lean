@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.MixedExteriorGeneratorBudget
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.left_generatedByAtMost_of_exterior_root_seeds
