@@ -86,6 +86,7 @@ theorem nativeAttach_generatorRank_of_mixed_relative_extensions
       B S hS D f Base n) :
     LocallyGeneratedOriginalPartialTreeCompletable
       Base (UnitAttachD B S hS D f).toStructure n := by
+  classical
   intro Test hTest hGen
   let Whole := (UnitAttachD B S hS D f).toStructure
   let Small := Whole.induce Test hTest
