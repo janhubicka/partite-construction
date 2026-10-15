@@ -463,6 +463,7 @@ import PartiteConstruction.Functional.OriginalPartialProjectedHistoryInvariant
 import PartiteConstruction.Functional.OriginalPartialProjectedHistoryInitial
 import PartiteConstruction.Functional.AmbientACopyOriginalPartialHistory
 import PartiteConstruction.Functional.AmbientRelativeWeakPullback
+import PartiteConstruction.Functional.AmbientRelativeOneCopyCore
 
 -- Distinguish undefined operations from defined-empty set-valued values.
 -- New conservative semantics API; existing Structure is unchanged.
