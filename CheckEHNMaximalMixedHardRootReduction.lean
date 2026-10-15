@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNMaximalMixedHardRootReduction
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.NativeMaximalMixedOriginalPartialRelativeExtension.of_hardRoot
