@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OriginalPartialIrreducibleRootRelativeWitness
+
+#print axioms StructuralRamsey.Structure.HasOriginalPartialTreeExtensionCompletion.of_irreducible_root_absolute
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.originalPartialTreeCompletion_of_irreducible_root
