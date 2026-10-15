@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WeakSingletonPartialProjection
+
+#print axioms StructuralRamsey.Structure.IsOriginalPartialHomomorphism.weakImage_singleton
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.weakImage_singleton
