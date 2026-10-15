@@ -1,0 +1,8 @@
+import PartiteConstruction.Functional.WeakTransversalTests
+
+#print axioms StructuralRamsey.FunctionalPartite.System.func_part_injOn
+#print axioms StructuralRamsey.FunctionalPartite.System.weakInduce
+#print axioms StructuralRamsey.FunctionalPartite.System.weakInduce_func_part_injOn
+#print axioms StructuralRamsey.FunctionalPartite.System.support_partSaturated
+#print axioms StructuralRamsey.FunctionalPartite.System.partSaturated_weakImage_originalPartial
+#print axioms StructuralRamsey.FunctionalPartite.System.support_originalPartial_weakProjection
