@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNAnchoredPictureStar
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachList_preserving_originalCore
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachAll_preserving_originalCore
