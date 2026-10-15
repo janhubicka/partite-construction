@@ -48,8 +48,17 @@ theorem IsAmbientRelativeWeakHE.pullback_ehn_exact
   change IsAmbientRelativeWeakHE C S Target (g ∘ pS)
   constructor
   · constructor
-    · intro R x hx
-      exact hg.1.1 R (pS ∘ x) (hpS.1.1 R x hx)
+    · constructor
+      · intro R x hx
+        exact hg.1.1.1 R (pS ∘ x) (hpS.1.1.1 R x hx)
+      · intro F x y hy
+        have hyD :
+            pS y ∈ (D.weakInduce (p '' S)).func F (pS ∘ x) :=
+          hpS.1.1.2 F x y hy
+        have hyT :
+            g (pS y) ∈ Target.func F (g ∘ (pS ∘ x)) :=
+          hg.1.1.2 F (pS ∘ x) (pS y) hyD
+        simpa only [Function.comp_assoc] using hyT
     · intro F x hDef hAll
       have hFirst := hpS.1.2 F x hDef hAll
       have hFull :
