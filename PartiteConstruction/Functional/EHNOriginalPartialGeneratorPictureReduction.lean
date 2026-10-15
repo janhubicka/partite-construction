@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.EHNInitialOriginalPartialGeneratorTree
 import PartiteConstruction.Functional.EHNInvariantConstruction
+import PartiteConstruction.Functional.EHNNativeOriginalPartialMixedAttachmentReduction
 
 /-!
 # Published functional n-pass induction reduced to one mixed attachment lemma
@@ -168,6 +169,61 @@ theorem inducedConstruction_originalPartial_generatorRank_of_attachment
       (fun T f hT => hAttach Old T alpha f hOld hT)
   exact inducedConstruction_preserving
     A Base D κ hRamsey Q hInitial hStep
+
+
+/-- Published Appendix A functional n-pass iteration, now reduced
+exclusively to the *mixed relative-root extension* property of the
+exact native binary attachments. The PURE partite cores and PURE
+attached copies, the initial Picture, Hales--Jewett canonicalization,
+and final backward Ramsey colouring are all discharged by existing
+validated constructions. The pending mathematical obligation is
+the stated hMixed, not a second recursive Ramsey argument. -/
+theorem inducedConstruction_originalPartial_generatorRank_of_mixed_extensions
+    (hK : Structure.FreeAmalgamationClass K)
+    (A : Structure L U) (Base : Structure L VB) (D : Structure L P)
+    [Finite U] [Finite VB] [Finite P]
+    (hKA : K A) (hKB : K Base)
+    (hBIrr : Base.Irreducible)
+    (hPos : L.PositiveFuncArity)
+    (eAB : Structure.Embedding A Base)
+    (κ : Type*) [Fintype κ] [Nonempty κ]
+    (hRamsey : Structure.Arrow A Base D κ)
+    (n : ℕ)
+    (hD : LocallyGeneratedOriginalPartialTreeCompletable Base D (n - 1))
+    (hMixed :
+      ∀ (Old T : Stage K D) (alpha : Structure.Embedding A D)
+        (f : FunctionalPartite.Embedding
+          (Old.system.induce (Old.system.support alpha.toFunctionEmbedding)
+            (Old.system.weak_support_closed D Old.isPartite.1 A alpha))
+          T.system),
+        LocallyGeneratedOriginalPartialTreeCompletable
+          Base Old.system.toStructure n →
+        LocallyGeneratedOriginalPartialTreeCompletable
+          Base T.system.toStructure n →
+        Attachment.NativeMixedOriginalPartialRelativeExtension
+          Old.system (Old.system.support alpha.toFunctionEmbedding)
+          (Old.system.weak_support_closed D Old.isPartite.1 A alpha)
+          T.system f Base n) :
+    ∃ C : Stage K D,
+      LocallyGeneratedOriginalPartialTreeCompletable
+        Base C.system.toStructure n ∧
+      Structure.Arrow A Base C.system.toStructure κ := by
+  apply inducedConstruction_originalPartial_generatorRank_of_attachment
+    hK A Base D hKA hKB hBIrr hPos eAB κ hRamsey n hD
+  intro Old T alpha f hOld hCore
+  let S := Old.system.support alpha.toFunctionEmbedding
+  let hS := Old.system.weak_support_closed
+    D Old.isPartite.1 A alpha
+  have hNative :
+      LocallyGeneratedOriginalPartialTreeCompletable
+        Base (Attachment.UnitAttachD Old.system S hS T.system f).toStructure n :=
+    Attachment.nativeAttach_generatorRank_of_mixed_relative_extensions
+      Old.system S hS T.system f Base n hCore hOld
+      (hMixed Old T alpha f hOld hCore)
+  change LocallyGeneratedOriginalPartialTreeCompletable
+    Base (Attachment.UnitAttachD Old.system S hS T.system f).toStructure n
+  exact hNative
+
 
 end
 end StructuralRamsey.FunctionalPartite.EHN
