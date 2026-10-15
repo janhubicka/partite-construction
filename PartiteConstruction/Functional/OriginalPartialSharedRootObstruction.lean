@@ -87,7 +87,7 @@ theorem closedTest_no_originalPartial_sharedRoot_of_no_completion
         (Start := Start) Base pb.toLeft q ∧
       HasOriginalPartialTreeExtensionCompletion
         (Start := Start) Base pb.toRight q := by
-  exact (closedTestPullback B S hS D f Test hTest).free
-    .no_originalPartial_sharedRoot_of_no_completion Base hBad
+  let pb := closedTestPullback B S hS D f Test hTest
+  exact pb.free.no_originalPartial_sharedRoot_of_no_completion Base hBad
 
 end StructuralRamsey.FunctionalPartite.Attachment
