@@ -419,3 +419,7 @@ import PartiteConstruction.Functional.ClosedPullbackAnchorFactor
 -- Exact native functional test: each shared separator factors through the
 -- intersection of that closed test with the preserved original HJ core.
 import PartiteConstruction.Functional.NativeClosedPullbackAnchorFactor
+
+-- Exact mapped intersection of native closed tests with the original HJ core,
+-- and anchored strict original-partial relative Picture star step.
+import PartiteConstruction.Functional.NativeClosedMappedAnchor
