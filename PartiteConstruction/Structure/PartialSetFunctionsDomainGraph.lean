@@ -1,5 +1,5 @@
 import PartiteConstruction.Structure.PartialSetFunctionsClosed
-import PartiteConstruction.Relational.Basic
+import PartiteConstruction.Relational.Homomorphism
 
 /-!
 # Relational encoding of genuinely partial set-valued operations
