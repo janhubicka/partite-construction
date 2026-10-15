@@ -464,3 +464,6 @@ import PartiteConstruction.Functional.OriginalPartialProjectedHistoryInvariant
 -- Distinguish undefined operations from defined-empty set-valued values.
 -- New conservative semantics API; existing Structure is unchanged.
 import PartiteConstruction.Structure.PartialSetFunctions
+
+-- Composition and closed weak/full agreement for explicitly partial set-valued functions.
+import PartiteConstruction.Structure.PartialSetFunctionsClosed
