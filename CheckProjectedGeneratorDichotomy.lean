@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.ProjectedGeneratorDichotomy
+
+#print axioms StructuralRamsey.Structure.maximal_projected_generator_rank_injective
+#print axioms StructuralRamsey.Structure.projected_generator_collision_rank_drop
+#print axioms StructuralRamsey.Structure.HasOriginalPartialTreeCompletion.of_EHN_generator_collision
