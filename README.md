@@ -126,12 +126,12 @@ kernel-checked tools now reduce this problem:
 - `IsFreeAmalgam.compatibleOriginalPartialRelativeCompletions_of_exterior_root_budget`
   synchronizes absolute strict completions over an **irreducible**
   root when exterior reserves pay for its generators on both sides.
-- `StrictRanked.sparsening_of_hard_root_schema_from_two` proves the
+- `StrictRanked.sparsening_of_hard_root_schema_from_two_all` proves the
   ENTIRE functional n-pass Ramsey and final B-copy construction
   conditional only on genuinely mixed maximal-rank native tests
   whose common separator needs **at least two generators**.
-  The conditional form without an A↪B initialization is also checked
-  as `StrictRanked.sparsening_of_maximal_mixed_schema_from_two_all`.
+  This sharpest fully checked conditional endpoint requires no
+  A↪B initialization: if A does not embed into B, simply use C=B.
 
 **The higher-rank multi-generated mixed-root relative extension
 hypothesis is still unproved.** Independent side completions do not
