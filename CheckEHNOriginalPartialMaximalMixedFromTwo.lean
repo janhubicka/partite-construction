@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.EHNOriginalPartialMaximalMixedFromTwo
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.StrictRanked.maximalMixed_rank_le_one_vacuous
+#print axioms StructuralRamsey.FunctionalPartite.EHN.StrictRanked.MaximalMixedSchema.of_from_two
+#print axioms StructuralRamsey.FunctionalPartite.EHN.StrictRanked.MaximalMixedSchema.to_from_two
+#print axioms StructuralRamsey.FunctionalPartite.EHN.StrictRanked.sparsening_of_maximal_mixed_schema_from_two
