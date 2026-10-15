@@ -431,3 +431,7 @@ import PartiteConstruction.Functional.NativeCanonicalSupportStarStep
 -- The original HJ anchor in each attached closed test is precisely the
 -- intersection with the original power core, with no extra closure vertices.
 import PartiteConstruction.Functional.NativeExactWholeAnchor
+
+-- A Picture star carries an invariant depending on the precise ORIGINAL
+-- Hales--Jewett core embedding, not just on the intermediate stage.
+import PartiteConstruction.Functional.EHNAnchoredPictureStar
