@@ -30,10 +30,20 @@ endpoints are forced to the same original-core B-vertex, which would
 produce an odd closed walk in a strict K₂-tree. See
 docs/fixed-core-root-invariant-counterexample.md.
 
+There is also a maximal projected example with A=B=K₂: an old
+two-edge path on labels 0,1,2, plus a separate selected A-edge
+on labels 0,2. The three-vertex mixed test has all THREE
+distinct projected labels, yet its even path cannot be mapped
+to a strict K₂-tree with the two core endpoints forced to
+opposite Base vertices by fixed A-labels. A flexible root
+completion (possibly collapsing those nonadjacent endpoints)
+is essential. Both examples are detailed in the documentation.
+
 Therefore this conditional theorem is a geometric API, NOT a
 standalone route to unconditional sparsening. The published induction
-first handles smaller projected image/generator rank separately, and
-only makes a mixed rooted request at maximal projected generator rank.
+handles smaller projected image/generator rank separately and, at
+maximal mixed rank, must permit a test-dependent SHARED root tree and
+root map. Fixed canonical A-labels are an over-strong requirement.
 -/
 
 namespace StructuralRamsey.Structure
