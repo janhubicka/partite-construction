@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.OriginalPartialStarAttachment
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.originalPartialTreeExtension_append_over_anchor
