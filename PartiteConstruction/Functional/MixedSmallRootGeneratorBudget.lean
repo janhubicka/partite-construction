@@ -90,13 +90,8 @@ theorem left_generatedByAtMost_of_mixed_small_root
         leftGen.card = Fintype.card ↥(↑leftGen : Set E) := by simp
         _ ≤ Fintype.card ↥(↑(G.erase g) : Set C) :=
           Fintype.card_le_of_injective phi hphi
-        _ = (G.erase g).card := by
-          have hset : ((↑G : Set C) \ {g}) =
-              (↑(G.erase g) : Set C) := by
-            ext x
-            simp
-          rw [hset]
-          exact Set.ncard_coe_finset _
+        _ = (G.erase g).card :=
+          Fintype.card_coe (G.erase g)
     have hErase : (G.erase g).card = G.card - 1 :=
       Finset.card_erase_of_mem hgG
     have hPos : 0 < G.card := Finset.card_pos.mpr ⟨g, hgG⟩
