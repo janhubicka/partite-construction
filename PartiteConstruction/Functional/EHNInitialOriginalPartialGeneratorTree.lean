@@ -46,6 +46,7 @@ theorem initial_originalPartial_generatorRank
           ∀ x, T.system.part (e x) = beta x := by
   obtain ⟨T, hTree, hCopies⟩ :=
     initial_tree hK Base hBase hBIrr hPos beta0
+  classical
   exact ⟨T,
     Structure.LocallyGeneratedOriginalPartialTreeCompletable.of_tree
       hTree k,
