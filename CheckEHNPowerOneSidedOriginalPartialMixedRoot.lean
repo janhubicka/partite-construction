@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNPowerOneSidedOriginalPartialMixedRoot
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.power_relabel_originalPartial_EHN_to_base
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTest_originalPartial_strictTree_of_powerCore_and_copy_relative
