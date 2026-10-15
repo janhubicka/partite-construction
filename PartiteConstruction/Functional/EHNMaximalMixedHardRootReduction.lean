@@ -50,8 +50,7 @@ def NativeMaximalMixedHardRootRelativeExtension
     (hOutsideCopy : ¬ ∀ x : Test, ∃ v : V,
       x.1 = unitCopyEmbedding B S hS D f v)
     (hHardRoot :
-      ¬ (closedTestPullback B S hS D f Test hTest)
-        .common.GeneratedByAtMost 1),
+      ¬ ((closedTestPullback B S hS D f Test hTest).common.GeneratedByAtMost 1)),
     let pb := closedTestPullback B S hS D f Test hTest
     ∃ (G₀ : Type v) (Start : Structure L G₀) (q : pb.Common → G₀),
       TreeAmalgam Base G₀ Start ∧
