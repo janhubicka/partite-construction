@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.MixedExteriorGeneratorBudget
 import PartiteConstruction.Functional.OriginalPartialIrreducibleRootRelativeWitness
+import PartiteConstruction.Functional.OriginalPartialSmallImageGeneratorHull
 
 /-!
 # Exterior generator reserves give compatible strict relative B-trees
