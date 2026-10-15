@@ -84,7 +84,7 @@ theorem IsAmbientRelativeWeakHomomorphism.toOriginalPartial_of_closed
       exact ⟨y.1, hy⟩
     have hAll : ∀ y, y ∈ C.func F (Subtype.val ∘ x) → y ∈ S :=
       fun y hy => hS F (Subtype.val ∘ x)
-        (fun i => (x i).2) y hy
+        (fun i => (x i).2) hy
     exact h.2 F x hDefined hAll
 
 /-- A closed test upgrades the ambient-relative weak HE to the
