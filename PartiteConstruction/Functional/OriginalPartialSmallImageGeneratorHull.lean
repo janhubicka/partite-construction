@@ -77,6 +77,7 @@ theorem of_tree {Base : Structure L VB} {D : Structure L V}
 rank-zero invariant, without any closure cardinality bound. -/
 theorem base (Base : Structure L VB) (k : ℕ) :
     LocallyGeneratedOriginalPartialTreeCompletable Base Base k := by
+  classical
   exact of_tree (TreeAmalgam.copy (Embedding.id Base)
     (fun b => ⟨b, rfl⟩)) k
 
