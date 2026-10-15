@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNPowerCanonicalAnchoredRoot
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTest_power_canonicalRoot_anchored_relative_completion

@@ -403,3 +403,7 @@ import PartiteConstruction.Functional.MixedExteriorRelativeWitnesses
 -- Sharpest current conditional n-pass theorem: only roots requiring
 -- >=2 generators remain; A->B initialization is optional.
 import PartiteConstruction.Functional.EHNOriginalPartialHardRootNoACopy
+
+-- Published Appendix A first native Hales--Jewett mixed test retains its
+-- canonical power-core anchor for subsequent relative attachments.
+import PartiteConstruction.Functional.EHNPowerCanonicalAnchoredRoot
