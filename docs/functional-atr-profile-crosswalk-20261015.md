@@ -1,182 +1,212 @@
-# Functional sparsening versus the verified 2019 relational theorem
-### Proof crosswalk and semantic audit — 15 October 2026
+# Native functional iteration from the verified closed recursive Picture
+### Corrected correspondence note — 15 October 2026
 
-**Status: mathematical correspondence / proof plan, not a new Lean theorem.**
-The verified reference is
-`AllThoseRamseyClasses.Published.coordinated2019_ramsey_by_profile_sparsening`
-in `janhubicka/lean-all-those-ramsey-classes`, and its exact English proof is
-`docs/coordinated-profile-proof-20261013.md` in that repository.
-The present native strict functional n-pass theorem is **conditional** on a
-mixed-root extension schema; the uniform arbitrary-stage schema is too strong
-(the graph `C5` audit, partite-construction PR #313). We should not solve
-the native iteration by assuming that false schema. The proven relational
-theorem takes a different route: *profile records → ordinary relational
-sparsening → fresh-tagged second closed Picture → exact weak tests*.
+**Status:** proof architecture and individually stated formal lemmas, NOT a
+claim that the strict functional sparsening theorem is completed.
 
-## 1. Function semantics come first
+## 0. The intended theorem and why the earlier detour was wrong
 
-The new work-in-progress `PartialSetStructure` (PR #318) represents
-a genuinely partial set-valued function as
-`F : V^r → Option (Set V)`. This distinguishes:
+The user-specified target is the *published-order iterated partite argument
+in the natural language of partial functions*, with **irreducible closed
+base B** (the irreducibility hypothesis on B was inadvertently dropped in
+an earlier manuscript revision). Do not substitute the alternative
+profile/relational-sparsening/fresh-tag proof of *All Those Ramsey Classes*
+for the native iterated functional construction.
 
-* `none`: undefined input;
-* `some ∅`: defined, empty-valued input;
-* `some T` with `T.Nonempty`: defined input with outputs.
+The recursive construction in
+`PartiteConstruction/Functional/OrderedRecursive.lean` is verified:
+`Structure.orderedRamsey` produces an actual Ramsey witness with
+genuine set-valued functions. Its ranking-to-singleton reduction,
+`rankExpand_singletonValued`, `Embedding.rankExpand` and
+`arrow_of_singletonExpansion`, is checked. The temporary semi-closed
+relational steps belong only to that **recursive construction**.
+The output of that phase is a genuine closed functional Ramsey picture D.
+The subsequent iteration should never replay the recursive construction.
 
-A **source-defined partial homomorphism** sends every `some T` to
-`some (f '' T)`, including `some ∅`, but makes no assertion on
-source `none`. A total-fibre/domain-reflecting homomorphism makes the
-same equality on *all* inputs. Neither should be interchanged with
-positive preservation of output incidences.
+For the full native induced pass use the already proved
+`FunctionalPartite.EHN.inducedConstruction`,
+`FunctionalPartite.EHN.pictureLemma`, the native Hales–Jewett power,
+function-closed selected supports, full copied embeddings and free
+attachments. Every intermediate **functional** Picture has real
+function fibres. Positive arity eliminates empty-overlap hazards;
+nullary roots have a separately checked transport mechanism.
 
-For an exact vertex set `S`, the intended **weak** value is:
+The stage projection p to the (closed/genuine) control D is **not** a
+full total-fibre homomorphism on all tuples. Source-undefined inputs can
+map to defined target inputs, even between two disjoint copies of an
+irreducible B. The correct original-2019 partial-function map is
+`IsOriginalPartialHomomorphismEmbedding`, equivalent to the native
+`IsEHNHomomorphismEmbedding`. A closed control does not by itself
+imply reflection of undefined domains. The verified two-copy example
+in `PublishedProjectionObstruction.lean` establishes this limitation.
 
-```text
-none           ↦ none
-some ∅         ↦ some ∅
-some T, T≠∅    ↦ some (T∩S) if T∩S≠∅, otherwise none.
-```
+## 1. Weak substructure is the right induction object
 
-It does NOT enlarge `S` to its function closure. On function-closed
-sets the weak restriction agrees with the full induced functional
-substructure. PR #318 has the elementary definitions, but its then-current
-full CI build was red at the time of this audit, so no fresh validation
-marker should be issued for these new declarations.
+For an exact vertex set S of a genuine function structure C, use
 
-### Two relational presentations have DIFFERENT uses
+    C|ᵂS := C.weakInduce S
 
-The `Dom_F` plus `Graph_F` presentation in
-`PartialSetFunctionsDomainGraph.lean` retains full domain information,
-but **does not commute with weak induced substructures**: if
-`F(x)=some {y}` and `S={x}` with `y∉S`, the weak operation on `S`
-is undefined, whereas relational induction retains `Dom_F(x)`.
+with the same vertices and original relations and with function output
+sets intersected with S (when using the older encoding in which an
+empty fibre means undefined). For the projection p:C→D use
 
-For the ordinary **relational sparsening of exact weak vertex tests**,
-use instead the two predicates
+    p_S : C|ᵂS  →  D|ᵂ(p '' S),
 
-```text
-Empty_F(x)    ↔ F(x) = some ∅
-Graph_F(x,y)  ↔ ∃T, F(x) = some T ∧ y∈T .
-```
+never the closure hull of p[S]. Thus `|p[S]| ≤ |S|` exactly as in
+the relational proof.
 
-These two predicates together are lossless: nonempty graph fibres give
-`some` of the fibre, `Empty_F` gives `some ∅`, and neither gives
-`none`. They also commute *exactly* with weak restriction:
+**Already proved:**
 
-```text
-weakGraph(A.weakInduce S) = (weakGraph A).induce S
-```
+* `Structure.weakInduce_graph_rel_iff`: weak function substructures
+  are exactly induced graph-incidence relations, on the identical
+  vertex set. This is an internal interpretation lemma, not a mandate
+  to construct relational Pictures.
+* `IsWeakHomomorphismEmbedding.weakImage`: every graph-protected
+  map restricts to a graph-protected map of the two exact weak tests.
+* `IsEHNHomomorphismEmbedding.graphHomomorphismEmbedding`: native
+  functional EHN projections supply the former hypothesis. Its
+  proof passes through a closed irreducible hull **only to localize
+  an irreducible test**, not to change the tested weak set or rank.
+* `IsEHNHomomorphismEmbedding.closedToWeakImage_originalPartial`:
+  on a **closed source** S, p induces a genuine original-2019 partial
+  function homomorphism-embedding from C|S into D|ᵂp[S].
+  Thus at the terminal stage the original closed structures recover
+  precisely the expected functional map and strict target can be used.
 
-on the subtype carrier `S`, for each original relation, `Empty_F`
-and `Graph_F`. **This exact theorem is proposed, not yet checked
-in Lean.** The case split is `none`, `some ∅`, and `some T` according
-to whether `T∩S` is empty.
+**New proof obligation / lemma (this branch):** after the
+rank-to-singleton reduction, if C is singleton-valued and p is
+original-partial, then for **every** S the restricted map
+`p_S : C|ᵂS → D|ᵂp[S]` preserves the entire function fibre on
+*every input that remains defined in C|ᵂS*. This is
+`IsOriginalPartialHomomorphism.weakImage_singleton` in
+`Functional/WeakSingletonPartialProjection.lean`.
+Combined with the already checked graph protection, the named pair is
+`IsEHNHomomorphismEmbedding.weakImage_singleton`.
+Only claim kernel certification when this branch's full CI and axiom
+checks succeed.
 
-### Morphism bridges that must be kept explicit
+Why singleton fibres matter: for a nonempty weak source fibre
+there is a retained value y∈S. Singleton-valuedness forces the
+original fibre to be {y}; exact EHN fibre preservation then forces
+the whole target fibre to be {p(y)}. Since p(y)∈p[S], weakly
+restricting the target changes nothing on that defined tuple.
+Undefined source inputs impose **no** target-domain condition.
 
-1. For a full functional embedding `f : A ↪ B`, the induced map
-   on `Empty+Graph` relationalizations is a full relational embedding
-   and the image `f[A]` is closed under *all* target outputs.
-   Conversely, a full relational embedding **together with function-closed
-   range** is a full functional embedding: range closure rules out extra
-   target outputs outside the range; `Graph_F` reflection rules out
-   extra outputs inside; `Empty_F` detects the empty/undefined cases.
-   The range-closed hypothesis is indispensable.
+For arbitrary multivalued fibres, some original outputs may be lost
+from S while other vertices of S project to their output labels.
+The target weak fibre can then be larger than the image of the
+source weak fibre. We must either keep the ranked singleton
+representation throughout the induction, or separately prove a
+relative output-lifting hypothesis. Do not assume it for all
+multivalued stages.
 
-2. A source-defined functional homomorphism induces a positive
-   `Empty+Graph` relational homomorphism. The converse requires a
-   **fibre-surjectivity clause**: for each source-defined nonempty
-   `F_A(x)=some T`, every target output of `F_B(fx)` is in `f[T]`.
-   Positive graph preservation proves only the opposite inclusion.
-   For ordinary partial **single-valued** functions with singleton-or-
-   undefined target values, fibre-surjectivity is automatic when the
-   source is defined; **not** for general multivalued functions.
+The preceding pair is **not** automatically a full functional
+homomorphism-embedding of arbitrary weak substructures: graph
+irreducibles and full functional irreducibles need not coincide,
+and domain reflection remains intentionally absent. The correct
+weak induction invariant comprises source-defined fibre preservation,
+graph-level protection, and the specified partial-A-copy/history
+data; closed terminal tests are upgraded using the already verified
+closed-to-weak-image theorem. This is how weak substructures play
+the role of ordinary homomorphism-embeddings on U-closed pieces
+without demanding a false full reflection theorem.
 
-3. Ordinary relational homomorphism-embeddings protect relational
-   irreducible tests. This is NOT by itself the stronger original
-   partial-function homomorphism-embedding; the fibre equality above
-   is an independent obligation, and function-closed protected tests
-   must be identified explicitly.
+## 2. Published two-case induction, directly in functions
 
-These are intended interfaces and proofs to formalize; no converse
-from an arbitrary positive `domainGraph` homomorphism has been asserted.
+Fix B irreducible and closed, a genuine closed Ramsey control D
+from the verified recursive construction, and n≥1. Each native
+functional partite pass proceeds over the finite ordered list of
+embeddings α_i:A→D. Retain full functional A-, B-embeddings, closed
+selected support, and the Ramsey arrow. For a test of size ≤n
+in the current stage use C|ᵂS and its exact weak image in D.
 
-## 2. Step-by-step crosswalk against the *actual proved* theorem
+1. **Small projected image:** if |p[S]|<n, use the predecessor
+   invariant on D|ᵂp[S]. Compose its tree witness with the exact
+   weak-image projection, without adding closure vertices.
+   Full source-defined fibre equality in the ranked singleton
+   case and graph HE are independently available.
 
-| Verified relational component | Functional proof counterpart | Audit status |
-| --- | --- | --- |
-| Fix `C0` via ambient Ramsey and choose `n(B,C0)` once; unrestricted closed Picture `InducedClosed2019UnrestrictedInitial` | Keep the same original control, cutoff, exact arrow and class assumptions. Existing native EHN passes prove a different, free-amalgamation-oriented interface; do not silently assume they prove the unrestricted `K` case. | Relational proved; general functional transfer needed |
-| `GeneratedClosureProfiles2019.lean`: `closureProfileExpansion2019`, `closureProfileEmbedding2019` | A profile is an actual **function-closed** induced substructure `H⊆B` and a tuple of generators. Add a relation recording full realizations of `H`. Full embeddings reflect a record because their ranges are function-closed, so the realization of all generators forces the whole `H` into the range. | Relational proved; direct functional closure-range lemma needed |
-| `GeneratedClosureProfileBoundary2019.lean`: `closureProfile2019_common_weak_root_closed_boundary` | Enumerate an **exact** weak common root in the profiled language. Its shared profile determines **one** closed `H` in `B` with compatible full embeddings into both completed sides. No independent root choices, no generic arbitrary-stage hard-root lemma. | Relational proved; transfer to function embeddings needed |
-| `ProfileStrictTreeCompletion2019.lean`: `closureProfile2019_tree_completion_to_K` | Complete strict trees of profiled `B`-copies using strong amalgamation in `K` over the generated full closed boundary `H`. The root itself need not be closed and the finite source stays vertex-exact. | Relational proved; functional boundary/gluing interface needed |
-| `PartiteConstruction.Iterated.SparseningStrictBaseIrreducible`: `sparseningRamsey_strict_baseIrreducible_all` | Apply the **already verified purely relational** sparsening theorem to the profiled `Empty+Graph` language, with the **same** bound `n`. Every exact subset of `B+` is relationally irreducible because its generators have a profile tuple. No native generating-rank increment is required. | Reuse theorem literally after embedding/arrow bridge |
-| `ProfileRootTagLanguage2019`, `ProfileRootTagClosedness2019`, `ProfileRootTagLocalLaws2019` | The sparse relational witness cannot simply be decoded as a closed function structure. A second, fresh **full root-pattern-tagged** closed Picture must reconstruct the intended function domains and fibres, validate root/tuple normality, and protect closed function tests. Defined-empty and nullary cases must be covered separately. | Main NEW mathematical/Lean transfer obligation |
-| `ProfileRootTagTransfer2019.lean`: `profileTag2019_original_closed_and_coverage`, `profileRootTag2019_forget_arrow` | Recover the actual function language and Ramsey arrow using canonical lifts of embeddings between closed `A,B`. Projected maps must be proved **original-partial fibre-exact**, not merely positive graph maps. | Fibre-exactness is nonautomatic for multivalued functions |
-| `Coordinated2019ProfileSparseWitness.lean`: exact `S`, `T=p[S]`, `card T ≤ card S ≤ n`, tree completion to `K`; then copywise Ramsey transfer | Test **every original weak subset `S` of cardinality ≤ n**, not its closure; project to **exact** weak image, use relational tree and constructed closed `K` boundary, upgrade to the required protected functional completion, and apply the SAME local cutoff. | Relational proved; functional last upgrade still needed |
+2. **Maximal image:** if |p[S]|=|S|=n, p is injective on the test.
+   Pure Hales–Jewett-core tests inherit the canonical A-labelled
+   completion; pure copied-old-stage tests use the preceding
+   invariant. For a mixed test split by the **actual** closed
+   support, work with the actual common piece G=E∩F and
+   projected histories; do not glue arbitrarily chosen
+   completions of E and F over incompatible copies of G.
 
-### Quantifiers and hypotheses to preserve
+The strictly functional mixed target remains the difficult step:
+construct **two relative extensions of the same strict B-tree
+completion of G**. The conditional glue itself is already
+verified as `IsFreeAmalgam.originalPartialTreeCompletion_glue_commonTree`
+and `originalPartialTreeCompletion_glue_relative`; existence of
+compatible witnesses for arbitrary hard multigenerated separators
+in *genuine constructed Pictures* is NOT yet established.
 
-* The original `C0` need not be closed.
-* Choose `n=n(B,C0)` **before** either sparse/closed construction,
-  and never change it.
-* The small tests are **all exact original weak subsets** on at most `n`
-  vertices, not enlarged hulls or only intrinsically closed ones.
-* The local completion should be a `K`-target preserving selected
-  full `B`-copies; it need not reflect every global `A`-copy.
-* The general theorem assumes **finite strong amalgamation**, not
-  free amalgamation of all target `K`-structures.
-* Corrected closed-irreducible membership/protection clauses in
-  the reference theorem are intentional and must not be weakened or
-  broadened by an informal translation.
+Importantly, PR #313 exhibited a C5 obstruction already with
+A=B=K2 (irreducible) to a universally quantified arbitrary-stage
+mixed-root schema. Restoring B irreducible does not make that
+over-strong premise true. The legitimate invariant must remember
+the actual HJ core and partial A-copy histories. Do **not** adopt
+that false schema as a new axiom. The source-specific initial
+projected-history invariant has been merged in #314; the
+initial-Picture specialization is green in draft PR #315.
 
-## 3. Why a naïve literal reduction is not yet enough
+After n genuine functional passes, perform the checked final
+B-coverage pass. The complete **weak-graph** conclusion is
+`sparseningRamsey_nativeFunctional_graphStrict_withBCover`.
+This is **not** the final strict functional B-tree assertion.
+Complete the exact native relative-extension lemma and only
+then promote its validation marker.
 
-* Ordinary `Dom+Graph` induction does not produce the functional
-  weak substructure. Use the `Empty+Graph` presentation for the
-  exact weak-test stage.
-* Graph-positive maps do not preserve complete multivalued fibres.
-  Even `Empty+Graph` maps require fibre-surjectivity or a stronger
-  generated-closure/typed-tag argument.
-* `Empty+Graph` relations alone do not automatically define a 2019
-  `U`-closure description with one **unique complete closure tuple**
-  above every root: `Graph_F` has one incidence for each output.
-  In particular, a defined-empty value adds no output vertex.
-  Reusing the **architecture** is justified; applying the full ATR
-  class theorem directly to this graph encoding is **not** justified
-  without a separately proved closure-description bridge.
-* Ordered enumeration of a finite output set into singleton selectors
-  can help for **closed/full** structures, but is not automatically
-  functorial on arbitrary weak subsets: deleting the least output
-  shifts selector indices. Therefore it is not a substitute for the
-  exact weak-induced theorem.
-* The verified relational proof **avoids** the original native
-  Lemma 2.30 rank increment. A demand for literal lemma-by-lemma
-  equality with the *published rank proof* would be stronger than
-  the already verified result and would revive the C5 obstacle.
+## 3. Defined empty versus undefined
 
-## 4. Shortest trustworthy formalization sequence
+The older survey notation `F:A^r→P(A)` treats an empty fibre
+as undefined. That is sufficient for ranked standard partial
+single-valued functions and for the existing EHN equivalence,
+but cannot distinguish an *originally defined empty-valued
+operation* from an undefined operation.
 
-1. Repair and finish CI/axiom checks for PR #318's separate
-   `Option (Set)` foundation. As inspected on 15 October, its
-   Lean job failed in `PartialSetFunctionsClosed.lean` (unknown
-   `hNonempty`, tuple-variable elaboration errors); no CI-green claim.
-2. Add `PartialSetFunctionsWeakGraph.lean`: `Empty+Graph` encoding,
-   explicit weak-induced commutation, range-closed full embedding
-   equivalence, and source-defined map/fibre-surjectivity equivalence.
-   Include counterexamples for `Dom+Graph` weak-induction and
-   `Graph`-only fibre exactness.
-3. Reuse the **relational** theorem to construct profiled strict
-   trees and closed common boundaries. Port only its closure-range
-   and profile-record lemmas to the function API; do NOT recreate
-   native n-pass/rank machinery.
-4. Prove a function-valued version of the **fresh root-tagged second
-   closed Picture** and the exact upgrade from positive incidence
-   maps to original-partial fibre-exact maps. This is the real bridge.
-5. Assemble the final exact weak-`S`, same-`n` `K`-completion and
-   arrow transfer, and only then add a validation marker to the survey.
+If the general theorem permits such genuinely empty-valued
+definitions, use the separate `PartialSetStructure` interface
+`F:A^r→Option (Set A)`: `none` is undefined and `some ∅`
+is defined-empty. Weak restriction must preserve an original
+`some ∅` and turn a `some T` with T≠∅ and T∩S=∅ into
+`none`. The exact weak projection lemma needs its analog in
+this enriched language; it is not a reason to abandon the
+functional iteration.
 
-The intended final argument can be written in natural function-language
-notation even when the middle sparsening pass internally uses the
-verified relational library. That is a proof of the same **construction
-architecture**, not a claim that the currently conditional native
-strict n-pass theorem has already become unconditional.
+PR #318 is building this extension separately; at the most
+recent inspected head, its previous Lean CI failed on small
+proof elaboration errors, so do not claim it is merged/checked.
+
+## 4. Match with the verified All Those Ramsey Classes proof
+
+The corrected relational theorem
+`coordinated2019_ramsey_by_profile_sparsening` is completely
+verified, but its internal **alternative** proof avoids the
+native rank increment via profiles, relational sparsening and a
+second tagged closed Picture. It is a useful correctness oracle:
+the exact original C0 and n stay fixed; weak S is never replaced
+by a closed hull; compatible common boundaries cannot be chosen
+independently; and B-copywise transfer suffices at the end.
+
+For this survey appendix we use the directly verified native
+function construction and the published order: initial Picture,
+HJ Picture steps, weak-test two-case induction, n passes, and
+final B-copy extension. The relational alternative is not a
+replacement algorithm.
+
+### Working acceptance tests
+
+* Input/output stages have genuine (ranked) functions, with no
+  broken semi-closed intermediate language in the iteration.
+* B is irreducible (and each B-copy is a closed embedded copy).
+* The projection law on defined weak fibres is verified, not
+  conflated with reflection of undefined inputs.
+* S and p[S] stay exact vertex sets in both cases.
+* For the hard mixed case, obtain one common strict B-tree root
+  and actual relative side extensions, keeping the projected
+  partial-A history. Merely quoting the conditional glue or
+  the false uniform hard-root schema fails the test.
+* Complete n iterations and final B-coverage, then certify the
+  precise strict function-language theorem with an axiom audit.
