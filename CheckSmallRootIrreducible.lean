@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.SmallRootIrreducible
+
+#print axioms StructuralRamsey.Structure.irreducible_of_subsingleton
+#print axioms StructuralRamsey.Structure.irreducible_of_card_le_one
