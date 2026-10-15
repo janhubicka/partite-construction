@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.NativeCanonicalSupportStarStep
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTest_originalPartial_star_step_with_selected_support
