@@ -1,0 +1,5 @@
+import PartiteConstruction.Structure.PartialSetFunctionsClosed
+
+#print axioms StructuralRamsey.PartialSetStructure.IsOriginalPartialHomomorphism.comp
+#print axioms StructuralRamsey.PartialSetStructure.weakValue_of_subset
+#print axioms StructuralRamsey.PartialSetStructure.weakInduce_closed_func
