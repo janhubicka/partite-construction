@@ -18,6 +18,9 @@ has been forgotten; the weak test must not invent information about
 outputs outside S.
 
 This condition:
+* preserves ALL surviving function incidences positively, even on
+  truncated inputs, and preserves complete fibres on inputs closed
+  within the tested set;
 * makes sense for arbitrary set-valued functions, not only partial
   singleton-valued functions;
 * is preserved by EVERY EHN projection to the EXACT weak image p[S],
@@ -44,8 +47,7 @@ Undefined source fibres are deliberately not reflected. -/
 def IsAmbientRelativeWeakHomomorphism
     (C : Structure L U) (S : Set U)
     (T : Structure L V) (f : S → V) : Prop :=
-  (∀ R (x : Fin (L.relArity R) → S),
-    (C.weakInduce S).rel R x → T.rel R (f ∘ x)) ∧
+  (C.weakInduce S).IsWeakHomomorphism T f ∧
   (∀ F (x : Fin (L.funcArity F) → S),
     (C.func F (Subtype.val ∘ x)).Nonempty →
     (∀ y, y ∈ C.func F (Subtype.val ∘ x) → y ∈ S) →
@@ -77,7 +79,7 @@ theorem IsAmbientRelativeWeakHomomorphism.toOriginalPartial_of_closed
     IsOriginalPartialHomomorphism (C.induce S hS) T f := by
   constructor
   · intro R x hx
-    exact h.1 R x hx
+    exact h.1.1 R x hx
   · intro F x hNonempty
     have hDefined : (C.func F (Subtype.val ∘ x)).Nonempty := by
       obtain ⟨y, hy⟩ := hNonempty
@@ -131,9 +133,13 @@ theorem IsEHNHomomorphismEmbedding.ambientRelativeWeakImage
   change IsAmbientRelativeWeakHE C S (D.weakInduce (p '' S)) pS
   constructor
   · constructor
-    · intro R x hx
-      change D.rel R (p ∘ (Subtype.val ∘ x))
-      exact hp.1.1 R (Subtype.val ∘ x) hx
+    · constructor
+      · intro R x hx
+        change D.rel R (p ∘ (Subtype.val ∘ x))
+        exact hp.1.1 R (Subtype.val ∘ x) hx
+      · intro F x y hy
+        change p y.1 ∈ D.func F (p ∘ (Subtype.val ∘ x))
+        exact hp.1.2 F (Subtype.val ∘ x) y.1 hy
     · intro F x hNonempty hAll
       have hFull :
           imageSet p (C.func F (Subtype.val ∘ x)) =
@@ -176,7 +182,7 @@ theorem IsAmbientWeakOriginalPartialHE.toAmbientRelative
     {f : S → V}
     (h : IsAmbientWeakOriginalPartialHE C S T f) :
     IsAmbientRelativeWeakHE C S T f := by
-  refine ⟨⟨h.1.1, ?_⟩, h.2⟩
+  refine ⟨⟨h.1.toWeak, ?_⟩, h.2⟩
   intro F x hNonempty hAll
   obtain ⟨y, hy⟩ := hNonempty
   have hyWeak :
