@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNStrictIteratedNoACopy
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.StrictRanked.sparsening_of_maximal_mixed_schema_from_two_all
