@@ -136,6 +136,33 @@ genuinely mixed rank-n test over its same completed reducible root.
 The problem remains open for n≥2. No recursive or U-closed Ramsey proof
 was replayed.
 
+### Sharpened genuine-function hard-root frontier (15 October 2026)
+
+The rank-zero and rank-one strict original-2019 functional construction
+is now unconditional, including the vacuous case without A ↪ B.
+At arbitrary rank, the complete genuine EHN n-pass and final B-copy
+extension are kernel-verified **conditional** on the remaining relative
+completion of genuinely mixed maximal tests whose exact closed separator
+requires **two or more generators**. All cases with a one-generated
+separator are now discharged, even when the separator has many vertices.
+
+More generally, the quantitative generator-budget theorem shows
+that exterior source generators can pay for the generators of the
+common full-functional root. With an irreducible root and sufficiently
+large exterior reserves on both sides, this budget combines with
+strict original-partial irreducible-root synchronization to produce
+both compatible relative B-tree witnesses on one prescribed copy
+of B. The full n-pass conditional theorem no longer needs a
+prescribed A ↪ B embedding either: the no-copy case uses C=B.
+
+**Still open:** the hard-root relative extension for those actual
+maximal mixed native tests requiring at least two separator generators
+for which exterior reserves and the checked irreducible-root
+synchronization hypotheses do not suffice. None of the conditional
+theorems proves this premise. This is a separate original-2019
+partial-map refinement, not the printed survey's refuted total-fibre
+functional formulation. Do not re-run the verified recursive Ramsey
+construction while developing this remaining local step.
 ## Remaining proof obligations
 
 There are no remaining proof obligations for the statements currently printed
