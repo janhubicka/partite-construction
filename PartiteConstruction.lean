@@ -361,3 +361,20 @@ import PartiteConstruction.Functional.EHNDomainFailureDecompose
 -- and class-free functional graph-tree sparsening with B-extension.
 import PartiteConstruction.Functional.EHNCombinedConstructionWeakTreeCover
 import PartiteConstruction.Functional.NativePublishedWeakSparseningClassFree
+
+-- Original-2019 partial-function STRICT full-functional local trees:
+-- verified root gluing, generator-rank reduction, n-pass conditional theorem,
+-- and unconditional rank-one native sparsening. The maximal mixed relative
+-- extension schema at rank >=2 remains an explicit unproved hypothesis.
+import PartiteConstruction.Functional.NativeMixedOriginalPartialOneCopyCriterion
+import PartiteConstruction.Functional.OriginalPartialRootedTreeGlue
+import PartiteConstruction.Functional.OriginalPartialSmallImageGeneratorHull
+import PartiteConstruction.Functional.EHNInitialOriginalPartialGeneratorTree
+import PartiteConstruction.Functional.OriginalPartialRankFinalBCover
+import PartiteConstruction.Functional.EHNNativeOriginalPartialMixedAttachmentReduction
+import PartiteConstruction.Functional.EHNNativeOriginalPartialMaximalMixedReduction
+import PartiteConstruction.Functional.EHNOriginalPartialGeneratorPictureReduction
+import PartiteConstruction.Functional.OriginalPartialRankZero
+import PartiteConstruction.Functional.OneGeneratorFreeAmalgam
+import PartiteConstruction.Functional.EHNOriginalPartialStrictIteratedRank
+import PartiteConstruction.Functional.EHNNativeOriginalPartialRankOne
