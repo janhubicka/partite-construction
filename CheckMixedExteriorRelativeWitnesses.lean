@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.MixedExteriorRelativeWitnesses
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.compatibleOriginalPartialRelativeCompletions_of_exterior_root_budget
