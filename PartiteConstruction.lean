@@ -460,3 +460,7 @@ import PartiteConstruction.Functional.OriginalPartialSharedRootObstruction
 -- Source-faithful strict functional B-tree witnesses with coherent
 -- projected partial A-copies and finite projected history diaries.
 import PartiteConstruction.Functional.OriginalPartialProjectedHistoryInvariant
+
+-- Distinguish undefined operations from defined-empty set-valued values.
+-- New conservative semantics API; existing Structure is unchanged.
+import PartiteConstruction.Structure.PartialSetFunctions
