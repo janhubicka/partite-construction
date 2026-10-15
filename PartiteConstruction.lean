@@ -439,3 +439,7 @@ import PartiteConstruction.Functional.EHNAnchoredPictureStar
 -- Transfer a strict original-partial relative completion between FULL
 -- presentations of the same exact original-core tested intersection.
 import PartiteConstruction.Functional.OriginalPartialAnchorPresentation
+
+-- Exact original Hales--Jewett core-anchored strict 2019 partial-function
+-- n-vertex local invariant, conditional only on the incoming copy witness.
+import PartiteConstruction.Functional.OriginalPartialExactCoreLocalStep
