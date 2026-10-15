@@ -125,6 +125,25 @@ closed-to-weak-image theorem. This is how weak substructures play
 the role of ordinary homomorphism-embeddings on U-closed pieces
 without demanding a false full reflection theorem.
 
+### Full embeddings restrict weakly without ANY singleton assumption
+
+`Structure.Embedding.weakRestrictToPreimage` (new proof in this
+branch, CI pending) proves directly that for a FULL functional
+embedding e:A↪B and an arbitrary exact set S⊆B,
+
+    A|ᵂ(e⁻¹[S])  ↪  B|ᵂS
+
+is again a full **function-language** embedding. Both original
+relations and entire retained function fibres are reflected. The
+preimage, not a generated closure, is the new source carrier.
+This is the elementary mechanism by which the full closed root and
+side embeddings in a functional free amalgam restrict to the weak
+pieces of a mixed test. It is valid even with multivalued functions.
+
+Do not extend the lemma to a merely weak EHN projection: for that
+projection the separate singleton source-defined map and
+ambient-closed irreducible protection below are required.
+
 ## 1a. The ambient-relative weak HE (precise closed-test bridge)
 
 A weak S may *appear* irreducible only because an original function
