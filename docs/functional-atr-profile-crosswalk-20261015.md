@@ -100,6 +100,20 @@ representation throughout the induction, or separately prove a
 relative output-lifting hypothesis. Do not assume it for all
 multivalued stages.
 
+There is a direct way to ensure that the singleton hypothesis remains
+true throughout the construction: the already verified
+`Structure.originalPartialModelClass_free` gives a genuine free-amalgamation
+class of singleton-valued partial-function structures. The existing EHN
+`inducedConstruction_allArity` and its n-pass/final-coverage variants are
+class-preserving, so specializing them to this class certifies that their
+output stages are still singleton-valued. The theorem
+`Structure.sparseningRamsey_nativeSingleton_graphStrict_weakProjection`
+(added in the same PR, pending CI) packages the complete native n-pass,
+B-coverage, and both exact weak-projection laws, with *no* artificially
+multivalued intermediate function. Its local tree property is explicitly
+still **relational graph strict**, not the missing full-function strict
+local completion.
+
 The preceding pair is **not** automatically a full functional
 homomorphism-embedding of arbitrary weak substructures: graph
 irreducibles and full functional irreducibles need not coincide,
