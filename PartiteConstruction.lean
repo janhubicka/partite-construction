@@ -407,3 +407,7 @@ import PartiteConstruction.Functional.EHNOriginalPartialHardRootNoACopy
 -- Published Appendix A first native Hales--Jewett mixed test retains its
 -- canonical power-core anchor for subsequent relative attachments.
 import PartiteConstruction.Functional.EHNPowerCanonicalAnchoredRoot
+
+-- A fixed central power-core anchor suffices through star attachments:
+-- rebase each copied side over the current strict tree; no moving-target axiom.
+import PartiteConstruction.Functional.OriginalPartialStarAttachment
