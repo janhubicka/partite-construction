@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.EHNOriginalPartialStrictIteratedRank
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.StrictRanked.first
+#print axioms StructuralRamsey.FunctionalPartite.EHN.StrictRanked.succ
+#print axioms StructuralRamsey.FunctionalPartite.EHN.StrictRanked.build
+#print axioms StructuralRamsey.FunctionalPartite.EHN.StrictRanked.sparsening_of_maximal_mixed_schema
