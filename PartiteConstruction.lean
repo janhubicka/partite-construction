@@ -411,3 +411,7 @@ import PartiteConstruction.Functional.EHNPowerCanonicalAnchoredRoot
 -- A fixed central power-core anchor suffices through star attachments:
 -- rebase each copied side over the current strict tree; no moving-target axiom.
 import PartiteConstruction.Functional.OriginalPartialStarAttachment
+
+-- A genuine closed-test overlap factors into the tested old HJ core
+-- whenever the attachment support was embedded in that original core.
+import PartiteConstruction.Functional.ClosedPullbackAnchorFactor

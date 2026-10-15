@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.ClosedPullbackAnchorFactor
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.EmbeddingPullback.common_factors_through_closed_anchor
