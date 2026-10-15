@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OriginalPartialExactCoreInitialPower
+
+#print axioms StructuralRamsey.Structure.HasExactCoreAnchoredOriginalPartialCompletions.of_core_EHN
+#print axioms StructuralRamsey.FunctionalPartite.Induced.power_relabel_exactCoreAnchoredOriginalPartial
