@@ -81,6 +81,48 @@ theorem base (Base : Structure L VB) (k : ℕ) :
   exact of_tree (TreeAmalgam.copy (Embedding.id Base)
     (fun b => ⟨b, rfl⟩)) k
 
+
+/-- The closed-test generator-rank invariant extends to EVERY finite
+GENERATED structure with a full embedding into the ambient structure,
+not only the same induced structure written on an explicit closed set.
+
+The embedded range is function-closed, and the full embedding is a
+bijection onto that range; generator rank is transported without adding
+vertices. This is the interface needed for the PURE-SIDE cases of the
+published native free-attachment induction. -/
+theorem completion_of_embedding
+    {Base : Structure L VB} {D : Structure L V}
+    {k : ℕ}
+    (hD : LocallyGeneratedOriginalPartialTreeCompletable Base D k)
+    {X : Type v} (E : Structure L X)
+    (hGen : E.GeneratedByAtMost k)
+    (e : Embedding E D) :
+    HasOriginalPartialTreeCompletion Base E := by
+  classical
+  let RangeSet : Set V := Set.range e
+  have hClosed : D.IsClosed RangeSet := e.range_isClosed
+  let Range : Structure L RangeSet := D.induce RangeSet hClosed
+  let inc : Embedding Range D := inclusion D RangeSet hClosed
+  have hrange : ∀ x : X, ∃ z : RangeSet, e x = inc z := by
+    intro x
+    exact ⟨⟨e x, ⟨x,rfl⟩⟩,rfl⟩
+  let eRange : Embedding E Range := e.factorThroughRange inc hrange
+  have heRange (x : X) : inc (eRange x) = e x :=
+    (Classical.choose_spec (hrange x)).symm
+  have hSurj : Function.Surjective eRange := by
+    intro y
+    obtain ⟨x, hx⟩ := y.2
+    refine ⟨x, ?_⟩
+    apply inc.injective
+    calc
+      inc (eRange x) = e x := heRange x
+      _ = inc y := hx
+  have hRank : Range.GeneratedByAtMost k :=
+    hGen.of_surjective_embedding eRange hSurj
+  have hTree : HasOriginalPartialTreeCompletion Base Range :=
+    hD RangeSet hClosed hRank
+  exact hTree.pullback eRange.isEHNHomomorphismEmbedding.toOriginalPartial
+
 end LocallyGeneratedOriginalPartialTreeCompletable
 
 /-- Every closed source test has an original-partial EHN map into the
