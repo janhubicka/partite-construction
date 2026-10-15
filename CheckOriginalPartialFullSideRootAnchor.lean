@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OriginalPartialFullSideRootAnchor
+
+#print axioms StructuralRamsey.Structure.HasOriginalPartialTreeExtensionCompletion.of_full_tree_rooted
+#print axioms StructuralRamsey.Structure.HasOriginalPartialTreeExtensionCompletion.of_full_side_in_base
