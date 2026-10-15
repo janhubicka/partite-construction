@@ -456,3 +456,7 @@ import PartiteConstruction.Functional.ProjectedGeneratorDichotomy
 -- obstruction and flexible common-root extension contrapositive.
 import PartiteConstruction.Iterated.OddCycleEdgeTreeObstruction
 import PartiteConstruction.Functional.OriginalPartialSharedRootObstruction
+
+-- Source-faithful strict functional B-tree witnesses with coherent
+-- projected partial A-copies and finite projected history diaries.
+import PartiteConstruction.Functional.OriginalPartialProjectedHistoryInvariant

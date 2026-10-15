@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.OriginalPartialProjectedHistoryInvariant
+
+#print axioms StructuralRamsey.Structure.FunctionalOriginalPartialProjectedHistoryTreeLike.mono
+#print axioms StructuralRamsey.Structure.FunctionalOriginalPartialProjectedHistoryTreeLike.of_full
+#print axioms StructuralRamsey.Structure.FunctionalOriginalPartialProjectedHistoryTreeLike.base
