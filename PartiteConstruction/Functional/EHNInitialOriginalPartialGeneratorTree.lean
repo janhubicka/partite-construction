@@ -68,6 +68,7 @@ theorem power_originalPartial_generatorRank
     (N : ℕ) (hN : 0 < N) (k : ℕ) :
     Structure.LocallyGeneratedOriginalPartialTreeCompletable
       Base (Induced.power R N).toStructure k := by
+  classical
   have hCore : Structure.HasOriginalPartialTreeCompletion
       Base (Induced.power R N).toStructure :=
     FunctionalPartite.Induced.power_hasOriginalPartialTreeCompletion
