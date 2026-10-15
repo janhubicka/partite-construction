@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OriginalPartialRankZero
+
+#print axioms StructuralRamsey.Structure.closed_rank_zero_originalPartial_completion
+#print axioms StructuralRamsey.Structure.closed_rank_zero_originalPartial_completion_of_arrow
