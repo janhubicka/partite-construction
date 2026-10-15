@@ -68,8 +68,6 @@ theorem IsAmbientWeakOriginalPartialHE.toOriginalPartialHE_of_closed
       g x = f ⟨eC x, heC x⟩ := hg x
       _ = f (e x) := by
         congr 1
-        apply Subtype.ext
-        rfl
 
 /-- Under singleton-valuedness an EHN original-partial projection
 satisfies the ambient-relative weak homomorphism-embedding interface
