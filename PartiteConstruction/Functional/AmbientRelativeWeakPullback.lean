@@ -58,7 +58,7 @@ theorem IsAmbientRelativeWeakHE.pullback_ehn_exact
         have hyT :
             g (pS y) ∈ Target.func F (g ∘ (pS ∘ x)) :=
           hg.1.1.2 F (pS ∘ x) (pS y) hyD
-        simpa only [Function.comp_assoc] using hyT
+        simpa only [Function.comp_assoc, Function.comp_apply] using hyT
     · intro F x hDef hAll
       have hFirst := hpS.1.2 F x hDef hAll
       have hFull :
@@ -92,7 +92,7 @@ theorem IsAmbientRelativeWeakHE.pullback_ehn_exact
             imageSet g ((D.weakInduce (p '' S)).func F (pS ∘ x)) :=
           ⟨pS a, hb, rfl⟩
         rw [hSecond] at hc
-        simpa only [Function.comp_assoc] using hc
+        simpa only [Function.comp_assoc, Function.comp_apply] using hc
       · intro hz
         have hzT :
             z ∈ Target.func F (g ∘ (pS ∘ x)) := by
