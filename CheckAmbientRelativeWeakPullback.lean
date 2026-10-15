@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.AmbientRelativeWeakPullback
+
+#print axioms StructuralRamsey.Structure.IsAmbientRelativeWeakHE.pullback_ehn_exact
+#print axioms StructuralRamsey.Structure.IsAmbientRelativeWeakHE.pullback_ehn_closed
