@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNNativeOriginalPartialOneGeneratedRoot
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.native_closedTest_oneGeneratedRoot_compatibleRelativeCompletions

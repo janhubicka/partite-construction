@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OneGeneratedRootRelativeCompletion
+
+#print axioms StructuralRamsey.Structure.irreducible_of_one_generated
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.compatibleOriginalPartialRelativeCompletions_one_generated_root
