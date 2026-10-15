@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNNativeOriginalPartialEmptyRoot
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.compatibleOriginalPartialRelativeCompletions_empty_root
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.native_closedTest_emptyRoot_compatibleRelativeCompletions
