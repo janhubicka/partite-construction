@@ -42,6 +42,28 @@ theorem maximal_projected_generator_rank_injective
   have hEq : G.card = n := by omega
   exact ⟨hEq, Finset.card_image_iff.mp (hImage.trans hEq.symm)⟩
 
+/-- The exact replacement for the published vertex-cardinality
+two-case induction in a genuine function language. Either the
+projected GENERATOR image has smaller cardinality, or all n source
+generators are distinct after projection.
+
+This says nothing about projection injectivity on the function-closed
+hull; that false strengthening would conceal the mixed hard-root
+obstruction. -/
+theorem projected_generator_rank_dichotomy
+    (G : Finset U) (p : U → V) (n : ℕ)
+    (hCard : G.card ≤ n) :
+    (G.image p).card < n ∨
+      (G.card = n ∧
+        ∀ x ∈ G, ∀ y ∈ G, p x = p y → x = y) := by
+  classical
+  have hImageBound : (G.image p).card ≤ n :=
+    (Finset.card_image_le).trans hCard
+  rcases lt_or_eq_of_le hImageBound with hDrop | hMax
+  · exact Or.inl hDrop
+  · exact Or.inr
+      (maximal_projected_generator_rank_injective G p n hCard hMax)
+
 /-- If two DISTINCT generators share a projected part, their
 projected generating set has strictly fewer than n members.
 Consequently the maximal-generator case excludes collisions
