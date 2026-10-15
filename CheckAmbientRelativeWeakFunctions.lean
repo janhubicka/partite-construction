@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.AmbientRelativeWeakFunctions
+
+#print axioms StructuralRamsey.Structure.IsAmbientRelativeWeakHomomorphism.toOriginalPartial_of_closed
+#print axioms StructuralRamsey.Structure.IsAmbientRelativeWeakHE.toOriginalPartialHE_of_closed
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.ambientRelativeWeakImage
+#print axioms StructuralRamsey.Structure.IsAmbientWeakOriginalPartialHE.toAmbientRelative
