@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNNativeOriginalPartialRankOneAll
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.sparsening_originalPartial_strict_one_all
