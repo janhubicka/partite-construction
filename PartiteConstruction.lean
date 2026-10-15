@@ -46,6 +46,7 @@ import PartiteConstruction.Functional.OrderedRecursive
 import PartiteConstruction.Structure.Order
 import PartiteConstruction.Structure.Relationalize
 import PartiteConstruction.Structure.WeakSubstructure
+import PartiteConstruction.Functional.WeakFunctionalFreeAmalgam
 import PartiteConstruction.Structure.UClosed
 import PartiteConstruction.Structure.Basic
 import PartiteConstruction.Structure.FreeAmalgam
