@@ -78,7 +78,7 @@ theorem left_generatedByAtMost_of_mixed_small_root
         apply Finset.mem_erase.mpr
         constructor
         · intro hx
-          exact hgOut ⟨x.1, hx.symm⟩
+          exact hgOut ⟨x.1, hx⟩
         · exact (Finset.mem_filter.mp x.2).2⟩
     have hphi : Function.Injective phi := by
       intro x y hxy
@@ -86,7 +86,11 @@ theorem left_generatedByAtMost_of_mixed_small_root
       apply iL.injective
       exact congrArg Subtype.val hxy
     have hle : leftGen.card ≤ (G.erase g).card := by
-      simpa [leftGen] using Fintype.card_le_of_injective phi hphi
+      calc
+        leftGen.card = Fintype.card ↥(↑leftGen : Set E) := by simp
+        _ ≤ Fintype.card ↥(↑(G.erase g) : Set C) :=
+          Fintype.card_le_of_injective phi hphi
+        _ = (G.erase g).card := by simp
     have hErase : (G.erase g).card = G.card - 1 :=
       Finset.card_erase_of_mem hgG
     have hPos : 0 < G.card := Finset.card_pos.mpr ⟨g, hgG⟩
