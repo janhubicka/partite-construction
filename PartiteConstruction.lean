@@ -415,3 +415,7 @@ import PartiteConstruction.Functional.OriginalPartialStarAttachment
 -- A genuine closed-test overlap factors into the tested old HJ core
 -- whenever the attachment support was embedded in that original core.
 import PartiteConstruction.Functional.ClosedPullbackAnchorFactor
+
+-- Exact native functional test: each shared separator factors through the
+-- intersection of that closed test with the preserved original HJ core.
+import PartiteConstruction.Functional.NativeClosedPullbackAnchorFactor
