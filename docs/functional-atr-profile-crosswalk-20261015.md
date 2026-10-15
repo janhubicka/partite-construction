@@ -125,6 +125,35 @@ closed-to-weak-image theorem. This is how weak substructures play
 the role of ordinary homomorphism-embeddings on U-closed pieces
 without demanding a false full reflection theorem.
 
+## 1a. The ambient-relative weak HE (precise closed-test bridge)
+
+A weak S may *appear* irreducible only because an original function
+output was forgotten. Requiring a full functional embedding of EVERY
+such intrinsic weak irreducible into a strict B-tree is false. The
+proper projection invariant instead protects **all full irreducible
+ambient pieces** E→C whose ranges lie in S. A full E→C has closed
+function-image range; its projection must be a full embedding into
+the weak target on p[S]. This is precisely the extra clause in
+
+`Structure.IsAmbientWeakOriginalPartialHE C S T f`.
+
+New theorems (PR #319, CI pending):
+
+* `IsEHNHomomorphismEmbedding.ambientWeakImage_singleton`:
+  for every weak S, p:C→D induces this ambient-relative weak
+  interface to D|ᵂp[S]. No generated hull or target-domain reflection.
+* `IsAmbientWeakOriginalPartialHE.toOriginalPartialHE_of_closed`:
+  when S is genuinely function-closed in C, this *same* interface
+  is a usual original-partial **homomorphism-embedding** of
+  the full induced function structure C|S into T.
+
+This realizes the intended phrase “weak substructures do what
+normal homomorphism-embeddings do on U-closed structures,” without
+making the demonstrably false assertion that every weak test should
+fully embed into a strict B-tree. It remains necessary to construct
+actual strict B-tree witnesses preserving this predicate through the
+mixed Hales–Jewett Picture attachment.
+
 ## 2. Published two-case induction, directly in functions
 
 Fix B irreducible and closed, a genuine closed Ramsey control D
