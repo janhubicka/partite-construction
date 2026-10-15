@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNIrreducibleRootOriginalPartialCompletion
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTest_originalPartial_irreducibleRoot_of_sideRanks
