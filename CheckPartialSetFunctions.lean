@@ -1,0 +1,10 @@
+import PartiteConstruction.Structure.PartialSetFunctions
+
+#print axioms StructuralRamsey.PartialSetStructure.IsDomainReflectingHomomorphism.toOriginalPartial
+#print axioms StructuralRamsey.PartialSetStructure.weakValue_none
+#print axioms StructuralRamsey.PartialSetStructure.weakValue_some_empty
+#print axioms StructuralRamsey.PartialSetStructure.weakValue_nonempty_disjoint
+#print axioms StructuralRamsey.PartialSetStructure.example_distinct
+#print axioms StructuralRamsey.PartialSetStructure.example_collapse_equal
+#print axioms StructuralRamsey.PartialSetStructure.undefined_to_definedEmpty_allowed
+#print axioms StructuralRamsey.PartialSetStructure.definedEmpty_to_undefined_forbidden
