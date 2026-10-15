@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.AmbientRelativeOneCopyCore
+
+#print axioms StructuralRamsey.Structure.Embedding.ambientRelativeWeakRestriction
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.ambientRelativeWeak_to_embedding
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.ambientRelativeWeak_oneCopyTree
