@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNPowerCanonicalRootOneSided
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTest_power_core_root_label_eq_selected_part
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTest_originalPartial_strictTree_of_power_and_canonical_copy_relative
