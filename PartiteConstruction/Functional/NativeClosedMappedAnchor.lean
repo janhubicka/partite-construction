@@ -126,8 +126,7 @@ theorem closedTestPullback_common_in_original_core_with_map
       (∀ x : T,
         pb.leftMap ((Structure.inclusion pb.left T hT) x) =
           coreIn (toOriginal x)) := by
-  exact Structure.IsFreeAmalgam.EmbeddingPullback
-    .common_factors_through_closed_anchor_with_map
+  exact Structure.IsFreeAmalgam.EmbeddingPullback.common_factors_through_closed_anchor_with_map
     (unit_isFreeAmalgam_full B S hS D f)
     (Structure.inclusion (UnitAttachD B S hS D f).toStructure Test hTest)
     (closedTestPullback B S hS D f Test hTest)
