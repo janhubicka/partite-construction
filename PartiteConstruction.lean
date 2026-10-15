@@ -399,3 +399,7 @@ import PartiteConstruction.Functional.EHNMaximalMixedHardRootReduction
 import PartiteConstruction.Functional.EHNOriginalPartialHardRootSchema
 import PartiteConstruction.Functional.EHNStrictIteratedNoACopy
 import PartiteConstruction.Functional.MixedExteriorRelativeWitnesses
+
+-- Sharpest current conditional n-pass theorem: only roots requiring
+-- >=2 generators remain; A->B initialization is optional.
+import PartiteConstruction.Functional.EHNOriginalPartialHardRootNoACopy
