@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.MaximalHardRootFiveCycleFixture
+
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.oldEdge_distinct_parts
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.coreEdge_distinct_parts
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.support_closed
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.supportMap_part
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.supportPartiteEmbedding

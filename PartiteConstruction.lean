@@ -456,3 +456,7 @@ import PartiteConstruction.Functional.ProjectedGeneratorDichotomy
 -- obstruction and flexible common-root extension contrapositive.
 import PartiteConstruction.Iterated.OddCycleEdgeTreeObstruction
 import PartiteConstruction.Functional.OriginalPartialSharedRootObstruction
+
+-- Concrete function-free EHN forest carriers and their full selected
+-- A-support partite embedding for the maximal C5 hard-root audit.
+import PartiteConstruction.Functional.MaximalHardRootFiveCycleFixture
