@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OriginalPartialRelativeAppend
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.originalPartialTreeExtension_append
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.originalPartialTreeExtension_append_exists
