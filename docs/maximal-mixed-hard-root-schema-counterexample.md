@@ -33,6 +33,26 @@ The *arbitrary stage* quantification is too strong. It does not record
 the additional projected-A-history / Hales--Jewett geometry of the
 actual iterated Picture.
 
+**Optional ordered strengthening.** The same finite obstruction can
+be expanded by a second binary order-relation symbol: make `A=B`
+a single graph edge oriented from its first to its second vertex;
+orient each Old/Core edge by the increasing **control-part** label
+but add no order relation between vertices in separate edge-copy
+pieces. Let `D` carry the complete graph and the strict total
+order `0<1<2<3<4`. Then `A=B` has only one self-embedding,
+so any `D` containing one ordered edge already satisfies the
+trivial Ramsey arrow `D → (B)^A_r` for every finite `r`.
+All source pieces remain strict trees of the expanded two-vertex
+Base and the five-cycle graph obstruction is unchanged. Take
+`K` to be the free-amalgamation class of **all** structures
+of this expanded relational signature, not the subclass requiring
+the order to be globally total on every intermediate stage.
+
+This optional refinement is a mathematical observation, not part of
+the current Lean-certified graph obstruction. It shows that the
+failure of the universal stage schema is not attributable merely
+to a lack of Ramsey witnesses for unordered `A=B=K₂`.
+
 ## Counterexample: two forest stages and a five-cycle
 
 Use the function-free relational language of simple undirected
