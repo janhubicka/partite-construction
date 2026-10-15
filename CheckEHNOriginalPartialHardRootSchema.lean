@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNOriginalPartialHardRootSchema
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.StrictRanked.MaximalMixedSchemaFromTwo.of_hardRoot
+#print axioms StructuralRamsey.FunctionalPartite.EHN.StrictRanked.sparsening_of_hard_root_schema_from_two
