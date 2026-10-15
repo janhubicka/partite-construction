@@ -59,9 +59,12 @@ theorem EmbeddingPullback.left_original_anchor_exact_range
   · rintro ⟨x, hx⟩
     have hxMem : pb.leftMap ((inclusion pb.left T hT) x) ∈ Set.range j := by
       change pb.leftMap x.1 ∈ Set.range j
-      have hm : x.1 ∈ T := x.2
-      rw [hExact] at hm
-      exact hm
+      have hSet : ∀ b : pb.Left,
+          b ∈ T ↔ pb.leftMap b ∈ Set.range j := by
+        intro b
+        rw [hExact]
+        rfl
+      exact (hSet x.1).mp x.2
     obtain ⟨a, ha⟩ := hxMem
     refine ⟨a, ?_⟩
     calc
@@ -97,7 +100,7 @@ theorem EmbeddingPullback.left_original_anchor_exact_range
         rw [hExact]
         refine ⟨a, ?_⟩
         calc
-          j a = sE d := hdL.symm
+          j a = sE d := hdL
           _ = sE (pb.commonMap x) := congrArg sE hdx.symm
           _ = pb.leftMap (pb.toLeft x) := (pb.common_left x).symm
       refine ⟨⟨pb.toLeft x, hxT⟩, ?_⟩
