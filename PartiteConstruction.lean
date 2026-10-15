@@ -423,3 +423,7 @@ import PartiteConstruction.Functional.NativeClosedPullbackAnchorFactor
 -- Exact mapped intersection of native closed tests with the original HJ core,
 -- and anchored strict original-partial relative Picture star step.
 import PartiteConstruction.Functional.NativeClosedMappedAnchor
+
+-- Every native mixed closed-root label agrees with the ORIGINAL
+-- selected support placement throughout star attachments.
+import PartiteConstruction.Functional.NativeCanonicalSupportStarStep
