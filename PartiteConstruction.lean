@@ -456,3 +456,7 @@ import PartiteConstruction.Functional.ProjectedGeneratorDichotomy
 -- obstruction and flexible common-root extension contrapositive.
 import PartiteConstruction.Iterated.OddCycleEdgeTreeObstruction
 import PartiteConstruction.Functional.OriginalPartialSharedRootObstruction
+
+-- Exact five-vertex cycle test admits no homomorphism-embedding
+-- into any strict tree of copies of the irreducible graph K2.
+import PartiteConstruction.Iterated.ExactFiveCycleEdgeTreeObstruction
