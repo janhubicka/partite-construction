@@ -136,6 +136,6 @@ theorem sparsening_of_maximal_mixed_schema_from_two
       LooseTreeAmalgam Base W C := by
   exact sparsening_of_maximal_mixed_schema
     K hK A Base D hKA hKB hBIrr hPos eAB
-    κ hArrow hMixed.of_from_two n hn
+    κ hArrow (MaximalMixedSchema.of_from_two hMixed) n hn
 
 end StructuralRamsey.FunctionalPartite.EHN.StrictRanked
