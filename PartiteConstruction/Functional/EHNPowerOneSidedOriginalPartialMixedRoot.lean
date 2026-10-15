@@ -42,9 +42,9 @@ theorem power_relabel_originalPartial_EHN_to_base
     (Base : Structure L VB)
     (eAB : Structure.Embedding A Base)
     (N : ℕ) (hN : 0 < N) :
-    ((power R N).relabel alpha.toFunctionEmbedding).toStructure
-      .IsEHNHomomorphismEmbedding Base
-        (eAB ∘ (power R N).part) := by
+    Structure.IsEHNHomomorphismEmbedding
+      (((power R N).relabel alpha.toFunctionEmbedding).toStructure)
+      Base (eAB ∘ (power R N).part) := by
   exact eAB.isEHNHomomorphismEmbedding.comp
     (power_weaklyPartiteOver hR hN)
 
@@ -100,9 +100,9 @@ theorem closedTest_originalPartial_strictTree_of_powerCore_and_copy_relative
         (B.weak_support_closed Douter hB.1 A alpha)
         ((Induced.power R N).relabel alpha.toFunctionEmbedding)
         f).toStructure.induce Test hTest) := by
-  have hCore : ((Induced.power R N).relabel alpha.toFunctionEmbedding)
-      .toStructure.IsEHNHomomorphismEmbedding A
-        (Induced.power R N).part :=
+  have hCore : Structure.IsEHNHomomorphismEmbedding
+      (((Induced.power R N).relabel alpha.toFunctionEmbedding).toStructure)
+      A (Induced.power R N).part :=
     Induced.power_weaklyPartiteOver hR hN
   exact closedTest_originalPartial_strictTree_of_selected_core_and_copy_relative
     B Douter hB A Base eAB alpha
