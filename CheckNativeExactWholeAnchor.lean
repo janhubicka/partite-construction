@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.NativeExactWholeAnchor
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.EmbeddingPullback.left_original_anchor_exact_range
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTest_originalPartial_star_step_exact_whole_anchor

@@ -427,3 +427,7 @@ import PartiteConstruction.Functional.NativeClosedMappedAnchor
 -- Every native mixed closed-root label agrees with the ORIGINAL
 -- selected support placement throughout star attachments.
 import PartiteConstruction.Functional.NativeCanonicalSupportStarStep
+
+-- The original HJ anchor in each attached closed test is precisely the
+-- intersection with the original power core, with no extra closure vertices.
+import PartiteConstruction.Functional.NativeExactWholeAnchor
