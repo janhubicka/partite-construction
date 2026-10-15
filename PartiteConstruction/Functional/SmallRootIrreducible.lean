@@ -60,6 +60,7 @@ theorem irreducible_of_card_le_one
     Root.Irreducible := by
   letI : Subsingleton H :=
     (Finite.card_le_one_iff_subsingleton).mp hCard
-  exact irreducible_of_subsingleton Root
+  intro H' E' F' C' Dsrc Esrc Fsrc Csrc sE sF iE iF hFree e
+  exact (irreducible_of_subsingleton Root) hFree e
 
 end StructuralRamsey.Structure
