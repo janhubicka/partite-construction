@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNNativeOriginalPartialMixedAttachmentReduction
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.nativeAttach_generatorRank_of_mixed_relative_extensions
