@@ -461,6 +461,7 @@ import PartiteConstruction.Functional.OriginalPartialSharedRootObstruction
 -- projected partial A-copies and finite projected history diaries.
 import PartiteConstruction.Functional.OriginalPartialProjectedHistoryInvariant
 import PartiteConstruction.Functional.AmbientACopyOriginalPartialHistory
+import PartiteConstruction.Functional.WeakAmbientHistoryPullback
 
 -- Distinguish undefined operations from defined-empty set-valued values.
 -- New conservative semantics API; existing Structure is unchanged.
