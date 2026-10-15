@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OriginalPartialAnchorPresentation
+
+#print axioms StructuralRamsey.Structure.HasOriginalPartialTreeExtensionCompletion.reparametrize_root
+#print axioms StructuralRamsey.Structure.HasOriginalPartialTreeExtensionCompletion.of_exact_anchor_range

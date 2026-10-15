@@ -435,3 +435,7 @@ import PartiteConstruction.Functional.NativeExactWholeAnchor
 -- A Picture star carries an invariant depending on the precise ORIGINAL
 -- Hales--Jewett core embedding, not just on the intermediate stage.
 import PartiteConstruction.Functional.EHNAnchoredPictureStar
+
+-- Transfer a strict original-partial relative completion between FULL
+-- presentations of the same exact original-core tested intersection.
+import PartiteConstruction.Functional.OriginalPartialAnchorPresentation
