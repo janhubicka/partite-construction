@@ -43,6 +43,7 @@ theorem LocallyGeneratedOriginalPartialTreeCompletable.pullback_embedding
     (hOld : LocallyGeneratedOriginalPartialTreeCompletable Base Old n)
     (e : Embedding New Old) :
     LocallyGeneratedOriginalPartialTreeCompletable Base New n := by
+  classical
   intro S hS hGen
   let inc : Embedding (New.induce S hS) New :=
     inclusion New S hS
