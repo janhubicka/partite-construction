@@ -451,3 +451,8 @@ import PartiteConstruction.Functional.OriginalPartialExactCoreInitialPower
 -- The published two-case functional iteration must count projected
 -- GENERATORS; maximality yields injection only on those generators.
 import PartiteConstruction.Functional.ProjectedGeneratorDichotomy
+
+-- Adversarial maximal mixed-root audit: the explicit graph odd-cycle
+-- obstruction and flexible common-root extension contrapositive.
+import PartiteConstruction.Iterated.OddCycleEdgeTreeObstruction
+import PartiteConstruction.Functional.OriginalPartialSharedRootObstruction
