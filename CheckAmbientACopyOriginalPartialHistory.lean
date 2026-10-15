@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.AmbientACopyOriginalPartialHistory
+
+#print axioms StructuralRamsey.Structure.FunctionalAmbientACopyHistoryTreeLike.mono
+#print axioms StructuralRamsey.Structure.FunctionalAmbientACopyHistoryTreeLike.of_tree
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initial_ambientACopy_originalPartial_history
