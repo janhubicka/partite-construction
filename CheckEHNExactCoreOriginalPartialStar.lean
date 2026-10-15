@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNExactCoreOriginalPartialStar
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.attach_preserves_exactCoreOriginalPartial
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachAll_exactCoreOriginalPartial
