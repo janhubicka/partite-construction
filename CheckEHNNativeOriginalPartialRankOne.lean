@@ -1,0 +1,8 @@
+import PartiteConstruction.Functional.EHNNativeOriginalPartialRankOne
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.nativeClosedTest_rankOne_pure
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.nativeMixed_rankOne_vacuous
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.nativeMaximalMixed_rankOne_vacuous
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.nativeAttach_rankOne_strict
+#print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_originalPartial_generatorRank_one
+#print axioms StructuralRamsey.FunctionalPartite.EHN.sparsening_originalPartial_strict_one
