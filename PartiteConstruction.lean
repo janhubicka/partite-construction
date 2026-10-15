@@ -460,3 +460,7 @@ import PartiteConstruction.Functional.OriginalPartialSharedRootObstruction
 -- Source-faithful strict functional B-tree witnesses with coherent
 -- projected partial A-copies and finite projected history diaries.
 import PartiteConstruction.Functional.OriginalPartialProjectedHistoryInvariant
+
+-- Genuine strict functional B-trees and the actual initial EHN Picture
+-- satisfy the new partial projected A-copy and history invariant.
+import PartiteConstruction.Functional.OriginalPartialProjectedHistoryInitial
