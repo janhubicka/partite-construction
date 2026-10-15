@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EmptyRootGeneratorBudget
+
+#print axioms StructuralRamsey.Structure.irreducible_of_isEmpty
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.sides_generatedByAtMost_of_empty_root
