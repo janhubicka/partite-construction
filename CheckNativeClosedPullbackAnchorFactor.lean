@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.NativeClosedPullbackAnchorFactor
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTestPullback_common_in_original_core
