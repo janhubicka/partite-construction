@@ -1,0 +1,5 @@
+import PartiteConstruction.Structure.PartialSetFunctionsDomainGraph
+
+#print axioms StructuralRamsey.PartialSetStructure.IsOriginalPartialHomomorphism.to_domainGraph_hom
+#print axioms StructuralRamsey.PartialSetStructure.example_domain_distinguishes
+#print axioms StructuralRamsey.PartialSetStructure.example_no_output
