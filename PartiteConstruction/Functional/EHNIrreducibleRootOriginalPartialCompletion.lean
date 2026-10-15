@@ -86,6 +86,7 @@ theorem closedTest_originalPartial_irreducibleRoot_of_sideRanks
       ((UnitAttachD B (B.support alpha.toFunctionEmbedding)
         (B.weak_support_closed Douter hB.1 A alpha)
         Dsys f).toStructure.induce Test hTest) := by
+  classical
   let Supp := B.support alpha.toFunctionEmbedding
   let hSupp := B.weak_support_closed Douter hB.1 A alpha
   let pb := closedTestPullback B Supp hSupp Dsys f Test hTest
