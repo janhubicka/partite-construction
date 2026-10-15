@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OneGeneratorFreeAmalgam
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.one_generated_source_contained_in_side
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.one_generated_no_mixed
