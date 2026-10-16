@@ -116,4 +116,104 @@ theorem setRespectsProjectedHistory_glue_crossKernel
       rw [hpR a.1, hpR b.1]
       exact hHistR K hK a b hab
 
+
+variable {G WL WR Z : Type v}
+
+/-- In a genuine FULL functional TARGET free amalgam, a cross-side
+equality of witness values must factor through its common full root.
+If both side maps carry a prescribed projected label on every point
+mapping into that target root, then such an equality necessarily
+identifies points of the SAME projected source part.
+
+This root-label factoring requirement is weaker than demanding
+global injectivity or a full closed root embedding; it must still
+be constructed in the maximal mixed functional Picture step. -/
+theorem crossKernel_of_targetRootProjection
+    {Start : Structure L G}
+    {TargetL : Structure L WL} {TargetR : Structure L WR}
+    {Target : Structure L Z}
+    {sTL : Embedding Start TargetL}
+    {sTR : Embedding Start TargetR}
+    {jTL : Embedding TargetL Target}
+    {jTR : Embedding TargetR Target}
+    (hTgt : IsFreeAmalgam sTL sTR jTL jTR)
+    {XLeft XRight : Type v}
+    (fL : XLeft → WL) (fR : XRight → WR)
+    (pL : XLeft → P) (pR : XRight → P)
+    (pG : G → P)
+    (hRootL : ∀ a g, fL a = sTL g → pL a = pG g)
+    (hRootR : ∀ b g, fR b = sTR g → pR b = pG g)
+    (a : XLeft) (b : XRight)
+    (hab : jTL (fL a) = jTR (fR b)) :
+    pL a = pR b := by
+  obtain ⟨g, hLeft, hRight⟩ :=
+    (hTgt.overlap (fL a) (fR b)).mp hab
+  exact (hRootL a g hLeft).trans (hRootR b g hRight).symm
+
+/-- Global projected-history preservation when the strict target is
+built by FREE merging two full-functional target extensions over
+one Start and their maps factor their projected labels through the
+common target root.
+
+The root-label-factor assumptions are explicit and NOT inferred from
+unrelated predecessor tree completions. This is the exact target
+history preservation needed after choosing coherent strict relative
+side witnesses; no closure hull is used on the source weak test. -/
+theorem setRespectsProjectedHistory_glue_targetRoot
+    {Root : Structure L H}
+    {Left : Structure L E} {Right : Structure L F}
+    {Whole : Structure L C}
+    {sL : Embedding Root Left} {sR : Embedding Root Right}
+    {iL : Embedding Left Whole} {iR : Embedding Right Whole}
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (S : Set C)
+    (pWhole : C → P) (pL : E → P) (pR : F → P)
+    (hpL : ∀ a, pWhole (iL a) = pL a)
+    (hpR : ∀ b, pWhole (iR b) = pR b)
+    {Start : Structure L G}
+    {TargetL : Structure L WL} {TargetR : Structure L WR}
+    {Target : Structure L Z}
+    {sTL : Embedding Start TargetL}
+    {sTR : Embedding Start TargetR}
+    {jTL : Embedding TargetL Target}
+    {jTR : Embedding TargetR Target}
+    (hTgt : IsFreeAmalgam sTL sTR jTL jTR)
+    (f : S → Z)
+    (fL : (iL ⁻¹' S) → WL)
+    (fR : (iR ⁻¹' S) → WR)
+    (hfL : ∀ a : iL ⁻¹' S,
+      f ⟨iL a.1, a.2⟩ = jTL (fL a))
+    (hfR : ∀ b : iR ⁻¹' S,
+      f ⟨iR b.1, b.2⟩ = jTR (fR b))
+    (history : List (Set P))
+    (hHistL : SetRespectsProjectedHistory pL
+      (iL ⁻¹' S) fL history)
+    (hHistR : SetRespectsProjectedHistory pR
+      (iR ⁻¹' S) fR history)
+    (pG : G → P)
+    (hRootL : ∀ (a : iL ⁻¹' S) g,
+      fL a = sTL g → pL a.1 = pG g)
+    (hRootR : ∀ (b : iR ⁻¹' S) g,
+      fR b = sTR g → pR b.1 = pG g) :
+    SetRespectsProjectedHistory pWhole S f history := by
+  have hHistL' : SetRespectsProjectedHistory pL
+      (iL ⁻¹' S) (jTL ∘ fL) history := by
+    intro K hK a b hab
+    exact hHistL K hK a b (jTL.injective hab)
+  have hHistR' : SetRespectsProjectedHistory pR
+      (iR ⁻¹' S) (jTR ∘ fR) history := by
+    intro K hK a b hab
+    exact hHistR K hK a b (jTR.injective hab)
+  have hCross : ∀ (a : iL ⁻¹' S) (b : iR ⁻¹' S),
+      (jTL ∘ fL) a = (jTR ∘ fR) b →
+      pL a.1 = pR b.1 := by
+    intro a b hab
+    exact hTgt.crossKernel_of_targetRootProjection
+      fL fR (fun a => pL a.1) (fun b => pR b.1)
+      pG hRootL hRootR a b hab
+  exact hSrc.setRespectsProjectedHistory_glue_crossKernel
+    S pWhole pL pR hpL hpR f
+    (jTL ∘ fL) (jTR ∘ fR) hfL hfR
+    history hHistL' hHistR' hCross
+
 end StructuralRamsey.Structure.IsFreeAmalgam
