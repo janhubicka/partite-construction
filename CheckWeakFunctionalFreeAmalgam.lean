@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WeakFunctionalFreeAmalgam
+
+#print axioms StructuralRamsey.Structure.Embedding.weakRestrictExact
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakInduce_withMaps
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakInduce
