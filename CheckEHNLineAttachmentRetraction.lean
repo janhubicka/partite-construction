@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.EHNLineAttachmentRetraction
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.ehn_retract_right
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_parameter_coordinate_EHN_retraction
+#print axioms StructuralRamsey.FunctionalPartite.EHN.lineUnitAttachment_EHN_retraction
