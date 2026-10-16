@@ -1,0 +1,3 @@
+import PartiteConstruction.Structure.PartialSetFunctionsTransversal
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.agreement_isClosed
