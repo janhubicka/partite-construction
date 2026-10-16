@@ -55,11 +55,11 @@ theorem Stage.realizedACopy_extends_controlBase
     (A : Structure L U) (Base : Structure L VB)
     (hCover : Old.ProjectedCover Base)
     (hA : A.Irreducible)
-    (alpha : Embedding A D)
-    (eA : Embedding A Old.system.toStructure)
+    (alpha : Structure.Embedding A D)
+    (eA : Structure.Embedding A Old.system.toStructure)
     (hAlpha : ∀ a, Old.system.part (eA a) = alpha a) :
-    ∃ (beta : Embedding Base D)
-      (eAB : Embedding A Base),
+    ∃ (beta : Structure.Embedding Base D)
+      (eAB : Structure.Embedding A Base),
       ∀ a, beta (eAB a) = alpha a := by
   classical
   obtain ⟨beta, hb⟩ := hCover A hA eA
@@ -67,7 +67,7 @@ theorem Stage.realizedACopy_extends_controlBase
   have hFactor : ∀ a, alpha a = beta (f a) := by
     intro a
     exact (hAlpha a).symm.trans (hf a)
-  let eAB : Embedding A Base :=
+  let eAB : Structure.Embedding A Base :=
     alpha.factorWithMap beta f hFactor
   refine ⟨beta, eAB, ?_⟩
   intro a
@@ -81,19 +81,19 @@ closed; its projection is the prescribed A-copy. We do not interpret
 an arbitrary weak partial A-copy as a letter. -/
 theorem Stage.nonempty_letters_iff_realizedACopy
     (Old : Stage K D)
-    (A : Structure L U) (alpha : Embedding A D) :
+    (A : Structure L U) (alpha : Structure.Embedding A D) :
     Nonempty (FunctionalPartite.Embedding
       (transversal A)
       (Old.system.weakRestrict D Old.isPartite.1 A alpha)) ↔
-    ∃ eA : Embedding A Old.system.toStructure,
+    ∃ eA : Structure.Embedding A Old.system.toStructure,
       ∀ a, Old.system.part (eA a) = alpha a := by
   classical
   constructor
   · rintro ⟨letter⟩
     let R := Old.system.weakRestrict D Old.isPartite.1 A alpha
-    let inc : Embedding R.toStructure Old.system.toStructure :=
+    let inc : Structure.Embedding R.toStructure Old.system.toStructure :=
       Old.system.weakRestrictInclusion D Old.isPartite.1 A alpha
-    let eA : Embedding A Old.system.toStructure :=
+    let eA : Structure.Embedding A Old.system.toStructure :=
       inc.comp letter.toEmbedding
     refine ⟨eA, ?_⟩
     intro a
@@ -116,12 +116,12 @@ theorem Stage.nonempty_letters_extend_controlBase
     (A : Structure L U) (Base : Structure L VB)
     (hCover : Old.ProjectedCover Base)
     (hA : A.Irreducible)
-    (alpha : Embedding A D)
+    (alpha : Structure.Embedding A D)
     (hLetters : Nonempty (FunctionalPartite.Embedding
       (transversal A)
       (Old.system.weakRestrict D Old.isPartite.1 A alpha))) :
-    ∃ (beta : Embedding Base D)
-      (eAB : Embedding A Base),
+    ∃ (beta : Structure.Embedding Base D)
+      (eAB : Structure.Embedding A Base),
       ∀ a, beta (eAB a) = alpha a := by
   obtain ⟨eA, hAlpha⟩ :=
     (Old.nonempty_letters_iff_realizedACopy A alpha).mp hLetters
@@ -144,14 +144,14 @@ theorem Stage.nonempty_letters_labelledOneCopyCore
     (hCover : Old.ProjectedCover Base)
     (hA : A.Irreducible)
     (hBase : Base.Irreducible)
-    (alpha : Embedding A D)
+    (alpha : Structure.Embedding A D)
     (hLetters : Nonempty (FunctionalPartite.Embedding
       (transversal A)
       (Old.system.weakRestrict D Old.isPartite.1 A alpha)))
     (C : Structure L W) (p : W → U)
     (hp : C.IsEHNHomomorphismEmbedding A p)
     (S : Set W) (history : List (Set P)) :
-    ∃ (beta : Embedding Base D) (eAB : Embedding A Base),
+    ∃ (beta : Structure.Embedding Base D) (eAB : Structure.Embedding A Base),
       (∀ a, beta (eAB a) = alpha a) ∧
       ∃ f : S → VB,
         TreeAmalgam Base VB Base ∧
@@ -186,14 +186,14 @@ theorem Stage.activePower_labelledWeakCore
     (A : Structure L U) (Base : Structure L VB)
     (hCover : Old.ProjectedCover Base)
     (hA : A.Irreducible) (hBase : Base.Irreducible)
-    (alpha : Embedding A D)
+    (alpha : Structure.Embedding A D)
     (hLetters : Nonempty (FunctionalPartite.Embedding
       (transversal A)
       (Old.system.weakRestrict D Old.isPartite.1 A alpha)))
     (N : ℕ) (hN : 0 < N) :
     let R := Old.system.weakRestrict D Old.isPartite.1 A alpha
     let E := Induced.power R N
-    ∃ (beta : Embedding Base D) (eAB : Embedding A Base),
+    ∃ (beta : Structure.Embedding Base D) (eAB : Structure.Embedding A Base),
       (∀ a, beta (eAB a) = alpha a) ∧
       (∀ F (x : Fin (L.funcArity F) → Induced.Vertex R N),
         Set.InjOn E.part (E.func F x)) ∧
