@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.AmbientACopyIntersectionsGlue
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.ambientACopyIntersections_glue
