@@ -465,6 +465,7 @@ import PartiteConstruction.Functional.AmbientACopyOriginalPartialHistory
 import PartiteConstruction.Functional.AmbientRelativeWeakPullback
 import PartiteConstruction.Functional.AmbientRelativeOneCopyCore
 import PartiteConstruction.Functional.WeakTransversalTests
+import PartiteConstruction.Functional.NativePowerTransversalTree
 
 -- Distinguish undefined operations from defined-empty set-valued values.
 -- New conservative semantics API; existing Structure is unchanged.
