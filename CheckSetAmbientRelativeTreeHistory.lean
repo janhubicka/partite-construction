@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.SetAmbientRelativeTreeHistory
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.closed_test
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.pullback_ehn
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.pullback_closed_ehn
