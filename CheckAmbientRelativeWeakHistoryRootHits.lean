@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.AmbientRelativeWeakHistoryRootHits
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.ambientRelativeWeakTreeHistory_glue_isolatedRootHits
