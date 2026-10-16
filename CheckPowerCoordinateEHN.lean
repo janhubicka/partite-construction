@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PowerCoordinateEHN
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.coordinateEHN
