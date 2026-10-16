@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNAttachmentShadowExtensionCriterion
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.unitAttachment_EHN_shadow_of_compatible
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.unitAttachment_EHN_shadow_partCompatible
