@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNLineAttachmentStrictWeakLocality
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.lineUnitAttachment_preserves_strictWeakHistoryAtMost
