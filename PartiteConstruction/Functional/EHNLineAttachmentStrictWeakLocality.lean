@@ -74,16 +74,17 @@ theorem lineUnitAttachment_preserves_strictWeakHistoryAtMost
         (Attachment.UnitAttachD B S hS Core f).part n := by
   classical
   dsimp only
+  let S : Set V := B.support alpha.toFunctionEmbedding
+  let hS : B.toStructure.IsClosed S :=
+    B.weak_support_closed D hB.1 A alpha
+  let R := B.weakRestrict D hB.1 A alpha
+  let E := Induced.power R N
+  let Core := E.relabel alpha.toFunctionEmbedding
   obtain ⟨f, q, hq, _hqCore, _hqCopy, hPart⟩ :=
     lineUnitAttachment_EHN_retraction B D hB A alpha N W i hi
   refine ⟨f, ?_⟩
   exact SetAmbientRelativeWeakTreeWitness.AtMost.pullback_ehn_commutingParts
-    (Attachment.UnitAttachD B
-      (B.support alpha.toFunctionEmbedding)
-      (B.weak_support_closed D hB.1 A alpha)
-      (Induced.power
-        (B.weakRestrict D hB.1 A alpha) N).relabel
-        alpha.toFunctionEmbedding f).part
+    (Attachment.UnitAttachD B S hS Core f).part
     B.part q hq (fun z => (hPart z).symm)
     hTestA n hOld
 
