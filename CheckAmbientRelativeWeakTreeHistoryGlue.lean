@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.AmbientRelativeWeakTreeHistoryGlue
+
+#print axioms StructuralRamsey.Structure.SetAmbientACopyIntersections.postcomp_full
+#print axioms StructuralRamsey.Structure.SetRespectsProjectedHistory.postcomp_full
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.ambientRelativeWeakTreeHistory_glue_sharedRoot
