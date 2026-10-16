@@ -90,8 +90,6 @@ namespace StructuralRamsey.FunctionalPartite.Attachment
 
 open StructuralRamsey.Structure
 
-noncomputable section
-
 universe u v
 variable {L : Language.{u}} {P V W : Type v}
 
@@ -115,15 +113,15 @@ theorem unit_weakTest_decompose_transversal
       (unitCopyEmbedding B S hS D f) ⁻¹' Test
     let rootSet : Set S :=
       ((unitCoreEmbedding B S hS D f).comp f.toEmbedding) ⁻¹' Test
-    ∃ (mCore : Embedding
+    ∃ (mCore : Structure.Embedding
         ((B.induce S hS).toStructure.weakInduce rootSet)
         (D.toStructure.weakInduce coreSet))
-      (mCopy : Embedding
+      (mCopy : Structure.Embedding
         ((B.induce S hS).toStructure.weakInduce rootSet)
         (B.toStructure.weakInduce copySet))
-      (jCore : Embedding (D.toStructure.weakInduce coreSet)
+      (jCore : Structure.Embedding (D.toStructure.weakInduce coreSet)
         ((UnitAttachD B S hS D f).toStructure.weakInduce Test))
-      (jCopy : Embedding (B.toStructure.weakInduce copySet)
+      (jCopy : Structure.Embedding (B.toStructure.weakInduce copySet)
         ((UnitAttachD B S hS D f).toStructure.weakInduce Test)),
       IsFreeAmalgam mCore mCopy jCore jCopy ∧
       (∀ x : coreSet, (jCore x).1 = unitCoreEmbedding B S hS D f x.1) ∧
