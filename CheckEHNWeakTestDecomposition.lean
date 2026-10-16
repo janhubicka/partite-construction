@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.EHNWeakTestDecomposition
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakLeftPreimage_card_lt
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakRightPreimage_card_lt
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_weakTest_decompose_transversal
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_weakTest_corePreimage_card_lt
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_weakTest_copyPreimage_card_lt
