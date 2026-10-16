@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.AmbientRelativeWeakTreeGlue
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.ambientRelativeWeakTree_glue_sharedRoot
