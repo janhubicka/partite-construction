@@ -177,7 +177,7 @@ theorem ambientRelativeWeakHE_glue
           have hxi : x i = (⟨iL (a i), haS i⟩ : S) := by
             apply Subtype.ext
             exact congrFun hxa i
-          change f (x i) = _
+          change f (x i) = fL (xs i)
           rw [hxi]
           exact hfL ⟨a i, haS i⟩
         rw [hEq]
@@ -194,7 +194,7 @@ theorem ambientRelativeWeakHE_glue
           have hxi : x i = (⟨iR (a i), haS i⟩ : S) := by
             apply Subtype.ext
             exact congrFun hxa i
-          change f (x i) = _
+          change f (x i) = fR (xs i)
           rw [hxi]
           exact hfR ⟨a i, haS i⟩
         rw [hEq]
@@ -219,7 +219,7 @@ theorem ambientRelativeWeakHE_glue
           have hxi : x i = (⟨iL (a i), haS i⟩ : S) := by
             apply Subtype.ext
             exact congrFun hxa i
-          change f (x i) = _
+          change f (x i) = fL (xs i)
           rw [hxi]
           exact hfL ⟨a i, haS i⟩
         have hyEq : f y = fL ys := by
@@ -246,7 +246,7 @@ theorem ambientRelativeWeakHE_glue
           have hxi : x i = (⟨iR (a i), haS i⟩ : S) := by
             apply Subtype.ext
             exact congrFun hxa i
-          change f (x i) = _
+          change f (x i) = fR (xs i)
           rw [hxi]
           exact hfR ⟨a i, haS i⟩
         have hyEq : f y = fR ys := by
@@ -289,8 +289,8 @@ theorem ambientRelativeWeakHE_glue
         have hxi : x i = (⟨iL (a i), haS i⟩ : S) := by
           apply Subtype.ext
           exact congrFun hxa i
-        change f (x i) = _
-          rw [hxi]
+        change f (x i) = fL (xs i)
+        rw [hxi]
         exact hfL ⟨a i, haS i⟩
       ext z
       constructor
@@ -333,8 +333,8 @@ theorem ambientRelativeWeakHE_glue
         have hxi : x i = (⟨iR (a i), haS i⟩ : S) := by
           apply Subtype.ext
           exact congrFun hxa i
-        change f (x i) = _
-          rw [hxi]
+        change f (x i) = fR (xs i)
+        rw [hxi]
         exact hfR ⟨a i, haS i⟩
       ext z
       constructor
