@@ -145,7 +145,10 @@ theorem lineUnitAttachment_EHN_retraction
           q (Attachment.unitCoreEmbedding B S hS Core f c) =
             (c.coord i).1) ∧
         (∀ b : V,
-          q (Attachment.unitCopyEmbedding B S hS Core f b) = b) := by
+          q (Attachment.unitCopyEmbedding B S hS Core f b) = b) ∧
+        (∀ z : Structure.Attachment.Vertex S
+            (W := Induced.Vertex R N) (I := PUnit.{v+1}),
+          B.part (q z) = (Attachment.UnitAttachD B S hS Core f).part z) := by
   classical
   dsimp only
   let S : Set V := B.support alpha.toFunctionEmbedding
@@ -186,6 +189,43 @@ theorem lineUnitAttachment_EHN_retraction
     Attachment.unit_isFreeAmalgam_full B S hS Core f
   obtain ⟨q, hq, hqCore, hqCopy⟩ :=
     hFree.ehn_retract_right rCore hrCore hFix
-  exact ⟨f, q, hq, hqCore, hqCopy⟩
+  have hPartCore : ∀ c : Induced.Vertex R N,
+      B.part (rCore c) = Core.part c := by
+    intro c
+    calc
+      B.part (rCore c) =
+          alpha (R.part (c.coord i)) :=
+        (B.restrictedPart_spec alpha.toFunctionEmbedding (c.coord i)).symm
+      _ = alpha c.part := congrArg alpha (c.belongs i)
+      _ = Core.part c := rfl
+  let fullCore : FunctionalPartite.Embedding Core
+      (Attachment.UnitAttachD B S hS Core f) :=
+    Attachment.coreEmbedding B S hS Core
+      (fun _ : PUnit.{v+1} => f)
+  let fullCopy : FunctionalPartite.Embedding B
+      (Attachment.UnitAttachD B S hS Core f) :=
+    Attachment.copyEmbedding B S hS Core
+      (fun _ : PUnit.{v+1} => f) PUnit.unit
+  have hPart : ∀ z : Structure.Attachment.Vertex S
+      (W := Induced.Vertex R N) (I := PUnit.{v+1}),
+      B.part (q z) = (Attachment.UnitAttachD B S hS Core f).part z := by
+    intro z
+    rcases hFree.covers z with ⟨c, hcz⟩ | ⟨b, hbz⟩
+    · subst z
+      calc
+        B.part (q (Attachment.unitCoreEmbedding B S hS Core f c)) =
+            B.part (rCore c) := congrArg B.part (hqCore c)
+        _ = Core.part c := hPartCore c
+        _ = (Attachment.UnitAttachD B S hS Core f).part
+              (Attachment.unitCoreEmbedding B S hS Core f c) :=
+          (fullCore.map_part c).symm
+    · subst z
+      calc
+        B.part (q (Attachment.unitCopyEmbedding B S hS Core f b)) =
+            B.part b := congrArg B.part (hqCopy b)
+        _ = (Attachment.UnitAttachD B S hS Core f).part
+              (Attachment.unitCopyEmbedding B S hS Core f b) :=
+          (fullCopy.map_part b).symm
+  exact ⟨f, q, hq, hqCore, hqCopy, hPart⟩
 
 end StructuralRamsey.FunctionalPartite.EHN
