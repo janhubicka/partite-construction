@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.NativeStrictWeakHistoryBases
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.of_strict_tree
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.of_ehn_oneCopy
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initial_weakHistory_strictTree
+#print axioms StructuralRamsey.FunctionalPartite.Induced.power_strictWeakHistory_transversal
