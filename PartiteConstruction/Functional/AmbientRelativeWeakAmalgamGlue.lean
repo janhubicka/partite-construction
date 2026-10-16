@@ -177,6 +177,7 @@ theorem ambientRelativeWeakHE_glue
           have hxi : x i = (⟨iL (a i), haS i⟩ : S) := by
             apply Subtype.ext
             exact congrFun hxa i
+          change f (x i) = _
           rw [hxi]
           exact hfL ⟨a i, haS i⟩
         rw [hEq]
@@ -193,6 +194,7 @@ theorem ambientRelativeWeakHE_glue
           have hxi : x i = (⟨iR (a i), haS i⟩ : S) := by
             apply Subtype.ext
             exact congrFun hxa i
+          change f (x i) = _
           rw [hxi]
           exact hfR ⟨a i, haS i⟩
         rw [hEq]
@@ -217,6 +219,7 @@ theorem ambientRelativeWeakHE_glue
           have hxi : x i = (⟨iL (a i), haS i⟩ : S) := by
             apply Subtype.ext
             exact congrFun hxa i
+          change f (x i) = _
           rw [hxi]
           exact hfL ⟨a i, haS i⟩
         have hyEq : f y = fL ys := by
@@ -243,6 +246,7 @@ theorem ambientRelativeWeakHE_glue
           have hxi : x i = (⟨iR (a i), haS i⟩ : S) := by
             apply Subtype.ext
             exact congrFun hxa i
+          change f (x i) = _
           rw [hxi]
           exact hfR ⟨a i, haS i⟩
         have hyEq : f y = fR ys := by
@@ -285,7 +289,8 @@ theorem ambientRelativeWeakHE_glue
         have hxi : x i = (⟨iL (a i), haS i⟩ : S) := by
           apply Subtype.ext
           exact congrFun hxa i
-        rw [hxi]
+        change f (x i) = _
+          rw [hxi]
         exact hfL ⟨a i, haS i⟩
       ext z
       constructor
@@ -328,7 +333,8 @@ theorem ambientRelativeWeakHE_glue
         have hxi : x i = (⟨iR (a i), haS i⟩ : S) := by
           apply Subtype.ext
           exact congrFun hxa i
-        rw [hxi]
+        change f (x i) = _
+          rw [hxi]
         exact hfR ⟨a i, haS i⟩
       ext z
       constructor
@@ -361,7 +367,7 @@ theorem ambientRelativeWeakHE_glue
         e.factorWithMap iL lift hLift
       have hInto : ∀ x, eL x ∈ iL ⁻¹' S := by
         intro x
-        change iL (eL x) ∈ S
+        change iL (lift x) ∈ S
         rw [← hLift x]
         exact he x
       obtain ⟨g, hg⟩ := hL.2 Test hIrr eL hInto
@@ -381,7 +387,7 @@ theorem ambientRelativeWeakHE_glue
         e.factorWithMap iR lift hLift
       have hInto : ∀ x, eR x ∈ iR ⁻¹' S := by
         intro x
-        change iR (eR x) ∈ S
+        change iR (lift x) ∈ S
         rw [← hLift x]
         exact he x
       obtain ⟨g, hg⟩ := hR.2 Test hIrr eR hInto
