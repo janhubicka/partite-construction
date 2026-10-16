@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.LabelledStrictFunctionalTreeGlue
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.labelledStrictTree_glue
