@@ -172,7 +172,7 @@ theorem IsFreeAmalgam.weakInduce_withMaps
           ⟨x, hx, hzx⟩ | ⟨x, hx, hzx⟩
         · have hxS : ∀ i, x i ∈ Lset := by
             intro i
-            change iL (x i) ∈ S
+            change (iL ∘ x) i ∈ S
             have hi := congrFun hzx i
             rw [← hi]
             exact (z i).2
@@ -184,7 +184,7 @@ theorem IsFreeAmalgam.weakInduce_withMaps
           exact congrFun hzx i
         · have hxS : ∀ i, x i ∈ Rset := by
             intro i
-            change iR (x i) ∈ S
+            change (iR ∘ x) i ∈ S
             have hi := congrFun hzx i
             rw [← hi]
             exact (z i).2
@@ -215,7 +215,7 @@ theorem IsFreeAmalgam.weakInduce_withMaps
           ⟨args, out, hout, hargs, htarget⟩
         · have hargsS : ∀ i, args i ∈ Lset := by
             intro i
-            change iL (args i) ∈ S
+            change (iL ∘ args) i ∈ S
             have hi := congrFun hargs i
             rw [← hi]
             exact (x i).2
@@ -234,7 +234,7 @@ theorem IsFreeAmalgam.weakInduce_withMaps
             exact htarget
         · have hargsS : ∀ i, args i ∈ Rset := by
             intro i
-            change iR (args i) ∈ S
+            change (iR ∘ args) i ∈ S
             have hi := congrFun hargs i
             rw [← hi]
             exact (x i).2
