@@ -49,8 +49,10 @@ retains a global EHN shadow to a fixed old Picture if each attached copy
 has a control-labelled EHN self-map of Old agreeing with the core shadow
 along that copy's FULL selected-support map.
 
-The entire original core embeds fully, and the final EHN shadow's
-restriction to that core is the original qE. All intermediate
+The entire original core embeds fully, every specified attached copy
+has a FULL functional embedding whose support agrees with the corresponding
+core placement, and the final EHN shadow's restriction to the original
+core is qE. All intermediate
 set-valued operation fibres remain part-TRANSVERSAL by construction.
 
 The self-map family is a genuine hypothesis. This theorem is not a
@@ -81,16 +83,21 @@ theorem attachList_partCompatibleEHNShadow
           T.system.toStructure.IsEHNHomomorphismEmbedding
             B.toStructure q ∧
           (∀ x : E.Carrier, q (core x) = qE x) ∧
-          (∀ z : T.Carrier, B.part (q z) = T.system.part z) := by
+          (∀ z : T.Carrier, B.part (q z) = T.system.part z) ∧
+          (∀ i ∈ xs,
+            ∃ copy : FunctionalPartite.Embedding B T.system,
+              ∀ x : S, copy x.1 = core (maps i x)) := by
   classical
   induction xs with
   | nil =>
       refine ⟨E, FunctionalPartite.Embedding.id E.system,
-        qE, hqE, ?_, hpartE⟩
-      intro x
-      rfl
+        qE, hqE, ?_, hpartE, ?_⟩
+      · intro x
+        rfl
+      · intro i hi
+        exact (List.not_mem_nil hi).elim
   | cons i xs ih =>
-      obtain ⟨T, core, qT, hqT, hCore, hPartT⟩ := ih
+      obtain ⟨T, core, qT, hqT, hCore, hPartT, hCopiesXs⟩ := ih
       let f : FunctionalPartite.Embedding (B.induce S hS) T.system :=
         core.comp (maps i)
       let R := T.attach hK B hB hmB S hS f
@@ -105,10 +112,23 @@ theorem attachList_partCompatibleEHNShadow
       let j : FunctionalPartite.Embedding T.system R.system :=
         FunctionalPartite.Attachment.coreEmbedding B S hS T.system
           (fun _ : PUnit.{v+1} => f)
-      refine ⟨R, j.comp core, qR, hqR, ?_, hPartR⟩
-      intro x
-      calc
-        qR ((j.comp core) x) = qT (core x) := hqCore (core x)
-        _ = qE x := hCore x
+      let b : FunctionalPartite.Embedding B R.system :=
+        FunctionalPartite.Attachment.copyEmbedding B S hS T.system
+          (fun _ : PUnit.{v+1} => f) PUnit.unit
+      refine ⟨R, j.comp core, qR, hqR, ?_, hPartR, ?_⟩
+      · intro x
+        calc
+          qR ((j.comp core) x) = qT (core x) := hqCore (core x)
+          _ = qE x := hCore x
+      · intro k hk
+        rcases List.mem_cons.mp hk with rfl | hk
+        · refine ⟨b, ?_⟩
+          intro x
+          exact FunctionalPartite.Attachment.copy_extends
+            B S hS T.system (fun _ : PUnit.{v+1} => f) PUnit.unit x
+        · obtain ⟨copy, hCopy⟩ := hCopiesXs k hk
+          refine ⟨j.comp copy, ?_⟩
+          intro x
+          exact congrArg j (hCopy x)
 
 end StructuralRamsey.FunctionalPartite.EHN
