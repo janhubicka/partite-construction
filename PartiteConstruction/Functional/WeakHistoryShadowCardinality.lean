@@ -76,7 +76,7 @@ theorem AtMost.pullback_ehn_commutingParts
     have hTmp := hD I hICard history
     rw [hImage] at hTmp
     exact hTmp
-  exact pullback_ehn_commutingParts
+  exact StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.pullback_ehn_commutingParts
     pC pD q hq hParts hA (↑S : Set W) history hOld
 
 /-- On any genuinely function-closed finite test, the same n-bound
