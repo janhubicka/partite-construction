@@ -75,3 +75,48 @@ constant-letter extensions or reuse a different line's parameter
 coordinate. The full conditional functional tree/history gluing and
 transversal-image infrastructure is already verified in #342/#347;
 the **existence** of compatible side witnesses is still open.
+
+## The actual Picture attaches more than Hales–Jewett lines
+
+The verified `FunctionalPartite.EHN.pictureLemma` constructs the full
+coordinatewise power `E`, and then calls `EHN.attachAll` indexed by
+**every** full partite embedding
+
+```
+g : FunctionalPartite.Embedding R E
+```
+
+of the selected support `R` into `E`. Hales–Jewett LINE embeddings
+are a special family used to extract a monochromatic line, but they
+are not the entire attachment index set.
+
+An arbitrary full partite embedding need not split at ANY coordinate.
+Already in the empty language, take a single part with selected
+support `R={a,b,c}` and its two-coordinate power `E=R²`.
+The injection
+
+```
+g(a)=(a,a),   g(b)=(a,b),   g(c)=(b,a)
+```
+
+is a full partite embedding (there are no relations or functions).
+Neither coordinate projection is injective on its image:
+coordinate 0 identifies `a` with `b`, and coordinate 1
+identifies `a` with `c`. Thus neither coordinate evaluation
+composed with `g` can equal the identity on the support.
+
+This second obstruction differs from the constant-letter example
+above. In the empty language a non-coordinate retraction of
+`E` onto `R` can of course be defined, but the `EHNPicture`
+theorem supplies no such compatible retraction for arbitrary
+genuinely functional `R`, nor a simultaneous one for all
+attachments. The source supports and output fibres are already
+correctly function-closed/transversal; neither condition manufactures
+a splitting coordinate.
+
+**Proof acceptance test:** a claimed preservation theorem for the
+FULL native Picture must quantify over the complete
+`FunctionalPartite.Embedding R E` attachment family, not merely
+`Line (Letter A R) N`. The current one-line strict locality
+theorem covers only the latter and must not be promoted to the
+unrestricted Picture case without further work.
