@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNFiniteAttachmentShadow
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachList_partCompatibleEHNShadow
