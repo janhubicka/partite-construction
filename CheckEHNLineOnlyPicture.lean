@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNLineOnlyPicture
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma_lines_preservingSupport
+#print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma_lines

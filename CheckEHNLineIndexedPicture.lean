@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNLineIndexedPicture
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.finite_HJLines
+#print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma_lineIndexed

@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNLineOnlyConstruction
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_allArity_lines
