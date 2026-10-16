@@ -169,4 +169,64 @@ theorem Stage.nonempty_letters_labelledOneCopyCore
   exact hp.labelledOneCopyWeakHistory
     hA hBase eAB beta alpha hAlpha S history
 
+
+/-- A direct statement for the ACTUAL native Hales-Jewett power, not
+merely an abstract EHN core. An active original selected-support
+alphabet letter and the verified projected Base-coverage invariant
+automatically supply an actual full beta:Base↪D with alpha factoring
+through beta.
+
+Every exact weak subset of the power then has a marked, labelled,
+strict one-copy functional Base-tree witness respecting arbitrary
+projected histories. Function images remain transversal under the
+part projection in the ACTUAL coordinatewise power, even when
+operation values are genuinely multivalued. -/
+theorem Stage.activePower_labelledWeakCore
+    (Old : Stage K D)
+    (A : Structure L U) (Base : Structure L VB)
+    (hCover : Old.ProjectedCover Base)
+    (hA : A.Irreducible) (hBase : Base.Irreducible)
+    (alpha : Embedding A D)
+    (hLetters : Nonempty (FunctionalPartite.Embedding
+      (transversal A)
+      (Old.system.weakRestrict D Old.isPartite.1 A alpha)))
+    (N : ℕ) (hN : 0 < N) :
+    let R := Old.system.weakRestrict D Old.isPartite.1 A alpha
+    let E := Induced.power R N
+    ∃ (beta : Embedding Base D) (eAB : Embedding A Base),
+      (∀ a, beta (eAB a) = alpha a) ∧
+      (∀ F (x : Fin (L.funcArity F) → Induced.Vertex R N),
+        Set.InjOn E.part (E.func F x)) ∧
+      ∀ (S : Set (Induced.Vertex R N))
+        (history : List (Set P)),
+        ∃ f : S → VB,
+          TreeAmalgam Base VB Base ∧
+          IsAmbientRelativeWeakHE E.toStructure S Base f ∧
+          SetAmbientACopyIntersections A E.toStructure Base S f ∧
+          (∀ x : S, beta (f x) = alpha (E.part x.1)) ∧
+          SetRespectsProjectedHistory (alpha ∘ E.part) S f history ∧
+          eAB.ContainedInIrreducible := by
+  classical
+  dsimp only
+  let R := Old.system.weakRestrict D Old.isPartite.1 A alpha
+  let E := Induced.power R N
+  obtain ⟨beta, eAB, hPlace⟩ :=
+    Old.nonempty_letters_extend_controlBase
+      A Base hCover hA alpha hLetters
+  have hR : R.WeaklyPartiteOver A :=
+    Old.system.weakRestrict_invariant
+      D Old.isPartite.1 A alpha Old.isPartite
+  have hPower : E.WeaklyPartiteOver A :=
+    Induced.power_weaklyPartiteOver hR hN
+  refine ⟨beta, eAB, hPlace, ?_, ?_⟩
+  · intro Func x
+    exact E.func_part_injOn Func x
+  · intro S history
+    obtain ⟨f, hTree, hWeak, hCopies,
+      hLabels, hHist, hContained, _hTrans⟩ :=
+      hPower.labelledOneCopyWeakHistory
+        hA hBase eAB beta alpha hPlace S history
+    exact ⟨f, hTree, hWeak, hCopies,
+      hLabels, hHist, hContained⟩
+
 end StructuralRamsey.FunctionalPartite.EHN
