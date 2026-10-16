@@ -466,6 +466,7 @@ import PartiteConstruction.Functional.AmbientRelativeWeakPullback
 import PartiteConstruction.Functional.AmbientRelativeOneCopyCore
 import PartiteConstruction.Functional.WeakTransversalTests
 import PartiteConstruction.Functional.WeakFunctionalFreeAmalgam
+import PartiteConstruction.Functional.EHNWeakTestDecomposition
 import PartiteConstruction.Functional.NativePowerTransversalTree
 
 -- Distinguish undefined operations from defined-empty set-valued values.
