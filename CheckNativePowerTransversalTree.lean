@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.NativePowerTransversalTree
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.power_oneCopyTree_transversal
