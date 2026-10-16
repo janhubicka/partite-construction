@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.AmbientRelativeWeakAmalgamGlue
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.exists_weakMap_of_compatible
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.ambientRelativeWeakHE_glue
