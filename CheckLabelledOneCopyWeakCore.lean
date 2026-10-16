@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.LabelledOneCopyWeakCore
+
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.labelledOneCopyWeakHistory
