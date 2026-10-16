@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.LabelledStrictFunctionalTreeGlue
 import PartiteConstruction.Functional.AmbientACopyIntersectionsGlue
 import PartiteConstruction.Functional.AmbientRelativeWeakAmalgamGlue
+import PartiteConstruction.Functional.AmbientRelativeWeakTreeHistoryGlue
 import PartiteConstruction.Functional.SetAmbientRelativeTreeHistory
 
 /-!
