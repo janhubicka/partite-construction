@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNLineOnlyProjectedCover
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma_lines_projectedCover
+#print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_allArity_lines_projectedCover
