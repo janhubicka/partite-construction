@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.NativeHJLineWitness
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weak_partiteLemma_withLineWitness
