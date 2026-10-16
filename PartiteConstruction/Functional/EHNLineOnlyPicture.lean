@@ -41,6 +41,15 @@ noncomputable instance finiteLines
     (α : Type v) [Finite α] (N : ℕ) :
     Finite (Line α N) := by
   classical
+  letI : Finite (SuccessorTree.LineSymbol α) :=
+    Finite.of_injective
+      (fun s : SuccessorTree.LineSymbol α =>
+        match s with
+        | .parameter => (none : Option α)
+        | .const a => some a)
+      (by
+        intro x y h
+        cases x <;> cases y <;> simp_all)
   exact Finite.of_injective (fun W : Line α N => W.symbol) (by
     intro ⟨sx, hx⟩ ⟨sy, hy⟩ h
     cases h
