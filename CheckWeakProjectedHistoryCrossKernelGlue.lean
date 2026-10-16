@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakProjectedHistoryCrossKernelGlue
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.setRespectsProjectedHistory_glue_crossKernel
