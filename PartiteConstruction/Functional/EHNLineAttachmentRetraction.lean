@@ -139,8 +139,8 @@ theorem lineUnitAttachment_EHN_retraction
     ∃ f : FunctionalPartite.Embedding (B.induce S hS) Core,
       ∃ q : Structure.Attachment.Vertex S
           (W := Induced.Vertex R N) (I := PUnit.{v+1}) → V,
-        (Attachment.UnitAttachD B S hS Core f).toStructure
-          .IsEHNHomomorphismEmbedding B.toStructure q ∧
+        (Attachment.UnitAttachD B S hS Core f).toStructure.IsEHNHomomorphismEmbedding
+          B.toStructure q ∧
         (∀ c : Induced.Vertex R N,
           q (Attachment.unitCoreEmbedding B S hS Core f c) =
             (c.coord i).1) ∧
