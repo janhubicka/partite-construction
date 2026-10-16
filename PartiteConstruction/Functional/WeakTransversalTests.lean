@@ -159,6 +159,48 @@ theorem System.partSaturated_weakImage_originalPartial
       apply Subtype.ext
       exact hEq
 
+/-- Under part saturation, the part map is a BIJECTION on each
+SURVIVING defined weak function fibre: exact weak fibre surjectivity
+comes from the original-2019 EHN map and part saturation, and
+injectivity comes specifically from the required transversal-image
+axiom of the functional partite system. Thus distinct set-valued
+outputs never collapse to the same part. -/
+theorem System.partSaturated_weakFibre_bijOn
+    (B : System L P V) (D : Structure L P)
+    (hB : B.WeaklyPartiteOver D)
+    (S : Set V) (hSat : B.PartSaturated S)
+    (F : L.FuncSymbol) (x : Fin (L.funcArity F) → S)
+    (hDef : ((B.toStructure.weakInduce S).func F x).Nonempty) :
+    let q : S → B.part '' S :=
+      fun y => ⟨B.part y.1, ⟨y.1, y.2, rfl⟩⟩
+    Set.BijOn q
+      ((B.toStructure.weakInduce S).func F x)
+      ((D.weakInduce (B.part '' S)).func F (q ∘ x)) := by
+  dsimp only
+  let q : S → B.part '' S :=
+    fun y => ⟨B.part y.1, ⟨y.1, y.2, rfl⟩⟩
+  have hp : IsOriginalPartialHomomorphism
+      (B.toStructure.weakInduce S)
+      (D.weakInduce (B.part '' S)) q :=
+    B.partSaturated_weakImage_originalPartial D hB S hSat
+  have hMap := hp.2 F x hDef
+  have hInj : Set.InjOn q
+      ((B.toStructure.weakInduce S).func F x) := by
+    intro y hy z hz heq
+    apply Subtype.ext
+    apply B.funcTransversal F (Subtype.val ∘ x) y.1 z.1 hy hz
+    exact congrArg Subtype.val heq
+  refine ⟨?_, hInj, ?_⟩
+  · intro y hy
+    have hyImage :
+        q y ∈ imageSet q ((B.toStructure.weakInduce S).func F x) :=
+      ⟨y, hy, rfl⟩
+    rw [hMap] at hyImage
+    exact hyImage
+  · intro z hz
+    rw [← hMap] at hz
+    exact hz
+
 /-- The actual selected full-part support therefore has exact
 source-defined weak fibre projection, even with multivalued
 functions. Its input/output partite structure remains transversal. -/
