@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WeakHistoryShadowCardinality
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMost.pullback_ehn_commutingParts
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMost.closed_test
