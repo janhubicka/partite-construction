@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.TransversalEmbeddingEqualizer
+
+#print axioms StructuralRamsey.FunctionalPartite.Embedding.agreement_isClosed
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_agreement_isClosed
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_range_inter_isClosed
