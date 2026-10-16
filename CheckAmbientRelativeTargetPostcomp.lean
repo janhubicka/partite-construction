@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.AmbientRelativeTargetPostcomp
+
+#print axioms StructuralRamsey.Structure.IsAmbientRelativeWeakHomomorphism.postcomp_full
+#print axioms StructuralRamsey.Structure.IsAmbientRelativeWeakHE.postcomp_full
