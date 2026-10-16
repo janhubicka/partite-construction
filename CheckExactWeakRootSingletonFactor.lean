@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.ExactWeakRootSingletonFactor
+
+#print axioms StructuralRamsey.Structure.SetRespectsProjectedHistory.factors_through_weakRoot
+#print axioms StructuralRamsey.Structure.SetRespectsProjectedHistory.factors_through_weakRoot_of_singletons
+#print axioms StructuralRamsey.Structure.SetRespectsProjectedHistory.root_labels_safe_of_isolated_hits
