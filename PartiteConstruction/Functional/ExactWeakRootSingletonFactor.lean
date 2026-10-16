@@ -40,7 +40,7 @@ possibly noninjective q, and any full embedding of Start into
 the witness target. -/
 theorem SetRespectsProjectedHistory.factors_through_weakRoot
     [Nonempty P]
-    {C : Structure L W} {Target : Structure L Y}
+    {Target : Structure L Y}
     {Start : Structure L G}
     {S : Set W} {p : W → P} {f : S → Y}
     {history : List (Set P)}
@@ -71,7 +71,7 @@ caller wishes to preserve. The resulting pG is a witness to
 root-projection factorization, NOT automatic root-hitting safety. -/
 theorem SetRespectsProjectedHistory.factors_through_weakRoot_of_singletons
     [Fintype P] [Nonempty P]
-    {C : Structure L W} {Target : Structure L Y}
+    {Target : Structure L Y}
     {Start : Structure L G}
     {S : Set W} {p : W → P} {f : S → Y}
     {history : List (Set P)}
@@ -99,7 +99,7 @@ for every side vertex and is not inferred from arbitrary tree
 completions. -/
 theorem SetRespectsProjectedHistory.root_labels_safe_of_isolated_hits
     [Nonempty P]
-    {C : Structure L W} {Target : Structure L Y}
+    {Target : Structure L Y}
     {Start : Structure L G}
     {S : Set W} {p : W → P} {f : S → Y}
     {history : List (Set P)}
