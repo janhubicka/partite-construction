@@ -4,3 +4,5 @@ import PartiteConstruction.Functional.EHNRealizedPlacementBaseExtension
 #print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.nonempty_letters_iff_realizedACopy
 #print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.nonempty_letters_extend_controlBase
 #print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.nonempty_letters_labelledOneCopyCore
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.activePower_labelledWeakCore
