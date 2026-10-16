@@ -71,7 +71,7 @@ theorem coordinateEHN
     let H := B.toStructure.induce S hS
     have hH : H.Irreducible :=
       hE.functionClosure_weakImage hq
-    let inc : Embedding H B.toStructure :=
+    let inc : Structure.Embedding H B.toStructure :=
       inclusion B.toStructure S hS
     obtain ⟨gH, hgH⟩ := hB.2 H hH inc
     obtain ⟨gE, hgE⟩ := hPower.2 E hE e
@@ -86,9 +86,9 @@ theorem coordinateEHN
         gE x = C.part (e x) := hgE x
         _ = B.part (q x) := ((e x).belongs i).symm
         _ = gH (qs x) := (hgH (qs x)).symm
-    let eH : Embedding E H :=
+    let eH : Structure.Embedding E H :=
       gE.factorWithMap gH qs hEq
-    let eB : Embedding E B.toStructure := inc.comp eH
+    let eB : Structure.Embedding E B.toStructure := inc.comp eH
     refine ⟨eB, ?_⟩
     intro x
     rfl
