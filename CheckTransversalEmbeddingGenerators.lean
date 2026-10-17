@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TransversalEmbeddingGenerators
+
+#print axioms StructuralRamsey.FunctionalPartite.Embedding.eq_of_agree_on_generators
