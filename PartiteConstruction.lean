@@ -538,3 +538,4 @@ import PartiteConstruction.Structure.PartialSetFunctionsWeakEmbedding
 -- Exact closed equalizer of full embeddings in the explicitly partial
 -- set-valued function language, with per-fibre output transversality.
 import PartiteConstruction.Structure.PartialSetFunctionsTransversal
+import PartiteConstruction.Functional.WeakMissingRootCoherence
