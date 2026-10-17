@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.HJLineOverlapDichotomy
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.lineMap_eq_source_of_common_parameter
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_range_inter_eq_agreement_image
+#print axioms StructuralRamsey.FunctionalPartite.Induced.lineMap_eq_letter_of_parameter_const
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_range_inter_subset_letter
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_overlap_closedRoot_or_letter
