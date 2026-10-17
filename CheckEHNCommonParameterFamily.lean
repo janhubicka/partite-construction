@@ -1,3 +1,5 @@
-import PartiteConstruction.Functional.EHNCommonParameterFamily
+import PartiteConstruction.Functional.EHNCommonParameterFamilyLocality
 
 #print axioms StructuralRamsey.FunctionalPartite.EHN.commonParameterLines_partCompatibleEHNShadow
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.commonParameterLines_strictWeakHistory
