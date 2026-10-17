@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OccupiedAlphaMark
+
+#print axioms StructuralRamsey.Structure.SetAmbientACopyIntersections.occupied_mark_trace
+#print axioms StructuralRamsey.Structure.SetAmbientACopyIntersections.full_mark_trace_of_covered
