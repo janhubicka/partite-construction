@@ -44,7 +44,7 @@ The reverse direction is labelled *anchoring*; the forward direction
 is *no wrong hit*. Both are needed for the functional mixed proof. -/
 def ProtectedAMark
     {A : Structure L UA} {D : Structure L P}
-    {Source : Structure L C} {Target : Structure L Z}
+    {Target : Structure L Z}
     (alpha : Embedding A D)
     (part : C → P) (S : Set C) (f : S → Z)
     (mark : Embedding A Target) : Prop :=
@@ -57,7 +57,7 @@ than necessary here: the equalities on the tested and marked points
 alone suffice. -/
 theorem ProtectedAMark.of_labelled
     {A : Structure L UA} {D : Structure L P}
-    {Source : Structure L C} {Target : Structure L Z}
+    {Target : Structure L Z}
     (alpha : Embedding A D)
     (part : C → P) (S : Set C) (f : S → Z)
     (mark : Embedding A Target)
