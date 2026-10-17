@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.HJFullPartOverlap
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_fullPartOverlap_in_letter
