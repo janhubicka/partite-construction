@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.WeakClosedActiveMasks
+
+#print axioms StructuralRamsey.FunctionalPartite.System.isClosed_iff_weakActiveOutputMasks
+#print axioms StructuralRamsey.FunctionalPartite.System.isClosed_iff_ambientActiveMasks_reflected
+
+#print axioms StructuralRamsey.FunctionalPartite.System.isClosed_iff_weakInclusion_full
