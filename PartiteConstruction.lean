@@ -527,6 +527,7 @@ import PartiteConstruction.Structure.PartialSetFunctionsDomainGraph
 import PartiteConstruction.Functional.WeakPatternDomainBridge2019
 import PartiteConstruction.Functional.ActiveOutputRootTransport
 import PartiteConstruction.Functional.WeakClosedActiveMasks
+import PartiteConstruction.Functional.WeakActiveRootPreimage
 import PartiteConstruction.Functional.ActiveMaskFullEmbedding
 import PartiteConstruction.Functional.WeakPatternDomainRegression
 
