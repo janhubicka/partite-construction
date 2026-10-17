@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.ProtectedAMarkWeakPullback
+
+#print axioms StructuralRamsey.Structure.SetAmbientProtectedWeakTreeWitness.toWeak
+#print axioms StructuralRamsey.Structure.SetAmbientProtectedWeakTreeWitness.closed_test
+#print axioms StructuralRamsey.Structure.SetAmbientProtectedWeakTreeWitness.pullback_ehn_commutingParts
+#print axioms StructuralRamsey.Structure.AtMostProtectedWeakTreeWitness.pullback_ehn_commutingParts
