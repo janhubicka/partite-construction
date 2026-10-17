@@ -90,4 +90,43 @@ theorem System.isClosed_iff_ambientActiveMasks_reflected
     · rintro ⟨y, hy, hq⟩
       exact ⟨y.1, hy, hq⟩
 
+/-- The canonical weak vertex inclusion can be a FULL functional
+partite embedding exactly when the weak set is function-closed.
+
+For arbitrary S the inclusion is already a WEAK graph embedding;
+the extra fibre-surjectivity required by a genuine full embedding
+is equivalent to the absence of missing ambient output vertices.
+No other re-embedding of the abstract weak structure is ruled out. -/
+theorem System.isClosed_iff_weakInclusion_full
+    (B : System L P V) (S : Set V) :
+    B.toStructure.IsClosed S ↔
+      ∃ e : Embedding (B.weakInduce S) B,
+        ∀ x : S, e x = x.1 := by
+  constructor
+  · intro hClosed
+    let e : Embedding (B.weakInduce S) B := {
+      toEmbedding := Structure.inclusion B.toStructure S hClosed
+      map_part := by
+        intro x
+        rfl
+    }
+    exact ⟨e, fun _ => rfl⟩
+  · rintro ⟨e, hInclusion⟩
+    intro F xs hArgs y hy
+    let sourceArgs : Fin (L.funcArity F) → S :=
+      fun i => ⟨xs i, hArgs i⟩
+    have hArgsEq : (e.toFun ∘ sourceArgs) = xs := by
+      funext i
+      exact hInclusion (sourceArgs i)
+    have hyTarget : y ∈ B.func F (e.toFun ∘ sourceArgs) := by
+      simpa only [hArgsEq] using hy
+    rw [← e.map_func F sourceArgs] at hyTarget
+    obtain ⟨z, hz, hImage⟩ := hyTarget
+    have hSame : y = z.1 := by
+      calc
+        y = e z := hImage.symm
+        _ = z.1 := hInclusion z
+    rw [hSame]
+    exact z.2
+
 end StructuralRamsey.FunctionalPartite
