@@ -52,12 +52,14 @@ theorem two_step_path_no_fixed_edge_mark
     bool_eq_of_ne_ne h01ne h12ne
   have hEdge : Edge.rel ()
       (fun i => if i = i0 then (0 : Fin 2) else 1) := by
-    simp [Edge, hi10, i0_ne_i1]
+    simp [Edge, hi10]
   have hm : T.rel ()
       (fun i => if i = i0 then mark (0 : Fin 2) else mark 1) := by
     have he := (mark.map_rel_iff ()
       (fun i => if i = i0 then (0 : Fin 2) else 1)).mpr hEdge
     convert he using 1
+    funext i
+    by_cases hi : i = i0 <;> simp [hi]
   have hMarkNe : c (mark 0) ≠ c (mark 1) := by
     simpa [hi10] using
       (hc (fun i => if i = i0 then mark (0 : Fin 2) else mark 1) hm)
