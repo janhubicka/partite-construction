@@ -96,8 +96,8 @@ theorem System.controlMissing_commonWeakRoot_iff
       (fun i => Left.part (iLeft (xs i).1)) =
       (fun i => Right.part (iRight (xs i).1)) := by
     funext i
-    exact (iLeft.map_part (xs i).1).symm.trans
-      (iRight.map_part (xs i).1)
+    exact (iLeft.map_part (xs i).1).trans
+      (iRight.map_part (xs i).1).symm
   have hSurvives :=
     Root.weakActiveOutputAtPart_commonWeakRoot_iff
       Left Right iLeft iRight SLeft SRight hRoot F xs q
