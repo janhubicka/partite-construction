@@ -137,10 +137,13 @@ theorem SetAmbientRelativeWeakTreeWitness.protected_of_closedOccupiedA
     refine ⟨VB, Base, hBase, jR, ?_⟩
     intro a
     exact ⟨eAB a, rfl⟩
+  have hHistNew : SetRespectsProjectedHistory
+      (id : P → P) I fNew history := by
+    intro K hK x y hEq
+    exact hHist K hK x y (jL.injective hEq)
   exact ⟨_, Tplus, hBTree, fNew,
     hWeak.postcomp_full jL,
     hCopies.postcomp_full jL,
-    hHist.postcomp_full jL,
-    freshMark, hMarkContainedNew, hTrace⟩
+    hHistNew, freshMark, hMarkContainedNew, hTrace⟩
 
 end StructuralRamsey.Structure
