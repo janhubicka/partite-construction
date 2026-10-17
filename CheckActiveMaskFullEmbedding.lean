@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.ActiveMaskFullEmbedding
+
+#print axioms StructuralRamsey.FunctionalPartite.Embedding.of_activeMasks
+#print axioms StructuralRamsey.FunctionalPartite.System.fullEmbedding_iff_activeMasks
