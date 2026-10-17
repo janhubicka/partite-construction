@@ -46,7 +46,7 @@ def pat : Language.FunctionInputPattern lang where
   argMap := fun _ => 0
   onto := by
     intro a
-    refine ⟨0, ?_⟩
+    refine ⟨⟨0, by decide⟩, ?_⟩
     fin_cases a
     rfl
 
