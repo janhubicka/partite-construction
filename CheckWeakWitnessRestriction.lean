@@ -1,0 +1,8 @@
+import PartiteConstruction.Functional.WeakWitnessRestriction
+
+#print axioms StructuralRamsey.Structure.IsAmbientRelativeWeakHE.restrict_subset
+#print axioms StructuralRamsey.Structure.SetAmbientACopyIntersections.restrict_subset
+#print axioms StructuralRamsey.Structure.SetRespectsProjectedHistory.restrict_subset
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.restrict_subset
+#print axioms StructuralRamsey.Structure.ProtectedAMark.restrict_subset
+#print axioms StructuralRamsey.Structure.SetAmbientProtectedWeakTreeWitness.restrict_subset
