@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.BudgetedAlphaWeakWitness
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMost.protected_of_union_budget
