@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.ClosedOccupiedARelativeMark
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.protected_of_closedOccupiedA
