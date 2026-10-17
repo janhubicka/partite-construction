@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNCommonParameterFamily
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.commonParameterLines_partCompatibleEHNShadow
