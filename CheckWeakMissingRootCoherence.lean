@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.WeakMissingRootCoherence
+
+#print axioms StructuralRamsey.FunctionalPartite.System.missingActiveOutputAtPart_iff_outside
+#print axioms StructuralRamsey.FunctionalPartite.System.missingActiveOutputAtPart_uniqueOutside
+#print axioms StructuralRamsey.FunctionalPartite.System.missingActiveOutputAtPart_commonWeakRoot_iff
+#print axioms StructuralRamsey.FunctionalPartite.System.missingActiveOutputAtPart_commonWhole_iff
