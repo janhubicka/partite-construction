@@ -506,3 +506,7 @@ import PartiteConstruction.Structure.PartialSetFunctionsClosed
 -- Domain predicate and output-incidence relation for genuinely
 -- partial set-valued functions; outputs alone lose defined-empty data.
 import PartiteConstruction.Structure.PartialSetFunctionsDomainGraph
+
+-- Exact closed equalizer of full embeddings in the explicitly partial
+-- set-valued function language, with per-fibre output transversality.
+import PartiteConstruction.Structure.PartialSetFunctionsTransversal
