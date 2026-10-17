@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.ProtectedAMarkWeakTreeGlue
+
+#print axioms StructuralRamsey.Structure.ProtectedAMark.of_labelled
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.protectedAMarkWeakTree_glue
