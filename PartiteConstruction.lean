@@ -539,4 +539,5 @@ import PartiteConstruction.Structure.PartialSetFunctionsWeakEmbedding
 -- set-valued function language, with per-fibre output transversality.
 import PartiteConstruction.Structure.PartialSetFunctionsTransversal
 import PartiteConstruction.Functional.WeakMissingRootCoherence
+import PartiteConstruction.Functional.ControlRootWeakCutCoherence
 import PartiteConstruction.Functional.ControlMissingOutputDichotomy

@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.ControlRootWeakCutCoherence
+
+#print axioms StructuralRamsey.FunctionalPartite.System.weakActiveOutputAtPart_commonWeakRoot_iff
+#print axioms StructuralRamsey.FunctionalPartite.System.controlMissing_commonWeakRoot_iff
+#print axioms StructuralRamsey.FunctionalPartite.System.controlMissing_commonWhole_iff
