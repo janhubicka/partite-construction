@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OccupiedAlphaPredecessor
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMost.occupiedAlpha_witness
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMost.fullAlpha_witness
