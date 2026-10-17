@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.ProtectedAMarkMixedRankStep
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.mixedWeakTree_of_predecessor_protected
