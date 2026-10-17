@@ -508,6 +508,10 @@ import PartiteConstruction.Structure.PartialSetFunctionsClosed
 -- partial set-valued functions; outputs alone lose defined-empty data.
 import PartiteConstruction.Structure.PartialSetFunctionsDomainGraph
 
+-- Full embeddings restrict to exact weak tests, preserving defined-empty
+-- independently from undefined operation fibres.
+import PartiteConstruction.Structure.PartialSetFunctionsWeakEmbedding
+
 -- Exact closed equalizer of full embeddings in the explicitly partial
 -- set-valued function language, with per-fibre output transversality.
 import PartiteConstruction.Structure.PartialSetFunctionsTransversal
