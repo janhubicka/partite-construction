@@ -31,7 +31,9 @@ def lang : Language where
 
 def ambient : Structure lang (Fin 2) where
   rel R _ := Empty.elim R
-  func _ xs := {y | xs 0 = 0 ∧ y = 1}
+  func F xs := by
+    cases F
+    exact {y | xs (0 : Fin 1) = 0 ∧ y = 1}
 
 def test : Set (Fin 2) := {x | x = 0}
 
