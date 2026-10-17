@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNProtectedPowerCore
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.activePower_protectedWeakCore
