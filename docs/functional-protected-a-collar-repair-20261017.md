@@ -31,6 +31,46 @@ A cross-side collision in the target free amalgam occurs only through a marked (
 
 This is a sound **conditional** gluing theorem, suitable for Lean. It is deliberately weaker than requiring a global EHN label map on every target (B)-tree vertex, which is unnecessary for this one gluing step.
 
+## Audited abstract mixed rank-increment lemma
+
+A sharper intermediate theorem isolates the problematic **mixed** case
+without any Hales--Jewett-specific proof replay.
+
+Let (C=L *_R M) be a genuine full functional free amalgam, with EHN
+part map (p:C\to D), and assume every point of the full attaching
+root (R) projects into the image of one actual full control
+embedding (alpha:A\hookrightarrow D). Suppose the *previous control*
+(D) has an exact protected-(alpha) strict (B)-tree witness for
+**every** weak test of at most (n-1) vertices, with every requested
+finite projected history. Let (S\subseteq C) have (|S|\le n) and
+meet BOTH sides beyond the common root.
+
+Then the exact side tests
+(S_L=i_L^{-1}[S]) and (S_M=i_M^{-1}[S]) have strictly fewer
+than (n) vertices. Their exact projected images in (D) have
+at most (n-1) vertices. Pull back the two protected predecessor
+witnesses along the EHN side maps (L\to D), (M\to D).
+They share the prescribed (alpha)-mark by construction.
+The preceding conditional gluing theorem then gives a strict
+functional (B)-tree witness on the whole exact weak (S), with
+all ambient (A)-intersection and history certificates.
+
+**Adversarial audit.** This lemma explicitly requires the
+predecessor **protected** rank-((n-1)) property on (D), not just
+separate rank-(n) tree completability of (L,M).
+The arbitrary-stage (C_5) counterexample violates this extra
+predecessor premise for its complete control (K_5).
+The genuine three-line (C_7) example violates the corresponding
+rank-six predecessor premise for (K_3). Thus neither refutes the
+statement. No closure of (S) or (p[S]) is invoked.
+
+This proves ONLY the mixed branch. Pure-side inheritance of the
+**ambient** (A)-copy history is not entirely formal: an ambient
+full (A)-copy from the other side can intersect a pure test through
+the attaching root. The complete Picture induction must handle
+that history restriction separately, rather than declaring a
+whole-stage theorem directly from the abstract mixed lemma.
+
 ## The published two-case induction
 
 * If (|p[S]|<n), use the predecessor weak-test witness on the exact projected image. The commuting-parts EHN pullback and ambient histories are already checked.
