@@ -105,7 +105,7 @@ theorem SetAmbientACopyIntersections.restrict_subset
 /-- Arbitrary projected histories persist under exact weak-test
 restriction (the target map itself is unchanged). -/
 theorem SetRespectsProjectedHistory.restrict_subset
-    {C : Structure L U} {Large : Set U}
+    {Large : Set U}
     {f : Large → V} {part : U → P}
     {history : List (Set P)}
     (h : SetRespectsProjectedHistory part Large f history)
@@ -140,7 +140,7 @@ theorem SetAmbientRelativeWeakTreeWitness.restrict_subset
 WEAK source carrier, including originally unoccupied control parts. -/
 theorem ProtectedAMark.restrict_subset
     {A : Structure L VA} {D : Structure L P}
-    {C : Structure L U} {Target : Structure L V}
+    {Target : Structure L V}
     {part : U → P} {Large : Set U} {f : Large → V}
     {mark : Embedding A Target} {alpha : Embedding A D}
     (h : ProtectedAMark alpha part Large f mark)
