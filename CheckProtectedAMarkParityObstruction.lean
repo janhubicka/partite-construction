@@ -1,0 +1,3 @@
+import PartiteConstruction.Iterated.ProtectedAMarkParityObstruction
+
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.two_step_path_no_fixed_edge_mark
