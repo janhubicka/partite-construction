@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.ClosedOccupiedAPredecessor
+import PartiteConstruction.Functional.ClosedOccupiedAMixedGlue
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMost.protected_of_closedOccupiedA
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakTree_of_closedOccupied_alpha_sides
