@@ -496,6 +496,7 @@ import PartiteConstruction.Functional.AmbientRelativeTargetPostcomp
 import PartiteConstruction.Functional.NativePowerTransversalTree
 import PartiteConstruction.Functional.TransversalEmbeddingEqualizer
 import PartiteConstruction.Functional.HJLineOverlapDichotomy
+import PartiteConstruction.Functional.HJFullPartOverlap
 
 -- Distinguish undefined operations from defined-empty set-valued values.
 -- New conservative semantics API; existing Structure is unchanged.
