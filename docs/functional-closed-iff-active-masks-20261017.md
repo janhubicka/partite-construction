@@ -77,3 +77,41 @@ This equivalence is a genuine **native functional theorem** and a
 reusable validation point for the user-requested corrected Appendix
 A. It does not, by itself, produce compatible strict B-tree
 completions of a reducible weak root in a mixed HJ attachment.
+
+
+## Stronger three-way characterization of a weak boundary
+
+The same condition is equivalent to the canonical weak inclusion
+being a GENUINE FULL functional partite embedding:
+\[
+ S\text{ function-closed in }B
+ \quad\Longleftrightarrow\quad
+ (B|^w_S \hookrightarrow B)\text{ is a full function embedding}
+ \quad\Longleftrightarrow\quad
+ \text{all ambient active output-part masks survive on }S.
+\]
+
+The weak inclusion exists as an ordinary *function-graph embedding*
+for any \(S\) (already verified). It can be upgraded to a FULL
+functional embedding when \(S\) is closed: every complete function
+fibre in \(B\) over inputs from \(S\) is entirely inside \(S\),
+so the full functional inclusion is well-defined.
+
+Conversely, suppose a full functional embedding has the SAME
+underlying map as the canonical weak inclusion. For any ambient
+\(y\in F_B(\bar x)\) with \(\bar x\in S^k\), full target-fibre
+surjectivity gives an output \(z\in F_{B|^w_S}(\bar x)\) mapped
+to \(y\). Since the underlying map is inclusion, \(y=z\in S\).
+Thus \(S\) is closed.
+
+This is a map-level equivalence—not merely a Boolean closure
+predicate—and separates the already valid graph/weak embedding
+from the additional closure obligation required by genuine
+functional free-amalgamation roots.
+
+**Audit:** This equivalence is about the canonical SAME-VERTEX
+inclusion. It does not say there cannot be some unrelated full
+embedding of the abstract weak substructure into \(B\): such an
+embedding might relocate vertices to another closed part.
+Nor does it apply to an EHN map that does not preserve all
+source undefined domains.
