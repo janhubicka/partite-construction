@@ -82,7 +82,11 @@ theorem weakValue_map_preimage
             imageSet_restrictMap f S T
         · have hImgMeet : ¬(Structure.imageSet f T ∩ S).Nonempty := by
             rintro ⟨y, ⟨x, hxT, hxy⟩, hyS⟩
-            exact hMeet ⟨x, hxT, by simpa only [← hxy] using hyS⟩
+            apply hMeet
+            refine ⟨x, hxT, ?_⟩
+            change f x ∈ S
+            rw [hxy]
+            exact hyS
           simp [weakValue, hT, hImg, hMeet, hImgMeet]
       · have hEmpty : T = ∅ := by
           ext x
@@ -118,8 +122,7 @@ def Embedding.weakRestrictToPreimage
         (Structure.imageSet (restrictMap e.toFun S)) =
       weakValue S (B.func F (e.toFun ∘ (Subtype.val ∘ xs)))
     rw [← e.map_func F (Subtype.val ∘ xs)]
-    simpa only [Option.map_some] using
-      weakValue_map_preimage e.toFun S
-        (some (A.func F (Subtype.val ∘ xs)))
+    exact weakValue_map_preimage e.toFun S
+      (A.func F (Subtype.val ∘ xs))
 
 end StructuralRamsey.PartialSetStructure
