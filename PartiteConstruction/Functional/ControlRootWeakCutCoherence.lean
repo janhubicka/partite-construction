@@ -1,4 +1,4 @@
-import PartiteConstruction.Functional.WeakActiveRootPreimage
+import PartiteConstruction.Functional.ControlMissingOutputDichotomy
 
 /-!
 # Surviving functional output parts and control missing slots on one root
@@ -155,5 +155,61 @@ theorem System.controlMissing_commonWhole_iff
     Left Right iLeft iRight
     (jLeft.toFun ⁻¹' S) (jRight.toFun ⁻¹' S)
     hRoot D F xs q
+
+
+
+/-- Named-control-predicate form of the common weak root theorem.
+
+This wrapper combines the verified EHN-control-versus-source
+dichotomy with exact full root-cut coherence, but requires no
+global full/domain-reflecting projection. -/
+theorem System.controlMissingAtPart_commonWeakRoot_iff
+    (Root : System L P H)
+    (Left : System L P V) (Right : System L P W)
+    (iLeft : Embedding Root Left)
+    (iRight : Embedding Root Right)
+    (SLeft : Set V) (SRight : Set W)
+    (hRoot : ∀ r : H, iLeft r ∈ SLeft ↔ iRight r ∈ SRight)
+    (D : Structure L P)
+    (F : L.FuncSymbol)
+    (xs : Fin (L.funcArity F) → (iLeft.toFun ⁻¹' SLeft))
+    (q : P) :
+    Left.ControlMissingAtPart D SLeft F
+      (fun i => (⟨iLeft (xs i).1, (xs i).2⟩ : SLeft)) q ↔
+    Right.ControlMissingAtPart D SRight F
+      (fun i =>
+        (⟨iRight (xs i).1,
+          (hRoot (xs i).1).mp (xs i).2⟩ : SRight)) q := by
+  exact Root.controlMissing_commonWeakRoot_iff
+    Left Right iLeft iRight SLeft SRight hRoot D F xs q
+
+/-- Named-control-predicate form for two actual full attaching
+sides restricted by one exact ambient weak test. -/
+theorem System.controlMissingAtPart_commonWhole_iff
+    (Root : System L P H)
+    (Left : System L P V) (Right : System L P W)
+    (Whole : System L P C)
+    (iLeft : Embedding Root Left)
+    (iRight : Embedding Root Right)
+    (jLeft : Embedding Left Whole)
+    (jRight : Embedding Right Whole)
+    (hComm : ∀ r : H, jLeft (iLeft r) = jRight (iRight r))
+    (S : Set C) (D : Structure L P)
+    (F : L.FuncSymbol)
+    (xs : Fin (L.funcArity F) →
+      (iLeft.toFun ⁻¹' (jLeft.toFun ⁻¹' S)))
+    (q : P) :
+    Left.ControlMissingAtPart D (jLeft.toFun ⁻¹' S) F
+      (fun i => (⟨iLeft (xs i).1, (xs i).2⟩ :
+        jLeft.toFun ⁻¹' S)) q ↔
+    Right.ControlMissingAtPart D (jRight.toFun ⁻¹' S) F
+      (fun i =>
+        (⟨iRight (xs i).1,
+          (show jRight (iRight (xs i).1) ∈ S from
+            (hComm (xs i).1 ▸ (xs i).2))⟩ :
+          jRight.toFun ⁻¹' S)) q := by
+  exact Root.controlMissing_commonWhole_iff
+    Left Right Whole iLeft iRight jLeft jRight
+    hComm S D F xs q
 
 end StructuralRamsey.FunctionalPartite
