@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.ControlMissingOutputDichotomy
+
+#print axioms StructuralRamsey.FunctionalPartite.System.controlMissing_iff_undefined_or_omitted
+#print axioms StructuralRamsey.FunctionalPartite.System.projectedUndefined_not_missingActive
+#print axioms StructuralRamsey.FunctionalPartite.System.controlMissing_of_closed_iff_projectedUndefined
+#print axioms StructuralRamsey.FunctionalPartite.System.controlMissing_closed_inputHull_reducible
+#print axioms StructuralRamsey.FunctionalPartite.System.controlMissing_defined_uniqueOutside
