@@ -96,12 +96,18 @@ following separate reusable endpoints are now proved and axiom-audited:
   final strict original-partial B-coverage are proved **conditional**
   on one explicit uniform `MaximalMixedSchema` hypothesis.
 
-**This last hypothesis is unproved for n≥2.** It requests compatible
-relative B-tree extensions over the actual closed separator of a
-maximal genuinely mixed n-generated native attachment test. The
-verified gluing theorem does *not* prove that such extensions exist.
-Do not confuse the original-partial projection with the later survey's
-stronger total-fibre global homomorphism, which is independently refuted.
+**The uniform mixed-root hypothesis is too strong, not merely unproved.**
+Its quantification over arbitrary EHN old/core stages includes the explicit
+finite graph five-cycle in
+[docs/maximal-mixed-hard-root-schema-counterexample.md](docs/maximal-mixed-hard-root-schema-counterexample.md).
+The graph and rank certificates have a finite executable regression;
+the complete Stage-level counterexample is not yet Lean encoded.
+The checked n-pass theorem remains a valid implication, but it is NOT an
+unconditional proof strategy with this false universal premise. A viable
+replacement must carry actual Hales--Jewett Picture histories (or stronger
+root compatibility) through the weak-substructure iteration.
+Do not confuse original-partial projections with the separately refuted
+total-fibre global homomorphism.
 
 These proof modules are available through the `PartiteConstruction`
 umbrella import. Full details and exact scope:
@@ -133,11 +139,14 @@ kernel-checked tools now reduce this problem:
   This sharpest fully checked conditional endpoint requires no
   A↪B initialization: if A does not embed into B, simply use C=B.
 
-**The higher-rank multi-generated mixed-root relative extension
-hypothesis is still unproved.** Independent side completions do not
-automatically synchronize, and sufficient exterior-generator reserves
-need not exist. The later survey's stronger total-fibre global
-homomorphism remains a separate, refuted interpretation.
+**Do not attempt to prove the universal hard-root schema as stated.**
+The five-cycle audit refutes it even with irreducible Base and two strict
+forest stages. The unresolved *actual* task is a history-sensitive
+maximal-image weak-test lemma for the genuine function-language HJ Picture,
+not arbitrary full support attachments. The corrected induction must count
+exact weak vertices and use compatible relative completions over one root.
+Per-fibre output transversality is retained throughout. The later survey's
+total-fibre global homomorphism remains a separate, refuted interpretation.
 ## Map conventions
 
 `Structure.IsHomomorphism` retains equality of complete function-value
