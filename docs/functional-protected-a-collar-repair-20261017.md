@@ -31,6 +31,24 @@ A cross-side collision in the target free amalgam occurs only through a marked (
 
 This is a sound **conditional** gluing theorem, suitable for Lean. It is deliberately weaker than requiring a global EHN label map on every target (B)-tree vertex, which is unnecessary for this one gluing step.
 
+## Verified common-coordinate geometry: a preservation route
+
+The earlier full-functional theorem
+`EHN.commonParameterLines_partCompatibleEHNShadow` supplies one
+part-compatible EHN map (q:T\to\mathrm{Old}) from the entire genuine
+finite attachment of a family of HJ lines sharing a parameter
+coordinate, preserving the whole full selected support on each line.
+The exact protected witness therefore pulls back **with the same
+marked (A)-copy** from `Old` to (T) at the SAME vertex cutoff,
+by the protected commuting-parts EHN transfer. This gives a genuine
+*preservation of the stronger collar invariant* for all
+common-parameter line families, not just bare strict weak-tree
+completability.
+
+Adversarial boundary: the genuine C7 family has no common
+parameter coordinate and is not covered. In particular no claim is
+made for unions of line families with disjoint parameter supports.
+
 ## The published two-case induction
 
 * If (|p[S]|<n), use the predecessor weak-test witness on the exact projected image. The commuting-parts EHN pullback and ambient histories are already checked.
