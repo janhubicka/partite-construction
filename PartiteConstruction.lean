@@ -520,6 +520,8 @@ import PartiteConstruction.Structure.PartialSetFunctionsClosed
 -- partial set-valued functions; outputs alone lose defined-empty data.
 import PartiteConstruction.Structure.PartialSetFunctionsDomainGraph
 import PartiteConstruction.Functional.WeakPatternDomainBridge2019
+import PartiteConstruction.Functional.ActiveOutputRootTransport
+import PartiteConstruction.Functional.WeakPatternDomainRegression
 
 -- Full embeddings restrict to exact weak tests, preserving defined-empty
 -- independently from undefined operation fibres.

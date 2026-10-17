@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.ActiveOutputRootTransport
+
+#print axioms StructuralRamsey.FunctionalPartite.Embedding.activeOutputAtPart_iff
+#print axioms StructuralRamsey.FunctionalPartite.System.activeOutputAtPart_commonRoot_iff
+#print axioms StructuralRamsey.FunctionalPartite.System.activeOutputAtPart_unique
