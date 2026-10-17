@@ -65,12 +65,12 @@ theorem weakTree_of_budgeted_alpha_sides
       A Base D (id : P → P) m)
     (S : Finset C)
     (hBudgetL :
-      ((((Finset.univ : Finset E).filter (fun e => iL e ∈ S))
-          .image (p ∘ iL)) ∪
+      (Finset.image (p ∘ iL)
+          ((Finset.univ : Finset E).filter (fun e => iL e ∈ S)) ∪
         ((Finset.univ : Finset UA).image alpha)).card ≤ m)
     (hBudgetR :
-      ((((Finset.univ : Finset F).filter (fun z => iR z ∈ S))
-          .image (p ∘ iR)) ∪
+      (Finset.image (p ∘ iR)
+          ((Finset.univ : Finset F).filter (fun z => iR z ∈ S)) ∪
         ((Finset.univ : Finset UA).image alpha)).card ≤ m)
     (history : List (Set P)) :
     SetAmbientRelativeWeakTreeWitness
