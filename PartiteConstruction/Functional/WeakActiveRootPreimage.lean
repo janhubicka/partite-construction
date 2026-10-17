@@ -108,4 +108,28 @@ theorem Embedding.missingActiveOutputAtPart_preimage_iff
     refine ⟨hAmbient.mpr hAct, ?_⟩
     exact fun h => hNot (hSurviving.mp h)
 
+/-- EXACT weak functional U-closedness can be checked by the
+absence of missing active output-part root slots. This is
+stronger than equality of a single global defined-domain bit:
+multivalued functions may retain one output part while losing another.
+
+Full functional embeddings transport this precise local defect
+predicate by the preceding theorem. -/
+theorem System.isClosed_iff_noMissingActiveOutputs
+    (B : System L P V) (S : Set V) :
+    B.toStructure.IsClosed S ↔
+      ∀ (F : L.FuncSymbol)
+        (xs : Fin (L.funcArity F) → S) (q : P),
+        ¬ B.MissingActiveOutputAtPart S F xs q := by
+  constructor
+  · intro hc F xs q hMissing
+    exact hMissing.2
+      (((B.isClosed_iff_weakActiveOutputMasks S).mp hc F xs q).mp
+        hMissing.1)
+  · intro h
+    apply (B.isClosed_iff_ambientActiveMasks_reflected S).mpr
+    intro F xs q hActive
+    by_contra hNo
+    exact h F xs q ⟨hActive, hNo⟩
+
 end StructuralRamsey.FunctionalPartite
