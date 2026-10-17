@@ -518,6 +518,7 @@ import PartiteConstruction.Structure.PartialSetFunctionsClosed
 -- Domain predicate and output-incidence relation for genuinely
 -- partial set-valued functions; outputs alone lose defined-empty data.
 import PartiteConstruction.Structure.PartialSetFunctionsDomainGraph
+import PartiteConstruction.Functional.WeakPatternDomainBridge2019
 
 -- Full embeddings restrict to exact weak tests, preserving defined-empty
 -- independently from undefined operation fibres.

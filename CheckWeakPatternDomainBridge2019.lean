@@ -1,0 +1,12 @@
+import PartiteConstruction.Functional.WeakPatternDomainBridge2019
+
+#print axioms StructuralRamsey.Structure.weakInduce_patternGraph_output_iff
+#print axioms StructuralRamsey.Structure.weakInduce_patternGraph_domain_iff
+#print axioms StructuralRamsey.Structure.induced_patternGraph_domain_iff
+#print axioms StructuralRamsey.Structure.weakPatternDomain_implies_ambient
+#print axioms StructuralRamsey.Structure.weakInduce_patternGraph_domain_iff_of_closed
+#print axioms StructuralRamsey.Structure.weakInduce_patternGraph_rel_iff_of_closed
+#print axioms StructuralRamsey.Structure.weakPatternGraphInclusion_of_closed
+#print axioms StructuralRamsey.Structure.patternGraph_domain_lost_of_missing_outputs
+#print axioms StructuralRamsey.FunctionalPartite.System.existsUnique_output_at_part
+#print axioms StructuralRamsey.FunctionalPartite.System.active_output_survives_iff
