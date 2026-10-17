@@ -2,3 +2,5 @@ import PartiteConstruction.Functional.WeakActiveRootPreimage
 
 #print axioms StructuralRamsey.FunctionalPartite.Embedding.weakActiveOutputAtPart_preimage_iff
 #print axioms StructuralRamsey.FunctionalPartite.Embedding.missingActiveOutputAtPart_preimage_iff
+
+#print axioms StructuralRamsey.FunctionalPartite.System.isClosed_iff_noMissingActiveOutputs
