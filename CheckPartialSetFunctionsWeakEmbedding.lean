@@ -1,0 +1,5 @@
+import PartiteConstruction.Structure.PartialSetFunctionsWeakEmbedding
+
+#print axioms StructuralRamsey.PartialSetStructure.imageSet_restrictMap
+#print axioms StructuralRamsey.PartialSetStructure.weakValue_map_preimage
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.weakRestrictToPreimage
