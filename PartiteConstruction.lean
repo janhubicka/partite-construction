@@ -455,6 +455,7 @@ import PartiteConstruction.Functional.ProjectedGeneratorDichotomy
 -- Adversarial maximal mixed-root audit: the explicit graph odd-cycle
 -- obstruction and flexible common-root extension contrapositive.
 import PartiteConstruction.Iterated.OddCycleEdgeTreeObstruction
+import PartiteConstruction.Iterated.ProtectedAMarkParityObstruction
 import PartiteConstruction.Functional.OriginalPartialSharedRootObstruction
 
 -- Source-faithful strict functional B-tree witnesses with coherent
