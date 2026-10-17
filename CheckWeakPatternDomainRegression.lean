@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakPatternDomainRegression
+
+#print axioms StructuralRamsey.Structure.WeakPatternDomainRegression.unary_missing_output_loses_domain
