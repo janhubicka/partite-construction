@@ -60,8 +60,9 @@ theorem System.controlMissing_closedFiniteTest_decompose
     simpa only [Function.comp_assoc] using hPhantom.2
   have hSource :
       ¬ ((B.toStructure.induce (↑S : Set V) hClosed).func F xs).Nonempty := by
-    change ¬ (B.func F (Subtype.val ∘ xs)).Nonempty
-    exact hPhantom.1
+    rintro ⟨y, hy⟩
+    apply hPhantom.1
+    exact ⟨y.1, hy⟩
   exact hp.closedTest_decompose_of_domainFailure
     S hClosed F xs hTarget hSource
 
