@@ -523,6 +523,7 @@ import PartiteConstruction.Structure.PartialSetFunctionsClosed
 import PartiteConstruction.Structure.PartialSetFunctionsDomainGraph
 import PartiteConstruction.Functional.WeakPatternDomainBridge2019
 import PartiteConstruction.Functional.ActiveOutputRootTransport
+import PartiteConstruction.Functional.ActiveMaskFullEmbedding
 import PartiteConstruction.Functional.WeakPatternDomainRegression
 
 -- Full embeddings restrict to exact weak tests, preserving defined-empty
