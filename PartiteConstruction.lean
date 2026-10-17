@@ -496,6 +496,7 @@ import PartiteConstruction.Functional.AmbientRelativeTargetPostcomp
 import PartiteConstruction.Functional.NativePowerTransversalTree
 import PartiteConstruction.Functional.TransversalEmbeddingEqualizer
 import PartiteConstruction.Functional.TransversalEmbeddingGenerators
+import PartiteConstruction.Functional.HJGeneratingPartOverlap
 import PartiteConstruction.Functional.HJLineOverlapDichotomy
 
 -- Distinguish undefined operations from defined-empty set-valued values.
