@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.ActiveOutputRootTransport
+import PartiteConstruction.Functional.WeakClosedActiveMasks
 import PartiteConstruction.Functional.WeakTransversalTests
 
 /-!
