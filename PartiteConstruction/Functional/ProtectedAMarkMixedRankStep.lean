@@ -108,7 +108,7 @@ theorem mixedWeakTree_of_predecessor_protected
       refine ⟨?_, haS⟩
       intro hEq
       apply hzOut
-      exact ⟨a, hEq.symm⟩
+      exact ⟨a, hEq⟩
     calc
       SL.card = (SL.image iL).card :=
         (Finset.card_image_of_injective SL iL.injective).symm
@@ -125,7 +125,7 @@ theorem mixedWeakTree_of_predecessor_protected
       refine ⟨?_, hbS⟩
       intro hEq
       apply hzOut
-      exact ⟨b, hEq.symm⟩
+      exact ⟨b, hEq⟩
     calc
       SR.card = (SR.image iR).card :=
         (Finset.card_image_of_injective SR iR.injective).symm
