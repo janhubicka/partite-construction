@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.ControlMissingClosedRankSplit
+
+#print axioms StructuralRamsey.FunctionalPartite.System.controlMissing_closedFiniteTest_decompose
