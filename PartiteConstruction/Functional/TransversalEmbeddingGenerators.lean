@@ -24,9 +24,8 @@ namespace StructuralRamsey.FunctionalPartite
 
 open StructuralRamsey.Structure
 
-universe u v w
-variable {L : Language.{u}} {P : Type v}
-variable {V : Type w} {W : Type w}
+universe u v
+variable {L : Language.{u}} {P V W : Type v}
 
 /-- Agreement on a function-generating set forces equality of full
 partite embeddings, because output-fibre transversality closes the
