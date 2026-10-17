@@ -58,7 +58,7 @@ theorem SetAmbientACopyIntersections.occupied_mark_trace
     have hh := hHist (Set.singleton x.1)
       (hSingletons x.1) x y hxy
     have hy : alpha a ∈ (Set.singleton x.1 : Set P) := by
-      exact hh.mp (by simp)
+      exact hh.mp (by change x.1 = x.1; rfl)
     exact (Set.mem_singleton_iff.mp hy).symm
   · intro hx
     have hxeq : x = (⟨alpha a, ha⟩ : I) :=
