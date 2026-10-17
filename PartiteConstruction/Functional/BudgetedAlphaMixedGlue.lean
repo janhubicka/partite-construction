@@ -51,7 +51,7 @@ theorem weakTree_of_budgeted_alpha_sides
     {Whole : Structure L C}
     {sL : Embedding Root Left} {sR : Embedding Root Right}
     {iL : Embedding Left Whole} {iR : Embedding Right Whole}
-    [Fintype UA] [Fintype P] [DecidableEq P]
+    [Fintype UA] [Fintype P] [DecidableEq P] [DecidableEq C]
     [Fintype E] [Fintype F]
     (hSrc : IsFreeAmalgam sL sR iL iR)
     (D : Structure L P) (alpha : Embedding A D)
