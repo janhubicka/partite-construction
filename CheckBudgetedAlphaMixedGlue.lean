@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.BudgetedAlphaMixedGlue
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakTree_of_budgeted_alpha_sides
