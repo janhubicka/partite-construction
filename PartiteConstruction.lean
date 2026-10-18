@@ -543,3 +543,4 @@ import PartiteConstruction.Functional.WeakMissingRootCoherence
 import PartiteConstruction.Functional.ControlRootWeakCutCoherence
 import PartiteConstruction.Functional.ControlMissingOutputDichotomy
 import PartiteConstruction.Functional.ControlMissingClosedRankSplit
+import PartiteConstruction.Functional.OccupiedAlphaControlExposure
