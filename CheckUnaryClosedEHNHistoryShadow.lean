@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.UnaryClosedEHNHistoryShadow
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.atMostClosed_iff_withPart_id
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMostClosedWithPart.pullback_ehn_unary
+#print axioms StructuralRamsey.FunctionalPartite.Induced.power_closedHistory_unary
