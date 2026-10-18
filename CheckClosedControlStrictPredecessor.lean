@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.ClosedControlStrictPredecessor
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMost.toClosed
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMostClosed.protected_of_closedOccupiedA
