@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.ActualStageExposedSideOutput
+
+#print axioms StructuralRamsey.FunctionalPartite.System.weakTree_or_exposed_alpha_side_mixed_succ
