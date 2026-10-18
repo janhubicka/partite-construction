@@ -71,8 +71,6 @@ theorem protected_of_closedOccupiedA
     (alpha : Embedding A D)
     (I : Finset P) (hI : I.card ≤ m)
     (hIClosed : D.IsClosed (↑I : Set P))
-    (hAlphaClosed : A.IsClosed
-      {a : UA | alpha a ∈ (↑I : Set P)})
     (history : List (Set P)) :
     SetAmbientProtectedWeakTreeWitness
       A Base alpha D (id : P → P)
@@ -83,6 +81,9 @@ theorem protected_of_closedOccupiedA
     intro q
     exact List.mem_append.mpr
       (Or.inr (singleton_mem_singletonProjectedHistory q))
+  have hAlphaClosed : A.IsClosed
+      {a : UA | alpha a ∈ (↑I : Set P)} :=
+    alpha.preimage_isClosed (↑I : Set P) hIClosed
   have hPrevious :
       SetAmbientRelativeWeakTreeWitness
         A Base D (id : P → P)
