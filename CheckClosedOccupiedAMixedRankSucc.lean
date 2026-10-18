@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.ClosedOccupiedAMixedRankSucc
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakTree_of_closedOccupied_alpha_mixed_succ
