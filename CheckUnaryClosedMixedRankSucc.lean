@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.UnaryClosedMixedRankSucc
+
+#print axioms StructuralRamsey.Structure.IsHomomorphism.image_isClosed
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakTree_of_closed_unary_mixed_succ
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.fullTree_of_closed_unary_mixed_succ
