@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.ProtectedProjectedSideMixedGlue
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakTree_of_protected_projected_side_witnesses
