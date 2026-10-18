@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.OccupiedAlphaControlExposure
+
+#print axioms StructuralRamsey.FunctionalPartite.System.occupiedAlphaClosed_iff_noExposed
+#print axioms StructuralRamsey.FunctionalPartite.System.exposed_of_not_occupiedAlphaClosed
+#print axioms StructuralRamsey.FunctionalPartite.System.exposed_has_controlMissing
+#print axioms StructuralRamsey.FunctionalPartite.System.not_occupiedAlphaClosed_closedFiniteTest_decompose
+#print axioms StructuralRamsey.FunctionalPartite.System.occupiedAlphaClosed_of_closedFinite_irreducible
