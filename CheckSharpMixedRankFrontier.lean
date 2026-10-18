@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.SharpMixedRankFrontier
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakTree_or_maximal_nonclosed_alpha_mixed_succ
