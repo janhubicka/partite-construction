@@ -1,0 +1,8 @@
+import PartiteConstruction.Functional.UnaryClosedMixedRankClosedPrev
+import PartiteConstruction.Functional.UnaryClosedMixedRankSucc
+
+#print axioms StructuralRamsey.Structure.projectedSideBudgets_of_mixed
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakTree_of_closed_unary_mixed_succ_closedPrev
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.fullTree_of_closed_unary_mixed_succ_closedPrev
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakTree_of_closedOccupied_alpha_mixed_succ
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakTree_of_closed_unary_mixed_succ
