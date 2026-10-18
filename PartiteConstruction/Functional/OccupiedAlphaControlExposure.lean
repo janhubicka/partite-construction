@@ -106,8 +106,8 @@ theorem System.occupiedAlphaClosed_iff_noExposed
         ∀ i : Fin (L.funcArity F),
           ∃ x : S, B.part x.1 = alpha (args i) := by
       intro i
-      change alpha (args i) ∈ B.part '' S at hArgs i
-      obtain ⟨x, hxS, hxPart⟩ := hArgs i
+      have hi : alpha (args i) ∈ B.part '' S := hArgs i
+      obtain ⟨x, hxS, hxPart⟩ := hi
       exact ⟨⟨x, hxS⟩, hxPart⟩
     choose xs hXs using hLift
     have hInputEq :
