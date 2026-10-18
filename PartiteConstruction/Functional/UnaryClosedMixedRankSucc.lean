@@ -1,4 +1,4 @@
-import PartiteConstruction.Structure.HomImageClosed
+import PartiteConstruction.Functional.UnaryClosedMixedRankClosedPrev
 import PartiteConstruction.Functional.UnaryEHNCompletion
 import PartiteConstruction.Functional.ClosedOccupiedAMixedRankSucc
 
@@ -72,66 +72,9 @@ theorem weakTree_of_closed_unary_mixed_succ
     (history : List (Set P)) :
     SetAmbientRelativeWeakTreeWitness
       A Base Whole p (↑S : Set C) history := by
-  classical
-  let pL : E → P := p ∘ iL
-  let pR : F → P := p ∘ iR
-  let SL : Finset E := Finset.univ.filter (fun e => iL e ∈ S)
-  let SR : Finset F := Finset.univ.filter (fun f => iR f ∈ S)
-  let IL : Finset P := SL.image pL
-  let IR : Finset P := SR.image pR
-  have hSetL : (↑SL : Set E) = iL ⁻¹' (↑S : Set C) := by
-    ext x
-    simp [SL]
-  have hSetR : (↑SR : Set F) = iR ⁻¹' (↑S : Set C) := by
-    ext x
-    simp [SR]
-  have hImgL :
-      (↑IL : Set P) = pL '' (iL ⁻¹' (↑S : Set C)) := by
-    rw [← hSetL]
-    ext q
-    constructor
-    · intro hq
-      obtain ⟨x, hx, hEq⟩ := Finset.mem_image.mp hq
-      exact ⟨x, hx, hEq⟩
-    · rintro ⟨x, hx, rfl⟩
-      exact Finset.mem_image.mpr ⟨x, hx, rfl⟩
-  have hImgR :
-      (↑IR : Set P) = pR '' (iR ⁻¹' (↑S : Set C)) := by
-    rw [← hSetR]
-    ext q
-    constructor
-    · intro hq
-      obtain ⟨x, hx, hEq⟩ := Finset.mem_image.mp hq
-      exact ⟨x, hx, hEq⟩
-    · rintro ⟨x, hx, rfl⟩
-      exact Finset.mem_image.mpr ⟨x, hx, rfl⟩
-  have hClosedSideL : Left.IsClosed (iL ⁻¹' (↑S : Set C)) :=
-    iL.preimage_isClosed (↑S : Set C) hClosed
-  have hClosedSideR : Right.IsClosed (iR ⁻¹' (↑S : Set C)) :=
-    iR.preimage_isClosed (↑S : Set C) hClosed
-  have hpL : Left.IsEHNHomomorphismEmbedding D pL :=
-    hp.comp iL.isEHNHomomorphismEmbedding
-  have hpR : Right.IsEHNHomomorphismEmbedding D pR :=
-    hp.comp iR.isEHNHomomorphismEmbedding
-  have hFullL : Left.IsHomomorphism D pL :=
-    hpL.isHomomorphism_of_unary hUnary
-  have hFullR : Right.IsHomomorphism D pR :=
-    hpR.isHomomorphism_of_unary hUnary
-  have hIL : D.IsClosed (↑IL : Set P) := by
-    rw [hImgL]
-    exact hFullL.image_isClosed
-      (iL ⁻¹' (↑S : Set C)) hClosedSideL
-  have hIR : D.IsClosed (↑IR : Set P) := by
-    rw [hImgR]
-    exact hFullR.image_isClosed
-      (iR ⁻¹' (↑S : Set C)) hClosedSideR
-  have hAlphaL : A.IsClosed {a : UA | alpha a ∈ (↑IL : Set P)} :=
-    alpha.preimage_isClosed (↑IL : Set P) hIL
-  have hAlphaR : A.IsClosed {a : UA | alpha a ∈ (↑IR : Set P)} :=
-    alpha.preimage_isClosed (↑IR : Set P) hIR
-  exact hSrc.weakTree_of_closedOccupied_alpha_mixed_succ
-    hA D alpha p hp hRootAlpha Base eAB hBase m
-    hPrev S hS hMixedL hMixedR hAlphaL hAlphaR history
+  exact hSrc.weakTree_of_closed_unary_mixed_succ_closedPrev
+    hUnary hA D alpha p hp hRootAlpha Base eAB hBase
+    m hPrev.toClosed S hS hClosed hMixedL hMixedR history
 
 /-- The strict unary completion of a CLOSED mixed test actually has
 a FULL unary homomorphism-embedding (not merely the original-2019

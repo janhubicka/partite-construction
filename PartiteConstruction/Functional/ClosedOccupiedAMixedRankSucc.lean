@@ -1,4 +1,4 @@
-import PartiteConstruction.Functional.ClosedOccupiedAMixedGlue
+import PartiteConstruction.Functional.MixedProjectedSideBudgets
 
 /-!
 # Genuine native functional mixed tests: successor-rank side budgets
@@ -69,72 +69,10 @@ theorem weakTree_of_closedOccupied_alpha_mixed_succ
     SetAmbientRelativeWeakTreeWitness
       A Base Whole p (↑S : Set C) history := by
   classical
-  let SL : Finset E :=
-    Finset.univ.filter (fun e => iL e ∈ S)
-  let SR : Finset F :=
-    Finset.univ.filter (fun f => iR f ∈ S)
-  have hSmallL : SL.card < S.card := by
-    obtain ⟨z, hz, hOutside⟩ := hMixedL
-    let T : Finset C := SL.image iL
-    have hSubset : T ⊆ S := by
-      intro w hw
-      change w ∈ SL.image iL at hw
-      obtain ⟨e, he, heq⟩ := Finset.mem_image.mp hw
-      rw [← heq]
-      exact (Finset.mem_filter.mp he).2
-    have hzNot : z ∉ T := by
-      intro hzT
-      change z ∈ SL.image iL at hzT
-      obtain ⟨e, he, heq⟩ := Finset.mem_image.mp hzT
-      exact hOutside e heq.symm
-    have hProper : T ⊂ S := by
-      apply Finset.ssubset_iff.mpr
-      refine ⟨z, hzNot, ?_⟩
-      intro w hw
-      rcases Finset.mem_insert.mp hw with rfl | hw
-      · exact hz
-      · exact hSubset hw
-    have hCardImage : T.card = SL.card :=
-      Finset.card_image_iff.mpr
-        (fun _ _ _ _ h => iL.injective h)
-    rw [← hCardImage]
-    exact Finset.card_lt_card hProper
-  have hSmallR : SR.card < S.card := by
-    obtain ⟨z, hz, hOutside⟩ := hMixedR
-    let T : Finset C := SR.image iR
-    have hSubset : T ⊆ S := by
-      intro w hw
-      change w ∈ SR.image iR at hw
-      obtain ⟨f, hf, heq⟩ := Finset.mem_image.mp hw
-      rw [← heq]
-      exact (Finset.mem_filter.mp hf).2
-    have hzNot : z ∉ T := by
-      intro hzT
-      change z ∈ SR.image iR at hzT
-      obtain ⟨f, hf, heq⟩ := Finset.mem_image.mp hzT
-      exact hOutside f heq.symm
-    have hProper : T ⊂ S := by
-      apply Finset.ssubset_iff.mpr
-      refine ⟨z, hzNot, ?_⟩
-      intro w hw
-      rcases Finset.mem_insert.mp hw with rfl | hw
-      · exact hz
-      · exact hSubset hw
-    have hCardImage : T.card = SR.card :=
-      Finset.card_image_iff.mpr
-        (fun _ _ _ _ h => iR.injective h)
-    rw [← hCardImage]
-    exact Finset.card_lt_card hProper
-  have hCardL : (SL.image (p ∘ iL)).card ≤ m := by
-    have hImage : (SL.image (p ∘ iL)).card ≤ SL.card :=
-      Finset.card_image_le
-    omega
-  have hCardR : (SR.image (p ∘ iR)).card ≤ m := by
-    have hImage : (SR.image (p ∘ iR)).card ≤ SR.card :=
-      Finset.card_image_le
-    omega
+  obtain ⟨hCardL, hCardR⟩ :=
+    StructuralRamsey.Structure.projectedSideBudgets_of_mixed
+      iL iR p m S hS hMixedL hMixedR
   exact hSrc.weakTree_of_closedOccupied_alpha_sides hA
     D alpha p hp hRootAlpha Base eAB hBase m hPrev S
     hCardL hCardR hClosedL hClosedR history
-
 end StructuralRamsey.Structure.IsFreeAmalgam
