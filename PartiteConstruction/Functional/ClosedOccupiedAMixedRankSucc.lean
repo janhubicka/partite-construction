@@ -78,15 +78,22 @@ theorem weakTree_of_closedOccupied_alpha_mixed_succ
     let T : Finset C := SL.image iL
     have hSubset : T ⊆ S := by
       intro w hw
+      change w ∈ SL.image iL at hw
       obtain ⟨e, he, heq⟩ := Finset.mem_image.mp hw
       rw [← heq]
       exact (Finset.mem_filter.mp he).2
     have hzNot : z ∉ T := by
-      rintro ⟨e, he, heq⟩
+      intro hzT
+      change z ∈ SL.image iL at hzT
+      obtain ⟨e, he, heq⟩ := Finset.mem_image.mp hzT
       exact hOutside e heq.symm
     have hProper : T ⊂ S := by
       apply Finset.ssubset_iff.mpr
-      exact ⟨z, ⟨hz, hzNot⟩, hSubset⟩
+      refine ⟨z, hzNot, ?_⟩
+      intro w hw
+      rcases Finset.mem_insert.mp hw with rfl | hw
+      · exact hz
+      · exact hSubset hw
     have hCardImage : T.card = SL.card :=
       Finset.card_image_iff.mpr
         (fun _ _ _ _ h => iL.injective h)
@@ -97,15 +104,22 @@ theorem weakTree_of_closedOccupied_alpha_mixed_succ
     let T : Finset C := SR.image iR
     have hSubset : T ⊆ S := by
       intro w hw
+      change w ∈ SR.image iR at hw
       obtain ⟨f, hf, heq⟩ := Finset.mem_image.mp hw
       rw [← heq]
       exact (Finset.mem_filter.mp hf).2
     have hzNot : z ∉ T := by
-      rintro ⟨f, hf, heq⟩
+      intro hzT
+      change z ∈ SR.image iR at hzT
+      obtain ⟨f, hf, heq⟩ := Finset.mem_image.mp hzT
       exact hOutside f heq.symm
     have hProper : T ⊂ S := by
       apply Finset.ssubset_iff.mpr
-      exact ⟨z, ⟨hz, hzNot⟩, hSubset⟩
+      refine ⟨z, hzNot, ?_⟩
+      intro w hw
+      rcases Finset.mem_insert.mp hw with rfl | hw
+      · exact hz
+      · exact hSubset hw
     have hCardImage : T.card = SR.card :=
       Finset.card_image_iff.mpr
         (fun _ _ _ _ h => iR.injective h)
