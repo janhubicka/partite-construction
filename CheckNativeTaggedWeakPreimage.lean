@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.NativeTaggedWeakPreimage
+
+#print axioms StructuralRamsey.Structure.Embedding.taggedPatternWeakPreimage
