@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.NativeTaggedWeakFreeAmalgam2019
+
+#print axioms StructuralRamsey.Structure.surjectiveInputRoot_factor
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.patternGraph
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.taggedPatternGraph
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.taggedPatternGraph_exactWeak_withMaps
