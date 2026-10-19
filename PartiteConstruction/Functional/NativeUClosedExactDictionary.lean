@@ -134,17 +134,21 @@ theorem isClosed_iff_taggedPattern_isUSubstructure
       intro i
       change Structure.funcTuple e y (Fin.castSucc i) = e i
       exact Structure.funcTuple_castSucc e y i
-    have hRootIn :
-        ∀ i : Fin root.closureRule.rootSize,
-          t (i.castLE root.closureRule.rootLE) ∈ S := by
+    have hPrefixIn : ∀ i : Fin m, t (Fin.castSucc i) ∈ S := by
       intro i
       obtain ⟨k, hk⟩ := hSurj i
       have hmem : e i ∈ S := by
         rw [← hk, ← hFact k]
         exact hx k
-      change Structure.funcTuple e y (Fin.castSucc i) ∈ S
-      rw [Structure.funcTuple_castSucc]
+      have heq : t (Fin.castSucc i) = e i := by
+        change Structure.funcTuple e y (Fin.castSucc i) = e i
+        exact Structure.funcTuple_castSucc e y i
+      rw [heq]
       exact hmem
+    have hRootIn :
+        ∀ i : Fin root.closureRule.rootSize,
+          t (i.castLE root.closureRule.rootLE) ∈ S := by
+      simpa only [root, Language.FunctionRootPattern.closureRule] using hPrefixIn
     have hLast :=
       hU root.closureRule ⟨root, rfl⟩ t hTag
         hRootIn (Fin.last m)
