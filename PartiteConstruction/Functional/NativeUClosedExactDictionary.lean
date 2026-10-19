@@ -132,7 +132,8 @@ theorem isClosed_iff_taggedPattern_isUSubstructure
       refine ⟨Language.FunctionRootPattern.ofActiveDomain_embedding
         Old pat hmPos e hInj hDom, ?_⟩
       intro i
-      simp only [t, Structure.funcTuple_castSucc]
+      change Structure.funcTuple e y (Fin.castSucc i) = e i
+      exact Structure.funcTuple_castSucc e y i
     have hRootIn :
         ∀ i : Fin root.closureRule.rootSize,
           t (i.castLE root.closureRule.rootLE) ∈ S := by
@@ -141,8 +142,9 @@ theorem isClosed_iff_taggedPattern_isUSubstructure
       have hmem : e i ∈ S := by
         rw [← hk, ← hFact k]
         exact hx k
-      change t (Fin.castSucc i) ∈ S
-      simpa only [t, Structure.funcTuple_castSucc] using hmem
+      change Structure.funcTuple e y (Fin.castSucc i) ∈ S
+      rw [Structure.funcTuple_castSucc]
+      exact hmem
     have hLast :=
       hU root.closureRule ⟨root, rfl⟩ t hTag
         hRootIn (Fin.last m)
