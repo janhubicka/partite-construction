@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.NativeStageSplitCopies
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachList_splitCopies
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachAll_splitCopies
