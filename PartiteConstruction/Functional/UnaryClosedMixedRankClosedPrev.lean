@@ -1,8 +1,6 @@
-import PartiteConstruction.Functional.ClosedControlStrictPredecessor
+import PartiteConstruction.Functional.AllArityClosedProjectedMixedRankSucc
 import PartiteConstruction.Functional.UnaryEHNCompletion
 import PartiteConstruction.Structure.HomImageClosed
-import PartiteConstruction.Functional.ProtectedProjectedSideMixedGlue
-import PartiteConstruction.Functional.MixedProjectedSideBudgets
 
 /-!
 # Unary closed mixed functional successor from CLOSED-control-only predecessor
@@ -118,32 +116,9 @@ theorem weakTree_of_closed_unary_mixed_succ_closedPrev
     rw [hImgR]
     exact hFullR.image_isClosed
       (iR ⁻¹' (↑S : Set C)) hClosedSideR
-  have hBudget :=
-    StructuralRamsey.Structure.projectedSideBudgets_of_mixed
-      iL iR p m S hS hMixedL hMixedR
-  have hCardL : (SL.image pL).card ≤ m := hBudget.1
-  have hCardR : (SR.image pR).card ≤ m := hBudget.2
-  have hControlL : SetAmbientProtectedWeakTreeWitness
-      A Base alpha D (id : P → P) (↑IL : Set P) history :=
-    hPrev.protected_of_closedOccupiedA
-      eAB hBase alpha IL hCardL hIL history
-  have hControlR : SetAmbientProtectedWeakTreeWitness
-      A Base alpha D (id : P → P) (↑IR : Set P) history :=
-    hPrev.protected_of_closedOccupiedA
-      eAB hBase alpha IR hCardR hIR history
-  have hTargetL : SetAmbientProtectedWeakTreeWitness
-      A Base alpha D (id : P → P)
-      ((p ∘ iL) '' (iL ⁻¹' (↑S : Set C))) history := by
-    rw [← hImgL]
-    exact hControlL
-  have hTargetR : SetAmbientProtectedWeakTreeWitness
-      A Base alpha D (id : P → P)
-      ((p ∘ iR) '' (iR ⁻¹' (↑S : Set C))) history := by
-    rw [← hImgR]
-    exact hControlR
-  exact hSrc.weakTree_of_protected_projected_side_witnesses
-    hA D alpha p hp hRootAlpha Base
-    (↑S : Set C) history hTargetL hTargetR
+  exact hSrc.weakTree_of_closedProjected_alpha_mixed_succ
+    hA D alpha p hp hRootAlpha Base eAB hBase m
+    hPrev S hS hMixedL hMixedR hIL hIR history
 
 /-- The same strict target gives a FULL unary homomorphism-embedding
 of the original exact function-closed mixed test and retains actual
