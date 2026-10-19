@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.CanonicalTagFreeAmalgam2019
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.patternTagExpansion
