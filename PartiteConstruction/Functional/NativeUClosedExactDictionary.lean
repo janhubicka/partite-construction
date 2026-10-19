@@ -148,7 +148,8 @@ theorem isClosed_iff_taggedPattern_isUSubstructure
     have hRootIn :
         ∀ i : Fin root.closureRule.rootSize,
           t (i.castLE root.closureRule.rootLE) ∈ S := by
-      simpa only [root, Language.FunctionRootPattern.closureRule] using hPrefixIn
+      change ∀ i : Fin m, t (Fin.castSucc i) ∈ S
+      exact hPrefixIn
     have hLast :=
       hU root.closureRule ⟨root, rfl⟩ t hTag
         hRootIn (Fin.last m)
