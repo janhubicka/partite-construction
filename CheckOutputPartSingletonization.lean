@@ -1,0 +1,10 @@
+import PartiteConstruction.Functional.OutputPartSingletonUClosedBridge
+
+#print axioms StructuralRamsey.FunctionalPartite.System.splitOutputParts_singletonValued
+#print axioms StructuralRamsey.FunctionalPartite.System.mem_splitOutputParts_iff
+#print axioms StructuralRamsey.FunctionalPartite.System.mem_original_iff_split_actualPart
+#print axioms StructuralRamsey.FunctionalPartite.System.isClosed_iff_splitOutputParts_isClosed
+#print axioms StructuralRamsey.FunctionalPartite.Embedding.splitOutputParts
+#print axioms StructuralRamsey.FunctionalPartite.System.splitOutputParts_weak_func_iff
+#print axioms StructuralRamsey.Language.PositiveFuncArity.outputPartIndexed
+#print axioms StructuralRamsey.FunctionalPartite.System.isClosed_iff_outputPartTaggedInduce_isUClosed
