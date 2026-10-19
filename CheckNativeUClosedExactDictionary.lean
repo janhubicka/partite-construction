@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.NativeUClosedExactDictionary
+
+#print axioms StructuralRamsey.Structure.isClosed_iff_taggedPattern_isUSubstructure
+#print axioms StructuralRamsey.Structure.isClosed_iff_taggedPatternInduce_isUClosed
