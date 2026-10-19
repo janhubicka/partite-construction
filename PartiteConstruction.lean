@@ -534,6 +534,7 @@ import PartiteConstruction.Structure.PartialSetFunctionsClosed
 -- partial set-valued functions; outputs alone lose defined-empty data.
 import PartiteConstruction.Structure.PartialSetFunctionsDomainGraph
 import PartiteConstruction.Functional.WeakPatternDomainBridge2019
+import PartiteConstruction.Functional.NativeUClosedExactDictionary
 import PartiteConstruction.Functional.ActiveOutputRootTransport
 import PartiteConstruction.Functional.WeakClosedActiveMasks
 import PartiteConstruction.Functional.WeakActiveRootPreimage
