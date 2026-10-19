@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OutputPartSplitFreeAmalgam
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.splitOutputParts_of_partite
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.splitOutputParts_exactWeak_withMaps
