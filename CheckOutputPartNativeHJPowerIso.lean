@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.OutputPartNativeHJPowerIso
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.toSplitPowerVertex
+#print axioms StructuralRamsey.FunctionalPartite.Induced.fromSplitPowerVertex
+#print axioms StructuralRamsey.FunctionalPartite.Induced.splitPowerEmbedding
+#print axioms StructuralRamsey.FunctionalPartite.Induced.splitPowerEmbedding_surjective
