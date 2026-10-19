@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OutputPartNativeHJPower
+
+#print axioms StructuralRamsey.FunctionalPartite.System.splitOutputParts_projectionHom
+#print axioms StructuralRamsey.FunctionalPartite.Induced.power_splitOutputParts_func_iff
