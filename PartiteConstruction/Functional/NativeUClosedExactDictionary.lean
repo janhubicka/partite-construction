@@ -127,11 +127,12 @@ theorem isClosed_iff_taggedPattern_isUSubstructure
         Structure.funcTuple_last, hargs] using
         (show Function.Injective e ∧ y ∈ A.func F (e ∘ r)
           from ⟨hInj, by rw [hargs]; exact hy⟩)
-    have hTag : (patternTagExpansion Old).rel (.inr root) t :=
-      patternTagExpansion_tag_of_valid_old_output
-        Old pat hmPos t hGraph
-        (by simpa only [t, Structure.funcTuple_castSucc] using hInj)
-        (by simpa only [t, Structure.funcTuple_castSucc] using hDom)
+    have hTag : (patternTagExpansion Old).rel (.inr root) t := by
+      refine ⟨hGraph, ?_⟩
+      refine ⟨Language.FunctionRootPattern.ofActiveDomain_embedding
+        Old pat hmPos e hInj hDom, ?_⟩
+      intro i
+      simp only [t, Structure.funcTuple_castSucc]
     have hRootIn :
         ∀ i : Fin root.closureRule.rootSize,
           t (i.castLE root.closureRule.rootLE) ∈ S := by
@@ -140,11 +141,7 @@ theorem isClosed_iff_taggedPattern_isUSubstructure
       have hmem : e i ∈ S := by
         rw [← hk, ← hFact k]
         exact hx k
-      have hidx :
-          i.castLE root.closureRule.rootLE = Fin.castSucc i := by
-        apply Fin.ext
-        rfl
-      rw [hidx]
+      change t (Fin.castSucc i) ∈ S
       simpa only [t, Structure.funcTuple_castSucc] using hmem
     have hLast :=
       hU root.closureRule ⟨root, rfl⟩ t hTag
