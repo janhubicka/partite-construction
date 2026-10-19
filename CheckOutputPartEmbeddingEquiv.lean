@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.OutputPartEmbeddingEquiv
+
+#print axioms StructuralRamsey.FunctionalPartite.Embedding.unsplitOutputParts
+#print axioms StructuralRamsey.FunctionalPartite.Embedding.outputPartSplitEquiv
+#print axioms StructuralRamsey.FunctionalPartite.arrow_iff_splitOutputParts
