@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.NativePartiteWeakUClosureRankDictionary
+
+#print axioms StructuralRamsey.FunctionalPartite.System.weakIsClosed_iff_split_weakIsClosed
+#print axioms StructuralRamsey.FunctionalPartite.System.weakIsClosed_iff_outputTagged_isUSubstructure
+#print axioms StructuralRamsey.FunctionalPartite.System.weakFunctionClosure_eq_outputTaggedUClosureHull
+#print axioms StructuralRamsey.FunctionalPartite.System.weakGeneratedByAtMost_iff_outputTaggedUSize_le
