@@ -59,6 +59,7 @@ instance completeOutputPartLanguage_symbol_finite
     (L : Language.{u}) (P : Type v) [Fintype P]
     [Finite L.RelSymbol] [Finite L.FuncSymbol] :
     Finite (completeOutputPartLanguage L P).Symbol := by
+  change Finite (L.RelSymbol ⊕ (L.FuncSymbol × CompleteOutputParts P))
   infer_instance
 
 end Language
