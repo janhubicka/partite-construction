@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.NativePartialClosure
+
+#print axioms StructuralRamsey.Structure.toNonemptyPartial_collapseDomain
+#print axioms StructuralRamsey.Structure.toNonemptyPartial_isClosed_iff
+#print axioms StructuralRamsey.Structure.toNonemptyPartial_functionClosure
+#print axioms StructuralRamsey.Structure.toNonemptyPartial_generatedByAtMost_iff
