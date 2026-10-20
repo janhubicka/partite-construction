@@ -1,0 +1,7 @@
+# Complete output-part tuples (source language)
+
+The whole-fibre weak deletion convention is compatible with relational induction on an exact tested vertex set provided a relation records a **complete** defined function value, not a single output incidence. A finite family of parts gives a finite family of injectively-labelled output-part tuples, with width bounded by the part count. For each original function F and each such tuple q, the relation has arity arity(F)+length(q), asserts that the function value is exactly the set of output coordinates, and fixes each output coordinate's part according to q. Width zero represents a defined-empty value.
+
+Any such relation survives restriction to S precisely when all of its output vertices are in S. This is the same condition as the whole-fibre weak restriction, yielding identity embeddings between the induced graph and the graph of the weak restriction. If values are transversal by part, the output coordinate at each labelled part is unique for a fixed input tuple, including when an output coincides with a root vertex.
+
+This proves only source syntax, restriction and uniqueness. It does not yet supply the 2019 closure rules with irreducible full equality-pattern roots, nor encode arbitrary function values without showing an enumeration exists, nor give compatible strict target-tree completions. No generated hull replaces the exact tested vertex set.
