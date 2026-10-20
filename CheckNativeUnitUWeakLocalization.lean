@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.NativeUnitUWeakLocalization
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_tagged_relativeIrreducible_weak_side
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_tagged_mixed_weak_not_relativeIrreducible
+

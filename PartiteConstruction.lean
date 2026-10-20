@@ -572,3 +572,11 @@ import PartiteConstruction.Functional.LocalDomainClosedHistoryPullback
 import PartiteConstruction.Functional.LocalDomainClosedImage
 import PartiteConstruction.Functional.ControlMissingClosedRankSplit
 import PartiteConstruction.Functional.OccupiedAlphaControlExposure
+
+-- Exact weak-test source lemmas; the closure/rank dictionary uses surviving-output restriction.
+import PartiteConstruction.Functional.NativeTaggedSemiClosedWeak
+import PartiteConstruction.Functional.NativeTaggedRelativeWeakSideLocalization
+import PartiteConstruction.Functional.NativeUnitUWeakLocalization
+import PartiteConstruction.Functional.NativeWeakAmbientUClosureDictionary
+import PartiteConstruction.Functional.NativePartiteWeakUClosureRankDictionary
+

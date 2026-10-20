@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.NativeTaggedSemiClosedWeak
+
+#print axioms StructuralRamsey.FunctionalPartite.System.taggedOutputPart_isUClosed
+#print axioms StructuralRamsey.FunctionalPartite.System.taggedOutputPart_weak_isUSemiClosed
+#print axioms StructuralRamsey.FunctionalPartite.System.taggedOutputPart_weak_isUClosed_iff_nativeClosed
+
