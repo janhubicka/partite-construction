@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.OutputPartClosureHullRank
+
+#print axioms StructuralRamsey.FunctionalPartite.System.functionClosure_splitOutputParts
+#print axioms StructuralRamsey.FunctionalPartite.System.generatedBy_iff_splitOutputParts
+#print axioms StructuralRamsey.FunctionalPartite.System.generatedByAtMost_iff_splitOutputParts
