@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.OutputPartNativeHJLineNaturality
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.splitLetter
+#print axioms StructuralRamsey.FunctionalPartite.Induced.splitLine
+#print axioms StructuralRamsey.FunctionalPartite.Induced.toSplitPowerVertex_lineMap
+#print axioms StructuralRamsey.FunctionalPartite.Induced.splitPowerEmbedding_comp_lineEmbedding
