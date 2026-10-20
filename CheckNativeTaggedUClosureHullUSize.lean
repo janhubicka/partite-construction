@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.NativeTaggedUClosureHullUSize
+
+#print axioms StructuralRamsey.FunctionalPartite.System.functionClosure_eq_taggedUClosureHull
+#print axioms StructuralRamsey.FunctionalPartite.System.generatedBy_iff_taggedUGenerating
+#print axioms StructuralRamsey.FunctionalPartite.System.generatedByAtMost_iff_taggedUSize_le
