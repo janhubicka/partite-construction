@@ -147,6 +147,36 @@ not arbitrary full support attachments. The corrected induction must count
 exact weak vertices and use compatible relative completions over one root.
 Per-fibre output transversality is retained throughout. The later survey's
 total-fibre global homomorphism remains a separate, refuted interpretation.
+## Weak-restriction conventions and the functional induction
+
+Two weak restrictions are now kept distinct. `Structure.weakInduce` retains
+each surviving output, so its fibre is `F(x) ∩ S`. The tagged singleton
+closure and `USize` dictionary uses this convention. In contrast,
+`PartialSetStructure.wholeWeakInduce` makes the entire application undefined
+if any output leaves `S`. Its `Option (Set V)` values retain the difference
+between undefined and defined-empty. For `F(a) = {b,c}` and `S = {a,b}`,
+the first restriction keeps `{b}` and the second is undefined.
+
+The whole-fibre API proves full embedding restriction on exact preimages,
+source-defined homomorphism restriction to exact weak images, and full
+free-amalgam decomposition on exact weak sides and their common root.
+`Structure.IsFreeAmalgam.wholeWeakPartialInduce_withMaps` applies this
+decomposition to the existing native construction with its original
+nonempty-defined convention. No tested set is replaced by its closure.
+
+`PartialSetStructure.wholeValueGraph` records an entire finite output value
+in one relation tuple. Its induced restriction is exactly the graph of the
+whole-fibre weak restriction, including defined-empty values. This is not
+yet a canonical `U`-closure description: repeated output enumerations are
+allowed, and the ambient active-root data still needs to be incorporated.
+The older singleton-output dictionary must not be transferred to this
+convention without proof. Compatible strict target-tree completions in the
+actual mixed Hales--Jewett step also remain open.
+
+See [the whole-fibre restriction proof](docs/whole-fibre-weak-restriction-20261020.md),
+[the exact free-amalgam cut](docs/whole-fibre-weak-free-amalgam-20261020.md), and
+[the complete-value tuple encoding](docs/whole-output-tuple-weak-restriction-20261020.md).
+
 ## Map conventions
 
 `Structure.IsHomomorphism` retains equality of complete function-value
@@ -174,3 +204,4 @@ CI builds the umbrella and the audit imports.  Only `propext`,
 See [docs/appendix-a.md](docs/appendix-a.md),
 [docs/ehn-functions.md](docs/ehn-functions.md), and [ROADMAP.md](ROADMAP.md) for
 the exact current proof boundary.
+

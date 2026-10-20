@@ -1,0 +1,7 @@
+import PartiteConstruction.Structure.PartialSetFunctionsWholeGraph
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakValue_eq_some_range_iff
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakInduce_wholeValueGraph_rel_iff
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakGraphToInduce
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakGraphFromInduce
+#print axioms StructuralRamsey.PartialSetStructure.IsOriginalPartialHomomorphism.to_wholeValueGraph_hom
