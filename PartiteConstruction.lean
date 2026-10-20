@@ -588,3 +588,8 @@ import PartiteConstruction.Structure.PartialSetFunctionsWholeFreeAmalgam
 import PartiteConstruction.Functional.NativeWholeWeakFreeAmalgam
 
 import PartiteConstruction.Structure.PartialSetFunctionsWholeGraph
+
+import PartiteConstruction.Structure.PartialSetFunctionsClosure
+import PartiteConstruction.Functional.NativePartialClosure
+import PartiteConstruction.Functional.PatternLanguageFinite
+
