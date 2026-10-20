@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.OriginalPartialOutputMaskCoherence
+
+#print axioms StructuralRamsey.FunctionalPartite.System.weak_projection_split
+#print axioms StructuralRamsey.FunctionalPartite.System.weaklyPartite_splitProjectionWeak
+#print axioms StructuralRamsey.FunctionalPartite.System.originalPartial_projection_split
+#print axioms StructuralRamsey.FunctionalPartite.System.originalPartial_projection_iff_split_and_coverage
+#print axioms StructuralRamsey.FunctionalPartite.System.definedOutputPartCoverage_of_EHN
