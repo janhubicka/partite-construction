@@ -146,6 +146,6 @@ theorem IsOriginalPartialHomomorphism.to_wholeValueGraph_hom
         · rintro ⟨j, rfl⟩
           exact ⟨xs (Fin.natAdd (L.funcArity F) j), ⟨j, rfl⟩, rfl⟩
       change B.func F (fun i => f (xs (Fin.castAdd n i))) = _
-      simpa only [hImage] using hValue
+      simpa only [hImage, Function.comp_apply] using hValue
 
 end StructuralRamsey.PartialSetStructure
