@@ -1,0 +1,5 @@
+import PartiteConstruction.Structure.PartialSetFunctionsWholePartClosure
+
+#print axioms StructuralRamsey.PartialSetStructure.isClosed_iff_completePartGraph_isClosed
+#print axioms StructuralRamsey.PartialSetStructure.completePartClosureHull_eq_functionClosure
+#print axioms StructuralRamsey.PartialSetStructure.generatedByAtMost_iff_completePartGraph

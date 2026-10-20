@@ -1,0 +1,177 @@
+import PartiteConstruction.Structure.PartialSetFunctionsWholePartRepresent
+import PartiteConstruction.Structure.PartialSetFunctionsClosure
+
+/-!
+# Exact functional closure and generator rank in the finite whole-value graph
+
+For a finite transverse structure, every defined function value has an
+entire output-part tuple (proved separately), and all such tuple relations
+restrict exactly under whole-fibre weak induction.
+
+A vertex set is function-closed iff it contains the output coordinates of
+every full value relation whose input coordinates it contains. As a result
+the least vertex closure and every finite generator-size bound agree
+literally with those defined in the finite relational source language.
+
+This is the closure-operator correspondence, NOT yet the 2019 U-closure
+description with full irreducible roots; no arbitrary tagged target decoding
+or strict functional tree completion is assumed.
+-/
+
+namespace StructuralRamsey
+
+universe u v w
+
+namespace RelStructure
+
+variable {L : Language.{u}} {P : Type v} {V : Type w}
+variable [Fintype P]
+
+/-- Closure under all complete output-part relation tuples whose original
+function inputs lie in the proposed closed subset. Only function-value
+symbols impose closure; ordinary relations impose no new vertices. -/
+def IsClosedByCompleteParts
+    (E : RelStructure (L.completeOutputPartLanguage P) V)
+    (T : Set V) : Prop :=
+  ∀ (F : L.FuncSymbol) (q : Language.CompleteOutputParts P)
+    (xs : Fin (L.funcArity F + q.size) → V),
+      E.rel (.inr (F, q)) xs →
+      (∀ i : Fin (L.funcArity F),
+        xs (Fin.castAdd q.size i) ∈ T) →
+      ∀ j : Fin q.size,
+        xs (Fin.natAdd (L.funcArity F) j) ∈ T
+
+/-- The intersection of all subsets closed under the complete-value
+relations and containing S. This is vertex-exact, not an ambient copy
+completion. -/
+def completePartClosureHull
+    (E : RelStructure (L.completeOutputPartLanguage P) V)
+    (S : Set V) : Set V :=
+  {x | ∀ T : Set V, IsClosedByCompleteParts E T → S ⊆ T → x ∈ T}
+
+/-- The finite relational complete-part presentation has a generating
+set of at most n vertices if one such set closes to the whole carrier. -/
+def CompletePartGeneratedByAtMost
+    (E : RelStructure (L.completeOutputPartLanguage P) V)
+    (n : ℕ) : Prop :=
+  ∃ G : Finset V, G.card ≤ n ∧
+    completePartClosureHull E (↑G : Set V) = Set.univ
+
+end RelStructure
+
+namespace PartialSetStructure
+
+open StructuralRamsey.RelStructure
+
+variable {L : Language.{u}} {P : Type v} {V : Type w}
+variable [Fintype P]
+
+/-- Every actual complete value relation imposes precisely the original
+native closedness requirement, and conversely every native defined value
+is represented by such a relation. Handles empty defined values, repeated
+function inputs, and output vertices belonging to the input root. -/
+theorem isClosed_iff_completePartGraph_isClosed
+    (A : PartialSetStructure L V) [Finite V]
+    (part : V → P) (hTrans : FibreTransversal A part)
+    (T : Set V) :
+    A.IsClosed T ↔
+      IsClosedByCompleteParts (A.completeOutputPartGraph part) T := by
+  constructor
+  · intro h F q xs hRel hx j
+    exact h F
+      (fun i => xs (Fin.castAdd q.size i))
+      (Set.range (fun j : Fin q.size =>
+        xs (Fin.natAdd (L.funcArity F) j)))
+      hx hRel.1 ⟨j, rfl⟩
+  · intro h F xs U hx hValue y hy
+    obtain ⟨q, ys, hRange, hLabels⟩ :=
+      A.completeOutputPartGraph_represents_value part hTrans F xs U hValue
+    let t : Fin (L.funcArity F + q.size) → V := Fin.append xs ys
+    have htInput (i : Fin (L.funcArity F)) :
+        t (Fin.castAdd q.size i) = xs i :=
+      Fin.append_left xs ys i
+    have htOutput (j : Fin q.size) :
+        t (Fin.natAdd (L.funcArity F) j) = ys j :=
+      Fin.append_right xs ys j
+    have hInputs :
+        (fun i : Fin (L.funcArity F) => t (Fin.castAdd q.size i)) = xs :=
+      funext htInput
+    have hOutputs :
+        (fun j : Fin q.size => t (Fin.natAdd (L.funcArity F) j)) = ys :=
+      funext htOutput
+    have hRel : (A.completeOutputPartGraph part).rel (.inr (F, q)) t := by
+      change
+        (A.func F (fun i => t (Fin.castAdd q.size i)) =
+          some (Set.range (fun j : Fin q.size =>
+            t (Fin.natAdd (L.funcArity F) j))) ∧
+          ∀ j : Fin q.size,
+            part (t (Fin.natAdd (L.funcArity F) j)) = q.label j)
+      constructor
+      · rw [hInputs, hOutputs, hRange]
+        exact hValue
+      · intro j
+        rw [htOutput]
+        exact hLabels j
+    have hRoot : ∀ i : Fin (L.funcArity F),
+        t (Fin.castAdd q.size i) ∈ T := by
+      intro i
+      rw [htInput]
+      exact hx i
+    have hAll : ∀ j : Fin q.size,
+        t (Fin.natAdd (L.funcArity F) j) ∈ T :=
+      h F q t hRel hRoot
+    have hyRep : y ∈ Set.range ys := by
+      rw [hRange]
+      exact hy
+    obtain ⟨j, hj⟩ := hyRep
+    have hOut : ys j ∈ T := by
+      rw [← htOutput j]
+      exact hAll j
+    rw [hj] at hOut
+    exact hOut
+
+/-- Full identity of the native vertex-closure operator and the closure
+generated by complete-value tuples in the finite relational language. -/
+theorem completePartClosureHull_eq_functionClosure
+    (A : PartialSetStructure L V) [Finite V]
+    (part : V → P) (hTrans : FibreTransversal A part)
+    (S : Set V) :
+    completePartClosureHull (A.completeOutputPartGraph part) S =
+      A.functionClosure S := by
+  ext y
+  rw [A.mem_functionClosure_iff S y]
+  change
+    (∀ T : Set V,
+      IsClosedByCompleteParts (A.completeOutputPartGraph part) T →
+        S ⊆ T → y ∈ T) ↔
+    (∀ T : Set V, A.IsClosed T → S ⊆ T → y ∈ T)
+  constructor
+  · intro h T hClosed hST
+    exact h T ((A.isClosed_iff_completePartGraph_isClosed
+      part hTrans T).mp hClosed) hST
+  · intro h T hGraph hST
+    exact h T ((A.isClosed_iff_completePartGraph_isClosed
+      part hTrans T).mpr hGraph) hST
+
+/-- Intrinsic minimum generator bounds are preserved by the SAME
+finite complete-value source presentation. No tested vertex set is
+replaced by its ambient closure, and no 2019 USize is asserted yet. -/
+theorem generatedByAtMost_iff_completePartGraph
+    (A : PartialSetStructure L V) [Finite V]
+    (part : V → P) (hTrans : FibreTransversal A part)
+    (n : ℕ) :
+    A.GeneratedByAtMost n ↔
+      CompletePartGeneratedByAtMost (A.completeOutputPartGraph part) n := by
+  constructor
+  · rintro ⟨G, hCard, hGen⟩
+    refine ⟨G, hCard, ?_⟩
+    rw [A.completePartClosureHull_eq_functionClosure part hTrans (↑G : Set V)]
+    exact hGen
+  · rintro ⟨G, hCard, hGen⟩
+    refine ⟨G, hCard, ?_⟩
+    change A.functionClosure (↑G : Set V) = Set.univ
+    rw [← A.completePartClosureHull_eq_functionClosure part hTrans (↑G : Set V)]
+    exact hGen
+
+end PartialSetStructure
+end StructuralRamsey
