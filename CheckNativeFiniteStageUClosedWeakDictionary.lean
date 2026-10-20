@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.NativeFiniteStageUClosedWeakDictionary
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachList_taggedUClosedWeakCopies
