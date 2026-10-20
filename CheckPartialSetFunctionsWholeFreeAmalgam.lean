@@ -1,0 +1,6 @@
+import PartiteConstruction.Structure.PartialSetFunctionsWholeFreeAmalgam
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.whole_defined_iff
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakInduce_defined_ambient
+#print axioms StructuralRamsey.PartialSetStructure.IsFreeAmalgam.func_iff
+#print axioms StructuralRamsey.PartialSetStructure.IsFreeAmalgam.wholeWeakInduce_withMaps
