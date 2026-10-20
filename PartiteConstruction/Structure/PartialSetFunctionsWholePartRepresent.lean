@@ -38,14 +38,18 @@ theorem completeOutputPartGraph_represents_value
     (Fintype.equivFin U).symm
   let labels : Fin (Fintype.card U) → P :=
     fun j => part (e j).1
+  let f : U → P := fun z => part z.1
+  have hf : Function.Injective f := by
+    intro a b hab
+    apply Subtype.ext
+    exact hTrans F xs U hValue
+      a.1 a.2 b.1 b.2 hab
   have hInjective : Function.Injective labels := by
     intro i j hij
     apply e.injective
-    apply Subtype.ext
-    exact hTrans F xs U hValue
-      (e i).1 (e i).2 (e j).1 (e j).2 hij
+    exact hf hij
   have hBound : Fintype.card U ≤ Fintype.card P :=
-    Fintype.card_le_of_injective labels hInjective
+    Fintype.card_le_of_injective f hf
   let q : Language.CompleteOutputParts P :=
     ⟨⟨⟨Fintype.card U, Nat.lt_succ_of_le hBound⟩, labels⟩,
       hInjective⟩
