@@ -155,8 +155,6 @@ theorem weakIsClosed_iff_ambientTagged_isUSubstructure
         ((patternTagExpansion Old).induce S).rel (.inr root) tS := by
       change (patternTagExpansion Old).rel (.inr root)
         (Subtype.val ∘ tS)
-      have hval : Subtype.val ∘ tS = t := rfl
-      rw [hval]
       exact hTag
     have hRootIn :
         ∀ i : Fin root.closureRule.rootSize,
