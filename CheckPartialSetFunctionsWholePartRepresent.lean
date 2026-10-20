@@ -1,0 +1,3 @@
+import PartiteConstruction.Structure.PartialSetFunctionsWholePartRepresent
+
+#print axioms StructuralRamsey.PartialSetStructure.completeOutputPartGraph_represents_value
