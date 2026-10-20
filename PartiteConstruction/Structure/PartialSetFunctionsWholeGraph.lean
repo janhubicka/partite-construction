@@ -131,21 +131,23 @@ theorem IsOriginalPartialHomomorphism.to_wholeValueGraph_hom
       exact h.1 R xs hxs
   | inr symbol =>
       rcases symbol with ⟨F, n⟩
-      have hValue := h.2 F
-        (fun i => xs (Fin.castAdd n i))
-        (Set.range (fun j : Fin n =>
-          xs (Fin.natAdd (L.funcArity F) j))) hxs
-      have hImage :
-          Structure.imageSet f
-            (Set.range (fun j : Fin n => xs (Fin.natAdd (L.funcArity F) j))) =
-          Set.range (fun j : Fin n => f (xs (Fin.natAdd (L.funcArity F) j))) := by
-        ext y
-        constructor
-        · rintro ⟨z, ⟨j, rfl⟩, rfl⟩
-          exact ⟨j, rfl⟩
-        · rintro ⟨j, rfl⟩
-          exact ⟨xs (Fin.natAdd (L.funcArity F) j), ⟨j, rfl⟩, rfl⟩
-      change B.func F (fun i => f (xs (Fin.castAdd n i))) = _
-      simpa only [hImage, Function.comp_apply] using hValue
+      let inputs : Fin (L.funcArity F) → V :=
+        fun i => xs (Fin.castAdd n i)
+      let outputs : Fin n → V :=
+        fun j => xs (Fin.natAdd (L.funcArity F) j)
+      change A.func F inputs = some (Set.range outputs) at hxs
+      change B.func F (f ∘ inputs) = some (Set.range (f ∘ outputs))
+      calc
+        B.func F (f ∘ inputs) =
+            some (Structure.imageSet f (Set.range outputs)) :=
+          h.2 F inputs (Set.range outputs) hxs
+        _ = some (Set.range (f ∘ outputs)) := by
+          congr 1
+          ext y
+          constructor
+          · rintro ⟨z, ⟨j, rfl⟩, rfl⟩
+            exact ⟨j, rfl⟩
+          · rintro ⟨j, rfl⟩
+            exact ⟨outputs j, ⟨j, rfl⟩, rfl⟩
 
 end StructuralRamsey.PartialSetStructure
