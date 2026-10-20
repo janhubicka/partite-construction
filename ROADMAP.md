@@ -165,8 +165,20 @@ functional formulation. Do not re-run the verified recursive Ramsey
 construction while developing this remaining local step.
 ## Remaining proof obligations
 
-There are no remaining proof obligations for the statements currently printed
-in Appendix A.
+The relational Appendix statements are checked. The requested iterated
+construction with genuine functional target trees remains open; its status
+must not be inferred from the narrower relational statements currently
+printed in the survey.
+
+The 20 October source calculus now also handles the requested whole-fibre
+weak restriction: omit an application if any output leaves the exact test,
+while retaining an originally defined-empty value. Full embeddings and
+free-amalgam diagrams restrict to the exact weak sides and root, and
+source-defined projections restrict to exact weak images. Complete-value
+relation tuples commute with this restriction. The existing per-output
+singleton closure/rank dictionary instead uses the restriction that retains
+individual surviving outputs. A canonical whole-value closure description
+and the actual mixed-step compatible target completions remain to be proved.
 
 The arbitrary-alpha Picture issue was resolved by correcting the manuscript:
 the ordinary Picture-with-closures lemma assumes a closed projection and is
@@ -190,3 +202,4 @@ Use the all-arity EHN endpoints in the survey and mark `thm:HN` fully
 verified.  Keep the direct globally fibre-surjective functional partite
 formulation separate from the checked weak global projection formulation.
 Do not silently replace irreducibility by hereditary irreducibility.
+

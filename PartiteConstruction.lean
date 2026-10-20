@@ -586,3 +586,5 @@ import PartiteConstruction.Structure.PartialSetFunctionsWholeWeak
 import PartiteConstruction.Structure.PartialSetFunctionsWholeFreeAmalgam
 
 import PartiteConstruction.Functional.NativeWholeWeakFreeAmalgam
+
+import PartiteConstruction.Structure.PartialSetFunctionsWholeGraph
