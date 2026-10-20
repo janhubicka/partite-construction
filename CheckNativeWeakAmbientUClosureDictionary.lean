@@ -2,3 +2,5 @@ import PartiteConstruction.Functional.NativeWeakAmbientUClosureDictionary
 
 #print axioms StructuralRamsey.Structure.weakIsClosed_iff_ambientTagged_isUSubstructure
 #print axioms StructuralRamsey.Structure.weakFunctionClosure_eq_ambientTaggedUClosureHull
+#print axioms StructuralRamsey.Structure.weakGeneratedBy_iff_ambientTaggedUGenerating
+#print axioms StructuralRamsey.Structure.weakGeneratedByAtMost_iff_ambientTaggedUSize_le
