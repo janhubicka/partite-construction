@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.NativeWholeWeakFreeAmalgam
+
+#print axioms StructuralRamsey.Structure.toNonemptyPartial_defined_iff
+#print axioms StructuralRamsey.Structure.Embedding.toNonemptyPartial
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.toNonemptyPartial
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.wholeWeakPartialInduce_withMaps

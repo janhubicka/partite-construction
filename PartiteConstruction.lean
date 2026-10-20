@@ -580,3 +580,9 @@ import PartiteConstruction.Functional.NativeUnitUWeakLocalization
 import PartiteConstruction.Functional.NativeWeakAmbientUClosureDictionary
 import PartiteConstruction.Functional.NativePartiteWeakUClosureRankDictionary
 
+
+import PartiteConstruction.Structure.PartialSetFunctionsWholeWeak
+
+import PartiteConstruction.Structure.PartialSetFunctionsWholeFreeAmalgam
+
+import PartiteConstruction.Functional.NativeWholeWeakFreeAmalgam
