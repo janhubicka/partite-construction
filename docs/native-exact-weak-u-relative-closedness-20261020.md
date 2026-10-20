@@ -100,3 +100,29 @@ weak functionClosure and relative UClosureHull on S
 and equivalence of weak-test generating sets.
 
 Audit named axioms and complete umbrella CI.
+
+## Exact intrinsic weak-generator rank
+
+The same relative-closure identity holds for every seed T⊆S, so
+T generates the WHOLE weak functional structure A|ᵂS if and only if
+it generates the induced AMBIENT tagged structure E|S in the
+published relative U-sense. In particular, for every finite n,
+
+\[
+ (A|^{w}S).\mathrm{GeneratedByAtMost}(n)
+ \quad\Longleftrightarrow\quad
+ \mathrm{USize}(\mathcal U,E|S)\le n.
+\]
+
+The qualifier **intrinsic to the exact weak S** is important:
+\(\mathrm{USize}(E|S)\) need not equal the U-size of the
+generated *ambient* hull of S. The corrected 2019 proof
+contains independent counterexamples to that false equality.
+
+The additional Lean declarations are
+\`weakGeneratedBy_iff_ambientTaggedUGenerating\` and
+\`weakGeneratedByAtMost_iff_ambientTaggedUSize_le\`.
+This closes the numerical weak-substructure presentation
+dictionary once the current CI/axiom audit succeeds; it
+still does not construct the missing strict functional
+history-compatible target root.
