@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.NativeUClosedExactDictionary
 import PartiteConstruction.Structure.WeakSubstructure
-import PartiteConstruction.Ramsey.ClosureUSize2019
+import PartiteConstruction.Ramsey.ClosureGeneratedHullRank
+import PartiteConstruction.Functional.ClosedGeneratorRank
 
 /-!
 # Exact weak functional closure = relative 2019 U-closure on AMBIENT tags
@@ -205,5 +206,54 @@ theorem weakFunctionClosure_eq_ambientTaggedUClosureHull
     exact hx Q ((hEquiv Q).mpr hQ) hTQ
   · intro hx Q hQ hTQ
     exact hx Q ((hEquiv Q).mp hQ) hTQ
+
+
+/-- In every EXACT weak source vertex test S, the SAME generators
+in its native weak function structure also generate its AMBIENT
+induced canonical U-tag structure relative to S.
+
+The comparison is WITHIN the weak carrier S, not the often much
+larger closure of S inside the full original ambient A. -/
+theorem weakGeneratedBy_iff_ambientTaggedUGenerating
+    (A : Structure L V) [Finite V]
+    (hPos : L.PositiveFuncArity) (S : Set V) (T : Set S) :
+    (A.weakInduce S).GeneratedBy T ↔
+      IsUGenerating L.patternClosureRules
+        ((patternTagExpansion A.patternGraph).induce S) T := by
+  change (A.weakInduce S).functionClosure T = Set.univ ↔
+    UClosureHull L.patternClosureRules
+      ((patternTagExpansion A.patternGraph).induce S) T = Set.univ
+  rw [weakFunctionClosure_eq_ambientTaggedUClosureHull A hPos S T]
+
+/-- Minimum exact WEAK source generator size is precisely the
+published 2019 USize of its induced AMBIENT tagged pattern structure.
+
+This directly identifies the two weak-substructure induction
+parameters on the SAME carrier S and does not equate
+cardinality of a potentially larger closure hull with rank. -/
+theorem weakGeneratedByAtMost_iff_ambientTaggedUSize_le
+    (A : Structure L V) [Finite V]
+    (hPos : L.PositiveFuncArity) (S : Set V)
+    [Fintype S] (n : ℕ) :
+    (A.weakInduce S).GeneratedByAtMost n ↔
+      USize L.patternClosureRules
+        ((patternTagExpansion A.patternGraph).induce S) ≤ n := by
+  let Weak := A.weakInduce S
+  let Tagged := (patternTagExpansion A.patternGraph).induce S
+  constructor
+  · rintro ⟨G, hG, hGen⟩
+    have hU : IsUGenerating L.patternClosureRules Tagged (↑G : Set S) :=
+      (weakGeneratedBy_iff_ambientTaggedUGenerating
+        A hPos S (↑G : Set S)).mp hGen
+    exact (USize_le_of_generating L.patternClosureRules Tagged G hU).trans hG
+  · intro h
+    obtain ⟨G, hCard, hGen⟩ :=
+      USize_spec L.patternClosureRules Tagged
+    have hBound : G.card ≤ n := by
+      rw [hCard]
+      exact h
+    exact ⟨G, hBound,
+      (weakGeneratedBy_iff_ambientTaggedUGenerating
+        A hPos S (↑G : Set S)).mpr hGen⟩
 
 end StructuralRamsey.Structure
