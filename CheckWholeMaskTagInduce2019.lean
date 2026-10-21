@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskTagInduce2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskTagExpansion_induce_rel_iff
+#print axioms StructuralRamsey.RelStructure.wholeMaskTagExpansion_induce_eq
