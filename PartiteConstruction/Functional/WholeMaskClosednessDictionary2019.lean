@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.WholeMaskActiveRootExtraction
 import PartiteConstruction.Functional.WholeMaskClosureCanonical2019
 import PartiteConstruction.Functional.TupleEqualityPattern2019
+import PartiteConstruction.Functional.Closed
 import PartiteConstruction.Structure.PartialSetFunctionsWholePartRepresent
 
 /-!
@@ -69,7 +70,8 @@ theorem isClosed_iff_wholeMaskTagged_isUSubstructure
       rw [hRange]
       exact hy
     obtain ⟨j, hj⟩ := hyRange
-    have hQPos : 0 < q.size := j.isLt
+    have hQPos : 0 < q.size :=
+      Nat.lt_of_le_of_lt (Nat.zero_le j.val) j.isLt
     obtain ⟨m, r, e, hSurj, hInj, hFact, _⟩ :=
       exists_tuple_equality_pattern_exact xs
     have hmPos : 0 < m := by
@@ -88,7 +90,7 @@ theorem isClosed_iff_wholeMaskTagged_isUSubstructure
       ext a
       constructor
       · rintro ⟨z, ⟨i, rfl⟩, rfl⟩
-        exact ⟨i, hLabels i⟩
+        exact ⟨i, (hLabels i).symm⟩
       · rintro ⟨i, rfl⟩
         exact ⟨ys i, ⟨i, rfl⟩, hLabels i⟩
     have hDomain : Old.rel (.inr (.inl (pat,q))) e := by
@@ -127,12 +129,11 @@ theorem isClosed_iff_wholeMaskTagged_isUSubstructure
     have hPrefix : ∀ i : Fin m,
         t (Fin.castAdd q.size i) ∈ S := by
       intro i
-      rw [Fin.append_left]
       obtain ⟨k, hk⟩ := hSurj i
       have hei : e i ∈ S := by
         rw [← hk, ← hFact k]
         exact hXs k
-      exact hei
+      simpa only [t, Fin.append_left] using hei
     have hRoot : ∀ i : Fin root.closureRule.rootSize,
         t (i.castLE root.closureRule.rootLE) ∈ S := by
       change ∀ i : Fin m, t (Fin.castAdd q.size i) ∈ S
