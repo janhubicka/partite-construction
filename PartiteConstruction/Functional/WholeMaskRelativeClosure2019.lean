@@ -114,12 +114,12 @@ theorem isClosedByWholeMaskTuples_iff_Usubstructure
       exact Fin.elim0 z0
     have hMaskPos : 0 < q.size :=
       Nat.lt_of_le_of_lt (Nat.zero_le j.val) j.isLt
-    let prefix : Fin p.rootSize → V :=
+    let inputRoot : Fin p.rootSize → V :=
       fun i => t (Fin.castAdd q.size i)
     obtain ⟨hInj,hDomain⟩ := hValid p q t ht
     let root : Language.WholeMaskRootPattern L P :=
       Language.WholeMaskRootPattern.ofActiveDomain
-        E p q hInputPos hMaskPos prefix hDomain
+        E p q hInputPos hMaskPos inputRoot hDomain
     have hTag : (wholeMaskTagExpansion E).rel (.inr root) t := by
       change E.rel (.inr (.inr (p,q))) t ∧
         ∃ g : Embedding root.root E,
@@ -127,7 +127,7 @@ theorem isClosedByWholeMaskTuples_iff_Usubstructure
             t (Fin.castAdd q.size i) = g i
       refine ⟨ht,
         Language.WholeMaskRootPattern.ofActiveDomain_embedding
-          E p q hInputPos hMaskPos prefix hInj hDomain, ?_⟩
+          E p q hInputPos hMaskPos inputRoot hInj hDomain, ?_⟩
       intro i
       rfl
     have hRoot : ∀ i : Fin root.closureRule.rootSize,
