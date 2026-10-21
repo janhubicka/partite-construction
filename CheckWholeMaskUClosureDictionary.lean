@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskUClosureDictionary
+
+#print axioms StructuralRamsey.PartialSetStructure.isClosed_iff_wholeMaskTag_isUSubstructure
+#print axioms StructuralRamsey.PartialSetStructure.functionClosure_eq_wholeMaskUClosureHull
+#print axioms StructuralRamsey.PartialSetStructure.generatedByAtMost_iff_wholeMaskUSize_le
