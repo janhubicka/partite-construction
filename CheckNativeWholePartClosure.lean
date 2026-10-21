@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.NativeWholePartClosure
+
+#print axioms StructuralRamsey.FunctionalPartite.System.toNonemptyPartial_fibreTransversal
+#print axioms StructuralRamsey.FunctionalPartite.System.wholeWeakIsClosed_iff_completePartGraph
+#print axioms StructuralRamsey.FunctionalPartite.System.wholeWeakFunctionClosure_eq_completePartHull
+#print axioms StructuralRamsey.FunctionalPartite.System.wholeWeakGeneratedByAtMost_iff_completePartGraph
