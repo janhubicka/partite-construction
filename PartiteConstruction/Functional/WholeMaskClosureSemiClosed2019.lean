@@ -156,7 +156,7 @@ theorem wholeMaskTagExpansion_isUSemiClosed
   · intro t ht
     change (A.wholeMaskPatternGraph part).rel
         (.inr (.inr (p.input,p.mask))) t ∧
-      ∃ e : Embedding p.root (A.wholeMaskPatternGraph part),
+      ∃ e : RelStructure.Embedding p.root (A.wholeMaskPatternGraph part),
         ∀ i : Fin p.input.rootSize,
           t (Fin.castAdd p.mask.size i) = e i at ht
     obtain ⟨_,e,he⟩ := ht

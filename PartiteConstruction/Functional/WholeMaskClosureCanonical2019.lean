@@ -40,7 +40,7 @@ theorem wholeMaskTagExpansion_isUClosed
   intro rule hrule e
   obtain ⟨p, rfl⟩ := hrule
   let Old := A.wholeMaskPatternGraph part
-  let old : Embedding p.root Old := e.wholeMaskTagReduct
+  let old : RelStructure.Embedding p.root Old := e.wholeMaskTagReduct
   have hDomain : Old.rel (.inr (.inl (p.input, p.mask))) (old ∘ id) :=
     (old.map_rel_iff (.inr (.inl (p.input, p.mask))) id).mpr
       p.hasDomain
