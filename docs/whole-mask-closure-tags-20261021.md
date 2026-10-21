@@ -1,0 +1,7 @@
+# Irreducible positive complete-value closure roots — 21 October 2026
+
+The separate active mask-domain and full complete-output tuple relations permit an exact 2019 closure description. Index a fresh closure symbol by the primitive function's **surjective input equality pattern**, a nonempty injective output-part mask, and the full induced OLD relational pattern on its distinct input vertices. Retain the mask-domain relation on the input root. Because that domain relation includes every distinct root coordinate, the root is irreducible, regardless of repeated primitive function arguments or coincidences between inputs and outputs. The associated fresh closure relation has arity rootSize + maskWidth, strictly greater than rootSize; the output mask's positivity witnesses this strictness.
+
+A canonical tagged source relation holds only when the ambient complete-value graph tuple exists and the root prefix fully embeds the named old root structure. Forgetting the fresh tags returns the old graph exactly. Defined-empty applications supply zero-width active domain records but do not generate a closure rule with an output vertex. Nullary function inputs require the separate nullary-root reduction from the 2019 formalization.
+
+This module contains **closure-description syntax and irreducibility**, not yet canonical U-closedness, weak USize equality, arbitrary tagged target validity, or a strict functional mixed B-tree completion. Those assertions require separate proofs.

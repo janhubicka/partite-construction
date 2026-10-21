@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskClosureTags2019
+
+#print axioms StructuralRamsey.Language.WholeMaskRootPattern.closureRule
