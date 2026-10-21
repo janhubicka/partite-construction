@@ -42,7 +42,9 @@ def ofActiveDomain
   root := {rel := fun R xs => E.rel R (e ∘ xs)}
   hasDomain := by
     change E.rel (.inr (.inl (input, mask))) (e ∘ id)
-    simpa only [Function.comp_id] using hDomain
+    convert hDomain using 1
+    funext i
+    rfl
 
 /-- The root extraction carries a literal FULL OLD embedding. Its
 carrier consists of exactly the given distinct function-input
