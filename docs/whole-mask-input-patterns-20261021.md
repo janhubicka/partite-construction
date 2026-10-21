@@ -1,0 +1,7 @@
+# Whole-value input-pattern source graph — 21 October 2026
+
+The finite source syntax has separate symbols for complete output-part tuples and persistent input-domain masks. The original function arguments need not be distinct: a surjection from argument positions onto distinct root vertices records their equality pattern. The mask domain predicate remembers both definedness and which output parts occur, while the complete graph relation records the entire value in an ordered tuple of mutually distinct output parts.
+
+A complete output tuple implies the corresponding active mask domain, including the defined-empty case. Under whole-fibre weak deletion, the *output relation* survives exactly when every output vertex survives, so it agrees with ordinary induced restriction of the ambient graph relation on the exact tested vertex set. The *domain-mask predicate does not commute with weak deletion*: the induced ambient domain must be retained even when a complete value has lost an output. This is the semi-closed source convention in the 2019 proof.
+
+Original signature and part set must be finite to conclude that this indexed source language is finite. A subsequent step must add fresh closure symbols indexed by the full induced old root pattern, prove the root irreducibility and canonical U-closedness, and then prove coherent decoding of completed target structures. None of these steps is asserted by the current syntax lemma. Nullary roots and empty-valued operations remain separate from positive-output closure rules.
