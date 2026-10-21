@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskClosednessDictionary2019
+
+#print axioms StructuralRamsey.PartialSetStructure.isClosed_iff_wholeMaskTagged_isUSubstructure
+#print axioms StructuralRamsey.PartialSetStructure.isClosed_iff_wholeMaskTaggedInduce_isUClosed
