@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskActiveRootExtraction
+
+#print axioms StructuralRamsey.Language.WholeMaskRootPattern.ofActiveDomain
+#print axioms StructuralRamsey.Language.WholeMaskRootPattern.ofActiveDomain_embedding
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskPatternGraph_domain_mask_set_unique
