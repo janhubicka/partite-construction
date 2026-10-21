@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskRelativeClosure2019
+
+#print axioms StructuralRamsey.RelStructure.PartialSetStructure.wholeMaskPatternGraph_validDomains
+#print axioms StructuralRamsey.RelStructure.HasValidCompleteMaskDomains.induce
+#print axioms StructuralRamsey.RelStructure.isClosedByWholeMaskTuples_iff_Usubstructure
