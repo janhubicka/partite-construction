@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskWholeWeakUSize2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakFunctionClosure_eq_inducedAmbientUClosureHull
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakGeneratedByAtMost_iff_inducedAmbientUSize_le
