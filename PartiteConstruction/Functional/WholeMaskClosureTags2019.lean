@@ -89,6 +89,7 @@ def closureRule (p : WholeMaskRootPattern L P) :
   rootPositive := p.rootPositive
   rootStrict := by
     change p.input.rootSize < p.input.rootSize + p.mask.size
+    have hPositive : 0 < p.mask.size := p.outputPositive
     omega
   root := RelStructure.wholeMaskTagExpansion p.root
   rootIrreducible := by
