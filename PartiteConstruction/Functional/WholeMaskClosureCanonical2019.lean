@@ -49,7 +49,20 @@ theorem wholeMaskTagExpansion_isUClosed
         ∃ U : Set V,
           A.func p.input.symbol (old ∘ p.input.argMap) = some U ∧
           part '' U = Set.range p.mask.label := by
-    simpa [Old, wholeMaskPatternGraph, Function.comp_def] using hDomain
+    change Function.Injective (old.toFun ∘ id) ∧
+      ∃ U : Set V,
+        A.func p.input.symbol
+          ((old.toFun ∘ id) ∘ p.input.argMap) = some U ∧
+        part '' U = Set.range p.mask.label at hDomain
+    obtain ⟨_, U, hValue, hMask⟩ := hDomain
+    refine ⟨old.injective, U, ?_, hMask⟩
+    have hArgs :
+        ((old.toFun ∘ id) ∘ p.input.argMap) =
+          old.toFun ∘ p.input.argMap := by
+      funext i
+      rfl
+    rw [hArgs] at hValue
+    exact hValue
   obtain ⟨_, U, hValue, hMask⟩ := hDom
   have hExists (j : Fin p.mask.size) :
       ∃ y : V, y ∈ U ∧ part y = p.mask.label j := by
