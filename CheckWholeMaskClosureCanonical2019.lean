@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskClosureCanonical2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskTagExpansion_isUClosed
