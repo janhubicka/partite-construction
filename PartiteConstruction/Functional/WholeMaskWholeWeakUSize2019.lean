@@ -48,6 +48,7 @@ theorem wholeWeakFunctionClosure_eq_inducedAmbientUClosureHull
     A.wholeWeakIsClosed_iff_inducedAmbientTagUSubstructure
       part hPos hTrans S T
   ext x
+  rw [(wholeWeakInduce A S).mem_functionClosure_iff Q x]
   change
     (∀ T : Set S, Weak.IsClosed T → Q ⊆ T → x ∈ T) ↔
       (∀ T : Set S,
