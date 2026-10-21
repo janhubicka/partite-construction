@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskClosureSemiClosed2019
+
+#print axioms StructuralRamsey.RelStructure.Embedding.wholeMaskTag
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskPatternGraph_unique_outputs
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskTagExpansion_isUSemiClosed
