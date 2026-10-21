@@ -116,7 +116,7 @@ theorem wholeMaskPatternGraph_output_has_domain
   ext a
   constructor
   · rintro ⟨y, ⟨j, rfl⟩, rfl⟩
-    exact ⟨j, h.2.2 j⟩
+    exact ⟨j, (h.2.2 j).symm⟩
   · rintro ⟨j, rfl⟩
     exact ⟨xs (Fin.natAdd p.rootSize j), ⟨j, rfl⟩, h.2.2 j⟩
 
