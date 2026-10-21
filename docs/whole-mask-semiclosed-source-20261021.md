@@ -1,0 +1,7 @@
+# Semiclosedness of the canonical full-mask tagged source
+
+For a full embedding of old source relational structures, fresh closure tags are preserved and reflected. Tag recognition asserts an old complete-value tuple and an embedded full old root pattern on its displayed prefix. Reflection of the full old root pattern works because its vertices already lie in the embedded source image; pull the old embedded root back coordinatewise. Thus full OLD embeddings lift to tagged embeddings, and reduction forgets the fresh tags exactly.
+
+Every canonical tag has a tagged full old root witness, giving root validity. If two tagged tuples have the same input-root prefix for a fixed complete-output mask, their function input tuples agree. Their whole-value output sets are consequently equal. In each output-part slot there is one vertex in that value set with the named part, by transversality. Hence all output coordinates agree, and therefore the entire tuples agree. These statements prove the 2019 U-semi-closedness invariant of the canonical source. They do not prove U-closed existence above every embedded root or that arbitrary tagged target structures decode to genuine functions.
+
+Whole-fibre weak tests inherit semiclosedness by the already verified theorem on induced substructures of U-semi-closed relational structures, provided they are induced from the AMBIENT tags rather than recomputed from weak operations.
