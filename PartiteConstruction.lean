@@ -593,3 +593,10 @@ import PartiteConstruction.Structure.PartialSetFunctionsClosure
 import PartiteConstruction.Functional.NativePartialClosure
 import PartiteConstruction.Functional.PatternLanguageFinite
 
+-- Finite complete-output part relations for the exact whole-fibre convention.
+-- The U-closed root-pattern completion and strict B-tree targets remain open.
+import PartiteConstruction.Structure.PartialSetFunctionsWholePartGraph
+import PartiteConstruction.Structure.PartialSetFunctionsWholePartRepresent
+import PartiteConstruction.Structure.PartialSetFunctionsWholePartClosure
+import PartiteConstruction.Structure.PartialSetFunctionsWholePartWeakDictionary
+import PartiteConstruction.Functional.NativeWholePartClosure
