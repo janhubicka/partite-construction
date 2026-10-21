@@ -143,7 +143,7 @@ theorem wholeWeakIsClosed_iff_inducedAmbientTagUSubstructure
         ((wholeMaskTagExpansion (A.wholeMaskPatternGraph part)).induce S) Q := by
   let E := (A.wholeMaskPatternGraph part).induce S
   have hValid : HasValidCompleteMaskDomains E :=
-    (A.wholeMaskPatternGraph_validDomains part).induce S
+    (StructuralRamsey.RelStructure.PartialSetStructure.wholeMaskPatternGraph_validDomains A part).induce S
   have hOld : (wholeWeakInduce A S).IsClosed Q ↔
       IsClosedByWholeMaskTuples E Q :=
     A.wholeWeakIsClosed_iff_inducedWholeMaskTuples part hTrans S Q
