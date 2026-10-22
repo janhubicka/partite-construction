@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskCoveredOutputCrossPattern2019
+
+#print axioms StructuralRamsey.RelStructure.WholeMaskTagNormal.completeValue_unique_crossPattern_of_covered
