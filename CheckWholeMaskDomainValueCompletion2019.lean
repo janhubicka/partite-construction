@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskDomainValueCompletion2019
+
+#print axioms StructuralRamsey.RelStructure.WholeMaskTagNormal.domain_has_wholeMaskValue_of_injective
