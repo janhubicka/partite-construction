@@ -132,8 +132,8 @@ theorem IsOriginalPartialHomomorphism.wholeMaskPatternGraph_hom
             f ∘ (root ∘ p.argMap) := by
           funext i
           rfl
-      rw [hInputEq, ← hOutputs]
-      exact hTarget
+      rw [hInputEq]
+      exact hTarget.trans (congrArg some hOutputs)
     · intro j
       exact (hPart (t (Fin.natAdd p.rootSize j))).trans (ht.2.2 j)
 
