@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskCoveredPartialDecoding2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskValue_unique_of_closed_coverage
+#print axioms StructuralRamsey.RelStructure.wholeMaskPartialDecode_defined_iff_OLD_domain_of_closed_coverage
