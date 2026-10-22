@@ -56,12 +56,18 @@ theorem WholeMaskTagNormal.positiveDomain_has_completeValue
   let oldRoot : Embedding pat.root E :=
     Language.WholeMaskRootPattern.ofActiveDomain_embedding
       E p q hp hq root hInj hDomain
-  have hCanonical : C = wholeMaskTagExpansion E :=
-    hNormal.eqCanonical
-  let taggedRoot : Embedding pat.closureRule.root C := by
-    change Embedding (wholeMaskTagExpansion pat.root) C
-    rw [hCanonical]
-    exact oldRoot.wholeMaskTag
+  let canonicalIntoC : Embedding (wholeMaskTagExpansion E) C := {
+    toFun := id
+    injective := Function.injective_id
+    map_rel_iff := by
+      intro R xs
+      cases R with
+      | inl R => exact Iff.rfl
+      | inr tag =>
+          simpa only [Function.id_comp] using hNormal tag xs
+  }
+  let taggedRoot : Embedding pat.closureRule.root C :=
+    canonicalIntoC.comp oldRoot.wholeMaskTag
   obtain ⟨t, ht, _⟩ :=
     (hClosed pat.closureRule ⟨pat, rfl⟩).2 taggedRoot
   have hOld : E.rel (.inr (.inr (p,q))) t :=
@@ -69,6 +75,11 @@ theorem WholeMaskTagNormal.positiveDomain_has_completeValue
   refine ⟨t, hOld, ?_⟩
   intro i
   have h := ht.2 i
+  have hIdx : i.castLE pat.closureRule.rootLE =
+      Fin.castAdd q.size i := by
+    apply Fin.ext
+    rfl
+  rw [hIdx] at h
   change t (Fin.castAdd q.size i) = root i at h
   exact h
 
