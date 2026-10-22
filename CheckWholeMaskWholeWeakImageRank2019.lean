@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskWholeWeakImageRank2019
+
+#print axioms StructuralRamsey.PartialSetStructure.IsOriginalPartialHomomorphism.inducedAmbientWholeMaskUSize_le_of_le
+#print axioms StructuralRamsey.PartialSetStructure.IsOriginalPartialHomomorphism.inducedAmbientWholeMaskUSize_le
