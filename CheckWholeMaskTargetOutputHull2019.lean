@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskTargetOutputHull2019
+
+#print axioms StructuralRamsey.RelStructure.WholeMaskTagNormal.eqCanonical
+#print axioms StructuralRamsey.RelStructure.WholeMaskTagNormal.completeOutput_mem_inputHull
