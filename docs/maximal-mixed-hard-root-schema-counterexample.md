@@ -154,8 +154,22 @@ A-support by a genuine Hales--Jewett power, with controlled
 projected-A histories and canonical copies. The five-cycle core
 above satisfies only the weaker separate local-tree rank
 invariants, not the extra published construction-history
-requirements. It cannot be substituted blindly for an actual
-power core.
+requirements. There is a particularly simple concrete obstruction
+to identifying it with the ACTUAL one-step Hales--Jewett core:
+the selected A-support has only the control parts J={0,3}, so
+every vertex of its Hales--Jewett power has part label in J.
+But the counterexample's core path c0--d1--c3 contains the
+interior vertex d1 of part 1, outside J. Consequently this
+specific core cannot be the selected-support power.
+
+This eliminates the displayed arbitrary-stage C5 configuration as
+a candidate for a direct, one-step actual-core counterexample.
+It does NOT prove the actual mixed-root extension theorem:
+several attached OLD copies and their Hales--Jewett histories
+may create different compatibility defects, and even a core
+whose parts all lie in J need not admit the required pair of
+relative strict B-tree completions. The genuine history/line
+structure and simultaneous common-root target are still needed.
 
 The correct next statement must be parameterized by a
 **realizable, history-controlled Picture stage** (or a different
