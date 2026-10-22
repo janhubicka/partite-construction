@@ -106,6 +106,7 @@ theorem WholeMaskTagNormal.completeValue_unique_crossPattern_of_covered
     relationTuple_range_irreducible C
       (.inl (.inr (.inl (p₁,q₁)))) root₁ hDom
   have hIrred : (C.induce S).Irreducible := by
+    change (C.induce (Set.range x)).Irreducible
     rw [← hRange₁]
     exact hIrredRoot
   obtain ⟨g⟩ := hCover (C.induce H)
@@ -121,12 +122,14 @@ theorem WholeMaskTagNormal.completeValue_unique_crossPattern_of_covered
       t₁ (Fin.castAdd q₁.size i) ∈ H := by
     intro i
     apply subset_UClosureHull (L.wholeMaskClosureRules P) C S
+    change t₁ (Fin.castAdd q₁.size i) ∈ Set.range x
     rw [← hRange₁]
     exact ⟨i, rfl⟩
   have hPref₂ : ∀ i : Fin m₂,
       t₂ (Fin.castAdd q₂.size i) ∈ H := by
     intro i
     apply subset_UClosureHull (L.wholeMaskClosureRules P) C S
+    change t₂ (Fin.castAdd q₂.size i) ∈ Set.range x
     rw [← hRange₂]
     exact ⟨i, rfl⟩
   have hOut₁ : ∀ j : Fin q₁.size,
@@ -134,13 +137,19 @@ theorem WholeMaskTagNormal.completeValue_unique_crossPattern_of_covered
     intro j
     have hy := hNormal.completeOutput_mem_inputHull
       C hValid hPos p₁ q₁ t₁ hOld₁ j
-    simpa only [hRange₁] using hy
+    change t₁ (Fin.natAdd m₁ j) ∈
+      UClosureHull (L.wholeMaskClosureRules P) C (Set.range root₁) at hy
+    rw [hRange₁] at hy
+    exact hy
   have hOut₂ : ∀ j : Fin q₂.size,
       t₂ (Fin.natAdd m₂ j) ∈ H := by
     intro j
     have hy := hNormal.completeOutput_mem_inputHull
       C hValid hPos p₂ q₂ t₂ hOld₂ j
-    simpa only [hRange₂] using hy
+    change t₂ (Fin.natAdd m₂ j) ∈
+      UClosureHull (L.wholeMaskClosureRules P) C (Set.range root₂) at hy
+    rw [hRange₂] at hy
+    exact hy
   have hAll₁ : ∀ k : Fin (m₁ + q₁.size), t₁ k ∈ H :=
     fun k => Fin.addCases hPref₁ hOut₁ k
   have hAll₂ : ∀ k : Fin (m₂ + q₂.size), t₂ k ∈ H :=
