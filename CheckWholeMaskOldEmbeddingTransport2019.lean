@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskOldEmbeddingTransport2019
+
+#print axioms StructuralRamsey.RelStructure.Embedding.map_hasWholeMaskValue
+#print axioms StructuralRamsey.RelStructure.Embedding.hasWholeMaskDomain_map_iff
+#print axioms StructuralRamsey.PartialSetStructure.hasWholeMaskDomain_iff_sourceDefined
