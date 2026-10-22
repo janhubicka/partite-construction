@@ -1,0 +1,7 @@
+# Active positive complete-mask roots are realized by complete OLD values — 22 October 2026
+
+In a final U-closed 2019 complete-mask tagged C, assume fresh full-root tag normality. Fix a distinct-input equality pattern p and nonempty ordered output-part mask q. If the positive input-root tuple is injective and its OLD domain-mask relation is active, pull back all OLD relations along the input root to obtain its complete induced OLD root pattern. The active mask proves this root is one of the fresh closure rules, and the root map is a FULL OLD embedding.
+
+Tag normality identifies C with the canonical tagging of its own OLD reduct, on the same vertices. Consequently the root embedding lifts to a full embedding of the prescribed tagged closure root into C. U-closedness supplies its unique tagged completion tuple, and tag normality then implies that this tuple satisfies the original OLD COMPLETE-VALUE graph relation. Its input coordinates agree with the original root, so no replacement or additional vertices are made in the source.
+
+This is a positive-output target existence lemma. The defined-empty mask is retained as an independent OLD domain fact, and its complete zero-output tuple is separately forced by B-copy coverage (merged #474). Nullary input roots are not positive 2019 closure roots, so require another exact-root argument. The result is distinct from the unverified maximal-rank mixed functional B-tree target existence theorem.
