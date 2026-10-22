@@ -181,8 +181,10 @@ def supportEmbedding :
     apply Subtype.ext
     rcases a with ⟨a, ha⟩
     rcases b with ⟨b, hb⟩
+    change a = 0 ∨ a = 3 ∨ a = 4 ∨ a = 5 at ha
+    change b = 0 ∨ b = 3 ∨ b = 4 ∨ b = 5 at hb
     fin_cases a <;> fin_cases b <;>
-      simp_all [support, supportMap]
+      simp_all [supportMap]
   map_rel_iff := by
     intro R xs
     cases R
@@ -193,8 +195,10 @@ def supportEmbedding :
       oldEdge a.1 b.1
     rcases a with ⟨a, ha⟩
     rcases b with ⟨b, hb⟩
+    change a = 0 ∨ a = 3 ∨ a = 4 ∨ a = 5 at ha
+    change b = 0 ∨ b = 3 ∨ b = 4 ∨ b = 5 at hb
     fin_cases a <;> fin_cases b <;>
-      simp_all [support, supportMap, oldEdge, coreEdge]
+      simp_all [supportMap, oldEdge, coreEdge]
   map_func := by
     intro F
     exact Empty.elim F
@@ -204,7 +208,8 @@ theorem supportMap_part :
     ∀ x : support, corePart (supportMap x.1) = oldPart x.1 := by
   intro x
   rcases x with ⟨x,hx⟩
-  fin_cases x <;> simp_all [support, supportMap, corePart, oldPart]
+  change x = 0 ∨ x = 3 ∨ x = 4 ∨ x = 5 at hx
+  fin_cases x <;> simp_all [supportMap, corePart, oldPart]
 
 /-- Native functional PARTITE embedding for the selected support. -/
 def supportPartiteEmbedding :
