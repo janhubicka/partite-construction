@@ -79,7 +79,12 @@ theorem IsOriginalPartialHomomorphism.wholeMaskPatternGraph_hom
         B.func p.symbol ((f ∘ t) ∘ p.argMap) = some T ∧
         partB '' T = Set.range q.label
     refine ⟨hInjective, Structure.imageSet f U, ?_, ?_⟩
-    · simpa only [Function.comp_assoc] using hTarget
+    · have hInputEq :
+          ((f ∘ t) ∘ p.argMap) = f ∘ (t ∘ p.argMap) := by
+        funext i
+        rfl
+      rw [hInputEq]
+      exact hTarget
     · rw [hPartsImage, hMask]
   · rcases pq with ⟨p,q⟩
     let root : Fin p.rootSize → V :=
@@ -121,7 +126,14 @@ theorem IsOriginalPartialHomomorphism.wholeMaskPatternGraph_hom
       (∀ j : Fin q.size,
         partB ((f ∘ t) (Fin.natAdd p.rootSize j)) = q.label j)
     refine ⟨hInjective, ?_, ?_⟩
-    · simpa only [Function.comp_assoc, hOutputs] using hTarget
+    · have hInputEq :
+          ((fun i : Fin p.rootSize =>
+            (f ∘ t) (Fin.castAdd q.size i)) ∘ p.argMap) =
+            f ∘ (root ∘ p.argMap) := by
+          funext i
+          rfl
+      rw [hInputEq, ← hOutputs]
+      exact hTarget
     · intro j
       exact (hPart (t (Fin.natAdd p.rootSize j))).trans (ht.2.2 j)
 
