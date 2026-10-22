@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskCoveredActiveDomainInjective2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMask_activeDomain_injective_of_closed_coverage
