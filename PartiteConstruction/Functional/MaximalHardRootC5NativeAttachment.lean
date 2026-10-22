@@ -94,8 +94,7 @@ theorem nativeEdge_core (a b : Fin 5) (h : coreEdge a b) :
         if k = 0 then nativeCore a else nativeCore b) := by
     funext k
     by_cases hk : k = 0 <;> simp [tup,hk]
-  rw [heq] at hmap
-  exact hmap
+  exact heq ▸ hmap
 
 theorem nativeEdge_old (a b : Fin 6) (h : oldEdge a b) :
     nativeEdge (nativeCopy a) (nativeCopy b) := by
@@ -111,8 +110,7 @@ theorem nativeEdge_old (a b : Fin 6) (h : oldEdge a b) :
         if k = 0 then nativeCopy a else nativeCopy b) := by
     funext k
     by_cases hk : k = 0 <;> simp [tup,hk]
-  rw [heq] at hmap
-  exact hmap
+  exact heq ▸ hmap
 
 /-- The actual five cyclic vertices c0,d1,c3,b2,b4. -/
 def nativeCycle : Fin 5 → NativeVertex
@@ -133,15 +131,15 @@ def nativeCyclePart : Fin 5 → Fin 5
 theorem nativeCycle_part (i : Fin 5) :
     nativeAttached.part (nativeCycle i) = nativeCyclePart i := by
   fin_cases i
-  · simpa [nativeCycle,nativeCyclePart,corePart] using
+  · simpa [nativeCycle,nativeCyclePart,coreSystem,corePart] using
       nativeCore.map_part (0 : Fin 5)
-  · simpa [nativeCycle,nativeCyclePart,corePart] using
+  · simpa [nativeCycle,nativeCyclePart,coreSystem,corePart] using
       nativeCore.map_part (1 : Fin 5)
-  · simpa [nativeCycle,nativeCyclePart,corePart] using
+  · simpa [nativeCycle,nativeCyclePart,coreSystem,corePart] using
       nativeCore.map_part (2 : Fin 5)
-  · simpa [nativeCycle,nativeCyclePart,oldPart] using
+  · simpa [nativeCycle,nativeCyclePart,oldSystem,oldPart] using
       nativeCopy.map_part (2 : Fin 6)
-  · simpa [nativeCycle,nativeCyclePart,oldPart] using
+  · simpa [nativeCycle,nativeCyclePart,oldSystem,oldPart] using
       nativeCopy.map_part (1 : Fin 6)
 
 theorem nativeCyclePart_injective : Function.Injective nativeCyclePart := by
