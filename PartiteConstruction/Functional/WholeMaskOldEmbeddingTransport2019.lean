@@ -94,9 +94,7 @@ theorem hasWholeMaskDomain_map_iff
           congrArg root (Classical.choose_spec (hr i))
     have hSourceDomain : E.rel (.inr (.inl (p,q))) rootSource := by
       apply (f.map_rel_iff (.inr (.inl (p,q))) rootSource).mp
-      change D.rel (.inr (.inl (p,q))) (f ∘ rootSource)
-      rw [hRootMap]
-      exact hDom
+      exact hRootMap.symm ▸ hDom
     have hSourceArgs : ∀ i : Fin (L.funcArity F),
         x i = rootSource (r i) := by
       intro i
@@ -146,7 +144,11 @@ theorem hasWholeMaskDomain_iff_sourceDefined
         (A.wholeMaskPatternGraph part) F x U :=
       (A.hasWholeMaskValue_iff_source_func_some
         part hTrans F x U).mpr hValue
-    exact (A.wholeMaskPatternGraph_validDomains part).domain_of_value
+    have hValid : RelStructure.HasValidCompleteMaskDomains
+        (A.wholeMaskPatternGraph part) :=
+      RelStructure.PartialSetStructure.wholeMaskPatternGraph_validDomains
+        A part
+    exact hValid.domain_of_value
       (A.wholeMaskPatternGraph part) F x U hGraph
 
 end StructuralRamsey.PartialSetStructure
