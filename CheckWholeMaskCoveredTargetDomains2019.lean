@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskCoveredTargetDomains2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMask_domainSets_coherent_of_closed_coverage
+#print axioms StructuralRamsey.RelStructure.wholeMask_validCompleteDomains_of_closed_coverage
