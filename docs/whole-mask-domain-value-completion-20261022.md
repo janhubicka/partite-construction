@@ -7,3 +7,7 @@ Assume positive primitive arities, full-root tag normality, U-closedness, protec
 If q has zero output slots, the verified protected B-copy zero-value theorem #474 produces the complete OLD graph tuple on exactly the root. This is a genuine defined-empty value, not undefinedness. If q has positive width, positive primitive arity forces p.rootSize>0, and the independently checked full-root U-closure rule (#476) completes the active root to an entire OLD value tuple. In either case the primitive input equality xs = root ∘ p.argMap gives the corresponding whole-value witness for that literal input.
 
 The injectivity hypothesis is consciously explicit: U-closedness alone cannot rule out collapsed domain-root tuples. Under the published final B-copy coverage it is now being formalized separately in PR #478, which can discharge this hypothesis without changing any weak source test or projected image. The claim is about final OLD domain semantics, not compatible maximal-mixed strict functional B-tree targets.
+
+## Validation dependency checkpoint
+
+The originally stacked CI attempted the positive-completion import before that module was merged into main. Positive-completion PR #476 and active-root-injectivity PR #478 are now both merged and verified. The source theorem here retains its explicit root-injectivity hypothesis; the separate wrapper under review discharges it from final canonical B-copy coverage. This patch reruns Lean against the corrected main dependency graph without changing the mathematical statement.
