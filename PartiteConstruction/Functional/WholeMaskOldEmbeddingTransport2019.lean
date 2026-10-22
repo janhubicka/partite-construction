@@ -132,9 +132,10 @@ theorem hasWholeMaskDomain_iff_sourceDefined
   classical
   constructor
   · rintro ⟨m,r,hr,q,root,hDomain,hArgs⟩
-    have hSource : ∃ U : Set V,
-        A.func F (root ∘ r) = some U := hDomain.2
-    obtain ⟨U,hValue,_⟩ := hSource
+    change Function.Injective root ∧
+      ∃ U : Set V, A.func F (root ∘ r) = some U ∧
+        part '' U = Set.range q.label at hDomain
+    obtain ⟨_,U,hValue,_⟩ := hDomain
     have hEq : root ∘ r = x := by
       funext i
       exact (hArgs i).symm
