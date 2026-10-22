@@ -71,6 +71,13 @@ are no function symbols. -/
 def selected (x : Fin 6) : Prop :=
   x = 0 ∨ x = 3 ∨ x = 4 ∨ x = 5
 
+/-- The explicitly listed four selected vertices are exactly
+the inverse image of the A-part support {0,3}. -/
+theorem selected_iff_parts (x : Fin 6) :
+    selected x ↔ oldPart x = 0 ∨ oldPart x = 3 := by
+  fin_cases x <;> norm_num [selected, oldPart]
+
+
 def oldSelected := oldGraph.induce selected
 
 /-- The embedding has two distinct vertices on part 0 and two
