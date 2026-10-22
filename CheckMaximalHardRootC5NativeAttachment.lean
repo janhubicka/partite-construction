@@ -1,0 +1,9 @@
+import PartiteConstruction.Functional.MaximalHardRootC5NativeAttachment
+
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.native_overlap_a0
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.native_overlap_a3
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.nativeCycle_part
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.nativeCycle_injective
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.nativeCycleSet_closed
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.nativeCycle_projected_parts
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.nativeAttached_not_twoColorable
