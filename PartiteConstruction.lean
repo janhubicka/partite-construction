@@ -456,6 +456,8 @@ import PartiteConstruction.Functional.ProjectedGeneratorDichotomy
 -- obstruction and flexible common-root extension contrapositive.
 import PartiteConstruction.Iterated.OddCycleEdgeTreeObstruction
 import PartiteConstruction.Iterated.ExactFiveCycleEdgeTreeObstruction
+import PartiteConstruction.Functional.HardRootFiveCycleFixture
+import PartiteConstruction.Functional.MaximalHardRootFiveCycleFixture
 import PartiteConstruction.Iterated.ProtectedAMarkParityObstruction
 import PartiteConstruction.Functional.OriginalPartialSharedRootObstruction
 
