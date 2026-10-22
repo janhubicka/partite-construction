@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskCoveredTargetTagNormality2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskTagNormal_canonical
+#print axioms StructuralRamsey.RelStructure.WholeMaskTagNormal.of_embedding
+#print axioms StructuralRamsey.RelStructure.wholeMaskTagNormal_of_closed_coverage
