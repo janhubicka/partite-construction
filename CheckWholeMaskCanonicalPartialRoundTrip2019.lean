@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskCanonicalPartialRoundTrip2019
+
+#print axioms StructuralRamsey.PartialSetStructure.hasWholeMaskValue_iff_source_func_some
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskPartialDecode_canonical_func
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskPartialDecode_canonical_rel
