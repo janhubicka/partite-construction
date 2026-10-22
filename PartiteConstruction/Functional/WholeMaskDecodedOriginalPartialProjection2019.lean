@@ -82,7 +82,7 @@ theorem wholeMaskPartialDecode_originalPartial_of_oldHom
       · rintro ⟨j, rfl⟩
         exact ⟨t (Fin.natAdd m j), ⟨j, rfl⟩, rfl⟩
       · rintro ⟨a, ⟨j, hja⟩, ha⟩
-        exact ⟨j, by rw [hja, ha]⟩
+        exact ⟨j, (congrArg f hja).trans ha⟩
     rw [hArgsTarget, hOutputSet] at hTargetValue
     exact hTargetValue
 
