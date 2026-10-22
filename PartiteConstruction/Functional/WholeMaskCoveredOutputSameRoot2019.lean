@@ -154,8 +154,8 @@ theorem WholeMaskTagNormal.completeValue_unique_sameRoot_of_covered
     obtain ⟨k, hk⟩ := hIn
     have hEq : t₁H (Fin.natAdd p.rootSize j) =
         t₂H (Fin.natAdd p.rootSize k) :=
-      g.injective hk
-    exact ⟨k, congrArg Subtype.val hEq⟩
+      g.injective hk.symm
+    exact ⟨k, (congrArg Subtype.val hEq).symm⟩
   · rintro ⟨k, rfl⟩
     have hIn : out₂ k ∈ Set.range out₁ := by
       rw [hOutputEq]
@@ -163,7 +163,7 @@ theorem WholeMaskTagNormal.completeValue_unique_sameRoot_of_covered
     obtain ⟨j, hj⟩ := hIn
     have hEq : t₂H (Fin.natAdd p.rootSize k) =
         t₁H (Fin.natAdd p.rootSize j) :=
-      g.injective hj
+      g.injective hj.symm
     exact ⟨j, (congrArg Subtype.val hEq).symm⟩
 
 end StructuralRamsey.RelStructure
