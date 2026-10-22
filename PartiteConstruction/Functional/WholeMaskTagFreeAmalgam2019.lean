@@ -63,7 +63,7 @@ theorem wholeMaskTagExpansion
         have hFactor (j : Fin p.input.rootSize) :
             eRoot j = iL (rootLeft j) :=
           Classical.choose_spec (hRange j)
-        have hSide : (wholeMaskTagExpansion Left).rel (.inr p) t := by
+        have hSide : (StructuralRamsey.RelStructure.wholeMaskTagExpansion Left).rel (.inr p) t := by
           refine ⟨htOld, rootLeft, ?_⟩
           intro j
           apply iL.injective
@@ -87,7 +87,7 @@ theorem wholeMaskTagExpansion
         have hFactor (j : Fin p.input.rootSize) :
             eRoot j = iR (rootRight j) :=
           Classical.choose_spec (hRange j)
-        have hSide : (wholeMaskTagExpansion Right).rel (.inr p) t := by
+        have hSide : (StructuralRamsey.RelStructure.wholeMaskTagExpansion Right).rel (.inr p) t := by
           refine ⟨htOld, rootRight, ?_⟩
           intro j
           apply iR.injective
