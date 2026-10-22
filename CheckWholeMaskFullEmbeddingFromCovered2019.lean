@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskFullEmbeddingFromCovered2019
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.ofWholeMaskPatternGraph
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.ofCoveredWholeMaskPatternGraph
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.ofCoveredWholeMaskTag
