@@ -30,9 +30,9 @@ and no strict B-tree target completion is constructed.
 
 namespace StructuralRamsey.RelStructure
 
-universe u v w z
+universe u v w
 variable {L : Language.{u}} {P : Type w} [Fintype P]
-variable {V : Type v} {W : Type z}
+variable {V W : Type v}
 
 /-- Every complete OLD output tuple respects its own output-part
 labels under the ACTUAL target part map. This condition is not
