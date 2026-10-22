@@ -85,11 +85,15 @@ def core : Structure language (Fin 5) where
 
 theorem oldEdge_distinct_parts :
     ∀ x y : Fin 6, oldEdge x y → oldPart x ≠ oldPart y := by
-  decide
+  intro x y h
+  fin_cases x <;> fin_cases y <;>
+    simp_all [oldEdge, oldPart]
 
 theorem coreEdge_distinct_parts :
     ∀ x y : Fin 5, coreEdge x y → corePart x ≠ corePart y := by
-  decide
+  intro x y h
+  fin_cases x <;> fin_cases y <;>
+    simp_all [coreEdge, corePart]
 
 /-- The OLD forest is a genuine functional partite system (with
 no function symbols). No stage-level EHN assertion is made here. -/
@@ -97,9 +101,11 @@ def oldSystem : System language (Fin 5) (Fin 6) where
   toStructure := old
   part := oldPart
   relTransversal := by
-    intro _ x hEdge i j hpart
+    intro R x hEdge i j hpart
+    cases R
+    have hOld : oldEdge (x 0) (x 1) := hEdge
     have hd : oldPart (x 0) ≠ oldPart (x 1) :=
-      oldEdge_distinct_parts (x 0) (x 1) hEdge
+      oldEdge_distinct_parts (x 0) (x 1) hOld
     fin_cases i <;> fin_cases j
     · rfl
     · exact (hd hpart).elim
@@ -114,9 +120,11 @@ def coreSystem : System language (Fin 5) (Fin 5) where
   toStructure := core
   part := corePart
   relTransversal := by
-    intro _ x hEdge i j hpart
+    intro R x hEdge i j hpart
+    cases R
+    have hCore : coreEdge (x 0) (x 1) := hEdge
     have hd : corePart (x 0) ≠ corePart (x 1) :=
-      coreEdge_distinct_parts (x 0) (x 1) hEdge
+      coreEdge_distinct_parts (x 0) (x 1) hCore
     fin_cases i <;> fin_cases j
     · rfl
     · exact (hd hpart).elim
@@ -149,9 +157,23 @@ def supportEmbedding :
     Embedding (old.induce support support_closed) core where
   toFun := fun x => supportMap x.1
   injective := by
-    decide
+    intro a b hab
+    apply Subtype.ext
+    rcases a with ⟨a, ha⟩
+    rcases b with ⟨b, hb⟩
+    fin_cases a <;> fin_cases b <;>
+      simp_all [support, supportMap]
   map_rel_iff := by
-    decide
+    intro R xs
+    cases R
+    let a : support := xs (0 : Fin 2)
+    let b : support := xs (1 : Fin 2)
+    change coreEdge (supportMap a.1) (supportMap b.1) ↔
+      oldEdge a.1 b.1
+    rcases a with ⟨a, ha⟩
+    rcases b with ⟨b, hb⟩
+    fin_cases a <;> fin_cases b <;>
+      simp_all [support, supportMap, oldEdge, coreEdge]
   map_func := by
     intro F
     exact Empty.elim F
@@ -159,7 +181,9 @@ def supportEmbedding :
 /-- Part preservation on the entire selected support. -/
 theorem supportMap_part :
     ∀ x : support, corePart (supportMap x.1) = oldPart x.1 := by
-  decide
+  intro x
+  rcases x with ⟨x,hx⟩
+  fin_cases x <;> simp_all [support, supportMap, corePart, oldPart]
 
 /-- Native functional PARTITE embedding for the selected support. -/
 def supportPartiteEmbedding :
