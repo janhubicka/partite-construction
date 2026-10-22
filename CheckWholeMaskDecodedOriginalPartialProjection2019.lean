@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskDecodedOriginalPartialProjection2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskPartialDecode_originalPartial_of_oldHom
+#print axioms StructuralRamsey.RelStructure.wholeMaskPartialDecode_originalPartial_of_covered_oldHom
