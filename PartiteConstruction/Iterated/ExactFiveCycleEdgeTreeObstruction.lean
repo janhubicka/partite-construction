@@ -39,11 +39,11 @@ theorem FiveCycle_not_twoColorable : ¬ TwoColorable FiveCycle := by
       c a ≠ c b := by
     have h := hc _ h
     simpa [i0_ne_i1.symm] using h
-  have h01 : c (0 : Fin 5) ≠ c 1 := edgeCol 0 1 (by decide)
-  have h12 : c (1 : Fin 5) ≠ c 2 := edgeCol 1 2 (by decide)
-  have h23 : c (2 : Fin 5) ≠ c 3 := edgeCol 2 3 (by decide)
-  have h34 : c (3 : Fin 5) ≠ c 4 := edgeCol 3 4 (by decide)
-  have h40 : c (4 : Fin 5) ≠ c 0 := edgeCol 4 0 (by decide)
+  have h01 : c (0 : Fin 5) ≠ c 1 := edgeCol 0 1 (by simp [FiveCycle, i0_ne_i1.symm])
+  have h12 : c (1 : Fin 5) ≠ c 2 := edgeCol 1 2 (by simp [FiveCycle, i0_ne_i1.symm])
+  have h23 : c (2 : Fin 5) ≠ c 3 := edgeCol 2 3 (by simp [FiveCycle, i0_ne_i1.symm])
+  have h34 : c (3 : Fin 5) ≠ c 4 := edgeCol 3 4 (by simp [FiveCycle, i0_ne_i1.symm])
+  have h40 : c (4 : Fin 5) ≠ c 0 := edgeCol 4 0 (by simp [FiveCycle, i0_ne_i1.symm])
   have h02 : c (0 : Fin 5) = c 2 := bool_eq_of_ne_ne h01 h12
   have h24 : c (2 : Fin 5) = c 4 := bool_eq_of_ne_ne h23 h34
   exact h40 (h02.trans h24).symm
