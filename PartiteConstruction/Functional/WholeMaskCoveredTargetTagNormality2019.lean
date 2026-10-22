@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.WholeMaskTagInduce2019
 import PartiteConstruction.Functional.WholeMaskClosureCanonical2019
 import PartiteConstruction.Ramsey.ClosureWeakIrreducibleCoverage
+import PartiteConstruction.Ramsey.CopywiseTreeHomomorphism
 
 /-!
 # Final U-closed B-covered targets have canonical full-root tags
