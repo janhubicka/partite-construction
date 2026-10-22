@@ -84,7 +84,7 @@ theorem joined_not_twoColorable : ¬ TwoColorable joined := by
       selectedEmbedding (inclusion oldGraph selected))
       (h : joinedEdge a b) : c a ≠ c b := by
     have he := hc (fun k => if k = i0 then a else b) h
-    simpa only [if_pos rfl, if_neg i0_ne_i1.symm] using he
+    simpa [i0_ne_i1.symm] using he
   have h01 : c (coreInto 0) ≠ c (coreInto 1) :=
     edgeColor _ _ (joinedEdge_core 0 1 (by simp [coreAdjacent, coreEdges]))
   have h12 : c (coreInto 1) ≠ c (coreInto 2) :=
