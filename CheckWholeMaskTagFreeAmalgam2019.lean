@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskTagFreeAmalgam2019
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.wholeMaskTagExpansion
