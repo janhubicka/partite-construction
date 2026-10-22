@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskCoveredDefinedEmpty2019
+
+#print axioms StructuralRamsey.RelStructure.completeOutputParts_zero_no_index
+#print axioms StructuralRamsey.RelStructure.wholeMask_definedEmpty_has_completeGraph_of_closed_coverage
