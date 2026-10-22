@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskWholeWeakClosedness2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakIsClosed_iff_inducedWholeMaskTuples
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakIsClosed_iff_inducedAmbientTagUSubstructure
