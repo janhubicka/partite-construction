@@ -101,7 +101,7 @@ theorem wholeMask_definedEmpty_has_completeGraph_of_closed_coverage
   have hInput : (fun i : Fin p.rootSize =>
       (g ∘ tS) (Fin.castAdd q.size i)) = g ∘ rootS := by
     funext i
-    rfl
+    simp only [Function.comp_apply, tS, Fin.append_left]
   have hOutputEmpty : Set.range (fun j : Fin q.size =>
       (g ∘ tS) (Fin.natAdd p.rootSize j)) = (∅ : Set W) := by
     ext y
@@ -134,6 +134,6 @@ theorem wholeMask_definedEmpty_has_completeGraph_of_closed_coverage
     (g.map_rel_iff (.inl (.inr (.inr (p,q)))) tS).mp hGraphB
   refine ⟨Subtype.val ∘ tS, hLocal, ?_⟩
   intro i
-  rfl
+  simp only [Function.comp_apply, tS, Fin.append_left, rootS]
 
 end StructuralRamsey.RelStructure
