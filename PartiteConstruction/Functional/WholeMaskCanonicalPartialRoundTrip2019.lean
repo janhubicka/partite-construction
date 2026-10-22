@@ -125,7 +125,7 @@ theorem wholeMaskPartialDecode_canonical_func
       have hDecoded :
           E.wholeMaskPartialDecode.func F x = none :=
         (E.wholeMaskPartialDecode_func_none_iff F x).mpr hNo
-      exact hDecoded.trans hA.symm
+      exact hDecoded
   | some U =>
       have hValue : HasWholeMaskValue E F x U :=
         (A.hasWholeMaskValue_iff_source_func_some
@@ -133,7 +133,7 @@ theorem wholeMaskPartialDecode_canonical_func
       have hDecoded :
           E.wholeMaskPartialDecode.func F x = some U :=
         (E.wholeMaskPartialDecode_func_some_iff F x hUnique U).mpr hValue
-      exact hDecoded.trans hA.symm
+      exact hDecoded
 
 /-- All original relational predicates are preserved by the source
 round trip, independently of the primitive function semantics. -/
