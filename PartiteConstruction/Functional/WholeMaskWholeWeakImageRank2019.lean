@@ -36,16 +36,14 @@ theorem IsOriginalPartialHomomorphism.inducedAmbientWholeMaskUSize_le_of_le
     (hTransA : FibreTransversal A partA)
     (hTransB : FibreTransversal B partB)
     (hPos : L.PositiveFuncArity)
-    (S : Set V) (n : ℕ)
+    (S : Set V) [Fintype S]
+    [Fintype (Structure.imageSet f S)] (n : ℕ)
     (hRank : USize (L.wholeMaskClosureRules P)
       ((wholeMaskTagExpansion (A.wholeMaskPatternGraph partA)).induce S) ≤ n) :
     USize (L.wholeMaskClosureRules P)
       ((wholeMaskTagExpansion (B.wholeMaskPatternGraph partB)).induce
         (Structure.imageSet f S)) ≤ n := by
   classical
-  letI : Fintype S := Fintype.ofFinite S
-  letI : Fintype (Structure.imageSet f S) :=
-    Fintype.ofFinite (Structure.imageSet f S)
   have hGen : (wholeWeakInduce A S).GeneratedByAtMost n :=
     (A.wholeWeakGeneratedByAtMost_iff_inducedAmbientUSize_le
       partA hPos hTransA S n).mpr hRank
@@ -66,7 +64,8 @@ theorem IsOriginalPartialHomomorphism.inducedAmbientWholeMaskUSize_le
     (partA : V → P) (partB : W → P)
     (hTransA : FibreTransversal A partA)
     (hTransB : FibreTransversal B partB)
-    (hPos : L.PositiveFuncArity) (S : Set V) :
+    (hPos : L.PositiveFuncArity) (S : Set V)
+    [Fintype S] [Fintype (Structure.imageSet f S)] :
     USize (L.wholeMaskClosureRules P)
       ((wholeMaskTagExpansion (B.wholeMaskPatternGraph partB)).induce
         (Structure.imageSet f S)) ≤
