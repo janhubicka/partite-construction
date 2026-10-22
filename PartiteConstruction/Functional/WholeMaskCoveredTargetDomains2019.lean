@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.WholeMaskDomainCoherenceFreeAmalgam2019
 import PartiteConstruction.Functional.WholeMaskRelativeClosure2019
 import PartiteConstruction.Ramsey.ClosureWeakIrreducibleCoverage
+import PartiteConstruction.Ramsey.CopywiseTreeHomomorphism
 
 /-!
 # Protected B-copy coverage forces correct OLD domain records in targets
@@ -96,7 +97,8 @@ theorem wholeMask_validCompleteDomains_of_closed_coverage
       (.inr (.inr (p,q))) (g ∘ ts) :=
     (g.map_rel_iff (.inl (.inr (.inr (p,q)))) ts).mpr hST
   obtain ⟨hInjectiveB, hDomainB⟩ :=
-    Base.wholeMaskPatternGraph_validDomains part p q
+    StructuralRamsey.RelStructure.PartialSetStructure.wholeMaskPatternGraph_validDomains
+      Base part p q
       (g ∘ ts) hBT
   let rS : Fin p.rootSize → S :=
     fun i => ts (Fin.castAdd q.size i)
