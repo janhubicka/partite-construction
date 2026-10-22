@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.HardRootFiveCycleAttachmentObstruction
+
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.HardRootC5.joinedEdge_core
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.HardRootC5.joinedEdge_old
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.HardRootC5.joined_not_twoColorable
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.HardRootC5.joined_not_strict_edge_tree
