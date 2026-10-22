@@ -37,12 +37,18 @@ def language : Language where
 
 /-- Complete graph K5, used as the control for PART labels. -/
 def control : Structure language (Fin 5) where
-  rel _ x := x (0 : Fin 2) ≠ x (1 : Fin 2)
+  rel R x := by
+    cases R
+    change (Fin 2 → Fin 5) at x
+    exact x 0 ≠ x 1
   func F := Empty.elim F
 
 /-- The irreducible base K2. -/
 def base : Structure language (Fin 2) where
-  rel _ x := x (0 : Fin 2) ≠ x (1 : Fin 2)
+  rel R x := by
+    cases R
+    change (Fin 2 → Fin 2) at x
+    exact x 0 ≠ x 1
   func F := Empty.elim F
 
 /-- Old vertex indices: 0=a0, 1=b4, 2=b2, 3=a3, 4=u0, 5=u3.
@@ -62,7 +68,10 @@ def oldEdge (x y : Fin 6) : Prop :=
   (x = 4 ∧ y = 5) ∨ (x = 5 ∧ y = 4)
 
 def old : Structure language (Fin 6) where
-  rel _ x := oldEdge (x 0) (x 1)
+  rel R x := by
+    cases R
+    change (Fin 2 → Fin 6) at x
+    exact oldEdge (x 0) (x 1)
   func F := Empty.elim F
 
 /-- Core vertex indices: 0=c0, 1=d1, 2=c3, 3=w0, 4=w3.
@@ -80,7 +89,10 @@ def coreEdge (x y : Fin 5) : Prop :=
   (x = 3 ∧ y = 4) ∨ (x = 4 ∧ y = 3)
 
 def core : Structure language (Fin 5) where
-  rel _ x := coreEdge (x 0) (x 1)
+  rel R x := by
+    cases R
+    change (Fin 2 → Fin 5) at x
+    exact coreEdge (x 0) (x 1)
   func F := Empty.elim F
 
 theorem oldEdge_distinct_parts :
@@ -103,6 +115,10 @@ def oldSystem : System language (Fin 5) (Fin 6) where
   relTransversal := by
     intro R x hEdge i j hpart
     cases R
+    change Fin 2 → Fin 6 at x
+    change Fin 2 at i
+    change Fin 2 at j
+    change oldEdge (x 0) (x 1) at hEdge
     have hOld : oldEdge (x 0) (x 1) := hEdge
     have hd : oldPart (x 0) ≠ oldPart (x 1) :=
       oldEdge_distinct_parts (x 0) (x 1) hOld
@@ -122,6 +138,10 @@ def coreSystem : System language (Fin 5) (Fin 5) where
   relTransversal := by
     intro R x hEdge i j hpart
     cases R
+    change Fin 2 → Fin 5 at x
+    change Fin 2 at i
+    change Fin 2 at j
+    change coreEdge (x 0) (x 1) at hEdge
     have hCore : coreEdge (x 0) (x 1) := hEdge
     have hd : corePart (x 0) ≠ corePart (x 1) :=
       coreEdge_distinct_parts (x 0) (x 1) hCore
@@ -166,6 +186,7 @@ def supportEmbedding :
   map_rel_iff := by
     intro R xs
     cases R
+    change Fin 2 → support at xs
     let a : support := xs (0 : Fin 2)
     let b : support := xs (1 : Fin 2)
     change coreEdge (supportMap a.1) (supportMap b.1) ↔
