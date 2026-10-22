@@ -82,7 +82,7 @@ noncomputable def ofWholeMaskPatternGraph
         have hTargetNone :
             E.wholeMaskPartialDecode.func F (f ∘ xs) = none := by
           cases hVal : E.wholeMaskPartialDecode.func F (f ∘ xs) with
-          | none => exact hVal
+          | none => rfl
           | some U => exact (hNoTargetDefined ⟨U,hVal⟩).elim
         simpa only [hA, Option.map_none] using hTargetNone.symm
     | some U =>
