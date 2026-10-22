@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.HardRootFiveCycleFixture
+
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.HardRootC5.selectedMap_injective
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.HardRootC5.selectedMap_part
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.HardRootC5.selectedMap_rel
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.HardRootC5.overlap_at_a0
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.HardRootC5.overlap_at_a3
