@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskRelativeClosure2019
 import PartiteConstruction.Structure.PartialSetFunctionsWholeMaskPatterns
 import PartiteConstruction.Structure.PartialSetFunctionsWholeWeak
 
