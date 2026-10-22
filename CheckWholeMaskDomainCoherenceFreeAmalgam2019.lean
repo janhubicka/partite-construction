@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskDomainCoherenceFreeAmalgam2019
+
+#print axioms StructuralRamsey.RelStructure.PartialSetStructure.wholeMaskPatternGraph_uniqueDomainSets
+#print axioms StructuralRamsey.RelStructure.HasUniqueWholeMaskDomainSets.induce
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.wholeMaskDomainSetsCoherent
