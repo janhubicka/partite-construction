@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskPositiveDomainCompletion2019
+
+#print axioms StructuralRamsey.RelStructure.WholeMaskTagNormal.positiveDomain_has_completeValue
