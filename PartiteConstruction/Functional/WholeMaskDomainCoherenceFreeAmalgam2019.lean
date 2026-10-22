@@ -106,14 +106,10 @@ theorem wholeMaskDomainSetsCoherent
       exact (Classical.choose_spec (hShared j)).2
     have h₁ : Root.rel (.inr (.inl (p,q₁))) root := by
       apply (sL.map_rel_iff (.inr (.inl (p,q₁))) root).mp
-      change Left.rel (.inr (.inl (p,q₁))) (sL ∘ root)
-      rw [← hLa]
-      exact ha
+      exact hLa ▸ ha
     have h₂ : Root.rel (.inr (.inl (p,q₂))) root := by
       apply (sR.map_rel_iff (.inr (.inl (p,q₂))) root).mp
-      change Right.rel (.inr (.inl (p,q₂))) (sR ∘ root)
-      rw [← hRb]
-      exact hb
+      exact hRb ▸ hb
     exact hRoot p q₁ q₂ root h₁ h₂
   intro p q₁ q₂ z hz₁ hz₂
   rcases (hFree.rel_iff (.inr (.inl (p,q₁))) z).mp hz₁ with
