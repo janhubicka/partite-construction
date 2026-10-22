@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskCoveredOutputSameRoot2019
+
+#print axioms StructuralRamsey.RelStructure.WholeMaskTagNormal.completeValue_unique_sameRoot_of_covered
