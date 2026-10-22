@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskPartialDecode2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskPartialDecode_func_none_iff
+#print axioms StructuralRamsey.RelStructure.wholeMaskPartialDecode_func_some_iff
+#print axioms StructuralRamsey.RelStructure.HasValidCompleteMaskDomains.domain_of_value
