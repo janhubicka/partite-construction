@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.WholeMaskDecodedOutputParts2019
+
+#print axioms StructuralRamsey.RelStructure.PartialSetStructure.wholeMaskPatternGraph_outputPartsCompatible
+#print axioms StructuralRamsey.RelStructure.WholeMaskOutputPartsCompatible.induce
+#print axioms StructuralRamsey.RelStructure.WholeMaskOutputPartsCompatible.decoder_fibreTransversal
+#print axioms StructuralRamsey.RelStructure.wholeMaskPartialDecode_fibreTransversal_of_closed_coverage
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.wholeMaskOutputPartsCompatible
