@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskProjectionOldHom2019
+
+#print axioms StructuralRamsey.PartialSetStructure.IsOriginalPartialHomomorphism.wholeMaskPatternGraph_hom
