@@ -184,7 +184,7 @@ def supportEmbedding :
     change a = 0 ∨ a = 3 ∨ a = 4 ∨ a = 5 at ha
     change b = 0 ∨ b = 3 ∨ b = 4 ∨ b = 5 at hb
     fin_cases a <;> fin_cases b <;>
-      simp_all [supportMap]
+      simp_all [supportMap] <;> norm_num at ha hb
   map_rel_iff := by
     intro R xs
     cases R
@@ -198,7 +198,7 @@ def supportEmbedding :
     change a = 0 ∨ a = 3 ∨ a = 4 ∨ a = 5 at ha
     change b = 0 ∨ b = 3 ∨ b = 4 ∨ b = 5 at hb
     fin_cases a <;> fin_cases b <;>
-      simp_all [supportMap, oldEdge, coreEdge]
+      simp_all [supportMap, oldEdge, coreEdge] <;> norm_num at ha hb
   map_func := by
     intro F
     exact Empty.elim F
@@ -209,7 +209,8 @@ theorem supportMap_part :
   intro x
   rcases x with ⟨x,hx⟩
   change x = 0 ∨ x = 3 ∨ x = 4 ∨ x = 5 at hx
-  fin_cases x <;> simp_all [supportMap, corePart, oldPart]
+  fin_cases x <;> simp_all [supportMap, corePart, oldPart] <;>
+    norm_num at hx
 
 /-- Native functional PARTITE embedding for the selected support. -/
 def supportPartiteEmbedding :
