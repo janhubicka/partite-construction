@@ -4,6 +4,59 @@ The previous chronological inventory is preserved in
 [the historical coverage log](archive/appendix-a-before-closure-audit.md).
 Historical TODOs in that log are not current proof obligations.
 
+## Complete-mask functional transfer checkpoint — 22 October 2026
+
+This section records the **newly verified source/target correspondence**,
+separate from the still-open strict full-functional B-tree iteration.
+
+**Exact source and weak tests.** Genuinely partial set-valued operations
+are represented by Option(Set V), retaining distinct `none` and `some ∅`
+values. Whole-fibre weak restriction drops an ENTIRE application when
+one output is lost; it never clips a full value or replaces S by its
+ambient closure. The canonical full-root complete-mask expansion has
+a finite 2019 U-language, closed-set equivalence on exact weak tests,
+intrinsic generator-rank equality with induced ambient USize, and
+projected-image USize monotonicity (merged PRs #449, #455–#466 and #468).
+Full-root tags preserve actual OLD full relational free amalgams (#467),
+and coherent active output-mask sets survive them (#469).
+The canonical complete-mask Option(Set) decoder recovers every finite
+transverse source function value EXACTLY, including repeated arguments,
+defined-empty values and nullaries (merged #477 and #479).
+
+**Final covered tagged targets.** Given a U-closed final target C with
+full canonical-B-copy coverage of every closed U-irreducible test, OLD
+complete-output tuples have valid domains and coherent mask-part sets,
+all fresh tags are canonical, and every active OLD domain root is
+injective (merged #470–#471 and #478). The ENTIRE output vertex set of
+an OLD complete-value tuple is independent of its output-part
+enumeration and even its primitive input equality-pattern
+representation, for positive-arity function symbols (#472–#475).
+Active positive domains with nonempty masks admit complete values
+by U-closure (#476); zero-output masks have complete defined-empty
+tuples by protected B-copy coverage (#474). The combined explicit
+domain-to-value existence theorem is merged as #480. The final
+target-domain/decoder equivalence remains a separate formal statement
+under validation in PR #481; the CI status of that exact head must be
+checked before claiming it.
+
+**Sharp limitations.** Protected U-irreducible B-copy coverage and
+positive-root U-closedness DO NOT synchronize outputs of nullary
+functions. A two-copy counterexample is recorded as a mathematical,
+not Lean-certified, adversarial audit in
+[whole-mask-nullary-counterexample-20261022.md](whole-mask-nullary-counterexample-20261022.md)
+(merged documentation PR #482). A common nullary-generated root
+invariant is needed to handle positive-output constants. Likewise,
+none of these source or final-target normalization results constructs
+the missing **compatible strict functional B-tree relative extensions
+over a maximal-rank nonclosed mixed root** of the ACTUAL
+Hales–Jewett Picture. The unrestricted maximal-mixed schema is too
+strong (C5 obstruction); actual Picture history, common root
+completion and target-root hitting safety remain indispensable.
+
+Only a theorem supported by a green Lean build AND named-theorem axiom
+audit may receive a green survey validation marker. The circulation
+survey remains frozen outside its existing author TODOs and markers.
+
 ## Construction routes
 
 | Survey component | Lean endpoint (under `StructuralRamsey`) | Exact scope |
