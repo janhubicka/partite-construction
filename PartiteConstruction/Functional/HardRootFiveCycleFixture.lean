@@ -69,7 +69,7 @@ def coreGraph : RelStructure L (Fin 5) where
 edge on parts 0 and 3; here every subset is closed, since there
 are no function symbols. -/
 def selected (x : Fin 6) : Prop :=
-  oldPart x = 0 ∨ oldPart x = 3
+  x = 0 ∨ x = 3 ∨ x = 4 ∨ x = 5
 
 def oldSelected := oldGraph.induce selected
 
@@ -87,22 +87,29 @@ theorem selectedMap_injective : Function.Injective selectedMap := by
   apply Subtype.ext
   rcases x with ⟨x, hx⟩
   rcases y with ⟨y, hy⟩
-  fin_cases x <;> fin_cases y <;>
-    simp_all [selectedMap, selected, oldPart]
+  change x = 0 ∨ x = 3 ∨ x = 4 ∨ x = 5 at hx
+  change y = 0 ∨ y = 3 ∨ y = 4 ∨ y = 5 at hy
+  rcases hx with (rfl | rfl | rfl | rfl) <;>
+    rcases hy with (rfl | rfl | rfl | rfl) <;>
+    simp_all [selectedMap]
 
 theorem selectedMap_part (x : {a : Fin 6 // selected a}) :
     corePart (selectedMap x) = oldPart x.1 := by
   rcases x with ⟨x, hx⟩
-  fin_cases x <;> simp_all [selectedMap, selected, oldPart, corePart]
+  change x = 0 ∨ x = 3 ∨ x = 4 ∨ x = 5 at hx
+  rcases hx with (rfl | rfl | rfl | rfl) <;>
+    simp_all [selectedMap, oldPart, corePart]
 
 theorem selectedMap_rel (x y : {a : Fin 6 // selected a}) :
     coreAdjacent (selectedMap x) (selectedMap y) ↔
       oldAdjacent x.1 y.1 := by
   rcases x with ⟨x, hx⟩
   rcases y with ⟨y, hy⟩
-  fin_cases x <;> fin_cases y <;>
-    simp_all [selectedMap, selected, oldPart, oldAdjacent, coreAdjacent,
-      oldEdges, coreEdges]
+  change x = 0 ∨ x = 3 ∨ x = 4 ∨ x = 5 at hx
+  change y = 0 ∨ y = 3 ∨ y = 4 ∨ y = 5 at hy
+  rcases hx with (rfl | rfl | rfl | rfl) <;>
+    rcases hy with (rfl | rfl | rfl | rfl) <;>
+    simp_all [selectedMap, oldAdjacent, coreAdjacent, oldEdges, coreEdges]
 
 def selectedEmbedding : Embedding oldSelected coreGraph where
   toFun := selectedMap
@@ -117,7 +124,7 @@ def selectedEmbedding : Embedding oldSelected coreGraph where
 graph carriers along the COMPLETE selected support. In the
 function-free specialization the same vertex identification is
 used by UnitAttachD. -/
-abbrev joined :=
+noncomputable abbrev joined :=
   FreeAmalgam.amalgam oldSelected coreGraph oldGraph
     selectedEmbedding (inclusion oldGraph selected)
 
