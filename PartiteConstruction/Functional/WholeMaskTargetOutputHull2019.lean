@@ -93,11 +93,7 @@ theorem WholeMaskTagNormal.completeOutput_mem_inputHull
   have hRoot : ∀ i : Fin pat.closureRule.rootSize,
       t (i.castLE pat.closureRule.rootLE) ∈ H := by
     intro i
-    have hEq : i.castLE pat.closureRule.rootLE =
-        Fin.castAdd q.size i := by
-      apply Fin.ext
-      rfl
-    rw [hEq]
+    change t (Fin.castAdd q.size i) ∈ H
     exact subset_UClosureHull
       (L.wholeMaskClosureRules P) C (Set.range root)
       ⟨i, rfl⟩
