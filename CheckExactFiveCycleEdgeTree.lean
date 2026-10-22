@@ -1,0 +1,4 @@
+import PartiteConstruction.Iterated.ExactFiveCycleEdgeTreeObstruction
+
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.FiveCycle_not_twoColorable
+#print axioms StructuralRamsey.RelStructure.LooseNotStrictifiable.FiveCycle_not_strict_edge_tree
