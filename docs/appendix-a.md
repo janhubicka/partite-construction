@@ -74,9 +74,18 @@ HJ multi-attachment C7 regression
 shows that this restriction alone does NOT guarantee strict
 B-tree completions. Compatible relative witnesses for the actual
 history-controlled mixed root, plus target-root hitting safety,
-remain indispensable. The native five-vertex attachment certificate
-is being checked separately in draft PR #493 and must not be counted
-as merged until its exact CI is green.
+remain indispensable. The actual native functional one-copy `UnitAttachD` instance
+and its exact five-vertex test are now kernel-verified and merged as
+#493 (Lean CI run 39875973270, head
+`200031484934ec6469ebd1b29bf0ed2aa536ae7b`):
+the selected-support old/core maps agree exactly, the cyclic five
+vertices are distinct and their carrier is function-closed,
+their projected control labels are a permutation of all five parts,
+and the native attachment is not two-colourable. This is NOT YET
+a Lean refutation of the complete `MaximalMixedHardRootSchemaFromTwo`
+with its quantified free-amalgamation class and local rank hypotheses:
+those remaining Stage-level hypotheses need separate certification.
+The core is not a genuine HJ support power.
 
 Only a theorem supported by a green Lean build AND named-theorem axiom
 audit may receive a green survey validation marker. The circulation
