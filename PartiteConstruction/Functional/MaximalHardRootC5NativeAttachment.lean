@@ -113,6 +113,9 @@ theorem nativeEdge_old (a b : Fin 6) (h : oldEdge a b) :
         if k = 0 then nativeCopy a else nativeCopy b) := by
     funext k
     by_cases hk : k = 0 <;> simp [tup,hk]
+  change nativeAttached.toStructure.rel ()
+    (fun k : Fin 2 =>
+      if k = 0 then nativeCopy a else nativeCopy b)
   exact heq ▸ hmap
 
 /-- The actual five cyclic vertices c0,d1,c3,b2,b4. -/
