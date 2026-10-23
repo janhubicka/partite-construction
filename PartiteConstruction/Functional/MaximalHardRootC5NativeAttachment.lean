@@ -94,6 +94,9 @@ theorem nativeEdge_core (a b : Fin 5) (h : coreEdge a b) :
         if k = 0 then nativeCore a else nativeCore b) := by
     funext k
     by_cases hk : k = 0 <;> simp [tup,hk]
+  change nativeAttached.toStructure.rel ()
+    (fun k : Fin 2 =>
+      if k = 0 then nativeCore a else nativeCore b)
   exact heq ▸ hmap
 
 theorem nativeEdge_old (a b : Fin 6) (h : oldEdge a b) :
