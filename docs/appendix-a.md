@@ -4,7 +4,7 @@ The previous chronological inventory is preserved in
 [the historical coverage log](archive/appendix-a-before-closure-audit.md).
 Historical TODOs in that log are not current proof obligations.
 
-## Complete-mask functional transfer checkpoint — 22 October 2026
+## Complete-mask functional transfer checkpoint — 23 October 2026
 
 This section records the **newly verified source/target correspondence**,
 separate from the still-open strict full-functional B-tree iteration.
@@ -35,9 +35,20 @@ Active positive domains with nonempty masks admit complete values
 by U-closure (#476); zero-output masks have complete defined-empty
 tuples by protected B-copy coverage (#474). The combined explicit
 domain-to-value existence theorem is merged as #480. The final
-target-domain/decoder equivalence remains a separate formal statement
-under validation in PR #481; the CI status of that exact head must be
-checked before claiming it.
+positive-arity target-domain/decoder equivalence and full output-set
+coherence are fully kernel-verified and merged as #481.
+Correct output-part labels give transversal decoded fibres; the
+part-label law holds for canonical sources and survives induced
+restrictions and part-preserving OLD free amalgams (#484), but remains
+an explicit external partite invariant.
+A FULL old complete-mask embedding of a finite canonical source
+becomes a FULL genuine partial-function embedding into the decoded
+final target (#485–#486), whereas positive OLD graph homomorphisms
+into canonical controls decode as original-2019 source-defined partial
+projections (#487). Under explicit active-root injectivity and
+part-preservation the converse positive OLD graph homomorphism
+construction is also certified (#489). Undefined inputs are not
+reflected by this latter projection.
 
 **Sharp limitations.** Protected U-irreducible B-copy coverage and
 positive-root U-closedness DO NOT synchronize outputs of nullary
@@ -50,8 +61,22 @@ none of these source or final-target normalization results constructs
 the missing **compatible strict functional B-tree relative extensions
 over a maximal-rank nonclosed mixed root** of the ACTUAL
 Hales–Jewett Picture. The unrestricted maximal-mixed schema is too
-strong (C5 obstruction); actual Picture history, common root
-completion and target-root hitting safety remain indispensable.
+strong: the literal five-cycle has no strict K2-tree completion (#488);
+the actual FULL arbitrary old/core forest free attachment contains
+a five-cycle and cannot map into such a tree (#491–#492).
+Its core is NOT an actual Hales–Jewett coordinate power: the selected
+support uses only parts {0,3}, whereas the fixture's core has a vertex
+of part 1. Positive HJ powers cannot acquire such new part labels
+and outside-core part vertices of a native binary attachment must
+belong to the copied old stage (#494). The stronger genuine line-only
+HJ multi-attachment C7 regression
+([seven-cycle note](native-hj-line-only-seven-cycle-20261016.md))
+shows that this restriction alone does NOT guarantee strict
+B-tree completions. Compatible relative witnesses for the actual
+history-controlled mixed root, plus target-root hitting safety,
+remain indispensable. The native five-vertex attachment certificate
+is being checked separately in draft PR #493 and must not be counted
+as merged until its exact CI is green.
 
 Only a theorem supported by a green Lean build AND named-theorem axiom
 audit may receive a green survey validation marker. The circulation
