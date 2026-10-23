@@ -73,11 +73,17 @@ theorem core_projectionHom :
 both global projections are at least WEAK; the remaining EHN condition
 is a separate LOCAL reflection requirement. -/
 theorem old_projectionWeak :
-    old.IsWeakHomomorphism control oldPart :=
-  old_projectionHom.weak
+    old.IsWeakHomomorphism control oldPart := by
+  constructor
+  · exact old_projectionHom.1
+  · intro F
+    exact Empty.elim F
 
 theorem core_projectionWeak :
-    core.IsWeakHomomorphism control corePart :=
-  core_projectionHom.weak
+    core.IsWeakHomomorphism control corePart := by
+  constructor
+  · exact core_projectionHom.1
+  · intro F
+    exact Empty.elim F
 
 end StructuralRamsey.Structure.MaximalHardRootFiveCycle
