@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.MaximalHardRootC5GeneratorRank
+
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.nativeCycleEquiv
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.nativeCycle_card
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.nativeClosedCycle_functionClosure_eq
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.nativeClosedCycle_generatedByAtMost_five
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.nativeClosedCycle_not_generatedByAtMost_four
