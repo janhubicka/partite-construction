@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.NativeHJPowerSelectedPartSupport
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.power_part_mem_of_mem
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_outside_core_parts_is_copy
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.unit_power_outside_selected_parts_is_copy
