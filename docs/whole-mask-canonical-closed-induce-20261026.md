@@ -1,0 +1,7 @@
+# Closed genuine partial-function boundaries are exactly induced complete-mask U-structures
+
+26 October 2026. The 2019 generated-profile proof replaces a weak common root by an actual **target-side** B-closed boundary, with compatible embeddings of its generated closure on both sides. It never replaces the original weak test or changes its counted generators.
+
+For any function-closed subset S of a genuine partial Option(Set) structure A, the full functional induced structure A.induceClosed S has the same independent domain bits and entire function output sets as ambient A restricted to S. The already established full part-preserving whole-mask embedding of closedInclusion therefore gives equality between the canonical OLD complete-mask graph of this genuine functional closed subset and the exact induced ambient OLD graph. The verified full-root tag/induction commutation then gives equality also after 2019 U-tags.
+
+This is the structural counterpart of the newly verified weak-root generated-profile boundary specialization in `lean-all-those-ramsey-classes` PR #640. It justifies interpreting the profile boundary as an actual partial-function **substructure**, not merely a set in a relational completion. It does NOT claim the analogous equality for an arbitrary nonclosed weak subset S: its inherited ambient OLD domain-mask relations need not be the domains of the clipped or whole-fibre-deleted weak functions.
