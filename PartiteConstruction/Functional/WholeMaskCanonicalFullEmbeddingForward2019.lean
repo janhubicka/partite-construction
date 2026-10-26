@@ -62,7 +62,7 @@ preservation of a given already-existing complete OLD relation. -/
 def wholeMaskPatternGraph
     (e : Embedding A B)
     (partA : V → P) (partB : W → P)
-    (hPart : ∀ x : V, partB (e x) = partA x) :
+    (hPart : ∀ x : V, partB (e.toFun x) = partA x) :
     RelStructure.Embedding
       (A.wholeMaskPatternGraph partA)
       (B.wholeMaskPatternGraph partB) where
@@ -71,26 +71,26 @@ def wholeMaskPatternGraph
   map_rel_iff := by
     classical
     have hPartImage (U : Set V) :
-        partB '' Structure.imageSet e U = partA '' U := by
+        partB '' Structure.imageSet e.toFun U = partA '' U := by
       ext p
       constructor
       · rintro ⟨y, ⟨x, hx, rfl⟩, rfl⟩
         exact ⟨x, hx, (hPart x).symm⟩
       · rintro ⟨x, hx, rfl⟩
-        exact ⟨e x, ⟨x, hx, rfl⟩, hPart x⟩
+        exact ⟨e.toFun x, ⟨x, hx, rfl⟩, hPart x⟩
     intro R t
     rcases R with R | R
     · exact e.map_rel_iff R t
     rcases R with pq | pq
     · rcases pq with ⟨p,q⟩
       have hInputEq :
-          ((e ∘ t) ∘ p.argMap) = e ∘ (t ∘ p.argMap) := by
+          ((e.toFun ∘ t) ∘ p.argMap) = e.toFun ∘ (t ∘ p.argMap) := by
         funext i
         rfl
       change
-        (Function.Injective (e ∘ t) ∧
+        (Function.Injective (e.toFun ∘ t) ∧
           ∃ U : Set W,
-            B.func p.symbol ((e ∘ t) ∘ p.argMap) = some U ∧
+            B.func p.symbol ((e.toFun ∘ t) ∘ p.argMap) = some U ∧
               partB '' U = Set.range q.label) ↔
         (Function.Injective t ∧
           ∃ T : Set V,
@@ -107,29 +107,29 @@ def wholeMaskPatternGraph
             have hMap := e.map_func p.symbol (t ∘ p.argMap)
             rw [hA] at hMap
             change (none : Option (Set W)) =
-                B.func p.symbol (e ∘ (t ∘ p.argMap)) at hMap
+                B.func p.symbol (e.toFun ∘ (t ∘ p.argMap)) at hMap
             rw [← hInputEq, ← hMap] at hValue
             cases hValue
         | some T =>
             have hMap := e.map_func p.symbol (t ∘ p.argMap)
             rw [hA] at hMap
-            change some (Structure.imageSet e T) =
-                B.func p.symbol (e ∘ (t ∘ p.argMap)) at hMap
+            change some (Structure.imageSet e.toFun T) =
+                B.func p.symbol (e.toFun ∘ (t ∘ p.argMap)) at hMap
             rw [← hInputEq] at hMap
-            have hSet : Structure.imageSet e T = U :=
+            have hSet : Structure.imageSet e.toFun T = U :=
               Option.some.inj (hMap.trans hValue)
             refine ⟨hSourceInj, T, hA, ?_⟩
             rw [← hPartImage, hSet]
             exact hLabel
       · rintro ⟨hInj,T,hA,hLabel⟩
-        have hTargetInj : Function.Injective (e ∘ t) :=
+        have hTargetInj : Function.Injective (e.toFun ∘ t) :=
           e.injective.comp hInj
         have hMap := e.map_func p.symbol (t ∘ p.argMap)
         rw [hA] at hMap
-        change some (Structure.imageSet e T) =
-            B.func p.symbol (e ∘ (t ∘ p.argMap)) at hMap
+        change some (Structure.imageSet e.toFun T) =
+            B.func p.symbol (e.toFun ∘ (t ∘ p.argMap)) at hMap
         rw [← hInputEq] at hMap
-        refine ⟨hTargetInj, Structure.imageSet e T, hMap.symm, ?_⟩
+        refine ⟨hTargetInj, Structure.imageSet e.toFun T, hMap.symm, ?_⟩
         rw [hPartImage]
         exact hLabel
     · rcases pq with ⟨p,q⟩
@@ -138,12 +138,12 @@ def wholeMaskPatternGraph
       let out : Fin q.size → V :=
         fun j => t (Fin.natAdd p.rootSize j)
       have hInputEq :
-          ((e ∘ root) ∘ p.argMap) = e ∘ (root ∘ p.argMap) := by
+          ((e.toFun ∘ root) ∘ p.argMap) = e.toFun ∘ (root ∘ p.argMap) := by
         funext i
         rfl
       have hImageRange :
-          Structure.imageSet e (Set.range out) =
-            Set.range (fun j : Fin q.size => e (out j)) := by
+          Structure.imageSet e.toFun (Set.range out) =
+            Set.range (fun j : Fin q.size => e.toFun (out j)) := by
         ext y
         constructor
         · rintro ⟨x, ⟨j, rfl⟩, rfl⟩
@@ -151,10 +151,10 @@ def wholeMaskPatternGraph
         · rintro ⟨j, rfl⟩
           exact ⟨out j, ⟨j, rfl⟩, rfl⟩
       change
-        (Function.Injective (e ∘ root) ∧
-          B.func p.symbol ((e ∘ root) ∘ p.argMap) =
-            some (Set.range (fun j : Fin q.size => e (out j))) ∧
-          (∀ j : Fin q.size, partB (e (out j)) = q.label j)) ↔
+        (Function.Injective (e.toFun ∘ root) ∧
+          B.func p.symbol ((e.toFun ∘ root) ∘ p.argMap) =
+            some (Set.range (fun j : Fin q.size => e.toFun (out j))) ∧
+          (∀ j : Fin q.size, partB (e.toFun (out j)) = q.label j)) ↔
         (Function.Injective root ∧
           A.func p.symbol (root ∘ p.argMap) =
             some (Set.range out) ∧
@@ -170,21 +170,21 @@ def wholeMaskPatternGraph
             have hMap := e.map_func p.symbol (root ∘ p.argMap)
             rw [hA] at hMap
             change (none : Option (Set W)) =
-                B.func p.symbol (e ∘ (root ∘ p.argMap)) at hMap
+                B.func p.symbol (e.toFun ∘ (root ∘ p.argMap)) at hMap
             rw [← hInputEq, ← hMap] at hValue
             cases hValue
         | some T =>
             have hMap := e.map_func p.symbol (root ∘ p.argMap)
             rw [hA] at hMap
-            change some (Structure.imageSet e T) =
-                B.func p.symbol (e ∘ (root ∘ p.argMap)) at hMap
+            change some (Structure.imageSet e.toFun T) =
+                B.func p.symbol (e.toFun ∘ (root ∘ p.argMap)) at hMap
             rw [← hInputEq] at hMap
             have hImg :
-                Structure.imageSet e T =
-                  Set.range (fun j : Fin q.size => e (out j)) :=
+                Structure.imageSet e.toFun T =
+                  Set.range (fun j : Fin q.size => e.toFun (out j)) :=
               Option.some.inj (hMap.trans hValue)
             have hOutput : T = Set.range out :=
-              imageSet_injective e e.injective
+              imageSet_injective e.toFun e.injective
                 (hImg.trans hImageRange.symm)
             refine ⟨hSourceInj, ?_, ?_⟩
             · rw [← hOutput]
@@ -192,12 +192,12 @@ def wholeMaskPatternGraph
             · intro j
               exact (hPart (out j)).symm.trans (hLabels j)
       · rintro ⟨hInj,hValue,hLabels⟩
-        have hTargetInj : Function.Injective (e ∘ root) :=
+        have hTargetInj : Function.Injective (e.toFun ∘ root) :=
           e.injective.comp hInj
         have hMap := e.map_func p.symbol (root ∘ p.argMap)
         rw [hValue] at hMap
-        change some (Structure.imageSet e (Set.range out)) =
-            B.func p.symbol (e ∘ (root ∘ p.argMap)) at hMap
+        change some (Structure.imageSet e.toFun (Set.range out)) =
+            B.func p.symbol (e.toFun ∘ (root ∘ p.argMap)) at hMap
         rw [← hInputEq, hImageRange] at hMap
         refine ⟨hTargetInj, hMap.symm, ?_⟩
         intro j
