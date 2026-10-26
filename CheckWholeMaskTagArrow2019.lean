@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskTagArrow2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskTag_arrow
+#print axioms StructuralRamsey.RelStructure.wholeMaskTag_forget_arrow
