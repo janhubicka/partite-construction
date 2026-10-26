@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskProfileNativeClosure2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskUClosureHull_eq_functionClosure
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskGeneratedProfileHull_isClosed
