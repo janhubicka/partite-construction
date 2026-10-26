@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskCanonicalEmbeddingInverse2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskPartialDecode_canonical_eq
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.ofCanonicalWholeMaskPatternGraph
