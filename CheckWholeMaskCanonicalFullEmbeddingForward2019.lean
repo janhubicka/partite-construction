@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskCanonicalFullEmbeddingForward2019
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.wholeMaskPatternGraph
