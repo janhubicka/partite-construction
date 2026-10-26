@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskClosedBoundaryTransversal2019
+
+#print axioms StructuralRamsey.PartialSetStructure.FibreTransversal.induceClosed
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskTagExpansion_induceClosed_isUClosed
