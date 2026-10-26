@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskPartialRamseyArrowTransfer2019
+
+#print axioms StructuralRamsey.PartialSetStructure.PartPreservingArrow.ofWholeMaskRelationalArrow
+#print axioms StructuralRamsey.PartialSetStructure.PartPreservingArrow.ofCoveredWholeMaskRelationalArrow
+#print axioms StructuralRamsey.PartialSetStructure.PartPreservingArrow.ofCoveredWholeMaskTaggedArrow
