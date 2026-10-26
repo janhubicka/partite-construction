@@ -101,14 +101,14 @@ def wholeMaskPatternGraph
         have hSourceInj : Function.Injective t := by
           intro i j hij
           apply hInj
-          exact congrArg e hij
+          exact congrArg e.toFun hij
         cases hA : A.func p.symbol (t ∘ p.argMap) with
         | none =>
             have hMap := e.map_func p.symbol (t ∘ p.argMap)
             rw [hA] at hMap
             change (none : Option (Set W)) =
                 B.func p.symbol (e.toFun ∘ (t ∘ p.argMap)) at hMap
-            rw [← hInputEq, ← hMap] at hValue
+            rw [hInputEq, ← hMap] at hValue
             cases hValue
         | some T =>
             have hMap := e.map_func p.symbol (t ∘ p.argMap)
@@ -118,7 +118,7 @@ def wholeMaskPatternGraph
             rw [← hInputEq] at hMap
             have hSet : Structure.imageSet e.toFun T = U :=
               Option.some.inj (hMap.trans hValue)
-            refine ⟨hSourceInj, T, hA, ?_⟩
+            refine ⟨hSourceInj, T, rfl, ?_⟩
             rw [← hPartImage, hSet]
             exact hLabel
       · rintro ⟨hInj,T,hA,hLabel⟩
@@ -164,14 +164,14 @@ def wholeMaskPatternGraph
         have hSourceInj : Function.Injective root := by
           intro i j hij
           apply hInj
-          exact congrArg e hij
+          exact congrArg e.toFun hij
         cases hA : A.func p.symbol (root ∘ p.argMap) with
         | none =>
             have hMap := e.map_func p.symbol (root ∘ p.argMap)
             rw [hA] at hMap
             change (none : Option (Set W)) =
                 B.func p.symbol (e.toFun ∘ (root ∘ p.argMap)) at hMap
-            rw [← hInputEq, ← hMap] at hValue
+            rw [hInputEq, ← hMap] at hValue
             cases hValue
         | some T =>
             have hMap := e.map_func p.symbol (root ∘ p.argMap)
@@ -188,7 +188,6 @@ def wholeMaskPatternGraph
                 (hImg.trans hImageRange.symm)
             refine ⟨hSourceInj, ?_, ?_⟩
             · rw [← hOutput]
-              exact hA
             · intro j
               exact (hPart (out j)).symm.trans (hLabels j)
       · rintro ⟨hInj,hValue,hLabels⟩
