@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskCanonicalClosedInduce2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskPatternGraph_induceClosed_eq_induce
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskTagExpansion_induceClosed_eq_induce
