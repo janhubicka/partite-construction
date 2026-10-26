@@ -1,0 +1,4 @@
+import PartiteConstruction.Structure.PartialSetFunctionsEmbeddingComposition
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.ext_toFun
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.comp
