@@ -1,0 +1,8 @@
+import PartiteConstruction.Functional.PartialSetFunctionsPartPredicates2019
+
+#print axioms StructuralRamsey.PartialSetStructure.withParts_func
+#print axioms StructuralRamsey.PartialSetStructure.withParts_isClosed_iff
+#print axioms StructuralRamsey.PartialSetStructure.withParts_fibreTransversal_iff
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.withParts
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.withParts_preserves_part
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.forgetParts
