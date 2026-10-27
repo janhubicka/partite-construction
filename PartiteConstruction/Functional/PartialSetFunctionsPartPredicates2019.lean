@@ -189,4 +189,52 @@ theorem withParts_wholeWeak_generatedByAtMost_iff
     rw [A.withParts_wholeWeak_functionClosure_eq part S (↑G : Set S)]
     exact hGenerated
 
+/-- Full partial-function embeddings are determined by their vertex
+maps. Other fields are propositions, so no chosen proof data remains. -/
+@[ext] theorem Embedding.ext
+    {A : PartialSetStructure L V} {B : PartialSetStructure L W}
+    {f g : Embedding A B}
+    (h : ∀ x, f.toFun x = g.toFun x) : f = g := by
+  cases f with
+  | mk f fi fr fv =>
+    cases g with
+    | mk g gi gr gv =>
+      have heq : f = g := funext h
+      cases heq
+      rfl
+
+/-- Adding and then forgetting part predicates returns the SAME full
+partial embedding on its original vertex map. -/
+theorem Embedding.forget_withParts
+    {A : PartialSetStructure L V} {B : PartialSetStructure L W}
+    (e : Embedding A B)
+    (partA : V → P) (partB : W → P)
+    (hPart : ∀ x, partB (e.toFun x) = partA x) :
+    (e.withParts partA partB hPart).forgetParts = e := by
+  apply Embedding.ext
+  intro x
+  rfl
+
+/-- Every full embedding between PART-LABELLED genuine partial
+structures is exactly a full part-preserving embedding of the
+original structures, on the SAME vertices. -/
+def Embedding.withPartsEquiv
+    {A : PartialSetStructure L V} {B : PartialSetStructure L W}
+    (partA : V → P) (partB : W → P) :
+    {e : Embedding A B // ∀ x, partB (e.toFun x) = partA x} ≃
+      Embedding (A.withParts partA) (B.withParts partB) where
+  toFun e := e.1.withParts partA partB e.2
+  invFun f := ⟨f.forgetParts, f.withParts_preserves_part partA partB⟩
+  left_inv := by
+    intro f
+    apply Subtype.ext
+    apply Embedding.ext
+    intro x
+    rfl
+  right_inv := by
+    intro f
+    apply Embedding.ext
+    intro x
+    rfl
+
 end StructuralRamsey.PartialSetStructure
