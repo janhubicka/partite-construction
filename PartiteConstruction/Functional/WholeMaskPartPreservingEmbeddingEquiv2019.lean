@@ -33,9 +33,9 @@ open StructuralRamsey
 open StructuralRamsey.RelStructure
 open StructuralRamsey.Structure
 
-universe u v w z
+universe u v z
 variable {L : Language.{u}} {P : Type z} [Fintype P]
-variable {V : Type v} {W : Type w}
+variable {V W : Type v}
 
 /-- Encode actual vertex parts as unary SOURCE-language predicates
 before taking complete OLD domain/value masks. The canonical
