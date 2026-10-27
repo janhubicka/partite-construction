@@ -41,6 +41,9 @@ def id (A : PartialSetStructure L U) : Embedding A A where
     rfl
   map_func := by
     intro F xs
+    change (A.func F xs).map (Structure.imageSet _root_.id) =
+      A.func F (_root_.id ∘ xs)
+    simp only [Function.id_comp]
     cases A.func F xs with
     | none => rfl
     | some T =>
