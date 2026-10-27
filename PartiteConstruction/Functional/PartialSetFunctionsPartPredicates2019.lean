@@ -122,4 +122,71 @@ def Embedding.forgetParts
   map_rel_iff R xs := e.map_rel_iff (.inl (ULift.up R)) xs
   map_func F xs := e.map_func (ULift.up F) xs
 
+/-- Naming every vertex's part does not affect the ACTUAL closure
+of the original genuine partial functions on any vertex seed. -/
+theorem withParts_functionClosure_eq
+    (A : PartialSetStructure L V) (part : V → P) (S : Set V) :
+    (A.withParts part).functionClosure S = A.functionClosure S := by
+  apply Set.Subset.antisymm
+  · exact (A.withParts part).functionClosure_least
+      ((A.withParts_isClosed_iff part _).mpr
+        (A.functionClosure_isClosed S))
+      (A.subset_functionClosure S)
+  · exact A.functionClosure_least
+      ((A.withParts_isClosed_iff part _).mp
+        ((A.withParts part).functionClosure_isClosed S))
+      ((A.withParts part).subset_functionClosure S)
+
+/-- Whole-fibre weak restriction commutes with the unary part expansion
+on the ENTIRE Option(Set) value (not merely individual incidences).
+A deleted nonempty value becomes none, and some empty stays defined. -/
+theorem withParts_wholeWeak_func
+    (A : PartialSetStructure L V) (part : V → P)
+    (S : Set V)
+    (F : L.FuncSymbol) (xs : Fin (L.funcArity F) → S) :
+    (wholeWeakInduce (A.withParts part) S).func (ULift.up F) xs =
+      (wholeWeakInduce A S).func F xs := rfl
+
+/-- The SAME exact weak subset of the expanded source has the SAME
+intrinsic closure under surviving whole function fibres, independent
+of the additional unary part labels. -/
+theorem withParts_wholeWeak_functionClosure_eq
+    (A : PartialSetStructure L V) (part : V → P)
+    (S : Set V) (G : Set S) :
+    (wholeWeakInduce (A.withParts part) S).functionClosure G =
+      (wholeWeakInduce A S).functionClosure G := by
+  apply Set.Subset.antisymm
+  · apply (wholeWeakInduce (A.withParts part) S).functionClosure_least
+    · intro F xs T hxs hFunc y hy
+      exact (wholeWeakInduce A S).functionClosure_isClosed G
+        F.down xs T hxs hFunc hy
+    · exact (wholeWeakInduce A S).subset_functionClosure G
+  · apply (wholeWeakInduce A S).functionClosure_least
+    · intro F xs T hxs hFunc y hy
+      exact (wholeWeakInduce (A.withParts part) S).functionClosure_isClosed G
+        (ULift.up F) xs T hxs hFunc hy
+    · exact (wholeWeakInduce (A.withParts part) S).subset_functionClosure G
+
+/-- Hence the weak generator count is unchanged on EXACTLY the tested
+vertex carrier. This is the bookkeeping needed to apply the verified
+2019 profile-sparsening theorem after adding part predicates. -/
+theorem withParts_wholeWeak_generatedByAtMost_iff
+    (A : PartialSetStructure L V) (part : V → P)
+    (S : Set V) (n : ℕ) :
+    (wholeWeakInduce (A.withParts part) S).GeneratedByAtMost n ↔
+      (wholeWeakInduce A S).GeneratedByAtMost n := by
+  constructor
+  · rintro ⟨G, hCard, hGenerated⟩
+    refine ⟨G, hCard, ?_⟩
+    change (wholeWeakInduce A S).functionClosure
+      (↑G : Set S) = Set.univ
+    rw [← A.withParts_wholeWeak_functionClosure_eq part S (↑G : Set S)]
+    exact hGenerated
+  · rintro ⟨G, hCard, hGenerated⟩
+    refine ⟨G, hCard, ?_⟩
+    change (wholeWeakInduce (A.withParts part) S).functionClosure
+      (↑G : Set S) = Set.univ
+    rw [A.withParts_wholeWeak_functionClosure_eq part S (↑G : Set S)]
+    exact hGenerated
+
 end StructuralRamsey.PartialSetStructure
