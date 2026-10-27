@@ -1,0 +1,5 @@
+import PartiteConstruction.Structure.PartialSetFunctionsEmbeddingComp
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.id
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.imageSet_comp
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.comp
