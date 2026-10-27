@@ -1,0 +1,9 @@
+# Part preservation in the genuine partial-function 2019 profile route
+
+27 October 2026. A canonical complete-mask relational OLD graph faithfully records definedness and entire function outputs, but does **not** intrinsically record the part of a vertex with no complete-function relation incident to it. Therefore an embedding of bare OLD graphs need not preserve the actual vertex-part map; using such embeddings as if they were partite embeddings is an unjustified arrow transfer.
+
+Add the standard unary part predicates **before** the full OLD mask graph encoding, i.e. first expand genuine Option(Set) structure A to A.withParts(part), then encode complete OLD masks, and finally add 2019 full-root U-closure tags and generated-closure profiles. All stages retain the same original vertex carrier.
+
+The expansion preserves the exact Option(Set) operations, including none versus some empty, positive primitive arities, closure under functions and output transversality. A full genuine embedding preserving the actual part map becomes a full embedding of these expanded function structures; conversely a full embedding of expanded structures reflects the original map and automatically preserves the part of EVERY vertex. Hence the full canonical OLD complete-mask graph embedding theorem can be applied to the expanded language, and part labels do not have to be reconstructed from incidental output tuples in an arbitrary intermediate target.
+
+This is the native presentation matching the verified 2019 two-pass generated-profile proof. It DOES NOT claim that arbitrary unlabelled U-closed targets have globally coherent parts, nor that the intermediate picture admits a strict full-functional B-tree completion. The subsequent Ramsey-arrow and relative-copywise local completion transfers still need Lean proofs.
