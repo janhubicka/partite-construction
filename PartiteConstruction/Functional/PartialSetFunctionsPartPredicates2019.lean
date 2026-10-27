@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.PartPredicates
 import PartiteConstruction.Structure.PartialSetFunctionsTransversal
+import PartiteConstruction.Structure.PartialSetFunctionsClosure
 import PartiteConstruction.Functional.WholeMaskCanonicalFullEmbeddingForward2019
 
 /-!
