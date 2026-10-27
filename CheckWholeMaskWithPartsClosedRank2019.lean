@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskWithPartsClosedRank2019
+
+#print axioms StructuralRamsey.PartialSetStructure.withPartsWholeMaskTag_isUClosed
+#print axioms StructuralRamsey.PartialSetStructure.withPartsWholeMaskTag_exactWeakUSize
