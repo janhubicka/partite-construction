@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskPartPreservingEmbeddingEquiv2019
+
+#print axioms StructuralRamsey.PartialSetStructure.PartPreservingEmbedding.encode
+#print axioms StructuralRamsey.PartialSetStructure.PartPreservingEmbedding.decode
+#print axioms StructuralRamsey.PartialSetStructure.PartPreservingEmbedding.encodingEquiv
