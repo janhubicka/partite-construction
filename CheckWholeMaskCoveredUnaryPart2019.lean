@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskCoveredUnaryPart2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMask_vertexPart_existsUnique_of_closed_coverage
+#print axioms StructuralRamsey.RelStructure.wholeMaskCoveredPart_holds
