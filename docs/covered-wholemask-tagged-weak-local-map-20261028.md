@@ -1,0 +1,7 @@
+# Correct original-functional exact weak local map from a tagged K-completion
+
+28 October 2026. From the **final** U-closed protected canonical B-covered picture C, recover true `Option(Set)` partial functions and the unique vertex part map. Let S be any original exact weak vertex subset, without closing S or its projection. If the standard 2019 relational local completion gives a *positive tagged homomorphism* `f:(C.induce S)→tag(canonical Target)`, the verified complete OLD value semantics imply `f:(wholeWeakInduce decoded(C) S)→Target` is a genuine original-2019 source-defined partial homomorphism. Every whole value `some U` is carried as precisely `some f[U]`, including `U=∅`. Undefined source applications remain unrestricted. The recovered unary vertex part is preserved by f.
+
+The proof intentionally does NOT assert `C` equals the canonical representation of its decoded source: ambient OLD domain masks may persist after a weak restriction becomes undefined. Instead, source complete-value uniqueness from protected final B-copy coverage and an exact OLD relation tuple inside S justify the positive map. The one-copy B-tree mixed-step issue is absent.
+
+The **remaining class condition** is that each chosen relational K-member local completion actually has a faithful genuine partial-function interpretation as `tag(canonical Target)`. The theorem above proves all map semantics once that class representation is supplied; K's structural hereditary/strong-amalgamation properties alone do not silently provide it.

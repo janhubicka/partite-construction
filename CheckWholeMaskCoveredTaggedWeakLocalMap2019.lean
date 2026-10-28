@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskCoveredTaggedWeakLocalMap2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskOriginalDecode_weak_originalPartial_of_taggedLocalHom
