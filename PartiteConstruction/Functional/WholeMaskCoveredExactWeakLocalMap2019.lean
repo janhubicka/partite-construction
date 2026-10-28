@@ -128,7 +128,7 @@ theorem wholeMaskPartialDecode_weak_originalPartial_of_inducedOldHom
         rw [hTSet] at hIn
         obtain ⟨j, hj⟩ := hIn
         have hEq : x = tS (Fin.natAdd m j) :=
-          Subtype.ext hj
+          Subtype.ext hj.symm
         exact ⟨j, congrArg f hEq.symm⟩
     rw [hInput, hOutput] at hTarget
     exact hTarget
