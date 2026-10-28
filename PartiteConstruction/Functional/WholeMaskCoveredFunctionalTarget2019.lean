@@ -42,7 +42,7 @@ variable {V W X : Type v}
 genuinely partial Option(Set) decoder of a tagged relational
 target. Every partial function value (including some empty)
 is retained literally. -/
-def wholeMaskOriginalDecode
+noncomputable def wholeMaskOriginalDecode
     (C : RelStructure ((L.withParts P).wholeMaskTagLanguage P) W) :
     PartialSetStructure L W where
   rel R xs :=
