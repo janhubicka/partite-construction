@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskExactWeakLocalProjection2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakInduce_originalPartial_of_inducedOldHom
