@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskExactWeakDecode2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskValue_weak_iff_induced
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskPartialDecode_induced_func_eq_wholeWeak
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskPartialDecode_induced_rel_eq_wholeWeak
