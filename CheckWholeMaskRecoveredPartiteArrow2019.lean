@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskRecoveredPartiteArrow2019
+
+#print axioms StructuralRamsey.PartialSetStructure.partPreservingArrow_of_relational_old_covered

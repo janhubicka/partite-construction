@@ -1,0 +1,9 @@
+# A verified 2019 relational arrow recovers a true genuine partial-function Ramsey arrow
+
+28 October 2026.
+
+The 2019 two-pass generated-profile construction produces a Ramsey arrow for **relational** canonical part-labelled complete-mask A and B inside a final old relational target. To convert it to the original genuinely partial Option(Set) Ramsey statement, one needs a full functional recovery map for each relational A/B embedding in the FINAL target, not for arbitrary intermediate profile pictures.
+
+The theorem `partPreservingArrow_of_relational_old_covered` packages the exact categorical argument. It assumes a recovered full, part-preserving genuine Option(Set) embedding for every full OLD A-copy and B-copy, whose underlying vertex map is literally the original relational map. A coloring χ of genuine A-copies induces a coloring of OLD relational A-copies by composing χ with recovery. The relational arrow gives f:B_old↪Q_old monochromatic. Recover f as a true functional B-copy. For any genuine A↪B, full canonical encoding gives an OLD embedding, then f∘encode(a) is a relational A-copy in Q_old. The two ways of interpreting this composite give EXACTLY the same functional embedding because both preserve the underlying map and full functional embeddings are extensional. Thus χ is constant on the selected functional B-copy.
+
+No surjectivity of the correspondence on arbitrary functional A-copies of Q is assumed. Only copywise relational-to-functional recovery is needed, which is exactly what the protected B-copy decoder can supply in the final two-pass target. This avoids constructing strict genuine functional B-trees during intermediate sparsening. The theorem is conditional on the final target recovery maps; their construction from normalized unary part predicates and full OLD mask domains is the next independent Lean target. Nullary positive-output synchronization remains a separate reduction.
