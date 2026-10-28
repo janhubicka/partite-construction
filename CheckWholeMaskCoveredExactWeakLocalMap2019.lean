@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskCoveredExactWeakLocalMap2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskPartialDecode_weak_originalPartial_of_inducedOldHom
+#print axioms StructuralRamsey.RelStructure.wholeMaskPartialDecode_weak_originalPartial_of_coveredOldHom
