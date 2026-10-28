@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.WholeMaskPartiteRamseyArrow2019
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.comp
+#print axioms StructuralRamsey.PartialSetStructure.PartPreservingEmbedding.comp
+#print axioms StructuralRamsey.PartialSetStructure.PartPreservingEmbedding.encode_comp
+#print axioms StructuralRamsey.PartialSetStructure.partPreservingArrow_iff_withPartsWholeMaskOld
