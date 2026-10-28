@@ -53,8 +53,8 @@ theorem wholeMaskOriginalDecode_originalPartialControl_of_tagHom
       (Test : RelStructure ((L.withParts P).wholeMaskTagLanguage P) T),
       IsUClosed ((L.withParts P).wholeMaskClosureRules P) Test →
       IsUIrreducible ((L.withParts P).wholeMaskClosureRules P) Test →
-      Embedding Test C →
-      Nonempty (Embedding Test
+      RelStructure.Embedding Test C →
+      Nonempty (RelStructure.Embedding Test
         (wholeMaskTagExpansion
           ((Base.withParts basePart).wholeMaskPatternGraph basePart))))
     (Target : PartialSetStructure L X) (targetPart : X → P)
