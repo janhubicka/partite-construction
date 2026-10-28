@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskCoveredOutputPartSoundness2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMask_output_part_predicate_of_closed_coverage
+#print axioms StructuralRamsey.RelStructure.wholeMask_outputPartsCompatible_of_closed_coverage
+#print axioms StructuralRamsey.RelStructure.wholeMaskCoveredPart_decoder_fibreTransversal
