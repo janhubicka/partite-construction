@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskCoveredFunctionalControlProjection2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskOriginalDecode_originalPartialControl_of_tagHom
