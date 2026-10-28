@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskCoveredFunctionalTarget2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskOriginalDecode_fibreTransversal_of_covered
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.ofCoveredPartiteWholeMaskOld
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.ofCoveredPartiteWholeMaskOld_apply
