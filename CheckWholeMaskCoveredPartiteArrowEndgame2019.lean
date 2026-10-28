@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskCoveredPartiteArrowEndgame2019
+
+#print axioms StructuralRamsey.PartialSetStructure.coveredWholeMask_partPreservingArrow_of_old
+#print axioms StructuralRamsey.PartialSetStructure.coveredWholeMask_partPreservingArrow_of_tagged
