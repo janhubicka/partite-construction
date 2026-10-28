@@ -72,7 +72,7 @@ def comp {A : PartialSetStructure L V}
         | none => rfl
         | some S =>
             simpa [hv] using
-              congrArg some (imageSet_comp f.toFun g.toFun S).symm
+              congrArg some (imageSet_comp f.toFun g.toFun S)
       _ = (B.func F (f.toFun ∘ xs)).map
           (Structure.imageSet g.toFun) := by rw [hf]
       _ = C.func F ((g.toFun ∘ f.toFun) ∘ xs) := by
