@@ -62,7 +62,9 @@ theorem wholeWeakInduce_wholeMaskPatternGraph_eq_induce_of_closed
       | some T =>
           have hT : T ⊆ S :=
             hS F (Subtype.val ∘ xs) T (fun i => (xs i).2) hv
-          rw [hv, wholeWeakValue_of_subset S T hT]
+          change Option.map (Structure.imageSet Subtype.val)
+            (wholeWeakValue S (some T)) = some T
+          rw [wholeWeakValue_of_subset S T hT]
           simp only [Option.map_some]
           congr 1
           ext y
@@ -71,6 +73,7 @@ theorem wholeWeakInduce_wholeMaskPatternGraph_eq_induce_of_closed
             exact hz
           · intro hy
             exact ⟨⟨y, hT hy⟩, hy, rfl⟩
+  }
   let eOld : RelStructure.Embedding
       ((wholeWeakInduce A S).wholeMaskPatternGraph
         (part ∘ Subtype.val))
@@ -100,9 +103,18 @@ theorem wholeWeakInduce_isClosed_of_wholeMaskPatternGraph_eq_induce
     FibreTransversal.wholeWeakInduce A part hTrans S
   let eOld : RelStructure.Embedding
       (Weak.wholeMaskPatternGraph (part ∘ Subtype.val))
-      (A.wholeMaskPatternGraph part) := by
-    rw [hEq]
-    exact RelStructure.inclusion (A.wholeMaskPatternGraph part) S
+      (A.wholeMaskPatternGraph part) := {
+    toFun := Subtype.val
+    injective := Subtype.val_injective
+    map_rel_iff := by
+      intro R z
+      change ((A.wholeMaskPatternGraph part).induce S).rel R z ↔
+        (Weak.wholeMaskPatternGraph (part ∘ Subtype.val)).rel R z
+      have hh := congrArg
+        (fun E : RelStructure (L.wholeMaskPatternLanguage P) S =>
+          E.rel R z) hEq
+      rw [← hh]
+  }
   let e : Embedding Weak A :=
     Embedding.ofCanonicalWholeMaskPatternGraph
       Weak A (part ∘ Subtype.val) part
@@ -112,7 +124,10 @@ theorem wholeWeakInduce_isClosed_of_wholeMaskPatternGraph_eq_induce
   let xsS : Fin (L.funcArity F) → S :=
     fun i => ⟨xs i, hxs i⟩
   have hValue : A.func F (Subtype.val ∘ xsS) = some T := by
-    simpa only [xsS] using hVal
+    have hXs : Subtype.val ∘ xsS = xs := by
+      funext i
+      rfl
+    simpa only [hXs] using hVal
   have hLost : ¬ T ⊆ S := by
     intro hT
     exact hyOutside (hT hy)
