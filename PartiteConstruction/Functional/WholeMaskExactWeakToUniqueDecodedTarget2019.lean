@@ -132,4 +132,45 @@ theorem wholeMaskPartialDecode_weak_originalPartial_of_inducedOldHom_toDecoded
       F (f ∘ xs) (hUniqueTarget F (f ∘ xs))
       (Structure.imageSet f U)).mpr hWitnessTarget
 
+/-- The actual final U-closed B-covered tagged 2019 picture supplies
+the SOURCE entire-value uniqueness for FREE.  Hence a local positive
+map into ANY OLD target with coherent unique complete values decodes
+to the correct original-2019 partial-function homomorphism, even
+if that K-target is not its own canonical OLD re-encoding.  Only
+target witness uniqueness is required; source-undefined domains
+are not reflected and exact S is unchanged. -/
+theorem wholeMaskPartialDecode_weak_originalPartial_of_coveredOldHom_toDecoded
+    {Q : Type w}
+    (C : RelStructure (L.wholeMaskTagLanguage P) V)
+    (Base : PartialSetStructure L Q) (basePart : Q → P)
+    (hC : IsUClosed (L.wholeMaskClosureRules P) C)
+    (hPos : L.PositiveFuncArity)
+    (hCover : ∀ {X : Type w}
+      (Test : RelStructure (L.wholeMaskTagLanguage P) X),
+      IsUClosed (L.wholeMaskClosureRules P) Test →
+      IsUIrreducible (L.wholeMaskClosureRules P) Test →
+      Embedding Test C →
+      Nonempty (Embedding Test
+        (wholeMaskTagExpansion (Base.wholeMaskPatternGraph basePart))))
+    (S : Set V)
+    (D : RelStructure (L.wholeMaskPatternLanguage P) W)
+    (hUniqueTarget : ∀ (F : L.FuncSymbol)
+      (xs : Fin (L.funcArity F) → W)
+      (U T : Set W),
+      HasWholeMaskValue D F xs U →
+      HasWholeMaskValue D F xs T → U = T)
+    (f : S → W)
+    (hOld : ((wholeMaskTagReduct C).induce S).IsHomomorphism D f) :
+    PartialSetStructure.IsOriginalPartialHomomorphism
+      (PartialSetStructure.wholeWeakInduce
+        (wholeMaskTagReduct C).wholeMaskPartialDecode S)
+      D.wholeMaskPartialDecode f := by
+  exact wholeMaskPartialDecode_weak_originalPartial_of_inducedOldHom_toDecoded
+    (wholeMaskTagReduct C)
+    (fun F xs U T hU hT =>
+      wholeMaskValue_unique_of_closed_coverage
+        C Base basePart hC hPos hCover F xs U T hU hT)
+    S D hUniqueTarget f hOld
+
+
 end StructuralRamsey.RelStructure
