@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskExactWeakToUniqueDecodedTarget2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskPartialDecode_weak_originalPartial_of_inducedOldHom_toDecoded
