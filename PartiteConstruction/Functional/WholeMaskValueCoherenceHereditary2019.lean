@@ -27,9 +27,9 @@ namespace StructuralRamsey.RelStructure
 open StructuralRamsey
 open StructuralRamsey.Structure
 
-universe u v w z
+universe u v w
 variable {L : Language.{u}} {P : Type v} [Fintype P]
-variable {V : Type w} {W : Type z}
+variable {V W : Type w}
 
 /-- Every complete OLD graph witness for a fixed primitive function
 and input tuple specifies the same ENTIRE set of output vertices;
