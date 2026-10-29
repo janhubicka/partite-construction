@@ -126,7 +126,7 @@ theorem wholeMaskPartialDecode_weak_originalPartial_of_inducedOldHom_toDecoded
         (Structure.imageSet f U) := by
       refine ⟨m, r, hr, q, f ∘ tS, hMapped, ?_, ?_⟩
       · intro i
-        exact congrFun hInput i |>.symm
+        exact (congrFun hInput i).symm
       · exact hOutput.symm
     exact (D.wholeMaskPartialDecode_func_some_iff
       F (f ∘ xs) (hUniqueTarget F (f ∘ xs))
