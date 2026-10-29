@@ -1,0 +1,20 @@
+import PartiteConstruction.Functional.WholeMaskRecoveredPartiteArrow2019
+import PartiteConstruction.Functional.WholeMaskCoveredPartiteArrowEndgame2019
+import PartiteConstruction.Functional.WholeMaskCoveredFunctionalControlProjection2019
+import PartiteConstruction.Functional.WholeMaskCoveredTaggedWeakLocalMap2019
+
+/-!
+Combined Appendix A 2019 endgame audit: the genuine partial Ramsey
+arrow, final part-transversal target, final source-defined control,
+and exact weak-set local original-partial map must compile and
+remain free of nonstandard axioms TOGETHER on the same main revision.
+This intentionally does not assert arbitrary K-member functional
+interpretability or a strict functional B-tree mixed extension.
+-/
+
+#print axioms StructuralRamsey.PartialSetStructure.partPreservingArrow_of_relational_old_covered
+#print axioms StructuralRamsey.PartialSetStructure.coveredWholeMask_partPreservingArrow_of_tagged
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskOriginalDecode_fibreTransversal_of_covered
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskOriginalDecode_originalPartialControl_of_tagHom
+#print axioms StructuralRamsey.RelStructure.wholeMaskPartialDecode_weak_originalPartial_of_coveredOldHom
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskOriginalDecode_weak_originalPartial_of_taggedLocalHom
