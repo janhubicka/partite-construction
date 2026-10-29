@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskCanonicalLocalProtectedTest2019
+
+#print axioms StructuralRamsey.PartialSetStructure.canonicalProtectedTest_of_closedULocalHE
