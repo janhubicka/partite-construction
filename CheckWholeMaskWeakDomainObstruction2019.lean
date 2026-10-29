@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WholeMaskWeakDomainObstruction2019
+
+#print axioms StructuralRamsey.PartialSetStructure.oldInducedHom_target_defined_of_ambient_defined
+#print axioms StructuralRamsey.PartialSetStructure.oldInducedHom_not_fullWholeWeakEmbedding_of_lost_output
