@@ -1,4 +1,5 @@
-import PartiteConstruction.Functional.WholeMaskCanonicalEmbeddingInverse2019
+import PartiteConstruction.Functional.WholeMaskCanonicalFullEmbeddingForward2019
+import PartiteConstruction.Functional.WholeMaskOldEmbeddingTransport2019
 import PartiteConstruction.Functional.WholeMaskTagInduce2019
 import PartiteConstruction.Functional.WholeMaskWeakDomainObstruction2019
 import PartiteConstruction.Structure.PartialSetFunctionsWholePartWeakDictionary
@@ -82,7 +83,11 @@ theorem wholeWeakInduce_wholeMaskPatternGraph_eq_induce_of_closed
       (fun _ => rfl)
   apply RelStructure.rel_injective
   funext R xs
-  exact propext (eOld.map_rel_iff R xs).symm
+  have hMap := eOld.map_rel_iff R xs
+  change (A.wholeMaskPatternGraph part).rel R (Subtype.val ∘ xs) ↔
+    ((wholeWeakInduce A S).wholeMaskPatternGraph
+      (part ∘ Subtype.val)).rel R xs at hMap
+  exact propext hMap.symm
 
 /-- Conversely a canonical full OLD induced weak graph is possible
 ONLY on a genuine function-closed carrier.  The failure on an
@@ -101,39 +106,53 @@ theorem wholeWeakInduce_isClosed_of_wholeMaskPatternGraph_eq_induce
   let Weak := wholeWeakInduce A S
   have hTransWeak : FibreTransversal Weak (part ∘ Subtype.val) :=
     FibreTransversal.wholeWeakInduce A part hTrans S
-  let eOld : RelStructure.Embedding
-      (Weak.wholeMaskPatternGraph (part ∘ Subtype.val))
-      (A.wholeMaskPatternGraph part) := {
-    toFun := Subtype.val
-    injective := Subtype.val_injective
-    map_rel_iff := by
-      intro R z
-      change ((A.wholeMaskPatternGraph part).induce S).rel R z ↔
-        (Weak.wholeMaskPatternGraph (part ∘ Subtype.val)).rel R z
-      have hh := congrArg
-        (fun E : RelStructure (L.wholeMaskPatternLanguage P) S =>
-          E.rel R z) hEq
-      rw [← hh]
-  }
-  let e : Embedding Weak A :=
-    Embedding.ofCanonicalWholeMaskPatternGraph
-      Weak A (part ∘ Subtype.val) part
-      hTransWeak hTrans eOld
   intro F xs T hxs hVal y hy
   by_contra hyOutside
   let xsS : Fin (L.funcArity F) → S :=
     fun i => ⟨xs i, hxs i⟩
-  have hValue : A.func F (Subtype.val ∘ xsS) = some T := by
-    have hXs : Subtype.val ∘ xsS = xs := by
-      funext i
-      rfl
-    simpa only [hXs] using hVal
   have hLost : ¬ T ⊆ S := by
     intro hT
     exact hyOutside (hT hy)
-  have hNot := canonicalOldInclusion_not_fullWeakEmbedding_of_lost_output
-    A part hTrans S F xsS T hValue hLost
-  exact hNot ⟨e, fun _ => rfl⟩
+  have hAmbientDomain : HasWholeMaskDomain
+      (A.wholeMaskPatternGraph part) F xs :=
+    (A.hasWholeMaskDomain_iff_sourceDefined part hTrans F xs).mpr
+      ⟨T, hVal⟩
+  obtain ⟨m, r, hr, q, root, hDom, hArgs⟩ := hAmbientDomain
+  let pat : Language.FunctionInputPattern L := ⟨F, m, r, hr⟩
+  have hRootS (i : Fin m) : root i ∈ S := by
+    obtain ⟨j, hj⟩ := hr i
+    have hxs : xs j ∈ S := hxs j
+    rw [hArgs j] at hxs
+    simpa only [hj] using hxs
+  let rootS : Fin m → S := fun i => ⟨root i, hRootS i⟩
+  have hOldDom :
+      ((A.wholeMaskPatternGraph part).induce S).rel
+        (.inr (.inl (pat,q))) rootS := hDom
+  have hWeakDom :
+      (Weak.wholeMaskPatternGraph (part ∘ Subtype.val)).rel
+        (.inr (.inl (pat,q))) rootS := by
+    rw [hEq]
+    exact hOldDom
+  have hWeakHasDomain :
+      HasWholeMaskDomain
+        (Weak.wholeMaskPatternGraph (part ∘ Subtype.val)) F xsS := by
+    refine ⟨m, r, hr, q, rootS, hWeakDom, ?_⟩
+    intro i
+    apply Subtype.ext
+    exact hArgs i
+  have hWeakDefined : Weak.Defined F xsS :=
+    (Weak.hasWholeMaskDomain_iff_sourceDefined
+      (part ∘ Subtype.val) hTransWeak F xsS).mp hWeakHasDomain
+  have hWeakNone : Weak.func F xsS = none := by
+    change wholeWeakValue S (A.func F (Subtype.val ∘ xsS)) = none
+    have hXs : Subtype.val ∘ xsS = xs := by
+      funext i
+      rfl
+    rw [hXs, hVal]
+    exact wholeWeakValue_of_not_subset S T hLost
+  obtain ⟨U, hU⟩ := hWeakDefined
+  rw [hWeakNone] at hU
+  cases hU
 
 /-- The exact OLD whole-mask presentation commutes with whole-fibre
 weak induction if and only if no defined output leaves S.
