@@ -121,4 +121,28 @@ theorem oldInducedHom_not_fullWholeWeakEmbedding_of_lost_output
   rw [hT] at hTargetNone
   cases hTargetNone
 
+/-- In particular the inclusion of an exact OLD induced ambient
+complete-mask graph into its own canonical source is already a FULL
+RELATIONAL embedding, but the SAME literal vertex inclusion cannot
+be a full genuine partial-function weak embedding whenever a
+defined whole value is lost. This uses no noncanonical K-target. -/
+theorem canonicalOldInclusion_not_fullWeakEmbedding_of_lost_output
+    (A : PartialSetStructure L V) [Finite V]
+    (part : V → P) (hTrans : FibreTransversal A part)
+    (S : Set V)
+    (F : L.FuncSymbol)
+    (xs : Fin (L.funcArity F) → S)
+    (U : Set V)
+    (hValue : A.func F (Subtype.val ∘ xs) = some U)
+    (hLost : ¬ U ⊆ S) :
+    ¬ ∃ e : Embedding (wholeWeakInduce A S) A,
+        ∀ x : S, e.toFun x = x.1 := by
+  have hOld : ((A.wholeMaskPatternGraph part).induce S).IsHomomorphism
+      (A.wholeMaskPatternGraph part) Subtype.val := by
+    intro R ys hRel
+    exact hRel
+  exact oldInducedHom_not_fullWholeWeakEmbedding_of_lost_output
+    A part hTrans S A part hTrans Subtype.val hOld
+    F xs U hValue hLost
+
 end StructuralRamsey.PartialSetStructure
