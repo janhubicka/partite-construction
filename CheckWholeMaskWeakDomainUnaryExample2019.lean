@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.WholeMaskWeakDomainUnaryExample2019
+
+#print axioms StructuralRamsey.PartialSetStructure.weakDomainUnaryToy_transversal
+#print axioms StructuralRamsey.PartialSetStructure.weakDomainUnaryToy_value
+#print axioms StructuralRamsey.PartialSetStructure.weakDomainUnaryToy_lost
+#print axioms StructuralRamsey.PartialSetStructure.weakDomainUnaryToy_no_full_weak_inclusion
