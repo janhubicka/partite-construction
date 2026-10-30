@@ -53,7 +53,7 @@ noncomputable def weakDomainUnaryToy_fullWeakToUndefined :
     intro F xs
     cases F
     have hx : (xs (0 : Fin 1)).1 = (0 : Fin 2) :=
-      Set.mem_singleton_iff.mp (xs 0).2
+      Set.mem_singleton_iff.mp (xs (0 : Fin 1)).2
     have hValue :
         weakDomainUnaryToy.func ()
           (Subtype.val ∘ xs) =
@@ -82,12 +82,12 @@ theorem weakDomainUnaryToy_no_oldHomToUndefined
     ¬ ((weakDomainUnaryToy.wholeMaskPatternGraph
         (fun x : Fin 2 => x)).induce unaryWeakCarrier).IsHomomorphism
       (undefinedExample.wholeMaskPatternGraph
-        (fun _ : Unit => ())) f := by
+        (fun _ : Unit => (0 : Fin 2))) f := by
   intro hf
   let xs : Fin 1 → unaryWeakCarrier := fun _ =>
     ⟨0, by simp [unaryWeakCarrier]⟩
   have hTrTarget : FibreTransversal undefinedExample
-      (fun _ : Unit => ()) := by
+      (fun _ : Unit => (0 : Fin 2)) := by
     intro F ys U hVal y hy z hz heq
     cases hVal
   have hTarget : undefinedExample.Defined () (f ∘ xs) :=
@@ -95,7 +95,7 @@ theorem weakDomainUnaryToy_no_oldHomToUndefined
       weakDomainUnaryToy (fun x : Fin 2 => x)
       weakDomainUnaryToy_transversal
       unaryWeakCarrier undefinedExample
-      (fun _ : Unit => ()) hTrTarget
+      (fun _ : Unit => (0 : Fin 2)) hTrTarget
       f hf () xs
       ⟨{(1 : Fin 2)}, by
         change weakDomainUnaryToy.func ()
@@ -115,7 +115,7 @@ theorem weakDomainUnaryToy_fullWeak_but_noOldRelativeCompletion :
       ((weakDomainUnaryToy.wholeMaskPatternGraph
           (fun x : Fin 2 => x)).induce unaryWeakCarrier).IsHomomorphism
         (undefinedExample.wholeMaskPatternGraph
-          (fun _ : Unit => ())) f :=
+          (fun _ : Unit => (0 : Fin 2))) f :=
   ⟨⟨weakDomainUnaryToy_fullWeakToUndefined⟩,
     fun ⟨f,hf⟩ => weakDomainUnaryToy_no_oldHomToUndefined f hf⟩
 
