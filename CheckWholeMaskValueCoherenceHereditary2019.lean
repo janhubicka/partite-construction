@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.WholeMaskValueCoherenceHereditary2019
+
+#print axioms StructuralRamsey.RelStructure.PartialSetStructure.wholeMaskPatternGraph_hasUniqueValues
+#print axioms StructuralRamsey.RelStructure.HasUniqueWholeMaskValues.ofEmbedding
+#print axioms StructuralRamsey.RelStructure.HasUniqueWholeMaskValues.induce
+#print axioms StructuralRamsey.RelStructure.wholeMask_hasUniqueValues_of_closed_coverage
