@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WholeMaskTaggedPartiteFaithful2019
+
+#print axioms StructuralRamsey.PartialSetStructure.withPartsWholeMaskTagged_injective
