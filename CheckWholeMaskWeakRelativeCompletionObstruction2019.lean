@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WholeMaskWeakRelativeCompletionObstruction2019
+
+#print axioms StructuralRamsey.PartialSetStructure.weakDomainUnaryToy_fullWeakToUndefined
+#print axioms StructuralRamsey.PartialSetStructure.weakDomainUnaryToy_no_oldHomToUndefined
+#print axioms StructuralRamsey.PartialSetStructure.weakDomainUnaryToy_fullWeak_but_noOldRelativeCompletion
