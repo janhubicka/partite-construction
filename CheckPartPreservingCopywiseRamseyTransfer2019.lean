@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PartPreservingCopywiseRamseyTransfer2019
+
+#print axioms StructuralRamsey.PartialSetStructure.PartPreservingArrow.of_copywiseCompletion
