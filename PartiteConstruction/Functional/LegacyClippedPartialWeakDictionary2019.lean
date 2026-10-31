@@ -56,8 +56,7 @@ theorem collapseDomain_weakInduce_toNonemptyPartial_func
       · intro hy
         exact (hNonempty ⟨y, hy⟩).elim
       · simp
-    subst U
-    simp [PartialSetStructure.weakValue]
+    simp [hZero, PartialSetStructure.weakValue]
 
 /-- The WHOLE printed legacy weak structure is exactly the collapse
 of the genuine partial CLIPPED weak structure on the same S. -/
