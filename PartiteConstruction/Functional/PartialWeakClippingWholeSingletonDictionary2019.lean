@@ -68,6 +68,29 @@ theorem weakInduce_eq_wholeWeakInduce_of_noPartial
         exact (wholeWeakValue_eq_weakValue_of_all_or_none S U
           (hNo F xs U hv)).symm
 
+/-- Sharp equivalence: equality of the ENTIRE clipped and whole-fibre
+weak structures holds on an EXACT S if and only if no defined
+multivalued output crosses S with some but not all of its vertices.
+No auxiliary closedness or tree assumption is imposed. -/
+theorem weakInduce_eq_wholeWeakInduce_iff_noPartial
+    (A : PartialSetStructure L V) (S : Set V) :
+    A.weakInduce S = A.wholeWeakInduce S ↔
+      NoPartiallyRetainedValues A S := by
+  constructor
+  · intro h F xs U hValue
+    by_cases hFull : U ⊆ S
+    · exact Or.inl hFull
+    · right
+      intro hMeet
+      have hFunc := congrArg
+        (fun B : PartialSetStructure L S => B.func F xs) h
+      change weakValue S (A.func F (Subtype.val ∘ xs)) =
+        wholeWeakValue S (A.func F (Subtype.val ∘ xs)) at hFunc
+      rw [hValue] at hFunc
+      exact (wholeWeakValue_ne_weakValue_of_partial S U hMeet hFull)
+        hFunc.symm
+  · exact weakInduce_eq_wholeWeakInduce_of_noPartial A S
+
 /-- If EVERY defined output fibre is empty or a singleton, the
 clipped and whole-fibre weak structures coincide on every S,
 WITHOUT requiring S to be function-closed. -/
