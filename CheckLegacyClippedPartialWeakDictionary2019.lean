@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.LegacyClippedPartialWeakDictionary2019
+
+#print axioms StructuralRamsey.Structure.collapseDomain_weakInduce_toNonemptyPartial_func
+#print axioms StructuralRamsey.Structure.collapseDomain_weakInduce_toNonemptyPartial
