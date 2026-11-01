@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.PartialWeakClippingWholeSingletonDictionary2019
+
+#print axioms StructuralRamsey.PartialSetStructure.weakInduce_eq_wholeWeakInduce_of_noPartial
+#print axioms StructuralRamsey.PartialSetStructure.weakInduce_eq_wholeWeakInduce_of_singletonValues
+#print axioms StructuralRamsey.PartialSetStructure.weakInduce_eq_wholeWeakInduce_iff_noPartial
