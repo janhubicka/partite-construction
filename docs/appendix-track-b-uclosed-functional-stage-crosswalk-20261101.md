@@ -45,6 +45,44 @@ ProjectionHom hypothesis can supply output-part agreement in some
 applications, but that is a separate checked theorem assumption,
 not a blanket commutation of old relational tagging and native power.
 
+## Two intentionally distinct exact-carrier 2019 dictionaries
+
+`TrackBWholeFibreActualStages2019.lean` now states the
+*whole-fibre*, genuinely partial `Option(Set)` dictionary on the
+**actual** native EHN Stage and Hales--Jewett power, separately
+from the clipped singleton-output-part dictionary. On each Test:
+
+- The faithful native `toNonemptyPartial` translation exposes only
+  NONEMPTY original fibres; it does not invent defined-empty inputs.
+- `wholeWeakInduce` drops an entire source application if any output
+  escapes Test. Its vertex-closure and generator-size predicates
+  correspond to the induced AMBIENT complete-mask 2019 (U)-closure
+  and (USize) of the same true source stage or coordinate power.
+- In contrast, the original `Structure.weakInduce` clips surviving
+  outputs; its exact rank is expressed in the singleton-output-part
+  canonical tags. These ranks are not automatically the same on
+  multivalued weak tests. No such equality is asserted.
+
+The two theorems are `Stage.exactWholeWeakUClosureAndGeneratorRank`
+and `nativePower_exactWholeWeakUClosureAndGeneratorRank`.
+They use the checked whole-mask source theorems plus
+`System.toNonemptyPartial_fibreTransversal`; both require
+positive primitive function arity and finite output-part labels.
+**Pending exact-head CI** before being marked validated.
+
+## Different Lean carrier universes (actual HJ line map)
+
+The native power carrier type may be in the universe
+`max(universe(P),universe(V))`, even if the source B carrier is
+in `universe(V)`. The original tagged weak-preimage helper was
+declared for both carriers in the same universe. The new
+`TrackBHeterogeneousTaggedPreimage2019.lean` supplies a FULL
+native equality-pattern embedding and its canonical tagged weak
+preimage for **heterogeneous source/target universes**. It uses
+the exact same embedding function and reflects all tuples and
+complete fibres; no `ULift` or replacement of vertices is needed.
+The actual HJ line proof consumes this new map.
+
 ## Actual Hales--Jewett power: full line-map and control-mask bridge
 
 TrackBNativePowerTaggedLineTransport2019.lean specializes the original
