@@ -28,6 +28,6 @@ theorem weakInduce_eq_wholeWeakInduce_of_closed
   apply weakInduce_eq_wholeWeakInduce_of_noPartial A S
   intro F xs U hU
   left
-  exact hS F (Subtype.val ∘ xs) (fun i => (xs i).2) U hU
+  exact hS F (Subtype.val ∘ xs) U (fun i => (xs i).2) hU
 
 end StructuralRamsey.PartialSetStructure
