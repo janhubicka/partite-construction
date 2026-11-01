@@ -4,6 +4,12 @@
 
 **Baseline:** main `0959f4d5b857059937a236c77d8cef67cfcdf4e1`; survey adversarial split [#140](https://github.com/janhubicka/Ne-et-il-s-classification-programme-of-Ramsey-classes/pull/140). Every `CheckAxioms*.lean` is included by `.github/workflows/lean.yml`. A proof requires CI on the precise HEAD, not just presence of a file.
 
+## Direct check against the ACTUAL current survey theorem
+
+At `main.tex:1001-1012`, the **current** Theorem `thm:sparseningRamsey` explicitly requires a **relational** language, irreducible A **and B**, and a two-colour arrow. It asserts a relational homomorphism-embedding `C→C0`, strict relational tree local completions for **all** small substructures, and internal B-copy extension in C. It is marked `\\leanverified{PartiteConstruction/Iterated/SparseningStrictBaseIrreducible.lean}{Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all}`.
+
+The finite functional refutation `literal_publishedTriple_false_atEveryRank` applies to the **historical published functional extension**, represented separately by `PublishedSparseningConclusion`. It **does not contradict** the current verified **relational** `main.tex` theorem. The survey's existing TODOs at `main.tex:1013-1037` already explicitly distinguish these endpoints and forbid treating the functional original as verified; do NOT add duplicate TODOs or restore any author-removed comments. A separate direct native functional argument is preserved in `appendix-functional-revision.tex` but is not included in `main.tex`.
+
 ## Statement comparison: no weakening by swapping the witness or tested set
 
 | Comparison | Lean endpoint on the SAME objects | Direction and exact qualification |
