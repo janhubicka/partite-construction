@@ -82,15 +82,13 @@ theorem nativePower_exactWholeWeakUClosureAndGeneratorRank
         ((Induced.power B N).toStructure.toNonemptyPartial) Test).IsClosed Q ↔
         IsUSubstructure (L.wholeMaskClosureRules P)
           ((wholeMaskTagExpansion
-            (((Induced.power B N).toStructure.toNonemptyPartial)
-              .wholeMaskPatternGraph (Induced.power B N).part)).induce
+            (((Induced.power B N).toStructure.toNonemptyPartial).wholeMaskPatternGraph (Induced.power B N).part)).induce
                 Test) Q) ∧
     ((wholeWeakInduce
         ((Induced.power B N).toStructure.toNonemptyPartial) Test).GeneratedByAtMost n ↔
       USize (L.wholeMaskClosureRules P)
         ((wholeMaskTagExpansion
-          (((Induced.power B N).toStructure.toNonemptyPartial)
-            .wholeMaskPatternGraph (Induced.power B N).part)).induce
+          (((Induced.power B N).toStructure.toNonemptyPartial).wholeMaskPatternGraph (Induced.power B N).part)).induce
               Test) ≤ n) := by
   let Source := Induced.power B N
   let A := Source.toStructure.toNonemptyPartial
