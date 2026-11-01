@@ -73,8 +73,8 @@ def Edge : Vertex → Vertex → Prop
       (p = false ∧ u = word (line w) false) ∨
       (p = true  ∧ u = word (line w) true)
   | .core p u, .outside w =>
-      (p = false ∧ u = (line w).eval false) ∨
-      (p = true  ∧ u = (line w).eval true)
+      (p = false ∧ u = word (line w) false) ∨
+      (p = true  ∧ u = word (line w) true)
   | .outside _, .outside _ => False
 
 /-- This is the seven-cycle
