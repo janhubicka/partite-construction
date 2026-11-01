@@ -19,3 +19,5 @@ merely conditional or weaker graph/relative statement.
 
 #print axioms StructuralRamsey.Structure.TrackEStatementAudit.exactOneVertexWeakHCompletions_not_globalHMembership
 #print axioms StructuralRamsey.Structure.TrackEStatementAudit.globalHMembership_not_exactTwoVertexWeakHCompletions
+
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.functionClosedGraphTree_decodesOnSameCarrier
