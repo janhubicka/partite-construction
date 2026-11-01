@@ -22,6 +22,7 @@ namespace StructuralRamsey.FunctionalPartite.Induced
 
 open StructuralRamsey.Structure
 open StructuralRamsey.RelStructure
+open StructuralRamsey.HalesJewett
 
 universe u v w
 variable {L : Language.{u}} {P : Type v} {V : Type w}
