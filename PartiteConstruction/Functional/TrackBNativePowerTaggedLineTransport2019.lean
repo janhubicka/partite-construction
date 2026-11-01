@@ -94,7 +94,7 @@ theorem lineEmbedding_taggedWeakPreimage
       ((patternTagExpansion
         ((power B N).splitOutputParts).toStructure.patternGraph).induce
           Test)) := by
-  exact ⟨((lineEmbedding hB W).splitOutputParts.toEmbedding)
-    .taggedPatternWeakPreimage Test⟩
+  let e := (lineEmbedding hB W).splitOutputParts.toEmbedding
+  exact ⟨e.taggedPatternWeakPreimage Test⟩
 
 end StructuralRamsey.FunctionalPartite.Induced
