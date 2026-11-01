@@ -1,0 +1,9 @@
+import PartiteConstruction.Functional.TrackBPowerOldRootPatternExact2019
+
+/- Track B: OLD exact root-pattern semantics of actual HJ powers. -/
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.nativePower_oldDomainPattern_iff
+#print axioms StructuralRamsey.FunctionalPartite.Induced.nativePower_oldOutputPattern_iff
+#print axioms StructuralRamsey.FunctionalPartite.Induced.nativePower_oldDomainPattern_control_iff
+#print axioms StructuralRamsey.FunctionalPartite.Induced.nativePower_oldDomainPattern_coordinateCollapse
+#print axioms StructuralRamsey.FunctionalPartite.Induced.nativePower_globalInjective_coordinateCollision
