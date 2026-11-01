@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PartialWeakClosedAgreement2019
+
+#print axioms StructuralRamsey.PartialSetStructure.weakInduce_eq_wholeWeakInduce_of_closed
