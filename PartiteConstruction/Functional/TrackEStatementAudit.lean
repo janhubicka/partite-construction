@@ -99,22 +99,31 @@ theorem oneCopy_internal_and_external (Base : Structure L V) :
 
 /-- External coverage in D is not internal B-copy extension in C.
 The witness uses actual finite left-projection algebras: C has 1 vertex,
-B=D has 2 vertices. EVERY projected vertex is in B=D, yet B cannot
-fully embed inside C. -/
+B=D has 2 vertices. The fixed projection is even a full embedding, hence
+EHN; every projected vertex lies in B=D, yet no B-copy exists inside C. -/
 theorem projectedCover_doesNot_imply_internalCover :
     ProjectsIrreduciblesInto
       PublishedTotalBinaryObstruction.B
       PublishedTotalBinaryObstruction.A
       PublishedTotalBinaryObstruction.B
       (fun _ => (0 : Fin 2)) ∧
+    PublishedTotalBinaryObstruction.A.IsEHNHomomorphismEmbedding
+      PublishedTotalBinaryObstruction.B (fun _ => (0 : Fin 2)) ∧
     ¬ IrreduciblesExtendTo
       PublishedTotalBinaryObstruction.B
       PublishedTotalBinaryObstruction.A := by
-  constructor
+  refine ⟨?_, ?_, ?_⟩
   · intro Y E _ e
     refine ⟨Embedding.id PublishedTotalBinaryObstruction.B, ?_⟩
     intro x
     exact ⟨(0 : Fin 2), rfl⟩
+  · have hEmbedding : Embedding
+        PublishedTotalBinaryObstruction.A
+        PublishedTotalBinaryObstruction.B :=
+      PublishedTotalBinaryObstruction.ofInjection
+        (fun _ : Fin 1 => (0 : Fin 2))
+        (by intro x y h; exact Subsingleton.elim x y)
+    exact hEmbedding.isEHNHomomorphismEmbedding
   · intro hInternal
     have hS : PublishedTotalBinaryObstruction.A.IsClosed Set.univ := by
       intro F x hx y hy
@@ -142,7 +151,7 @@ theorem closedWhole_graphTree_not_fullFunctionTree :
       (Structure.ofGraph FunctionalClosedTestGraphObstruction.pathGraph) :=
   FunctionalClosedTestGraphObstruction.closedSource_graphCompletion_not_fullCompletion
 
-/-- The paper's literal triple of total-fibre projection, strict function
+/-- The historical full-functional triple of total-fibre projection, strict function
 locality, and internal B-copies is refuted at EVERY n, although the input
 Ramsey arrow holds. The counterexample has positive-arity functions and
 irreducible A/B. -/
