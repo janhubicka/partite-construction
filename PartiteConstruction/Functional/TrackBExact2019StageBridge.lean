@@ -1,3 +1,4 @@
+import PartiteConstruction.Functional.Induced
 import PartiteConstruction.Functional.NativeFiniteStageUClosedWeakDictionary
 import PartiteConstruction.Functional.NativePartiteWeakUClosureRankDictionary
 import PartiteConstruction.Functional.NativeTaggedWeakFreeAmalgam2019
@@ -31,6 +32,36 @@ variable {L : Language.{u}}
 variable {P V I : Type v}
 variable {K : Structure.StructureClass (L := L)}
 variable {D : Structure L P}
+
+
+/-- The actual native Hales--Jewett function-language coordinate power,
+NOT a surrogate relational power, admits the exact SAME-CARRIER 2019
+ambient tagged weak-closure and minimum-generator dictionary.
+
+This is a one-way *presentation* of the existing native power stage,
+not a claim that OLD tagging commutes with an independently formed
+relational power. -/
+theorem nativePower_exactWeakUClosureAndGeneratorRank
+    (B : System L P V) [Finite P] [Finite V]
+    (N : ℕ) (hPos : L.PositiveFuncArity)
+    (Test : Set (Induced.Vertex B N)) [Fintype Test] (n : ℕ) :
+    (∀ Q : Set Test,
+      (((Induced.power B N).toStructure.weakInduce Test).IsClosed Q ↔
+        IsUSubstructure (L.outputPartIndexed P).patternClosureRules
+          ((patternTagExpansion
+            ((Induced.power B N).splitOutputParts).toStructure.patternGraph).induce
+              Test) Q)) ∧
+    (((Induced.power B N).toStructure.weakInduce Test).GeneratedByAtMost n ↔
+      USize (L.outputPartIndexed P).patternClosureRules
+        ((patternTagExpansion
+          ((Induced.power B N).splitOutputParts).toStructure.patternGraph).induce
+            Test) ≤ n) := by
+  constructor
+  · intro Q
+    exact (Induced.power B N).weakIsClosed_iff_outputTagged_isUSubstructure
+      hPos Test Q
+  · exact (Induced.power B N).weakGeneratedByAtMost_iff_outputTaggedUSize_le
+      hPos Test n
 
 /-- On the exact weak subset of an ACTUAL native stage, both closed-set
 and minimal-generator predicates agree with the induced ambient
