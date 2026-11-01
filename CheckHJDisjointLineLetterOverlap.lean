@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.HJDisjointLineLetterOverlap
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.disjoint_lines_overlap_in_full_letter
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_pair_shared_parameter_or_full_letter
