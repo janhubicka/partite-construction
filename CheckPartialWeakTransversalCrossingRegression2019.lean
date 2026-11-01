@@ -1,0 +1,9 @@
+import PartiteConstruction.Functional.PartialWeakTransversalCrossingRegression2019
+
+#print axioms StructuralRamsey.FunctionalPartite.TrackA.mixedPartite_output_transversal
+#print axioms StructuralRamsey.FunctionalPartite.TrackA.mixedPartite_two_distinct_outputs
+#print axioms StructuralRamsey.FunctionalPartite.TrackA.clipped_ne_whole_for_each_arity
+#print axioms StructuralRamsey.FunctionalPartite.TrackA.clipped_ne_whole_nullary
+#print axioms StructuralRamsey.FunctionalPartite.TrackA.clipped_ne_whole_repeated_binary
+#print axioms StructuralRamsey.FunctionalPartite.TrackA.defined_empty_survives
+#print axioms StructuralRamsey.FunctionalPartite.TrackA.undefined_survives

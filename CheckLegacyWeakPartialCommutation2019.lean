@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.LegacyWeakPartialCommutation2019
+
+#print axioms StructuralRamsey.Structure.toNonemptyPartial_weakInduce_commute
+#print axioms StructuralRamsey.Structure.toNonemptyPartial_weakInduce_eq_whole_iff
+#print axioms StructuralRamsey.Structure.collapseDomain_wholeWeakInduce_of_noPartial
