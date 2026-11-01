@@ -135,9 +135,9 @@ theorem closedWhole_graphTree_not_fullFunctionTree :
     (Structure.ofGraph
       FunctionalClosedTestGraphObstruction.pathGraph).IsClosed Set.univ ∧
     RelStructure.HasTreeCompletion
-      FunctionalClosedTestGraphObstruction.base.graph
+      FunctionalTreeTransferObstruction.base.graph
       (Structure.ofGraph FunctionalClosedTestGraphObstruction.pathGraph).graph ∧
-    ¬ HasTreeCompletion FunctionalClosedTestGraphObstruction.base
+    ¬ HasTreeCompletion FunctionalTreeTransferObstruction.base
       (Structure.ofGraph FunctionalClosedTestGraphObstruction.pathGraph) :=
   FunctionalClosedTestGraphObstruction.closedSource_graphCompletion_not_fullCompletion
 
