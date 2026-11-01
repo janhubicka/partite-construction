@@ -60,6 +60,8 @@ def R : FunctionalPartite.System Lang Bool (Bool × Bool) where
     intro Rel xs h i j hij
     cases Rel
     change (Fin 2 → Bool × Bool) at xs
+    change Fin 2 at i
+    change Fin 2 at j
     change (xs 0).1 ≠ (xs 1).1 ∧
       (xs 0).2 = (xs 1).2 at h
     fin_cases i <;> fin_cases j
