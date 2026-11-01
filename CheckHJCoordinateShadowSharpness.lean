@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.HJCoordinateShadowSharpness
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_coordinate_splits_of_parameter
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_parameter_of_coordinate_splits
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_coordinate_splits_iff_parameter
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_family_coordinate_splits_iff_common_parameter
+#print axioms StructuralRamsey.FunctionalPartite.Induced.disjoint_lines_no_common_coordinate_shadow
