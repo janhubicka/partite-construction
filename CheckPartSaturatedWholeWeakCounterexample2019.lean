@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.PartSaturatedWholeWeakCounterexample2019
+
+#print axioms StructuralRamsey.FunctionalPartite.TrackASaturation.partial_collapse_eq_system
+#print axioms StructuralRamsey.FunctionalPartite.TrackASaturation.output_transversal
+#print axioms StructuralRamsey.FunctionalPartite.TrackASaturation.two_outputs
+#print axioms StructuralRamsey.FunctionalPartite.TrackASaturation.cut_partSaturated
+#print axioms StructuralRamsey.FunctionalPartite.TrackASaturation.partSaturated_not_enough
