@@ -247,7 +247,7 @@ theorem globalHMembership_not_exactTwoVertexWeakHCompletions :
     have hSet : (↑S : Set (Fin 3)) =
         NativePowerObstruction.weakOrderedXYSet := by
       ext x
-      fin_cases x <;> decide
+      simp [S, NativePowerObstruction.weakOrderedXYSet]
     let eWeak : Embedding NativePowerObstruction.weakOrderedXY
         (NativePowerObstruction.toyBaseOrdered.weakInduce
           (↑S : Set (Fin 3))) :=
