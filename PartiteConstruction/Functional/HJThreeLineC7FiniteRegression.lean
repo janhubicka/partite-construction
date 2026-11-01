@@ -33,11 +33,11 @@ open SuccessorTree
 /-- Letter a = false, letter b = true; p is the varying parameter. -/
 def W0 : Line Bool 2 where
   symbol i := if i = 0 then .const true else .parameter
-  hasParameter := ⟨1, by decide⟩
+  hasParameter := ⟨1, rfl⟩
 
 def W1 : Line Bool 2 where
   symbol i := if i = 0 then .parameter else .const false
-  hasParameter := ⟨0, by decide⟩
+  hasParameter := ⟨0, rfl⟩
 
 def W2 : Line Bool 2 where
   symbol _ := .parameter
@@ -50,7 +50,11 @@ def line : Fin 3 → Line Bool 2
 
 /-- True HJ coordinatewise selected-support word (two old A-letters).
 One core vertex is the word and its part tag. -/
-abbrev Word := Fin 2 → Bool
+abbrev Word := Bool × Bool
+
+/-- Exact two coordinates of a genuine Hales--Jewett word. -/
+def word (W : Line Bool 2) (a : Bool) : Word :=
+  (W.eval a 0, W.eval a 1)
 
 /-- Full core plus exactly THREE fresh exterior OLD-copy vertices.
 There are no phantom edges or extra copies in this finite skeleton. -/
@@ -66,8 +70,8 @@ the old exterior c is linked to the a0 and b1 boundary vertices. -/
 def Edge : Vertex → Vertex → Prop
   | .core p u, .core q v => p ≠ q ∧ u = v
   | .outside w, .core p u =>
-      (p = false ∧ u = (line w).eval false) ∨
-      (p = true  ∧ u = (line w).eval true)
+      (p = false ∧ u = word (line w) false) ∨
+      (p = true  ∧ u = word (line w) true)
   | .core p u, .outside w =>
       (p = false ∧ u = (line w).eval false) ∨
       (p = true  ∧ u = (line w).eval true)
@@ -79,21 +83,19 @@ The four core vertices are the exact tagged power words, not an
 unrelated Cartesian-product edge system. -/
 def cycle : Fin 7 → Vertex
   | 0 => .outside 0
-  | 1 => .core false (W0.eval false)
-  | 2 => .core true  (W1.eval true)
+  | 1 => .core false (word W0 false)
+  | 2 => .core true  (word W1 true)
   | 3 => .outside 1
-  | 4 => .core false (W1.eval false)
+  | 4 => .core false (word W1 false)
   | 5 => .outside 2
-  | _ => .core true  (W2.eval true)
+  | _ => .core true  (word W2 true)
 
 def next (i : Fin 7) : Fin 7 :=
   ⟨(i.val + 1) % 7, Nat.mod_lt _ (by decide)⟩
 
 /-- All seven cycle vertices are distinct. -/
 theorem cycle_injective : Function.Injective cycle := by
-  intro i j hij
-  fin_cases i <;> fin_cases j <;>
-    simp_all [cycle, W0, W1, W2, Line.eval, LineSymbol.eval]
+  decide
 
 /-- The graph contains the seven exact cyclic edges. -/
 theorem cycle_edge (i : Fin 7) :
@@ -116,7 +118,10 @@ theorem no_common_parameter :
       W0.symbol i = .parameter ∧
       W1.symbol i = .parameter ∧
       W2.symbol i = .parameter := by
-  decide
+  rintro ⟨i, h0, h1, _h2⟩
+  fin_cases i
+  · exact (by simp [W0] : W0.symbol 0 ≠ .parameter) h0
+  · exact (by simp [W1] : W1.symbol 1 ≠ .parameter) h1
 
 /-- An odd cycle in the actual three-line skeleton prevents any
 graph homomorphism to a bipartite strict K2-tree. This proves a
