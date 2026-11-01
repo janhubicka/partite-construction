@@ -1,0 +1,30 @@
+import PartiteConstruction.Functional.TrackEStatementAudit
+import PartiteConstruction.Functional.TrackEProtectedCoverage2019
+
+/-!
+The exact Track E endpoint contract and counterexample declarations.
+The normal Lean CI compiles this module and checks each listed name
+against allowed logical axioms; no printed theorem is inferred from a
+merely conditional or weaker graph/relative statement.
+-/
+
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.totalHE_implies_originalPartialHE
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.originalPartialHE_implies_totalHE_of_domainReflection
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.totalHE_iff_originalPartialHE_and_domainReflection
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.internalCover_implies_projectedCover_of_baseIrreducible
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.oneCopy_internal_and_external
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.projectedCover_doesNot_imply_internalCover
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.closedWhole_graphTree_not_fullFunctionTree
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.literal_publishedTriple_false_atEveryRank
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.exactWeakHCompletions_of_weakHereditary
+
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.exactOneVertexWeakHCompletions_not_globalHMembership
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.globalHMembership_not_exactTwoVertexWeakHCompletions
+
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.functionClosedGraphTree_decodesOnSameCarrier
+
+#print axioms StructuralRamsey.RelStructure.ExternalClosedUIrreducibleBCoverage.ofEmbedding
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.externalUProtectedCover_doesNot_imply_internalCover
+
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.EmbedsInToyBaseClass_closedHereditary
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.EmbedsInToyBaseClass_notWeakHereditary

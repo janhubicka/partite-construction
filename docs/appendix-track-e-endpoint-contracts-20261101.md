@@ -1,0 +1,50 @@
+# Appendix A — Track E exact endpoint audit (1 November 2026)
+
+**Scope:** independent endpoint source, not a replacement for the frozen manuscript or an unconditional functional sparsening proof. Only new proof/audit modules are edited: `Functional/TrackEStatementAudit.lean`, `Functional/TrackEProtectedCoverage2019.lean` and the root-level axiom audit. The frozen survey prose and author-maintained TODO markers are untouched.
+
+**Baseline:** main `0959f4d5b857059937a236c77d8cef67cfcdf4e1`; survey adversarial split [#140](https://github.com/janhubicka/Ne-et-il-s-classification-programme-of-Ramsey-classes/pull/140). Every `CheckAxioms*.lean` is included by `.github/workflows/lean.yml`. A proof requires CI on the precise HEAD, not just presence of a file.
+
+## Direct check against the ACTUAL current survey theorem
+
+At `main.tex:1001-1012`, the **current** Theorem `thm:sparseningRamsey` explicitly requires a **relational** language, irreducible A **and B**, and a two-colour arrow. It asserts a relational homomorphism-embedding `C→C0`, strict relational tree local completions for **all** small substructures, and internal B-copy extension in C. It is marked `\\leanverified{PartiteConstruction/Iterated/SparseningStrictBaseIrreducible.lean}{Partite.IteratedSparsening.sparseningRamsey_strict_baseIrreducible_all}`.
+
+The finite functional refutation `literal_publishedTriple_false_atEveryRank` applies to the **historical published functional extension**, represented separately by `PublishedSparseningConclusion`. It **does not contradict** the current verified **relational** `main.tex` theorem. The survey's existing TODOs at `main.tex:1013-1037` already explicitly distinguish these endpoints and forbid treating the functional original as verified; do NOT add duplicate TODOs or restore any author-removed comments. A separate direct native functional argument is preserved in `appendix-functional-revision.tex` but is not included in `main.tex`.
+
+## Statement comparison: no weakening by swapping the witness or tested set
+
+| Comparison | Lean endpoint on the SAME objects | Direction and exact qualification |
+|---|---|---|
+| Survey full total-fibre projection `C.IsHomomorphismEmbedding D p` vs. genuine 2019 source-defined `IsOriginalPartialHomomorphismEmbedding C D p` | `totalHE_implies_originalPartialHE`; `totalHE_iff_originalPartialHE_and_domainReflection` | Full implies source-defined. Reverse needs nonempty-domain reflection on EVERY tuple of the identical C and p; no implicit domain equivalence. |
+| Strict relational B-graph tree vs. strict full-function B-tree | `closedWhole_graphTree_not_fullFunctionTree` reuses `FunctionalClosedTestGraphObstruction.closedSource_graphCompletion_not_fullCompletion` | Graph tree is insufficient even for a function-closed entire source. Do not promote the verified graph local theorem. Positive graph-to-functional decoding uses actual function-closed graph root maps (`RelStructure.FunctionClosedTreeAmalgam.toFunctional`), not arbitrary graph targets. |
+| **Actual corrected 2019 external U-protected canonical B-test coverage** vs. an internal B-copy in final C | `ExternalClosedUIrreducibleBCoverage`; `ExternalClosedUIrreducibleBCoverage.ofEmbedding`; `externalUProtectedCover_doesNot_imply_internalCover` | This predicate has the **identical quantifier pattern** of upstream `genuinePartite2019_actual_sparse_witness_with_H_completions`'s `hCover` after instantiating the real whole-mask tagged language and closure rules: every U-closed U-irreducible Test **embedding into C** embeds into the canonical tagged B **outside C**. Even with an embedding C→B, no internal B→C is implied. The finite nonimplication is in the abstract relational schema, **not a claim to be a 2019 canonical tagged Picture witness**. |
+| Internal `IrreduciblesExtendTo B C` vs. external `ProjectsIrreduciblesInto B C D p` | `internalCover_implies_projectedCover_of_baseIrreducible`; `projectedCover_doesNot_imply_internalCover` | Internal + B irreducible + EHN p gives external for the **same C and p**. Even external coverage **together with a full (hence EHN) map C→D** does not put a B-copy inside C; finite C=one point, B=D=two points witnesses failure. |
+| `K C` / `H C` vs. each exact weak S having a target in H | `HasExactWeakHCompletions`; `exactWeakHCompletions_of_weakHereditary` | If H is actually hereditary for the precise **weakInduce** semantics, H C implies this local property, with target the exact weak structure. Ordinary closed heredity is NOT weak heredity. Both generic converses fail: `exactOneVertexWeakHCompletions_not_globalHMembership` and `globalHMembership_not_exactTwoVertexWeakHCompletions` are checked finite counterexamples for the intrinsic full weak HE convention. Crucially, the upstream 2019 H certificates are **ambient relative OLD tagged completions**, *not* this intrinsic full weak HE. |
+
+## Nonvacuous regression examples
+
+- `oneCopy_internal_and_external`: actual one-copy B structure with full identity projection, internal and external coverage.
+- `externalUProtectedCover_doesNot_imply_internalCover`: exact 2019 external U-closed/U-irreducible test quantifier schema, with a full one-point→two-point embedding C→B but no B-copy in C. This is a finite **abstract relational** counterexample; the source is not asserted canonical OLD tagged. 
+- `projectedCover_doesNot_imply_internalCover`: the exact finite one-vertex C and two-vertex B=D first-projection structures admit even a full (hence EHN) projection C→D, and every irreducible C-copy projects into B=D, yet there is no embedded B-copy in C.
+- `closedWhole_graphTree_not_fullFunctionTree`: actual function-closed unary path of length two, a strict tree in its graph reduct, impossible in strict full-function B-trees.
+- `exactOneVertexWeakHCompletions_not_globalHMembership`: all exact at-most-one-vertex weak tests of a 3-vertex structure have an H-completion, although that C itself is not in H. Here H means carriers of size at most one.
+- `globalHMembership_not_exactTwoVertexWeakHCompletions`: H contains the ordered three-vertex binary-function template and its full embedding substructures. The exact weak pair {0,1} is irreducible but has no full HE into any H-target, since its output 2 was lost. H is closed-hereditary but *not weak-hereditary*. This is an intrinsic full weak-test counterexample, not an OLD ambient certificate.
+- `literal_publishedTriple_false_atEveryRank`: the positive-arity, irreducible A/B, nonvacuous arrow `Fin 3 → (Fin 2)^(Fin 1)_2` of `PublishedTotalBinaryObstruction`; `PublishedSparseningConclusion` fails **for every n**, from clauses (1)+(3), not just rank-three locality.
+
+## Actual endgame: quantified clause ledger
+
+1. The historical full-functional predicate `PublishedSparseningConclusion A B D κ n` first **exists** one finite C with `Arrow A B C κ`, then **exists** a single `p:C→D`, with FULL `IsHomomorphismEmbedding`, and requires BOTH strict full-function local completions on **every closed S of size <=n** and internal `IrreduciblesExtendTo B C`. This literal target is refuted, not merely unproved.
+2. The verified native `sparseningRamsey_nativeFunctional_graphStrict_withBCover` exists one finite C with arrow, genuine original-partial global p, strict `LocallyTreeLike A.graph B.graph C.graph n`, and internal B extension in that SAME C. It also has a loose full-functional B-tree structure. It assumes positive arity, the free-amalgamation class K, graph-hereditary irreducibility of A and n>0. It does **not** assert strict full-functional local completions.
+3. The all-arity `sparseningRamsey_functional_looseFullTrees_inClass` has a full function-language Ramsey arrow, EHN p, internal coverage and a full FUNCTION loose B-tree C, with local closed tests embedding into that same loose C. **Loose** (arbitrary closed root) is not the printed strict tree.
+4. Upstream `AllThoseRamseyClasses.Published.genuinePartite2019_actual_sparse_witness_with_H_completions` returns an actual part-preserving original partial-function Ramsey arrow, a source-defined projection, and for every exact small weak S, `HasGenuinePartiteTagged2019RelativeCompletion H (C.induce S)`. Targets of those *ambient-relational* tests are genuine H-structures, but the final C need not belong to H. This is not a same-target full intrinsic `weakInduce` embedding.
+5. Upstream `genuinePartite2019_ramsey_of_original_class_data` produces class Ramseyness **conditionally**, assuming `hLocal`: for each K-member B and ambient R control C0 there is a uniform n with OLD-relative local completion for the required tests. Neither graph-tree completion nor external B coverage discharges this quantifier.
+
+## Open/unasserted arrows
+
+- Original intrinsic weak/local-finiteness `→` OLD ambient-relative H-class local axiom remains Track C (not assumed by this audit).
+- Strict full-functional mixed reducible-root local B-trees on actual native Picture remain Track D.
+- `C ∈ H` from only bounded exact weak H-completion certificates requires an additional class-level local-completion/strong-amalgamation transfer; it does not follow definitionally. Likewise `H C` plus only **closed** heredity cannot justify all intrinsic weak S.
+- Converting full functional strict trees to an arbitrary *relational strict tree encoding* needs a proper target root-closure / irreducibility comparison; no unsupported blanket equivalence is claimed.
+
+## Integration gate
+
+After the latest proof change, rerun the full Lean build and `CheckAxiomsTrackEStatementAudit.lean` at the precise PR HEAD. The previous head passed in [CI run 41267299452](https://github.com/janhubicka/partite-construction/actions/runs/41267299452), with 1,692 declarations and only standard logical axioms. Recheck the strengthened projected-coverage regression on the new head. The audit does not replace Track F's manuscript marker reconciliation. **No survey prose or author-removed TODOs have been altered.**
