@@ -3,6 +3,7 @@ import PartiteConstruction.Functional.PublishedTotalBinaryObstruction
 import PartiteConstruction.Functional.ClosedTestGraphTreeObstruction
 import PartiteConstruction.Functional.ProjectedLooseCompletion
 import PartiteConstruction.Functional.FibreExactness
+import PartiteConstruction.Functional.OriginalPartialWeakTestObstruction
 
 /-!
 # Appendix A, independent Track E: exact conclusion contracts
@@ -182,5 +183,79 @@ theorem exactWeakHCompletions_of_weakHereditary
   refine ⟨Sset, inferInstance, C.weakInduce Sset,
     hWeakHer C Sset hMem, ?_⟩
   exact ⟨id, (Embedding.id _).isHomomorphismEmbedding⟩
+
+/-- Finite class test: H consists of structures on carriers of at most one
+vertex. The fixed 3-vertex C does NOT belong to H, but all exact weak
+tests with at most one vertex complete into H using their OWN carrier.
+No closure hull and no witness substitution is made. -/
+def AtMostOneVertexClass :
+    StructureClass
+      (L := NativePowerObstruction.toyLanguage.withLinearOrder) :=
+  fun {Y} _ => ∀ a b : Y, a = b
+
+theorem exactOneVertexWeakHCompletions_not_globalHMembership :
+    HasExactWeakHCompletions AtMostOneVertexClass
+      NativePowerObstruction.toyBaseOrdered 1 ∧
+    ¬ AtMostOneVertexClass NativePowerObstruction.toyBaseOrdered := by
+  constructor
+  · intro S hCard
+    let Sset : Set (Fin 3) := (↑S : Set (Fin 3))
+    refine ⟨Sset, inferInstance,
+      NativePowerObstruction.toyBaseOrdered.weakInduce Sset,
+      ?_, ?_⟩
+    · intro x y
+      apply Subtype.ext
+      exact Finset.card_le_one.mp hCard x.1 x.2 y.1 y.2
+    · exact ⟨id, (Embedding.id _).isHomomorphismEmbedding⟩
+  · intro hMem
+    exact (by decide : (0 : Fin 3) ≠ 1) (hMem 0 1)
+
+/-- A simple class of targets fully embeddable in the 3-point ordered
+binary-function template. It contains the actual template, and is even
+hereditary under FULL functional embeddings, but not under weak
+restrictions that remove a function output. -/
+def EmbedsInToyBaseClass :
+    StructureClass
+      (L := NativePowerObstruction.toyLanguage.withLinearOrder) :=
+  fun T => Nonempty (Embedding T NativePowerObstruction.toyBaseOrdered)
+
+/-- Transport between exactly equal vertex SUBSETS, not an enlargement
+to a closed hull. -/
+private def weakInduce_changeSet
+    (C : Structure L U) {S T : Set U} (h : S = T) :
+    Embedding (C.weakInduce S) (C.weakInduce T) := by
+  cases h
+  exact Embedding.id _
+
+/-- Conversely, H-membership of the actual C does NOT suffice to complete
+all its small intrinsic weak restrictions into H, even when H is
+closed-hereditary. The weak ordered pair {0,1} loses output 2 and is
+itself irreducible. Any H-completion would fully embed this pair
+back into the 3-vertex base, contradicting the checked role/domain
+obstruction. -/
+theorem globalHMembership_not_exactTwoVertexWeakHCompletions :
+    EmbedsInToyBaseClass NativePowerObstruction.toyBaseOrdered ∧
+    ¬ HasExactWeakHCompletions EmbedsInToyBaseClass
+      NativePowerObstruction.toyBaseOrdered 2 := by
+  constructor
+  · exact ⟨Embedding.id _⟩
+  · intro hLocal
+    let S : Finset (Fin 3) := {0, 1}
+    have hSize : S.card ≤ 2 := by decide
+    obtain ⟨Y, hY, Target, ⟨eT⟩, f, hf⟩ := hLocal S hSize
+    have hSet : (↑S : Set (Fin 3)) =
+        NativePowerObstruction.weakOrderedXYSet := by
+      ext x
+      fin_cases x <;> decide
+    let eWeak : Embedding NativePowerObstruction.weakOrderedXY
+        (NativePowerObstruction.toyBaseOrdered.weakInduce
+          (↑S : Set (Fin 3))) :=
+      weakInduce_changeSet NativePowerObstruction.toyBaseOrdered
+        hSet.symm
+    obtain ⟨g, _⟩ :=
+      hf.2 NativePowerObstruction.weakOrderedXY
+        NativePowerObstruction.weakOrderedXY_irreducible eWeak
+    exact NativePowerObstruction.weakOrderedXY_no_fullEmbedding
+      (eT.comp g)
 
 end StructuralRamsey.Structure.TrackEStatementAudit
