@@ -159,4 +159,49 @@ theorem not_twoColorable :
     propagates _ _ _ h45 h56
   exact h60 (h02.trans (h24.trans h46)).symm
 
+/-- The actual OLD five-vertex graph: a1--a0--c--b1--b0.
+This is a forest, with two disjoint selected A-letter edges
+(a0,a1) and (b0,b1), and exactly one exterior bridge c. -/
+inductive OldPoint where
+  | a0 | a1 | b0 | b1 | bridge
+  deriving DecidableEq
+
+/-- Undirected old P5 edge relation. -/
+def OldEdge : OldPoint → OldPoint → Prop
+  | .a0, .a1 | .a1, .a0
+  | .a0, .bridge | .bridge, .a0
+  | .bridge, .b1 | .b1, .bridge
+  | .b1, .b0 | .b0, .b1 => True
+  | _, _ => False
+
+def oldTwoColor : OldPoint → Bool
+  | .a0 => false
+  | .a1 => true
+  | .bridge => true
+  | .b1 => false
+  | .b0 => true
+
+/-- Each true old P5 edge flips the explicit bipartite colour. -/
+theorem old_edge_twoColored {a b : OldPoint}
+    (h : OldEdge a b) : oldTwoColor a ≠ oldTwoColor b := by
+  cases a <;> cases b <;> simp_all [OldEdge, oldTwoColor]
+
+/-- The three genuine HJ-line attachments have no graph
+homomorphism back to the original five-vertex old tree, regardless
+of whether the map commutes with part labels.
+
+Thus a GLOBAL EHN retraction onto this Old cannot exist for the
+complete three-line skeleton. This is stronger than ruling out
+evaluation at a single parameter coordinate; but it remains a
+finite skeleton result until the corresponding native Stage is
+formally assembled with all full embeddings. -/
+theorem no_graph_hom_to_old :
+    ¬ ∃ f : Vertex → OldPoint,
+      ∀ x y : Vertex, Edge x y → OldEdge (f x) (f y) := by
+  rintro ⟨f, hf⟩
+  apply not_twoColorable
+  refine ⟨oldTwoColor ∘ f, ?_⟩
+  intro x y h
+  exact old_edge_twoColored (hf x y h)
+
 end StructuralRamsey.Structure.TrackD.HJLineC7
