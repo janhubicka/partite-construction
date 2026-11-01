@@ -228,6 +228,33 @@ def EmbedsInToyBaseClass :
       (L := NativePowerObstruction.toyLanguage.withLinearOrder) :=
   fun T => Nonempty (Embedding T NativePowerObstruction.toyBaseOrdered)
 
+/-- The counterexample's class really IS hereditary for genuine
+FULL closed substructures. Thus the lost weak output, not failure of
+ordinary closed heredity, is responsible for the local counterexample. -/
+theorem EmbedsInToyBaseClass_closedHereditary
+    {Y : Type v}
+    (T : Structure NativePowerObstruction.toyLanguage.withLinearOrder Y)
+    (hT : EmbedsInToyBaseClass T)
+    (S : Set Y) (hS : T.IsClosed S) :
+    EmbedsInToyBaseClass (T.induce S hS) := by
+  obtain ⟨e⟩ := hT
+  exact ⟨e.comp (inclusion T S hS)⟩
+
+/-- The same class is NOT hereditary under the printed CLIPPED weak
+restriction. The exact two-input weak test loses the third vertex
+which is the required output. -/
+theorem EmbedsInToyBaseClass_notWeakHereditary :
+    ¬ (∀ {Y : Type v}
+        (T : Structure NativePowerObstruction.toyLanguage.withLinearOrder Y)
+        (S : Set Y), EmbedsInToyBaseClass T →
+          EmbedsInToyBaseClass (T.weakInduce S)) := by
+  intro hWeakHer
+  have hBase : EmbedsInToyBaseClass NativePowerObstruction.toyBaseOrdered :=
+    ⟨Embedding.id _⟩
+  obtain ⟨e⟩ := hWeakHer NativePowerObstruction.toyBaseOrdered
+    NativePowerObstruction.weakOrderedXYSet hBase
+  exact NativePowerObstruction.weakOrderedXY_no_fullEmbedding e
+
 /-- Transport between exactly equal vertex SUBSETS, not an enlargement
 to a closed hull. -/
 private def weakInduce_changeSet
