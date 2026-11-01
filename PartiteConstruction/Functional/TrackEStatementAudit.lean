@@ -244,7 +244,7 @@ theorem EmbedsInToyBaseClass_closedHereditary
 restriction. The exact two-input weak test loses the third vertex
 which is the required output. -/
 theorem EmbedsInToyBaseClass_notWeakHereditary :
-    ¬ (∀ {Y : Type v}
+    ¬ (∀ {Y : Type}
         (T : Structure NativePowerObstruction.toyLanguage.withLinearOrder Y)
         (S : Set Y), EmbedsInToyBaseClass T →
           EmbedsInToyBaseClass (T.weakInduce S)) := by
