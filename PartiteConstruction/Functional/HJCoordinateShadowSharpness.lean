@@ -45,7 +45,7 @@ theorem line_parameter_of_coordinate_splits
     (hSplit : ∀ z : V, (lineMap W z).coord i = z) :
     W.symbol i = .parameter := by
   cases h : W.symbol i with
-  | parameter => exact h
+  | parameter => rfl
   | const e =>
       have hx : e (B.part x) = x := by
         simpa [lineMap, h] using hSplit x
