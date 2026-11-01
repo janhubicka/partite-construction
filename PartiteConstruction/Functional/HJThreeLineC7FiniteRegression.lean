@@ -77,6 +77,14 @@ def Edge : Vertex → Vertex → Prop
       (p = true  ∧ u = word (line w) true)
   | .outside _, .outside _ => False
 
+/-- Decidability of the *actual* finite graph skeleton relation.
+A global classical decidability instance would not execute under
+`decide`; destructing the finite vertex constructors exposes only
+decidable Boolean/equality data. -/
+instance : DecidableRel Edge := by
+  intro x y
+  cases x <;> cases y <;> (dsimp [Edge]; infer_instance)
+
 /-- This is the seven-cycle
   c0, (b0,a0), (b1,a1), c1, (a0,a0), c2, (b1,b1), c0.
 The four core vertices are the exact tagged power words, not an
