@@ -71,7 +71,7 @@ left-projection D MUST have an undefined source input whose image
 is defined in D. We do not require any local B-tree hypothesis;
 the obstruction is already forced by Ramsey+internal B coverage. -/
 theorem unavoidable_domain_loss_for_corrected_Bcover
-    {X : Type v}
+    {X : Type}
     (C : Structure PublishedTotalBinaryObstruction.language X)
     (hArrow : Arrow PublishedTotalBinaryObstruction.A
       PublishedTotalBinaryObstruction.B C (Fin 2))
