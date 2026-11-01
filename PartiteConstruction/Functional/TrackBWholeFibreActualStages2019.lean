@@ -59,17 +59,15 @@ theorem Stage.exactWholeWeakUClosureAndGeneratorRank
         ((wholeMaskTagExpansion
           ((T.system.toStructure.toNonemptyPartial).wholeMaskPatternGraph
             T.system.part)).induce Test) ≤ n) := by
-  have hTrans :
-      FibreTransversal T.system.toStructure.toNonemptyPartial T.system.part :=
+  let A := T.system.toStructure.toNonemptyPartial
+  have hTrans : FibreTransversal A T.system.part :=
     T.system.toNonemptyPartial_fibreTransversal
   constructor
   · intro Q
-    exact (T.system.toStructure.toNonemptyPartial)
-      .wholeWeakIsClosed_iff_inducedAmbientTagUSubstructure
-        T.system.part hPos hTrans Test Q
-  · exact (T.system.toStructure.toNonemptyPartial)
-      .wholeWeakGeneratedByAtMost_iff_inducedAmbientUSize_le
-        T.system.part hPos hTrans Test n
+    exact A.wholeWeakIsClosed_iff_inducedAmbientTagUSubstructure
+      T.system.part hPos hTrans Test Q
+  · exact A.wholeWeakGeneratedByAtMost_iff_inducedAmbientUSize_le
+      T.system.part hPos hTrans Test n
 
 /-- The SAME whole-fibre 2019 exact-carrier dictionary applies to the
 ACTUAL native Hales--Jewett coordinate power, not a surrogate tag
@@ -94,17 +92,15 @@ theorem nativePower_exactWholeWeakUClosureAndGeneratorRank
           (((Induced.power B N).toStructure.toNonemptyPartial)
             .wholeMaskPatternGraph (Induced.power B N).part)).induce
               Test) ≤ n) := by
-  have hTrans :
-      FibreTransversal (Induced.power B N).toStructure.toNonemptyPartial
-        (Induced.power B N).part :=
-    (Induced.power B N).toNonemptyPartial_fibreTransversal
+  let Source := Induced.power B N
+  let A := Source.toStructure.toNonemptyPartial
+  have hTrans : FibreTransversal A Source.part :=
+    Source.toNonemptyPartial_fibreTransversal
   constructor
   · intro Q
-    exact ((Induced.power B N).toStructure.toNonemptyPartial)
-      .wholeWeakIsClosed_iff_inducedAmbientTagUSubstructure
-        (Induced.power B N).part hPos hTrans Test Q
-  · exact ((Induced.power B N).toStructure.toNonemptyPartial)
-      .wholeWeakGeneratedByAtMost_iff_inducedAmbientUSize_le
-        (Induced.power B N).part hPos hTrans Test n
+    exact A.wholeWeakIsClosed_iff_inducedAmbientTagUSubstructure
+      Source.part hPos hTrans Test Q
+  · exact A.wholeWeakGeneratedByAtMost_iff_inducedAmbientUSize_le
+      Source.part hPos hTrans Test n
 
 end StructuralRamsey.FunctionalPartite.EHN
