@@ -18,6 +18,34 @@ For a genuine partite system B, an input pattern p with surjective argument map 
 
 All the above theorems refer to the **exact true native power vertices** and **do not use a surrogate relational power**. In particular the global equality pattern must be constructed *after* forming the native function-language power.
 
+## When the coordinatewise OLD test is actually correct
+
+`TrackBPowerOldRootTransversal2019.lean` repairs the naïve assertion under
+an explicit and mathematically natural extra condition:
+
+- `nativePower_coordinateRoot_injective_of_partInjective`:
+  if distinct input-root vertices have distinct *part labels*, their
+  vertex coordinates are injective for **every** coordinate. This is a
+  genuine full-partite effect, not a generic fact about tuples of words.
+- `nativePower_oldDomainPattern_transversal_iff`: for such roots,
+  the actual OLD domain relation is equivalent to the collection of
+  coordinatewise OLD domain relations *together with one common output
+  part* present in every coordinate. No arbitrary output-part choices
+  are identified.
+- `nativePower_oldDomainPattern_transversal_control_iff`: if the
+  source system has the verified full native `ProjectionHom A` and
+  the power length is positive, the common-control projection makes
+  all coordinate output-part sets equal. Under part-injective roots,
+  the actual OLD domain predicate is therefore equivalent to
+  `∀ i, coordinate i satisfies the SAME OLD domain pattern`.
+
+This is the precise successful restricted comparison. The counterexample
+to unrestricted coordinatewise OLD equality patterns still applies to
+globally distinct power words *in the same input part*. Neither result
+claims that **fresh canonical full-root tags** automatically commute
+with relational coordinate powers: those tags inspect the entire induced
+OLD pattern of all distinct input-root vertices.
+
 ## Conclusions and unresolved directions
 
 1. The positive source correspondence via canonical OLD tagging of each actual native stage is sound. The unqualified assertion `tag(nativePower) = relationalCoordinatePower(tag(native))` requires special compatibility conditions and must **not** be treated as a theorem; even OLD distinct-root equality patterns can fail to commute with coordinate powers.
