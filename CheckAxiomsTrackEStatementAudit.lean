@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.TrackEStatementAudit
+import PartiteConstruction.Functional.TrackEProtectedCoverage2019
 
 /-!
 The exact Track E endpoint contract and counterexample declarations.
@@ -21,3 +22,6 @@ merely conditional or weaker graph/relative statement.
 #print axioms StructuralRamsey.Structure.TrackEStatementAudit.globalHMembership_not_exactTwoVertexWeakHCompletions
 
 #print axioms StructuralRamsey.Structure.TrackEStatementAudit.functionClosedGraphTree_decodesOnSameCarrier
+
+#print axioms StructuralRamsey.RelStructure.ExternalClosedUIrreducibleBCoverage.ofEmbedding
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.externalUProtectedCover_doesNot_imply_internalCover
