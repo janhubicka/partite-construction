@@ -117,7 +117,7 @@ theorem projectedCover_doesNot_imply_internalCover :
     refine ⟨Embedding.id PublishedTotalBinaryObstruction.B, ?_⟩
     intro x
     exact ⟨(0 : Fin 2), rfl⟩
-  · have hEmbedding : Embedding
+  · let hEmbedding : Embedding
         PublishedTotalBinaryObstruction.A
         PublishedTotalBinaryObstruction.B :=
       PublishedTotalBinaryObstruction.ofInjection
