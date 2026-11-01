@@ -38,7 +38,10 @@ abbrev Lang := StructuralRamsey.Structure.MaximalHardRootFiveCycle.language
 
 /-- A single graph edge on two parts; no function symbols. -/
 def A : Structure Lang Bool where
-  rel _ xs := xs 0 ≠ xs 1
+  rel Rel xs := by
+    cases Rel
+    change (Fin 2 → Bool) at xs
+    exact xs 0 ≠ xs 1
   func F := Empty.elim F
 
 /-- The actual four-vertex selected support of an old P5 stage:
@@ -46,14 +49,17 @@ two disjoint A-edges, with first coordinate the part and second
 coordinate the letter a/b. -/
 def R : FunctionalPartite.System Lang Bool (Bool × Bool) where
   toStructure := {
-    rel _ xs :=
-      (xs 0).1 ≠ (xs 1).1 ∧ (xs 0).2 = (xs 1).2
+    rel Rel xs := by
+      cases Rel
+      change (Fin 2 → Bool × Bool) at xs
+      exact (xs 0).1 ≠ (xs 1).1 ∧ (xs 0).2 = (xs 1).2
     func F := Empty.elim F
   }
   part := Prod.fst
   relTransversal := by
     intro Rel xs h i j hij
     cases Rel
+    change (Fin 2 → Bool × Bool) at xs
     change (xs 0).1 ≠ (xs 1).1 ∧
       (xs 0).2 = (xs 1).2 at h
     fin_cases i <;> fin_cases j
@@ -73,6 +79,9 @@ theorem R_weakProjection :
   constructor
   · intro Rel xs h
     cases Rel
+    change (Fin 2 → Bool × Bool) at xs
+    change (xs 0).1 ≠ (xs 1).1 ∧
+      (xs 0).2 = (xs 1).2 at h
     exact h.1
   · intro F
     exact Empty.elim F
@@ -88,6 +97,7 @@ def letter (a : Bool) :
     map_rel_iff := by
       intro Rel xs
       cases Rel
+      change (Fin 2 → Bool) at xs
       change (xs 0 ≠ xs 1 ∧ a = a) ↔ xs 0 ≠ xs 1
       simp
     map_func := by
@@ -121,7 +131,9 @@ def coreVertex (p : Bool) (a b : Bool) : Induced.Vertex R 2 where
 theorem W0_a0 :
     Induced.lineMap W0 (false, false) =
       coreVertex false true false := by
-  apply Induced.Vertex.ext R rfl
+  apply Induced.Vertex.ext (B := R)
+    (x := Induced.lineMap W0 (false, false))
+    (y := coreVertex false true false) rfl
   intro i
   fin_cases i <;> rfl
 
@@ -129,35 +141,45 @@ theorem W0_a0 :
 theorem W1_b1 :
     Induced.lineMap W1 (true, true) =
       coreVertex true true false := by
-  apply Induced.Vertex.ext R rfl
+  apply Induced.Vertex.ext (B := R)
+    (x := Induced.lineMap W1 (true, true))
+    (y := coreVertex true true false) rfl
   intro i
   fin_cases i <;> rfl
 
 theorem W1_a0 :
     Induced.lineMap W1 (false, false) =
       coreVertex false false false := by
-  apply Induced.Vertex.ext R rfl
+  apply Induced.Vertex.ext (B := R)
+    (x := Induced.lineMap W1 (false, false))
+    (y := coreVertex false false false) rfl
   intro i
   fin_cases i <;> rfl
 
 theorem W2_a0 :
     Induced.lineMap W2 (false, false) =
       coreVertex false false false := by
-  apply Induced.Vertex.ext R rfl
+  apply Induced.Vertex.ext (B := R)
+    (x := Induced.lineMap W2 (false, false))
+    (y := coreVertex false false false) rfl
   intro i
   fin_cases i <;> rfl
 
 theorem W2_b1 :
     Induced.lineMap W2 (true, true) =
       coreVertex true true true := by
-  apply Induced.Vertex.ext R rfl
+  apply Induced.Vertex.ext (B := R)
+    (x := Induced.lineMap W2 (true, true))
+    (y := coreVertex true true true) rfl
   intro i
   fin_cases i <;> rfl
 
 theorem W0_b1 :
     Induced.lineMap W0 (true, true) =
       coreVertex true true true := by
-  apply Induced.Vertex.ext R rfl
+  apply Induced.Vertex.ext (B := R)
+    (x := Induced.lineMap W0 (true, true))
+    (y := coreVertex true true true) rfl
   intro i
   fin_cases i <;> rfl
 
@@ -170,7 +192,11 @@ theorem native_core_cross_edge :
         else Induced.lineMap W1 (true, true)) := by
   rw [W0_a0, W1_b1]
   intro i
-  fin_cases i <;> decide
+  fin_cases i
+  · change (false ≠ true ∧ true = true)
+    decide
+  · change (false ≠ true ∧ false = false)
+    decide
 
 /-- Both selected A copies embed FULLY, and consequently all three
 HJ lines are genuine full functional partite embeddings into the
