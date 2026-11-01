@@ -25,3 +25,6 @@ merely conditional or weaker graph/relative statement.
 
 #print axioms StructuralRamsey.RelStructure.ExternalClosedUIrreducibleBCoverage.ofEmbedding
 #print axioms StructuralRamsey.Structure.TrackEStatementAudit.externalUProtectedCover_doesNot_imply_internalCover
+
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.EmbedsInToyBaseClass_closedHereditary
+#print axioms StructuralRamsey.Structure.TrackEStatementAudit.EmbedsInToyBaseClass_notWeakHereditary
