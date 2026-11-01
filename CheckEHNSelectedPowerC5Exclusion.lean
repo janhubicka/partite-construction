@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNSelectedPowerC5Exclusion
+
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.selectedPart_ne_one
+#print axioms StructuralRamsey.Structure.MaximalHardRootFiveCycle.c5_core_not_selected_HJ_power

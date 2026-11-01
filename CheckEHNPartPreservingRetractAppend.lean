@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNPartPreservingRetractAppend
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.unitAttach_extend_partPreserving_EHN_retraction
+#print axioms StructuralRamsey.FunctionalPartite.EHN.unitAttach_preserves_strictWeakHistory_of_retraction

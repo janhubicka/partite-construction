@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNPartPreservingRetractFamily
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachFamily_splitRoot_EHN_retraction
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachFamily_splitRoot_strictWeakHistory

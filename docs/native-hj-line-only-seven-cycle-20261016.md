@@ -22,9 +22,15 @@ symmetric binary relations.
 
 - `A = Base = K₂`, a single edge (closed and irreducible; `A`
   is also hereditarily irreducible).
-- Control `D = K₃` on vertices/parts `0,1,2`. For `A=Base=K₂`,
-  it is already a Ramsey control for every positive finite colour
-  count, since any edge is a monochromatic `Base`-copy.
+- Control `D = K₃` on vertices/parts `0,1,2` is used only as an
+  **EHN part control** for this regression. Contrary to an earlier
+  version of this note, it is **not** a Ramsey arrow for arbitrary
+  colourings of unordered `A=Base=K₂` embeddings: colour an oriented
+  embedding by whether its two vertices increase in an external linear
+  order on `D`; reversing either embedded edge changes the colour.
+  The two `A`-embeddings into any fixed `Base` edge therefore cannot
+  be monochromatic. This is a limitation of the example, not a defect
+  in the verified PictureProperty or selected-line construction.
 - Let the old functional-partite system have vertices
   `a0,b0` in part 0, `a1,b1` in part 1, and `c` in part 2,
   with precisely these graph edges:
