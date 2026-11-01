@@ -45,6 +45,37 @@ ProjectionHom hypothesis can supply output-part agreement in some
 applications, but that is a separate checked theorem assumption,
 not a blanket commutation of old relational tagging and native power.
 
+## Actual Hales--Jewett power: full line-map and control-mask bridge
+
+TrackBNativePowerTaggedLineTransport2019.lean specializes the original
+genuine native Hales--Jewett partite source, with its real line
+embeddings and full equality-pattern/root tags. It proves:
+
+- `Induced.power_active_outputPart_iff_control`: provided
+  `B.ProjectionHom A` and `0<N`, existence of an output in any
+  specified part `p` at a native power tuple is literally the
+  control `A.func` output-part membership. This is a consequence of
+  the verified native `power_projectionHom`, not an invented
+  relational-coordinate-power hypothesis.
+- `Induced.power_nonempty_iff_control`: the power's unqualified
+  nonempty-domain bit matches the common control function-domain bit
+  under the SAME hypotheses. It does not claim the invalid unconditional
+  conjunction of arbitrary coordinate domain bits.
+- `Induced.lineEmbedding_taggedWeakPreimage`: each ACTUAL native HJ line
+  map, already a FULL partite embedding, induces a FULL relational
+  embedding of canonical complete-root tagged data on its EXACT weak
+  inverse image `lineMap⁻¹(Test)` into the tagged induced power on
+  `Test`, for *every* literal test subset. All OLD domain masks remain
+  ambient. This is the direct same-map, same-carrier Hales--Jewett line
+  compatibility required for source-side 2019 test bookkeeping.
+
+All three new endpoints have named `#print axioms` checks. The first
+two require a real native partite projection, positive power length,
+and retain arbitrary function arities; none of these conditions implies
+the full old-tagged relational coordinate power is isomorphic to the
+native tagged power. The last endpoint requires a *full* line embedding,
+not merely a source-defined EHN projection.
+
 ## Adversarial source tests
 
 - **The two-point lost output:** F(a)=some({b}), S={a}. The weak value is none, but the AMBIENT OLD graph retains the old defined/root mask at a. Thus ambient induced OLD is not the whole OLD graph recomputed from the weak function.
