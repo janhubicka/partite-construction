@@ -269,6 +269,6 @@ theorem functionClosedGraphTree_decodesOnSameCarrier
     (hBase : Base.Irreducible)
     (hTree : RelStructure.FunctionClosedTreeAmalgam Base.graph W T) :
     TreeAmalgam Base W (Structure.ofGraph T) :=
-  hTree.toFunctional hBase
+  RelStructure.FunctionClosedTreeAmalgam.toFunctional hBase hTree
 
 end StructuralRamsey.Structure.TrackEStatementAudit
