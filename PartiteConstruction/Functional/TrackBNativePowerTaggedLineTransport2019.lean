@@ -1,5 +1,5 @@
 import PartiteConstruction.Functional.TrackBNativePowerOutputMasks2019
-import PartiteConstruction.Functional.NativeTaggedWeakPreimage
+import PartiteConstruction.Functional.TrackBHeterogeneousTaggedPreimage2019
 import PartiteConstruction.Functional.OutputPartSplitFreeAmalgam
 
 /-!
@@ -95,6 +95,6 @@ theorem lineEmbedding_taggedWeakPreimage
         ((power B N).splitOutputParts).toStructure.patternGraph).induce
           Test)) := by
   let e := (lineEmbedding hB W).splitOutputParts.toEmbedding
-  exact ⟨e.taggedPatternWeakPreimage Test⟩
+  exact ⟨e.heteroTaggedPatternWeakPreimage Test⟩
 
 end StructuralRamsey.FunctionalPartite.Induced
