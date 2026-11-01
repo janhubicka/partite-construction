@@ -18,6 +18,39 @@
 
 **Scope:** a single HJ line has `q(f(x))=x` by evaluation at *one* parameter coordinate (the existing checked `lineUnitAttachment_EHN_retraction`). For a series of lines sharing a common parameter coordinate, evaluation gives a plausible reusable common shadow. For unrelated lines, the pointwise splitting hypothesis can fail; the theorem above does not assert it. This avoids a false global EHN retraction.
 
+## New finite-HJ-history propagation and its sharp limit
+
+The additional full-functional Lean modules
+`Functional/EHNPartPreservingRetractFamily.lean` and
+`Functional/EHNCommonParameterLineFamily.lean` upgrade the one-step
+retraction to an ACTUALLY CONSTRUCTED finite sequence of native full
+attachments. The family theorem is conditional only on a pointwise
+splitting condition `q0(map_i(x)) = x` for EVERY selected full
+support map in the list, and preserves the common old shadow, core
+embedding, and part labels. It then pulls back the exact n-vertex
+strict weak-history witness with the SAME rank bound.
+
+In the true coordinatewise Hales--Jewett power, if all listed line
+symbols have `.parameter` at the SAME coordinate `j`, taking
+`q0(z) = z.coord j` gives the splitting condition, by the previously
+checked full functional line-map equation. Therefore
+`EHN.lineFamily_commonParameter_strictWeakHistory` is a positive
+history-sensitive original-function-language theorem, not merely
+a proposed proof strategy.
+
+The new `EHN.fixedParameterCoordinate_not_monochromatic` records
+an important adverse fact. Such a common-parameter-only family is
+INSUFFICIENT for the HJ colouring argument whenever the letter
+alphabet has two distinct elements: colour every word by its letter
+at `j`, and every line with parameter symbol at `j` is
+non-monochromatic. The full Picture must coordinate different
+parameter sets; it cannot get both Ramsey and strict locality simply
+by restricting all lines to one fixed coordinate.
+
+All three named family/check theorems are included in new root-level
+`Check*.lean` files. The full build and axiom-check status must be
+taken from the latest CI head, not from an earlier successful run.
+
 ## Adversarial seven-cycle check
 
 The full, real tagged line-only Picture may contain a closed induced `C7` even though the old `P5` and HJ power core are forests. The explicit three lines at length 2 are `(b,p)`, `(p,a)`, `(p,p)`; `checks/native_hj_line_only_seven_cycle.py` tests lengths 2–5 and the accompanying note proves the same cycle survives all lengths >=2. Thus **merely attaching every genuine HJ line** does not imply strict `K2`-tree locality on all exact weak 7-vertex tests.
