@@ -1,9 +1,12 @@
 import PartiteConstruction.Functional.TrackBExact2019StageBridge
 import PartiteConstruction.Functional.TrackBNativePowerOutputMasks2019
 import PartiteConstruction.Functional.TrackBNativePowerTaggedLineTransport2019
+import PartiteConstruction.Functional.TrackBWholeFibreActualStages2019
 
 /- Track B: named source dictionary endpoints for CI axiom audit. -/
 
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.exactWholeWeakUClosureAndGeneratorRank
+#print axioms StructuralRamsey.FunctionalPartite.EHN.nativePower_exactWholeWeakUClosureAndGeneratorRank
 #print axioms StructuralRamsey.Structure.Embedding.heteroPatternGraph
 #print axioms StructuralRamsey.Structure.Embedding.heteroTaggedPatternWeakPreimage
 #print axioms StructuralRamsey.FunctionalPartite.Induced.power_active_outputPart_iff_control
