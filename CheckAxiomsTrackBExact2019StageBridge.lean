@@ -2,6 +2,7 @@ import PartiteConstruction.Functional.TrackBExact2019StageBridge
 
 /- Track B: named source dictionary endpoints for CI axiom audit. -/
 
+#print axioms StructuralRamsey.FunctionalPartite.EHN.nativePower_exactWeakUClosureAndGeneratorRank
 #print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.exactWeakUClosureAndGeneratorRank
 #print axioms StructuralRamsey.FunctionalPartite.EHN.attachList_taggedUClosedWeakRankCopies
 #print axioms StructuralRamsey.PartialSetStructure.wholeWeakFunctionClosure_eq_inducedAmbientUClosureHull
