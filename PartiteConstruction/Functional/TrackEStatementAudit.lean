@@ -237,6 +237,7 @@ theorem globalHMembership_not_exactTwoVertexWeakHCompletions :
     EmbedsInToyBaseClass NativePowerObstruction.toyBaseOrdered ∧
     ¬ HasExactWeakHCompletions EmbedsInToyBaseClass
       NativePowerObstruction.toyBaseOrdered 2 := by
+  classical
   constructor
   · exact ⟨Embedding.id _⟩
   · intro hLocal
@@ -257,5 +258,17 @@ theorem globalHMembership_not_exactTwoVertexWeakHCompletions :
         NativePowerObstruction.weakOrderedXY_irreducible eWeak
     exact NativePowerObstruction.weakOrderedXY_no_fullEmbedding
       (eT.comp g)
+
+/-- A valid positive graph-to-full-tree direction retains EXACTLY the
+same graph witness, provided its function-graph gluing root maps are
+function-closed. Base irreducibility supplies strict containment on the
+functional side. This is NOT a theorem for arbitrary graph trees. -/
+theorem functionClosedGraphTree_decodesOnSameCarrier
+    {Base : Structure L V}
+    {T : RelStructure L.graph W}
+    (hBase : Base.Irreducible)
+    (hTree : RelStructure.FunctionClosedTreeAmalgam Base.graph W T) :
+    TreeAmalgam Base W (Structure.ofGraph T) :=
+  hTree.toFunctional hBase
 
 end StructuralRamsey.Structure.TrackEStatementAudit
