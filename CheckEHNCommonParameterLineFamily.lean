@@ -1,3 +1,4 @@
 import PartiteConstruction.Functional.EHNCommonParameterLineFamily
 
 #print axioms StructuralRamsey.FunctionalPartite.EHN.lineFamily_commonParameter_strictWeakHistory
+#print axioms StructuralRamsey.FunctionalPartite.EHN.fixedParameterCoordinate_not_monochromatic
