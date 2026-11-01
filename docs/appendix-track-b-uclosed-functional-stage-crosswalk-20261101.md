@@ -8,7 +8,7 @@ Baseline reviewed: local PartiteConstruction at 28840e5644c849b0a4bd5eca6611b908
 
 | Stage/operation | Existing theorem(s) and exact guarantee | Limitation |
 |---|---|---|
-| Native power | Functional/Induced.lean forms the actual native coordinate power; NativePowerOrderedPower.lean checks concrete native power geometry. | No general theorem in this PR identifying *power of tagged OLD* with *tag of native power*. This is an open naturality/comparison obligation. |
+| Native power | Functional/Induced.lean forms the actual native coordinate power; NativePowerOrderedPower.lean checks concrete native power geometry. | NEW: TrackBNativePowerOutputMasks2019.lean proves that each output-part active mask of the ACTUAL native power is the conjunction of that part's coordinate masks, while nonempty domain requires one common output part across all coordinates. It does **not** prove equality of *power of tagged OLD* with *tag of native power*: that broader comparison remains open. |
 | Full closed attachment | NativeTaggedWeakFreeAmalgam2019.lean: IsFreeAmalgam.taggedPatternGraph_exactWeak_withMaps. A full native free-amalgam gives the actual tagged source weak free-amalgam, on the same test and literal preimage root/side carriers, with full relational copy maps. | This applies to a genuine full/closed gluing root, not an arbitrary nonclosed intrinsic weak root. |
 | Actual finite attached Picture stage | NativeStageSplitCopies.lean and NativeFiniteStageUClosedWeakDictionary.lean: attachList_taggedUClosedWeakCopies. The same native Stage.attachList survives, with full split core/B-copy maps, exact overlap and full canonical tagged weak-preimage maps on every test. | Source construction; strict full-functional TARGET tree completion is separate. |
 | Clipped weak local structure | NativePartiteWeakUClosureRankDictionary.lean: System.weakIsClosed_iff_outputTagged_isUSubstructure, System.weakFunctionClosure_eq_outputTaggedUClosureHull, System.weakGeneratedByAtMost_iff_outputTaggedUSize_le. All on SAME exact Test in ambient output-part-indexed tags. | The native Structure.weakInduce operation clips values. No whole-fibre identification for mixed multivalued outputs. |
@@ -25,6 +25,25 @@ Functional/TrackBExact2019StageBridge.lean adds three named source-side proof co
 3. attachList_taggedUClosedWeakRankCopies: packages the actual finite full-functional attachList stage, closure on every exact test, generator rank on every finite test, and original full tagged core/copy maps preserving the old exact support overlaps.
 
 The separate axiom-check file prints the three new endpoints and already established genuine Option(Set) weak USize/projection endpoints. This is a useful *composition* of existing lemmas, not a proof of the missing global functional theorem. Until exact-head CI is green, treat these new endpoints as unverified.
+
+## Exact native power mask algebra
+
+The new theorem `Induced.power_active_outputPart_iff_coordinates` is
+unconditional (including repeated inputs, multivalued fibres, and
+the zero-coordinate case):
+
+`exists y in F_(power B N)(xs) with part(y)=p`
+iff
+`for all i : Fin N, exists z in F_B(xs.coordinate i) with part(z)=p`.
+
+Its corollary `Induced.power_nonempty_iff_common_outputPart` asserts that
+the native power has SOME output exactly when there is ONE SAME output
+part p accepted in every coordinate. Thus a raw coordinatewise
+conjunction of unqualified OLD domain bits is not the correct general
+rule; a common part must be witnessed. The full Hales--Jewett
+ProjectionHom hypothesis can supply output-part agreement in some
+applications, but that is a separate checked theorem assumption,
+not a blanket commutation of old relational tagging and native power.
 
 ## Adversarial source tests
 
