@@ -18,12 +18,13 @@ Baseline reviewed: local PartiteConstruction at 28840e5644c849b0a4bd5eca6611b908
 
 ## New Lean assembly
 
-Functional/TrackBExact2019StageBridge.lean adds two named source-side proof contracts:
+Functional/TrackBExact2019StageBridge.lean adds three named source-side proof contracts:
 
-1. Stage.exactWeakUClosureAndGeneratorRank: for an ACTUAL native EHN Stage T and literal Test subset, the clipped weak-closed subsets Q of Test equal the relative induced ambient U-substructures; minimum weak-generator bound equals induced ambient tagged USize. No generated hull replaces Test. The theorem has explicit positive-arity and finite-Test assumptions.
-2. attachList_taggedUClosedWeakRankCopies: packages the actual finite full-functional attachList stage, closure on every exact test, generator rank on every finite test, and original full tagged core/copy maps preserving the old exact support overlaps.
+1. nativePower_exactWeakUClosureAndGeneratorRank: the ACTUAL function-language HJ coordinate power (not a constructed relational surrogate) has the exact ambient 2019 U-closure and minimal-generator rank dictionary on each literal weak carrier. This does not claim that the canonical tag functor commutes with an independently formed OLD power.
+2. Stage.exactWeakUClosureAndGeneratorRank: for an ACTUAL native EHN Stage T and literal Test subset, the clipped weak-closed subsets Q of Test equal the relative induced ambient U-substructures; minimum weak-generator bound equals induced ambient tagged USize. No generated hull replaces Test. The theorem has explicit positive-arity and finite-Test assumptions.
+3. attachList_taggedUClosedWeakRankCopies: packages the actual finite full-functional attachList stage, closure on every exact test, generator rank on every finite test, and original full tagged core/copy maps preserving the old exact support overlaps.
 
-The separate axiom-check file prints the two new endpoints and already established genuine Option(Set) weak USize/projection endpoints. This is a useful *composition* of existing lemmas, not a proof of the missing global functional theorem. Until exact-head CI is green, treat these new endpoints as unverified.
+The separate axiom-check file prints the three new endpoints and already established genuine Option(Set) weak USize/projection endpoints. This is a useful *composition* of existing lemmas, not a proof of the missing global functional theorem. Until exact-head CI is green, treat these new endpoints as unverified.
 
 ## Adversarial source tests
 
