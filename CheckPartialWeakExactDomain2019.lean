@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.PartialWeakExactDomain2019
+
+#print axioms StructuralRamsey.PartialSetStructure.weakInduce_defined_iff_exact
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakInduce_defined_iff_exact
+#print axioms StructuralRamsey.PartialSetStructure.weakInduce_defined_implies_ambient
