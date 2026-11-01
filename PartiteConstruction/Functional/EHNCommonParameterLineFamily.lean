@@ -120,4 +120,22 @@ theorem lineFamily_commonParameter_strictWeakHistory
     B S hS Core q0 hq0 hPart0 maps lines hSplit
     TestA Base hTestA n hOld
 
+/-- Fixing a parameter coordinate cannot by itself provide the
+Hales--Jewett Ramsey line: for an alphabet with two distinct letters,
+colour a word by its letter at this coordinate. Every line which
+varies at that coordinate has two differently coloured words.
+
+Thus the positive common-parameter history theorem above is NOT a
+replacement for the unrestricted line family required by Ramsey
+canonicalization. -/
+theorem fixedParameterCoordinate_not_monochromatic
+    {α : Type v} {M : ℕ}
+    (j : Fin M) (a b : α) (hab : a ≠ b)
+    (W : Line α M) (hj : W.symbol j = .parameter) :
+    ¬ ∀ x y : α, (W.eval x) j = (W.eval y) j := by
+  intro hMono
+  have heq : a = b := by
+    simpa [Line.eval, hj] using hMono a b
+  exact hab heq
+
 end StructuralRamsey.FunctionalPartite.EHN
