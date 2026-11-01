@@ -40,7 +40,7 @@ theorem weakInduce_defined_iff_exact
     | none =>
       simp [weakValue, hVal] at hT
     | some U =>
-      refine ⟨U, hVal, ?_⟩
+      refine ⟨U, rfl, ?_⟩
       by_cases hU : U.Nonempty
       · right
         by_contra hMeet
