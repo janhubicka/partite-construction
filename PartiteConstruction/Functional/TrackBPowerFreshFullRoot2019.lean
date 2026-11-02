@@ -1,5 +1,5 @@
 import PartiteConstruction.Functional.TrackBPowerOldRootTransversal2019
-import PartiteConstruction.Functional.PatternClosureTags2019
+import PartiteConstruction.Functional.PatternCompleteRootExtraction2019
 
 /-!
 # Track B: complete fresh U-root tags in actual native functional powers
@@ -128,5 +128,42 @@ theorem nativePower_freshTag_iff_completeOldRootProfile
     refine ⟨?_, hRoot, hFull⟩
     exact (nativePower_oldOutputPattern_iff B N p.input t).mpr
       ⟨hRoot, hCoord⟩
+
+
+/-- Every genuine native-power OLD output relation with positive
+distinct-input root has a CANONICAL fresh 2019 closure tag on the
+SAME original root and output vertices.
+
+The fresh symbol is constructed from the COMPLETE OLD induced
+root structure, not from a bare domain bit or a guessed
+coordinatewise OLD root. All primitive repeated inputs are
+retained through pat.argMap; no new vertices are introduced. -/
+theorem nativePower_oldOutput_admits_canonicalFreshRoot
+    (B : System L P V) (N : ℕ)
+    (pat : Language.FunctionInputPattern L)
+    (hPositive : 0 < pat.rootSize)
+    (t : Fin (pat.rootSize + 1) → Vertex B N)
+    (hOutput :
+      ((power B N).toStructure.patternGraph).rel
+        (.inr (.inr pat)) t) :
+    ∃ (q : Language.FunctionRootPattern L),
+      q.input = pat ∧
+        (patternTagExpansion ((power B N).toStructure.patternGraph)).rel
+          (.inr q) t := by
+  let E := (power B N).toStructure.patternGraph
+  have hInjective :
+      Function.Injective
+        (fun j : Fin pat.rootSize => t j.castSucc) := hOutput.1
+  have hDomain :
+      E.rel (.inr (.inl pat))
+        (fun j : Fin pat.rootSize => t j.castSucc) := by
+    refine ⟨hInjective, ?_⟩
+    exact ⟨t (Fin.last pat.rootSize), hOutput.2⟩
+  refine ⟨Language.FunctionRootPattern.ofActiveDomain E pat
+      hPositive (fun j : Fin pat.rootSize => t j.castSucc) hDomain,
+      rfl, ?_⟩
+  exact RelStructure.patternTagExpansion_tag_of_valid_old_output
+    E pat hPositive t hOutput hInjective hDomain
+
 
 end StructuralRamsey.FunctionalPartite.Induced
