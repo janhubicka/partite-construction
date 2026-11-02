@@ -98,8 +98,6 @@ theorem exactCycle_not_twoColorable :
     eq_of_ne_ne h45 h56
   exact h60 (h02.trans (h24.trans h46)).symm
 
-universe w
-
 /-- The exact closed native C7 test has no even WEAK relation/function
 homomorphism into any bipartite graph target. In particular it has no
 original-2019 partial-HE into such a target.
@@ -107,7 +105,7 @@ original-2019 partial-HE into such a target.
 This isolates the mathematical obstruction from any independent proof
 that a chosen family of strict K2-trees is bipartite. -/
 theorem exactCycle_no_weak_hom_to_bipartite
-    {X : Type w} (Target : Structure Lang X)
+    {X : Type} (Target : Structure Lang X)
     (hBip : ∃ c : X → Bool,
       ∀ x y : X,
         Target.rel () (fun k : Fin 2 =>
