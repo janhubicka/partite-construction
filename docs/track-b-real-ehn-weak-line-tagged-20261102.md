@@ -16,6 +16,45 @@ However, `Induced.weak_lineEmbedding` (verified in `WeakInduced.lean`) is itself
 
 The proof composes the existing full `Induced.weak_lineEmbedding`, genuine output-part singleton split, and merged heterogeneous full tagged weak-preimage functor. No new Ramsey witness, local strict B-tree completion, or abstract surrogate power is fabricated.
 
+
+## Actual EHN projected weak-image generator rank
+
+`TrackBRealEHNExactImageUSize2019.lean` closes the remaining
+source-defined *projection* bookkeeping without demanding the
+strong total-fibre projection:
+
+- `Structure.IsOriginalPartialHomomorphism.toNonemptyPartial`:
+  the native 2019 original partial homomorphism (equality on all
+  defined nonempty source fibres) survives the faithful conversion
+  to genuine `Option(Set)`. An undefined source application may
+  become defined in the target; this is permitted. No defined-empty
+  operations are invented by the conversion.
+- `System.weaklyPartite_toNonemptyPartial_originalHom`:
+  the **actual EHN** `WeaklyPartiteOver` invariant implies the
+  original `Option(Set)` partial-homomorphism law via the already
+  verified `IsEHNHomomorphismEmbedding.toOriginalPartial`.
+  This does not require `ProjectionHom`.
+- `System.weaklyPartite_inducedAmbientWholeMaskUSize_le`:
+  for every exact weak vertex set S of a finite transversal
+  EHN system, the 2019 `USize` of the AMBIENT OLD tagged
+  control on literal image `B.part '' S` is at most the
+  `USize` of the AMBIENT OLD tagged source on the **same S**.
+  It uses the verified genuine `Option(Set)` whole-fibre
+  weak-image generator inequality and positive function arities.
+- `EHN.Stage.inducedAmbientWholeMaskUSize_le`:
+  the same inequality on the **actual native EHN Stage**, using
+  precisely its stored `isPartite` proof.
+
+No function closure hull replaces S or its exact image; the rank
+counts minimal generators. Distinct notions remain separate:
+this is whole-fibre / complete-mask USize, not automatic
+equality with the clipped weak-output-part USize at arbitrary
+partly surviving multivalued fibres.
+
+The four new declarations are in the same named `#print axioms`
+audit. They remain **unverified until exact-head CI passes**;
+no manuscript text or author-removed TODO is altered.
+
 ## Independent scope
 
 These are statements about full LINE embeddings into the actual power. They do NOT identify the weak projection `B.part` with a full original-2019 function homomorphism, do not assert that nonclosed *intrinsic* weak inclusion is full, and do not identify arbitrary old tagged coordinate powers with native power tagging. The latter issue is treated in independent draft PR #543 (complete root equality patterns).
