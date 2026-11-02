@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.HJThreeLineNativeOldP5
+
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.oldEdge_distinct_parts
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.decode_injective
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.support_rel_iff
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.support_part
