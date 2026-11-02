@@ -94,6 +94,33 @@ by the symbol's own domain mask alone.
 `#print axioms` checks; do not mark them green before a complete
 Lean CI success for the exact branch head. No TeX manuscript changes.
 
+
+## Finite unconditional regression (three vertices)
+
+`TrackBPowerFreshFiniteRegression2019.lean` provides a literal
+finite transversal native functional source:
+
+- Three vertices 0,1,2 with 0 and 1 in one part, 2 in another;
+- One binary primitive function with the SINGLETON output {2}
+  on every input pair;
+- A distinct-input equality pattern on both binary arguments.
+
+Its actual two-coordinate native Hales--Jewett power contains
+globally different source words (0,0) and (0,1), which coincide in
+coordinate zero. The binary function has a genuine global power
+output (2,2). Therefore the actual power has a canonical complete
+fresh 2019 U-root tag, while the coordinate-zero OLD domain of the
+SAME two-distinct-input pattern is false.
+
+`actualNativePower_freshRoot_not_coordinatewiseOld` packages
+this as a single finite existential Lean statement. It removes
+the previous conditional regression's extra common-output premise:
+the source function itself supplies the common part. It is a
+counterexample only to the **naïve coordinatewise OLD/tag power
+comparison**, NOT to the corrected two-pass U-closed Ramsey theorem.
+
+Its named axiom check is added; exact-head CI is still required.
+
 ## Conclusions and unresolved directions
 
 1. The positive source correspondence via canonical OLD tagging of each actual native stage is sound. The unqualified assertion `tag(nativePower) = relationalCoordinatePower(tag(native))` requires special compatibility conditions and must **not** be treated as a theorem; even OLD distinct-root equality patterns can fail to commute with coordinate powers.
