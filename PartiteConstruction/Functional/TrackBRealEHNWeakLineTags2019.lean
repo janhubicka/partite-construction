@@ -101,8 +101,7 @@ theorem Stage.taggedWeakLinePreimage
     (T : Stage K D)
     {N : ℕ} (W : Line (Induced.Letter D T.system) N)
     (Test : Set (Induced.Vertex T.system N)) :
-    let e := (Induced.weak_lineEmbedding T.isPartite.1 W)
-      .splitOutputParts.toEmbedding
+    let e := (Induced.weak_lineEmbedding T.isPartite.1 W).splitOutputParts.toEmbedding
     Nonempty (RelStructure.Embedding
       ((patternTagExpansion
         (T.system.splitOutputParts).toStructure.patternGraph).induce
