@@ -16,3 +16,5 @@ import PartiteConstruction.Functional.TrackBPowerFreshFullRoot2019
 
 #print axioms StructuralRamsey.RelStructure.patternTagExpansion_fresh_iff_fullOldRoot
 #print axioms StructuralRamsey.FunctionalPartite.Induced.nativePower_freshTag_iff_completeOldRootProfile
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.nativePower_oldOutput_admits_canonicalFreshRoot
