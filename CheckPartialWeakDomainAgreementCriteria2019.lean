@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.PartialWeakDomainAgreementCriteria2019
+
+#print axioms StructuralRamsey.PartialSetStructure.weakDomain_agrees_iff_noLost
+#print axioms StructuralRamsey.PartialSetStructure.wholeDomain_agrees_iff_closed
+#print axioms StructuralRamsey.FunctionalPartite.TrackASaturation.noLost_even_though_not_closed
