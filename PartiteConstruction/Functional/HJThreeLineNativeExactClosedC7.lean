@@ -98,4 +98,45 @@ theorem exactCycle_not_twoColorable :
     eq_of_ne_ne h45 h56
   exact h60 (h02.trans (h24.trans h46)).symm
 
+universe w
+
+/-- The exact closed native C7 test has no even WEAK relation/function
+homomorphism into any bipartite graph target. In particular it has no
+original-2019 partial-HE into such a target.
+
+This isolates the mathematical obstruction from any independent proof
+that a chosen family of strict K2-trees is bipartite. -/
+theorem exactCycle_no_weak_hom_to_bipartite
+    {X : Type w} (Target : Structure Lang X)
+    (hBip : ∃ c : X → Bool,
+      ∀ x y : X,
+        Target.rel () (fun k : Fin 2 =>
+          if k = 0 then x else y) → c x ≠ c y) :
+    ¬ ∃ f : (↑exactCycle : Set Vertex) → X,
+      Small.IsWeakHomomorphism Target f := by
+  rintro ⟨f, hf⟩
+  obtain ⟨c, hc⟩ := hBip
+  apply exactCycle_not_twoColorable
+  refine ⟨c ∘ f, ?_⟩
+  intro x y hxy
+  have hMap : Target.rel () (f ∘ (fun k : Fin 2 =>
+      if k = 0 then x else y)) :=
+    hf.1 () (fun k : Fin 2 => if k = 0 then x else y) hxy
+  have hTarget : Target.rel () (fun k : Fin 2 =>
+      if k = 0 then f x else f y) := by
+    simpa only [Function.comp_apply] using hMap
+  exact hc _ _ hTarget
+
+/-- The exact small test cannot even weakly project back to the
+original old P5. This strengthens the ambient no-retraction
+certificate: the obstruction is already contained in seven exact
+function-closed vertices. -/
+theorem exactCycle_no_weak_hom_to_old :
+    ¬ ∃ f : (↑exactCycle : Set Vertex) → Fin 5,
+      Small.IsWeakHomomorphism oldSystem.toStructure f := by
+  apply exactCycle_no_weak_hom_to_bipartite oldSystem.toStructure
+  refine ⟨oldColor, ?_⟩
+  intro x y h
+  exact oldColor_edge x y h
+
 end StructuralRamsey.Structure.TrackD.NativeThreeLineC7
