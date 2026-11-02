@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.HJThreeLineNativeExactClosedC7
+
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.exactCycle_card_le_seven
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.exactCycle_closed
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.smallCycle_edge
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.exactCycle_not_twoColorable
