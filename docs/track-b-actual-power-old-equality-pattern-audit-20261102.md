@@ -46,6 +46,54 @@ claims that **fresh canonical full-root tags** automatically commute
 with relational coordinate powers: those tags inspect the entire induced
 OLD pattern of all distinct input-root vertices.
 
+
+## Complete fresh U-closure tag on the actual functional power
+
+The new `TrackBPowerFreshFullRoot2019.lean` makes the missing
+full-root data explicit, rather than conflating it with the OLD
+domain/output relations.
+
+- `RelStructure.patternTagExpansion_fresh_iff_fullOldRoot`:
+  on any OLD relational source E, a *fresh* tag at `t` means the
+  corresponding OLD output tuple is realized, the distinct-root
+  prefix is globally injective, and **every OLD relation symbol
+  on every input-root tuple** agrees with the prescribed complete
+  relational structure `p.root`. The last clause has both directions
+  (full embedding), not merely preservation of positive tuples.
+- `Induced.nativePower_freshTag_iff_completeOldRootProfile`:
+  on the ACTUAL Hales--Jewett native power, substitute the genuine
+  coordinatewise output-word criterion while keeping exact global
+  injectivity and the entire OLD root profile. This includes original
+  relations, all equal-input-pattern active domains, and all OLD
+  output relations, including negatives on the root.
+- `Induced.nativePower_oldOutput_admits_canonicalFreshRoot`:
+  every real OLD output witness with a positive distinct-input root
+  determines an actual fresh closure tag using the exact induced
+  OLD root, with no enlarged test carrier and no guessed pattern.
+- `TrackBPowerFreshRootCollision2019.lean` upgrades the
+  coordinate-collapse obstruction from a bare OLD active-domain
+  predicate to a **real fresh 2019 U-closure tag**: if a globally
+  injective native root has one common output part across all
+  source coordinates, it has a genuine output word and hence its
+  canonical complete-root tag, even when a particular coordinate's
+  *same* OLD domain input-pattern symbol is false because its root
+  collapses.
+
+Therefore the unrestricted coordinatewise OLD-tagged product
+interpretation is not an equivalence. The correct safe presentation
+forms the native function-language Hales--Jewett power first, and
+then adds complete OLD/root tags on its actual vertex set.
+
+This conclusion is distinct from the **part-injective root** repair
+above. Even when OLD relations admit a coordinatewise comparison,
+the fresh U-tag `p` is indexed by the WHOLE OLD root pattern, whose
+relations must all be preserved and reflected. It is not determined
+by the symbol's own domain mask alone.
+
+**Validation gate:** the four new fresh-root declarations have
+`#print axioms` checks; do not mark them green before a complete
+Lean CI success for the exact branch head. No TeX manuscript changes.
+
 ## Conclusions and unresolved directions
 
 1. The positive source correspondence via canonical OLD tagging of each actual native stage is sound. The unqualified assertion `tag(nativePower) = relationalCoordinatePower(tag(native))` requires special compatibility conditions and must **not** be treated as a theorem; even OLD distinct-root equality patterns can fail to commute with coordinate powers.
