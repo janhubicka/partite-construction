@@ -10,3 +10,5 @@ import PartiteConstruction.Functional.TrackBRealEHNExactImageUSize2019
 #print axioms StructuralRamsey.Structure.IsOriginalPartialHomomorphism.toNonemptyPartial
 #print axioms StructuralRamsey.FunctionalPartite.System.weaklyPartite_toNonemptyPartial_originalHom
 #print axioms StructuralRamsey.FunctionalPartite.System.weaklyPartite_inducedAmbientWholeMaskUSize_le
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.inducedAmbientWholeMaskUSize_le
