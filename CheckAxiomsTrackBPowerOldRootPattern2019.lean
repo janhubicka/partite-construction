@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.TrackBPowerOldRootPatternExact2019
 import PartiteConstruction.Functional.TrackBPowerOldRootTransversal2019
 import PartiteConstruction.Functional.TrackBPowerFreshFullRoot2019
+import PartiteConstruction.Functional.TrackBPowerFreshRootCollision2019
 
 /- Track B: OLD exact root-pattern semantics of actual HJ powers. -/
 
@@ -18,3 +19,5 @@ import PartiteConstruction.Functional.TrackBPowerFreshFullRoot2019
 #print axioms StructuralRamsey.FunctionalPartite.Induced.nativePower_freshTag_iff_completeOldRootProfile
 
 #print axioms StructuralRamsey.FunctionalPartite.Induced.nativePower_oldOutput_admits_canonicalFreshRoot
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.nativePower_canonicalFreshTag_coordinateCollapse
