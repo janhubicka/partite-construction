@@ -4,3 +4,5 @@ import PartiteConstruction.Functional.HJThreeLineNativeExactClosedC7
 #print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.exactCycle_closed
 #print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.smallCycle_edge
 #print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.exactCycle_not_twoColorable
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.exactCycle_no_weak_hom_to_bipartite
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.exactCycle_no_weak_hom_to_old
