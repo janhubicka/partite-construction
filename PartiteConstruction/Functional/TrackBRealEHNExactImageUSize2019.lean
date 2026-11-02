@@ -1,6 +1,7 @@
 import PartiteConstruction.Functional.OriginalPartialSemantics
 import PartiteConstruction.Functional.NativeWholePartClosure
 import PartiteConstruction.Functional.WholeMaskWholeWeakImageRank2019
+import PartiteConstruction.Functional.EHNStage
 
 /-!
 # Track B: original EHN projection gives exact 2019 USize monotonicity
@@ -134,3 +135,40 @@ theorem System.weaklyPartite_inducedAmbientWholeMaskUSize_le
     B.part (fun p : P => p) hTrB hTrA hPos S
 
 end StructuralRamsey.FunctionalPartite
+
+namespace StructuralRamsey.FunctionalPartite.EHN
+
+open StructuralRamsey.Structure
+open StructuralRamsey.PartialSetStructure
+open StructuralRamsey.RelStructure
+
+universe u v
+variable {L : Language.{u}} {P : Type v} [Fintype P]
+variable {K : Structure.StructureClass (L := L)}
+variable {D : Structure L P}
+
+/-- Literal current EHN Stage projection is sufficient to bound the
+2019 ambient U-generator rank of EVERY exact weak image of S.
+
+No full `ProjectionHom` is required: use the Stage's STORED
+`isPartite` EHN invariant, whose original-2019 source-defined
+partial-fibre law is preserved by the faithful Option(Set) lift.
+The image carrier remains exactly `T.system.part '' S`. -/
+theorem Stage.inducedAmbientWholeMaskUSize_le
+    (T : Stage K D)
+    (hPos : L.PositiveFuncArity)
+    (S : Set T.Carrier) [Fintype S]
+    [Fintype (Structure.imageSet T.system.part S)] :
+    USize (L.wholeMaskClosureRules P)
+      ((wholeMaskTagExpansion
+        ((D.toNonemptyPartial).wholeMaskPatternGraph
+          (fun p : P => p))).induce
+            (Structure.imageSet T.system.part S)) ≤
+    USize (L.wholeMaskClosureRules P)
+      ((wholeMaskTagExpansion
+        ((T.system.toStructure.toNonemptyPartial).wholeMaskPatternGraph
+          T.system.part)).induce S) :=
+  T.system.weaklyPartite_inducedAmbientWholeMaskUSize_le
+    D T.isPartite hPos S
+
+end StructuralRamsey.FunctionalPartite.EHN
