@@ -79,7 +79,7 @@ theorem wholeDomain_agrees_iff_closed
       (wholeWeakInduce_defined_iff_exact A S F ys).mp hDefined
     have hUT : U = T :=
       Option.some.inj (hVal.symm.trans hT)
-    exact hUT ▸ hTS
+    simpa [hUT] using hTS
   · intro hClosed F xs
     constructor
     · intro hWeak
