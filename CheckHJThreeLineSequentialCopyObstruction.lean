@@ -1,3 +1,0 @@
-import PartiteConstruction.Functional.HJThreeLineSequentialCopyObstruction
-
-#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.any_three_full_copies_not_twoColorable
