@@ -76,7 +76,11 @@ theorem edge_copy (i : Fin 3) (a b : Fin 5)
     ((FunctionalPartite.Attachment.copyEmbedding
       oldSystem support support_closed Core maps i).toEmbedding.map_rel_iff
         () tup).mpr hSrc
-  simpa only [Edge, copy, tup, Function.comp_apply] using hEmb
+  change Whole.toStructure.rel () (fun k : Fin 2 =>
+    if k = 0 then copy i a else copy i b)
+  convert hEmb using 1
+  funext k
+  by_cases hk : k = 0 <;> simp [tup, copy, hk, Function.comp_apply]
 
 /-- Every actual HJ core edge survives in the native full attachment. -/
 theorem edge_core (a b : Induced.Vertex R 2)
@@ -88,7 +92,11 @@ theorem edge_core (a b : Induced.Vertex R 2)
     ((FunctionalPartite.Attachment.coreEmbedding
       oldSystem support support_closed Core maps).toEmbedding.map_rel_iff
         () tup).mpr h
-  simpa only [Edge, core, tup, Function.comp_apply] using hEmb
+  change Whole.toStructure.rel () (fun k : Fin 2 =>
+    if k = 0 then core a else core b)
+  convert hEmb using 1
+  funext k
+  by_cases hk : k = 0 <;> simp [tup, core, hk, Function.comp_apply]
 
 /-- On every selected old support vertex, the native full copy
 embedding is IDENTIFIED with its prescribed full HJ core image. -/
@@ -99,12 +107,12 @@ theorem copy_support (i : Fin 3) (x : support) :
 
 /-- Exact supporting images for old a0 and b1 at every chosen line. -/
 theorem maps_a0 (i : Fin 3) :
-    maps i ⟨0, by decide⟩ =
+    maps i ⟨0, by simp [support, oldEdge]⟩ =
       Induced.lineMap (chosenLine i) (false, false) := by
   rfl
 
 theorem maps_b1 (i : Fin 3) :
-    maps i ⟨3, by decide⟩ =
+    maps i ⟨3, by simp [support, oldEdge]⟩ =
       Induced.lineMap (chosenLine i) (true, true) := by
   rfl
 
@@ -112,16 +120,16 @@ theorem copy_a0 (i : Fin 3) :
     copy i 0 =
       core (Induced.lineMap (chosenLine i) (false, false)) := by
   calc
-    copy i 0 = core (maps i ⟨0, by decide⟩) :=
-      copy_support i ⟨0, by decide⟩
+    copy i 0 = core (maps i ⟨0, by simp [support, oldEdge]⟩) :=
+      copy_support i ⟨0, by simp [support, oldEdge]⟩
     _ = _ := congrArg core (maps_a0 i)
 
 theorem copy_b1 (i : Fin 3) :
     copy i 3 =
       core (Induced.lineMap (chosenLine i) (true, true)) := by
   calc
-    copy i 3 = core (maps i ⟨3, by decide⟩) :=
-      copy_support i ⟨3, by decide⟩
+    copy i 3 = core (maps i ⟨3, by simp [support, oldEdge]⟩) :=
+      copy_support i ⟨3, by simp [support, oldEdge]⟩
     _ = _ := congrArg core (maps_b1 i)
 
 /-- True old bridge edges in both orientations, with the exact
@@ -130,25 +138,25 @@ theorem bridge_a0 (i : Fin 3) :
     Edge (copy i 4)
       (core (Induced.lineMap (chosenLine i) (false, false))) := by
   rw [← copy_a0 i]
-  exact edge_copy i 4 0 (by decide)
+  exact edge_copy i 4 0 (by simp [support, oldEdge])
 
 theorem a0_bridge (i : Fin 3) :
     Edge (core (Induced.lineMap (chosenLine i) (false, false)))
       (copy i 4) := by
   rw [← copy_a0 i]
-  exact edge_copy i 0 4 (by decide)
+  exact edge_copy i 0 4 (by simp [support, oldEdge])
 
 theorem bridge_b1 (i : Fin 3) :
     Edge (copy i 4)
       (core (Induced.lineMap (chosenLine i) (true, true))) := by
   rw [← copy_b1 i]
-  exact edge_copy i 4 3 (by decide)
+  exact edge_copy i 4 3 (by simp [support, oldEdge])
 
 theorem b1_bridge (i : Fin 3) :
     Edge (core (Induced.lineMap (chosenLine i) (true, true)))
       (copy i 4) := by
   rw [← copy_b1 i]
-  exact edge_copy i 3 4 (by decide)
+  exact edge_copy i 3 4 (by simp [support, oldEdge])
 
 /-- Literal C7 cycle vertices in the full native attachment. -/
 noncomputable def cycle (i : Fin 7) : Vertex :=
@@ -165,19 +173,21 @@ noncomputable def cycle (i : Fin 7) : Vertex :=
 tuple of the actual native attached functional structure. -/
 theorem cycle_edge (i : Fin 7) :
     Edge (cycle i)
-      (cycle ⟨(i.val + 1) % 7, Nat.mod_lt _ (by decide)⟩) := by
+      (cycle ⟨(i.val + 1) % 7, Nat.mod_lt _ (by simp [support, oldEdge])⟩) := by
   fin_cases i
   · exact bridge_a0 0
   · exact edge_core _ _ NativeTwoLetterHJ.native_core_cross_edge
   · exact b1_bridge 1
   · exact bridge_a0 1
-  · have heq : Induced.lineMap W1 (false, false) =
+  · change Edge (core (Induced.lineMap W1 (false, false))) (copy 2 4)
+    have heq : Induced.lineMap W1 (false, false) =
         Induced.lineMap W2 (false, false) :=
       NativeTwoLetterHJ.W1_a0.trans NativeTwoLetterHJ.W2_a0.symm
     rw [heq]
     exact a0_bridge 2
   · exact bridge_b1 2
-  · have heq : Induced.lineMap W2 (true, true) =
+  · change Edge (core (Induced.lineMap W2 (true, true))) (copy 0 4)
+    have heq : Induced.lineMap W2 (true, true) =
         Induced.lineMap W0 (true, true) :=
       NativeTwoLetterHJ.W2_b1.trans NativeTwoLetterHJ.W0_b1.symm
     rw [heq]
