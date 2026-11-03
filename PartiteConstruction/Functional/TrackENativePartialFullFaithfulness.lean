@@ -1,5 +1,4 @@
 import PartiteConstruction.Functional.NativePartialClosure
-import PartiteConstruction.Functional.PartialSetFunctionsPartPredicates2019
 
 /-!
 # Appendix A Track E: full native / partial embedding equivalence
