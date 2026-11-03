@@ -1,0 +1,13 @@
+import PartiteConstruction.Functional.HJThreeLineNativeFullAttachmentC7
+
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.oldEdge_distinct_parts
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.decode_injective
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.support_rel_iff
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.support_part
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.edge_copy
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.edge_core
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.copy_support
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.cycle_edge
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.not_twoColorable
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.oldColor_edge
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.no_graph_hom_to_old
