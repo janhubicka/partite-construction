@@ -79,16 +79,19 @@ theorem actualNativePower_freshRoot_not_coordinatewiseOld :
     ∃ roots : Fin 2 → Vertex source 2,
       ∃ (out : Vertex source 2)
         (fresh : Language.FunctionRootPattern lang),
-        fresh.input = binaryPattern ∧
+        ∃ hInput : fresh.input = binaryPattern,
         (patternTagExpansion ((power source 2).toStructure.patternGraph)).rel
-          (.inr fresh) (Structure.funcTuple roots out) ∧
+          (.inr fresh)
+          (fun i => (Structure.funcTuple roots out) (Fin.cast
+            (congrArg (fun p : Language.FunctionInputPattern lang => p.rootSize + 1)
+              hInput) i)) ∧
         ¬ (source.toStructure.patternGraph).rel
           (.inr (.inl binaryPattern))
             (fun j : Fin binaryPattern.rootSize =>
               (roots j).coord (0 : Fin 2)) := by
   have hDistinct : (0 : Fin 3) ≠ (1 : Fin 3) := by decide
   have hSamePart : source.part (0 : Fin 3) =
-      source.part (1 : Fin 3) := by decide
+      source.part (1 : Fin 3) := by simp [source, part]
   obtain ⟨roots, hInjective, hCollide⟩ :=
     nativePower_globalInjective_coordinateCollision
       source (0 : Fin 3) (1 : Fin 3) hDistinct hSamePart
@@ -102,7 +105,7 @@ theorem actualNativePower_freshRoot_not_coordinatewiseOld :
     refine ⟨2, ?_, ?_⟩
     · change (2 : Fin 3) ∈ ({(2 : Fin 3)} : Set (Fin 3))
       simp
-    · decide
+    · simp [source, part]
   refine ⟨roots, ?_⟩
   exact nativePower_canonicalFreshTag_coordinateCollapse
     source 2 binaryPattern (by decide) roots (0 : Fin 2)
