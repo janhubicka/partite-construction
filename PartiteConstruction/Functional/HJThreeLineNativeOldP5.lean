@@ -96,7 +96,9 @@ theorem decode_injective : Function.Injective decode := by
   apply Subtype.ext
   rcases x with ⟨x,hx⟩
   rcases y with ⟨y,hy⟩
-  fin_cases x <;> fin_cases y <;> simp_all [decode, support]
+  change x ≠ 4 at hx
+  change y ≠ 4 at hy
+  fin_cases x <;> fin_cases y <;> simp_all [decode]
 
 theorem support_rel_iff (x y : support) :
     R.toStructure.rel () (fun k : Fin 2 =>
@@ -107,13 +109,15 @@ theorem support_rel_iff (x y : support) :
     (decode x).2 = (decode y).2 ↔ oldEdge x.1 y.1
   rcases x with ⟨x,hx⟩
   rcases y with ⟨y,hy⟩
-  fin_cases x <;> fin_cases y <;>
-    simp_all [decode, support, oldEdge]
+  change x ≠ 4 at hx
+  change y ≠ 4 at hy
+  fin_cases x <;> fin_cases y <;> simp_all [decode, oldEdge]
 
 theorem support_part (x : support) :
     label (R.part (decode x)) = oldPart x.1 := by
   rcases x with ⟨x,hx⟩
-  fin_cases x <;> simp_all [decode, support, R, label, oldPart]
+  change x ≠ 4 at hx
+  fin_cases x <;> simp_all [decode, R, label, oldPart] <;> rfl
 
 /-- The old selected support is a FULL native substructure of R,
 not a weakly completed or clipped graph. -/
@@ -125,6 +129,7 @@ def selectedFull : Structure.Embedding
   map_rel_iff := by
     intro Rel xs
     cases Rel
+    change (Fin 2 → support) at xs
     exact support_rel_iff (xs 0) (xs 1)
   map_func := by
     intro F
