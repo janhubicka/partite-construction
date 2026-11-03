@@ -78,9 +78,14 @@ theorem edge_copy (i : Fin 3) (a b : Fin 5)
         () tup).mpr hSrc
   change Whole.toStructure.rel () (fun k : Fin 2 =>
     if k = 0 then copy i a else copy i b)
-  convert hEmb using 1
-  funext k
-  by_cases hk : k = 0 <;> simp [tup, copy, hk, Function.comp_apply]
+  have hTuple :
+      (fun k : Fin 2 => if k = 0 then copy i a else copy i b) =
+      ((FunctionalPartite.Attachment.copyEmbedding
+        oldSystem support support_closed Core maps i).toFun ∘ tup) := by
+    funext k
+    by_cases hk : k = 0 <;> simp [tup, copy, hk, Function.comp_apply]
+  rw [hTuple]
+  exact hEmb
 
 /-- Every actual HJ core edge survives in the native full attachment. -/
 theorem edge_core (a b : Induced.Vertex R 2)
@@ -94,9 +99,14 @@ theorem edge_core (a b : Induced.Vertex R 2)
         () tup).mpr h
   change Whole.toStructure.rel () (fun k : Fin 2 =>
     if k = 0 then core a else core b)
-  convert hEmb using 1
-  funext k
-  by_cases hk : k = 0 <;> simp [tup, core, hk, Function.comp_apply]
+  have hTuple :
+      (fun k : Fin 2 => if k = 0 then core a else core b) =
+      ((FunctionalPartite.Attachment.coreEmbedding
+        oldSystem support support_closed Core maps).toFun ∘ tup) := by
+    funext k
+    by_cases hk : k = 0 <;> simp [tup, core, hk, Function.comp_apply]
+  rw [hTuple]
+  exact hEmb
 
 /-- On every selected old support vertex, the native full copy
 embedding is IDENTIFIED with its prescribed full HJ core image. -/
