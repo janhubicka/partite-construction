@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.NativeFullAttachmentList
+
+#print axioms StructuralRamsey.FunctionalPartite.attachList_full
