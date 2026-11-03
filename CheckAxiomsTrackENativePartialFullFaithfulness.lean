@@ -1,0 +1,13 @@
+import PartiteConstruction.Functional.TrackENativePartialFullFaithfulness
+
+/-!
+Audited full-faithfulness and precise essential-image certificate
+for the already validated `Structure.toNonemptyPartial` converter.
+-/
+
+#print axioms StructuralRamsey.Structure.TrackENativePartialFullFaithfulness.option_getD_image
+#print axioms StructuralRamsey.Structure.TrackENativePartialFullFaithfulness.partialFullEmbedding_toNative
+#print axioms StructuralRamsey.Structure.TrackENativePartialFullFaithfulness.nativePartialFullEmbeddingEquiv
+#print axioms StructuralRamsey.Structure.TrackENativePartialFullFaithfulness.toNonemptyPartial_noDefinedEmpty
+#print axioms StructuralRamsey.Structure.TrackENativePartialFullFaithfulness.noDefinedEmpty_iff_nativeRoundtrip
+#print axioms StructuralRamsey.Structure.TrackENativePartialFullFaithfulness.definedEmptyExample_not_nativeImage
