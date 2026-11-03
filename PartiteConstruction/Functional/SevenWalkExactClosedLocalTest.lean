@@ -49,18 +49,18 @@ theorem test_card_le_seven (v : Fin 7 → X) :
 /-- Every literal vertex set is function-closed for the graph-only
 native language. In particular, the exact cycle test is closed. -/
 theorem test_closed (A : Structure Lang X) (v : Fin 7 → X) :
-    A.IsClosed (↑test v : Set X) := by
+    A.IsClosed (↑(test v) : Set X) := by
   intro F
   exact Empty.elim F
 
 /-- The exact induced full-functional source test. -/
 noncomputable def small (A : Structure Lang X) (v : Fin 7 → X) :
-    Structure Lang (↑test v : Set X) :=
-  A.induce (↑test v : Set X) (test_closed A v)
+    Structure Lang (↑(test v) : Set X) :=
+  A.induce (↑(test v) : Set X) (test_closed A v)
 
 /-- Each listed odd-walk vertex lies inside the exact same local test. -/
 noncomputable def localVertex (v : Fin 7 → X) (i : Fin 7) :
-    (↑test v : Set X) := by
+    (↑(test v) : Set X) := by
   classical
   exact ⟨v i, Finset.mem_image.mpr ⟨i, Finset.mem_univ _, rfl⟩⟩
 
@@ -86,8 +86,8 @@ theorem small_not_twoColorable
     (hEdges : ∀ i : Fin 7,
       A.rel () (fun k : Fin 2 =>
         if k = 0 then v i else v (next i))) :
-    ¬ ∃ c : (↑test v : Set X) → Bool,
-      ∀ x y : (↑test v : Set X),
+    ¬ ∃ c : (↑(test v) : Set X) → Bool,
+      ∀ x y : (↑(test v) : Set X),
         (small A v).rel () (fun k : Fin 2 =>
           if k = 0 then x else y) → c x ≠ c y := by
   rintro ⟨c, hc⟩
@@ -133,7 +133,7 @@ theorem small_no_weak_hom_to_bipartite
       ∀ a b : Y,
         B.rel () (fun k : Fin 2 =>
           if k = 0 then a else b) → c a ≠ c b) :
-    ¬ ∃ f : (↑test v : Set X) → Y,
+    ¬ ∃ f : (↑(test v) : Set X) → Y,
       (small A v).IsWeakHomomorphism B f := by
   rintro ⟨f, hf⟩
   obtain ⟨c, hc⟩ := hBip
