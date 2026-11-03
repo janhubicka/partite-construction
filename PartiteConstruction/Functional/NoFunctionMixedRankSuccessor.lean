@@ -79,7 +79,7 @@ theorem allSubsetsClosed_iff_conservativeFunctions
   · intro h F x y hy
     have hArgs : ∀ i, x i ∈ Set.range x :=
       fun i => ⟨i, rfl⟩
-    obtain ⟨i, hi⟩ := h (Set.range x) F x hArgs y hy
+    obtain ⟨i, hi⟩ := h (Set.range x) F x hArgs hy
     exact ⟨i, hi.symm⟩
   · intro h S
     exact allSubsetsClosed_of_conservativeFunctions A h S
