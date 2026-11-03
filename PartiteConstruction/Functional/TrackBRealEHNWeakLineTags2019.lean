@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.WeakInvariant
+import PartiteConstruction.Functional.OutputPartSingletonization
 import PartiteConstruction.Functional.TrackBHeterogeneousTaggedPreimage2019
 import PartiteConstruction.Functional.EHNStage
 
