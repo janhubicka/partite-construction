@@ -72,7 +72,8 @@ theorem wholeDomain_agrees_iff_closed
   · intro h F xs U hx hValue
     let ys : Fin (L.funcArity F) → S := fun i => ⟨xs i, hx i⟩
     have hVal : A.func F (Subtype.val ∘ ys) = some U := by
-      simpa [ys] using hValue
+      change A.func F xs = some U
+      exact hValue
     have hDefined : (A.wholeWeakInduce S).Defined F ys :=
       (h F ys).mpr ⟨U, hVal⟩
     obtain ⟨T, hT, hTS⟩ :=
@@ -118,7 +119,6 @@ theorem noLost_even_though_not_closed :
       hClosed () (fun _ : Fin 2 => (0 : Fin 2)) Set.univ
         (fun _ => by simp [S]) rfl
     have h1 : (1 : Fin 2) ∈ S := hSub (Set.mem_univ _)
-    have hne : (1 : Fin 2) ≠ 0 := by decide
-    exact hne (by simpa [S] using h1)
+    simpa [S] using h1
 
 end StructuralRamsey.FunctionalPartite.TrackASaturation
