@@ -109,6 +109,19 @@ theorem any_three_full_copies_not_twoColorable
         hb ⟨3, by simp [support]⟩
       _ = _ := congrArg j (maps_b1 i)
 
+  have hA0 : b0 0 = j (Induced.lineMap W0 (false, false)) := by
+    simpa [chosenLine] using (imageA b0 0 h0)
+  have hA1 : b1 0 = j (Induced.lineMap W1 (false, false)) := by
+    simpa [chosenLine] using (imageA b1 1 h1)
+  have hA2 : b2 0 = j (Induced.lineMap W2 (false, false)) := by
+    simpa [chosenLine] using (imageA b2 2 h2)
+  have hB0 : b0 3 = j (Induced.lineMap W0 (true, true)) := by
+    simpa [chosenLine] using (imageB b0 0 h0)
+  have hB1 : b1 3 = j (Induced.lineMap W1 (true, true)) := by
+    simpa [chosenLine] using (imageB b1 1 h1)
+  have hB2 : b2 3 = j (Induced.lineMap W2 (true, true)) := by
+    simpa [chosenLine] using (imageB b2 2 h2)
+
   let v0 : X := b0 4
   let v1 : X := j (Induced.lineMap W0 (false, false))
   let v2 : X := j (Induced.lineMap W1 (true, true))
@@ -119,34 +132,34 @@ theorem any_three_full_copies_not_twoColorable
 
   have h01 : E v0 v1 := by
     change E (b0 4) (j (Induced.lineMap W0 (false, false)))
-    rw [← imageA b0 0 h0]
+    rw [← hA0]
     exact copyEdge b0 4 0 (by simp [oldEdge])
   have h12 : E v1 v2 := coreEdge
   have h23 : E v2 v3 := by
     change E (j (Induced.lineMap W1 (true, true))) (b1 4)
-    rw [← imageB b1 1 h1]
+    rw [← hB1]
     exact copyEdge b1 3 4 (by simp [oldEdge])
   have h34 : E v3 v4 := by
     change E (b1 4) (j (Induced.lineMap W1 (false, false)))
-    rw [← imageA b1 1 h1]
+    rw [← hA1]
     exact copyEdge b1 4 0 (by simp [oldEdge])
   have h45 : E v4 v5 := by
     change E (j (Induced.lineMap W1 (false, false))) (b2 4)
     have heq : Induced.lineMap W1 (false, false) =
         Induced.lineMap W2 (false, false) :=
       NativeTwoLetterHJ.W1_a0.trans NativeTwoLetterHJ.W2_a0.symm
-    rw [heq, ← imageA b2 2 h2]
+    rw [heq, ← hA2]
     exact copyEdge b2 0 4 (by simp [oldEdge])
   have h56 : E v5 v6 := by
     change E (b2 4) (j (Induced.lineMap W2 (true, true)))
-    rw [← imageB b2 2 h2]
+    rw [← hB2]
     exact copyEdge b2 4 3 (by simp [oldEdge])
   have h60 : E v6 v0 := by
     change E (j (Induced.lineMap W2 (true, true))) (b0 4)
     have heq : Induced.lineMap W2 (true, true) =
         Induced.lineMap W0 (true, true) :=
       NativeTwoLetterHJ.W2_b1.trans NativeTwoLetterHJ.W0_b1.symm
-    rw [heq, ← imageB b0 0 h0]
+    rw [heq, ← hB0]
     exact copyEdge b0 3 4 (by simp [oldEdge])
 
   rintro ⟨c, hc⟩
@@ -211,8 +224,8 @@ theorem sequential_threeLines_no_weak_projection_to_old :
         (fun k : Fin 2 => if k = 0 then f a else f b) := by
       funext k
       by_cases hk : k = 0 <;> simp [hk, Function.comp_apply]
-    rw [heq] at hm
-    exact hm
+    exact Eq.mp (congrArg (fun args : Fin 2 → Fin 5 =>
+      oldSystem.toStructure.rel () args) heq) hm
   change oldEdge (f a) (f b) at hm'
   exact oldColor_edge (f a) (f b) hm'
 
