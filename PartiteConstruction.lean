@@ -39,7 +39,6 @@ import PartiteConstruction.Functional.SingletonHalfClosedConstruction
 import PartiteConstruction.Functional.SingletonHalfClosedPartite
 import PartiteConstruction.Functional.RecursiveConstruction
 import PartiteConstruction.Functional.ClosedAttachment
-import PartiteConstruction.Functional.ClosedPicture
 import PartiteConstruction.Functional.ClosedConstruction
 import PartiteConstruction.Functional.InducedConstruction
 import PartiteConstruction.Functional.OrderedRecursive
