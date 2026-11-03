@@ -48,10 +48,13 @@ theorem nativePower_canonicalFreshTag_coordinateCollapse
           (fun k => (roots (pat.argMap k)).coord j) ∧ B.part z = q)
     (hCollapse : ¬ Function.Injective
       (fun k : Fin pat.rootSize => (roots k).coord i)) :
-    ∃ (out : Vertex B N) (fresh : Language.FunctionRootPattern L),
-      fresh.input = pat ∧
+    ∃ (out : Vertex B N) (fresh : Language.FunctionRootPattern L)
+        (hInput : fresh.input = pat),
       (patternTagExpansion ((power B N).toStructure.patternGraph)).rel
-        (.inr fresh) (Structure.funcTuple roots out) ∧
+        (.inr fresh)
+        (fun j => (Structure.funcTuple roots out) (Fin.cast
+          (congrArg (fun p : Language.FunctionInputPattern L => p.rootSize + 1)
+            hInput) j)) ∧
       ¬ (B.toStructure.patternGraph).rel (.inr (.inl pat))
           (fun k : Fin pat.rootSize => (roots k).coord i) := by
   classical
