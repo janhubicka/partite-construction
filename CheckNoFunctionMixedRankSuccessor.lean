@@ -2,3 +2,5 @@ import PartiteConstruction.Functional.NoFunctionMixedRankSuccessor
 
 #print axioms StructuralRamsey.Structure.allSubsetsClosed_of_noFunctionSymbols
 #print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakTree_mixed_succ_of_noFunctionSymbols
+#print axioms StructuralRamsey.Structure.allSubsetsClosed_of_conservativeFunctions
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.weakTree_mixed_succ_of_conservativeAlpha
