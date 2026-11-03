@@ -147,9 +147,11 @@ theorem nativePower_oldOutput_admits_canonicalFreshRoot
       ((power B N).toStructure.patternGraph).rel
         (.inr (.inr pat)) t) :
     ∃ (q : Language.FunctionRootPattern L),
-      q.input = pat ∧
+      ∃ hInput : q.input = pat,
         (patternTagExpansion ((power B N).toStructure.patternGraph)).rel
-          (.inr q) t := by
+          (.inr q)
+          (fun i => t (Fin.cast
+            (congrArg (fun p : Language.FunctionInputPattern L => p.rootSize + 1) hInput) i)) := by
   let E := (power B N).toStructure.patternGraph
   have hInjective :
       Function.Injective
@@ -162,6 +164,9 @@ theorem nativePower_oldOutput_admits_canonicalFreshRoot
   refine ⟨Language.FunctionRootPattern.ofActiveDomain E pat
       hPositive (fun j : Fin pat.rootSize => t j.castSucc) hDomain,
       rfl, ?_⟩
+  change (patternTagExpansion E).rel
+    (.inr (Language.FunctionRootPattern.ofActiveDomain E pat
+      hPositive (fun j : Fin pat.rootSize => t j.castSucc) hDomain)) t
   exact RelStructure.patternTagExpansion_tag_of_valid_old_output
     E pat hPositive t hOutput hInjective hDomain
 
