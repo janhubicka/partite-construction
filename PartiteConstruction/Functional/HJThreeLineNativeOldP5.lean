@@ -98,7 +98,8 @@ theorem decode_injective : Function.Injective decode := by
   rcases y with ⟨y,hy⟩
   change x ≠ 4 at hx
   change y ≠ 4 at hy
-  fin_cases x <;> fin_cases y <;> simp_all [decode] <;> omega
+  fin_cases x <;> fin_cases y <;> simp_all [decode] <;>
+    (dsimp at *; simp_all)
 
 theorem support_rel_iff (x y : support) :
     R.toStructure.rel () (fun k : Fin 2 =>
@@ -111,13 +112,16 @@ theorem support_rel_iff (x y : support) :
   rcases y with ⟨y,hy⟩
   change x ≠ 4 at hx
   change y ≠ 4 at hy
-  fin_cases x <;> fin_cases y <;> simp_all [decode, oldEdge] <;> omega
+  fin_cases x <;> fin_cases y <;> simp_all [decode, oldEdge] <;>
+    (dsimp at *; simp_all)
 
 theorem support_part (x : support) :
     label (R.part (decode x)) = oldPart x.1 := by
+  change (if (decode x).1 = false then (0 : Fin 3) else 1) = oldPart x.1
   rcases x with ⟨x,hx⟩
   change x ≠ 4 at hx
-  fin_cases x <;> simp_all [decode, R, label, oldPart] <;> omega
+  fin_cases x <;> simp_all [decode, oldPart] <;>
+    (dsimp at *; simp_all)
 
 /-- The old selected support is a FULL native substructure of R,
 not a weakly completed or clipped graph. -/
