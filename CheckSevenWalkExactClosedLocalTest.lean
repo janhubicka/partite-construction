@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.SevenWalkExactClosedLocalTest
+
+#print axioms StructuralRamsey.Structure.TrackD.SevenWalkLocality.test_card_le_seven
+#print axioms StructuralRamsey.Structure.TrackD.SevenWalkLocality.test_closed
+#print axioms StructuralRamsey.Structure.TrackD.SevenWalkLocality.local_edge
+#print axioms StructuralRamsey.Structure.TrackD.SevenWalkLocality.small_not_twoColorable
+#print axioms StructuralRamsey.Structure.TrackD.SevenWalkLocality.small_no_weak_hom_to_bipartite
