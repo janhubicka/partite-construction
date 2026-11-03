@@ -43,6 +43,23 @@ theorem allSubsetsClosed_of_noFunctionSymbols
   intro F
   exact isEmptyElim F
 
+/-- If every function value of A is one of the function inputs,
+then every exact vertex subset of A is closed. The operation
+may still be set-valued and genuinely nontrivial, so this is
+strictly more general than assuming the language has no functions. -/
+theorem allSubsetsClosed_of_conservativeFunctions
+    (A : Structure L X)
+    (hConservative : ∀ (F : L.FuncSymbol)
+      (x : Fin (L.funcArity F) → X) (y : X),
+      y ∈ A.func F x → ∃ i, y = x i)
+    (S : Set X) :
+    A.IsClosed S := by
+  intro F x hx y hy
+  obtain ⟨i, hi⟩ := hConservative F x y hy
+  rw [hi]
+  exact hx i
+
+
 end StructuralRamsey.Structure
 
 namespace StructuralRamsey.Structure.IsFreeAmalgam
@@ -97,5 +114,58 @@ theorem weakTree_mixed_succ_of_noFunctionSymbols
         (hBadLeft (Structure.allSubsetsClosed_of_noFunctionSymbols A _))
     · exact False.elim
         (hBadRight (Structure.allSubsetsClosed_of_noFunctionSymbols A _))
+
+/-- Genuinely functional conservative A-operations cannot create
+the nonclosed occupied A-boundary that is the sole remaining
+maximal-mixed obstruction in the checked sharp rank reduction.
+
+Consequently every exact mixed n=m+1 vertex test inside the
+full native function-language free attachment receives a strict
+full-functional Base-tree witness, PROVIDED the true rank-m
+predecessor and EHN/source-root premises hold. This is not an
+unconditional n-pass Ramsey theorem; it is the full mixed rank
+step for conservative selected function fibres. -/
+theorem weakTree_mixed_succ_of_conservativeAlpha
+    {A : Structure L UA} (hA : A.Irreducible)
+    (hConservative : ∀ (Func : L.FuncSymbol)
+      (x : Fin (L.funcArity Func) → UA) (y : UA),
+      y ∈ A.func Func x → ∃ i, y = x i)
+    {Root : Structure L H}
+    {Left : Structure L E} {Right : Structure L F}
+    {Whole : Structure L C}
+    {sL : Embedding Root Left} {sR : Embedding Root Right}
+    {iL : Embedding Left Whole} {iR : Embedding Right Whole}
+    [Fintype UA] [Fintype P] [DecidableEq P] [DecidableEq C]
+    [Fintype E] [Fintype F]
+    (hSrc : IsFreeAmalgam sL sR iL iR)
+    (D : Structure L P) (alpha : Embedding A D)
+    (p : C → P)
+    (hp : Whole.IsEHNHomomorphismEmbedding D p)
+    (hRootAlpha : ∀ d : H,
+      ∃ a : UA, p (iL (sL d)) = alpha a)
+    (Base : Structure L VB)
+    (eAB : Embedding A Base) (hBase : Base.Irreducible)
+    (m : ℕ)
+    (hPrev : SetAmbientRelativeWeakTreeWitness.AtMost
+      A Base D (id : P → P) m)
+    (S : Finset C) (hS : S.card ≤ m + 1)
+    (hMixedL : ∃ z : C, z ∈ S ∧ ∀ e : E, z ≠ iL e)
+    (hMixedR : ∃ z : C, z ∈ S ∧ ∀ f : F, z ≠ iR f)
+    (history : List (Set P)) :
+    SetAmbientRelativeWeakTreeWitness
+      A Base Whole p (↑S : Set C) history := by
+  rcases hSrc.weakTree_or_maximal_nonclosed_alpha_mixed_succ
+      hA D alpha p hp hRootAlpha Base eAB hBase
+      m hPrev S hS hMixedL hMixedR history with
+      hGood | ⟨_hMax, hBad⟩
+  · exact hGood
+  · rcases hBad with hBadLeft | hBadRight
+    · exact False.elim
+        (hBadLeft (Structure.allSubsetsClosed_of_conservativeFunctions
+          A hConservative _))
+    · exact False.elim
+        (hBadRight (Structure.allSubsetsClosed_of_conservativeFunctions
+          A hConservative _))
+
 
 end StructuralRamsey.Structure.IsFreeAmalgam
