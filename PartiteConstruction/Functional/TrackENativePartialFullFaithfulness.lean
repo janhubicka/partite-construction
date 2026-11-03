@@ -67,6 +67,22 @@ noncomputable def partialFullEmbedding_toNative
       (B.toNonemptyPartial.collapseDomain).func F (e.toFun ∘ xs) at h'
     simpa only [Structure.toNonemptyPartial_collapseDomain] using h'
 
+/-- The generic extensionality lemma for genuine-partial FULL embeddings
+with DIFFERENT source/target universe levels. The older convenience ext
+theorem requires both carriers at one universe level, which is stronger
+than the API needed by this natural full-faithfulness equivalence. -/
+private theorem partialEmbedding_ext_crossUniverse
+    {A : PartialSetStructure L V} {B : PartialSetStructure L W}
+    {e d : PartialSetStructure.Embedding A B}
+    (h : ∀ x, e.toFun x = d.toFun x) : e = d := by
+  cases e with
+  | mk f fi fr fv =>
+    cases d with
+    | mk g gi gr gv =>
+      have heq : f = g := funext h
+      cases heq
+      rfl
+
 /-- Full faithfulness, not merely preservation: the EXACT sets of full
 embeddings coincide under the native-to-Option translation, without
 changing any underlying function on vertices. -/
@@ -84,7 +100,7 @@ noncomputable def nativePartialFullEmbeddingEquiv
     rfl
   right_inv := by
     intro e
-    apply PartialSetStructure.Embedding.ext
+    apply partialEmbedding_ext_crossUniverse
     intro x
     rfl
 
