@@ -31,8 +31,8 @@ open StructuralRamsey.Structure
 open StructuralRamsey.RelStructure
 open StructuralRamsey.HalesJewett
 
-universe u v w
-variable {L : Language.{u}} {P : Type v} {V : Type w}
+universe u v
+variable {L : Language.{u}} {P V : Type v}
 
 /-- Every ACTUAL HJ line under only the EHN weak homomorphism
 projection is a full native function embedding, and therefore
