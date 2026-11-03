@@ -60,6 +60,31 @@ theorem allSubsetsClosed_of_conservativeFunctions
   exact hx i
 
 
+/-- Exact characterization of the source-side closure obstruction:
+EVERY subset of A is function-closed if and only if every actual
+set-valued function output is one of its input vertices. The
+equivalence also handles nullary operations: any defined nullary
+output violates all-subsets closure.
+
+This justifies the conservative-A hypothesis in the positive
+mixed-rank successor theorem without silently replacing source
+weak tests by generated closures. -/
+theorem allSubsetsClosed_iff_conservativeFunctions
+    (A : Structure L X) :
+    (∀ S : Set X, A.IsClosed S) ↔
+      (∀ (F : L.FuncSymbol)
+        (x : Fin (L.funcArity F) → X) (y : X),
+        y ∈ A.func F x → ∃ i, y = x i) := by
+  constructor
+  · intro h F x y hy
+    have hArgs : ∀ i, x i ∈ Set.range x :=
+      fun i => ⟨i, rfl⟩
+    obtain ⟨i, hi⟩ := h (Set.range x) F x hArgs y hy
+    exact ⟨i, hi.symm⟩
+  · intro h S
+    exact allSubsetsClosed_of_conservativeFunctions A h S
+
+
 end StructuralRamsey.Structure
 
 namespace StructuralRamsey.Structure.IsFreeAmalgam
