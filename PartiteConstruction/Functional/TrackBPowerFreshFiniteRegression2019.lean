@@ -33,7 +33,7 @@ open StructuralRamsey.RelStructure
 open StructuralRamsey.FunctionalPartite
 
 /-- One genuine binary function symbol and no primitive relations. -/
-def lang : Language where
+def lang : Language.{0} where
   RelSymbol := PEmpty
   FuncSymbol := PUnit
   relArity := fun R => PEmpty.elim R
