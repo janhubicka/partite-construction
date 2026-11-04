@@ -62,6 +62,39 @@ theorem System.maximalExactTest_part_injective
   have hCard : S.card = m + 1 := by omega
   exact ⟨hCard, Finset.card_image_iff.mp (hMax.trans hCard.symm)⟩
 
+/-- Maximal projected weak rank already consumes the WHOLE exact
+vertex budget: adding ANY omitted source vertex y creates exactly
+m+2 vertices, while the projected image grows by one part iff its
+part was not already represented in S.
+
+If y has the SAME part as a tested opposite-side vertex, the
+new vertex causes a projection collision but does not give an
+(m)-sized projected predecessor test: the image remains of size
+m+1. This pinpoints why neither simply closing S nor simply
+using the lower-rank projected-image branch resolves the hard
+mixed-root case. No function-closure hull is constructed. -/
+theorem System.maximalExactTest_insert_omitted_budget
+    (B : System L P V)
+    [DecidableEq V] [DecidableEq P]
+    (S : Finset V) (m : ℕ)
+    (hSize : S.card ≤ m + 1)
+    (hMax : (S.image B.part).card = m + 1)
+    (y : V) (hy : y ∉ S) :
+    (insert y S).card = m + 2 ∧
+      ((insert y S).image B.part).card =
+        if B.part y ∈ S.image B.part then m + 1 else m + 2 := by
+  classical
+  have hExact :
+      S.card = m + 1 :=
+    (B.maximalExactTest_part_injective S m hSize hMax).1
+  have hInserted : (insert y S).card = m + 2 := by
+    rw [Finset.card_insert_of_not_mem hy]
+    omega
+  refine ⟨hInserted, ?_⟩
+  by_cases hPart : B.part y ∈ S.image B.part
+  · simp [Finset.image_insert, hPart, hMax]
+  · simp [Finset.image_insert, hPart, hMax]
+
 /-- The exact maximal-image dichotomy classifies the output of
 EVERY concrete exposed control function tuple. If its output is
 not external to S, the UNIQUE representative is outside Side.
