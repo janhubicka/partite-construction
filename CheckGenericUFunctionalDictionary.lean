@@ -1,0 +1,6 @@
+import PartiteConstruction.Structure.GenericUFunctionalDictionary
+
+#print axioms StructuralRamsey.RelLanguage.withUFunctions_positive
+#print axioms StructuralRamsey.RelLanguage.appendU_comp
+#print axioms StructuralRamsey.RelStructure.Embedding.fromUFunctions_uClosed
+#print axioms StructuralRamsey.RelStructure.uClosedEmbeddingEquiv
