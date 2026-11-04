@@ -282,6 +282,62 @@ theorem System.exposedControlOutput_sourceUndefined_or_omittedUnique
   · exact Or.inl hDefined
 
 
+
+/-- Refine the exact EHN source-provenance dichotomy by replacing a
+genuinely undefined source function input with an ACTUAL proper FULL
+free decomposition of its function-generated input hull.
+
+If the target control requires q but the source fibre is empty,
+the previously verified EHN input-hull decomposition theorem applies.
+Otherwise q has exactly one source value, and it lies in the
+attachment-side image but OUTSIDE the literal weak test.
+
+CRITICAL: The generated input hull here is used only as a
+decomposition CERTIFICATE; it is NOT substituted for the weak
+tested set S, and NO generator-/vertex-rank bound on that hull
+is inferred. A history-compatible TARGET root extension remains
+unproved. -/
+theorem System.exposedControlOutput_reducibleHull_or_omittedUnique
+    {C E : Type v}
+    (B : System L P C) (D : Structure L P)
+    (hB : B.WeaklyPartiteOver D)
+    {A : Structure L UA}
+    (alpha : Structure.Embedding A D)
+    (S : Finset C)
+    {Left : Structure L E}
+    (iL : Structure.Embedding Left B.toStructure)
+    (hExposed : B.ExposedControlOutputAtAlpha D alpha
+      ((↑S : Set C) ∩ Set.range iL)) :
+    ∃ (Func : L.FuncSymbol)
+      (xs : Fin (L.funcArity Func) →
+        ↥((↑S : Set C) ∩ Set.range iL)) (q : P),
+      (∀ i, B.part (xs i).1 ∈ Set.range alpha) ∧
+      q ∈ D.func Func (B.part ∘ (Subtype.val ∘ xs)) ∧
+      q ∉ B.part '' ((↑S : Set C) ∩ Set.range iL) ∧
+      (Nonempty (Structure.ProperFreeDecomposition
+        (B.toStructure.induce
+          (B.toStructure.functionClosure
+            (Set.range (Subtype.val ∘ xs)))
+          (B.toStructure.functionClosure_isClosed
+            (Set.range (Subtype.val ∘ xs))))) ∨
+        ∃! y : C,
+          y ∈ B.toStructure.func Func (Subtype.val ∘ xs) ∧
+          B.part y = q ∧
+          y ∈ Set.range iL ∧ y ∉ S) := by
+  obtain ⟨Func, xs, q, hInputs, hControl, hOutside, hCase⟩ :=
+    B.exposedControlOutput_sourceUndefined_or_omittedUnique
+      D hB alpha S iL hExposed
+  refine ⟨Func, xs, q, hInputs, hControl, hOutside, ?_⟩
+  rcases hCase with hUndefined | hOmitted
+  · left
+    have hTarget :
+        (D.func Func (B.part ∘ (Subtype.val ∘ xs))).Nonempty :=
+      ⟨q, hControl⟩
+    exact hB.inputHull_reducible_of_domainFailure
+      Func (Subtype.val ∘ xs) hTarget hUndefined
+  · exact Or.inr hOmitted
+
+
 end StructuralRamsey.FunctionalPartite
 
 namespace StructuralRamsey.FunctionalPartite
