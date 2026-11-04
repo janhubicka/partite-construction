@@ -112,4 +112,30 @@ theorem arrow_iff_canonicalNonemptyPartial
       _ = χ (g.comp a₂) :=
             congrArg χ (hReflect a₂)
 
+/-- Conditional FINAL DECODER Ramsey arrow iff. A genuine partial
+target P is literally its canonical native collapse when it has NO
+defined-empty fibres. Thus, given precisely that verified
+normality condition, a full Ramsey arrow on P transfers to the
+decoded native structure P.collapseDomain and conversely.
+
+This is the reusable last step for a future profiled 2019 output.
+It is NOT a theorem that an arbitrary two-pass profiled relational
+Picture is normal: its `NoDefinedEmptyValues` premise is explicit. -/
+theorem arrow_iff_partialTarget_of_noDefinedEmpty
+    (A : Structure L V) (B : Structure L W)
+    (P : PartialSetStructure L X) (κ : Type*)
+    (hNormal : NoDefinedEmptyValues P) :
+    Structure.Arrow A B P.collapseDomain κ ↔
+      GenuinePartialArrow A.toNonemptyPartial
+        B.toNonemptyPartial P κ := by
+  have hEq : P.collapseDomain.toNonemptyPartial = P :=
+    (noDefinedEmpty_iff_nativeRoundtrip P).mp hNormal
+  have hCanonical :
+      Structure.Arrow A B P.collapseDomain κ ↔
+        GenuinePartialArrow A.toNonemptyPartial
+          B.toNonemptyPartial
+          P.collapseDomain.toNonemptyPartial κ :=
+    arrow_iff_canonicalNonemptyPartial A B P.collapseDomain κ
+  simpa only [hEq] using hCanonical
+
 end StructuralRamsey.Structure.TrackECanonicalArrowEquivalence
