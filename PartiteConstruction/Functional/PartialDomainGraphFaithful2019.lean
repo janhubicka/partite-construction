@@ -63,16 +63,16 @@ theorem eq_of_domainGraph_eq
         cases ha : fnA F xs with
         | none =>
           cases hb : fnB F xs with
-          | none => exact ha.trans hb.symm
+          | none => rfl
           | some T =>
             have hNone : ¬ (∃ U : Set V, fnA F xs = some U) := by
               simp [ha]
-            have hSome : ∃ U : Set V, fnB F xs = some U := ⟨T, hb⟩
+            have hSome : ∃ U : Set V, fnB F xs = some U := ⟨T, rfl⟩
             exact (hNone (hDom.mpr hSome)).elim
         | some U =>
           cases hb : fnB F xs with
           | none =>
-            have hSome : ∃ T : Set V, fnA F xs = some T := ⟨U, ha⟩
+            have hSome : ∃ T : Set V, fnA F xs = some T := ⟨U, rfl⟩
             have hNone : ¬ (∃ T : Set V, fnB F xs = some T) := by
               simp [hb]
             exact (hNone (hDom.mp hSome)).elim
@@ -80,10 +80,7 @@ theorem eq_of_domainGraph_eq
             have hUT : U = T := by
               ext y
               simpa [ha, hb] using (hOutput y)
-            calc
-              fnA F xs = some U := ha
-              _ = some T := congrArg some hUT
-              _ = fnB F xs := hb.symm
+            exact congrArg some hUT
 
 /-- Faithfulness as a compact equality equivalence, directly usable in
 Track B/C when a canonical domain-graph representation is available. -/
