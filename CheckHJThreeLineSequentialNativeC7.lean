@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.HJThreeLineSequentialNativeC7
+
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.any_three_full_copies_not_twoColorable
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.sequential_threeLines_not_twoColorable
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.sequential_threeLines_no_weak_projection_to_old
