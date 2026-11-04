@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.PartialDomainGraphFaithful2019
+
+#print axioms StructuralRamsey.PartialSetStructure.eq_of_domainGraph_eq
+#print axioms StructuralRamsey.PartialSetStructure.domainGraph_eq_iff
