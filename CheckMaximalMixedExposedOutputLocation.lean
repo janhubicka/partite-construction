@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.MaximalMixedExposedOutputLocation
+
+#print axioms StructuralRamsey.FunctionalPartite.System.maximalExactTest_part_injective
+#print axioms StructuralRamsey.FunctionalPartite.System.exposedControlOutput_maximal_classified
+#print axioms StructuralRamsey.FunctionalPartite.System.classifiedExposed_iff_exposed_of_maximal
+#print axioms StructuralRamsey.FunctionalPartite.System.weakTree_or_classified_exposed_alpha_mixed_succ
