@@ -20,6 +20,24 @@ Structure.Arrow A B C κ ↔
 
 The direction native→genuine uses all three embedding equivalences `ΦAB`, `ΦBC`, `ΦAC`; the converse uses their inverses. The two Ramsey monochromaticity statements are related by the **same naturality identity**, not by a projection changing the test carrier. No Ramsey arrow is claimed for an arbitrary output of the coordinated 2019 two-pass profile construction.
 
+## Conditional final target decoder
+
+`arrow_iff_partialTarget_of_noDefinedEmpty` is the precise final target
+normality-gated arrow transfer: for a genuine `PartialSetStructure P`
+whose **every defined operation has a nonempty output set**,
+```
+Structure.Arrow A B P.collapseDomain κ
+  ↔ GenuinePartialArrow A.toNonemptyPartial B.toNonemptyPartial P κ
+```
+The proof uses the already verified iff
+`NoDefinedEmptyValues P ↔ P.collapseDomain.toNonemptyPartial = P` from
+merged PR #552 and the native/canonical arrow equivalence in the same
+module. It preserves A, B, the exact P carrier and all A/B copy embeddings,
+and creates no new Ramsey witness. The condition is an explicit premise,
+not a declaration that any two-pass profiled OLD-relational output satisfies
+it. Another decoder obligation is still needed to recover a genuine
+`PartialSetStructure P` in the first place.
+
 ## Why this is useful—and what remains open
 
 This closes the finite-**copy/colouring** semantic boundary between native full functions and genuine partial functions. For any **verified normal** final target, the Ramsey arrow can now be transported back without a new combinatorial proof. It does NOT show that an arbitrary intermediate OLD-relational U-closed sparse witness is itself a canonical functional normal target.
