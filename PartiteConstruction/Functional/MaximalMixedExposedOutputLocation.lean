@@ -140,7 +140,7 @@ theorem System.classifiedExposed_otherSide_of_cover
         ((↑S : Set C) ∩ Set.range l)) :
     ∃ (Func : L.FuncSymbol)
       (xs : Fin (L.funcArity Func) →
-        ((↑S : Set C) ∩ Set.range l)) (q : P),
+        ↥((↑S : Set C) ∩ Set.range l)) (q : P),
       (∀ i, B.part (xs i).1 ∈ Set.range alpha) ∧
       q ∈ D.func Func (B.part ∘ (Subtype.val ∘ xs)) ∧
       q ∉ B.part '' ((↑S : Set C) ∩ Set.range l) ∧
@@ -195,7 +195,7 @@ theorem System.exposedControlOutput_no_tested_source_value
       ((↑S : Set C) ∩ Set.range iL)) :
     ∃ (Func : L.FuncSymbol)
       (xs : Fin (L.funcArity Func) →
-        ((↑S : Set C) ∩ Set.range iL)) (q : P),
+        ↥((↑S : Set C) ∩ Set.range iL)) (q : P),
       (∀ i, B.part (xs i).1 ∈ Set.range alpha) ∧
       q ∈ D.func Func (B.part ∘ (Subtype.val ∘ xs)) ∧
       q ∉ B.part '' ((↑S : Set C) ∩ Set.range iL) ∧
