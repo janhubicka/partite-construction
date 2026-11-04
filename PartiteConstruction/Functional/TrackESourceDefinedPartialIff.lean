@@ -70,6 +70,56 @@ theorem originalPartialHom_iff_nonemptyPartial
   · exact IsOriginalPartialHomomorphism.toNonemptyPartial
   · exact originalPartialHom_of_nonemptyPartial
 
+/-- Faithful source-defined 2019 homomorphism-embedding predicate in
+genuine Option(Set) syntax, testing exactly all irreducible *native*
+substructures under their canonical encoding. The native test E is
+unchanged; no claim is made about irreducibility of arbitrary rich
+partial structures having independent defined-empty operations. -/
+def CanonicalEncodedOriginalPartialHE
+    (A : Structure L V) (B : Structure L W) (f : V → W) : Prop :=
+  PartialSetStructure.IsOriginalPartialHomomorphism
+    A.toNonemptyPartial B.toNonemptyPartial f ∧
+    ∀ {X : Type v} (E : Structure L X), E.Irreducible →
+      ∀ e : PartialSetStructure.Embedding
+        E.toNonemptyPartial A.toNonemptyPartial,
+        ∃ g : PartialSetStructure.Embedding
+          E.toNonemptyPartial B.toNonemptyPartial,
+          ∀ x, g.toFun x = f (e.toFun x)
+
+/-- Exact homomorphism-EMBEDDING correspondence, extending the prior
+same-map homomorphism iff using the checked full-embedding equivalence.
+Every quantifier still uses the identical native irreducible E and
+original vertex map f. -/
+theorem originalPartialHE_iff_canonicalEncodedHE
+    {A : Structure L V} {B : Structure L W} {f : V → W} :
+    IsOriginalPartialHomomorphismEmbedding A B f ↔
+      CanonicalEncodedOriginalPartialHE A B f := by
+  constructor
+  · intro h
+    refine ⟨originalPartialHom_iff_nonemptyPartial.mp h.1, ?_⟩
+    intro X E hIrred e
+    obtain ⟨g, hg⟩ :=
+      h.2 E hIrred
+        (TrackENativePartialFullFaithfulness.partialFullEmbedding_toNative e)
+    exact ⟨g.toNonemptyPartial, fun x => hg x⟩
+  · intro h
+    refine ⟨originalPartialHom_iff_nonemptyPartial.mpr h.1, ?_⟩
+    intro X E hIrred e
+    obtain ⟨g, hg⟩ := h.2 E hIrred e.toNonemptyPartial
+    exact ⟨TrackENativePartialFullFaithfulness.partialFullEmbedding_toNative g,
+      fun x => hg x⟩
+
+/-- Native EHN projections are EXACTLY these source-defined genuine
+partial homomorphism-embeddings on canonically encoded irreducible
+tests, by the previously verified 2019 EHN/original equivalence.
+No total-fibre domain reflection is added. -/
+theorem EHN_iff_canonicalEncodedOriginalPartialHE
+    {A : Structure L V} {B : Structure L W} {f : V → W} :
+    A.IsEHNHomomorphismEmbedding B f ↔
+      CanonicalEncodedOriginalPartialHE A B f := by
+  exact (originalPartialHE_iff_EHN).symm.trans
+    originalPartialHE_iff_canonicalEncodedHE
+
 /-- A one-point unary native function structure with ALL inputs undefined. -/
 def nowhereDefined : Structure PartialSetStructure.exampleLanguage Unit where
   rel := fun R => Empty.elim R
