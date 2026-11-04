@@ -8,3 +8,5 @@ admissions, axioms, functional coherence oracle or Part II theorem.
 
 #print axioms StructuralRamsey.Structure.TrackECanonicalArrowEquivalence.toNonemptyPartial_comp
 #print axioms StructuralRamsey.Structure.TrackECanonicalArrowEquivalence.arrow_iff_canonicalNonemptyPartial
+
+#print axioms StructuralRamsey.Structure.TrackECanonicalArrowEquivalence.arrow_iff_partialTarget_of_noDefinedEmpty
