@@ -178,5 +178,116 @@ theorem asUFunctionsReduced_toRelU_func_iff
     (RelLanguage.appendU L U hU F x y) ↔ y ∈ C.func F x
   simp [toRelU, F.2, RelLanguage.rootU_append, RelLanguage.lastU_append]
 
+
+namespace RelLanguage
+
+@[simp] theorem rootU_comp
+    (L : RelLanguage.{u}) (U : Set L.Symbol)
+    (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
+    (F : U) {V : Type v} {W : Type w}
+    (f : V → W) (t : Fin (L.arity F.1) → V) :
+    rootU L U hU F (f ∘ t) = f ∘ rootU L U hU F t := rfl
+
+@[simp] theorem lastU_comp
+    (L : RelLanguage.{u}) (U : Set L.Symbol)
+    (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
+    (F : U) {V : Type v} {W : Type w}
+    (f : V → W) (t : Fin (L.arity F.1) → V) :
+    lastU L U hU F (f ∘ t) = f (lastU L U hU F t) := rfl
+
+end RelLanguage
+
+namespace RelStructure
+
+variable {L : RelLanguage.{u}} {V : Type v} {W : Type w}
+
+/-- No U relation is duplicated: a U-closed induced relational embedding
+is a full embedding in the REDUCED mixed signature, on the same map. -/
+def Embedding.toReducedUFunctions
+    {A : RelStructure L V} {B : RelStructure L W}
+    (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
+    (e : Embedding A B) (he : IsUClosedEmbedding A B U hU e) :
+    Structure.Embedding (A.asUFunctionsReduced U hU)
+      (B.asUFunctionsReduced U hU) where
+  toFun := e
+  injective := e.injective
+  map_rel_iff R x := e.map_rel_iff R.1 x
+  map_func := by
+    intro F x
+    ext y
+    constructor
+    · rintro ⟨z, hz, rfl⟩
+      have hh : B.rel F.1
+          (e ∘ RelLanguage.appendU L U hU F x z) :=
+        (e.map_rel_iff F.1 (RelLanguage.appendU L U hU F x z)).mpr hz
+      simpa only [RelLanguage.appendU_comp] using hh
+    · intro hy
+      exact he F x y hy
+
+end RelStructure
+
+namespace Structure
+
+variable {L : RelLanguage.{u}} {V : Type v} {W : Type w}
+
+/-- A full embedding maps a specific source function value to an arbitrary
+target value iff the target value is the image of that very source value. -/
+theorem Embedding.func_mem_map_iff
+    (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
+    {C : Structure (L.withUFunctionsReduced U) V}
+    {D : Structure (L.withUFunctionsReduced U) W}
+    (f : Embedding C D)
+    (F : (L.withUFunctionsReduced U).FuncSymbol)
+    (x : Fin ((L.withUFunctionsReduced U).funcArity F) → V)
+    (y : V) :
+    f y ∈ D.func F (f ∘ x) ↔ y ∈ C.func F x := by
+  rw [← f.map_func F x]
+  constructor
+  · rintro ⟨z, hz, heq⟩
+    have he : z = y := f.injective heq
+    simpa [he] using hz
+  · intro hy
+    exact ⟨y, hy, rfl⟩
+
+/-- The nonredundant decoder converts ANY full functional embedding into
+an induced relational embedding, including the formerly U-relations. -/
+def Embedding.toRelU
+    (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
+    {C : Structure (L.withUFunctionsReduced U) V}
+    {D : Structure (L.withUFunctionsReduced U) W}
+    (f : Embedding C D) :
+    RelStructure.Embedding (toRelU U hU C) (toRelU U hU D) where
+  toFun := f
+  injective := f.injective
+  map_rel_iff := by
+    intro R x
+    by_cases hR : R ∈ U
+    · let F : U := ⟨R, hR⟩
+      have hm := f.func_mem_map_iff U hU F
+        (RelLanguage.rootU L U hU F x)
+        (RelLanguage.lastU L U hU F x)
+      simpa [toRelU, hR, RelLanguage.rootU_comp,
+        RelLanguage.lastU_comp] using hm
+    · simpa [toRelU, hR] using f.map_rel_iff ⟨R, hR⟩ x
+
+/-- A full map of arbitrary reduced functional witnesses has U-closed
+relational range, without requiring redundant-symbol coherence. -/
+theorem Embedding.toRelU_uClosed
+    (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
+    {C : Structure (L.withUFunctionsReduced U) V}
+    {D : Structure (L.withUFunctionsReduced U) W}
+    (f : Embedding C D) :
+    RelStructure.IsUClosedEmbedding (toRelU U hU C)
+      (toRelU U hU D) U hU (f.toRelU U hU) := by
+  intro F x y hy
+  have hf : y ∈ D.func F (f ∘ x) := by
+    simpa [toRelU, F.2, RelLanguage.rootU_append,
+      RelLanguage.lastU_append] using hy
+  rw [← f.map_func F x] at hf
+  rcases hf with ⟨z, hz, heq⟩
+  refine ⟨z, ?_, heq⟩
+  simpa [toRelU, F.2, RelLanguage.rootU_append,
+    RelLanguage.lastU_append] using hz
+
 end Structure
 end StructuralRamsey
