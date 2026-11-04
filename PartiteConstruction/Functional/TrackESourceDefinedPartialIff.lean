@@ -40,6 +40,7 @@ theorem originalPartialHom_of_nonemptyPartial
   classical
   refine ⟨h.1, ?_⟩
   intro F xs hDefined
+  change (A.func F xs).Nonempty at hDefined
   have hSource :
       A.toNonemptyPartial.func F xs = some (A.func F xs) := by
     change (if (A.func F xs).Nonempty then
@@ -177,11 +178,12 @@ theorem sourceDefined_and_nonreflecting_example :
   refine ⟨hPartial, hPartial.toNonemptyPartial, ?_⟩
   intro hFull
   have hEq := hFull.2 () (fun _ : Fin 1 => ())
-  have hUnit : () ∈ everywhereDefined.func () (fun _ : Fin 1 => ()) := by
+  have hImage :
+      () ∈ imageSet id (nowhereDefined.func () (fun _ : Fin 1 => ())) := by
+    rw [hEq]
     change () ∈ (Set.univ : Set Unit)
     trivial
-  rw [← hEq] at hUnit
-  rcases hUnit with ⟨x, hx, _⟩
+  rcases hImage with ⟨x, hx, _⟩
   exact hx
 
 end StructuralRamsey.Structure.TrackESourceDefinedPartialIff
