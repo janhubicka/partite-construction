@@ -216,6 +216,72 @@ theorem System.exposedControlOutput_no_tested_source_value
     hArgs y hy⟩, hPart⟩
 
 
+
+/-- The exact SOURCE provenance of an exposed native control output
+in a full attachment side, under the actual EHN projection.
+
+Either the ENTIRE source function fibre at that input tuple is
+UNDEFINED (the genuine domain-reflection failure), or the target
+output part q is realized by a UNIQUE value of that SAME source
+fibre, lying in the closed attaching side but OUTSIDE the
+literal finite tested set S.
+
+The uniqueness is per genuine function fibre and target part,
+using the transversal output invariant. It says nothing about
+an unrelated opposite-side tested vertex of part q. No closure
+hull, total-fibre map on undefined inputs, or new B-tree target
+extension is assumed. -/
+theorem System.exposedControlOutput_sourceUndefined_or_omittedUnique
+    {C E : Type v}
+    (B : System L P C) (D : Structure L P)
+    (hB : B.WeaklyPartiteOver D)
+    {A : Structure L UA}
+    (alpha : Structure.Embedding A D)
+    (S : Finset C)
+    {Left : Structure L E}
+    (iL : Structure.Embedding Left B.toStructure)
+    (hExposed : B.ExposedControlOutputAtAlpha D alpha
+      ((↑S : Set C) ∩ Set.range iL)) :
+    ∃ (Func : L.FuncSymbol)
+      (xs : Fin (L.funcArity Func) →
+        ↥((↑S : Set C) ∩ Set.range iL)) (q : P),
+      (∀ i, B.part (xs i).1 ∈ Set.range alpha) ∧
+      q ∈ D.func Func (B.part ∘ (Subtype.val ∘ xs)) ∧
+      q ∉ B.part '' ((↑S : Set C) ∩ Set.range iL) ∧
+      (¬ (B.toStructure.func Func (Subtype.val ∘ xs)).Nonempty ∨
+        ∃! y : C,
+          y ∈ B.toStructure.func Func (Subtype.val ∘ xs) ∧
+          B.part y = q ∧
+          y ∈ Set.range iL ∧ y ∉ S) := by
+  classical
+  obtain ⟨Func, xs, q, hInputs, hControl, hOutside⟩ := hExposed
+  refine ⟨Func, xs, q, hInputs, hControl, hOutside, ?_⟩
+  let args : Fin (L.funcArity Func) → C := Subtype.val ∘ xs
+  by_cases hDefined : (B.toStructure.func Func args).Nonempty
+  · right
+    have hFibre := hB.map_func_of_nonempty Func args hDefined
+    have hq : q ∈ Structure.imageSet B.part (B.toStructure.func Func args) := by
+      rw [hFibre]
+      exact hControl
+    obtain ⟨y, hy, hyq⟩ := hq
+    have hRangeClosed : B.toStructure.IsClosed (Set.range iL) :=
+      iL.range_isClosed
+    have hArgsRange : ∀ i : Fin (L.funcArity Func),
+        args i ∈ Set.range iL := by
+      intro i
+      exact (xs i).2.2
+    have hyRange : y ∈ Set.range iL :=
+      hRangeClosed Func args hArgsRange y hy
+    have hyOutside : y ∉ S := by
+      intro hyS
+      exact hOutside ⟨y, ⟨hyS, hyRange⟩, hyq⟩
+    refine ⟨y, ⟨hy, hyq, hyRange, hyOutside⟩, ?_⟩
+    intro z ⟨hz, hzq, _, _⟩
+    exact B.funcTransversal Func args z y hz hy
+      (hzq.trans hyq.symm)
+  · exact Or.inl hDefined
+
+
 end StructuralRamsey.FunctionalPartite
 
 namespace StructuralRamsey.FunctionalPartite
