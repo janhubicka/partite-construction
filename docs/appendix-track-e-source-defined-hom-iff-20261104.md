@@ -18,10 +18,31 @@ This is strictly weaker than the verified full embedding equivalence. The target
 
 `sourceDefined_and_nonreflecting_example` is a concrete unary one-point example: every input is undefined in native source A, every input is defined in native target B, and `id : Unit→Unit` is source-defined-original and genuine-partial-source-defined, but **not** a total-fibre native homomorphism. This rules out silently replacing the global EHN projection by the disproved stronger survey convention.
 
+## Same-map homomorphism-embedding extension
+
+The corrected 2019 global map is a **homomorphism-embedding**, not merely a
+source-defined homomorphism. The new `CanonicalEncodedOriginalPartialHE A B f`
+retains the original quantification over all **native irreducible structures E**
+fully embedded into A. It expresses this test via the canonical genuine-partial
+`E.toNonemptyPartial`, using a **FULL** `PartialSetStructure.Embedding` on
+each test while allowing the global f to remain source-defined.
+
+`originalPartialHE_iff_canonicalEncodedHE` proves that the exact original
+native HE and this canonical Option(Set) HE are equivalent, on the SAME map,
+E, and embedded copies. Its proof uses the merged #552 full embedding
+equivalence in both directions. `EHN_iff_canonicalEncodedOriginalPartialHE`
+composes the established `originalPartialHE_iff_EHN` equivalence, providing a
+fully same-witness interface for the actual native EHN projection.
+
+The claim is **not** a blanket equivalence with an irreducibility notion on
+arbitrary rich partial Option(Set) structures. In particular, its tests are the
+faithful encodings of native irreducibles, not `some ∅` structures with
+independent domain predicates.
+
 ## Carefully limited scope
 
-- This theorem concerns **homomorphisms**. A 2019 homomorphism-embedding additionally requires full embeddings of actual irreducible source substructures; the genuine-partial API in this location does not yet export a matching full HE predicate, so the claim does not silently include that quantification.
-- For the native interface, `Structure.originalPartialHE_iff_EHN` already certifies the homomorphism-embedding distinction with the same actual map. Upstream #854 proves that native EHN implies genuine partial source-defined HOM.
+- The first theorem concerns **homomorphisms**. The additional exact HE equivalence explicitly quantifies over *canonical encoded native* irreducible source tests and their full embeddings, without changing the original source test category.
+- For the native interface, `Structure.originalPartialHE_iff_EHN` already certifies the homomorphism-embedding distinction with the same map. Our composed HE theorem now connects this to genuine-partial canonical native copies. Upstream #854 separately proves the original forward homomorphism direction.
 - The original strict mixed-root functional B-tree problem remains separate (Track D). The ambient OLD-relative H local-completion transfer remains separate (Track C).
 - This is **not** an end-to-end decoder-normality theorem for arbitrary two-pass profiled relational sparsening outputs, which may carry independent defined-empty inputs.
 
