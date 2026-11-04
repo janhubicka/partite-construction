@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.PartialWeakCompleteDomainGraphIff2019
+
+#print axioms StructuralRamsey.PartialSetStructure.clippedDomainGraph_agrees_iff_noLost
+#print axioms StructuralRamsey.PartialSetStructure.wholeDomainGraph_agrees_iff_closed
+#print axioms StructuralRamsey.FunctionalPartite.TrackASaturation.clippedGraph_agrees_but_wholeGraph_does_not
