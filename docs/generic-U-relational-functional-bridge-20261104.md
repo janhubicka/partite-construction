@@ -116,3 +116,24 @@ or singleton-output assumption is permitted.
 
 Tracks C (ambient-relative local-completion) and D (strict
 full-functional B-trees) remain independent.
+
+
+## 6. Independent finite semantic regression (not a Lean certificate)
+
+As a sanity check of the **nonredundant** function/relation dictionary,
+I exhaustively enumerated **132,680** configurations with a single
+designated relation of arity 2 or 3, source and target carriers of
+sizes 1 or 2, and every injective map. For each configuration I
+independently tested:
+
+- the induced relational embedding condition (preserve **and reflect** R);
+- the U-closedness condition on the image relative to each root tuple;
+- exact equality of source/target set-valued function fibres under the map.
+
+In all 132,680 configurations, \`(induced relational embedding AND
+U-closed range) iff full set-valued-function embedding\` held. This also
+covers zero/empty outputs, loops, repeated coordinates and arbitrary
+multivalued fibres on two vertices. This finite enumeration does not
+establish the general theorem, that the proposed Lean source compiles,
+or the ordered Ramsey-arrow transfer; the root-level Lean checks and
+exact-head CI remain mandatory.
