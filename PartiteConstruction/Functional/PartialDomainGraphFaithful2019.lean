@@ -1,4 +1,5 @@
 import PartiteConstruction.Structure.PartialSetFunctionsDomainGraph
+import PartiteConstruction.Structure.Relationalize
 
 /-!
 # Track A: faithful genuine partial-function domain-graph encoding
@@ -67,12 +68,12 @@ theorem eq_of_domainGraph_eq
           | some T =>
             have hNone : ¬ (∃ U : Set V, fnA F xs = some U) := by
               simp [ha]
-            have hSome : ∃ U : Set V, fnB F xs = some U := ⟨T, rfl⟩
+            have hSome : ∃ U : Set V, fnB F xs = some U := ⟨T, hb⟩
             exact (hNone (hDom.mpr hSome)).elim
         | some U =>
           cases hb : fnB F xs with
           | none =>
-            have hSome : ∃ T : Set V, fnA F xs = some T := ⟨U, rfl⟩
+            have hSome : ∃ T : Set V, fnA F xs = some T := ⟨U, ha⟩
             have hNone : ¬ (∃ T : Set V, fnB F xs = some T) := by
               simp [hb]
             exact (hNone (hDom.mp hSome)).elim
