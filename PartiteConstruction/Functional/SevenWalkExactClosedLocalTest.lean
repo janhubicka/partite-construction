@@ -74,16 +74,8 @@ theorem local_edge
     (i : Fin 7) :
     (small A v).rel () (fun k : Fin 2 =>
       if k = 0 then localVertex v i else localVertex v (next i)) := by
-  change A.rel () (Subtype.val ∘
-    (fun k : Fin 2 => if k = 0 then localVertex v i else localVertex v (next i)))
-  have hTuple :
-      (Subtype.val ∘ (fun k : Fin 2 =>
-        if k = 0 then localVertex v i else localVertex v (next i))) =
-      (fun k : Fin 2 => if k = 0 then v i else v (next i)) := by
-    funext k
-    by_cases hk : k = 0 <;> simp [hk, Function.comp_apply, localVertex]
-  rw [hTuple]
-  exact hEdges i
+  simpa only [small, Structure.induce, localVertex, Function.comp_apply]
+    using hEdges i
 
 /-- Any seven-edge odd closed walk contradicts two-colourability
 already on the EXACT induced local test, even when its seven
