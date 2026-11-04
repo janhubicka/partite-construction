@@ -49,7 +49,7 @@ def appendU (L : RelLanguage.{u}) (U : Set L.Symbol)
     (x : Fin (L.arity F.1 - 1) → V) (y : V) :
     Fin (L.arity F.1) → V :=
   fun i => Structure.funcTuple x y
-    (Fin.cast (Nat.sub_add_cancel (hU F.1 F.2)).symm i)
+    (Fin.cast ((Nat.sub_add_cancel (hU F.1 F.2)).symm) i)
 
 @[simp] theorem appendU_comp
     (L : RelLanguage.{u}) (U : Set L.Symbol)
@@ -60,9 +60,9 @@ def appendU (L : RelLanguage.{u}) (U : Set L.Symbol)
       appendU L U hU F (f ∘ x) (f y) := by
   funext i
   change f (Structure.funcTuple x y
-    (Fin.cast (Nat.sub_add_cancel (hU F.1 F.2)).symm i)) =
+    (Fin.cast ((Nat.sub_add_cancel (hU F.1 F.2)).symm) i)) =
     Structure.funcTuple (f ∘ x) (f y)
-      (Fin.cast (Nat.sub_add_cancel (hU F.1 F.2)).symm i)
+      (Fin.cast ((Nat.sub_add_cancel (hU F.1 F.2)).symm) i)
   exact congrFun (Structure.comp_funcTuple f x y) _
 
 end RelLanguage
