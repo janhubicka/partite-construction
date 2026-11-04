@@ -12,3 +12,10 @@ import PartiteConstruction.Structure.GenericUReducedLanguage
 #print axioms StructuralRamsey.RelStructure.toRelU_asUFunctionsReduced_rel_iff
 #print axioms StructuralRamsey.Structure.asUFunctionsReduced_toRelU_rel_iff
 #print axioms StructuralRamsey.Structure.asUFunctionsReduced_toRelU_func_iff
+
+#print axioms StructuralRamsey.RelLanguage.rootU_comp
+#print axioms StructuralRamsey.RelLanguage.lastU_comp
+#print axioms StructuralRamsey.RelStructure.Embedding.toReducedUFunctions
+#print axioms StructuralRamsey.Structure.Embedding.func_mem_map_iff
+#print axioms StructuralRamsey.Structure.Embedding.toRelU
+#print axioms StructuralRamsey.Structure.Embedding.toRelU_uClosed
