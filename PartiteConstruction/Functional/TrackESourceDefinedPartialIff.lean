@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.TrackBRealEHNExactImageUSize2019
 import PartiteConstruction.Functional.TrackENativePartialFullFaithfulness
+import PartiteConstruction.Functional.TrackEExactThreeClauseEndgame
 
 /-!
 # Appendix A Track E: exact same-map source-defined homomorphism correspondence
@@ -119,6 +120,30 @@ theorem EHN_iff_canonicalEncodedOriginalPartialHE
       CanonicalEncodedOriginalPartialHE A B f := by
   exact (originalPartialHE_iff_EHN).symm.trans
     originalPartialHE_iff_canonicalEncodedHE
+
+/-- The corrected genuine-partial EHN/HE correspondence has a
+NONVACUOUS finite Ramsey witness where the source-defined projection
+does NOT reflect function definedness. This is the actual native
+two-colour Ramsey + internal B-cover + loose full-B-tree witness from
+the previously verified binary obstruction, not just a vacuous
+homomorphism from an empty-domain one-point source. -/
+theorem actualEncodedEHN_RamseyWitness_loses_domain :
+    ∃ (X : Type) (_ : Finite X)
+      (C : Structure PublishedTotalBinaryObstruction.language X),
+      Arrow PublishedTotalBinaryObstruction.A
+        PublishedTotalBinaryObstruction.B C (Fin 2) ∧
+      IrreduciblesExtendTo PublishedTotalBinaryObstruction.B C ∧
+      LooseTreeAmalgam PublishedTotalBinaryObstruction.B X C ∧
+      ∃ p : X → Fin 3,
+        CanonicalEncodedOriginalPartialHE C PublishedTotalBinaryObstruction.D p ∧
+        ∃ (F : PublishedTotalBinaryObstruction.language.FuncSymbol)
+          (x : Fin (PublishedTotalBinaryObstruction.language.funcArity F) → X),
+          (PublishedTotalBinaryObstruction.D.func F (p ∘ x)).Nonempty ∧
+          ¬ (C.func F x).Nonempty := by
+  obtain ⟨X, hX, C, hArrow, hCover, hLoose, p, hPartial, hLoss⟩ :=
+    TrackEExactThreeClauseEndgame.actual_corrected_Bcovered_RamseyWitness_loses_domain
+  exact ⟨X, hX, C, hArrow, hCover, hLoose, p,
+    originalPartialHE_iff_canonicalEncodedHE.mp hPartial, hLoss⟩
 
 /-- A one-point unary native function structure with ALL inputs undefined. -/
 def nowhereDefined : Structure PartialSetStructure.exampleLanguage Unit where
