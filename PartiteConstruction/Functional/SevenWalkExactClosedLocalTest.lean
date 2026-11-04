@@ -74,8 +74,15 @@ theorem local_edge
     (i : Fin 7) :
     (small A v).rel () (fun k : Fin 2 =>
       if k = 0 then localVertex v i else localVertex v (next i)) := by
-  change A.rel () (fun k : Fin 2 =>
-    if k = 0 then v i else v (next i))
+  change A.rel () (Subtype.val ∘
+    (fun k : Fin 2 => if k = 0 then localVertex v i else localVertex v (next i)))
+  have hTuple :
+      (Subtype.val ∘ (fun k : Fin 2 =>
+        if k = 0 then localVertex v i else localVertex v (next i))) =
+      (fun k : Fin 2 => if k = 0 then v i else v (next i)) := by
+    funext k
+    by_cases hk : k = 0 <;> simp [hk, Function.comp_apply, localVertex]
+  rw [hTuple]
   exact hEdges i
 
 /-- Any seven-edge odd closed walk contradicts two-colourability
@@ -144,9 +151,13 @@ theorem small_no_weak_hom_to_bipartite
     (fun k : Fin 2 => if k = 0 then x else y) hxy
   have hTarget : B.rel () (fun k : Fin 2 =>
       if k = 0 then f x else f y) := by
-    convert hMap using 1
-    funext k
-    by_cases hk : k = 0 <;> simp [hk, Function.comp_apply]
+    have hTuple :
+        (f ∘ (fun k : Fin 2 => if k = 0 then x else y)) =
+        (fun k : Fin 2 => if k = 0 then f x else f y) := by
+      funext k
+      by_cases hk : k = 0 <;> simp [hk, Function.comp_apply]
+    rw [← hTuple]
+    exact hMap
   exact hc (f x) (f y) hTarget
 
 end StructuralRamsey.Structure.TrackD.SevenWalkLocality
