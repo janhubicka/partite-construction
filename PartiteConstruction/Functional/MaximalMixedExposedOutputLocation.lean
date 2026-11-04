@@ -170,6 +170,52 @@ theorem System.classifiedExposed_otherSide_of_cover
     exact hyNotL e heq.symm
 
 
+
+/-- Every FULL source-side embedding has function-closed image.
+Hence a control output part q escaping that side's exact tested
+projection cannot have a SOURCE output y INSIDE THE WHOLE TEST S
+with part q on the same input tuple xs.
+
+This remains true when q is represented by a unique TESTED vertex
+on the OPPOSITE source side: that representative is not the output
+of the displayed source function tuple. The source function may
+instead be undefined at that tuple, or have outputs outside the
+literal test. This is a concrete source-local "phantom or omitted
+output" obligation, not the assertion that the entire test's
+projected image omits q. -/
+theorem System.exposedControlOutput_no_tested_source_value
+    {C E : Type v}
+    (B : System L P C) (D : Structure L P)
+    {A : Structure L UA}
+    (alpha : Structure.Embedding A D)
+    (S : Finset C)
+    {Left : Structure L E}
+    (iL : Structure.Embedding Left B.toStructure)
+    (hExposed : B.ExposedControlOutputAtAlpha D alpha
+      ((↑S : Set C) ∩ Set.range iL)) :
+    ∃ (Func : L.FuncSymbol)
+      (xs : Fin (L.funcArity Func) →
+        ((↑S : Set C) ∩ Set.range iL)) (q : P),
+      (∀ i, B.part (xs i).1 ∈ Set.range alpha) ∧
+      q ∈ D.func Func (B.part ∘ (Subtype.val ∘ xs)) ∧
+      q ∉ B.part '' ((↑S : Set C) ∩ Set.range iL) ∧
+      (∀ y : C,
+        y ∈ B.toStructure.func Func (Subtype.val ∘ xs) →
+        y ∈ S → B.part y ≠ q) := by
+  obtain ⟨Func, xs, q, hInputs, hControl, hOutside⟩ := hExposed
+  refine ⟨Func, xs, q, hInputs, hControl, hOutside, ?_⟩
+  have hRange : B.toStructure.IsClosed (Set.range iL) :=
+    iL.range_isClosed
+  have hArgs : ∀ i : Fin (L.funcArity Func),
+      (Subtype.val ∘ xs) i ∈ Set.range iL := by
+    intro i
+    exact (xs i).2.2
+  intro y hy hyS hPart
+  apply hOutside
+  exact ⟨y, ⟨hyS, hRange Func (Subtype.val ∘ xs)
+    hArgs y hy⟩, hPart⟩
+
+
 end StructuralRamsey.FunctionalPartite
 
 namespace StructuralRamsey.FunctionalPartite
