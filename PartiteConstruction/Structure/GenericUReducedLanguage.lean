@@ -144,15 +144,11 @@ theorem toRelU_asUFunctionsReduced_rel_iff
     (R : L.Symbol) (x : Fin (L.arity R) → V) :
     (Structure.toRelU U hU (A.asUFunctionsReduced U hU)).rel R x ↔
       A.rel R x := by
+  classical
   by_cases h : R ∈ U
-  · let F : U := ⟨R, h⟩
-    change A.rel R
-      (RelLanguage.appendU L U hU F
-        (RelLanguage.rootU L U hU F x)
-        (RelLanguage.lastU L U hU F x)) ↔ A.rel R x
-    rw [RelLanguage.appendU_root_last]
-  · change A.rel R x ↔ A.rel R x
-    rfl
+  · simp [Structure.toRelU, RelStructure.asUFunctionsReduced, h,
+      RelLanguage.appendU_root_last]
+  · simp [Structure.toRelU, RelStructure.asUFunctionsReduced, h]
 
 end RelStructure
 
@@ -167,8 +163,8 @@ theorem asUFunctionsReduced_toRelU_rel_iff
     (x : Fin ((L.withUFunctionsReduced U).relArity R) → V) :
     (RelStructure.asUFunctionsReduced (toRelU U hU C) U hU).rel R x ↔
       C.rel R x := by
-  change (if h : R.1 ∈ U then _ else C.rel ⟨R.1, h⟩ x) ↔ C.rel R x
-  simp [R.2]
+  change (toRelU U hU C).rel R.1 x ↔ C.rel R x
+  simp [toRelU, R.2]
 
 theorem asUFunctionsReduced_toRelU_func_iff
     (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
@@ -178,15 +174,9 @@ theorem asUFunctionsReduced_toRelU_func_iff
     (y : V) :
     y ∈ (RelStructure.asUFunctionsReduced (toRelU U hU C) U hU).func F x ↔
       y ∈ C.func F x := by
-  change
-    (if h : F.1 ∈ U then
-      RelLanguage.lastU L U hU ⟨F.1, h⟩
-        (RelLanguage.appendU L U hU F x y) ∈
-        C.func ⟨F.1, h⟩
-          (RelLanguage.rootU L U hU ⟨F.1, h⟩
-            (RelLanguage.appendU L U hU F x y))
-     else False) ↔ _
-  simp [F.2]
+  change (toRelU U hU C).rel F.1
+    (RelLanguage.appendU L U hU F x y) ↔ y ∈ C.func F x
+  simp [toRelU, F.2, RelLanguage.rootU_append, RelLanguage.lastU_append]
 
 end Structure
 end StructuralRamsey
