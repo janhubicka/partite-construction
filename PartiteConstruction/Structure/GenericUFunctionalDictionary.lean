@@ -3,17 +3,21 @@ import PartiteConstruction.Functional.OrderedRecursive
 /-!
 # Generic U-closed relational signatures as set-valued-function languages
 
-This is the same-carrier dictionary needed for the printed arbitrary-relational
-\(L,U\) theorem in Appendix A of the survey. We deliberately RETAIN all original
-relation symbols and add one redundant set-valued function for each designated
-relation. This avoids a fragile deletion/reindexing of unrelated symbols.
+This is a PRELIMINARY same-carrier dictionary for Appendix A. It
+deliberately RETAINS all original relations and adds a redundant function
+for each distinguished U-relation. It is suitable for comparing full
+embeddings BETWEEN CANONICALLY COHERENT SOURCES AND TARGETS.
 
-For a designated m-ary relation R, the function has input arity m-1 and
+For a designated m-ary R the extra function has input arity m-1, with
 F_R(x₀,...,x_{m-2}) = { y | R(x₀,...,x_{m-2},y) }.
-Full preservation of F_R is equivalent to an induced relational embedding
-with U-closed range, on precisely the same carriers and map.
+Full preservation of F_R is equivalent to U-closedness of an induced
+relational embedding between these coherent expansions, on the same map.
 
-The arbitrary-relational ordered Ramsey wrapper is a separate next step.
+CRITICAL: An arbitrary functional Ramsey witness need NOT remain coherent:
+its duplicated R relation and F_R function graph may disagree. Thus this
+dictionary ALONE cannot transfer an unrestricted functional Ramsey arrow.
+The final theorem must use the NONREDUNDANT signature replacing U-relations
+by functions, and separately handle the designated order.
 -/
 
 namespace StructuralRamsey
