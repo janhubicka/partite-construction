@@ -34,6 +34,15 @@ equivalence in both directions. `EHN_iff_canonicalEncodedOriginalPartialHE`
 composes the established `originalPartialHE_iff_EHN` equivalence, providing a
 fully same-witness interface for the actual native EHN projection.
 
+`actualEncodedEHN_RamseyWitness_loses_domain` then instantiates the exact
+HE equivalence on the already verified **genuine finite binary Ramsey
+witness** from merged #544: the *same C and projection p* have a full
+functional Ramsey arrow, genuine internal B-copy extension, an actual
+loose functional B-tree, and encoded source-defined 2019 HE; nevertheless
+some source function input is undefined while its p-image is defined.
+Thus even the full corrected 2019 **homomorphism-embedding** notion does
+not imply the historical global total-fibre-surjective map.
+
 The claim is **not** a blanket equivalence with an irreducibility notion on
 arbitrary rich partial Option(Set) structures. In particular, its tests are the
 faithful encodings of native irreducibles, not `some ∅` structures with
