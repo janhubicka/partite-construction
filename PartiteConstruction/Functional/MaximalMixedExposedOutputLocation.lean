@@ -116,6 +116,60 @@ theorem System.classifiedExposed_iff_exposed_of_maximal
     exact B.exposedControlOutput_maximal_classified
       D alpha Side S m hSize hMax hEx
 
+
+/-- Under the exact TWO-SIDE covering property of a full free
+amalgam, an exposed control output with a unique tested
+representative outside the left side must actually be in the
+right-side EXTERIOR (never in the left image or common root).
+
+The output is still the SAME concrete control-function slot F,xs,q.
+The classification makes no assumptions on source function
+closure, and does not silently supply a compatible target
+B-tree extension. -/
+theorem System.classifiedExposed_otherSide_of_cover
+    {C E F : Type v}
+    (B : System L P C) (D : Structure L P)
+    {A : Structure L UA}
+    (alpha : Structure.Embedding A D)
+    (S : Finset C)
+    (l : E → C) (r : F → C)
+    (hCover : ∀ z : C,
+      (∃ e : E, z = l e) ∨ (∃ f : F, z = r f))
+    (hClassified :
+      B.ClassifiedExposedControlOutputAtAlpha D alpha S
+        ((↑S : Set C) ∩ Set.range l)) :
+    ∃ (Func : L.FuncSymbol)
+      (xs : Fin (L.funcArity Func) →
+        ((↑S : Set C) ∩ Set.range l)) (q : P),
+      (∀ i, B.part (xs i).1 ∈ Set.range alpha) ∧
+      q ∈ D.func Func (B.part ∘ (Subtype.val ∘ xs)) ∧
+      q ∉ B.part '' ((↑S : Set C) ∩ Set.range l) ∧
+      (q ∉ B.part '' (↑S : Set C) ∨
+        ∃! z : C, z ∈ S ∧
+          (∃ f : F, z = r f) ∧
+          (∀ e : E, z ≠ l e) ∧ B.part z = q) := by
+  obtain ⟨Func, xs, q, hInputs, hControl, hOutside, hLoc⟩ :=
+    hClassified
+  refine ⟨Func, xs, q, hInputs, hControl, hOutside, ?_⟩
+  rcases hLoc with hExternal | ⟨z, ⟨hzS, hzNotLeft, hzq⟩, hUnique⟩
+  · exact Or.inl hExternal
+  · right
+    have hNotL : ∀ e : E, z ≠ l e := by
+      intro e heq
+      apply hzNotLeft
+      exact ⟨hzS, ⟨e, heq.symm⟩⟩
+    have hOther : ∃ f : F, z = r f := by
+      rcases hCover z with ⟨e, heq⟩ | ⟨f, heq⟩
+      · exact (hNotL e heq).elim
+      · exact ⟨f, heq⟩
+    refine ⟨z, ⟨hzS, hOther, hNotL, hzq⟩, ?_⟩
+    intro y ⟨hyS, _hOther, hyNotL, hyq⟩
+    apply hUnique y
+    refine ⟨hyS, ?_, hyq⟩
+    rintro ⟨_hyS, ⟨e, heq⟩⟩
+    exact hyNotL e heq.symm
+
+
 end StructuralRamsey.FunctionalPartite
 
 namespace StructuralRamsey.FunctionalPartite
