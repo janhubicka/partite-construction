@@ -75,8 +75,8 @@ exist. This is stronger than the whole-stage no-hom theorem:
 the obstruction is already witnessed by seven exact vertices. -/
 theorem exactSevenTest_no_weak_hom_to_old :
     ¬ ∃ f : (↑exactSevenTest : Set Vertex) → Fin 5,
-      (SevenWalkLocality.small Whole.toStructure cycle).
-        IsWeakHomomorphism oldSystem.toStructure f := by
+      (SevenWalkLocality.small Whole.toStructure cycle).IsWeakHomomorphism
+        oldSystem.toStructure f := by
   apply SevenWalkLocality.small_no_weak_hom_to_bipartite
     Whole.toStructure cycle native_sevenWalk_edges oldSystem.toStructure
   refine ⟨oldColor, ?_⟩
