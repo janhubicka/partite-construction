@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.HJThreeLineP5ControlTriangleAudit
+
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.weak_oldPart_forces_triangle
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.triangle_not_twoColorable
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.oldPart_no_bipartite_weak_control
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.oldPart_weaklyPartite_forces_triangle
