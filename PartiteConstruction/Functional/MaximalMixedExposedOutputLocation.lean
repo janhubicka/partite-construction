@@ -88,8 +88,7 @@ theorem System.maximalExactTest_insert_omitted_budget
       S.card = m + 1 :=
     (B.maximalExactTest_part_injective S m hSize hMax).1
   have hInserted : (insert y S).card = m + 2 := by
-    simp [hy, hExact]
-    omega
+    simp [hy, hExact] <;> omega
   refine ⟨hInserted, ?_⟩
   by_cases hPart : B.part y ∈ S.image B.part
   · simp [Finset.image_insert, hPart, hMax]
