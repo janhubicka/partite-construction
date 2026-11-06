@@ -1,4 +1,4 @@
-import PartiteConstruction.Functional.ClosedGeneratorRank
+import PartiteConstruction.Functional.OriginalPartialSmallImageGeneratorHull
 import PartiteConstruction.Functional.OccupiedAlphaControlExposure
 
 /-!
@@ -33,7 +33,7 @@ open Structure
 
 universe u v
 variable {L : Language.{u}}
-variable {P C E : Type v}
+variable {P C E VB : Type v}
 
 /-- The EXACT tested vertices inside one full embedding side,
 rather than a closure or the entire source-side carrier. -/
@@ -125,6 +125,43 @@ theorem System.exactMixedSideHull_generatedByAtMost_and_side
     intro z hz
     exact hz (Set.range iL) hRange hSeedsRange
   exact ⟨hBound, hHullRange⟩
+
+/-- If the actual full SOURCE side already satisfies the
+rank-m generated original-partial strict Base-tree predecessor
+invariant, then the closure of ALL its tested mixed-side vertices
+has an ABSOLUTE strict full-functional Base-tree completion.
+
+This closes the separate side-hull existence obligation without
+adding hull vertices to the original weak S, or charging their
+vertex cardinality. The theorem deliberately supplies NO
+relative extension over a specified older target root or
+protected Hales--Jewett history: synchronizing those absolute
+target trees is the remaining hard case. -/
+theorem System.exactMixedSideHull_hasAbsoluteOriginalPartialTree
+    (B : System L P C)
+    (Base : Structure L VB)
+    (S : Finset C) (m : ℕ)
+    (hS : S.card ≤ m + 1)
+    {Left : Structure L E}
+    (iL : Structure.Embedding Left B.toStructure)
+    (hMixed : ∃ z : C, z ∈ S ∧ ∀ e : E, z ≠ iL e)
+    (hSidePrev :
+      LocallyGeneratedOriginalPartialTreeCompletable
+        Base B.toStructure m) :
+    let Seeds := B.exactMixedSideSeeds S iL
+    HasOriginalPartialTreeCompletion Base
+      (B.toStructure.induce
+        (B.toStructure.functionClosure (↑Seeds : Set C))
+        (B.toStructure.functionClosure_isClosed
+          (↑Seeds : Set C))) := by
+  let Seeds := B.exactMixedSideSeeds S iL
+  let H : Set C := B.toStructure.functionClosure (↑Seeds : Set C)
+  let hH : B.toStructure.IsClosed H :=
+    B.toStructure.functionClosure_isClosed (↑Seeds : Set C)
+  have hGen : (B.toStructure.induce H hH).GeneratedByAtMost m :=
+    (B.exactMixedSideHull_generatedByAtMost_and_side
+      S m hS iL hMixed).1
+  exact hSidePrev H hH hGen
 
 /-- The literal tuple-input set inside a mixed source side is a
 proper subset of S, and therefore has at most m vertices.
