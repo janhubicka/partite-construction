@@ -222,7 +222,8 @@ def Embedding.toReducedUFunctions
       have hh : B.rel F.1
           (e ∘ RelLanguage.appendU L U hU F x z) :=
         (e.map_rel_iff F.1 (RelLanguage.appendU L U hU F x z)).mpr hz
-      simpa only [RelLanguage.appendU_comp] using hh
+      have hcomp := RelLanguage.appendU_comp L U hU F e.toFun x z
+      exact Eq.mp (congrArg (B.rel F.1) hcomp) hh
     · intro hy
       exact he F x y hy
 
