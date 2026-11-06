@@ -224,6 +224,7 @@ No projection injectivity or function closure is used here.
 This is a purely exact finite-source cardinal argument. -/
 theorem System.mixedSide_functionInput_card_le
     (B : System L P C)
+    [DecidableEq C]
     (S : Finset C) (m : ℕ)
     (hS : S.card ≤ m + 1)
     {Left : Structure L E}
@@ -303,7 +304,8 @@ theorem System.mixedSide_functionInputHull_generatedByAtMost
         (B.toStructure.functionClosure_isClosed
           (↑G : Set C))).GeneratedByAtMost m :=
     hGenerated.mono hCard
-  simpa only [hSet] using hBound
+  rw [← hSet]
+  exact hBound
 
 end StructuralRamsey.FunctionalPartite
 
