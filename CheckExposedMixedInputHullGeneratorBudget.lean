@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.ExposedMixedInputHullGeneratorBudget
+
+#print axioms StructuralRamsey.FunctionalPartite.System.mixedSide_functionInput_card_le
+#print axioms StructuralRamsey.FunctionalPartite.System.mixedSide_functionInputHull_generatedByAtMost
+#print axioms StructuralRamsey.FunctionalPartite.System.exposedControlOutput_inputHull_rank_le_m
