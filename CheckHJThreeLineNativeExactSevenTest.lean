@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.HJThreeLineNativeExactSevenTest
+
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.exactSevenTest_card_le_seven
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.exactSevenTest_closed
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.native_sevenWalk_edges
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.exactSevenTest_not_twoColorable
+#print axioms StructuralRamsey.Structure.TrackD.NativeThreeLineC7.exactSevenTest_no_weak_hom_to_old
