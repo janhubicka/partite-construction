@@ -114,17 +114,14 @@ theorem wholeMaskPartialDecode_noDefinedEmpty_of_closed_coverage
   classical
   intro F x U hSome
   let E := wholeMaskTagReduct C
-  by_cases hExists : ∃ T : Set V, HasWholeMaskValue E F x T
-  · have hChosen : HasWholeMaskValue E F x (Classical.choose hExists) :=
-      Classical.choose_spec hExists
-    have hEq : Classical.choose hExists = U := by
-      simpa [wholeMaskPartialDecode, hExists] using hSome
-    rw [← hEq]
-    exact wholeMaskValue_nonempty_of_closed_coverage
-      C Base part hClosed hCover hBase F x _ hChosen
-  · have hFalse : False := by
-      simpa [wholeMaskPartialDecode, hExists] using hSome
-    exact hFalse.elim
+  obtain ⟨hExists, hEq⟩ :
+      ∃ h : ∃ T : Set V, HasWholeMaskValue E F x T,
+        Classical.choose h = U := by
+    simpa [wholeMaskPartialDecode] using hSome
+  rw [← hEq]
+  exact wholeMaskValue_nonempty_of_closed_coverage
+    C Base part hClosed hCover hBase F x _
+    (Classical.choose_spec hExists)
 
 end StructuralRamsey.RelStructure
 
@@ -159,8 +156,8 @@ theorem wholeMaskOriginalDecode_noDefinedEmpty_of_closed_coverage
       (Test : RelStructure ((L.withParts P).wholeMaskTagLanguage P) X),
       IsUClosed ((L.withParts P).wholeMaskClosureRules P) Test →
       IsUIrreducible ((L.withParts P).wholeMaskClosureRules P) Test →
-      Embedding Test C →
-      Nonempty (Embedding Test
+      RelStructure.Embedding Test C →
+      Nonempty (RelStructure.Embedding Test
         (wholeMaskTagExpansion
           ((Base.withParts basePart).wholeMaskPatternGraph basePart))))
     (hBase : NoDefinedEmptyValues Base) :
@@ -169,7 +166,7 @@ theorem wholeMaskOriginalDecode_noDefinedEmpty_of_closed_coverage
       ((wholeMaskTagReduct C).wholeMaskPartialDecode) :=
     wholeMaskPartialDecode_noDefinedEmpty_of_closed_coverage
       C (Base.withParts basePart) basePart hClosed hCover
-      (hBase.withParts basePart)
+      (NoDefinedEmptyValues.withParts Base basePart hBase)
   intro F x S hValue
   exact hAll (ULift.up F) x S hValue
 
@@ -184,8 +181,8 @@ theorem wholeMaskOriginalDecode_noDefinedEmpty_of_nativeBCover
       (Test : RelStructure ((L.withParts P).wholeMaskTagLanguage P) X),
       IsUClosed ((L.withParts P).wholeMaskClosureRules P) Test →
       IsUIrreducible ((L.withParts P).wholeMaskClosureRules P) Test →
-      Embedding Test C →
-      Nonempty (Embedding Test
+      RelStructure.Embedding Test C →
+      Nonempty (RelStructure.Embedding Test
         (wholeMaskTagExpansion
           (((B.toNonemptyPartial).withParts basePart).wholeMaskPatternGraph basePart)))) :
     NoDefinedEmptyValues (wholeMaskOriginalDecode C) := by
@@ -210,8 +207,8 @@ theorem nativeArrow_iff_coveredPartialArrow
       (Test : RelStructure ((L.withParts P).wholeMaskTagLanguage P) X),
       IsUClosed ((L.withParts P).wholeMaskClosureRules P) Test →
       IsUIrreducible ((L.withParts P).wholeMaskClosureRules P) Test →
-      Embedding Test C →
-      Nonempty (Embedding Test
+      RelStructure.Embedding Test C →
+      Nonempty (RelStructure.Embedding Test
         (wholeMaskTagExpansion
           (((B.toNonemptyPartial).withParts basePart).wholeMaskPatternGraph basePart))))
     (κ : Type*) :
