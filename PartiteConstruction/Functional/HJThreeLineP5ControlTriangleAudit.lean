@@ -59,8 +59,8 @@ theorem weak_oldPart_forces_triangle
       fin_cases k
       · exact hpa
       · exact hpb
-    rw [hArgs] at hD
-    exact hD
+    exact Eq.mp
+      (congrArg (fun xs : Fin 2 → Fin 3 => D.rel () xs) hArgs) hD
   refine ⟨?_, ?_, ?_⟩
   · exact edgeMap 0 1 0 1
       (by simp [oldEdge]) (by decide) (by decide)
