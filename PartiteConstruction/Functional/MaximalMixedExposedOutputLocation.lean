@@ -88,7 +88,7 @@ theorem System.maximalExactTest_insert_omitted_budget
       S.card = m + 1 :=
     (B.maximalExactTest_part_injective S m hSize hMax).1
   have hInserted : (insert y S).card = m + 2 := by
-    rw [Finset.card_insert_of_not_mem hy]
+    simp [hy, hExact]
     omega
   refine ⟨hInserted, ?_⟩
   by_cases hPart : B.part y ∈ S.image B.part
@@ -246,7 +246,7 @@ theorem System.exposedControlOutput_no_tested_source_value
   intro y hy hyS hPart
   apply hOutside
   exact ⟨y, ⟨hyS, hRange Func (Subtype.val ∘ xs)
-    hArgs y hy⟩, hPart⟩
+    hArgs hy⟩, hPart⟩
 
 
 
@@ -304,7 +304,7 @@ theorem System.exposedControlOutput_sourceUndefined_or_omittedUnique
       intro i
       exact (xs i).2.2
     have hyRange : y ∈ Set.range iL :=
-      hRangeClosed Func args hArgsRange y hy
+      hRangeClosed Func args hArgsRange hy
     have hyOutside : y ∉ S := by
       intro hyS
       exact hOutside ⟨y, ⟨hyS, hyRange⟩, hyq⟩
@@ -327,7 +327,7 @@ attachment-side image but OUTSIDE the literal weak test.
 
 CRITICAL: The generated input hull here is used only as a
 decomposition CERTIFICATE; it is NOT substituted for the weak
-tested set S, and NO generator-/vertex-rank bound on that hull
+tested set S, and NO generator or vertex-rank bound on that hull
 is inferred. A history-compatible TARGET root extension remains
 unproved. -/
 theorem System.exposedControlOutput_reducibleHull_or_omittedUnique
