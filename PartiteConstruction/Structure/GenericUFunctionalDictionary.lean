@@ -115,9 +115,10 @@ def Embedding.toUFunctions
       have hh : B.rel F.1
           (e ∘ RelLanguage.appendU L U hU F x z) :=
         (e.map_rel_iff F.1 (RelLanguage.appendU L U hU F x z)).mpr hz
-      change B.rel F.1
-        (RelLanguage.appendU L U hU F (e ∘ x) (e z))
-      simpa only [RelLanguage.appendU_comp] using hh
+      -- Rewrite with the explicit function-tuple naturality law.  A
+      -- simplifier-only application does not elaborate the local coercion.
+      have hcomp := RelLanguage.appendU_comp L U hU F e.toFun x z
+      exact Eq.mp (congrArg (B.rel F.1) hcomp) hh
     · intro hy
       exact he F x y hy
 
