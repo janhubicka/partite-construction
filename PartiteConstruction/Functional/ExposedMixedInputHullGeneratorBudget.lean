@@ -163,6 +163,60 @@ theorem System.exactMixedSideHull_hasAbsoluteOriginalPartialTree
       S m hS iL hMixed).1
   exact hSidePrev H hH hGen
 
+/-- NONCIRCULAR absolute side-hull completion from the ACTUAL
+predecessor rank-m property on the ORIGINAL ATTACHMENT SIDE,
+not on the new whole Picture being constructed.
+
+The tested-side hull is m-generated and lies entirely in the
+full image of Left. Factor its genuine closed induced structure
+FULLY into Left, then invoke the existing original-partial
+generator-rank completion theorem there.
+
+This constructs an ABSOLUTE strict full-functional Base-tree
+for the entire closed side hull. The remaining hard step is
+not absolute existence but a RELATIVE extension over the same
+chosen target root as the Hales--Jewett core and earlier
+attachment history. No weak test is enlarged or assigned
+the cardinality of its generated closure. -/
+theorem System.exactMixedSideHull_hasAbsolute_fromSidePredecessor
+    (B : System L P C)
+    (Base : Structure L VB)
+    (S : Finset C) (m : ℕ)
+    (hS : S.card ≤ m + 1)
+    {Left : Structure L E}
+    (iL : Structure.Embedding Left B.toStructure)
+    (hMixed : ∃ z : C, z ∈ S ∧ ∀ e : E, z ≠ iL e)
+    (hSidePrev :
+      LocallyGeneratedOriginalPartialTreeCompletable Base Left m) :
+    let Seeds := B.exactMixedSideSeeds S iL
+    HasOriginalPartialTreeCompletion Base
+      (B.toStructure.induce
+        (B.toStructure.functionClosure (↑Seeds : Set C))
+        (B.toStructure.functionClosure_isClosed
+          (↑Seeds : Set C))) := by
+  classical
+  let Seeds := B.exactMixedSideSeeds S iL
+  let H : Set C :=
+    B.toStructure.functionClosure (↑Seeds : Set C)
+  let hH : B.toStructure.IsClosed H :=
+    B.toStructure.functionClosure_isClosed (↑Seeds : Set C)
+  have hBounds :
+      (B.toStructure.induce H hH).GeneratedByAtMost m ∧
+      H ⊆ Set.range iL :=
+    B.exactMixedSideHull_generatedByAtMost_and_side
+      S m hS iL hMixed
+  let inc : Structure.Embedding (B.toStructure.induce H hH)
+      B.toStructure :=
+    Structure.inclusion B.toStructure H hH
+  have hRange : ∀ x : H, ∃ a : E, inc x = iL a := by
+    intro x
+    obtain ⟨a, ha⟩ := hBounds.2 x.2
+    exact ⟨a, ha.symm⟩
+  let e : Structure.Embedding (B.toStructure.induce H hH) Left :=
+    inc.factorThroughRange iL hRange
+  exact hSidePrev.completion_of_embedding
+    (B.toStructure.induce H hH) hBounds.1 e
+
 /-- The literal tuple-input set inside a mixed source side is a
 proper subset of S, and therefore has at most m vertices.
 
