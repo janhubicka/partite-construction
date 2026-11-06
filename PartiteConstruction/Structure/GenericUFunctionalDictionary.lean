@@ -115,6 +115,8 @@ def Embedding.toUFunctions
       have hh : B.rel F.1
           (e ∘ RelLanguage.appendU L U hU F x z) :=
         (e.map_rel_iff F.1 (RelLanguage.appendU L U hU F x z)).mpr hz
+      change B.rel F.1
+        (RelLanguage.appendU L U hU F (e ∘ x) (e z))
       simpa only [RelLanguage.appendU_comp] using hh
     · intro hy
       exact he F x y hy
