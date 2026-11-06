@@ -102,4 +102,31 @@ theorem System.definedInputHull_fullEmbedding_to_selectedA
       (Classical.choose_spec (hGRange z)).symm
     _ = B.part z.1 := hg z
 
+/-- In a DEFINED source-function case the full input hull
+embeds canonically into one selected A-copy of Base.
+The precise EHN output part trace is still witnessed on the
+entire hull, not only the tuple input vertices. -/
+theorem System.definedInputHull_fullEmbedding_to_Base
+    (B : System L P C) (D : Structure L P)
+    (hB : B.WeaklyPartiteOver D)
+    {A : Structure L UA}
+    (alpha : Embedding A D)
+    (Base : Structure L VB) (eAB : Embedding A Base)
+    (Func : L.FuncSymbol)
+    (xs : Fin (L.funcArity Func) → C)
+    (hInputParts : ∀ i, B.part (xs i) ∈ Set.range alpha)
+    {y : C} (hy : y ∈ B.toStructure.func Func xs) :
+    let H := B.toStructure.functionClosure (Set.range xs)
+    ∃ e : Embedding
+      (B.toStructure.induce H
+        (B.toStructure.functionClosure_isClosed (Set.range xs))) Base,
+      ∀ z : H, ∃ a : UA,
+        e z = eAB a ∧ alpha a = B.part z.1 := by
+  obtain ⟨eA, hTrace⟩ :=
+    B.definedInputHull_fullEmbedding_to_selectedA
+      D hB alpha Func xs hInputParts hy
+  refine ⟨eAB.comp eA, ?_⟩
+  intro z
+  exact ⟨eA z, rfl, hTrace z⟩
+
 end StructuralRamsey.FunctionalPartite
