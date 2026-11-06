@@ -124,8 +124,9 @@ ONLY from the function value set; no coherence assumption is needed. -/
 def toRelU (U : Set L.Symbol)
     (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
     (C : Structure (L.withUFunctionsReduced U) V) : RelStructure L V where
-  rel R x :=
-    if hr : R ∈ U then
+  rel R x := by
+    classical
+    exact if hr : R ∈ U then
       let F : U := ⟨R, hr⟩
       RelLanguage.lastU L U hU F x ∈
         C.func F (RelLanguage.rootU L U hU F x)
