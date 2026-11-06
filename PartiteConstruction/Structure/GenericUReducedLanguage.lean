@@ -178,6 +178,7 @@ theorem asUFunctionsReduced_toRelU_func_iff
     (RelLanguage.appendU L U hU F x y) ↔ y ∈ C.func F x
   simp [toRelU, F.2, RelLanguage.rootU_append, RelLanguage.lastU_append]
 
+end Structure
 
 namespace RelLanguage
 
