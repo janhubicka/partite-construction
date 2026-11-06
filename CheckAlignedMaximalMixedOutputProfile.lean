@@ -2,3 +2,4 @@ import PartiteConstruction.Functional.AlignedMaximalMixedOutputProfile
 
 #print axioms StructuralRamsey.FunctionalPartite.System.alignedMaximalExposedSourceProfile_of_exposed
 #print axioms StructuralRamsey.FunctionalPartite.System.weakTree_or_aligned_exposed_alpha_mixed_succ
+#print axioms StructuralRamsey.FunctionalPartite.System.alignedMaximalExposedSourceProfile_otherSide
