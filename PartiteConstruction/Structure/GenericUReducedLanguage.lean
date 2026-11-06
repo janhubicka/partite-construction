@@ -143,8 +143,7 @@ the subtype witnesses are proof-irrelevant. -/
       RelLanguage.lastU L U hU F t ∈
         C.func F (RelLanguage.rootU L U hU F t) := by
   classical
-  simp only [toRelU, dif_pos F.2]
-  rfl
+  simpa only [toRelU, dif_pos F.2]
 
 /-- The non-U relations are left unchanged by arbitrary-target decoding. -/
 @[simp] theorem toRelU_rel_not_mem_iff
@@ -153,8 +152,7 @@ the subtype witnesses are proof-irrelevant. -/
     (R : L.Symbol) (hR : R ∉ U) (t : Fin (L.arity R) → V) :
     (toRelU U hU C).rel R t ↔ C.rel ⟨R, hR⟩ t := by
   classical
-  simp only [toRelU, dif_neg hR]
-  rfl
+  simpa only [toRelU, dif_neg hR]
 
 end Structure
 
