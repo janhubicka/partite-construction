@@ -1,0 +1,13 @@
+import PartiteConstruction.Functional.TrackESourceDefinedPartialIff
+
+/-!
+Lean kernel/axiom certification of the exact same-map source-defined
+2019 native/Option(Set) homomorphism equivalence.
+-/
+
+#print axioms StructuralRamsey.Structure.TrackESourceDefinedPartialIff.originalPartialHom_of_nonemptyPartial
+#print axioms StructuralRamsey.Structure.TrackESourceDefinedPartialIff.originalPartialHom_iff_nonemptyPartial
+#print axioms StructuralRamsey.Structure.TrackESourceDefinedPartialIff.originalPartialHE_iff_canonicalEncodedHE
+#print axioms StructuralRamsey.Structure.TrackESourceDefinedPartialIff.EHN_iff_canonicalEncodedOriginalPartialHE
+#print axioms StructuralRamsey.Structure.TrackESourceDefinedPartialIff.actualEncodedEHN_RamseyWitness_loses_domain
+#print axioms StructuralRamsey.Structure.TrackESourceDefinedPartialIff.sourceDefined_and_nonreflecting_example
