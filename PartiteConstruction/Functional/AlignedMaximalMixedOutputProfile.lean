@@ -108,6 +108,67 @@ theorem System.alignedMaximalExposedSourceProfile_of_exposed
     exact hInj w hwS z hzS (hwq.trans hzq.symm)
   · exact Or.inl hInTest
 
+
+/-- In a real full binary source free amalgam, an aligned
+cross-side q-witness from the LEFT side lies specifically in
+the RIGHT-SIDE EXTERIOR. Both location and source-fibre origin
+remain witnessed by the SAME (Func, xs, q), with the same
+test cardinality and no generated closure.
+
+Only the two-side covering property of the genuine full
+source free amalgam is used. This is a source-side localization
+theorem, not a strict target-tree extension. -/
+theorem System.alignedMaximalExposedSourceProfile_otherSide
+    {C E F : Type v}
+    (B : System L P C) (D : Structure L P)
+    {A : Structure L UA}
+    (alpha : Structure.Embedding A D)
+    (S : Finset C)
+    {Left : Structure L E} {Right : Structure L F}
+    (iL : Structure.Embedding Left B.toStructure)
+    (iR : Structure.Embedding Right B.toStructure)
+    (hCover : ∀ z : C,
+      (∃ e : E, z = iL e) ∨ (∃ f : F, z = iR f))
+    (hProfile :
+      B.AlignedMaximalExposedSourceProfile D alpha S iL) :
+    ∃ (Func : L.FuncSymbol)
+      (xs : Fin (L.funcArity Func) →
+        ↥((↑S : Set C) ∩ Set.range iL))
+      (q : P),
+      (∀ i, B.part (xs i).1 ∈ Set.range alpha) ∧
+      q ∈ D.func Func (B.part ∘ (Subtype.val ∘ xs)) ∧
+      q ∉ B.part '' ((↑S : Set C) ∩ Set.range iL) ∧
+      (q ∉ B.part '' (↑S : Set C) ∨
+        ∃! z : C,
+          z ∈ S ∧
+          (∃ f : F, z = iR f) ∧
+          (∀ e : E, z ≠ iL e) ∧
+          B.part z = q) ∧
+      (Nonempty (Structure.ProperFreeDecomposition
+        (B.toStructure.induce
+          (B.toStructure.functionClosure
+            (Set.range (Subtype.val ∘ xs)))
+          (B.toStructure.functionClosure_isClosed
+            (Set.range (Subtype.val ∘ xs))))) ∨
+        ∃! y : C,
+          y ∈ B.toStructure.func Func (Subtype.val ∘ xs) ∧
+          B.part y = q ∧
+          y ∈ Set.range iL ∧ y ∉ S) := by
+  obtain ⟨Func, xs, q, hInputs, hControl, hOutside, hLoc, hOrigin⟩ :=
+    hProfile
+  refine ⟨Func, xs, q, hInputs, hControl, hOutside, ?_, hOrigin⟩
+  rcases hLoc with hExternal | ⟨z, ⟨hzS, hzNotL, hzq⟩, hUnique⟩
+  · exact Or.inl hExternal
+  · right
+    have hOther : ∃ f : F, z = iR f := by
+      rcases hCover z with ⟨e, heq⟩ | ⟨f, heq⟩
+      · exact (hzNotL e heq).elim
+      · exact ⟨f, heq⟩
+    refine ⟨z, ⟨hzS, hOther, hzNotL, hzq⟩, ?_⟩
+    intro w ⟨hwS, _hwOther, hwNotL, hwq⟩
+    exact hUnique w ⟨hwS, hwNotL, hwq⟩
+
+
 end StructuralRamsey.FunctionalPartite
 
 
