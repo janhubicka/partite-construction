@@ -133,6 +133,29 @@ def toRelU (U : Set L.Symbol)
     else
       C.rel ⟨R, hr⟩ x
 
+/-- Direct membership presentation of a decoded distinguished relation;
+the subtype witnesses are proof-irrelevant. -/
+@[simp] theorem toRelU_func_iff
+    (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
+    (C : Structure (L.withUFunctionsReduced U) V)
+    (F : U) (t : Fin (L.arity F.1) → V) :
+    (toRelU U hU C).rel F.1 t ↔
+      RelLanguage.lastU L U hU F t ∈
+        C.func F (RelLanguage.rootU L U hU F t) := by
+  classical
+  simp only [toRelU, dif_pos F.2]
+  rfl
+
+/-- The non-U relations are left unchanged by arbitrary-target decoding. -/
+@[simp] theorem toRelU_rel_not_mem_iff
+    (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
+    (C : Structure (L.withUFunctionsReduced U) V)
+    (R : L.Symbol) (hR : R ∉ U) (t : Fin (L.arity R) → V) :
+    (toRelU U hU C).rel R t ↔ C.rel ⟨R, hR⟩ t := by
+  classical
+  simp only [toRelU, dif_neg hR]
+  rfl
+
 end Structure
 
 namespace RelStructure
@@ -178,12 +201,10 @@ theorem asUFunctionsReduced_toRelU_func_iff
     (y : V) :
     y ∈ (RelStructure.asUFunctionsReduced (toRelU U hU C) U hU).func F x ↔
       y ∈ C.func F x := by
-  classical
   change (Structure.toRelU U hU C).rel F.1
     (RelLanguage.appendU L U hU F x y) ↔ y ∈ C.func F x
-  simpa only [Structure.toRelU, dif_pos F.2,
-    RelLanguage.rootU_append, RelLanguage.lastU_append] using
-    (Iff.rfl : y ∈ C.func F x ↔ y ∈ C.func F x)
+  simpa only [Structure.toRelU_func_iff,
+    RelLanguage.rootU_append, RelLanguage.lastU_append]
 
 end Structure
 
@@ -276,10 +297,19 @@ def Embedding.toRelU
       have hm := f.func_mem_map_iff U hU F
         (RelLanguage.rootU L U hU F x)
         (RelLanguage.lastU L U hU F x)
-      simpa only [Structure.toRelU, dif_pos hR,
-        RelLanguage.rootU_comp, RelLanguage.lastU_comp] using hm
-    · simpa only [Structure.toRelU, dif_neg hR] using
-        f.map_rel_iff ⟨R, hR⟩ x
+      have hh : (Structure.toRelU U hU D).rel R (f.toFun ∘ x) ↔
+          f (RelLanguage.lastU L U hU F x) ∈
+            D.func F (f.toFun ∘ RelLanguage.rootU L U hU F x) := by
+        simpa only [F, Structure.toRelU_func_iff,
+          RelLanguage.rootU_comp, RelLanguage.lastU_comp]
+      have hc : (Structure.toRelU U hU C).rel R x ↔
+          RelLanguage.lastU L U hU F x ∈
+            C.func F (RelLanguage.rootU L U hU F x) :=
+        Structure.toRelU_func_iff U hU C F x
+      exact hh.trans (hm.trans hc.symm)
+    · exact (Structure.toRelU_rel_not_mem_iff U hU D R hR (f.toFun ∘ x)).trans
+        ((f.map_rel_iff ⟨R, hR⟩ x).trans
+          (Structure.toRelU_rel_not_mem_iff U hU C R hR x).symm)
 
 /-- A full map of arbitrary reduced functional witnesses has U-closed
 relational range, without requiring redundant-symbol coherence. -/
@@ -292,13 +322,17 @@ theorem Embedding.toRelU_uClosed
       (Structure.toRelU U hU D) U hU (f.toRelU U hU) := by
   intro F x y hy
   have hf : y ∈ D.func F (f ∘ x) := by
-    simpa only [Structure.toRelU, dif_pos F.2,
-      RelLanguage.rootU_append, RelLanguage.lastU_append] using hy
+    have ht := (Structure.toRelU_func_iff U hU D F
+      (RelLanguage.appendU L U hU F (f.toFun ∘ x) y)).mp hy
+    simpa only [RelLanguage.rootU_append, RelLanguage.lastU_append]
+      using ht
   rw [← f.map_func F x] at hf
   rcases hf with ⟨z, hz, heq⟩
   refine ⟨z, ?_, heq⟩
-  simpa only [Structure.toRelU, dif_pos F.2,
-    RelLanguage.rootU_append, RelLanguage.lastU_append] using hz
+  apply (Structure.toRelU_func_iff U hU C F
+    (RelLanguage.appendU L U hU F x z)).mpr
+  simpa only [RelLanguage.rootU_append, RelLanguage.lastU_append]
+    using hz
 
 end Structure
 end StructuralRamsey
