@@ -1,0 +1,14 @@
+import PartiteConstruction.Functional.TrackECoveredNativeDecoderNoDefinedEmpty2019
+
+/-!
+Track E exact final B-cover decoder normality and Ramsey endgame:
+full Lean build + named permitted-axiom audit. No assumptions about
+canonicality of arbitrary intermediate relational profiled Pictures.
+-/
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskValue_nonempty_of_closed_coverage
+#print axioms StructuralRamsey.RelStructure.wholeMaskPartialDecode_noDefinedEmpty_of_closed_coverage
+#print axioms StructuralRamsey.PartialSetStructure.NoDefinedEmptyValues.withParts
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskOriginalDecode_noDefinedEmpty_of_closed_coverage
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskOriginalDecode_noDefinedEmpty_of_nativeBCover
+#print axioms StructuralRamsey.PartialSetStructure.nativeArrow_iff_coveredPartialArrow
