@@ -23,9 +23,9 @@ variable {L : RelLanguage.{u}} {V : Type v} {W : Type w}
 functional target induces a full function embedding without re-encoding
 or modifying the target. -/
 def Embedding.toReducedUFunctionsTarget
+    (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
     {A : RelStructure L V}
     {C : Structure (L.withUFunctionsReduced U) W}
-    (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
     (e : Embedding A (Structure.toRelU U hU C))
     (he : IsUClosedEmbedding A (Structure.toRelU U hU C) U hU e) :
     Structure.Embedding (A.asUFunctionsReduced U hU) C where
@@ -62,9 +62,9 @@ def Embedding.toReducedUFunctionsTarget
 /-- An arbitrary full functional embedding also yields the original
 relational embedding of the source into the decoded target. -/
 def Embedding.fromReducedUFunctionsTarget
+    (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
     {A : RelStructure L V}
     {C : Structure (L.withUFunctionsReduced U) W}
-    (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
     (f : Structure.Embedding (A.asUFunctionsReduced U hU) C) :
     Embedding A (Structure.toRelU U hU C) where
   toFun := f
@@ -77,9 +77,9 @@ def Embedding.fromReducedUFunctionsTarget
 /-- Full functional embeddings have U-closed decoded range, and the
 source's reduced-language round trip does not alter this property. -/
 theorem Embedding.fromReducedUFunctionsTarget_uClosed
+    (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
     {A : RelStructure L V}
     {C : Structure (L.withUFunctionsReduced U) W}
-    (U : Set L.Symbol) (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
     (f : Structure.Embedding (A.asUFunctionsReduced U hU) C) :
     IsUClosedEmbedding A (Structure.toRelU U hU C) U hU
       (Embedding.fromReducedUFunctionsTarget U hU f) := by
