@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.MultiGeneratedIrreducibleRootReserves
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.compatibleOriginalPartialRelativeCompletions_irr_root_reserves
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.compatibleOriginalPartialRelativeCompletions_irr_EHN_root_reserves
