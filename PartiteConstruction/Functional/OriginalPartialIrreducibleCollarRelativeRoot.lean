@@ -233,4 +233,74 @@ theorem compatibleOriginalPartialRelativeCompletions_of_EHN_collars
     _ = eAB (pLeft (sL x)) :=
       congrArg (fun z => eAB (pLeft z)) (hFactorL x).symm
 
+/-- A MORE LOCAL source hypothesis: only each irreducible source
+COLLAR needs an original-2019/EHN map into the selected A.
+The surrounding left and right side structures need not project
+to A at all; in a genuine Hales--Jewett step their global
+projections may instead target the much larger outer control.
+
+Compatibility of the collar EHN maps on the ACTUAL root gives
+two full canonical Collar-to-Base maps agreeing on that root,
+hence strict relative side completions over ONE root in Base.
+
+This is the appropriate interface to seek from actual common
+separator histories. It still requires FULL collar containment
+of the whole root and absolute strict side completions. -/
+theorem compatibleOriginalPartialRelativeCompletions_of_local_EHN_collars
+    {Root : Structure L H}
+    {Left : Structure L E} {Right : Structure L F}
+    {CollarL : Structure L KL} {CollarR : Structure L KR}
+    {UA : Type v} (A : Structure L UA)
+    (Base : Structure L VB)
+    (hBase : Base.Irreducible)
+    (eAB : Embedding A Base)
+    (hCollarL : CollarL.Irreducible)
+    (hCollarR : CollarR.Irreducible)
+    (rootL : Embedding Root CollarL)
+    (rootR : Embedding Root CollarR)
+    (jL : Embedding CollarL Left)
+    (jR : Embedding CollarR Right)
+    (sL : Embedding Root Left)
+    (sR : Embedding Root Right)
+    (hFactorL : ∀ x : H, sL x = jL (rootL x))
+    (hFactorR : ∀ x : H, sR x = jR (rootR x))
+    (rL : KL → UA) (rR : KR → UA)
+    (hEHNL : CollarL.IsEHNHomomorphismEmbedding A rL)
+    (hEHNR : CollarR.IsEHNHomomorphismEmbedding A rR)
+    (hRootTrace : ∀ x : H, rL (rootL x) = rR (rootR x))
+    (hAbsL : HasOriginalPartialTreeCompletion Base Left)
+    (hAbsR : HasOriginalPartialTreeCompletion Base Right) :
+    ∃ (q : H → VB),
+      (∀ x : H, q x = eAB (rL (rootL x))) ∧
+      HasOriginalPartialTreeExtensionCompletion
+        (Start := Base) Base sL q ∧
+      HasOriginalPartialTreeExtensionCompletion
+        (Start := Base) Base sR q := by
+  obtain ⟨aL, haL⟩ :=
+    hEHNL.2 CollarL hCollarL (Embedding.id CollarL)
+  obtain ⟨aR, haR⟩ :=
+    hEHNR.2 CollarR hCollarR (Embedding.id CollarR)
+  let qL : Embedding CollarL Base := eAB.comp aL
+  let qR : Embedding CollarR Base := eAB.comp aR
+  have hAgree (x : H) : qL (rootL x) = qR (rootR x) := by
+    change eAB (aL (rootL x)) = eAB (aR (rootR x))
+    calc
+      eAB (aL (rootL x)) = eAB (rL (rootL x)) :=
+        congrArg eAB (haL (rootL x))
+      _ = eAB (rR (rootR x)) :=
+        congrArg eAB (hRootTrace x)
+      _ = eAB (aR (rootR x)) :=
+        congrArg eAB (haR (rootR x)).symm
+  obtain ⟨q, hQ, hRelL, hRelR⟩ :=
+    compatibleOriginalPartialRelativeCompletions_of_collars
+      Base hBase hCollarL hCollarR rootL rootR
+      jL jR sL sR hFactorL hFactorR
+      qL qR hAgree hAbsL hAbsR
+  refine ⟨q, ?_, hRelL, hRelR⟩
+  intro x
+  calc
+    q x = qL (rootL x) := hQ x
+    _ = eAB (rL (rootL x)) :=
+      congrArg eAB (haL (rootL x))
+
 end StructuralRamsey.Structure
