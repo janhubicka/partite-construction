@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.DefinedInputHullSelectedEmbedding
+
+#print axioms StructuralRamsey.FunctionalPartite.System.definedInputHull_fullEmbedding_to_selectedA
+#print axioms StructuralRamsey.FunctionalPartite.System.definedInputHull_fullEmbedding_to_Base
