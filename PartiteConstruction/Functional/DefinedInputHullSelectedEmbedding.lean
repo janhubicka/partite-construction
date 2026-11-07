@@ -92,7 +92,8 @@ theorem System.definedInputHull_fullEmbedding_to_selectedA
   have hGRange : ∀ z : H, ∃ a : UA, g z = alpha a := by
     intro z
     rw [hg z]
-    exact hHullPart z
+    obtain ⟨a, ha⟩ := hHullPart z
+    exact ⟨a, ha.symm⟩
   let e : Structure.Embedding Small A :=
     g.factorThroughRange alpha hGRange
   refine ⟨e, ?_⟩
