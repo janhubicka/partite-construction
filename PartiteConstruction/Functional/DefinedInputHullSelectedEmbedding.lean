@@ -54,13 +54,13 @@ theorem System.definedInputHull_fullEmbedding_to_selectedA
     (B : System L P C) (D : Structure L P)
     (hB : B.WeaklyPartiteOver D)
     {A : Structure L UA}
-    (alpha : Embedding A D)
+    (alpha : Structure.Embedding A D)
     (Func : L.FuncSymbol)
     (xs : Fin (L.funcArity Func) → C)
     (hInputParts : ∀ i, B.part (xs i) ∈ Set.range alpha)
     {y : C} (hy : y ∈ B.toStructure.func Func xs) :
     let H := B.toStructure.functionClosure (Set.range xs)
-    ∃ e : Embedding
+    ∃ e : Structure.Embedding
       (B.toStructure.induce H
         (B.toStructure.functionClosure_isClosed (Set.range xs))) A,
       ∀ z : H, alpha (e z) = B.part z.1 := by
@@ -72,7 +72,7 @@ theorem System.definedInputHull_fullEmbedding_to_selectedA
   have hSmallIrr : Small.Irreducible := by
     exact functionClosure_inputs_irreducible_of_value
       B.toStructure Func xs hy
-  let inc : Embedding Small B.toStructure :=
+  let inc : Structure.Embedding Small B.toStructure :=
     inclusion B.toStructure H hH
   have hp : B.toStructure.IsEHNHomomorphismEmbedding D B.part := hB
   obtain ⟨g, hg⟩ := hp.2 Small hSmallIrr inc
@@ -93,7 +93,7 @@ theorem System.definedInputHull_fullEmbedding_to_selectedA
     intro z
     rw [hg z]
     exact hHullPart z
-  let e : Embedding Small A :=
+  let e : Structure.Embedding Small A :=
     g.factorThroughRange alpha hGRange
   refine ⟨e, ?_⟩
   intro z
@@ -110,14 +110,14 @@ theorem System.definedInputHull_fullEmbedding_to_Base
     (B : System L P C) (D : Structure L P)
     (hB : B.WeaklyPartiteOver D)
     {A : Structure L UA}
-    (alpha : Embedding A D)
-    (Base : Structure L VB) (eAB : Embedding A Base)
+    (alpha : Structure.Embedding A D)
+    (Base : Structure L VB) (eAB : Structure.Embedding A Base)
     (Func : L.FuncSymbol)
     (xs : Fin (L.funcArity Func) → C)
     (hInputParts : ∀ i, B.part (xs i) ∈ Set.range alpha)
     {y : C} (hy : y ∈ B.toStructure.func Func xs) :
     let H := B.toStructure.functionClosure (Set.range xs)
-    ∃ e : Embedding
+    ∃ e : Structure.Embedding
       (B.toStructure.induce H
         (B.toStructure.functionClosure_isClosed (Set.range xs))) Base,
       ∀ z : H, ∃ a : UA,
