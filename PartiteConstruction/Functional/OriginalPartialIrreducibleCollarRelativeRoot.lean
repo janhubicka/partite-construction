@@ -34,6 +34,33 @@ universe u v
 variable {L : Language.{u}}
 variable {H K E F C VB KL KR : Type v}
 
+/-- ADVERSARIAL applicability gate: if a common root is fully
+embedded in an irreducible source collar and that collar has an
+EHN map into the selected A, then the induced canonical root map
+into A is INJECTIVE.
+
+Thus this collar repair cannot handle genuinely hard separators
+whose canonical Hales--Jewett labels identify distinct root
+vertices. A cardinality or rank bound alone cannot substitute
+for the missing full collar embedding. -/
+theorem irreducibleEHNCollar_rootLabels_injective
+    {Root : Structure L H} {Collar : Structure L K}
+    {UA : Type v} (A : Structure L UA)
+    (hCollar : Collar.Irreducible)
+    (r : K → UA)
+    (hr : Collar.IsEHNHomomorphismEmbedding A r)
+    (rootIn : Embedding Root Collar) :
+    Function.Injective (r ∘ rootIn) := by
+  obtain ⟨e, he⟩ :=
+    hr.2 Collar hCollar (Embedding.id Collar)
+  intro x y hEq
+  apply rootIn.injective
+  apply e.injective
+  calc
+    e (rootIn x) = r (rootIn x) := he (rootIn x)
+    _ = r (rootIn y) := hEq
+    _ = e (rootIn y) := (he (rootIn y)).symm
+
 /-- A reducible FULL root can be anchored relatively through an
 irreducible FULL source-side COLLAR containing it.
 
