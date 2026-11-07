@@ -1,0 +1,14 @@
+import PartiteConstruction.Functional.TrackENativePartiteFinalArrow
+
+/-!
+Exact Track E native/partial part-preserving full-embedding and Ramsey-arrow
+equivalence, including real U-closed B-covered 2019 target decoding.
+Every named endpoint is checked for permitted logical axioms.
+-/
+
+#print axioms StructuralRamsey.Structure.TrackENativePartiteFinalArrow.NativePartPreservingEmbedding.comp
+#print axioms StructuralRamsey.Structure.TrackENativePartiteFinalArrow.nativePartPreservingEmbeddingEquiv
+#print axioms StructuralRamsey.Structure.TrackENativePartiteFinalArrow.nativePartPreservingEmbedding_map_comp
+#print axioms StructuralRamsey.Structure.TrackENativePartiteFinalArrow.nativePartPreservingArrow_iff_partial
+#print axioms StructuralRamsey.Structure.TrackENativePartiteFinalArrow.nativePartPreservingArrow_iff_partialTarget_of_noDefinedEmpty
+#print axioms StructuralRamsey.Structure.TrackENativePartiteFinalArrow.nativePartPreservingArrow_iff_coveredOriginalDecode
