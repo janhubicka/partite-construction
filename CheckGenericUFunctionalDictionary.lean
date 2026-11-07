@@ -1,4 +1,4 @@
-import PartiteConstruction.Structure.GenericUFunctionalEquivInto
+import PartiteConstruction.Structure.GenericUFunctionalArrowTransfer
 
 #print axioms StructuralRamsey.RelLanguage.withUFunctions_positive
 #print axioms StructuralRamsey.RelLanguage.appendU_comp
@@ -24,3 +24,8 @@ import PartiteConstruction.Structure.GenericUFunctionalEquivInto
 #print axioms StructuralRamsey.RelStructure.Embedding.fromReducedUFunctionsTarget
 #print axioms StructuralRamsey.RelStructure.Embedding.fromReducedUFunctionsTarget_uClosed
 #print axioms StructuralRamsey.RelStructure.uClosedEmbeddingEquivIntoTarget
+
+#print axioms StructuralRamsey.RelStructure.IsUClosedEmbedding.comp
+#print axioms StructuralRamsey.RelStructure.uClosedComp
+#print axioms StructuralRamsey.RelStructure.UClosedArrowInto
+#print axioms StructuralRamsey.RelStructure.uClosedArrowInto_of_functional
