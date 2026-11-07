@@ -33,10 +33,8 @@ def Embedding.toReducedUFunctionsTarget
   injective := e.injective
   map_rel_iff := by
     intro R x
-    classical
-    have hn : R.1 ∉ U := R.2
-    simpa only [Structure.toRelU, dif_neg hn] using
-      (e.map_rel_iff R.1 x)
+    exact (Structure.toRelU_rel_not_mem_iff U hU C R.1 R.2
+      (e.toFun ∘ x)).symm.trans (e.map_rel_iff R.1 x)
   map_func := by
     intro F x
     ext y
@@ -50,13 +48,17 @@ def Embedding.toReducedUFunctionsTarget
       have ht : (Structure.toRelU U hU C).rel F.1
           (RelLanguage.appendU L U hU F (e.toFun ∘ x) (e.toFun z)) :=
         Eq.mp (congrArg ((Structure.toRelU U hU C).rel F.1) hcomp) hr
-      simpa only [Structure.toRelU, dif_pos F.2,
-        RelLanguage.rootU_append, RelLanguage.lastU_append] using ht
+      have hDecoded := (Structure.toRelU_func_iff U hU C F
+        (RelLanguage.appendU L U hU F (e.toFun ∘ x) (e.toFun z))).mp ht
+      simpa only [RelLanguage.rootU_append, RelLanguage.lastU_append]
+        using hDecoded
     · intro hy
       have ht : (Structure.toRelU U hU C).rel F.1
           (RelLanguage.appendU L U hU F (e.toFun ∘ x) y) := by
-        simpa only [Structure.toRelU, dif_pos F.2,
-          RelLanguage.rootU_append, RelLanguage.lastU_append] using hy
+        apply (Structure.toRelU_func_iff U hU C F
+          (RelLanguage.appendU L U hU F (e.toFun ∘ x) y)).mpr
+        simpa only [RelLanguage.rootU_append, RelLanguage.lastU_append]
+          using hy
       exact he F x y ht
 
 /-- An arbitrary full functional embedding also yields the original
