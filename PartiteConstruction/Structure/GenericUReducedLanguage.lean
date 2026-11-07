@@ -201,8 +201,10 @@ theorem asUFunctionsReduced_toRelU_func_iff
       y ∈ C.func F x := by
   change (Structure.toRelU U hU C).rel F.1
     (RelLanguage.appendU L U hU F x y) ↔ y ∈ C.func F x
-  simpa only [Structure.toRelU_func_iff,
-    RelLanguage.rootU_append, RelLanguage.lastU_append]
+  have hGraph := (Structure.toRelU_func_iff U hU C F
+    (RelLanguage.appendU L U hU F x y))
+  simpa only [RelLanguage.rootU_append, RelLanguage.lastU_append]
+    using hGraph
 
 end Structure
 
@@ -298,8 +300,9 @@ def Embedding.toRelU
       have hh : (Structure.toRelU U hU D).rel R (f.toFun ∘ x) ↔
           f (RelLanguage.lastU L U hU F x) ∈
             D.func F (f.toFun ∘ RelLanguage.rootU L U hU F x) := by
-        simpa only [F, Structure.toRelU_func_iff,
-          RelLanguage.rootU_comp, RelLanguage.lastU_comp]
+        have hGraph := Structure.toRelU_func_iff U hU D F (f.toFun ∘ x)
+        simpa only [RelLanguage.rootU_comp, RelLanguage.lastU_comp]
+          using hGraph
       have hc : (Structure.toRelU U hU C).rel R x ↔
           RelLanguage.lastU L U hU F x ∈
             C.func F (RelLanguage.rootU L U hU F x) :=
@@ -322,8 +325,8 @@ theorem Embedding.toRelU_uClosed
   have hf : y ∈ D.func F (f ∘ x) := by
     have ht := (Structure.toRelU_func_iff U hU D F
       (RelLanguage.appendU L U hU F (f.toFun ∘ x) y)).mp hy
-    simpa only [RelLanguage.rootU_append, RelLanguage.lastU_append]
-      using ht
+    simpa [Structure.Embedding.toRelU, RelLanguage.rootU_append,
+      RelLanguage.lastU_append] using ht
   rw [← f.map_func F x] at hf
   rcases hf with ⟨z, hz, heq⟩
   refine ⟨z, ?_, heq⟩
