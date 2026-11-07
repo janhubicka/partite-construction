@@ -89,6 +89,7 @@ theorem compatibleOriginalPartialRelativeCompletions_of_collars
     (hAbsL : HasOriginalPartialTreeCompletion Base Left)
     (hAbsR : HasOriginalPartialTreeCompletion Base Right) :
     ∃ (q : H → VB),
+      (∀ x : H, q x = qL (rootL x)) ∧
       HasOriginalPartialTreeExtensionCompletion
         (Start := Base) Base sL q ∧
       HasOriginalPartialTreeExtensionCompletion
@@ -99,7 +100,7 @@ theorem compatibleOriginalPartialRelativeCompletions_of_collars
   obtain ⟨YR, TR, eR, pR, hpR, hRootR⟩ :=
     HasOriginalPartialTreeExtensionCompletion.of_irreducible_collar_absolute
       Base hBase hCollarR rootR jR qR hAbsR
-  refine ⟨qL ∘ rootL, ?_, ?_⟩
+  refine ⟨qL ∘ rootL, (fun _ => rfl), ?_, ?_⟩
   · refine ⟨YL, TL, eL, pL, hpL, ?_⟩
     intro x
     calc
@@ -146,7 +147,7 @@ theorem IsFreeAmalgam.originalPartialTreeCompletion_of_aligned_irreducible_colla
     (hAbsL : HasOriginalPartialTreeCompletion Base Left)
     (hAbsR : HasOriginalPartialTreeCompletion Base Right) :
     HasOriginalPartialTreeCompletion Base Whole := by
-  obtain ⟨q, hRelL, hRelR⟩ :=
+  obtain ⟨q, _hQ, hRelL, hRelR⟩ :=
     compatibleOriginalPartialRelativeCompletions_of_collars
       Base hBase hCollarL hCollarR
       rootL rootR jL jR sL sR hFactorL hFactorR
