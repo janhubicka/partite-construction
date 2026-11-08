@@ -1,0 +1,3 @@
+import PartiteConstruction.Ramsey.ClosureFreeAmalgamClosedRoot
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.root_isUClosed_of_closed_whole_and_sides
