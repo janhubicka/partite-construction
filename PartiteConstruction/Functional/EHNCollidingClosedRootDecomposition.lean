@@ -1,4 +1,4 @@
-import PartiteConstruction.Functional.EHNClosedPullbackRootDichotomy
+import PartiteConstruction.Functional.NativeAttachmentOriginalPartialSeparator
 import PartiteConstruction.Functional.OneGeneratedRootRelativeCompletion
 import PartiteConstruction.Functional.OriginalPartialIrreducibleCollarRelativeRoot
 
@@ -194,5 +194,77 @@ theorem closedTestPullback_common_collision_decomposes
     Finite.of_injective pb.toLeft pb.toLeft.injective
   exact ⟨hp.proper_decomposition_of_collision x y hxy hCollision,
     hp.not_one_generated_of_collision x y hxy hCollision⟩
+
+/-- The COLLIDING common root of an ACTUAL native closed EHN
+attachment simultaneously has a one-copy strict Base-tree
+completion in the ORIGINAL partial-function sense and a
+proper FULL free decomposition with strictly smaller
+components. It is not one-generated.
+
+This makes explicit why an absolute root completion ALREADY
+EXISTS, but cannot by itself synchronize two relative side
+extensions over that root. The one-copy completion map can
+be noninjective; the irreducible-collar full-root shortcut
+cannot reproduce those collisions. -/
+theorem closedTestPullback_collision_oneCopy_and_decomposition
+    (B : System L P V) (Douter : Structure L P)
+    (hB : B.WeaklyPartiteOver Douter)
+    (A : Structure L U) (Base : Structure L VB)
+    (eAB : Structure.Embedding A Base)
+    (alpha : Structure.Embedding A Douter)
+    (Dsys : System L P W)
+    (f : FunctionalPartite.Embedding
+      (B.induce (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)) Dsys)
+    (Test : Set
+      (Structure.Attachment.Vertex
+        (B.support alpha.toFunctionEmbedding)
+        (W := W) (I := PUnit.{v+1})))
+    (hTest :
+      (UnitAttachD B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f).toStructure.IsClosed Test)
+    [Finite V] [Finite W]
+    (x y : (closedTestPullback B
+      (B.support alpha.toFunctionEmbedding)
+      (B.weak_support_closed Douter hB.1 A alpha)
+      Dsys f Test hTest).Common)
+    (hxy : x ≠ y)
+    (hCollision :
+      let pb := closedTestPullback B
+        (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f Test hTest
+      let q : pb.Common → U :=
+        (B.weakRestrict Douter hB.1 A alpha).part ∘ pb.commonMap
+      q x = q y) :
+    let pb := closedTestPullback B
+      (B.support alpha.toFunctionEmbedding)
+      (B.weak_support_closed Douter hB.1 A alpha)
+      Dsys f Test hTest
+    HasOriginalPartialTreeCompletion Base pb.common ∧
+      (∃ d : ProperFreeDecomposition pb.common,
+        Nat.card d.Left < Nat.card pb.Common ∧
+        Nat.card d.Right < Nat.card pb.Common ∧
+        Nat.card d.Common < Nat.card pb.Common) ∧
+      ¬ pb.common.GeneratedByAtMost 1 := by
+  classical
+  let pb := closedTestPullback B
+    (B.support alpha.toFunctionEmbedding)
+    (B.weak_support_closed Douter hB.1 A alpha)
+    Dsys f Test hTest
+  have hOneCopy : HasOriginalPartialTreeCompletion Base pb.common :=
+    native_closed_separator_originalPartial_oneCopy
+      B Douter hB A Base eAB alpha Dsys f Test hTest
+  have hColl : Nonempty (ProperFreeDecomposition pb.common) ∧
+      ¬ pb.common.GeneratedByAtMost 1 :=
+    closedTestPullback_common_collision_decomposes
+      B Douter hB A alpha Dsys f Test hTest x y hxy hCollision
+  letI : Finite pb.Common :=
+    Finite.of_injective pb.toLeft pb.toLeft.injective
+  obtain ⟨d⟩ := hColl.1
+  exact ⟨hOneCopy,
+    ⟨d, d.left_card_lt, d.right_card_lt, d.common_card_lt⟩,
+    hColl.2⟩
 
 end StructuralRamsey.FunctionalPartite.Attachment
