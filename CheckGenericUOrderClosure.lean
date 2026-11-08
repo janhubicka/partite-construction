@@ -1,0 +1,6 @@
+import PartiteConstruction.Structure.GenericUOrderClosure
+
+#print axioms StructuralRamsey.RelStructure.IsUClosedSetOn
+#print axioms StructuralRamsey.RelStructure.isUClosedSetOn_dropNamedOrder
+#print axioms StructuralRamsey.RelStructure.IsUClosedEmbeddingRange
+#print axioms StructuralRamsey.RelStructure.isUClosedEmbeddingRange_dropNamedOrder

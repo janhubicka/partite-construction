@@ -1,0 +1,8 @@
+import PartiteConstruction.Structure.GenericUOrderedReduct
+
+#print axioms StructuralRamsey.RelLanguage.dropNamedOrderU_arity_two
+#print axioms StructuralRamsey.RelLanguage.dropNamedOrderUEquiv
+#print axioms StructuralRamsey.RelLanguage.dropNamedOrderUEquiv_arity
+#print axioms StructuralRamsey.RelStructure.dropNamedOrder_rel_iff
+#print axioms StructuralRamsey.RelStructure.Embedding.dropNamedOrder_id
+#print axioms StructuralRamsey.RelStructure.Embedding.dropNamedOrder_comp
