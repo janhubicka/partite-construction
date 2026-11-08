@@ -1,0 +1,6 @@
+import PartiteConstruction.Structure.GenericUOrderedEmbeddingEquiv
+
+#print axioms StructuralRamsey.RelStructure.Embedding.withOrderOfStrictMono
+#print axioms StructuralRamsey.RelStructure.Embedding.forgetFreshOrder
+#print axioms StructuralRamsey.RelStructure.Embedding.equivFreshOrder
+#print axioms StructuralRamsey.RelStructure.Embedding.equivNamedOrderFresh
