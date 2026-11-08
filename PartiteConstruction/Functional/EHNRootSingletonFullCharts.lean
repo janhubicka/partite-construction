@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.OneGeneratedRootRelativeCompletion
 import PartiteConstruction.Functional.EHNClosedPullbackRootDichotomy
+import PartiteConstruction.Functional.FibreExactness
 
 /-!
 # Track D: canonical full A-charts on single-generated closed roots
@@ -178,7 +179,10 @@ theorem IsEHNHomomorphismEmbedding.fullEmbedding_iff_inj_reflect_rel_domain
       have hargs : e.toFun ∘ xs = p ∘ xs := by
         funext i
         exact he (xs i)
-      exact (e.map_rel_iff R xs).mp (hargs ▸ hD)
+      have hD' : D.rel R (e.toFun ∘ xs) := by
+        rw [hargs]
+        exact hD
+      exact (e.map_rel_iff R xs).mp hD'
     · intro Func xs hT
       have hargs : e.toFun ∘ xs = p ∘ xs := by
         funext i
