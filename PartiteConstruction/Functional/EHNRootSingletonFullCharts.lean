@@ -135,6 +135,77 @@ theorem IsEHNHomomorphismEmbedding.singleton_charts_agree
     ex ⟨z, hzX⟩ = p z := hx ⟨z, hzX⟩
     _ = ey ⟨z, hzY⟩ := (hy ⟨z, hzY⟩).symm
 
+/-- An exact GLUING GATE for canonical FULL root embeddings.
+
+An EHN map C → D is a FULL structure embedding on that SAME vertex
+map precisely when it is injective, reflects every relation tuple,
+and reflects function-domain nonemptiness on EVERY input tuple.
+
+Forward relations and exact images of nonempty SOURCE fibres
+are already guaranteed by the genuine EHN axioms, so no
+extra total-fibre premise is smuggled into this statement.
+
+For a reducible Hales--Jewett root, local one-generated full charts
+give NONE of the three global conditions by themselves:
+- distinct local charts can have extra equal image vertices;
+- cross-chart target relation tuples can be new;
+- source-undefined cross-chart tuples can be target-defined.
+
+This characterizes when one GLOBAL full root collar exists, but
+does NOT assert that the historical root satisfies the conditions
+or that the weaker original-partial relative B-tree construction
+requires a full root embedding. -/
+theorem IsEHNHomomorphismEmbedding.fullEmbedding_iff_inj_reflect_rel_domain
+    {C : Structure L U} {D : Structure L V}
+    {p : U → V}
+    (hp : C.IsEHNHomomorphismEmbedding D p) :
+    (∃ e : Embedding C D, ∀ x : U, e x = p x) ↔
+      Function.Injective p ∧
+      (∀ R xs, D.rel R (p ∘ xs) → C.rel R xs) ∧
+      (∀ Func (xs : Fin (L.funcArity Func) → U),
+        (D.func Func (p ∘ xs)).Nonempty →
+          (C.func Func xs).Nonempty) := by
+  constructor
+  · rintro ⟨e, he⟩
+    refine ⟨?_, ?_, ?_⟩
+    · intro x y hxy
+      apply e.injective
+      calc
+        e x = p x := he x
+        _ = p y := hxy
+        _ = e y := (he y).symm
+    · intro R xs hD
+      have hargs : e.toFun ∘ xs = p ∘ xs := by
+        funext i
+        exact he (xs i)
+      exact (e.map_rel_iff R xs).mp (hargs ▸ hD)
+    · intro Func xs hT
+      have hargs : e.toFun ∘ xs = p ∘ xs := by
+        funext i
+        exact he (xs i)
+      have hT' : (D.func Func (e.toFun ∘ xs)).Nonempty := by
+        rw [hargs]
+        exact hT
+      obtain ⟨y, hy⟩ := hT'
+      have himg : y ∈ imageSet e.toFun (C.func Func xs) := by
+        rw [e.map_func Func xs]
+        exact hy
+      obtain ⟨z, hz, _⟩ := himg
+      exact ⟨z, hz⟩
+  · rintro ⟨hInjective, hRelReflect, hDomReflect⟩
+    have hFull : C.IsHomomorphism D p :=
+      hp.isHomomorphism_of_domainReflection hDomReflect
+    let e : Embedding C D := {
+      toFun := p
+      injective := hInjective
+      map_rel_iff := by
+        intro R xs
+        exact ⟨hRelReflect R xs, hFull.1 R xs⟩
+      map_func := hFull.2
+    }
+    exact ⟨e, fun _ => rfl⟩
+
+
 end StructuralRamsey.Structure
 
 
