@@ -210,7 +210,8 @@ theorem asUFunctionsReduced_toRelU_func_iff
           (RelLanguage.appendU L U hU F x y)) :=
       Structure.toRelU_func_iff U hU C F _
     _ ↔ y ∈ C.func F x := by
-      rw [RelLanguage.lastU_append, RelLanguage.rootU_append]
+      rw [RelLanguage.lastU_append L U hU F x y,
+        RelLanguage.rootU_append L U hU F x y]
 
 end Structure
 
@@ -317,6 +318,7 @@ def Embedding.toRelU
           _ ↔ f (RelLanguage.lastU L U hU F x) ∈
                 D.func F (f.toFun ∘ RelLanguage.rootU L U hU F x) := by
             rw [RelLanguage.lastU_comp, RelLanguage.rootU_comp]
+            rfl
       have hc : (Structure.toRelU U hU C).rel R x ↔
           RelLanguage.lastU L U hU F x ∈
             C.func F (RelLanguage.rootU L U hU F x) :=
