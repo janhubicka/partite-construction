@@ -136,3 +136,64 @@ theorem IsEHNHomomorphismEmbedding.singleton_charts_agree
     _ = ey ⟨z, hzY⟩ := (hy ⟨z, hzY⟩).symm
 
 end StructuralRamsey.Structure
+
+
+namespace StructuralRamsey.FunctionalPartite.Attachment
+
+open StructuralRamsey.Structure
+universe u v
+variable {L : Language.{u}}
+variable {P U V W : Type v}
+
+/-- ACTUAL native closed Hales--Jewett attachment common separator:
+for every literal root vertex x, its generated FULL function hull
+has one exact canonical FULL chart into the selected A. The chart
+is the restriction of the original partial EHN projection, not
+a new freely chosen label.
+
+This does NOT assert the whole root maps injectively into A; distinct
+one-generated charts may have extra hits in A, which a history-respecting
+strict target construction must still resolve. -/
+theorem closedTestPullback_common_singleton_full_chart
+    (B : System L P V) (Douter : Structure L P)
+    (hB : B.WeaklyPartiteOver Douter)
+    (A : Structure L U) (alpha : Structure.Embedding A Douter)
+    (Dsys : System L P W)
+    (f : FunctionalPartite.Embedding
+      (B.induce (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)) Dsys)
+    (Test : Set
+      (Structure.Attachment.Vertex
+        (B.support alpha.toFunctionEmbedding)
+        (W := W) (I := PUnit.{v+1})))
+    (hTest :
+      (UnitAttachD B (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f).toStructure.IsClosed Test)
+    (x :
+      let pb := closedTestPullback B
+        (B.support alpha.toFunctionEmbedding)
+        (B.weak_support_closed Douter hB.1 A alpha)
+        Dsys f Test hTest
+      pb.Common) :
+    let pb := closedTestPullback B
+      (B.support alpha.toFunctionEmbedding)
+      (B.weak_support_closed Douter hB.1 A alpha)
+      Dsys f Test hTest
+    let q : pb.Common → U :=
+      (B.weakRestrict Douter hB.1 A alpha).part ∘ pb.commonMap
+    ∃ e : Structure.Embedding
+      (pb.common.induce (singletonFunctionHull pb.common x)
+        (singletonFunctionHull_closed pb.common x)) A,
+      ∀ z : singletonFunctionHull pb.common x, e z = q z.1 := by
+  let Supp := B.support alpha.toFunctionEmbedding
+  let hSupp := B.weak_support_closed Douter hB.1 A alpha
+  let pb := closedTestPullback B Supp hSupp Dsys f Test hTest
+  let WR := B.weakRestrict Douter hB.1 A alpha
+  have hRoot : pb.common.IsEHNHomomorphismEmbedding A
+      (WR.part ∘ pb.commonMap) :=
+    closedTestPullback_common_EHN
+      B Douter hB A alpha Dsys f Test hTest
+  exact hRoot.singleton_full_chart x
+
+end StructuralRamsey.FunctionalPartite.Attachment
