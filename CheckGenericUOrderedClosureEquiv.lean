@@ -1,0 +1,5 @@
+import PartiteConstruction.Structure.GenericUOrderedClosureEquiv
+
+#print axioms StructuralRamsey.RelStructure.isUClosedSetOn_restoreNamedOrder
+#print axioms StructuralRamsey.RelStructure.isUClosedEmbeddingRange_restored
+#print axioms StructuralRamsey.RelStructure.uClosedEquivNamedOrderFresh
