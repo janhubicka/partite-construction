@@ -1,0 +1,10 @@
+import PartiteConstruction.Structure.GenericUOrderedRestoration
+
+#print axioms StructuralRamsey.RelStructure.restoreNamedOrder_rel_order
+#print axioms StructuralRamsey.RelStructure.restoreNamedOrder_rel_ne
+#print axioms StructuralRamsey.RelStructure.drop_restoreNamedOrder_rel_iff
+#print axioms StructuralRamsey.RelStructure.restore_dropNamedOrder_rel_iff
+#print axioms StructuralRamsey.RelStructure.Embedding.strictMono_of_restored
+#print axioms StructuralRamsey.RelStructure.Embedding.toDroppedRestored
+#print axioms StructuralRamsey.RelStructure.Embedding.ofDroppedRestored
+#print axioms StructuralRamsey.RelStructure.Embedding.equivDroppedRestored
