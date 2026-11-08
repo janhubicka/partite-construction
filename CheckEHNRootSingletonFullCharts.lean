@@ -1,0 +1,10 @@
+import PartiteConstruction.Functional.EHNRootSingletonFullCharts
+
+#print axioms StructuralRamsey.Structure.singletonFunctionHull_closed
+#print axioms StructuralRamsey.Structure.singletonFunctionHull_contains
+#print axioms StructuralRamsey.Structure.singletonFunctionHull_generatedByAtMostOne
+#print axioms StructuralRamsey.Structure.singletonFunctionHull_irreducible
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.singleton_full_chart
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.singleton_hull_labels_injective
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.singleton_charts_agree
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTestPullback_common_singleton_full_chart
