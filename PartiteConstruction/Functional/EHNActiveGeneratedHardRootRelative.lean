@@ -66,7 +66,8 @@ theorem irreducible_of_generated_by_defined_function
       rw [hGen]
       exact Set.mem_univ z
     exact ⟨⟨z, hz⟩, rfl⟩
-  exact hIrr.of_surjective_homomorphism inc.isHomomorphism hSurj
+  exact Irreducible.of_surjective_homomorphism
+    (A := Hull) (B := A) hIrr inc.isHomomorphism hSurj
 
 
 /-- A noninjective ORIGINAL-2019/EHN part projection cannot
