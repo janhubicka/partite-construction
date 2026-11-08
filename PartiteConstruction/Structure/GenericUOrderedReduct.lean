@@ -44,6 +44,32 @@ theorem dropNamedOrderU_arity_two
     2 ≤ (L.dropNamedOrder ord).arity R :=
   hU R.1 hR
 
+/-- Deleting the named order loses NO designated closure symbols when
+ord ∉ U.  This explicit equivalence will reindex the final function sort. -/
+def dropNamedOrderUEquiv
+    (L : RelLanguage.{u}) (ord : L.Symbol)
+    (U : Set L.Symbol) (hordU : ord ∉ U) :
+    U ≃ L.dropNamedOrderU ord U where
+  toFun F := ⟨⟨F.1, fun h => hordU (h ▸ F.2)⟩, F.2⟩
+  invFun F := ⟨F.1.1, F.2⟩
+  left_inv := by
+    intro F
+    apply Subtype.ext
+    rfl
+  right_inv := by
+    intro F
+    apply Subtype.ext
+    apply Subtype.ext
+    rfl
+
+/-- The symbol equivalence changes neither relation nor function arity. -/
+@[simp] theorem dropNamedOrderUEquiv_arity
+    (L : RelLanguage.{u}) (ord : L.Symbol)
+    (U : Set L.Symbol) (hordU : ord ∉ U)
+    (F : U) :
+    (L.dropNamedOrder ord).arity
+      ((L.dropNamedOrderUEquiv ord U hordU F).1) = L.arity F.1 := rfl
+
 end RelLanguage
 
 namespace RelStructure
