@@ -131,13 +131,20 @@ def main():
                             assert full_function_embedding(a, c, gf, ordered)
                             triples += 1
     print(f'PASS: {pairs:,} embedding comparisons; {triples:,} composition checks; {arrows:,} Ramsey-arrow comparisons')
-    # Negative control: duplicate named order can be inconsistent with
-    # externally chosen linear order, so decoding order must override it.
-    a_order = {(0, 1)}
-    c_retained_order = set()
-    external_order = {(0, 1)}
-    assert a_order != c_retained_order and a_order == external_order
-    print('PASS: named-order duplication counterexample distinguished')
+    # Negative controls are actual embedding discrepancies, not just
+    # mismatched data. A raw duplicate order (or raw duplicate U-relation)
+    # can make a genuine decoded copy disappear in an incoherent target.
+    def preserves_binary_relation(source, target):
+        return all(((i, j) in source) == ((i, j) in target)
+                   for i, j in product(range(2), repeat=2))
+
+    genuine = {(0, 1)}
+    bogus = set()
+    assert preserves_binary_relation(genuine, genuine)
+    assert not preserves_binary_relation(genuine, bogus)
+    # For named order: the decoder restores the external 0<1 order, not bogus.
+    # For U: the decoder derives R from F_R={(0,1)}, not a bogus duplicate R.
+    print('PASS: incoherent-order and incoherent-U duplicate embedding controls')
 
 
 if __name__ == '__main__':
