@@ -68,6 +68,27 @@ theorem IsEHNHomomorphismEmbedding.proper_decomposition_of_collision
   exact (hp.not_irreducible_of_collision x y hxy hEq)
     ((irreducible_iff_noProperFreeDecomposition Root).mpr hNone)
 
+/-- The decomposition forced by colliding EHN labels has
+STRICTLY smaller left, right and common vertex carriers.
+This makes the precise finite-source induction resource
+explicit, without asserting that the resulting target relative
+completions can be synchronized.
+
+These are VERTEX-cardinality inequalities inside the genuinely
+closed common root itself, not a generator-rank decrease for
+the whole surrounding mixed Picture. -/
+theorem IsEHNHomomorphismEmbedding.collision_strict_decomposition_budget
+    {Root : Structure L U} {A : Structure L V}
+    [Finite U] {p : U → V}
+    (hp : Root.IsEHNHomomorphismEmbedding A p)
+    (x y : U) (hxy : x ≠ y) (hEq : p x = p y) :
+    ∃ d : ProperFreeDecomposition Root,
+      Nat.card d.Left < Nat.card U ∧
+      Nat.card d.Right < Nat.card U ∧
+      Nat.card d.Common < Nat.card U := by
+  obtain ⟨d⟩ := hp.proper_decomposition_of_collision x y hxy hEq
+  exact ⟨d, d.left_card_lt, d.right_card_lt, d.common_card_lt⟩
+
 /-- A root with colliding canonical EHN labels is necessarily
 harder than the verified one-generator case, even if its function
 closure has many more vertices than its generating set. -/
