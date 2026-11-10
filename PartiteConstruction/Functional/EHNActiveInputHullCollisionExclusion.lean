@@ -176,18 +176,42 @@ theorem functionClosure_relation_inputs_irreducible
     change A.rel R (Subtype.val ∘ q)
     rw [hqval]
     exact hRel
+  -- Prove generation inside the SAME carrier universe. The generic
+  -- closureLift_generates helper requires both carriers in one universe;
+  -- Fin (relArity R) is Type 0 while U may be Type v.
+  have hQGen :
+      ∀ T : Set H, Small.IsClosed T →
+        (∀ i, q i ∈ T) → ∀ z : H, z ∈ T := by
+    intro T hT hqT z
+    let T0 : Set U :=
+      {a | ∃ ha : a ∈ H, (⟨a, ha⟩ : H) ∈ T}
+    have hT0 : A.IsClosed T0 := by
+      intro Func args hargs out hout
+      let argsH : Fin (L.funcArity Func) → H :=
+        fun i => ⟨args i, (hargs i).choose⟩
+      have hargsT : ∀ i, argsH i ∈ T :=
+        fun i => (hargs i).choose_spec
+      have houtH : out ∈ H :=
+        hH Func args (fun i => (hargs i).choose) hout
+      have houtIn : (⟨out, houtH⟩ : H) ∈ Small.func Func argsH := by
+        change out ∈ A.func Func (Subtype.val ∘ argsH)
+        have hargsEq : Subtype.val ∘ argsH = args := by
+          funext i
+          rfl
+        rw [hargsEq]
+        exact hout
+      exact ⟨houtH, hT Func argsH hargsT houtIn⟩
+    have hxT0 : Set.range xs ⊆ T0 := by
+      rintro _ ⟨i, rfl⟩
+      exact ⟨(q i).2, hqT i⟩
+    exact (z.2 T0 hT0 hxT0).2
   have hSmallGen : Small.GeneratedBy (Set.range q) := by
     apply Set.Subset.antisymm
     · exact Set.subset_univ _
     · intro z _
-      let T : Set H := Small.functionClosure (Set.range q)
-      have hT : Small.IsClosed T :=
-        Small.functionClosure_isClosed (Set.range q)
-      have hSeed : ∀ i, q i ∈ T := by
-        intro i
-        exact Small.subset_functionClosure (Set.range q) ⟨i, rfl⟩
-      exact (closureLift_generates
-        (U := Fin (L.relArity R)) (V := U) A xs) T hT hSeed z
+      exact hQGen (Small.functionClosure (Set.range q))
+        (Small.functionClosure_isClosed (Set.range q))
+        (fun i => Small.subset_functionClosure (Set.range q) ⟨i, rfl⟩) z
   change Small.Irreducible
   exact irreducible_of_generated_by_relation_tuple
     Small R q hSmallRel hSmallGen
