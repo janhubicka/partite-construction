@@ -135,7 +135,8 @@ theorem irreducible_of_generated_by_relation_tuple
     have hz : z ∈ A.functionClosure (Set.range xs) := by
       rw [hGen]
       exact Set.mem_univ z
-    exact hz _ hClosed hInputs
+    obtain ⟨w, hw⟩ := hz _ hClosed hInputs
+    exact ⟨w, hw.symm⟩
   · right
     have hClosed : A.IsClosed
         {z : U | e z ∈ Set.range iF} :=
@@ -148,7 +149,8 @@ theorem irreducible_of_generated_by_relation_tuple
     have hz : z ∈ A.functionClosure (Set.range xs) := by
       rw [hGen]
       exact Set.mem_univ z
-    exact hz _ hClosed hInputs
+    obtain ⟨w, hw⟩ := hz _ hClosed hInputs
+    exact ⟨w, hw.symm⟩
 
 /-- The FULL function-closed hull of the inputs of a genuine
 relation tuple is irreducible. The hull can be much larger than
@@ -167,9 +169,13 @@ theorem functionClosure_relation_inputs_irreducible
   let Small := A.induce H hH
   let q : Fin (L.relArity R) → H :=
     fun i => ⟨xs i, A.subset_functionClosure (Set.range xs) ⟨i, rfl⟩⟩
+  have hqval : Subtype.val ∘ q = xs := by
+    funext i
+    rfl
   have hSmallRel : Small.rel R q := by
     change A.rel R (Subtype.val ∘ q)
-    simpa [q, Function.comp_apply] using hRel
+    rw [hqval]
+    exact hRel
   have hSmallGen : Small.GeneratedBy (Set.range q) := by
     apply Set.Subset.antisymm
     · exact Set.subset_univ _
@@ -180,7 +186,11 @@ theorem functionClosure_relation_inputs_irreducible
       have hSeed : ∀ i, q i ∈ T := by
         intro i
         exact Small.subset_functionClosure (Set.range q) ⟨i, rfl⟩
-      exact (closureLift_generates A xs) T hT hSeed z
+      have hGen :
+          Small.Generates q := by
+        exact (closureLift_generates (U := Fin (L.relArity R)) A xs)
+      exact hGen T hT hSeed z
+  change Small.Irreducible
   exact irreducible_of_generated_by_relation_tuple
     Small R q hSmallRel hSmallGen
 
