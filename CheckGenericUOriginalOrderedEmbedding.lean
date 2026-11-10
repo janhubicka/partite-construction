@@ -1,0 +1,3 @@
+import PartiteConstruction.Structure.GenericUOriginalOrderedEmbedding
+
+#print axioms StructuralRamsey.RelStructure.originalUClosedEmbeddingEquivIntoTarget
