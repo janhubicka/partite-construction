@@ -186,10 +186,8 @@ theorem functionClosure_relation_inputs_irreducible
       have hSeed : ∀ i, q i ∈ T := by
         intro i
         exact Small.subset_functionClosure (Set.range q) ⟨i, rfl⟩
-      have hGen :
-          Small.Generates q := by
-        exact (closureLift_generates (U := Fin (L.relArity R)) A xs)
-      exact hGen T hT hSeed z
+      exact (closureLift_generates
+        (U := Fin (L.relArity R)) (V := U) A xs) T hT hSeed z
   change Small.Irreducible
   exact irreducible_of_generated_by_relation_tuple
     Small R q hSmallRel hSmallGen
