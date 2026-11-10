@@ -1,0 +1,4 @@
+import PartiteConstruction.Structure.GenericUFunctionalOrderedArrowTransfer
+
+#print axioms StructuralRamsey.RelStructure.OrderedUClosedArrowInto
+#print axioms StructuralRamsey.RelStructure.orderedUClosedArrowInto_of_functional

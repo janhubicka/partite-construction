@@ -1,0 +1,31 @@
+import PartiteConstruction.Structure.GenericUFunctionalArrowTransfer
+
+#print axioms StructuralRamsey.RelLanguage.withUFunctions_positive
+#print axioms StructuralRamsey.RelLanguage.appendU_comp
+#print axioms StructuralRamsey.RelStructure.Embedding.fromUFunctions_uClosed
+#print axioms StructuralRamsey.RelStructure.uClosedEmbeddingEquiv
+
+#print axioms StructuralRamsey.RelLanguage.withUFunctionsReduced_positive
+#print axioms StructuralRamsey.RelLanguage.rootU_append
+#print axioms StructuralRamsey.RelLanguage.lastU_append
+#print axioms StructuralRamsey.RelLanguage.appendU_root_last
+#print axioms StructuralRamsey.RelStructure.toRelU_asUFunctionsReduced_rel_iff
+#print axioms StructuralRamsey.Structure.asUFunctionsReduced_toRelU_rel_iff
+#print axioms StructuralRamsey.Structure.asUFunctionsReduced_toRelU_func_iff
+
+#print axioms StructuralRamsey.RelLanguage.rootU_comp
+#print axioms StructuralRamsey.RelLanguage.lastU_comp
+#print axioms StructuralRamsey.RelStructure.Embedding.toReducedUFunctions
+#print axioms StructuralRamsey.Structure.Embedding.func_mem_map_iff
+#print axioms StructuralRamsey.Structure.Embedding.toRelU
+#print axioms StructuralRamsey.Structure.Embedding.toRelU_uClosed
+
+#print axioms StructuralRamsey.RelStructure.Embedding.toReducedUFunctionsTarget
+#print axioms StructuralRamsey.RelStructure.Embedding.fromReducedUFunctionsTarget
+#print axioms StructuralRamsey.RelStructure.Embedding.fromReducedUFunctionsTarget_uClosed
+#print axioms StructuralRamsey.RelStructure.uClosedEmbeddingEquivIntoTarget
+
+#print axioms StructuralRamsey.RelStructure.IsUClosedEmbedding.comp
+#print axioms StructuralRamsey.RelStructure.uClosedComp
+#print axioms StructuralRamsey.RelStructure.UClosedArrowInto
+#print axioms StructuralRamsey.RelStructure.uClosedArrowInto_of_functional

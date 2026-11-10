@@ -1,0 +1,8 @@
+import PartiteConstruction.Structure.GenericURangeLiftBridge
+
+#print axioms StructuralRamsey.RelLanguage.closureRoot_append
+#print axioms StructuralRamsey.RelLanguage.closureLast_append
+#print axioms StructuralRamsey.RelLanguage.appendClosureTuple_root_last
+#print axioms StructuralRamsey.RelLanguage.appendClosureTuple_comp
+#print axioms StructuralRamsey.RelStructure.IsUClosedEmbeddingLift
+#print axioms StructuralRamsey.RelStructure.isUClosedEmbeddingRange_iff_lift

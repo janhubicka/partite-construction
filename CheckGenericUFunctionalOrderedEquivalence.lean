@@ -1,0 +1,9 @@
+import PartiteConstruction.Structure.GenericUFunctionalOrderedEquivalence
+
+#print axioms StructuralRamsey.Structure.Embedding.forgetExternalOrder
+#print axioms StructuralRamsey.Structure.Embedding.withExternalOrder
+#print axioms StructuralRamsey.Structure.Embedding.equivExternalOrder
+#print axioms StructuralRamsey.RelStructure.uClosedOrderedEmbeddingEquivIntoTarget
+#print axioms StructuralRamsey.RelStructure.OrderedUClosedEmbedding
+#print axioms StructuralRamsey.RelStructure.orderedUClosedComp
+#print axioms StructuralRamsey.RelStructure.orderedUClosedComp_apply
