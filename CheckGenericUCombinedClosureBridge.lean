@@ -1,0 +1,4 @@
+import PartiteConstruction.Structure.GenericUCombinedClosureBridge
+
+#print axioms StructuralRamsey.RelStructure.isUClosedEmbedding_iff_lift
+#print axioms StructuralRamsey.RelStructure.isUClosedEmbedding_iff_range
