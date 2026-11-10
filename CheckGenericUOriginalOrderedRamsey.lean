@@ -1,0 +1,3 @@
+import PartiteConstruction.Structure.GenericUOriginalOrderedRamsey
+
+#print axioms StructuralRamsey.RelStructure.originalOrderedUClosedRamsey
