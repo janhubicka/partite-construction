@@ -50,15 +50,17 @@ def Embedding.toReducedUFunctionsTarget
         Eq.mp (congrArg ((Structure.toRelU U hU C).rel F.1) hcomp) hr
       have hDecoded := (Structure.toRelU_func_iff U hU C F
         (RelLanguage.appendU L U hU F (e.toFun ∘ x) (e.toFun z))).mp ht
-      simpa only [RelLanguage.rootU_append, RelLanguage.lastU_append]
-        using hDecoded
+      rw [RelLanguage.lastU_append L U hU F (e.toFun ∘ x) (e.toFun z),
+        RelLanguage.rootU_append L U hU F (e.toFun ∘ x) (e.toFun z)] at hDecoded
+      exact hDecoded
     · intro hy
       have ht : (Structure.toRelU U hU C).rel F.1
           (RelLanguage.appendU L U hU F (e.toFun ∘ x) y) := by
         apply (Structure.toRelU_func_iff U hU C F
           (RelLanguage.appendU L U hU F (e.toFun ∘ x) y)).mpr
-        simpa only [RelLanguage.rootU_append, RelLanguage.lastU_append]
-          using hy
+        rw [RelLanguage.lastU_append L U hU F (e.toFun ∘ x) y,
+          RelLanguage.rootU_append L U hU F (e.toFun ∘ x) y]
+        exact hy
       exact he F x y ht
 
 /-- An arbitrary full functional embedding also yields the original
