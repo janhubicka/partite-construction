@@ -1,0 +1,7 @@
+import PartiteConstruction.Structure.GenericUOriginalOrderedArrow
+
+#print axioms StructuralRamsey.RelStructure.uClosedRangeComp
+#print axioms StructuralRamsey.RelStructure.OriginalUClosedArrow
+#print axioms StructuralRamsey.RelStructure.Embedding.strictMono_of_correctNamedOrder
+#print axioms StructuralRamsey.RelStructure.originalUClosedEmbedding_toFunctional
+#print axioms StructuralRamsey.RelStructure.originalUClosedArrow_of_functional
