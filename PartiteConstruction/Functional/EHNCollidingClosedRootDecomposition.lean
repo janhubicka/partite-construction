@@ -190,6 +190,8 @@ theorem closedTestPullback_common_collision_decomposes
     (B.weakRestrict Douter hB.1 A alpha).part ∘ pb.commonMap
   have hp : pb.common.IsEHNHomomorphismEmbedding A q :=
     closedTestPullback_common_EHN B Douter hB A alpha Dsys f Test hTest
+  letI : Finite pb.Left :=
+    Finite.of_injective pb.leftMap pb.leftMap.injective
   letI : Finite pb.Common :=
     Finite.of_injective pb.toLeft pb.toLeft.injective
   exact ⟨hp.proper_decomposition_of_collision x y hxy hCollision,
@@ -260,6 +262,8 @@ theorem closedTestPullback_collision_oneCopy_and_decomposition
       ¬ pb.common.GeneratedByAtMost 1 :=
     closedTestPullback_common_collision_decomposes
       B Douter hB A alpha Dsys f Test hTest x y hxy hCollision
+  letI : Finite pb.Left :=
+    Finite.of_injective pb.leftMap pb.leftMap.injective
   letI : Finite pb.Common :=
     Finite.of_injective pb.toLeft pb.toLeft.injective
   obtain ⟨d⟩ := hColl.1
