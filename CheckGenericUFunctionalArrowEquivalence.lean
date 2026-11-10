@@ -1,0 +1,7 @@
+import PartiteConstruction.Structure.GenericUFunctionalArrowEquivalence
+
+#print axioms StructuralRamsey.RelStructure.Embedding.fromReducedUFunctions
+#print axioms StructuralRamsey.RelStructure.Embedding.fromReducedUFunctions_uClosed
+#print axioms StructuralRamsey.RelStructure.uClosedEmbeddingEquivReduced
+#print axioms StructuralRamsey.RelStructure.functionalArrow_of_UClosedArrowInto
+#print axioms StructuralRamsey.RelStructure.uClosedArrowInto_iff_functional
