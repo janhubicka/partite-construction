@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNNativeActiveRootPaidReserves
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.native_closedTest_activeGeneratedRoot_paidReserves_relative
