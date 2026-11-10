@@ -116,7 +116,7 @@ theorem irreducible_of_generated_by_relation_tuple
     (R : L.RelSymbol)
     (xs : Fin (L.relArity R) → U)
     (hRel : A.rel R xs)
-    (hGen : A.Generates xs) :
+    (hGen : A.GeneratedBy (Set.range xs)) :
     A.Irreducible := by
   intro H E F C Dsrc Esrc Fsrc Csrc sE sF iE iF hFree e
   have hTarget : Csrc.rel R (e.toFun ∘ xs) :=
@@ -127,22 +127,28 @@ theorem irreducible_of_generated_by_relation_tuple
     have hClosed : A.IsClosed
         {z : U | e z ∈ Set.range iE} :=
       e.preimage_isClosed (Set.range iE) iE.range_isClosed
-    have hInputs : ∀ i : Fin (L.relArity R),
-        e (xs i) ∈ Set.range iE := by
-      intro i
+    have hInputs : Set.range xs ⊆
+        {z : U | e z ∈ Set.range iE} := by
+      rintro _ ⟨i, rfl⟩
       exact ⟨a i, (congrFun ha i).symm⟩
     intro z
-    exact hGen _ hClosed hInputs z
+    have hz : z ∈ A.functionClosure (Set.range xs) := by
+      rw [hGen]
+      exact Set.mem_univ z
+    exact hz _ hClosed hInputs
   · right
     have hClosed : A.IsClosed
         {z : U | e z ∈ Set.range iF} :=
       e.preimage_isClosed (Set.range iF) iF.range_isClosed
-    have hInputs : ∀ i : Fin (L.relArity R),
-        e (xs i) ∈ Set.range iF := by
-      intro i
+    have hInputs : Set.range xs ⊆
+        {z : U | e z ∈ Set.range iF} := by
+      rintro _ ⟨i, rfl⟩
       exact ⟨b i, (congrFun hb i).symm⟩
     intro z
-    exact hGen _ hClosed hInputs z
+    have hz : z ∈ A.functionClosure (Set.range xs) := by
+      rw [hGen]
+      exact Set.mem_univ z
+    exact hz _ hClosed hInputs
 
 /-- The FULL function-closed hull of the inputs of a genuine
 relation tuple is irreducible. The hull can be much larger than
@@ -159,12 +165,22 @@ theorem functionClosure_relation_inputs_irreducible
   let H : Set U := A.functionClosure (Set.range xs)
   let hH : A.IsClosed H := A.functionClosure_isClosed (Set.range xs)
   let Small := A.induce H hH
-  let q : Fin (L.relArity R) → H := closureLift A xs
+  let q : Fin (L.relArity R) → H :=
+    fun i => ⟨xs i, A.subset_functionClosure (Set.range xs) ⟨i, rfl⟩⟩
   have hSmallRel : Small.rel R q := by
     change A.rel R (Subtype.val ∘ q)
-    simpa [q, closureLift, Function.comp_apply] using hRel
-  have hSmallGen : Small.Generates q :=
-    closureLift_generates A xs
+    simpa [q, Function.comp_apply] using hRel
+  have hSmallGen : Small.GeneratedBy (Set.range q) := by
+    apply Set.Subset.antisymm
+    · exact Set.subset_univ _
+    · intro z _
+      let T : Set H := Small.functionClosure (Set.range q)
+      have hT : Small.IsClosed T :=
+        Small.functionClosure_isClosed (Set.range q)
+      have hSeed : ∀ i, q i ∈ T := by
+        intro i
+        exact Small.subset_functionClosure (Set.range q) ⟨i, rfl⟩
+      exact (closureLift_generates A xs) T hT hSeed z
   exact irreducible_of_generated_by_relation_tuple
     Small R q hSmallRel hSmallGen
 
