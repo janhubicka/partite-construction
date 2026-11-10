@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.EHNActiveGeneratedHardRootRelative
+
+#print axioms StructuralRamsey.Structure.irreducible_of_generated_by_defined_function
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.native_closedTest_activeGeneratedRoot_compatibleRelative
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.no_active_generation_of_noninjective
