@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.TrackBActualLineSourceRank2019
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.actualLineWeakTest
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.actualLineTaggedAndWholeRank
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.actualLine_controlImageUSize_le_of_generated
