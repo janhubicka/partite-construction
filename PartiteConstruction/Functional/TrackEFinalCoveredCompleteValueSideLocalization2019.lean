@@ -129,7 +129,7 @@ theorem wholeMaskCovered_nativeFunctionIncident_side
   | some U =>
       have hIn : y ∈ U := by
         change y ∈ (A.func F xs).getD ∅ at hy
-        simpa only [hValue, Option.getD_some] using hy
+        simpa [hValue] using hy
       exact wholeMaskCovered_decodedFunctionIncident_side
         C Base part hC hPos hCover S T hLoc F xs U hValue y hIn
 
