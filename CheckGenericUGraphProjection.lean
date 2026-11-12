@@ -1,0 +1,8 @@
+import PartiteConstruction.Structure.GenericUGraphProjection
+
+#print axioms StructuralRamsey.RelStructure.Irreducible.asReducedUGraph
+#print axioms StructuralRamsey.RelStructure.Irreducible.ofReducedUGraph
+#print axioms StructuralRamsey.RelStructure.irreducible_asReducedUGraph_iff
+#print axioms StructuralRamsey.RelStructure.induce_asReducedUGraph
+#print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.asReducedUGraph
+#print axioms StructuralRamsey.Partite.System.isPartiteOver_asReducedUGraph
