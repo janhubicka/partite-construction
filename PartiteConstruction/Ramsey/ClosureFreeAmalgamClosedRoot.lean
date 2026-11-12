@@ -63,8 +63,8 @@ theorem IsFreeAmalgam.root_isUClosed_of_closed_whole_and_sides
     · rintro ⟨d, hd⟩
       refine ⟨sR d, ?_⟩
       rw [← hd]
-      exact (hFree.overlap (sL d) (sR d)).mpr
-        ⟨d, rfl, rfl⟩
+      exact ((hFree.overlap (sL d) (sR d)).mpr
+        ⟨d, rfl, rfl⟩).symm
   have hRootRange :
       IsUSubstructure rules Left (Set.range sL) := by
     rw [← hOverlap]
