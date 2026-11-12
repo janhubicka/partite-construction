@@ -132,4 +132,32 @@ theorem Stage.selectedSupport_clippedUSize_iff_wholeMaskUSize
     T.system.weak_support_closed D T.isPartite.1 A α
   exact T.system.clippedUSize_iff_wholeMaskUSize_of_closed hPos S hS n
 
+
+/-- The image of any FULL native partite copy in a real EHN Stage is
+function-closed in the target. Therefore the two canonical 2019
+minimum-generator USize bounds coincide on that LITERAL copy image.
+
+This is the partite copy-protection counterpart of the selected
+closed-support theorem. The source/target vertex function is the
+original full embedding; no closure hull, weak replacement, or
+relative target completion is introduced. -/
+theorem Stage.fullCopyRange_clippedUSize_iff_wholeMaskUSize
+    (T : Stage K D)
+    {V : Type v} (B : System L P V)
+    (copy : FunctionalPartite.Embedding B T.system)
+    (hPos : L.PositiveFuncArity) (n : ℕ)
+    [Fintype (Set.range copy.toEmbedding.toFun)] :
+    let S := Set.range copy.toEmbedding.toFun
+    (USize (L.outputPartIndexed P).patternClosureRules
+      ((patternTagExpansion
+        (T.system.splitOutputParts).toStructure.patternGraph).induce S) ≤ n) ↔
+    (USize (L.wholeMaskClosureRules P)
+      ((wholeMaskTagExpansion
+        (T.system.toStructure.toNonemptyPartial.wholeMaskPatternGraph T.system.part)).induce S) ≤ n) := by
+  let S := Set.range copy.toEmbedding.toFun
+  have hS : T.system.toStructure.IsClosed S :=
+    copy.toEmbedding.range_isClosed
+  exact T.system.clippedUSize_iff_wholeMaskUSize_of_closed hPos S hS n
+
+
 end StructuralRamsey.FunctionalPartite.EHN
