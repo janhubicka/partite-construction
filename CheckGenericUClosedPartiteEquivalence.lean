@@ -1,0 +1,6 @@
+import PartiteConstruction.Structure.GenericUClosedPartiteEquivalence
+
+#print axioms StructuralRamsey.Partite.Embedding.ofReindexed
+#print axioms StructuralRamsey.Partite.Embedding.ofReindexed_apply
+#print axioms StructuralRamsey.Partite.Embedding.uClosedReindexEquiv
+#print axioms StructuralRamsey.Partite.Embedding.uClosedReindexEquiv_apply
