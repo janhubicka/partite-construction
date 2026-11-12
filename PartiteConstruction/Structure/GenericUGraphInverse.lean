@@ -32,20 +32,13 @@ theorem from_asReducedUGraph_rel_iff
     (fromReducedUGraph U hU (A.asReducedUGraph U hU)).rel R t ↔
       A.rel R t := by
   classical
-  change (A.asReducedUGraph U hU).rel
-    (L.toReducedUGraphSymbol U R)
-    (fun i => t (Fin.cast (L.reducedUGraphSymbol_arity U hU R) i)) ↔
-    A.rel R t
-  rw [A.asReducedUGraph_rel_iff U hU]
-  rw [L.from_toReducedUGraphSymbol U R]
-  have ht :
-      (fun i : Fin (L.arity R) =>
-        t (Fin.cast (L.reducedUGraphSymbol_arity U hU R)
-          (Fin.cast (L.reducedUGraphSymbol_arity_from U hU
-            (L.toReducedUGraphSymbol U R)) i))) = t := by
-    funext i
-    exact congrArg t (Fin.ext rfl)
-  simpa only [ht]
+  by_cases hR : R ∈ U
+  · simp [fromReducedUGraph, asReducedUGraph,
+      RelLanguage.toReducedUGraphSymbol,
+      RelLanguage.fromReducedUGraphSymbol, hR]
+  · simp [fromReducedUGraph, asReducedUGraph,
+      RelLanguage.toReducedUGraphSymbol,
+      RelLanguage.fromReducedUGraphSymbol, hR]
 
 /-- Every arbitrary graph-language structure likewise survives the inverse
 roundtrip; no coherence of its relations with a separate function symbol is
@@ -59,21 +52,17 @@ theorem as_fromReducedUGraph_rel_iff
     ((fromReducedUGraph U hU D).asReducedUGraph U hU).rel S t ↔
       D.rel S t := by
   classical
-  rw [asReducedUGraph_rel_iff]
-  change D.rel
-    (L.toReducedUGraphSymbol U (L.fromReducedUGraphSymbol U S))
-    (fun i => t (Fin.cast (L.reducedUGraphSymbol_arity_from U hU S)
-      (Fin.cast (L.reducedUGraphSymbol_arity U hU
-        (L.fromReducedUGraphSymbol U S)) i))) ↔ D.rel S t
-  rw [L.to_fromReducedUGraphSymbol U S]
-  have ht :
-      (fun i : Fin ((L.withUFunctionsReduced U).graph.arity S) =>
-        t (Fin.cast (L.reducedUGraphSymbol_arity_from U hU S)
-          (Fin.cast (L.reducedUGraphSymbol_arity U hU
-            (L.fromReducedUGraphSymbol U S)) i))) = t := by
-    funext i
-    exact congrArg t (Fin.ext rfl)
-  simpa only [ht]
+  cases S with
+  | inl R =>
+      have hR : R.1 ∉ U := R.2
+      simp [fromReducedUGraph, asReducedUGraph,
+        RelLanguage.toReducedUGraphSymbol,
+        RelLanguage.fromReducedUGraphSymbol, hR]
+  | inr F =>
+      have hF : F.1 ∈ U := F.2
+      simp [fromReducedUGraph, asReducedUGraph,
+        RelLanguage.toReducedUGraphSymbol,
+        RelLanguage.fromReducedUGraphSymbol, hF]
 
 namespace IsHomomorphism
 
