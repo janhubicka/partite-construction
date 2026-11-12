@@ -66,8 +66,8 @@ theorem asReducedUGraph_iff_functionGraph
         refine Fin.lastCases ?_
           (fun (_ : Fin (L.arity F.1 - 1)) => ?_)
           (Fin.cast ((Nat.sub_add_cancel (hU F.1 F.2)).symm) i)
-        · simp
-        · simp
+        · rfl
+        · rfl
       change A.rel F.1 q ↔
         A.rel F.1 (RelLanguage.appendU L U hU F
           (fun i => t i.castSucc)
