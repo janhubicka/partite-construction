@@ -15,11 +15,11 @@ transversality, irreducibility nor a closure-hull construction is needed.
 
 namespace StructuralRamsey
 
-universe u v w
+universe u v
 
 namespace Partite.System
 
-variable {L : RelLanguage.{u}} {P : Type v} {V : Type w}
+variable {L : RelLanguage.{u}} {P V : Type v}
 
 /-- The original arbitrary-L last-coordinate U-closedness agrees literally
 with closure for the function-graph relations of the translated partite
