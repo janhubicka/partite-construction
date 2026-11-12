@@ -40,7 +40,13 @@ noncomputable def fromGraphPower
     let E := NonInduced.Vertex.uGraphEquiv B U hU N
     have hrel := Induced.power_reindex_rel_iff
       B U hU N S (fun i => E.symm (t i))
-    simpa only [Function.comp_apply, Equiv.apply_symm_apply] using hrel
+    have hfix :
+        (fun i => (NonInduced.Vertex.uGraphEquiv B U hU N)
+          (E.symm (t i))) = t := by
+      funext i
+      exact E.apply_symm_apply (t i)
+    rw [hfix] at hrel
+    exact hrel
   map_part := by
     intro x
     rfl
@@ -74,8 +80,8 @@ noncomputable def ofSurjectivePartite
   refine ⟨z, ?_, rfl⟩
   have htarget : B.rel (.inr F)
       (e.toEmbedding.toFun ∘ Structure.funcTuple x z) := by
-    rw [Structure.comp_funcTuple]
-    exact hy
+    have htuple := Structure.comp_funcTuple e.toEmbedding.toFun x z
+    exact Eq.mp (congrArg (fun q => B.rel (.inr F) q) htuple.symm) hy
   exact (e.toEmbedding.map_rel_iff (.inr F)
     (Structure.funcTuple x z)).mp htarget
 
