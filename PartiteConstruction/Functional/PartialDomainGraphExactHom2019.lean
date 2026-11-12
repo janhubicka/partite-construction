@@ -84,8 +84,7 @@ theorem originalPartialHom_iff_domainGraphHom_and_noExtra
             have hTuple : f ∘ Structure.funcTuple xs z =
                 Structure.funcTuple (f ∘ xs) (f z) :=
               Structure.comp_funcTuple f xs z
-            rw [hTuple] at hStep
-            exact hStep
+            exact hTuple ▸ hStep
           have hTarget : B.HasOutput F (f ∘ xs) (f z) := by
             simpa only [domainGraph, Structure.funcTuple_castSucc,
               Structure.funcTuple_last] using hOutB
