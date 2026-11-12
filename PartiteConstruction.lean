@@ -605,3 +605,6 @@ import PartiteConstruction.Functional.NativeWholePartClosure
 
 -- Track E: exact OLD-domain reflection across full tagged induced tests.
 import PartiteConstruction.Functional.TrackEExactInducedDomainReflection2019
+
+-- Track E: exact final decoded whole-value function incidences localize in tagged free covers.
+import PartiteConstruction.Functional.TrackEFinalCoveredCompleteValueSideLocalization2019
