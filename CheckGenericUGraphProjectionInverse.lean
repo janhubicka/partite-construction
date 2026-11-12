@@ -3,3 +3,5 @@ import PartiteConstruction.Structure.GenericUGraphProjectionInverse
 #print axioms StructuralRamsey.RelStructure.irreducible_graph_induce_of_decoded
 #print axioms StructuralRamsey.RelStructure.IsHomomorphismEmbedding.fromReducedUGraph
 #print axioms StructuralRamsey.Partite.System.isPartiteOver_fromReducedUGraph
+#print axioms StructuralRamsey.Partite.System.fromReducedUGraph
+#print axioms StructuralRamsey.RelStructure.Embedding.fromReducedUGraph
