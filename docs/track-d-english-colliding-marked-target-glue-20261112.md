@@ -60,7 +60,7 @@ canonical maps of a full functional free amalgam.
 Since each `m_i(A)` lies inside an irreducible constituent of the strict
 `B`-tree `T_i`, the strict tree gluing constructor makes `T`
 another strict `B`-tree. The gluing root for the **target** is the
-fully embedded `A), **not** the generally nonclosed image `q[R]`
+fully embedded `A`, **not** the generally nonclosed image `q[R]`
 nor the source root itself.
 
 For each actual source root vertex `r∈R`, the displayed target
