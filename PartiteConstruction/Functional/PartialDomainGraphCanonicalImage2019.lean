@@ -120,9 +120,14 @@ theorem domainGraph_decode_rel_iff
       (decodeDomainGraph R).HasOutput F
         (fun i => xs i.castSucc) (xs (Fin.last (L.funcArity F))) ↔
         R.rel (.inr (.inr F)) xs
-    simpa only [Structure.funcTuple_eta] using
-      (decodeDomainGraph_hasOutput_iff R hCan F
-        (fun i => xs i.castSucc) (xs (Fin.last (L.funcArity F))))
+    have hOutput := decodeDomainGraph_hasOutput_iff R hCan F
+      (fun i => xs i.castSucc) (xs (Fin.last (L.funcArity F)))
+    have hTuple :
+        Structure.funcTuple (fun i => xs i.castSucc)
+          (xs (Fin.last (L.funcArity F))) = xs :=
+      Structure.funcTuple_eta xs
+    rw [hTuple] at hOutput
+    exact hOutput
 
 /-- Every coherent domain/output graph is representable as a genuine
 partial set-valued structure, on the very same underlying vertex type. -/
