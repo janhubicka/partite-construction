@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WeakHistoryFreeControlOccupiedMixed
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.pullback_ehn_with_occupied_mark
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.ambientRelativeWeakTree_noHistory_of_ordinaryControlSideImages
