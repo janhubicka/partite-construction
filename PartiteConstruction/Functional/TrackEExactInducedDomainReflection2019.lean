@@ -21,7 +21,7 @@ namespace StructuralRamsey.RelStructure
 
 universe u v w z
 variable {L : Language.{u}} {P : Type z} [Fintype P]
-variable {V : Type v} {W : Type w} {Q : Type w}
+variable {V Q : Type v} {W : Type w}
 
 /-- Domain masks survive exact induction iff their literal primitive
 argument tuple lies in the induced carrier. The reverse direction uses
