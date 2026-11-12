@@ -82,9 +82,14 @@ noncomputable def encodeFullDecodedEmbedding
   injective := e.injective
   map_rel_iff := by
     intro symbol xs
-    have h := (e.domainGraph.map_rel_iff symbol xs)
-    rw [domainGraph_decode R hR, domainGraph_decode T hT] at h
-    exact h
+    have h :
+        (domainGraph (decodeDomainGraph T)).rel symbol
+            (e.toFun ∘ xs) ↔
+          (domainGraph (decodeDomainGraph R)).rel symbol xs :=
+      e.domainGraph.map_rel_iff symbol xs
+    exact (domainGraph_decode_rel_iff T hT symbol
+      (e.toFun ∘ xs)).symm.trans
+        (h.trans (domainGraph_decode_rel_iff R hR symbol xs))
 
 /-- The reverse direction likewise preserves the underlying vertex map. -/
 theorem encodeFullDecodedEmbedding_toFun
