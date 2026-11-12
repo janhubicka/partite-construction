@@ -95,9 +95,10 @@ theorem clipped_at_zero :
   have hv :
       sourcePartial.func () (Subtype.val ∘ (fun _ : Fin 1 => a)) =
         some ({1,2} : Set (Fin 3)) := by
-    classical
-    simp [sourcePartial, Structure.toNonemptyPartial,
-      native, Function.comp_apply, a, firstArg, outputs_nonempty]
+    change (if ({1,2} : Set (Fin 3)).Nonempty then
+      some ({1,2} : Set (Fin 3)) else none) =
+        some ({1,2} : Set (Fin 3))
+    simp [outputs_nonempty]
   change weakValue cut
     (sourcePartial.func () (Subtype.val ∘ (fun _ : Fin 1 => a))) =
       some ({b} : Set cut)
@@ -113,8 +114,9 @@ theorem clipped_at_zero :
   rcases hy with h0 | h1
   · have hEq : y = a := Subtype.ext h0
     subst y
-    change ¬ (0 : Fin 3) = 1 ∧ ¬ (0 : Fin 3) = 2
-    decide
+    have hnot : (a.1 : Fin 3) ∉ ({1,2} : Set (Fin 3)) := by
+      simp [a]
+    simp [hnot, a_ne_b]
   · have hEq : y = b := Subtype.ext h1
     subst y
     simp [a,b]
@@ -128,13 +130,20 @@ theorem whole_none_any (xs : Fin 1 → cut) :
   by_cases hx : (xs firstArg).1 = (0 : Fin 3)
   · have hv : sourcePartial.func () (Subtype.val ∘ xs) =
         some ({1,2} : Set (Fin 3)) := by
-      simp [sourcePartial, Structure.toNonemptyPartial,
-        native, Function.comp_apply, hx, outputs_nonempty]
+      change (if (if (xs firstArg).1 = (0 : Fin 3) then
+          ({1,2} : Set (Fin 3)) else ∅).Nonempty then
+        some (if (xs firstArg).1 = (0 : Fin 3) then
+          ({1,2} : Set (Fin 3)) else ∅) else none) =
+            some ({1,2} : Set (Fin 3))
+      simp [hx, outputs_nonempty]
     rw [hv]
     exact wholeWeakValue_of_not_subset cut {1,2} outputs_escape_cut
   · have hv : sourcePartial.func () (Subtype.val ∘ xs) = none := by
-      simp [sourcePartial, Structure.toNonemptyPartial,
-        native, Function.comp_apply, hx]
+      change (if (if (xs firstArg).1 = (0 : Fin 3) then
+          ({1,2} : Set (Fin 3)) else ∅).Nonempty then
+        some (if (xs firstArg).1 = (0 : Fin 3) then
+          ({1,2} : Set (Fin 3)) else ∅) else none) = none
+      simp [hx]
     rw [hv]
     rfl
 
