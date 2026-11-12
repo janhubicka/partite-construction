@@ -1,0 +1,7 @@
+import PartiteConstruction.Structure.GenericUGraphHJMaps
+
+#print axioms StructuralRamsey.Partite.GenericUGraphHJ.letterReindex
+#print axioms StructuralRamsey.Partite.GenericUGraphHJ.letterReindex_apply
+#print axioms StructuralRamsey.Partite.GenericUGraphHJ.wordMap_reindex
+#print axioms StructuralRamsey.Partite.GenericUGraphHJ.lineReindex
+#print axioms StructuralRamsey.Partite.GenericUGraphHJ.lineMap_reindex
