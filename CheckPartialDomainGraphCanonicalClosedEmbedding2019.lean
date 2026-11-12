@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.PartialDomainGraphCanonicalClosedEmbedding2019
+
+#print axioms StructuralRamsey.PartialSetStructure.decodeClosedGraphEmbedding_toFun
+#print axioms StructuralRamsey.PartialSetStructure.encodeFullDecodedEmbedding_toFun
+#print axioms StructuralRamsey.PartialSetStructure.canonicalClosedGraphEmbedding_iff_fullDecodedEmbedding
