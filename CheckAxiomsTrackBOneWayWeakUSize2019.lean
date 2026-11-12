@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.TrackBOneWayWeakUSize2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakInduce_to_clipped_originalPartial
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakGeneratedByAtMost_implies_clipped
+#print axioms StructuralRamsey.FunctionalPartite.System.wholeMaskUSize_le_implies_clippedUSize_le
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.exactProjectedClippedUSize_le_of_wholeSource
