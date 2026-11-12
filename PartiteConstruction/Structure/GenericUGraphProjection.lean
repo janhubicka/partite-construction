@@ -122,9 +122,8 @@ theorem asReducedUGraph
       (irreducible_asReducedUGraph_iff (A.induce S) U hU).mp hS'
     obtain ⟨e, he⟩ := h.2 S hSorig
     have e' : Embedding ((A.asReducedUGraph U hU).induce S)
-        (B.asReducedUGraph U hU) := by
-      rw [← induce_asReducedUGraph A S U hU]
-      exact e.asReducedUGraph U hU
+        (B.asReducedUGraph U hU) :=
+      e.asReducedUGraph U hU
     refine ⟨e', ?_⟩
     intro x
     change e x = f x.1
