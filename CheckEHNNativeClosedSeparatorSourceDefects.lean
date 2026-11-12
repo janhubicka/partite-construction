@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNNativeClosedSeparatorSourceDefects
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTestPullback_common_fullOrCollisionOrMultiInputDefect
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTestPullback_common_full_iff_injective_of_arities_le_one
