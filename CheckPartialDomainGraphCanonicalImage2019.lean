@@ -7,3 +7,6 @@ import PartiteConstruction.Functional.PartialDomainGraphCanonicalImage2019
 #print axioms StructuralRamsey.PartialSetStructure.domainGraph_decode
 #print axioms StructuralRamsey.PartialSetStructure.decode_domainGraph
 #print axioms StructuralRamsey.PartialSetStructure.canonical_iff_exists_domainGraph
+
+#print axioms StructuralRamsey.PartialSetStructure.orphanOutputGraph_not_canonical
+#print axioms StructuralRamsey.PartialSetStructure.orphanOutputGraph_not_representable
