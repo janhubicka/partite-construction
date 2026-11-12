@@ -1,0 +1,5 @@
+import PartiteConstruction.Structure.GenericUGraphInverse
+
+#print axioms StructuralRamsey.RelStructure.from_asReducedUGraph_rel_iff
+#print axioms StructuralRamsey.RelStructure.as_fromReducedUGraph_rel_iff
+#print axioms StructuralRamsey.RelStructure.IsHomomorphism.asReducedUGraph
