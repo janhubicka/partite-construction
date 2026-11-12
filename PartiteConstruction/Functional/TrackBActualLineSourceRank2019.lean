@@ -103,6 +103,6 @@ theorem Stage.actualLine_controlImageUSize_le_of_generated
           (fun p : P => p))).induce
             (Structure.imageSet T.system.part (T.actualLineWeakTest W Test))) ≤ n := by
   have h := T.actualLineTaggedAndWholeRank hPos W Test n
-  exact le_trans h.2.2 (h.2.1).mp hGen
+  exact le_trans h.2.2 ((h.2.1).mp hGen)
 
 end StructuralRamsey.FunctionalPartite.EHN
