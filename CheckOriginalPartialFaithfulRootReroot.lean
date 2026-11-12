@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OriginalPartialFaithfulRootReroot
+
+#print axioms StructuralRamsey.Structure.HasOriginalPartialTreeExtensionCompletion.of_partial_side_full_root
+#print axioms StructuralRamsey.Structure.HasOriginalPartialTreeExtensionCompletion.of_partial_side_root_defects_absent
