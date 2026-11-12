@@ -138,8 +138,9 @@ theorem arrow_iff_graph
         (A.asReducedUGraph U hU) (B.asReducedUGraph U hU)) :
         EA (Embedding.comp U hU f (EAB.symm g)) =
           Partite.Closed.Embedding.comp (EB f) g := by
-      rw [equiv_comp]
-      simp only [EAB.apply_symm_apply]
+      apply Partite.Closed.Embedding.ext
+      intro x
+      rfl
     simpa only [hc] using hχ
   · intro h χ
     let χG : Partite.Closed.Embedding
