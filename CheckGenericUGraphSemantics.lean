@@ -1,0 +1,4 @@
+import PartiteConstruction.Structure.GenericUGraphSemantics
+
+#print axioms StructuralRamsey.RelStructure.asReducedUGraph_iff_functionGraph
+#print axioms StructuralRamsey.Partite.System.asReducedUGraph_iff_functionGraph
