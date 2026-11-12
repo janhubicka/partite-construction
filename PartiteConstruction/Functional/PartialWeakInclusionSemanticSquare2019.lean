@@ -177,3 +177,69 @@ theorem noLost_but_partiallyRetained :
   exact partSaturated_not_enough.2 hEqual
 
 end StructuralRamsey.FunctionalPartite.TrackASaturation
+
+namespace StructuralRamsey.PartialSetStructure
+
+/-- Exact weak cut in the existing two-vertex unary example. -/
+def unaryClippedTest : Set (Fin 2) := {(0 : Fin 2)}
+
+/-- In the single-output unary example, a value escapes COMPLETELY.
+There is no partially retained value, hence the clipped inclusion is
+source-defined partial. But the independent ambient domain relation
+is lost, so the same inclusion is not an induced domain/output graph
+embedding. This is the converse independence regression to the
+two-output transversal part-saturated example above. -/
+theorem noPartial_but_entirelyLost :
+    NoPartiallyRetainedValues weakDomainUnaryToy unaryClippedTest ∧
+      ¬ NoLostDefinedApplications weakDomainUnaryToy unaryClippedTest := by
+  constructor
+  · intro F xs U hU
+    right
+    rintro ⟨y, hyU, hyS⟩
+    have hx : (xs (0 : Fin 1)).1 = (0 : Fin 2) := by
+      simpa [unaryClippedTest] using (xs (0 : Fin 1)).2
+    have hUeq : U = ({(1 : Fin 2)} : Set (Fin 2)) := by
+      have h : some ({(1 : Fin 2)} : Set (Fin 2)) = some U := by
+        simpa [weakDomainUnaryToy, hx] using hU
+      exact (Option.some.inj h).symm
+    rw [hUeq] at hyU
+    have hy1 : y = (1 : Fin 2) := by simpa using hyU
+    have hy0 : y = (0 : Fin 2) := by
+      simpa [unaryClippedTest] using hyS
+    exact (show (1 : Fin 2) ≠ 0 by decide) (hy1.symm.trans hy0)
+  · intro hNo
+    let xs : Fin 1 → unaryClippedTest :=
+      fun _ => ⟨0, by simp [unaryClippedTest]⟩
+    have hVal :
+        weakDomainUnaryToy.func ()
+          (Subtype.val ∘ xs) =
+            some ({(1 : Fin 2)} : Set (Fin 2)) := by
+      change weakDomainUnaryToy.func ()
+          (fun _ : Fin 1 => (0 : Fin 2)) =
+            some ({(1 : Fin 2)} : Set (Fin 2))
+      exact weakDomainUnaryToy_value
+    rcases hNo () xs ({(1 : Fin 2)} : Set (Fin 2)) hVal with
+      hEmpty | hMeet
+    · simp at hEmpty
+    · obtain ⟨y, hyU, hyS⟩ := hMeet
+      have hy1 : y = (1 : Fin 2) := by simpa using hyU
+      have hy0 : y = (0 : Fin 2) := by
+        simpa [unaryClippedTest] using hyS
+      exact (show (1 : Fin 2) ≠ 0 by decide) (hy1.symm.trans hy0)
+
+/-- Concrete check that the source-defined partial map condition and
+the induced graph condition are INDEPENDENT even among finite
+transversal examples. Their conjunction is exactly full closedness. -/
+theorem weakInclusionCriteria_independent :
+    (NoLostDefinedApplications
+        StructuralRamsey.FunctionalPartite.TrackASaturation.examplePartial
+        StructuralRamsey.FunctionalPartite.TrackASaturation.S ∧
+      ¬ NoPartiallyRetainedValues
+        StructuralRamsey.FunctionalPartite.TrackASaturation.examplePartial
+        StructuralRamsey.FunctionalPartite.TrackASaturation.S) ∧
+    (NoPartiallyRetainedValues weakDomainUnaryToy unaryClippedTest ∧
+      ¬ NoLostDefinedApplications weakDomainUnaryToy unaryClippedTest) := by
+  exact ⟨StructuralRamsey.FunctionalPartite.TrackASaturation.noLost_but_partiallyRetained,
+    noPartial_but_entirelyLost⟩
+
+end StructuralRamsey.PartialSetStructure
