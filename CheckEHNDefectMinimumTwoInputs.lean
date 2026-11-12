@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.EHNDefectMinimumTwoInputs
+
+#print axioms StructuralRamsey.Structure.ProperFreeDecomposition.crossedInputGenerators_distinct_vertices
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.relationFailure_hasTwoDistinctInputs
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.domainFailure_hasTwoDistinctInputs
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.fullEmbedding_of_allArity_le_one
