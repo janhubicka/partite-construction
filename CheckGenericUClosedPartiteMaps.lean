@@ -1,0 +1,5 @@
+import PartiteConstruction.Structure.GenericUClosedPartiteMaps
+
+#print axioms StructuralRamsey.Partite.Embedding.uClosedRange_iff_functionClosedMap
+#print axioms StructuralRamsey.Partite.Embedding.toGraphClosed
+#print axioms StructuralRamsey.Partite.Embedding.toGraphClosed_apply
