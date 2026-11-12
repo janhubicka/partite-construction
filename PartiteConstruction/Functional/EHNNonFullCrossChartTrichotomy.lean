@@ -39,12 +39,13 @@ theorem IsEHNHomomorphismEmbedding.collision_outside_every_irreducible_chart
   let Small := C.induce S hS
   let inc : Embedding Small C := inclusion C S hS
   obtain ⟨e, he⟩ := hp.2 Small hIrr inc
-  apply hDistinct
-  apply e.injective
-  calc
-    e ⟨x, hx⟩ = p x := he ⟨x, hx⟩
-    _ = p y := hCollision
-    _ = e ⟨y, hy⟩ := (he ⟨y, hy⟩).symm
+  have hSubtype : (⟨x, hx⟩ : S) = (⟨y, hy⟩ : S) := by
+    apply e.injective
+    calc
+      e ⟨x, hx⟩ = p x := he ⟨x, hx⟩
+      _ = p y := hCollision
+      _ = e ⟨y, hy⟩ := (he ⟨y, hy⟩).symm
+  exact hDistinct (congrArg Subtype.val hSubtype)
 
 /-- Any target-only OLD relation on an ORIGINAL source input tuple is
 absent from every full irreducible source chart containing ALL its inputs.
