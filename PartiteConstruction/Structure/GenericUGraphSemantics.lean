@@ -66,8 +66,12 @@ theorem asReducedUGraph_iff_functionGraph
         refine Fin.lastCases ?_
           (fun (_ : Fin (L.arity F.1 - 1)) => ?_)
           (Fin.cast ((Nat.sub_add_cancel (hU F.1 F.2)).symm) i)
-        · rfl
-        · rfl
+        · exact (Structure.funcTuple_last
+            (fun j : Fin (L.arity F.1 - 1) => t j.castSucc)
+            (t (Fin.last (L.arity F.1 - 1)))).symm
+        · exact (Structure.funcTuple_castSucc
+            (fun j : Fin (L.arity F.1 - 1) => t j.castSucc)
+            (t (Fin.last (L.arity F.1 - 1))) _).symm
       change A.rel F.1 q ↔
         A.rel F.1 (RelLanguage.appendU L U hU F
           (fun i => t i.castSucc)
