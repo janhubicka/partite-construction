@@ -1,6 +1,7 @@
 import PartiteConstruction.Structure.GenericUClosedPartiteArrow
 import PartiteConstruction.Structure.GenericUGraphPowerClosedEmbedding
 import PartiteConstruction.Structure.GenericUPowerOutputTransversal
+import PartiteConstruction.Structure.GenericUGraphProjection
 
 /-!
 # Track F — literal induced partite lemma with U-closures for arbitrary (L,U)
