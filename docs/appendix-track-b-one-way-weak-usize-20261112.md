@@ -15,3 +15,9 @@ The map from whole weak to clipped weak is only source-defined; it is not a full
 ## Verification
 
 Source-only additive module, root-level named `#print axioms`, active module register. Frozen survey manuscript and existing TODOs untouched. Keep as draft until exact-head full Lean build and axiom check pass.
+
+## Additional exact-source certificates
+
+The same source-defined identity homomorphism also transports **every** generated closure, not merely its minimum-generator number: for any Q⊆S, `wholeWeakInduce(A,S).functionClosure(Q) ⊆ weakInduce(A,S).functionClosure(Q)`. The tagged 2019 counterpart `System.wholeMaskUClosureHull_subset_clipped` compares the two *different* canonical ambient closure-hull operators on the **same literal S and Q**. It is a subset statement, not an unproved equivalence of the tagged languages.
+
+On an actual Hales--Jewett line W of a true EHN stage T and arbitrary literal power test Test, the theorem `Stage.actualWeakLine_taggedAnd_projectedClippedUSize` combines a full split-output OLD/root-tagged embedding of the exact inverse image with a bound on the clipped USize of the exact projected control image. This requires a whole-fibre n-generator witness on that same inverse image; it makes no assumption that an arbitrary weak test is full or closed.
