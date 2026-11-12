@@ -40,11 +40,9 @@ noncomputable def asReducedUGraph
     have hi : t (Fin.cast hArity.symm i) = x i := by
       change x (Fin.cast hArity (Fin.cast hArity.symm i)) = x i
       congr 1
-      exact Fin.ext rfl
     have hj : t (Fin.cast hArity.symm j) = x j := by
       change x (Fin.cast hArity (Fin.cast hArity.symm j)) = x j
       congr 1
-      exact Fin.ext rfl
     have hp' : B.part (t (Fin.cast hArity.symm i)) =
         B.part (t (Fin.cast hArity.symm j)) := by
       simpa only [hi, hj] using hp
