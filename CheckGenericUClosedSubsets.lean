@@ -1,0 +1,3 @@
+import PartiteConstruction.Structure.GenericUClosedSubsets
+
+#print axioms StructuralRamsey.Partite.System.originalUClosedSet_iff_functionClosed
