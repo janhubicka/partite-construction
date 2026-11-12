@@ -45,7 +45,7 @@ noncomputable def fromReducedUGraph
     {A : RelStructure (L.withUFunctionsReduced U).graph V}
     {B : RelStructure (L.withUFunctionsReduced U).graph W}
     (e : Embedding A B) (x : V) :
-    (e.fromReducedUGraph U hU) x = e x := rfl
+    (RelStructure.Embedding.fromReducedUGraph U hU e) x = e x := rfl
 
 @[simp] theorem fromReducedUGraph_comp
     (U : Set L.Symbol)
@@ -55,8 +55,9 @@ noncomputable def fromReducedUGraph
     {X : Type z}
     {C : RelStructure (L.withUFunctionsReduced U).graph X}
     (f : Embedding B C) (e : Embedding A B) :
-    (f.comp e).fromReducedUGraph U hU =
-      (f.fromReducedUGraph U hU).comp (e.fromReducedUGraph U hU) := by
+    RelStructure.Embedding.fromReducedUGraph U hU (f.comp e) =
+      (RelStructure.Embedding.fromReducedUGraph U hU f).comp
+        (RelStructure.Embedding.fromReducedUGraph U hU e) := by
   apply Embedding.ext
   intro x
   rfl
@@ -104,7 +105,7 @@ noncomputable def fromReducedUGraph
     (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
     (B : Partite.System (L.withUFunctionsReduced U).graph P V)
     (x : V) :
-    (B.fromReducedUGraph U hU).part x = B.part x := rfl
+    (Partite.System.fromReducedUGraph U hU B).part x = B.part x := rfl
 
 /-- The original-language partite relation is exactly the corresponding
 decoded graph relation (same tuple, modulo the canonical arity cast). -/
@@ -113,7 +114,7 @@ theorem fromReducedUGraph_rel_iff
     (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
     (B : Partite.System (L.withUFunctionsReduced U).graph P V)
     (R : L.Symbol) (t : Fin (L.arity R) → V) :
-    (B.fromReducedUGraph U hU).rel R t ↔
+    (Partite.System.fromReducedUGraph U hU B).rel R t ↔
       B.rel (L.toReducedUGraphSymbol U R)
         (fun i => t (Fin.cast
           (L.reducedUGraphSymbol_arity U hU R) i)) :=
@@ -136,7 +137,7 @@ noncomputable def fromReducedUGraph
     Partite.Embedding
       (Partite.System.fromReducedUGraph U hU A)
       (Partite.System.fromReducedUGraph U hU B) where
-  toEmbedding := e.toEmbedding.fromReducedUGraph U hU
+  toEmbedding := RelStructure.Embedding.fromReducedUGraph U hU e.toEmbedding
   map_part := e.map_part
 
 @[simp] theorem fromReducedUGraph_apply
@@ -145,7 +146,7 @@ noncomputable def fromReducedUGraph
     {A : Partite.System (L.withUFunctionsReduced U).graph P V}
     {B : Partite.System (L.withUFunctionsReduced U).graph P W}
     (e : Partite.Embedding A B) (x : V) :
-    (e.fromReducedUGraph U hU) x = e x := rfl
+    (Partite.Embedding.fromReducedUGraph U hU e) x = e x := rfl
 
 end Partite.Embedding
 end StructuralRamsey
