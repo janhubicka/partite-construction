@@ -1,0 +1,7 @@
+import PartiteConstruction.Structure.GenericUGraphPowerClosedEmbedding
+
+#print axioms StructuralRamsey.Partite.fromGraphPower
+#print axioms StructuralRamsey.Partite.fromGraphPower_apply
+#print axioms StructuralRamsey.Partite.Closed.ofSurjectivePartite
+#print axioms StructuralRamsey.Partite.Closed.arrow_of_closed_target
+#print axioms StructuralRamsey.Partite.closedFromGraphPower
