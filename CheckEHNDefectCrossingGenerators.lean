@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.EHNDefectCrossingGenerators
+
+#print axioms StructuralRamsey.Structure.ProperFreeDecomposition.crossedInputGenerators
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.relationFailure_crossesSourceGenerators
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.domainFailure_crossesSourceGenerators
