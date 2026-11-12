@@ -60,7 +60,7 @@ theorem asReducedUGraph_iff_functionGraph
             (Fin.cast ((Nat.sub_add_cancel (hU F.1 F.2)).symm) i)
         have heta := congrFun (Structure.funcTuple_eta t)
           (Fin.cast ((Nat.sub_add_cancel (hU F.1 F.2)).symm) i)
-        simpa only [] using heta.symm
+        simpa only [RelLanguage.withUFunctionsReduced, Language.graph] using heta.symm
       change A.rel F.1 q ↔
         A.rel F.1 (RelLanguage.appendU L U hU F
           (fun i => t i.castSucc)
