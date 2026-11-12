@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackBOneWayClosureHull2019
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakFunctionClosure_subset_clipped
+#print axioms StructuralRamsey.FunctionalPartite.System.wholeMaskUClosureHull_subset_clipped
