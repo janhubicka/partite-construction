@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.PartialDomainGraphNonClosedRegression2019
+
+#print axioms StructuralRamsey.FunctionalPartite.TrackASaturation.weakCutDomainGraphEmbedding_range_eq
+#print axioms StructuralRamsey.FunctionalPartite.TrackASaturation.weakCutDomainGraphEmbedding_notClosed
+#print axioms StructuralRamsey.FunctionalPartite.TrackASaturation.weakCutDomainGraphEmbedding_notFull
