@@ -62,8 +62,8 @@ theorem originalUOutputTransversal_decode_iff
     (Partite.System.fromReducedUGraph U hU B).OriginalUOutputTransversal
       U hU ↔
       B.FunctionOutputTransversal := by
-  exact ((Partite.System.fromReducedUGraph U hU B)
-      .originalUOutputTransversal_iff U hU).trans
+  exact ((Partite.System.fromReducedUGraph U hU B).originalUOutputTransversal_iff
+      U hU).trans
       (functionOutputTransversal_reencode_iff U hU B)
 
 end StructuralRamsey.Partite.System
