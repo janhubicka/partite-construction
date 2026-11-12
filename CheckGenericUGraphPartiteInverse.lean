@@ -1,0 +1,7 @@
+import PartiteConstruction.Structure.GenericUGraphPartiteInverse
+
+#print axioms StructuralRamsey.RelStructure.Embedding.fromReducedUGraph
+#print axioms StructuralRamsey.RelStructure.Embedding.fromReducedUGraph_comp
+#print axioms StructuralRamsey.Partite.System.fromReducedUGraph
+#print axioms StructuralRamsey.Partite.System.fromReducedUGraph_rel_iff
+#print axioms StructuralRamsey.Partite.Embedding.fromReducedUGraph
