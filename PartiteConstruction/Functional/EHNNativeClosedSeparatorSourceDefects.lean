@@ -3,7 +3,7 @@ import PartiteConstruction.Functional.EHNDefectMinimumTwoInputs
 import PartiteConstruction.Functional.EHNNonFullCrossChartTrichotomy
 
 /-!
-# Track D: exact original-source defects on the actual HJ closed separator
+# Track D: original-source defects on the actual native closed-test separator
 
 The common separator in an ACTUAL native one-copy EHN binary attachment
 inherits the CANONICAL EHN label map into its selected A. Its failure to
@@ -22,6 +22,8 @@ when its vertex map is injective: no other root defect can occur.
 A full root embedding still does NOT automatically yield an incoming
 old-copy strict relative B-tree extension over the same Start.
 
+The attachment is an actual full native UnitAttachD, with generic control
+and support map; this DOES NOT certify the full ordered HJ line history.
 The numbered survey Appendix A is frozen and untouched.
 -/
 
@@ -33,7 +35,7 @@ variable {L : Language.{u}}
 variable {P U V W : Type v}
 
 /-- Exhaustive ORIGINAL-SOURCE trichotomy for the actual full common
-separator of a genuine native functional Hales--Jewett attachment.
+separator of a genuine native functional one-copy attachment.
 The two tuple failure alternatives each preserve a real named
 primitive input and two DISTINCT original source input vertices.
 
@@ -103,7 +105,7 @@ theorem closedTestPullback_common_fullOrCollisionOrMultiInputDefect
         (Or.inr ⟨F, xs, i, j, hDistinct, hTarget, hSource⟩))
 
 /-- With only unary/nullary OLD primitive inputs, the ACTUAL closed
-HJ separator's canonical EHN projection is FULL precisely if its
+native separator's canonical EHN projection is FULL precisely if its
 vertex map is injective. In arbitrary arity this equivalence fails:
 extra target relations and source-undefined target-defined function
 tuples with two original source inputs can remain. -/
