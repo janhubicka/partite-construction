@@ -126,8 +126,7 @@ theorem asReducedUGraph
       e.asReducedUGraph U hU
     refine ⟨e', ?_⟩
     intro x
-    change e x = f x.1
-    exact he x
+    simpa only [e', RelStructure.Embedding.asReducedUGraph] using he x
 
 end IsHomomorphismEmbedding
 end RelStructure
