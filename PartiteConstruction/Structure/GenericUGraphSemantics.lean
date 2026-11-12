@@ -43,7 +43,6 @@ theorem asReducedUGraph_iff_functionGraph
             = t := by
         funext i
         congr 1
-        exact Fin.ext rfl
       rw [ht]
   | inr F =>
       let q : Fin (L.arity F.1) → V := fun i =>
@@ -59,9 +58,9 @@ theorem asReducedUGraph_iff_functionGraph
             (fun j => t j.castSucc)
             (t (Fin.last (L.arity F.1 - 1)))
             (Fin.cast ((Nat.sub_add_cancel (hU F.1 F.2)).symm) i)
-        rw [Structure.funcTuple_eta t]
-        congr 1
-        exact Fin.ext rfl
+        have heta := congrFun (Structure.funcTuple_eta t)
+          (Fin.cast ((Nat.sub_add_cancel (hU F.1 F.2)).symm) i)
+        simpa only [] using heta.symm
       change A.rel F.1 q ↔
         A.rel F.1 (RelLanguage.appendU L U hU F
           (fun i => t i.castSucc)
