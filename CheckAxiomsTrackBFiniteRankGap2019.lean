@@ -1,0 +1,8 @@
+import PartiteConstruction.Functional.TrackBFiniteRankGap2019
+
+#print axioms StructuralRamsey.FunctionalPartite.TrackBFiniteRankGap.original_fibre_transversal
+#print axioms StructuralRamsey.FunctionalPartite.TrackBFiniteRankGap.clipped_at_zero
+#print axioms StructuralRamsey.FunctionalPartite.TrackBFiniteRankGap.whole_none_any
+#print axioms StructuralRamsey.FunctionalPartite.TrackBFiniteRankGap.clipped_generated_by_one
+#print axioms StructuralRamsey.FunctionalPartite.TrackBFiniteRankGap.whole_not_generated_by_one
+#print axioms StructuralRamsey.FunctionalPartite.TrackBFiniteRankGap.exact_weak_rank_gap
