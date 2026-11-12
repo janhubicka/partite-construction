@@ -602,3 +602,6 @@ import PartiteConstruction.Structure.PartialSetFunctionsWholePartRepresent
 import PartiteConstruction.Structure.PartialSetFunctionsWholePartClosure
 import PartiteConstruction.Structure.PartialSetFunctionsWholePartWeakDictionary
 import PartiteConstruction.Functional.NativeWholePartClosure
+
+-- Track E: exact function-closed decoded tests in the actual final tagged witness.
+import PartiteConstruction.Functional.TrackEFinalCoveredDecodedClosedU2019
