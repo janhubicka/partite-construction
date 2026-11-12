@@ -34,11 +34,13 @@ def lang : Language where
   relArity := Empty.elim
   funcArity _ := 1
 
+def firstArg : Fin (lang.funcArity ()) := ⟨0, by simp [lang]⟩
+
 def native : Structure lang (Fin 3) where
   rel R := Empty.elim R
   func F xs := by
     cases F
-    exact if xs 0 = (0 : Fin 3) then
+    exact if xs firstArg = (0 : Fin 3) then
       ({1, 2} : Set (Fin 3))
     else ∅
 
@@ -52,6 +54,11 @@ noncomputable def sourcePartial : PartialSetStructure lang (Fin 3) :=
 def cut : Set (Fin 3) := {0,1}
 def a : cut := ⟨0, by simp [cut]⟩
 def b : cut := ⟨1, by simp [cut]⟩
+
+private theorem a_ne_b : a ≠ b := by
+  intro h
+  have heq : (0 : Fin 3) = 1 := congrArg Subtype.val h
+  exact (by decide : (0 : Fin 3) ≠ 1) heq
 
 private theorem outputs_nonempty :
     ({1,2} : Set (Fin 3)).Nonempty :=
@@ -88,7 +95,13 @@ theorem clipped_at_zero :
   have hv :
       sourcePartial.func () (Subtype.val ∘ (fun _ : Fin 1 => a)) =
         some ({1,2} : Set (Fin 3)) := by
-    simpa [a] using partial_at_zero
+    have hargs :
+        (Subtype.val ∘ (fun _ : Fin 1 => a)) =
+          (fun _ => (0 : Fin 3)) := by
+      funext i
+      rfl
+    rw [hargs]
+    exact partial_at_zero
   change weakValue cut
     (sourcePartial.func () (Subtype.val ∘ (fun _ : Fin 1 => a))) =
       some ({b} : Set cut)
@@ -104,7 +117,7 @@ theorem clipped_at_zero :
   rcases hy with h0 | h1
   · have hEq : y = a := Subtype.ext h0
     subst y
-    simp [a,b]
+    simp [a_ne_b]
   · have hEq : y = b := Subtype.ext h1
     subst y
     simp [a,b]
@@ -115,7 +128,7 @@ theorem whole_none_any (xs : Fin 1 → cut) :
   classical
   change wholeWeakValue cut
     (sourcePartial.func () (Subtype.val ∘ xs)) = none
-  by_cases hx : (xs 0).1 = (0 : Fin 3)
+  by_cases hx : (xs firstArg).1 = (0 : Fin 3)
   · have hv : sourcePartial.func () (Subtype.val ∘ xs) =
         some ({1,2} : Set (Fin 3)) := by
       simp [sourcePartial, Structure.toNonemptyPartial, native, hx,
@@ -135,10 +148,6 @@ theorem whole_all_closed (Q : Set cut) :
   rw [whole_none_any xs] at hValue
   cases hValue
 
-private theorem a_ne_b : a ≠ b := by
-  intro h
-  have heq : (0 : Fin 3) = 1 := congrArg Subtype.val h
-  exact (by decide : (0 : Fin 3) ≠ 1) heq
 
 /-- One generator a suffices for the clipped weak test, although the
 entire original fibre crosses the cut. -/
@@ -146,7 +155,12 @@ theorem clipped_generated_by_one :
     (sourcePartial.weakInduce cut).GeneratedByAtMost 1 := by
   classical
   refine ⟨{a}, by simp, ?_⟩
-  change (sourcePartial.weakInduce cut).functionClosure ({a} : Set cut) = Set.univ
+  change (sourcePartial.weakInduce cut).functionClosure
+    (↑({a} : Finset cut) : Set cut) = Set.univ
+  have hSeed : (↑({a} : Finset cut) : Set cut) = ({a} : Set cut) := by
+    ext x
+    simp
+  rw [hSeed]
   apply Set.Subset.antisymm (Set.subset_univ _)
   intro y _
   have hy : y.1 = (0 : Fin 3) ∨ y.1 = 1 := by
