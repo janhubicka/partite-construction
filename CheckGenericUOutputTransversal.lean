@@ -1,0 +1,5 @@
+import PartiteConstruction.Structure.GenericUOutputTransversal
+
+#print axioms StructuralRamsey.Partite.System.OriginalUOutputTransversal
+#print axioms StructuralRamsey.Partite.System.reducedUGraph_func_snoc_iff
+#print axioms StructuralRamsey.Partite.System.originalUOutputTransversal_iff
