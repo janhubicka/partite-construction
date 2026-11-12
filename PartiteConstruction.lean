@@ -608,3 +608,6 @@ import PartiteConstruction.Functional.TrackEExactInducedDomainReflection2019
 
 -- Track E: full Option(Set) embedding on an exact function-closed tagged test.
 import PartiteConstruction.Functional.TrackEClosedExactTaggedTestEmbedding2019
+
+-- Track E: selected tagged closed-U projection protects full partial closed tests.
+import PartiteConstruction.Functional.TrackEProtectedExactClosedUTestSameMap2019
