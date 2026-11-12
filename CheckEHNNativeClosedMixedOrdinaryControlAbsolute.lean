@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNNativeClosedMixedOrdinaryControlAbsolute
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.closedTest_originalPartial_weakRankSucc_absolute_mixed
