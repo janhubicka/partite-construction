@@ -1,0 +1,7 @@
+import PartiteConstruction.Structure.GenericUGraphReindex
+
+#print axioms StructuralRamsey.RelLanguage.reducedUGraphSymbol_arity_from
+#print axioms StructuralRamsey.RelStructure.asReducedUGraph_rel_iff
+#print axioms StructuralRamsey.RelStructure.fromReducedUGraph_rel_iff
+#print axioms StructuralRamsey.RelStructure.Embedding.asReducedUGraph
+#print axioms StructuralRamsey.RelStructure.Embedding.asReducedUGraph_comp
