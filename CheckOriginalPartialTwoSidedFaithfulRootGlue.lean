@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.OriginalPartialTwoSidedFaithfulRootGlue
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.originalPartialTreeCompletion_of_partialSides_faithfulRoot
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.originalPartialTreeCompletion_of_partialSides_inputCover
