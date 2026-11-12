@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.EHNGlobalDefectDecomposition
+
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.relationInputHull_reducible_of_reflectionFailure
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.nonFull_exactThreeDefects
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.nonFull_sourceDecompositionTrichotomy
