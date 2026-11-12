@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackBFiniteRankGapTaggedUSize2019
+
+#print axioms StructuralRamsey.FunctionalPartite.TrackBFiniteRankGap.tagged_USize_rank_gap
