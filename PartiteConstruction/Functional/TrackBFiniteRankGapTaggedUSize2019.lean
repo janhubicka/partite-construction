@@ -2,6 +2,7 @@ import PartiteConstruction.Functional.TrackBFiniteRankGap2019
 import PartiteConstruction.Functional.NativePartiteWeakUClosureRankDictionary
 import PartiteConstruction.Functional.WholeMaskWholeWeakUSize2019
 import PartiteConstruction.Functional.NativePartialClosure
+import PartiteConstruction.Functional.NativeWholePartClosure
 import PartiteConstruction.Functional.LegacyWeakPartialCommutation2019
 
 /-!
