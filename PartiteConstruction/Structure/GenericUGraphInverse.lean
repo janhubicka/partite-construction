@@ -36,9 +36,13 @@ theorem from_asReducedUGraph_rel_iff
   · simp [fromReducedUGraph, asReducedUGraph,
       RelLanguage.toReducedUGraphSymbol,
       RelLanguage.fromReducedUGraphSymbol, hR]
+    all_goals simp [RelLanguage.toReducedUGraphSymbol,
+      RelLanguage.fromReducedUGraphSymbol, hR, Fin.cast]
   · simp [fromReducedUGraph, asReducedUGraph,
       RelLanguage.toReducedUGraphSymbol,
       RelLanguage.fromReducedUGraphSymbol, hR]
+    all_goals simp [RelLanguage.toReducedUGraphSymbol,
+      RelLanguage.fromReducedUGraphSymbol, hR, Fin.cast]
 
 /-- Every arbitrary graph-language structure likewise survives the inverse
 roundtrip; no coherence of its relations with a separate function symbol is
@@ -58,11 +62,15 @@ theorem as_fromReducedUGraph_rel_iff
       simp [fromReducedUGraph, asReducedUGraph,
         RelLanguage.toReducedUGraphSymbol,
         RelLanguage.fromReducedUGraphSymbol, hR]
+      all_goals simp [RelLanguage.toReducedUGraphSymbol,
+        RelLanguage.fromReducedUGraphSymbol, hR, Fin.cast]
   | inr F =>
       have hF : F.1 ∈ U := F.2
       simp [fromReducedUGraph, asReducedUGraph,
         RelLanguage.toReducedUGraphSymbol,
         RelLanguage.fromReducedUGraphSymbol, hF]
+      all_goals simp [RelLanguage.toReducedUGraphSymbol,
+        RelLanguage.fromReducedUGraphSymbol, hF, Fin.cast]
 
 namespace IsHomomorphism
 
