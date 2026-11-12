@@ -605,3 +605,6 @@ import PartiteConstruction.Functional.NativeWholePartClosure
 
 -- Track E: exact OLD-domain reflection across full tagged induced tests.
 import PartiteConstruction.Functional.TrackEExactInducedDomainReflection2019
+
+-- Track E: full Option(Set) embedding on an exact function-closed tagged test.
+import PartiteConstruction.Functional.TrackEClosedExactTaggedTestEmbedding2019
