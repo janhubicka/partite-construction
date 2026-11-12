@@ -1,5 +1,6 @@
 import PartiteConstruction.Structure.GenericUGraphSemantics
 import PartiteConstruction.Structure.GenericUGraphInverse
+import PartiteConstruction.Structure.GenericUGraphPartiteInverse
 import PartiteConstruction.Structure.GenericUCombinedClosureBridge
 import PartiteConstruction.Functional.Closed
 
