@@ -80,7 +80,7 @@ theorem wholeMaskCovered_USubstructure_to_decodedClosed
   intro y hy
   rw [hOutput] at hy
   obtain ⟨j, hj⟩ := hy
-  rw [hj]
+  rw [← hj]
   exact hHull
     (hNormal.completeOutput_mem_inputHull
       C hValid hPos p q t hGraph j)
