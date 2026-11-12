@@ -602,3 +602,6 @@ import PartiteConstruction.Structure.PartialSetFunctionsWholePartRepresent
 import PartiteConstruction.Structure.PartialSetFunctionsWholePartClosure
 import PartiteConstruction.Structure.PartialSetFunctionsWholePartWeakDictionary
 import PartiteConstruction.Functional.NativeWholePartClosure
+
+-- Track E: exact OLD-domain reflection across full tagged induced tests.
+import PartiteConstruction.Functional.TrackEExactInducedDomainReflection2019

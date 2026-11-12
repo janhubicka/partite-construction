@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.TrackEExactInducedDomainReflection2019
+
+#print axioms StructuralRamsey.RelStructure.hasWholeMaskDomain_induce_iff
+#print axioms StructuralRamsey.RelStructure.wholeMaskDecoded_defined_iff_of_exact_tagged_embedding
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_defined_iff_of_exact_tagged_embedding
