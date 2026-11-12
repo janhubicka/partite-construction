@@ -1,0 +1,4 @@
+import PartiteConstruction.Ramsey.ClosureFreeAmalgamRelativeRoot
+
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.root_isUClosed_of_left_closed_right_relative
+#print axioms StructuralRamsey.RelStructure.IsFreeAmalgam.root_isUClosed_of_right_closed_left_relative
