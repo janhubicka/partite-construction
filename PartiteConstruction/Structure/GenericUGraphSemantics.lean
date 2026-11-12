@@ -58,9 +58,14 @@ theorem asReducedUGraph_iff_functionGraph
             (fun j => t j.castSucc)
             (t (Fin.last (L.arity F.1 - 1)))
             (Fin.cast ((Nat.sub_add_cancel (hU F.1 F.2)).symm) i)
-        have heta := congrFun (Structure.funcTuple_eta t)
-          (Fin.cast ((Nat.sub_add_cancel (hU F.1 F.2)).symm) i)
-        simpa only [RelLanguage.withUFunctionsReduced, Language.graph] using heta.symm
+        have hcast :
+            Fin.cast (L.reducedUGraphSymbol_arity_from U hU (.inr F)) i =
+              Fin.cast ((Nat.sub_add_cancel (hU F.1 F.2)).symm) i :=
+          Fin.ext rfl
+        rw [hcast]
+        refine Fin.lastCases ?_ (fun k => ?_) _
+        · simp [Structure.funcTuple]
+        · simp [Structure.funcTuple]
       change A.rel F.1 q ↔
         A.rel F.1 (RelLanguage.appendU L U hU F
           (fun i => t i.castSucc)
