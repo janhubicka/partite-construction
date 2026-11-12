@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackEFinalCoveredCompleteValueSideLocalization2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_decodedFunctionIncident_side
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_nativeFunctionIncident_side
