@@ -49,9 +49,9 @@ noncomputable def asReducedUGraph
 /-- Reindex a graph-language structure into the original relational
 signature on the same carrier, without constructing any closure hull. -/
 noncomputable def fromReducedUGraph
-    (D : RelStructure (L.withUFunctionsReduced U).graph V)
     (U : Set L.Symbol)
-    (hU : ∀ R, R ∈ U → 1 ≤ L.arity R) :
+    (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
+    (D : RelStructure (L.withUFunctionsReduced U).graph V) :
     RelStructure L V where
   rel R t := D.rel (L.toReducedUGraphSymbol U R)
     (fun i => t (Fin.cast (L.reducedUGraphSymbol_arity U hU R) i))
@@ -71,11 +71,11 @@ theorem asReducedUGraph_rel_iff
 /-- The inverse pullback has exactly the relation indicated by the
 symbol equivalence and the arity cast. -/
 theorem fromReducedUGraph_rel_iff
-    (D : RelStructure (L.withUFunctionsReduced U).graph V)
     (U : Set L.Symbol)
     (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
+    (D : RelStructure (L.withUFunctionsReduced U).graph V)
     (R : L.Symbol) (t : Fin (L.arity R) → V) :
-    (D.fromReducedUGraph U hU).rel R t ↔
+    (fromReducedUGraph U hU D).rel R t ↔
       D.rel (L.toReducedUGraphSymbol U R)
         (fun i => t (Fin.cast
           (L.reducedUGraphSymbol_arity U hU R) i)) :=
