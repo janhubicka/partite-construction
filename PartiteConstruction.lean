@@ -605,3 +605,10 @@ import PartiteConstruction.Functional.NativeWholePartClosure
 
 -- Track E: exact OLD-domain reflection across full tagged induced tests.
 import PartiteConstruction.Functional.TrackEExactInducedDomainReflection2019
+
+-- Exact endpoint bridges for Appendix A Track E (full same-map closed-test transfers).
+import PartiteConstruction.Functional.TrackEClosedExactTaggedTestEmbedding2019
+import PartiteConstruction.Functional.TrackEFinalCoveredDecodedClosedU2019
+import PartiteConstruction.Functional.TrackEFinalCoveredClosureDictionary2019
+import PartiteConstruction.Functional.TrackEProtectedExactClosedUTestSameMap2019
+import PartiteConstruction.Functional.TrackEFinalCoveredCompleteValueSideLocalization2019
