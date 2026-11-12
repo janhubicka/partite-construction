@@ -71,7 +71,7 @@ noncomputable def toGraphClosed
     (U : Set L.Symbol)
     (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
     (e : Partite.Embedding A B)
-    (he : RelStructure.IsUClosedEmbeddingRange U hU e)
+    (he : RelStructure.IsUClosedEmbeddingRange U hU e.toEmbedding)
     (x : V) :
     toGraphClosed U hU e he x = e x := rfl
 
