@@ -19,7 +19,7 @@ for a genuine partite system, with no added closed hull or vertices.
 This is a finite counterexample to unconditional identification of
 the split-output clipped and complete-mask whole-fibre 2019 USize
 presentations. It does not contradict their conditional agreement on
-function-closed cuts or on cuts retaining no partial original fibre.
+function-closed cuts or on cuts retaining no sourcePartial original fibre.
 -/
 
 namespace StructuralRamsey.FunctionalPartite.TrackBFiniteRankGap
@@ -36,16 +36,17 @@ def lang : Language where
 
 def native : Structure lang (Fin 3) where
   rel R := Empty.elim R
-  func _ xs :=
-    if xs 0 = (0 : Fin 3) then
+  func F xs := by
+    cases F
+    exact if xs 0 = (0 : Fin 3) then
       ({1, 2} : Set (Fin 3))
     else ∅
 
-/-- A genuine native partite system, not just a partial set-valued source. -/
+/-- A genuine native partite system, not just a sourcePartial set-valued source. -/
 def system : System lang (Fin 3) (Fin 3) :=
   transversal native
 
-noncomputable def partial : PartialSetStructure lang (Fin 3) :=
+noncomputable def sourcePartial : PartialSetStructure lang (Fin 3) :=
   native.toNonemptyPartial
 
 def cut : Set (Fin 3) := {0,1}
@@ -64,7 +65,7 @@ private theorem outputs_escape_cut :
     ¬ ({1,2} : Set (Fin 3)) ⊆ cut := by
   intro h
   have h2 : (2 : Fin 3) ∈ cut := h (by simp)
-  have hnot : (2 : Fin 3) ∉ cut := by decide
+  have hnot : (2 : Fin 3) ∉ cut := by simp [cut]
   exact hnot h2
 
 /-- The original complete fibre is genuinely output transversal. -/
@@ -74,22 +75,22 @@ theorem original_fibre_transversal
   system.func_part_injOn () xs
 
 private theorem partial_at_zero :
-    partial.func () (fun _ => (0 : Fin 3)) =
+    sourcePartial.func () (fun _ => (0 : Fin 3)) =
       some ({1,2} : Set (Fin 3)) := by
   classical
-  simp [partial, Structure.toNonemptyPartial, native, outputs_nonempty]
+  simp [sourcePartial, Structure.toNonemptyPartial, native, outputs_nonempty]
 
 /-- The clipped operation still generates b from a on exact cut. -/
 theorem clipped_at_zero :
-    (partial.weakInduce cut).func () (fun _ => a) =
+    (sourcePartial.weakInduce cut).func () (fun _ => a) =
       some ({b} : Set cut) := by
   classical
   have hv :
-      partial.func () (Subtype.val ∘ (fun _ : Fin 1 => a)) =
+      sourcePartial.func () (Subtype.val ∘ (fun _ : Fin 1 => a)) =
         some ({1,2} : Set (Fin 3)) := by
     simpa [a] using partial_at_zero
   change weakValue cut
-    (partial.func () (Subtype.val ∘ (fun _ : Fin 1 => a))) =
+    (sourcePartial.func () (Subtype.val ∘ (fun _ : Fin 1 => a))) =
       some ({b} : Set cut)
   rw [hv]
   have hWeak : weakValue cut (some ({1,2} : Set (Fin 3))) =
@@ -110,25 +111,25 @@ theorem clipped_at_zero :
 
 /-- All whole-fibre weak function applications on the cut are undefined. -/
 theorem whole_none_any (xs : Fin 1 → cut) :
-    (partial.wholeWeakInduce cut).func () xs = none := by
+    (sourcePartial.wholeWeakInduce cut).func () xs = none := by
   classical
   change wholeWeakValue cut
-    (partial.func () (Subtype.val ∘ xs)) = none
+    (sourcePartial.func () (Subtype.val ∘ xs)) = none
   by_cases hx : (xs 0).1 = (0 : Fin 3)
-  · have hv : partial.func () (Subtype.val ∘ xs) =
+  · have hv : sourcePartial.func () (Subtype.val ∘ xs) =
         some ({1,2} : Set (Fin 3)) := by
-      simp [partial, Structure.toNonemptyPartial, native, hx,
+      simp [sourcePartial, Structure.toNonemptyPartial, native, hx,
         outputs_nonempty]
     rw [hv]
     exact wholeWeakValue_of_not_subset cut {1,2} outputs_escape_cut
-  · have hv : partial.func () (Subtype.val ∘ xs) = none := by
-      simp [partial, Structure.toNonemptyPartial, native, hx]
+  · have hv : sourcePartial.func () (Subtype.val ∘ xs) = none := by
+      simp [sourcePartial, Structure.toNonemptyPartial, native, hx]
     rw [hv]
     rfl
 
 /-- Whole-fibre deletion leaves a source with no generating operations. -/
 theorem whole_all_closed (Q : Set cut) :
-    (partial.wholeWeakInduce cut).IsClosed Q := by
+    (sourcePartial.wholeWeakInduce cut).IsClosed Q := by
   intro F xs U _ hValue
   cases F
   rw [whole_none_any xs] at hValue
@@ -142,10 +143,10 @@ private theorem a_ne_b : a ≠ b := by
 /-- One generator a suffices for the clipped weak test, although the
 entire original fibre crosses the cut. -/
 theorem clipped_generated_by_one :
-    (partial.weakInduce cut).GeneratedByAtMost 1 := by
+    (sourcePartial.weakInduce cut).GeneratedByAtMost 1 := by
   classical
   refine ⟨{a}, by simp, ?_⟩
-  change (partial.weakInduce cut).functionClosure ({a} : Set cut) = Set.univ
+  change (sourcePartial.weakInduce cut).functionClosure ({a} : Set cut) = Set.univ
   apply Set.Subset.antisymm (Set.subset_univ _)
   intro y _
   have hy : y.1 = (0 : Fin 3) ∨ y.1 = 1 := by
@@ -153,11 +154,11 @@ theorem clipped_generated_by_one :
   rcases hy with h0 | h1
   · have heq : y = a := Subtype.ext h0
     subst y
-    exact (partial.weakInduce cut).subset_functionClosure
+    exact (sourcePartial.weakInduce cut).subset_functionClosure
       ({a} : Set cut) (by simp)
   · have heq : y = b := Subtype.ext h1
     subst y
-    apply ((partial.weakInduce cut).mem_functionClosure_iff
+    apply ((sourcePartial.weakInduce cut).mem_functionClosure_iff
       ({a} : Set cut) b).mpr
     intro Q hQ hAQ
     have ha : a ∈ Q := hAQ (by simp)
@@ -168,13 +169,13 @@ theorem clipped_generated_by_one :
 /-- No singleton can generate both cut vertices under whole-fibre
 deletion: every subset is closed because all operations are undefined. -/
 theorem whole_not_generated_by_one :
-    ¬ (partial.wholeWeakInduce cut).GeneratedByAtMost 1 := by
+    ¬ (sourcePartial.wholeWeakInduce cut).GeneratedByAtMost 1 := by
   classical
   rintro ⟨G, hCard, hGen⟩
   have hEq : (↑G : Set cut) = Set.univ := by
-    change (partial.wholeWeakInduce cut).functionClosure (↑G : Set cut) =
+    change (sourcePartial.wholeWeakInduce cut).functionClosure (↑G : Set cut) =
       Set.univ at hGen
-    rw [(partial.wholeWeakInduce cut).functionClosure_eq_of_isClosed
+    rw [(sourcePartial.wholeWeakInduce cut).functionClosure_eq_of_isClosed
       (whole_all_closed (↑G : Set cut))] at hGen
     exact hGen
   have ha : a ∈ G := by
@@ -195,11 +196,11 @@ theorem whole_not_generated_by_one :
   omega
 
 /-- Actual rank gap on a transversal multivalued native system. The
-partial presentation is by definition its genuine nonempty-fibre
+sourcePartial presentation is by definition its genuine nonempty-fibre
 Option(Set) translation: no invented independent-domain objects. -/
 theorem exact_weak_rank_gap :
-    (partial.weakInduce cut).GeneratedByAtMost 1 ∧
-      ¬ (partial.wholeWeakInduce cut).GeneratedByAtMost 1 :=
+    (sourcePartial.weakInduce cut).GeneratedByAtMost 1 ∧
+      ¬ (sourcePartial.wholeWeakInduce cut).GeneratedByAtMost 1 :=
   ⟨clipped_generated_by_one, whole_not_generated_by_one⟩
 
 end StructuralRamsey.FunctionalPartite.TrackBFiniteRankGap
