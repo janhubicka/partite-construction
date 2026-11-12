@@ -605,3 +605,5 @@ import PartiteConstruction.Functional.NativeWholePartClosure
 
 -- Track E: exact function-closed decoded tests in the actual final tagged witness.
 import PartiteConstruction.Functional.TrackEFinalCoveredDecodedClosedU2019
+-- Track E: full relative U-closed/function-closed dictionary on final tagged C.
+import PartiteConstruction.Functional.TrackEFinalCoveredClosureDictionary2019
