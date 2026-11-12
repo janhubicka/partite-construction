@@ -55,7 +55,10 @@ theorem hasWholeMaskDomain_induce_iff
         (.inr (.inl
           ((⟨F, m, r, hr⟩ : Language.FunctionInputPattern L), q)))
         (Subtype.val ∘ rootS)
-      simpa only [rootS] using hDomain
+      have hRootComp : (Subtype.val ∘ rootS) = root := by
+        funext j
+        rfl
+      simpa only [hRootComp] using hDomain
     refine ⟨m, r, hr, q, rootS, hDomainS, ?_⟩
     intro i
     apply Subtype.ext
