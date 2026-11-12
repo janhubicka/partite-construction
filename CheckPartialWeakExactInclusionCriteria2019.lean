@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.PartialWeakExactInclusionCriteria2019
+
+#print axioms StructuralRamsey.PartialSetStructure.weakDomainGraphInclusion_iff_noLost
+#print axioms StructuralRamsey.PartialSetStructure.weakFullInclusion_iff_closed
+#print axioms StructuralRamsey.PartialSetStructure.weakGraphIncluded_notFull_of_noLost_notClosed
