@@ -32,7 +32,7 @@ its induced universal subtype. The change of carrier is a genuine
 FULL structure embedding, not a weak or guessed quotient map. -/
 theorem IsAmbientRelativeWeakHE.toOriginalPartialHE_univ
     {Side : Structure L E} {Target : Structure L Y}
-    {f : (Set.univ : Set E) → Y}
+    {f : ↥(Set.univ : Set E) → Y}
     (h : IsAmbientRelativeWeakHE Side Set.univ Target f) :
     Side.IsOriginalPartialHomomorphismEmbedding Target
       (fun x : E => f ⟨x, Set.mem_univ x⟩) := by
@@ -112,12 +112,12 @@ theorem originalPartialTreeCompletion_of_ordinaryControlSideImages
   let mapR : F → YR := fun x =>
     fR ⟨pR x, ⟨x, Set.mem_univ x, rfl⟩⟩
   have hPulledL : IsAmbientRelativeWeakHE Left Set.univ TL
-      (fL ∘ (fun x : (Set.univ : Set E) =>
+      (fL ∘ (fun x : ↥(Set.univ : Set E) =>
         (⟨pL x.1, ⟨x.1, x.2, rfl⟩⟩ :
           pL '' (Set.univ : Set E)))) :=
     hWeakL.pullback_ehn_exact hpL Set.univ fL
   have hPulledR : IsAmbientRelativeWeakHE Right Set.univ TR
-      (fR ∘ (fun x : (Set.univ : Set F) =>
+      (fR ∘ (fun x : ↥(Set.univ : Set F) =>
         (⟨pR x.1, ⟨x.1, x.2, rfl⟩⟩ :
           pR '' (Set.univ : Set F)))) :=
     hWeakR.pullback_ehn_exact hpR Set.univ fR
