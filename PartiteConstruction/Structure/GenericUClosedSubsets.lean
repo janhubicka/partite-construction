@@ -43,13 +43,13 @@ theorem originalUClosedSet_iff_functionClosed
       intro i
       change (RelLanguage.rootU L U hU F
         (RelLanguage.appendU L U hU F x y)) i ∈ S
-      rw [RelLanguage.rootU_append]
+      rw [RelLanguage.rootU_append L U hU F x y]
       exact hroots i
     have hout := h F.1 F.2
       (RelLanguage.appendU L U hU F x y) htuple hroot
     change (RelLanguage.lastU L U hU F
       (RelLanguage.appendU L U hU F x y)) ∈ S at hout
-    rw [RelLanguage.lastU_append] at hout
+    rw [RelLanguage.lastU_append L U hU F x y] at hout
     exact hout
   · intro h R hR t ht hroots
     let F : U := ⟨R, hR⟩
