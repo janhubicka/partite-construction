@@ -116,7 +116,11 @@ theorem domainGraph_decode_rel_iff
   · rfl
   rcases symbol with F | F
   · exact decodeDomainGraph_defined_iff R F xs
-  · simpa only [Structure.funcTuple_eta] using
+  · change
+      (decodeDomainGraph R).HasOutput F
+        (fun i => xs i.castSucc) (xs (Fin.last (L.funcArity F))) ↔
+        R.rel (.inr (.inr F)) xs
+    simpa only [Structure.funcTuple_eta] using
       (decodeDomainGraph_hasOutput_iff R hCan F
         (fun i => xs i.castSucc) (xs (Fin.last (L.funcArity F))))
 
