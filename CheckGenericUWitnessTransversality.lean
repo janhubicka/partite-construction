@@ -1,0 +1,4 @@
+import PartiteConstruction.Structure.GenericUWitnessTransversality
+
+#print axioms StructuralRamsey.Partite.System.functionOutputTransversal_reencode_iff
+#print axioms StructuralRamsey.Partite.System.originalUOutputTransversal_decode_iff
