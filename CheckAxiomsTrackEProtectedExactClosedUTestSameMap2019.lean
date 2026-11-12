@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackEProtectedExactClosedUTestSameMap2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_protectedClosedExactTest_toPartialEmbedding
