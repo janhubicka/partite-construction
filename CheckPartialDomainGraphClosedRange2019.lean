@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.PartialDomainGraphClosedRange2019
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.range_isClosed
+#print axioms StructuralRamsey.PartialSetStructure.noExtra_of_domainGraphEmbedding_closed
+#print axioms StructuralRamsey.PartialSetStructure.noExtra_iff_closedRange_of_domainGraphEmbedding
+#print axioms StructuralRamsey.PartialSetStructure.fullEmbedding_iff_domainGraphEmbedding_closedRange
