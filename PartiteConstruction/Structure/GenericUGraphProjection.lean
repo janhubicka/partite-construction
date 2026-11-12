@@ -125,7 +125,10 @@ theorem asReducedUGraph
         (B.asReducedUGraph U hU) := by
       rw [← induce_asReducedUGraph A S U hU]
       exact e.asReducedUGraph U hU
-    exact ⟨e', he⟩
+    refine ⟨e', ?_⟩
+    intro x
+    change e x = f x.1
+    exact he x
 
 end IsHomomorphismEmbedding
 end RelStructure
