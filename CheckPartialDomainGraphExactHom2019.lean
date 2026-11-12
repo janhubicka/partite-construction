@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.PartialDomainGraphExactHom2019
+
+#print axioms StructuralRamsey.PartialSetStructure.originalPartialHom_iff_domainGraphHom_and_noExtra
