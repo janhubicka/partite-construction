@@ -16,8 +16,8 @@ multi-valued fibres and repeated coordinates are included.
 
 namespace StructuralRamsey.Partite.System
 
-universe u v w
-variable {L : RelLanguage.{u}} {P : Type v} {V : Type w}
+universe u v
+variable {L : RelLanguage.{u}} {P V : Type v}
 
 /-- Original arbitrary-relational U-transversality: each actual last-output
 fibre of a distinguished relation meets every part in at most one vertex. -/
