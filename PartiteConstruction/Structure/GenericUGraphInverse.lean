@@ -32,21 +32,25 @@ theorem from_asReducedUGraph_rel_iff
     (fromReducedUGraph U hU (A.asReducedUGraph U hU)).rel R t ↔
       A.rel R t := by
   classical
-  change A.rel (L.fromReducedUGraphSymbol U
-    (L.toReducedUGraphSymbol U R))
-    (fun i => t (Fin.cast (L.reducedUGraphSymbol_arity U hU R)
+  let S := L.fromReducedUGraphSymbol U (L.toReducedUGraphSymbol U R)
+  let k : Fin (L.arity S) → Fin (L.arity R) :=
+    fun i => Fin.cast (L.reducedUGraphSymbol_arity U hU R)
       (Fin.cast (L.reducedUGraphSymbol_arity_from U hU
-        (L.toReducedUGraphSymbol U R)) i))) ↔ A.rel R t
-  have hsym := L.from_toReducedUGraphSymbol U R
-  cases hsym
-  have ht :
-      (fun i : Fin (L.arity R) =>
-        t (Fin.cast (L.reducedUGraphSymbol_arity U hU R)
-          (Fin.cast (L.reducedUGraphSymbol_arity_from U hU
-            (L.toReducedUGraphSymbol U R)) i))) = t := by
-    funext i
-    exact congrArg t (Fin.ext rfl)
-  simpa only [ht]
+        (L.toReducedUGraphSymbol U R)) i)
+  have hk : ∀ i, (k i).val = i.val := by
+    intro i
+    rfl
+  have transport (T : L.Symbol) (hT : T = R)
+      (g : Fin (L.arity T) → Fin (L.arity R))
+      (hg : ∀ i, (g i).val = i.val) :
+      A.rel T (fun i => t (g i)) ↔ A.rel R t := by
+    subst T
+    have heq : (fun i => t (g i)) = t := by
+      funext i
+      exact congrArg t (Fin.ext (hg i))
+    simp only [heq]
+  change A.rel S (fun i => t (k i)) ↔ A.rel R t
+  exact transport S (L.from_toReducedUGraphSymbol U R) k hk
 
 /-- Every arbitrary graph-language structure likewise survives the inverse
 roundtrip; no coherence of its relations with a separate function symbol is
@@ -60,21 +64,28 @@ theorem as_fromReducedUGraph_rel_iff
     ((fromReducedUGraph U hU D).asReducedUGraph U hU).rel S t ↔
       D.rel S t := by
   classical
-  change D.rel (L.toReducedUGraphSymbol U
-      (L.fromReducedUGraphSymbol U S))
-    (fun i => t (Fin.cast (L.reducedUGraphSymbol_arity_from U hU S)
+  let T := L.toReducedUGraphSymbol U (L.fromReducedUGraphSymbol U S)
+  let k : Fin ((L.withUFunctionsReduced U).graph.arity T) →
+      Fin ((L.withUFunctionsReduced U).graph.arity S) :=
+    fun i => Fin.cast (L.reducedUGraphSymbol_arity_from U hU S)
       (Fin.cast (L.reducedUGraphSymbol_arity U hU
-        (L.fromReducedUGraphSymbol U S)) i))) ↔ D.rel S t
-  have hsym := L.to_fromReducedUGraphSymbol U S
-  cases hsym
-  have ht :
-      (fun i : Fin ((L.withUFunctionsReduced U).graph.arity S) =>
-        t (Fin.cast (L.reducedUGraphSymbol_arity_from U hU S)
-          (Fin.cast (L.reducedUGraphSymbol_arity U hU
-            (L.fromReducedUGraphSymbol U S)) i))) = t := by
-    funext i
-    exact congrArg t (Fin.ext rfl)
-  simpa only [ht]
+        (L.fromReducedUGraphSymbol U S)) i)
+  have hk : ∀ i, (k i).val = i.val := by
+    intro i
+    rfl
+  have transport (Q : (L.withUFunctionsReduced U).graph.Symbol)
+      (hQ : Q = S)
+      (g : Fin ((L.withUFunctionsReduced U).graph.arity Q) →
+        Fin ((L.withUFunctionsReduced U).graph.arity S))
+      (hg : ∀ i, (g i).val = i.val) :
+      D.rel Q (fun i => t (g i)) ↔ D.rel S t := by
+    subst Q
+    have heq : (fun i => t (g i)) = t := by
+      funext i
+      exact congrArg t (Fin.ext (hg i))
+    simp only [heq]
+  change D.rel T (fun i => t (k i)) ↔ D.rel S t
+  exact transport T (L.to_fromReducedUGraphSymbol U S) k hk
 
 namespace IsHomomorphism
 
