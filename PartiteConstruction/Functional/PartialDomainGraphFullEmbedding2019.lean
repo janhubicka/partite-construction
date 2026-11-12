@@ -144,7 +144,7 @@ def ofDomainGraphNoExtra
     | none =>
         have hB : B.func F (g.toFun ∘ xs) = none := by
           cases ht : B.func F (g.toFun ∘ xs) with
-          | none => exact ht
+          | none => rfl
           | some T =>
               have hDomain : (PartialSetStructure.domainGraph B).rel
                   (.inr (.inl F)) (g.toFun ∘ xs) := ⟨T, ht⟩
