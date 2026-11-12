@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.OriginalPartialMixedOrdinaryControlAbsolute
+
+#print axioms StructuralRamsey.Structure.IsAmbientRelativeWeakHE.toOriginalPartialHE_univ
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.originalPartialTreeCompletion_of_ordinaryControlSideImages
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.originalPartialTreeCompletion_of_ordinaryControlRank
