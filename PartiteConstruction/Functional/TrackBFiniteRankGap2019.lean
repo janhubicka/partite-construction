@@ -19,7 +19,7 @@ for a genuine partite system, with no added closed hull or vertices.
 This is a finite counterexample to unconditional identification of
 the split-output clipped and complete-mask whole-fibre 2019 USize
 presentations. It does not contradict their conditional agreement on
-function-closed cuts or on cuts retaining no sourcePartial original fibre.
+function-closed cuts or on cuts retaining no partially retained original fibre.
 -/
 
 namespace StructuralRamsey.FunctionalPartite.TrackBFiniteRankGap
@@ -44,7 +44,7 @@ def native : Structure lang (Fin 3) where
       ({1, 2} : Set (Fin 3))
     else ∅
 
-/-- A genuine native partite system, not just a sourcePartial set-valued source. -/
+/-- A genuine native partite system, not just a partial set-valued source. -/
 def system : System lang (Fin 3) (Fin 3) :=
   transversal native
 
@@ -95,13 +95,9 @@ theorem clipped_at_zero :
   have hv :
       sourcePartial.func () (Subtype.val ∘ (fun _ : Fin 1 => a)) =
         some ({1,2} : Set (Fin 3)) := by
-    have hargs :
-        (Subtype.val ∘ (fun _ : Fin 1 => a)) =
-          (fun _ => (0 : Fin 3)) := by
-      funext i
-      rfl
-    rw [hargs]
-    exact partial_at_zero
+    classical
+    simp [sourcePartial, Structure.toNonemptyPartial,
+      native, Function.comp_apply, a, firstArg, outputs_nonempty]
   change weakValue cut
     (sourcePartial.func () (Subtype.val ∘ (fun _ : Fin 1 => a))) =
       some ({b} : Set cut)
@@ -117,7 +113,8 @@ theorem clipped_at_zero :
   rcases hy with h0 | h1
   · have hEq : y = a := Subtype.ext h0
     subst y
-    simp [a_ne_b]
+    change ¬ (0 : Fin 3) = 1 ∧ ¬ (0 : Fin 3) = 2
+    decide
   · have hEq : y = b := Subtype.ext h1
     subst y
     simp [a,b]
@@ -131,12 +128,13 @@ theorem whole_none_any (xs : Fin 1 → cut) :
   by_cases hx : (xs firstArg).1 = (0 : Fin 3)
   · have hv : sourcePartial.func () (Subtype.val ∘ xs) =
         some ({1,2} : Set (Fin 3)) := by
-      simp [sourcePartial, Structure.toNonemptyPartial, native, hx,
-        outputs_nonempty]
+      simp [sourcePartial, Structure.toNonemptyPartial,
+        native, Function.comp_apply, hx, outputs_nonempty]
     rw [hv]
     exact wholeWeakValue_of_not_subset cut {1,2} outputs_escape_cut
   · have hv : sourcePartial.func () (Subtype.val ∘ xs) = none := by
-      simp [sourcePartial, Structure.toNonemptyPartial, native, hx]
+      simp [sourcePartial, Structure.toNonemptyPartial,
+        native, Function.comp_apply, hx]
     rw [hv]
     rfl
 
