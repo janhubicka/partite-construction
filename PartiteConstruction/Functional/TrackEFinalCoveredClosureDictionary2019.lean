@@ -80,10 +80,10 @@ theorem wholeMaskCovered_USubstructure_to_decodedClosed
   intro y hy
   rw [hOutput] at hy
   obtain ⟨j, hj⟩ := hy
-  rw [← hj]
+  rw [hj]
   exact hHull
     (hNormal.completeOutput_mem_inputHull
-      C hNormal hValid hPos p q t hGraph j)
+      C hValid hPos p q t hGraph j)
 
 /-- Exact two-way correspondence: final C's relative U-closed subsets
 are the function-closed subsets of the ACTUAL genuine partial decoder.
