@@ -58,7 +58,7 @@ theorem hasWholeMaskDomain_induce_iff
       have hRootComp : (Subtype.val ∘ rootS) = root := by
         funext j
         rfl
-      simpa only [hRootComp] using hDomain
+      exact hRootComp.symm ▸ hDomain
     refine ⟨m, r, hr, q, rootS, hDomainS, ?_⟩
     intro i
     apply Subtype.ext
