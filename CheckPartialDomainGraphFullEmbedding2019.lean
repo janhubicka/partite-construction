@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.PartialDomainGraphFullEmbedding2019
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.noExtraTargetOutputsOnDefined
+#print axioms StructuralRamsey.PartialSetStructure.fullEmbedding_iff_domainGraphEmbedding_noExtra
