@@ -116,7 +116,8 @@ theorem clipped_at_zero :
     subst y
     have hnot : (a.1 : Fin 3) ∉ ({1,2} : Set (Fin 3)) := by
       simp [a]
-    simp [hnot, a_ne_b]
+    simp [a_ne_b]
+    simpa only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or] using hnot
   · have hEq : y = b := Subtype.ext h1
     subst y
     simp [a,b]
