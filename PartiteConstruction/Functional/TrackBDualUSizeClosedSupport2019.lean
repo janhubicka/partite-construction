@@ -117,7 +117,8 @@ not an enlarged hull or a synthesized OLD relational test. -/
 theorem Stage.selectedSupport_clippedUSize_iff_wholeMaskUSize
     (T : Stage K D)
     (A : Structure L U) (α : Structure.Embedding A D)
-    (hPos : L.PositiveFuncArity) (n : ℕ) :
+    (hPos : L.PositiveFuncArity) (n : ℕ)
+    [Fintype (T.system.support α.toFunctionEmbedding)] :
     let S := T.system.support α.toFunctionEmbedding
     (USize (L.outputPartIndexed P).patternClosureRules
       ((patternTagExpansion
@@ -127,7 +128,6 @@ theorem Stage.selectedSupport_clippedUSize_iff_wholeMaskUSize
         (T.system.toStructure.toNonemptyPartial.wholeMaskPatternGraph T.system.part)).induce S) ≤ n) := by
   classical
   let S := T.system.support α.toFunctionEmbedding
-  letI : Fintype S := Fintype.ofFinite S
   have hS : T.system.toStructure.IsClosed S :=
     T.system.weak_support_closed D T.isPartite.1 A α
   exact T.system.clippedUSize_iff_wholeMaskUSize_of_closed hPos S hS n
