@@ -158,4 +158,32 @@ theorem canonical_iff_exists_domainGraph
     rw [← hA]
     exact domainGraph_isCanonical A
 
+
+/-- Deliberately inconsistent relational data: an output incidence is
+present, but the corresponding function input is not in the domain. -/
+def orphanOutputGraph :
+    RelStructure (domainGraphLanguage exampleLanguage) Unit where
+  rel
+    | .inl S => Empty.elim S
+    | .inr (.inl _) => fun _ => False
+    | .inr (.inr _) => fun _ => True
+
+/-- The output-to-domain condition cannot be omitted. -/
+theorem orphanOutputGraph_not_canonical :
+    ¬ IsCanonicalDomainGraph orphanOutputGraph := by
+  intro h
+  have hDom := h () (fun _ : Fin 1 => ()) ()
+    (show orphanOutputGraph.rel (.inr (.inr ()))
+      (Structure.funcTuple (fun _ : Fin 1 => ()) ()) from trivial)
+  exact hDom
+
+/-- The malformed relational structure has no genuine partial-function
+preimage; the rejection uses the exact image characterization. -/
+theorem orphanOutputGraph_not_representable :
+    ¬ ∃ A : PartialSetStructure exampleLanguage Unit,
+      domainGraph A = orphanOutputGraph := by
+  intro h
+  exact orphanOutputGraph_not_canonical
+    ((canonical_iff_exists_domainGraph orphanOutputGraph).mpr h)
+
 end StructuralRamsey.PartialSetStructure
