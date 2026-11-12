@@ -1,0 +1,6 @@
+import PartiteConstruction.Structure.GenericUGraphSymbols
+
+#print axioms StructuralRamsey.RelLanguage.from_toReducedUGraphSymbol
+#print axioms StructuralRamsey.RelLanguage.to_fromReducedUGraphSymbol
+#print axioms StructuralRamsey.RelLanguage.reducedUGraphSymbolEquiv
+#print axioms StructuralRamsey.RelLanguage.reducedUGraphSymbol_arity
