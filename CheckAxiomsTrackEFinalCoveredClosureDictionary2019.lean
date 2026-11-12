@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.TrackEFinalCoveredClosureDictionary2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_USubstructure_to_decodedClosed
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_USubstructure_iff_decodedClosed
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_inducedUClosed_iff_decodedClosed
