@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.TrackBOneWayWeakMapNaturality2019
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.toOriginalPartialHom
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.wholeWeakPreimage_to_clippedHom
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.fullCopy_wholeWeakPreimage_to_clippedHom
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weakLine_wholeWeakPreimage_to_clippedHom
