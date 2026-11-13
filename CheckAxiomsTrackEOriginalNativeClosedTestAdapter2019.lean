@@ -1,0 +1,8 @@
+import PartiteConstruction.Functional.TrackEOriginalNativeClosedTestAdapter2019
+
+/-! Track E original-language closed-test adapter: explicit kernel-axiom audit. -/
+
+#print axioms StructuralRamsey.PartialSetStructure.originalLanguageReduct_withParts
+#print axioms StructuralRamsey.PartialSetStructure.originalLanguageReduct_wholeWeakInduce
+#print axioms StructuralRamsey.PartialSetStructure.originalLanguageReduct_actualWholeMaskDecoder
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakInduce_collapse_eq_nativeInduce
