@@ -45,11 +45,9 @@ theorem Stage.actualWeakLine_taggedAnd_projectedClippedUSize
     (T : Stage K D) (hPos : L.PositiveFuncArity)
     {N : ℕ} (W : Line (Induced.Letter D T.system) N)
     (Test : Set (Induced.Vertex T.system N))
-    [Fintype (((Induced.weak_lineEmbedding T.isPartite.1 W)
-      .splitOutputParts.toEmbedding.toFun) ⁻¹' Test)]
+    [Fintype (((Induced.weak_lineEmbedding T.isPartite.1 W).splitOutputParts.toEmbedding.toFun) ⁻¹' Test)]
     [Fintype (Structure.imageSet T.system.part
-      (((Induced.weak_lineEmbedding T.isPartite.1 W)
-        .splitOutputParts.toEmbedding.toFun) ⁻¹' Test))]
+      (((Induced.weak_lineEmbedding T.isPartite.1 W).splitOutputParts.toEmbedding.toFun) ⁻¹' Test))]
     (n : ℕ) :
     let e := (Induced.weak_lineEmbedding T.isPartite.1 W).splitOutputParts.toEmbedding
     let S := e.toFun ⁻¹' Test
@@ -67,8 +65,7 @@ theorem Stage.actualWeakLine_taggedAnd_projectedClippedUSize
   · exact T.taggedWeakLinePreimage W Test
   · intro hGen
     let S : Set T.Carrier :=
-      ((Induced.weak_lineEmbedding T.isPartite.1 W)
-        .splitOutputParts.toEmbedding.toFun) ⁻¹' Test
+      ((Induced.weak_lineEmbedding T.isPartite.1 W).splitOutputParts.toEmbedding.toFun) ⁻¹' Test
     have hSource :
         USize (L.wholeMaskClosureRules P)
           ((wholeMaskTagExpansion
