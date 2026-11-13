@@ -615,3 +615,5 @@ import PartiteConstruction.Functional.TrackEFinalCoveredCompleteValueSideLocaliz
 
 -- Track E: exact U-closed sides and functional-incidence localization in induced tests.
 import PartiteConstruction.Functional.TrackEFinalInducedTestLocalization2019
+-- Track E: original-language native decoding of exact closed tagged tests.
+import PartiteConstruction.Functional.TrackEOriginalNativeClosedTestAdapter2019
