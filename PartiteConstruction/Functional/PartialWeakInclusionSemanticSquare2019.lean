@@ -200,7 +200,10 @@ theorem noPartial_but_entirelyLost :
       simpa [unaryClippedTest] using (xs (0 : Fin 1)).2
     have hUeq : U = ({(1 : Fin 2)} : Set (Fin 2)) := by
       have h : some ({(1 : Fin 2)} : Set (Fin 2)) = some U := by
-        simpa [weakDomainUnaryToy, hx] using hU
+        change
+          (if (Subtype.val ∘ xs) (0 : Fin 1) = (0 : Fin 2) then
+            some ({(1 : Fin 2)} : Set (Fin 2)) else none) = some U at hU
+        simpa only [hx, ite_true] using hU
       exact (Option.some.inj h).symm
     rw [hUeq] at hyU
     have hy1 : y = (1 : Fin 2) := by simpa using hyU
