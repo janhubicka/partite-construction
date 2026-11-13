@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackBWholeWeakMixedFreeAmalgam2019
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.wholeWeakPartial_withClippedSideMaps
