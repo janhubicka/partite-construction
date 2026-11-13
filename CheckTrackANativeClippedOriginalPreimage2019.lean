@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackANativeClippedOriginalPreimage2019
+
+#print axioms StructuralRamsey.Structure.IsOriginalPartialHomomorphism.clippedWeakRestrictToPreimage
+#print axioms StructuralRamsey.Structure.IsOriginalPartialHomomorphism.clippedWeakImage_of_saturated
