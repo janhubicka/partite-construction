@@ -28,9 +28,8 @@ native HJ history-free n-pass proof. The frozen survey is unchanged.
 
 namespace StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness
 
-universe u v w
-variable {L : Language.{u}} {UA VB X : Type v}
-variable {P : Type v} {Q : Type w}
+universe u v
+variable {L : Language.{u}} {UA VB X P Q : Type v}
 
 /-- With EMPTY projected history, the part-label map is not part of
 the actual strict weak-tree and ambient-copy witness. This is an
@@ -86,9 +85,9 @@ end StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness
 
 namespace StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness
 
-universe u v w
+universe u v
 variable {L : Language.{u}}
-variable {UA VB X Y P : Type v} {Q : Type w}
+variable {UA VB X Y P Q : Type v}
 
 /-- With EMPTY history, AtMostNoHistory is intrinsic to the full
 functional source and independent of the auxiliary part projection.
