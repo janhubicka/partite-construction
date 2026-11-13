@@ -1,0 +1,4 @@
+import PartiteConstruction.Structure.GenericUOriginalInducedPartiteLemma
+
+#print axioms StructuralRamsey.Partite.System.transversal_asReducedUGraph
+#print axioms StructuralRamsey.Partite.OriginalUClosed.inducedPartiteLemma

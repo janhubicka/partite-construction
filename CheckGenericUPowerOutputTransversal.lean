@@ -1,0 +1,3 @@
+import PartiteConstruction.Structure.GenericUPowerOutputTransversal
+
+#print axioms StructuralRamsey.Partite.System.originalUOutputTransversal_power
