@@ -87,8 +87,7 @@ theorem Stage.fullCopy_wholeWeakPreimage_to_clippedHom
       (PartialSetStructure.weakInduce
         T.system.toStructure.toNonemptyPartial Test)
       (PartialSetStructure.restrictMap copy.toEmbedding.toFun Test) := by
-  exact (copy.toEmbedding.toNonemptyPartial)
-    .wholeWeakPreimage_to_clippedHom Test
+  exact (copy.toEmbedding.toNonemptyPartial).wholeWeakPreimage_to_clippedHom Test
 
 end StructuralRamsey.FunctionalPartite.EHN
 
@@ -118,7 +117,6 @@ theorem weakLine_wholeWeakPreimage_to_clippedHom
         (((weak_lineEmbedding hB W).toEmbedding.toFun) ⁻¹' Test))
       (weakInduce (power B N).toStructure.toNonemptyPartial Test)
       (restrictMap ((weak_lineEmbedding hB W).toEmbedding.toFun) Test) := by
-  exact ((weak_lineEmbedding hB W).toEmbedding.toNonemptyPartial)
-    .wholeWeakPreimage_to_clippedHom Test
+  exact ((weak_lineEmbedding hB W).toEmbedding.toNonemptyPartial).wholeWeakPreimage_to_clippedHom Test
 
 end StructuralRamsey.FunctionalPartite.Induced
