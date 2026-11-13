@@ -41,7 +41,7 @@ noncomputable def graphRoundtripClosedForward
         intro S t
         exact (RelStructure.as_fromReducedUGraph_rel_iff
           U hU B.toRelStructure S t).symm
-    }
+    },
     map_part := by intro x; rfl
   }, ?_⟩
   intro F x y hy
@@ -64,7 +64,7 @@ noncomputable def graphRoundtripClosedBackward
         intro S t
         exact RelStructure.as_fromReducedUGraph_rel_iff
           U hU B.toRelStructure S t
-    }
+    },
     map_part := by intro x; rfl
   }, ?_⟩
   intro F x y hy
