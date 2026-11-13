@@ -61,12 +61,12 @@ theorem IsFreeAmalgam.wholeWeakPartial_withClippedSideMaps
       PartialSetStructure.IsFreeAmalgam mL mR jL jR ∧
       (∀ a : Lset, (jL.toFun a).1 = iL a.1) ∧
       (∀ b : Rset, (jR.toFun b).1 = iR b.1) ∧
-      IsOriginalPartialHomomorphism
+      PartialSetStructure.IsOriginalPartialHomomorphism
         (wholeWeakInduce Left.toNonemptyPartial Lset)
-        (weakInduce Whole.toNonemptyPartial S) jL.toFun ∧
-      IsOriginalPartialHomomorphism
+        (PartialSetStructure.weakInduce Whole.toNonemptyPartial S) jL.toFun ∧
+      PartialSetStructure.IsOriginalPartialHomomorphism
         (wholeWeakInduce Right.toNonemptyPartial Rset)
-        (weakInduce Whole.toNonemptyPartial S) jR.toFun := by
+        (PartialSetStructure.weakInduce Whole.toNonemptyPartial S) jR.toFun := by
   obtain ⟨mL, mR, jL, jR, hFreeWhole, hLeft, hRight⟩ :=
     hFree.wholeWeakPartialInduce_withMaps S
   refine ⟨mL, mR, jL, jR, hFreeWhole, hLeft, hRight, ?_, ?_⟩
