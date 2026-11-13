@@ -143,7 +143,16 @@ theorem weakProjection_not_originalPartial :
     simpa only [hTval] using hyT
   obtain ⟨z, hzU, hzy⟩ := hExtra
   have hZero : z.1 = (0 : Fin 3) := by
-    fin_cases z.1 <;> simp_all [support, output]
+    have hzS : z.1 = (0 : Fin 3) ∨ z.1 = 2 := by
+      simpa [support] using z.2
+    have hzV : z.1 = (0 : Fin 3) ∨ z.1 = 1 := by
+      simpa [output] using hzU
+    rcases hzS with h0 | h2
+    · exact h0
+    · rcases hzV with h0 | h1
+      · exact h0
+      · exact ((show (2 : Fin 3) ≠ 1 by decide)
+          (h2.symm.trans h1)).elim
   have hMapVal : projection z.1 = (1 : Fin 2) := by
     have h := congrArg Subtype.val hzy
     simpa only [weakProjection] using h
