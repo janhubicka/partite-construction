@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackBActualLineProjectedClippedUSize2019
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.actualWeakLine_taggedAnd_projectedClippedUSize
