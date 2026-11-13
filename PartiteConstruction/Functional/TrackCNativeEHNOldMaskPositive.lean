@@ -70,7 +70,10 @@ theorem IsEHNHomomorphismEmbedding.input_eq_of_defined
     calc
       g (⟨xs i, hi⟩ : Hset) = f (xs i) := hg _
       _ = f (xs j) := hImages
-      _ = g (⟨xs j, hj⟩ : Hset) := (hg _).symm
+      _ = g (⟨xs j, hj⟩ : Hset) := by
+        have h := hg (⟨xs j, hj⟩ : Hset)
+        change g (⟨xs j, hj⟩ : Hset) = f (xs j) at h
+        exact h.symm
   exact congrArg Subtype.val (g.injective hEq)
 
 /-- The same genuinely native EHN/2019 homomorphism-embedding,
