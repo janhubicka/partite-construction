@@ -21,3 +21,11 @@ Source-only additive module, root-level named `#print axioms`, active module reg
 The same source-defined identity homomorphism also transports **every** generated closure, not merely its minimum-generator number: for any Q⊆S, `wholeWeakInduce(A,S).functionClosure(Q) ⊆ weakInduce(A,S).functionClosure(Q)`. The tagged 2019 counterpart `System.wholeMaskUClosureHull_subset_clipped` compares the two *different* canonical ambient closure-hull operators on the **same literal S and Q**. It is a subset statement, not an unproved equivalence of the tagged languages.
 
 On an actual Hales--Jewett line W of a true EHN stage T and arbitrary literal power test Test, the theorem `Stage.actualWeakLine_taggedAnd_projectedClippedUSize` combines a full split-output OLD/root-tagged embedding of the exact inverse image with a bound on the clipped USize of the exact projected control image. This requires a whole-fibre n-generator witness on that same inverse image; it makes no assumption that an arbitrary weak test is full or closed.
+
+## Actual line-only Picture witness (13 November 2026)
+
+`TrackBLineOnlyPictureUSize2019.lean` packages the **same concrete Stage C** supplied by the existing line-only functional `pictureLemma_lines_projectedCover`. Besides its actual `PictureProperty` and projected irreducible B-coverage, that exact C carries (i) the one-way whole-mask-to-clipped UClosureHull comparison for every seed Q of every exact weak S, and (ii) whole-source-USize≤n ⇒ clipped-control-image-USize≤n on literal `C.system.part '' S`. This is not an independent free-amalgam construction: it reuses the already checked *actual* Picture witness, including the genuine Hales--Jewett line-indexed attachments.
+
+The additional result deliberately says nothing about two-sided relative completion of mixed functional tests, about producing a strict native target B-tree, or about arbitrary OLD-tagged intrinsic weak-copy embeddings. It is a source-side invariant already established for all genuine EHN Stages; the theorem records its compatibility with the same C chosen by the Picture canonicalization.
+
+New module and root-level `#print axioms` must pass CI on the exact head before this particular packaged theorem is labeled green. Frozen survey TeX and author-removed TODOs remain untouched.
