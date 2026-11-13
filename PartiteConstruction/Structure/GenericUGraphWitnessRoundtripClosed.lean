@@ -34,16 +34,19 @@ noncomputable def graphRoundtripClosedForward
       ((Partite.System.fromReducedUGraph U hU B).asReducedUGraph U hU)
       B := by
   let C := (Partite.System.fromReducedUGraph U hU B).asReducedUGraph U hU
-  refine ⟨{ toEmbedding := {
-      toFun := id
-      injective := by intro x y h; exact h
-      map_rel_iff := by
-        intro S t
-        exact (RelStructure.as_fromReducedUGraph_rel_iff
-          U hU B.toRelStructure S t).symm
-    },
+  let eR : RelStructure.Embedding C.toRelStructure B.toRelStructure := {
+    toFun := id
+    injective := by intro x y h; exact h
+    map_rel_iff := by
+      intro S t
+      exact (RelStructure.as_fromReducedUGraph_rel_iff
+        U hU B.toRelStructure S t).symm
+  }
+  let eP : Partite.Embedding C B := {
+    toEmbedding := eR
     map_part := by intro x; rfl
-  }, ?_⟩
+  }
+  refine ⟨eP, ?_⟩
   intro F x y hy
   refine ⟨y, ?_, rfl⟩
   exact (RelStructure.as_fromReducedUGraph_rel_iff
@@ -57,16 +60,20 @@ noncomputable def graphRoundtripClosedBackward
     Partite.Closed.Embedding
       B
       ((Partite.System.fromReducedUGraph U hU B).asReducedUGraph U hU) := by
-  refine ⟨{ toEmbedding := {
-      toFun := id
-      injective := by intro x y h; exact h
-      map_rel_iff := by
-        intro S t
-        exact RelStructure.as_fromReducedUGraph_rel_iff
-          U hU B.toRelStructure S t
-    },
+  let C := (Partite.System.fromReducedUGraph U hU B).asReducedUGraph U hU
+  let eR : RelStructure.Embedding B.toRelStructure C.toRelStructure := {
+    toFun := id
+    injective := by intro x y h; exact h
+    map_rel_iff := by
+      intro S t
+      exact RelStructure.as_fromReducedUGraph_rel_iff
+        U hU B.toRelStructure S t
+  }
+  let eP : Partite.Embedding B C := {
+    toEmbedding := eR
     map_part := by intro x; rfl
-  }, ?_⟩
+  }
+  refine ⟨eP, ?_⟩
   intro F x y hy
   refine ⟨y, ?_, rfl⟩
   exact (RelStructure.as_fromReducedUGraph_rel_iff
