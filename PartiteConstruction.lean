@@ -612,3 +612,6 @@ import PartiteConstruction.Functional.TrackEFinalCoveredDecodedClosedU2019
 import PartiteConstruction.Functional.TrackEFinalCoveredClosureDictionary2019
 import PartiteConstruction.Functional.TrackEProtectedExactClosedUTestSameMap2019
 import PartiteConstruction.Functional.TrackEFinalCoveredCompleteValueSideLocalization2019
+
+-- Track E: exact U-closed sides and functional-incidence localization in induced tests.
+import PartiteConstruction.Functional.TrackEFinalInducedTestLocalization2019

@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackEFinalInducedTestLocalization2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_inducedUSubstructure_to_nativeClosed
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_inducedNativeFunctionIncident_side
