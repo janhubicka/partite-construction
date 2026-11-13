@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakHistoryFreeMarkedTreeGlue
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.ambientRelativeWeakTree_noHistory_glue_markedRoot
