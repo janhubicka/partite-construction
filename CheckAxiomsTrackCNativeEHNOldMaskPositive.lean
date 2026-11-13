@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackCNativeEHNOldMaskPositive
+
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.input_eq_of_defined
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.toNonemptyPartial_oldMaskHom
