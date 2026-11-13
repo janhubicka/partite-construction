@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.WeakHistoryFreeTreeBasePower
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.of_strictTree_noHistory
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.of_ehn_oneCopy_noHistory
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMostNoHistory.of_strictTree
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMostNoHistory.of_ehn_oneCopy
