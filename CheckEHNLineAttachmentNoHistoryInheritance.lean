@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNLineAttachmentNoHistoryInheritance
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.lineUnitAttachment_preserves_noHistoryAtMost
