@@ -34,17 +34,25 @@ def binaryLanguage : Language where
   relArity := Empty.elim
   funcArity := fun _ => 2
 
+/-- Explicit, type-correct first binary input index in the dependent arity. -/
+def arg0 (F : binaryLanguage.FuncSymbol) :
+    Fin (binaryLanguage.funcArity F) := ⟨0, by simp [binaryLanguage]⟩
+
+/-- Explicit second binary input index; do not rely on numeral synthesis. -/
+def arg1 (F : binaryLanguage.FuncSymbol) :
+    Fin (binaryLanguage.funcArity F) := ⟨1, by simp [binaryLanguage]⟩
+
 /-- The ONLY defined input is the mixed pair (0,1), with EMPTY value. -/
 def mixedDefinedEmpty : PartialSetStructure binaryLanguage (Fin 2) where
   rel := fun R => Empty.elim R
-  func := fun _ xs =>
-    if xs 0 = 0 ∧ xs 1 = 1 then some ∅ else none
+  func := fun F xs =>
+    if xs (arg0 F) = 0 ∧ xs (arg1 F) = 1 then some ∅ else none
 
 /-- The mixed input is genuinely defined, despite having zero output vertices. -/
 theorem mixedDefinedEmpty_on_cross :
     mixedDefinedEmpty.func () (fun i : Fin 2 => i) =
       some (∅ : Set (Fin 2)) := by
-  simp [mixedDefinedEmpty]
+  simp [mixedDefinedEmpty, arg0, arg1, binaryLanguage]
 
 /-- Definedness is detected by the independent Option domain bit. -/
 theorem mixedDefinedEmpty_domain_cross :
@@ -58,7 +66,7 @@ theorem mixedDefinedEmpty_collapse_all_empty
     mixedDefinedEmpty.collapseDomain.func F xs =
       (∅ : Set (Fin 2)) := by
   change
-    (if xs 0 = 0 ∧ xs 1 = 1 then
+    (if xs (arg0 F) = 0 ∧ xs (arg1 F) = 1 then
       some (∅ : Set (Fin 2)) else none).getD ∅ = ∅
   split_ifs <;> rfl
 
@@ -83,13 +91,15 @@ theorem mixedDefinedEmpty_prevents_two_singleton_free_cut
     ⟨a, _ha, hEq⟩ | ⟨b, _hb, hEq⟩
   · have hContra : (1 : Fin 2) = 0 := by
       calc
-        (1 : Fin 2) = (iL.toFun ∘ a) 1 := congrFun hEq 1
-        _ = 0 := hLeft (a 1)
+        (1 : Fin 2) = (iL.toFun ∘ a) (arg1 ()) := by
+          simpa [arg1, binaryLanguage] using (congrFun hEq (arg1 ()))
+        _ = 0 := hLeft (a (arg1 ()))
     exact (by decide : (1 : Fin 2) ≠ 0) hContra
   · have hContra : (0 : Fin 2) = 1 := by
       calc
-        (0 : Fin 2) = (iR.toFun ∘ b) 0 := congrFun hEq 0
-        _ = 1 := hRight (b 0)
+        (0 : Fin 2) = (iR.toFun ∘ b) (arg0 ()) := by
+          simpa [arg0, binaryLanguage] using (congrFun hEq (arg0 ()))
+        _ = 1 := hRight (b (arg0 ()))
     exact (by decide : (0 : Fin 2) ≠ 1) hContra
 
 end StructuralRamsey.PartialSetStructure.TrackCDefinedEmptyCut
