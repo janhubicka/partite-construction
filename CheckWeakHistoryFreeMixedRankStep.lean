@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.WeakHistoryFreeMixedRankStep
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMostNoHistory.of_AtMost
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.noHistory_weakRankSucc_mixed
