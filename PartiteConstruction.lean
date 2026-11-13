@@ -617,3 +617,6 @@ import PartiteConstruction.Functional.TrackEFinalCoveredCompleteValueSideLocaliz
 import PartiteConstruction.Functional.TrackEFinalInducedTestLocalization2019
 -- Track E: original-language native decoding of exact closed tagged tests.
 import PartiteConstruction.Functional.TrackEOriginalNativeClosedTestAdapter2019
+
+-- Track E: generic full partial-function embedding collapse.
+import PartiteConstruction.Functional.TrackEPartialFullEmbeddingCollapse2019
