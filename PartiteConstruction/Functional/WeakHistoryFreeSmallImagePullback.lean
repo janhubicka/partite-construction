@@ -137,6 +137,7 @@ theorem AtMostNoHistory.pullback_ehn
     have h := (hD I hCard).changePart_noHistory (id : Y → Y)
     rw [← hImage]
     exact h
-  exact (pullback_ehn hq hA (↑S : Set X) [] hOld).changePart_noHistory pC
+  exact (SetAmbientRelativeWeakTreeWitness.pullback_ehn
+    hq hA (↑S : Set X) [] hOld).changePart_noHistory pC
 
 end StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness
