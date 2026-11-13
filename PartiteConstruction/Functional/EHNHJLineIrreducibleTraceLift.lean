@@ -46,8 +46,8 @@ theorem line_irreducible_trace_lifts_full_to_source
     (W : Line (Letter A B) N)
     (i : Fin N) (hi : W.symbol i = .parameter)
     (Source : Structure L X) (hSource : Source.Irreducible)
-    (e : Embedding Source (power B N).toStructure) :
-    ∃ eOld : Embedding Source B.toStructure,
+    (e : Structure.Embedding Source (power B N).toStructure) :
+    ∃ eOld : Structure.Embedding Source B.toStructure,
       (∀ x : X, eOld x = (e x).coord i) ∧
       (∀ (x : X) (b : V),
         e x = lineMap W b → eOld x = b) := by
@@ -88,7 +88,7 @@ multi-line strict B-tree or global EHN retraction is claimed. -/
 theorem selected_hj_line_irreducible_trace_lifts_to_old
     (Old : System L P V) (D : Structure L P)
     (hOld : Old.WeaklyPartiteOver D)
-    (A : Structure L U) (alpha : Embedding A D)
+    (A : Structure L U) (alpha : Structure.Embedding A D)
     (N : ℕ)
     (W : Line (Induced.Letter A
       (Old.weakRestrict D hOld.1 A alpha)) N)
@@ -96,7 +96,7 @@ theorem selected_hj_line_irreducible_trace_lifts_to_old
     (Source : Structure L X) (hSource : Source.Irreducible)
     (e : Embedding Source
       (Induced.power (Old.weakRestrict D hOld.1 A alpha) N).toStructure) :
-    ∃ eOld : Embedding Source Old.toStructure,
+    ∃ eOld : Structure.Embedding Source Old.toStructure,
       ∀ (x : X)
         (r : Old.support alpha.toFunctionEmbedding),
         e x = Induced.lineMap W r → eOld x = r.1 := by
@@ -106,7 +106,7 @@ theorem selected_hj_line_irreducible_trace_lifts_to_old
   obtain ⟨g, _hEval, hOnLine⟩ :=
     Induced.line_irreducible_trace_lifts_full_to_source
       hR W i hi Source hSource e
-  let inc : Embedding R.toStructure Old.toStructure :=
+  let inc : Structure.Embedding R.toStructure Old.toStructure :=
     Old.weakRestrictInclusion D hOld.1 A alpha
   refine ⟨inc.comp g, ?_⟩
   intro x r hx
