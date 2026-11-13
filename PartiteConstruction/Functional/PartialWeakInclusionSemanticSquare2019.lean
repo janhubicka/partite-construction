@@ -203,7 +203,9 @@ theorem noPartial_but_entirelyLost :
         change
           (if (Subtype.val ∘ xs) (0 : Fin 1) = (0 : Fin 2) then
             some ({(1 : Fin 2)} : Set (Fin 2)) else none) = some U at hU
-        simpa only [hx, ite_true] using hU
+        have hc : (Subtype.val ∘ xs) (0 : Fin 1) = (0 : Fin 2) := hx
+        rw [if_pos hc] at hU
+        exact hU
       exact (Option.some.inj h).symm
     rw [hUeq] at hyU
     have hy1 : y = (1 : Fin 2) := by simpa using hyU
