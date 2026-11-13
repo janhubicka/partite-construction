@@ -55,15 +55,10 @@ theorem IsOriginalPartialHomomorphism.clippedWeakImage_graphHom
       (clippedWeakImageMap f S) := by
   let T : Set W := f '' S
   let g : S → T := clippedWeakImageMap f S
-  have hTuple (n : ℕ) (xs : Fin n → S) :
-      Subtype.val ∘ (g ∘ xs) = f ∘ (Subtype.val ∘ xs) := by
-    funext i
-    rfl
   intro symbol xs hSource
   cases symbol with
   | inl R =>
-      change B.rel R (Subtype.val ∘ (g ∘ xs))
-      rw [hTuple]
+      change B.rel R (f ∘ (Subtype.val ∘ xs))
       exact hf.1 R (Subtype.val ∘ xs) hSource
   | inr symbol =>
       cases symbol with
@@ -78,9 +73,8 @@ theorem IsOriginalPartialHomomorphism.clippedWeakImage_graphHom
             hf.2 F (Subtype.val ∘ xs) Q hQ
           apply (weakInduce_defined_iff_exact B T F (g ∘ xs)).mpr
           refine ⟨Structure.imageSet f Q, ?_, ?_⟩
-          · change B.func F (Subtype.val ∘ (g ∘ xs)) =
+          · change B.func F (f ∘ (Subtype.val ∘ xs)) =
                 some (Structure.imageSet f Q)
-            rw [hTuple]
             exact hTarget
           · rcases hLive with hEmpty | hMeet
             · left
@@ -104,8 +98,7 @@ theorem IsOriginalPartialHomomorphism.clippedWeakImage_graphHom
               ((domainGraph B).induce T).rel
                 (.inr (.inr F)) (g ∘ xs) := by
             change (domainGraph B).rel (.inr (.inr F))
-              (Subtype.val ∘ (g ∘ xs))
-            rw [hTuple]
+              (f ∘ (Subtype.val ∘ xs))
             exact hB
           exact (weakInduce_domainGraph_output_iff B T F
             (g ∘ xs)).mpr hTargetAmbient
