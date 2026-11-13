@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.WeakHistoryFreeSmallImagePullback
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.changePart_noHistory
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.of_EHN_smallImage_noHistory
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMostNoHistory.changePart
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMostNoHistory.pullback_ehn
