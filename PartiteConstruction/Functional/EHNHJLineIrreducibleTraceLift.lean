@@ -94,7 +94,7 @@ theorem selected_hj_line_irreducible_trace_lifts_to_old
       (Old.weakRestrict D hOld.1 A alpha)) N)
     (i : Fin N) (hi : W.symbol i = .parameter)
     (Source : Structure L X) (hSource : Source.Irreducible)
-    (e : Embedding Source
+    (e : Structure.Embedding Source
       (Induced.power (Old.weakRestrict D hOld.1 A alpha) N).toStructure) :
     ∃ eOld : Structure.Embedding Source Old.toStructure,
       ∀ (x : X)
