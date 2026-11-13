@@ -88,6 +88,9 @@ def Embedding.originalNativeCollapse
     intro F xs
     have heq := e.map_func (ULift.up F) xs
     have hget := congrArg (fun x : Option (Set W) => x.getD ∅) heq
+    change Structure.imageSet e.toFun
+      ((A.func (ULift.up F) xs).getD ∅) =
+      (B.func (ULift.up F) (e.toFun ∘ xs)).getD ∅
     simpa only [option_getD_image] using hget
 
 /-- A genuinely function-closed exact set loses no whole-value outputs,
@@ -119,8 +122,7 @@ theorem wholeWeakInduce_collapse_eq_nativeInduce
   | some U =>
       have hU : U ⊆ S :=
         hS F (Subtype.val ∘ xs) U (fun i => (xs i).2) h
-      simp only [h, wholeWeakValue_of_subset S U hU, Option.getD_some]
-      rfl
+      simp only [wholeWeakValue_of_subset S U hU, Option.getD_some]
 
 /-- The original-language reduct of the actual final tagged decoder
 is IDENTICALLY the previously verified original 2019 decoder. -/
