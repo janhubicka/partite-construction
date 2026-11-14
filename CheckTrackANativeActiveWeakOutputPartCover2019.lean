@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.TrackANativeActiveWeakOutputPartCover2019
+
+#print axioms StructuralRamsey.FunctionalPartite.System.activeWeakOutputPartCover_iff_activeProjectedFibreCover
+#print axioms StructuralRamsey.FunctionalPartite.System.PartSaturated.activeWeakOutputPartCover
+#print axioms StructuralRamsey.FunctionalPartite.System.support_activeWeakOutputPartCover
