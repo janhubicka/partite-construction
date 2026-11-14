@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.TrackCDomainEmptyLegalRoundtrip
+
+#print axioms StructuralRamsey.Structure.domainEmptyEncode_isLegal
+#print axioms StructuralRamsey.Structure.IsLegalDomainEmpty.decodeEncode_rel_iff
+#print axioms StructuralRamsey.Structure.IsLegalDomainEmpty.decodeEncode_func
+#print axioms StructuralRamsey.Structure.IsLegalDomainEmpty.decodeEncode_eq
+#print axioms StructuralRamsey.PartialSetStructure.domainEmptyDecode_encode_eq
