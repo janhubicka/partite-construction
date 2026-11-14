@@ -48,6 +48,39 @@ def ActiveProjectedFibreCover
     ∀ y : V, y ∈ Q → f y ∈ f '' S →
       ∃ z : V, z ∈ Q ∧ z ∈ S ∧ f z = f y
 
+/-- A direct IMAGE-SET formulation of active projected fibre cover.
+Whenever the original defined output Q actually meets the literal
+weak carrier S, its surviving output labels are exactly the
+intersection of all its output labels with the occupied labels f[S].
+The forward inclusion is automatic; the reverse is the substantive
+local covering requirement. -/
+theorem activeProjectedFibreCover_iff_image_eq
+    (A : PartialSetStructure L V) (f : V → W) (S : Set V) :
+    ActiveProjectedFibreCover A f S ↔
+      ∀ (F : L.FuncSymbol) (xs : Fin (L.funcArity F) → S)
+        (Q : Set V), A.func F (Subtype.val ∘ xs) = some Q →
+          (Q ∩ S).Nonempty →
+            f '' (Q ∩ S) = (f '' Q) ∩ (f '' S) := by
+  constructor
+  · intro hCover F xs Q hQ hMeet
+    ext z
+    constructor
+    · rintro ⟨a, ⟨haQ, haS⟩, rfl⟩
+      exact ⟨⟨a, haQ, rfl⟩, ⟨a, haS, rfl⟩⟩
+    · rintro ⟨⟨a, haQ, haEq⟩, hzS⟩
+      have haS : f a ∈ f '' S := by
+        rw [haEq]
+        exact hzS
+      obtain ⟨b, hbQ, hbS, hbEq⟩ :=
+        hCover F xs Q hQ hMeet a haQ haS
+      exact ⟨b, ⟨hbQ, hbS⟩, hbEq.trans haEq⟩
+  · intro hEq F xs Q hQ hMeet a haQ haS
+    have haTarget : f a ∈ (f '' Q) ∩ (f '' S) :=
+      ⟨⟨a, haQ, rfl⟩, haS⟩
+    rw [← hEq F xs Q hQ hMeet] at haTarget
+    obtain ⟨b, hb, hbEq⟩ := haTarget
+    exact ⟨b, hb.1, hb.2, hbEq⟩
+
 /-- For any original source-defined map, local active-fibre cover is
 EXACTLY the no-extra-output condition on the two clipped weak
 structures. No closure hull, saturation, injectivity, or domain
