@@ -1,0 +1,5 @@
+import PartiteConstruction.Iterated.ProjectedBCopyControlCover
+
+#print axioms StructuralRamsey.RelStructure.ProjectedBCopyControl.projected_images_extend_of_control_internalCover
+#print axioms StructuralRamsey.RelStructure.ProjectedBCopyControl.build_all_of_control_internalCover
+#print axioms StructuralRamsey.RelStructure.ProjectedBCopyControl.build_all_with_arrow_of_control_internalCover
