@@ -106,6 +106,7 @@ vertex set and without a generated closure hull. -/
 theorem System.support_activeWeakOutputPartCover
     (B : System L P V) {Q : Type v} (α : Q ↪ P) :
     B.ActiveWeakOutputPartCover (B.support α) :=
-  (B.support_partSaturated α).activeWeakOutputPartCover B (B.support α)
+  System.PartSaturated.activeWeakOutputPartCover B (B.support α)
+    (B.support_partSaturated α)
 
 end StructuralRamsey.FunctionalPartite
