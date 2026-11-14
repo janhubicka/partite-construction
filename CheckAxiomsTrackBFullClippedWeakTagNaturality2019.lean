@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.TrackBFullClippedWeakTagNaturality2019
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.clippedWeakPreimage_imageClosure_eq
+#print axioms StructuralRamsey.FunctionalPartite.System.fullEmbedding_outputTaggedUClosureHull_image_eq
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.fullCopy_outputTaggedUClosureHull_image_eq
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.actualWeakLine_outputTaggedUClosureHull_image_eq
