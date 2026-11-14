@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.PureSideACopywiseRootRetract
+
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.isFullOnACopies
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.crossSideFullATraces_of_copywise_root_map
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.pureRight_ambientACopies_of_copywise_root_map
