@@ -1,0 +1,5 @@
+import PartiteConstruction.Structure.GenericUGraphWitnessRoundtripClosed
+
+#print axioms StructuralRamsey.Partite.System.graphRoundtripClosedForward
+#print axioms StructuralRamsey.Partite.System.graphRoundtripClosedBackward
+#print axioms StructuralRamsey.Partite.Closed.projectedRoundtripEquiv
