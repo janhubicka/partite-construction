@@ -44,9 +44,9 @@ theorem pictureProperty_of_graph
     (A : RelStructure L T)
     (B : Partite.System L P V)
     (α : T → P)
-    (C_g : Partite.System (L.withUFunctionsReduced U).graph P W)
     (U : Set L.Symbol)
     (hU : ∀ R, R ∈ U → 1 ≤ L.arity R)
+    (C_g : Partite.System (L.withUFunctionsReduced U).graph P W)
     (κ : Type*)
     (hP : Partite.Closed.PictureProperty
       (A.asReducedUGraph U hU)
