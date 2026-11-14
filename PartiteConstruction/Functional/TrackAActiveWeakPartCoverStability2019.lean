@@ -1,0 +1,122 @@
+import PartiteConstruction.Functional.TrackANativeActiveWeakOutputPartCover2019
+
+/-!
+# Track A: stability of active weak output-part cover under exact intersections
+# and full part-preserving embeddings
+
+The exact original-partial projection criterion in the native functional
+Picture is active-output-part cover on its LITERAL weak vertex support:
+whenever the output value of a function input in S intersects S, every
+output whose part label is occupied by S must itself lie in S.
+
+Two closure principles needed for genuine partite-copy geometry:
+
+1. Intersections: if S and T satisfy the local active-cover condition,
+   then the exact weak intersection S∩T satisfies it. No generated hull
+   or transfer to a larger intermediate carrier is used.
+2. Full partite embeddings: if e:B↪C is a genuine FULL part-preserving
+   embedding of functional Systems, and an exact target subset S satisfies
+   active cover in C, then its LITERAL inverse image under e satisfies
+   active cover in B. In contrast this is NOT asserted for a merely
+   original-partial/EHN projection, which need not reflect undefined
+   inputs or preserve whole output fibres.
+
+These two stability properties can be used in gluing diagrams of exact
+weak partite sides and roots. They do NOT assert that all arbitrary
+weak roots satisfy active cover, nor construct strict B-tree completions
+or solve the local ambient-relative class axiom.
+-/
+
+namespace StructuralRamsey.FunctionalPartite
+
+open StructuralRamsey
+
+universe u v w z
+variable {L : Language.{u}} {P : Type v} {V : Type w} {W : Type z}
+
+/-- Active output-part cover is closed under intersection of exact
+vertex supports, with no finite-carrier or positive-arity assumption.
+In particular this applies to common weak roots of copies whose
+two side supports already satisfy active cover. -/
+theorem System.ActiveWeakOutputPartCover.inter
+    (B : System L P V) (S T : Set V)
+    (hS : B.ActiveWeakOutputPartCover S)
+    (hT : B.ActiveWeakOutputPartCover T) :
+    B.ActiveWeakOutputPartCover (S ∩ T) := by
+  intro F xs hMeet y hy hPart
+  let xsS : Fin (L.funcArity F) → S :=
+    fun i => ⟨(xs i).1, (xs i).2.1⟩
+  let xsT : Fin (L.funcArity F) → T :=
+    fun i => ⟨(xs i).1, (xs i).2.2⟩
+  have hMeetS :
+      ((B.toStructure.func F (Subtype.val ∘ xsS)) ∩ S).Nonempty := by
+    obtain ⟨a, ha, haST⟩ := hMeet
+    exact ⟨a, ha, haST.1⟩
+  have hMeetT :
+      ((B.toStructure.func F (Subtype.val ∘ xsT)) ∩ T).Nonempty := by
+    obtain ⟨a, ha, haST⟩ := hMeet
+    exact ⟨a, ha, haST.2⟩
+  have hPartS : B.part y ∈ B.part '' S := by
+    obtain ⟨a, haST, haPart⟩ := hPart
+    exact ⟨a, haST.1, haPart⟩
+  have hPartT : B.part y ∈ B.part '' T := by
+    obtain ⟨a, haST, haPart⟩ := hPart
+    exact ⟨a, haST.2, haPart⟩
+  exact ⟨hS F xsS hMeetS y hy hPartS,
+    hT F xsT hMeetT y hy hPartT⟩
+
+/-- Exact preimage of active-output-part cover under a TRUE FULL,
+part-preserving embedding of native functional partite Systems.
+The only nontrivial use of fullness is exact preservation of the
+complete source output fibre under the target map. -/
+theorem Embedding.preimage_activeWeakOutputPartCover
+    {B : System L P V} {C : System L P W}
+    (e : Embedding B C) (S : Set W)
+    (hS : C.ActiveWeakOutputPartCover S) :
+    B.ActiveWeakOutputPartCover (e.toFun ⁻¹' S) := by
+  intro F xs hMeet y hy hPart
+  let xsB : Fin (L.funcArity F) → V := Subtype.val ∘ xs
+  let xsC : Fin (L.funcArity F) → S :=
+    fun i => ⟨e.toFun (xs i).1, (xs i).2⟩
+  have hTuple :
+      Subtype.val ∘ xsC = e.toFun ∘ xsB := by
+    funext i
+    rfl
+  have hMap :
+      Structure.imageSet e.toFun (B.toStructure.func F xsB) =
+        C.toStructure.func F (e.toFun ∘ xsB) :=
+    e.toEmbedding.map_func F xsB
+  have hMeetC :
+      ((C.toStructure.func F (Subtype.val ∘ xsC)) ∩ S).Nonempty := by
+    obtain ⟨a, ha, haS⟩ := hMeet
+    have haC : e.toFun a ∈
+        C.toStructure.func F (e.toFun ∘ xsB) := by
+      rw [← hMap]
+      exact ⟨a, ha, rfl⟩
+    refine ⟨e.toFun a, ?_, haS⟩
+    rw [hTuple]
+    exact haC
+  have hyC : e.toFun y ∈
+      C.toStructure.func F (Subtype.val ∘ xsC) := by
+    rw [hTuple, ← hMap]
+    exact ⟨y, hy, rfl⟩
+  have hPartC : C.part (e.toFun y) ∈ C.part '' S := by
+    obtain ⟨a, haS, haPart⟩ := hPart
+    refine ⟨e.toFun a, haS, ?_⟩
+    calc
+      C.part (e.toFun a) = B.part a := e.map_part a
+      _ = B.part y := haPart
+      _ = C.part (e.toFun y) := (e.map_part y).symm
+  exact hS F xsC hMeetC (e.toFun y) hyC hPartC
+
+/-- In particular, inverse images of canonical selected supports
+along honest full part-preserving copy embeddings satisfy the local
+active-cover criterion on their ORIGINAL source vertices. -/
+theorem Embedding.selectedSupport_preimage_activeWeakOutputPartCover
+    {B : System L P V} {C : System L P W}
+    (e : Embedding B C) {Q : Type v} (α : Q ↪ P) :
+    B.ActiveWeakOutputPartCover (e.toFun ⁻¹' C.support α) :=
+  e.preimage_activeWeakOutputPartCover
+    (C.support α) (C.support_activeWeakOutputPartCover α)
+
+end StructuralRamsey.FunctionalPartite
