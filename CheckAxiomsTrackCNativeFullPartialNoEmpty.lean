@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackCNativeFullPartialNoEmpty
+
+#print axioms StructuralRamsey.Structure.Embedding.toPartialOfNoDefinedEmpty
+#print axioms StructuralRamsey.Structure.Embedding.toPartialOfNoDefinedEmpty_rangeClosed
