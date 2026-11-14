@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackAArbitraryClippedWeakImagePositive2019
+
+#print axioms StructuralRamsey.PartialSetStructure.IsOriginalPartialHomomorphism.clippedWeakImage_graphHom
+#print axioms StructuralRamsey.PartialSetStructure.IsOriginalPartialHomomorphism.clippedWeakImage_originalPartial_iff_noExtra
