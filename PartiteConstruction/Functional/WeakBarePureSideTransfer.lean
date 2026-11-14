@@ -214,7 +214,8 @@ theorem AtMostBare.pure_side_of_full_embedding
         ∃ g : (i ⁻¹' (↑S : Set C)) → Y,
           IsAmbientRelativeWeakHE Side
             (i ⁻¹' (↑S : Set C)) Target g := by
-    simpa only [hT] using hOld T hCard
+    rw [← hT]
+    exact hOld T hCard
   obtain ⟨Y, Target, hTree, g, hg⟩ := hSide
   obtain ⟨f, hf⟩ :=
     hg.of_full_pure_side i (↑S : Set C) hPure
