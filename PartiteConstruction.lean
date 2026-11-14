@@ -627,3 +627,5 @@ import PartiteConstruction.Iterated.ProjectedBCopyControlCover
 
 -- Track E: source U-closed B attachment along exact irreducible U-hull with same HE.
 import PartiteConstruction.Iterated.ProjectedBCopyClosedHullAttachment
+-- Track E: preserve external B-protected closed tests through closed-root attachments.
+import PartiteConstruction.Iterated.ProjectedBCopyProtectedCoveragePreservation
