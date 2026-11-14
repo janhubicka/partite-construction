@@ -622,3 +622,5 @@ import PartiteConstruction.Functional.TrackEOriginalNativeClosedTestAdapter2019
 import PartiteConstruction.Iterated.ProjectedBCopyControlAttachment
 -- Track E: finite projected B-saturation retaining global HE and Ramsey arrow.
 import PartiteConstruction.Iterated.ProjectedBCopyFinalCompletion
+-- Track E: internal control B-cover implies selected same-map B-saturation.
+import PartiteConstruction.Iterated.ProjectedBCopyControlCover
