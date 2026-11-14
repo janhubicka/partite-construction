@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakBarePureSideTransfer
+
+#print axioms StructuralRamsey.Structure.IsAmbientRelativeWeakHE.of_full_pure_side
