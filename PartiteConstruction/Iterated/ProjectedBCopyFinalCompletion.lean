@@ -221,7 +221,7 @@ theorem build_all
 B-saturation, without changing its colours or its original core. -/
 theorem build_all_with_arrow
     [Fintype O] [Finite B]
-    {A : RelStructure L O}
+    {VA : Type v} {A : RelStructure L VA}
     {Color : Type*}
     (hArrow : StructuralRamsey.Arrow A Base Orig Color)
     (hpOrig : Orig.IsHomomorphismEmbedding Control pOrig)
