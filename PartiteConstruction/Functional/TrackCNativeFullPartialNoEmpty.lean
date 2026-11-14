@@ -52,8 +52,20 @@ theorem Embedding.toPartialOfNoDefinedEmpty_rangeClosed
     (hP : NoDefinedEmptyValues P)
     (g : Embedding E P.collapseDomain) :
     P.IsClosed (Set.range g.toFun) := by
-  exact (P.isClosed_iff_collapseDomain_isClosed (Set.range g.toFun)).mpr
-    g.range_isClosed
+  apply (P.isClosed_iff_collapseDomain_isClosed (Set.range g.toFun)).mpr
+  intro F xs hArgs y hy
+  classical
+  let pre : Fin (L.funcArity F) → V :=
+    fun i => Classical.choose (hArgs i)
+  have hPre : g.toFun ∘ pre = xs := by
+    funext i
+    exact Classical.choose_spec (hArgs i)
+  have hIn : y ∈ Structure.imageSet g.toFun (E.func F pre) := by
+    rw [g.map_func F pre]
+    rw [hPre]
+    exact hy
+  obtain ⟨z, _hz, hzEq⟩ := hIn
+  exact ⟨z, hzEq⟩
 
 
 variable {U : Type v}
