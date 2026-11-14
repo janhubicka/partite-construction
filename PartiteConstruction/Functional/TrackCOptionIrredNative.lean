@@ -81,7 +81,14 @@ theorem IsOptionClosedFreeIrreducible.domainEmptyEncode_irreducible
         e.toFun y ∈ Csrc.func G (e.toFun ∘ xs) := by
       rw [← e.map_func G xs]
       exact ⟨y, hSourceValue, rfl⟩
-    exact iE.range_isClosed G (e.toFun ∘ xs) hArgs hTargetValue
+    have hArgsNative :
+        ∀ i, (e.toFun ∘ xs) i ∈ Set.range iE.toFun := by
+      intro i
+      obtain ⟨z, hz⟩ := hArgs i
+      exact ⟨z, hz.symm⟩
+    obtain ⟨z, hz⟩ :=
+      iE.range_isClosed G (e.toFun ∘ xs) hArgsNative hTargetValue
+    exact ⟨z, hz.symm⟩
   have hTClosed : A.IsClosed T := by
     intro G xs U hArgs hValue y hy
     have hSourceValue : y ∈ A.domainEmptyEncode.func G xs := by
@@ -91,7 +98,14 @@ theorem IsOptionClosedFreeIrreducible.domainEmptyEncode_irreducible
         e.toFun y ∈ Csrc.func G (e.toFun ∘ xs) := by
       rw [← e.map_func G xs]
       exact ⟨y, hSourceValue, rfl⟩
-    exact iF.range_isClosed G (e.toFun ∘ xs) hArgs hTargetValue
+    have hArgsNative :
+        ∀ i, (e.toFun ∘ xs) i ∈ Set.range iF.toFun := by
+      intro i
+      obtain ⟨z, hz⟩ := hArgs i
+      exact ⟨z, hz.symm⟩
+    obtain ⟨z, hz⟩ :=
+      iF.range_isClosed G (e.toFun ∘ xs) hArgsNative hTargetValue
+    exact ⟨z, hz.symm⟩
   have hCovered : ∀ x : V, x ∈ S ∨ x ∈ T := by
     intro x
     rcases hFree.covers (e.toFun x) with hL | hR
