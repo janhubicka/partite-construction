@@ -32,7 +32,8 @@ theorem originalU_graphRoundtrip_eq
     (U : Set L.Symbol)
     (hU : ∀ R, R ∈ U → 1 ≤ L.arity R) :
     fromReducedUGraph U hU (D.asReducedUGraph U hU) = D := by
-  apply RelStructure.mk.injEq.mpr
+  change RelStructure.mk _ = RelStructure.mk _
+  congr 1
   funext R t
   exact propext (D.from_asReducedUGraph_rel_iff U hU R t)
 
