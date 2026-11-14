@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakAmbientACopyTraceRestorationBudget
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMostBare.restore_full_ambient_A_traces
