@@ -1,0 +1,4 @@
+import PartiteConstruction.Structure.GenericUOriginalPictureProperty
+
+#print axioms StructuralRamsey.Partite.OriginalUClosed.PictureProperty
+#print axioms StructuralRamsey.Partite.OriginalUClosed.pictureProperty_of_graph
