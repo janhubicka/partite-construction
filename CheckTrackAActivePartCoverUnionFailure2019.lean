@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.TrackAActivePartCoverUnionFailure2019
+
+#print axioms StructuralRamsey.FunctionalPartite.TrackAActivePartCoverUnionFailure.left_active
+#print axioms StructuralRamsey.FunctionalPartite.TrackAActivePartCoverUnionFailure.right_active
+#print axioms StructuralRamsey.FunctionalPartite.TrackAActivePartCoverUnionFailure.union_not_active
+#print axioms StructuralRamsey.FunctionalPartite.TrackAActivePartCoverUnionFailure.active_cover_not_union_closed
