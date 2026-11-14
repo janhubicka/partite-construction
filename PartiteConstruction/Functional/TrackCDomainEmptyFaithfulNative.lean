@@ -196,8 +196,9 @@ theorem IsEHNHomomorphismEmbedding.ofDomainEmptyEncode_originalPartial
       have hFull := hf.map_func_of_nonempty F xs hSourceNonempty
       have hEq : Structure.imageSet f U =
           (B.func F (f ∘ xs)).getD ∅ := by
-        simpa only [domainEmptyEncode, hA, Option.getD_some]
-          using hFull
+        change Structure.imageSet f ((A.func F xs).getD ∅) =
+          (B.func F (f ∘ xs)).getD ∅ at hFull
+        simpa only [hA, Option.getD_some] using hFull
       have hDom : B.Defined F (f ∘ xs) :=
         hf.1.1 (.inr (.inl F)) xs ⟨U, hA⟩
       obtain ⟨T, hB⟩ := hDom
