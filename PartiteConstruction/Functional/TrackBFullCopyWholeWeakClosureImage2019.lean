@@ -33,8 +33,8 @@ namespace StructuralRamsey.PartialSetStructure
 
 open StructuralRamsey.Structure
 
-universe u v w
-variable {L : Language.{u}} {V : Type v} {W : Type w}
+universe u v
+variable {L : Language.{u}} {V W : Type v}
 
 /-- A FULL genuine-partial embedding sends an arbitrary function-closed
 source subset to a function-closed target subset. This fails for a
