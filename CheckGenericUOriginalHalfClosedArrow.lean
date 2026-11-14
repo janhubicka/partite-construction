@@ -1,0 +1,5 @@
+import PartiteConstruction.Structure.GenericUOriginalHalfClosedArrow
+
+#print axioms StructuralRamsey.RelStructure.OriginalUHalfClosedArrow
+#print axioms StructuralRamsey.RelStructure.Embedding.reducedUGraphEquiv
+#print axioms StructuralRamsey.RelStructure.originalUHalfClosedArrow_iff_graph
