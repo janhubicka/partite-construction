@@ -1,5 +1,6 @@
 import PartiteConstruction.Structure.PartialSetFunctionsClosure
 import PartiteConstruction.Structure.PartialSetFunctionsClosed
+import PartiteConstruction.Structure.PartialSetFunctionsTransversal
 
 /-!
 # Appendix Track B: original 2019 partial projection need NOT preserve closure equality
