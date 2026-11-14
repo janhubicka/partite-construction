@@ -620,3 +620,6 @@ import PartiteConstruction.Functional.TrackEOriginalNativeClosedTestAdapter2019
 
 -- Track E: generic full genuine partial-function embedding to native.
 import PartiteConstruction.Functional.TrackEPartialFullEmbeddingCollapse2019
+
+-- Track E: projected B-copy attachment over an irreducible exact root.
+import PartiteConstruction.Iterated.ProjectedBCopyControlAttachment
