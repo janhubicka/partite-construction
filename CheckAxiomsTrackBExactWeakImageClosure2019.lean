@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.TrackBExactWeakImageClosure2019
+
+#print axioms StructuralRamsey.PartialSetStructure.IsOriginalPartialHomomorphism.wholeWeakImageClosure_subset_clipped
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.exactWholeImageClosure_subset_clipped
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.exactImageWholeMaskUClosureHull_subset_clipped
