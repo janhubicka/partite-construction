@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.TrackAArbitraryClippedWeakImagePositive2019
+import PartiteConstruction.Functional.PartialClippedWeakImageSaturationCounterexample2019
 
 /-!
 # Track A: minimal active-fibre cover for exact clipped weak image maps
@@ -157,3 +158,63 @@ theorem ActiveProjectedFibreCover.of_saturated
   exact ⟨y, hy, hSat y hTarget, rfl⟩
 
 end StructuralRamsey.PartialSetStructure
+
+namespace StructuralRamsey.PartialSetStructure.TrackAClippedImageCounterexample
+
+open StructuralRamsey
+open StructuralRamsey.PartialSetStructure
+
+/-- A nonvacuous test with TWO active distinct output labels, using the
+same nonsaturated three-to-two projection as the counterexample to
+unrestricted weak exactness. This time the entire source function
+value is contained in the weak carrier. -/
+def coveredSource : PartialSetStructure exampleLanguage (Fin 3) where
+  rel := fun R => Empty.elim R
+  func := fun _ _ => some support
+
+def coveredTarget : PartialSetStructure exampleLanguage (Fin 2) where
+  rel := fun R => Empty.elim R
+  func := fun _ _ => some (Structure.imageSet projection support)
+
+/-- The original complete function fibre maps ONTO its target value. -/
+theorem coveredOriginalPartial :
+    IsOriginalPartialHomomorphism coveredSource coveredTarget projection := by
+  constructor
+  · intro R
+    exact Empty.elim R
+  · intro F xs U hU
+    have hEq : support = U := Option.some.inj hU
+    subst U
+    rfl
+
+/-- The active source fibre is wholly contained in the weak carrier.
+Thus local output-cover holds even though the support does NOT
+contain all source vertices over its occupied projected labels. -/
+theorem coveredActiveFibre :
+    ActiveProjectedFibreCover coveredSource projection support := by
+  intro F xs Q hQ hMeet y hy hTarget
+  have hEq : Q = support := by
+    have h : some support = some Q := by
+      simpa only [coveredSource] using hQ
+    exact (Option.some.inj h).symm
+  exact ⟨y, hy, by simpa only [hEq] using hy, rfl⟩
+
+/-- Strictness with a genuinely defined, two-output source function:
+local active-fibre cover is weaker than global fibre saturation. -/
+theorem coveredActiveFibre_not_saturated :
+    ActiveProjectedFibreCover coveredSource projection support ∧
+      ¬ (∀ x : Fin 3, projection x ∈ projection '' support →
+        x ∈ support) := by
+  exact ⟨coveredActiveFibre, not_fibreSaturated⟩
+
+/-- The non-saturated example nevertheless has a correct complete
+CLIPPED weak-image partial projection by the local theorem. -/
+theorem coveredWeakImage_originalPartial :
+    IsOriginalPartialHomomorphism
+      (coveredSource.weakInduce support)
+      (coveredTarget.weakInduce (projection '' support))
+      (clippedWeakImageMap projection support) := by
+  exact (coveredOriginalPartial.clippedWeakImage_originalPartial_iff_activeCover
+    support).mpr coveredActiveFibre
+
+end StructuralRamsey.PartialSetStructure.TrackAClippedImageCounterexample
