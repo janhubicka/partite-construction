@@ -620,3 +620,5 @@ import PartiteConstruction.Functional.TrackEOriginalNativeClosedTestAdapter2019
 
 -- Track E: exact root B-copy attachment preserving selected HE to control.
 import PartiteConstruction.Iterated.ProjectedBCopyControlAttachment
+-- Track E: finite projected B-saturation retaining global HE and Ramsey arrow.
+import PartiteConstruction.Iterated.ProjectedBCopyFinalCompletion
