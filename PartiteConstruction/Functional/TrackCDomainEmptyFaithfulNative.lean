@@ -78,7 +78,8 @@ def Embedding.domainEmptyEncode
     rcases R with R | R
     · exact e.map_rel_iff R xs
     rcases R with F | F
-    · change B.Defined F (e.toFun ∘ xs) ↔ A.Defined F xs
+    · change (∃ U : Set W, B.func F (e.toFun ∘ xs) = some U) ↔
+          (∃ U : Set V, A.func F xs = some U)
       rw [← e.map_func F xs]
       cases hA : A.func F xs with
       | none =>
@@ -101,7 +102,9 @@ def Embedding.domainEmptyEncode
               have hfx : e.toFun x ∈
                   Structure.imageSet e.toFun U := ⟨x, hx, rfl⟩
               rw [hImage] at hfx
-              exact (Set.not_mem_empty _ hfx).elim
+              have hImpossible : False := by
+                simpa only [Set.mem_empty_iff_false] using hfx
+              exact hImpossible.elim
             · simp
           · intro hEmpty
             subst U
@@ -168,7 +171,8 @@ end PartialSetStructure
 
 namespace Structure
 
-variable {L : Language.{u}} {V : Type v} {W : Type w}
+-- The existing EHN API is universe-homogeneous in both vertex carriers.
+variable {L : Language.{u}} {V W : Type v}
 
 /-- An original native EHN projection between these FAITHFULLY
 encoded genuine partial structures preserves each source-defined
