@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.TrackCDomainEmptyFaithfulNative
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.domainEmptyEncode
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.ofDomainEmptyEncode
+#print axioms StructuralRamsey.Structure.IsEHNHomomorphismEmbedding.ofDomainEmptyEncode_originalPartial
