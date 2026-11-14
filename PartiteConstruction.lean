@@ -624,3 +624,6 @@ import PartiteConstruction.Iterated.ProjectedBCopyControlAttachment
 import PartiteConstruction.Iterated.ProjectedBCopyFinalCompletion
 -- Track E: internal control B-cover implies selected same-map B-saturation.
 import PartiteConstruction.Iterated.ProjectedBCopyControlCover
+
+-- Track E: source U-closed B attachment along exact irreducible U-hull with same HE.
+import PartiteConstruction.Iterated.ProjectedBCopyClosedHullAttachment
