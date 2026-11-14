@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.TrackBExactDualUClosure2019
+
+#print axioms StructuralRamsey.FunctionalPartite.System.wholeMaskUClosureHull_eq_clipped_of_noPartial
+#print axioms StructuralRamsey.FunctionalPartite.System.wholeMaskUClosureHull_eq_clipped_of_closed
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.selectedSupport_dualUClosureHull_eq
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.fullCopyRange_dualUClosureHull_eq
