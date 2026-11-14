@@ -19,3 +19,5 @@ and F4 irreducibility transport are indispensable.
 
 Two named axiom checks, active root. Keep draft until exact-head
 full Lean build and axiom/source-inventory checks pass.
+
+**Added positive same-map endpoint.** Under the identical no-defined-empty condition, any genuine native EHN map to P.collapseDomain gives a source-defined genuine Option(Set) partial homomorphism into the ORIGINAL P, on the SAME q. It composes the checked EHN-original semantics, native-to-Option positive map, and exact no-defined-empty object roundtrip. No source-undefined domain reflection. This supplies the positive q hypothesis required by the merged ATR #1147 without postulating globally OLD-protected q.
