@@ -80,7 +80,8 @@ theorem IsLegalDomainEmpty.ofFreeAmalgam
               Whole.func F (iL.toFun ∘ a) := by
             rw [← iL.map_func F a]
             exact ⟨y, hy, rfl⟩
-          simpa only [hx] using hVal
+          rw [hx]
+          exact hVal
         · right
           exact (hFree.rel_iff (.inr (.inr F)) xs).mpr
             (Or.inl ⟨a, he, hx⟩)
@@ -92,7 +93,8 @@ theorem IsLegalDomainEmpty.ofFreeAmalgam
               Whole.func F (iR.toFun ∘ a) := by
             rw [← iR.map_func F a]
             exact ⟨y, hy, rfl⟩
-          simpa only [hx] using hVal
+          rw [hx]
+          exact hVal
         · right
           exact (hFree.rel_iff (.inr (.inr F)) xs).mpr
             (Or.inr ⟨a, he, hx⟩)
@@ -132,7 +134,7 @@ theorem IsLegalDomainEmpty.ofFreeAmalgam
           (((hL F a).2).mp ha).2
         calc
           Whole.func F xs =
-              Whole.func F (iL.toFun ∘ a) := by rw [hx]
+              Whole.func F (iL.toFun ∘ a) := congrArg (Whole.func F) hx
           _ = Structure.imageSet iL.toFun (Left.func F a) :=
             (iL.map_func F a).symm
           _ = ∅ := by rw [hLa]; simp [Structure.imageSet]
@@ -140,7 +142,7 @@ theorem IsLegalDomainEmpty.ofFreeAmalgam
           (((hR F a).2).mp ha).2
         calc
           Whole.func F xs =
-              Whole.func F (iR.toFun ∘ a) := by rw [hx]
+              Whole.func F (iR.toFun ∘ a) := congrArg (Whole.func F) hx
           _ = Structure.imageSet iR.toFun (Right.func F a) :=
             (iR.map_func F a).symm
           _ = ∅ := by rw [hRa]; simp [Structure.imageSet]
@@ -148,13 +150,13 @@ theorem IsLegalDomainEmpty.ofFreeAmalgam
       rcases (hFree.rel_iff (.inr (.inl F)) xs).mp hd with
         ⟨a, ha, hx⟩ | ⟨a, ha, hx⟩
       · have hLValue : Left.func F a = ∅ :=
-          sideEmpty iL a (by simpa only [hx] using hVal)
+          sideEmpty iL a (by rw [hx]; exact hVal)
         have he : Left.rel (.inr (.inr F)) a :=
           ((hL F a).2).mpr ⟨ha, hLValue⟩
         exact (hFree.rel_iff (.inr (.inr F)) xs).mpr
           (Or.inl ⟨a, he, hx⟩)
       · have hRValue : Right.func F a = ∅ :=
-          sideEmpty iR a (by simpa only [hx] using hVal)
+          sideEmpty iR a (by rw [hx]; exact hVal)
         have he : Right.rel (.inr (.inr F)) a :=
           ((hR F a).2).mpr ⟨ha, hRValue⟩
         exact (hFree.rel_iff (.inr (.inr F)) xs).mpr
