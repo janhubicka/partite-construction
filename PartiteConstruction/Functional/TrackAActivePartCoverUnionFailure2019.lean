@@ -58,11 +58,11 @@ def system : System exampleLanguage (Fin 2) (Fin 3) where
     · rcases hzCases with h0' | h1'
       · exact h0.trans h0'.symm
       · have hBad : (0 : Fin 2) = 1 := by
-          simpa [system, projection, h0, h1'] using hPart
+          simpa [projection, h0, h1'] using hPart
         exact ((show (0 : Fin 2) ≠ 1 by decide) hBad).elim
     · rcases hzCases with h0' | h1'
       · have hBad : (1 : Fin 2) = 0 := by
-          simpa [system, projection, h1, h0'] using hPart
+          simpa [projection, h1, h0'] using hPart
         exact ((show (1 : Fin 2) ≠ 0 by decide) hBad).elim
       · exact h1.trans h1'.symm
 
