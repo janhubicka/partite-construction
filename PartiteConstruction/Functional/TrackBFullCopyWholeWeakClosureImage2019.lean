@@ -149,7 +149,6 @@ theorem weakLine_wholeWeakPreimage_imageClosure_eq
     (wholeWeakInduce (power B N).toStructure.toNonemptyPartial Test).functionClosure
       (Structure.imageSet
         (restrictMap ((weak_lineEmbedding hB W).toEmbedding.toFun) Test) Q) := by
-  exact ((weak_lineEmbedding hB W).toEmbedding.toNonemptyPartial)
-    |>.wholeWeakPreimage_imageClosure_eq Test Q
+  exact ((weak_lineEmbedding hB W).toEmbedding.toNonemptyPartial).wholeWeakPreimage_imageClosure_eq Test Q
 
 end StructuralRamsey.FunctionalPartite.Induced
