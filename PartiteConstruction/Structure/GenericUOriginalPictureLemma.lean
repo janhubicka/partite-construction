@@ -31,7 +31,8 @@ theorem from_asReducedUGraph_eq
     (hU : ∀ R, R ∈ U → 1 ≤ L.arity R) :
     RelStructure.fromReducedUGraph U hU
       (D.asReducedUGraph U hU) = D := by
-  apply RelStructure.mk.injEq.mpr
+  change RelStructure.mk _ = RelStructure.mk _
+  congr 1
   funext R t
   exact propext (D.from_asReducedUGraph_rel_iff U hU R t)
 
@@ -87,6 +88,10 @@ theorem pictureLemma
   have hTrans : C.OriginalUOutputTransversal U hU1 :=
     (Partite.System.originalUOutputTransversal_decode_iff
       U hU1 C_g).mpr hCTG
+  have hαg : α_g.toFun = (fun x => α.1 x) := by
+    funext x
+    rfl
+  rw [hαg] at hPicG
   have hP : PictureProperty A B (fun x => α.1 x) C U hU1 κ := by
     exact pictureProperty_of_graph A B (fun x => α.1 x) U hU1
       C_g κ (by simpa only [A_g, B_g] using hPicG)
