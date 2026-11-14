@@ -35,7 +35,7 @@ variable {L : Language.{u}} {V : Type v} {W : Type w}
 partial target with NO defined-empty inputs is a FULL original
 Option(Set) embedding E.toNonemptyPartial → P with the SAME map.
 All primitive domain bits and values are reflected. -/
-theorem Embedding.toPartialOfNoDefinedEmpty
+noncomputable def Embedding.toPartialOfNoDefinedEmpty
     {E : Structure L V} {P : PartialSetStructure L W}
     (hP : NoDefinedEmptyValues P)
     (g : Embedding E P.collapseDomain) :
@@ -52,7 +52,8 @@ theorem Embedding.toPartialOfNoDefinedEmpty_rangeClosed
     (hP : NoDefinedEmptyValues P)
     (g : Embedding E P.collapseDomain) :
     P.IsClosed (Set.range g.toFun) := by
-  exact (g.toPartialOfNoDefinedEmpty hP).range_isClosed
+  exact (P.isClosed_iff_collapseDomain_isClosed (Set.range g.toFun)).mpr
+    g.range_isClosed
 
 
 variable {U : Type v}
