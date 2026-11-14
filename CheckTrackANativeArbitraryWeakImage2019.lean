@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.TrackANativeArbitraryWeakImage2019
+
+#print axioms StructuralRamsey.Structure.IsOriginalPartialHomomorphism.clippedWeakImage_domainGraphHom
+#print axioms StructuralRamsey.Structure.IsOriginalPartialHomomorphism.clippedWeakImage_iff_noExtra
+#print axioms StructuralRamsey.FunctionalPartite.System.arbitraryWeakImage_domainGraphHom
+#print axioms StructuralRamsey.FunctionalPartite.System.arbitraryWeakImage_originalPartial_iff_noExtra
+#print axioms StructuralRamsey.FunctionalPartite.System.selectedSupport_noExtra
