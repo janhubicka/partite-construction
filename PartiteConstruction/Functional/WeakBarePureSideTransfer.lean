@@ -163,3 +163,61 @@ theorem IsAmbientRelativeWeakHE.of_full_pure_side
   exact ⟨f, ⟨⟨hWeak, hFibre⟩, hIrred⟩⟩
 
 end StructuralRamsey.Structure
+
+
+namespace StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness
+
+universe u v
+variable {L : Language.{u}} {VB E C : Type v}
+
+/-- A BARE strict functional Base-tree certificate transfers on an
+EXACT finite weak test lying wholly in the image of a FULL native
+source-side embedding. The preimage has no more tested vertices
+than the original S, by genuine embedding injectivity.
+
+This is the missing PURE-OLD / PURE-CORE case for the proposed
+weaker BARE strict-functional rank successor. It does NOT provide
+the stronger external partial ambient A-copy intersection condition,
+which is why that stronger native n-pass argument still fails. -/
+theorem AtMostBare.pure_side_of_full_embedding
+    {Base : Structure L VB}
+    {Side : Structure L E} {Whole : Structure L C}
+    [Fintype E] [DecidableEq C]
+    (i : Embedding Side Whole)
+    (n : ℕ)
+    (hOld : AtMostBare Base Side n)
+    (S : Finset C) (hS : S.card ≤ n)
+    (hPure : ∀ z : C, z ∈ S → ∃ x : E, z = i x) :
+    ∃ (Y : Type v) (Target : Structure L Y),
+      TreeAmalgam Base Y Target ∧
+      ∃ f : (↑S : Set C) → Y,
+        IsAmbientRelativeWeakHE Whole (↑S : Set C) Target f := by
+  classical
+  let T : Finset E := Finset.univ.filter (fun x => i x ∈ S)
+  have hT : (↑T : Set E) = i ⁻¹' (↑S : Set C) := by
+    ext x
+    simp [T]
+  have hImage : T.image i ⊆ S := by
+    intro y hy
+    obtain ⟨x, hx, hxy⟩ := Finset.mem_image.mp hy
+    have hxS : i x ∈ S := (Finset.mem_filter.mp hx).2
+    rwa [hxy] at hxS
+  have hCard : T.card ≤ n := by
+    calc
+      T.card = (T.image i).card :=
+        (Finset.card_image_of_injective T i.injective).symm
+      _ ≤ S.card := Finset.card_le_card hImage
+      _ ≤ n := hS
+  have hSide :
+      ∃ (Y : Type v) (Target : Structure L Y),
+        TreeAmalgam Base Y Target ∧
+        ∃ g : (i ⁻¹' (↑S : Set C)) → Y,
+          IsAmbientRelativeWeakHE Side
+            (i ⁻¹' (↑S : Set C)) Target g := by
+    simpa only [hT] using hOld T hCard
+  obtain ⟨Y, Target, hTree, g, hg⟩ := hSide
+  obtain ⟨f, hf⟩ :=
+    hg.of_full_pure_side i (↑S : Set C) hPure
+  exact ⟨Y, Target, hTree, f, hf⟩
+
+end StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness
