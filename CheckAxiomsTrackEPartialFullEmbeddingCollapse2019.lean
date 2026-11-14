@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackEPartialFullEmbeddingCollapse2019
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.collapseDomain
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.collapseDomain_apply
