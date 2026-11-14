@@ -1,0 +1,4 @@
+import PartiteConstruction.Structure.GenericUHalfClosedLiteralQuantifiers
+
+#print axioms StructuralRamsey.RelStructure.OriginalUHalfClosedArrowLiteral
+#print axioms StructuralRamsey.RelStructure.originalUHalfClosedArrowLiteral_iff
