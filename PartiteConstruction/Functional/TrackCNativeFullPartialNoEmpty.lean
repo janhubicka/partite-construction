@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.TrackENativePartialFullFaithfulness
 import PartiteConstruction.Functional.PartialDomainGraphClosedRange2019
+import PartiteConstruction.Functional.TrackBRealEHNExactImageUSize2019
 
 /-!
 # Track C: a full native copy into a NoDefinedEmpty Option(Set) control
@@ -52,5 +53,35 @@ theorem Embedding.toPartialOfNoDefinedEmpty_rangeClosed
     (g : Embedding E P.collapseDomain) :
     P.IsClosed (Set.range g.toFun) := by
   exact (g.toPartialOfNoDefinedEmpty hP).range_isClosed
+
+
+variable {U : Type v}
+
+/-- Any genuine native EHN/original-2019 homomorphism-embedding into
+the NATIVE COLLAPSE of a no-defined-empty partial target is an
+ORIGINAL source-defined Option(Set) homomorphism into that SAME
+partial target. The underlying vertex map is unchanged, and no
+undefined-domain reflection is introduced.
+
+This is the positive source-map bridge needed to use the
+already verified n-vertex weak completion pullback with the
+actual native second-cover projection q. -/
+theorem IsEHNHomomorphismEmbedding.toPartialTargetOfNoDefinedEmpty
+    {E : Structure L V} {P : PartialSetStructure L U}
+    {q : V → U}
+    (hP : NoDefinedEmptyValues P)
+    (hq : E.IsEHNHomomorphismEmbedding P.collapseDomain q) :
+    PartialSetStructure.IsOriginalPartialHomomorphism
+      E.toNonemptyPartial P q := by
+  have hOriginal :
+      IsOriginalPartialHomomorphism E P.collapseDomain q :=
+    hq.toOriginalPartial.1
+  have hPartial :
+      PartialSetStructure.IsOriginalPartialHomomorphism
+        E.toNonemptyPartial P.collapseDomain.toNonemptyPartial q :=
+    hOriginal.toNonemptyPartial
+  have hEq : P.collapseDomain.toNonemptyPartial = P :=
+    (noDefinedEmpty_iff_nativeRoundtrip P).mp hP
+  simpa only [hEq] using hPartial
 
 end StructuralRamsey.Structure
