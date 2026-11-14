@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.PureSideAmbientFullTraceTransfer
+
+#print axioms StructuralRamsey.Structure.SetAmbientACopyIntersections.pureSide_of_fullTraceLift
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.pureRight_fullTraceLift_of_crossSide
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.pureRight_ambientACopies_of_crossSideTraces
