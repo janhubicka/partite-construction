@@ -29,8 +29,8 @@ def OriginalUHalfClosedArrowLiteral
     (κ : Type*) : Prop :=
   ∀ χ : {e : Embedding A D // IsUClosedEmbeddingRange U hU e} → κ,
     ∃ β : Embedding B D,
-      ∃ hβ : ∀ e : {e : Embedding A B // IsUClosedEmbeddingRange U hU e},
-        IsUClosedEmbeddingRange U hU (β.comp e.1),
+      ∃ hβ : (∀ e : {e : Embedding A B // IsUClosedEmbeddingRange U hU e},
+        IsUClosedEmbeddingRange U hU (β.comp e.1)),
         ∀ e₁ e₂ : {e : Embedding A B // IsUClosedEmbeddingRange U hU e},
           χ ⟨β.comp e₁.1, hβ e₁⟩ =
           χ ⟨β.comp e₂.1, hβ e₂⟩
