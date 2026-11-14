@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackBFullCopyWholeMaskUClosure2019
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.fullCopy_wholeMaskUClosureHull_image_eq

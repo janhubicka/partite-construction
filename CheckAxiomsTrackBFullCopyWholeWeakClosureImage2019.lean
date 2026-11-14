@@ -1,0 +1,7 @@
+import PartiteConstruction.Functional.TrackBFullCopyWholeWeakClosureImage2019
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.image_isClosed_of_isClosed
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.image_functionClosure_eq
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.wholeWeakPreimage_imageClosure_eq
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.fullCopy_wholeWeakPreimage_imageClosure_eq
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weakLine_wholeWeakPreimage_imageClosure_eq
