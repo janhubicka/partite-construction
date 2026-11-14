@@ -90,4 +90,76 @@ theorem freeAmalgam_rightEmbeddedInBase_preserves_externalBCoverage
   exact freeAmalgam_preserves_externalBCoverage
     hFree hRoot hLeft hRight hCoverLeft hCoverRight
 
+
+/-- The repaired projected B attachment over the exact closed hull
+retains all THREE relevant one-step certificates simultaneously:
+U-CLOSEDNESS of the new source, its selected CONTROL HE, and external
+B-coverage for EVERY U-closed U-irreducible new source test. The core's
+old selected projection agrees exactly on all original vertices.
+
+The whole construction remains RELATIONAL. This result does not prove
+relative small-H test completion preservation or normality of an
+arbitrary genuinely partial whole-mask target after attachment. -/
+theorem attach_closedHull_preserves_all_three
+    {rules : ClosureDescription L}
+    (Orig : RelStructure L O) (Base : RelStructure L B)
+    (Control : RelStructure L Q) (pOrig : O → Q)
+    (hOrigClosed : IsUClosed rules Orig)
+    (hBaseClosed : IsUClosed rules Base)
+    (hExternal : ∀ {X : Type v} (Test : RelStructure L X),
+      IsUClosed rules Test → IsUIrreducible rules Test →
+      Embedding Test Orig → Nonempty (Embedding Test Base))
+    (hBaseHered : HereditarilyIrreducible Base)
+    (hpOrig : Orig.IsHomomorphismEmbedding Control pOrig)
+    (hControl : IrreduciblesExtendTo Base Control)
+    (S : Set O) (hSIrred : (Orig.induce S).Irreducible) :
+    ∃ (H : Set O), S ⊆ H ∧
+      ∃ (j : Embedding (Orig.induce H) Base)
+        (newProjection :
+          FreeAmalgam.Vertex (Orig.induce H) Orig Base
+            (inclusion Orig H) j → Q),
+        IsUClosed rules
+          (FreeAmalgam.amalgam (Orig.induce H) Orig Base
+            (inclusion Orig H) j) ∧
+        (FreeAmalgam.amalgam (Orig.induce H) Orig Base
+          (inclusion Orig H) j).IsHomomorphismEmbedding
+          Control newProjection ∧
+        (∀ o : O, newProjection
+          (FreeAmalgam.leftEmbedding
+            (Orig.induce H) Orig Base (inclusion Orig H) j o) =
+            pOrig o) ∧
+        (∀ {X : Type v} (Test : RelStructure L X),
+          IsUClosed rules Test → IsUIrreducible rules Test →
+          Embedding Test
+            (FreeAmalgam.amalgam (Orig.induce H) Orig Base
+              (inclusion Orig H) j) →
+          Nonempty (Embedding Test Base)) := by
+  classical
+  obtain ⟨H, hSH, hHClosed, _hHUIrred, hHOrdIrred, beta, hBeta⟩ :=
+    closedHull_has_selected_controlBCopy
+      Orig Base Control pOrig hOrigClosed hExternal
+      hBaseHered hpOrig hControl S hSIrred
+  let i : Embedding (Orig.induce H) Orig := inclusion Orig H
+  obtain ⟨j, newProjection, hProjected, hLeft, _hRight, _hOverlap⟩ :=
+    attach_irreducible_preserves_controlHE
+      hHOrdIrred i pOrig hpOrig beta hBeta
+  have hFree : IsFreeAmalgam i j
+      (FreeAmalgam.leftEmbedding (Orig.induce H) Orig Base i j)
+      (FreeAmalgam.rightEmbedding (Orig.induce H) Orig Base i j) :=
+    FreeAmalgam.isFreeAmalgam (Orig.induce H) Orig Base i j
+  have hWholeClosed :
+      IsUClosed rules
+        (FreeAmalgam.amalgam (Orig.induce H) Orig Base i j) :=
+    hFree.isUClosed hHClosed hOrigClosed hBaseClosed
+  have hWholeExternal :
+      ∀ {X : Type v} (Test : RelStructure L X),
+        IsUClosed rules Test → IsUIrreducible rules Test →
+        Embedding Test
+          (FreeAmalgam.amalgam (Orig.induce H) Orig Base i j) →
+        Nonempty (Embedding Test Base) :=
+    freeAmalgam_rightEmbeddedInBase_preserves_externalBCoverage
+      hFree hHClosed hOrigClosed hBaseClosed (Embedding.id Base) hExternal
+  exact ⟨H, hSH, j, newProjection,
+    hWholeClosed, hProjected, hLeft, hWholeExternal⟩
+
 end StructuralRamsey.RelStructure.ProjectedBCopyControl
