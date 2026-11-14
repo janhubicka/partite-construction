@@ -1,0 +1,7 @@
+import PartiteConstruction.Structure.GenericUOrdinaryClosedEmbedding
+
+#print axioms StructuralRamsey.RelStructure.reducedUGraph_func_snoc_iff
+#print axioms StructuralRamsey.RelStructure.Embedding.ofReducedReindex
+#print axioms StructuralRamsey.RelStructure.Embedding.toReducedGraphClosed
+#print axioms StructuralRamsey.RelStructure.Embedding.fromReducedGraphClosed
+#print axioms StructuralRamsey.RelStructure.Embedding.uClosedReducedGraphEquiv

@@ -1,0 +1,6 @@
+import PartiteConstruction.Structure.GenericUPictureProjected
+
+#print axioms StructuralRamsey.Partite.OriginalUClosed.ProjectedEmbedding
+#print axioms StructuralRamsey.Partite.OriginalUClosed.projectedEmbeddingEquiv
+#print axioms StructuralRamsey.Partite.OriginalUClosed.ProjectedEmbedding.comp
+#print axioms StructuralRamsey.Partite.OriginalUClosed.projectedEmbeddingEquiv_comp
