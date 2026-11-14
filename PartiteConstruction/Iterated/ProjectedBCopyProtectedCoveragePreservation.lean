@@ -31,7 +31,7 @@ open StructuralRamsey.RelStructure.FreeAmalgam
 
 universe u v
 variable {L : RelLanguage.{u}}
-variable {H E F C B : Type v}
+variable {H E F C B O Q : Type v}
 variable {Root : RelStructure L H}
 variable {Left : RelStructure L E}
 variable {Right : RelStructure L F}
