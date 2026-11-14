@@ -1,0 +1,4 @@
+import PartiteConstruction.Iterated.ProjectedBCopyClosedHullAttachment
+
+#print axioms StructuralRamsey.RelStructure.ProjectedBCopyControl.closedHull_has_selected_controlBCopy
+#print axioms StructuralRamsey.RelStructure.ProjectedBCopyControl.attach_closedHull_preserves_UClosed_controlHE
