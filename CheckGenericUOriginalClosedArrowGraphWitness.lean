@@ -1,0 +1,4 @@
+import PartiteConstruction.Structure.GenericUOriginalClosedArrowGraphWitness
+
+#print axioms StructuralRamsey.RelStructure.uClosedGraphWitnessEquiv
+#print axioms StructuralRamsey.RelStructure.originalUClosedArrow_of_graphWitness
