@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.TrackAActiveProjectedFibreCover2019
 import PartiteConstruction.Functional.WeakTransversalTests
+import PartiteConstruction.Functional.NativeWholeWeakFreeAmalgam
 
 /-!
 # Track A: native active-output-part closure on a true functional partite System
@@ -54,6 +55,7 @@ theorem System.activeWeakOutputPartCover_iff_activeProjectedFibreCover
     B.ActiveWeakOutputPartCover S ↔
       ActiveProjectedFibreCover
         B.toStructure.toNonemptyPartial B.part S := by
+  classical
   constructor
   · intro hLocal F xs Q hQ hMeet y hy hyPart
     have hQEq : Q = B.toStructure.func F (Subtype.val ∘ xs) := by
