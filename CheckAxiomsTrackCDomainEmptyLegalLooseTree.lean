@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackCDomainEmptyLegalLooseTree
+
+#print axioms StructuralRamsey.Structure.IsLegalDomainEmpty.ofEmbedding
+#print axioms StructuralRamsey.Structure.LooseTreeAmalgam.isLegalDomainEmpty
