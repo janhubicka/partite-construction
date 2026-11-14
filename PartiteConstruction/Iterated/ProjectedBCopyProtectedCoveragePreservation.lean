@@ -65,16 +65,17 @@ theorem freeAmalgam_preserves_externalBCoverage
   · exact hCoverLeft Test hTestClosed hTestIrred gL
   · exact hCoverRight Test hTestClosed hTestIrred gR
 
-/-- If the right free side IS Base, every protected test on that side
-embeds into Base by the identity. The closed-root attachment thus
-retains the exact external B-protection of the entire old core. -/
-theorem freeAmalgam_attachBase_preserves_externalBCoverage
+/-- If the right free side embeds fully in Base, every protected
+test on that side embeds in Base by composition. In particular the
+closed-root attachment with Right = Base uses its identity embedding.
+This retains the exact external B-protection of the old core. -/
+theorem freeAmalgam_rightEmbeddedInBase_preserves_externalBCoverage
     {rules : ClosureDescription L}
     (hFree : IsFreeAmalgam sL sR iL iR)
     (hRoot : IsUClosed rules Root)
     (hLeft : IsUClosed rules Left)
     (hRight : IsUClosed rules Right)
-    (BaseEq : Right = Base)
+    (eRight : Embedding Right Base)
     (hCoverLeft : ∀ {X : Type v} (Test : RelStructure L X),
       IsUClosed rules Test → IsUIrreducible rules Test →
       Embedding Test Left → Nonempty (Embedding Test Base)) :
@@ -85,8 +86,7 @@ theorem freeAmalgam_attachBase_preserves_externalBCoverage
       IsUClosed rules Test → IsUIrreducible rules Test →
       Embedding Test Right → Nonempty (Embedding Test Base) := by
     intro X Test _ _ e
-    cases BaseEq
-    exact ⟨e⟩
+    exact ⟨eRight.comp e⟩
   exact freeAmalgam_preserves_externalBCoverage
     hFree hRoot hLeft hRight hCoverLeft hCoverRight
 
