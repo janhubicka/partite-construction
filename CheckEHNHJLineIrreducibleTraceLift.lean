@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNHJLineIrreducibleTraceLift
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.line_irreducible_trace_lifts_full_to_source
+#print axioms StructuralRamsey.FunctionalPartite.EHN.selected_hj_line_irreducible_trace_lifts_to_old
