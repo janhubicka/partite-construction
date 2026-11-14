@@ -617,3 +617,6 @@ import PartiteConstruction.Functional.TrackEFinalCoveredCompleteValueSideLocaliz
 import PartiteConstruction.Functional.TrackEFinalInducedTestLocalization2019
 -- Track E: original-language native decoding of exact closed tagged tests.
 import PartiteConstruction.Functional.TrackEOriginalNativeClosedTestAdapter2019
+
+-- Track E: exact root B-copy attachment preserving selected HE to control.
+import PartiteConstruction.Iterated.ProjectedBCopyControlAttachment
