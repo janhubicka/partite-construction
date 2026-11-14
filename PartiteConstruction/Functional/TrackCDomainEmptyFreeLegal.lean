@@ -150,13 +150,13 @@ theorem IsLegalDomainEmpty.ofFreeAmalgam
       rcases (hFree.rel_iff (.inr (.inl F)) xs).mp hd with
         ⟨a, ha, hx⟩ | ⟨a, ha, hx⟩
       · have hLValue : Left.func F a = ∅ :=
-          sideEmpty iL a (by rw [hx]; exact hVal)
+          sideEmpty iL a hVal
         have he : Left.rel (.inr (.inr F)) a :=
           ((hL F a).2).mpr ⟨ha, hLValue⟩
         exact (hFree.rel_iff (.inr (.inr F)) xs).mpr
           (Or.inl ⟨a, he, hx⟩)
       · have hRValue : Right.func F a = ∅ :=
-          sideEmpty iR a (by rw [hx]; exact hVal)
+          sideEmpty iR a hVal
         have he : Right.rel (.inr (.inr F)) a :=
           ((hR F a).2).mpr ⟨ha, hRValue⟩
         exact (hFree.rel_iff (.inr (.inr F)) xs).mpr
