@@ -1,0 +1,5 @@
+import PartiteConstruction.Iterated.ProjectedBCopyFinalCompletion
+
+#print axioms StructuralRamsey.RelStructure.ProjectedBCopyControl.build_list
+#print axioms StructuralRamsey.RelStructure.ProjectedBCopyControl.build_all
+#print axioms StructuralRamsey.RelStructure.ProjectedBCopyControl.build_all_with_arrow
