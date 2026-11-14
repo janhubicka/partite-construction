@@ -629,3 +629,6 @@ import PartiteConstruction.Iterated.ProjectedBCopyControlCover
 import PartiteConstruction.Iterated.ProjectedBCopyClosedHullAttachment
 -- Track E: preserve external B-protected closed tests through closed-root attachments.
 import PartiteConstruction.Iterated.ProjectedBCopyProtectedCoveragePreservation
+
+-- Track E: finite U-closed projected B saturation preserving source HE and Ramsey.
+import PartiteConstruction.Iterated.ProjectedBCopyClosedFiniteSaturation
