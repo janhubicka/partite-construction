@@ -43,11 +43,15 @@ def IsLegalDomainEmpty
 Dom_F is present; otherwise the genuine partial value is undefined.
 For arbitrary, possibly ILLEGAL native data this is still a
 well-defined genuine partial structure. -/
-def domainEmptyDecode (C : Structure L.withDomainEmptyFlags V) :
-    PartialSetStructure L V where
-  rel R xs := C.rel (.inl R) xs
-  func F xs :=
-    if C.rel (.inr (.inl F)) xs then some (C.func F xs) else none
+noncomputable def domainEmptyDecode (C : Structure L.withDomainEmptyFlags V) :
+    PartialSetStructure L V := by
+  classical
+  exact {
+    rel R xs := C.rel (.inl R)
+      xs
+    func F xs :=
+      if C.rel (.inr (.inl F)) xs then some (C.func F xs) else none
+  }
 
 private theorem exact_structure_ext
     {A B : Structure L.withDomainEmptyFlags V}
@@ -102,6 +106,7 @@ theorem IsLegalDomainEmpty.decodeEncode_rel_iff
     (R : L.withDomainEmptyFlags.RelSymbol)
     (xs : Fin (L.withDomainEmptyFlags.relArity R) → V) :
     C.domainEmptyDecode.domainEmptyEncode.rel R xs ↔ C.rel R xs := by
+  classical
   rcases R with R | R
   · rfl
   rcases R with F | F
@@ -133,6 +138,7 @@ theorem IsLegalDomainEmpty.decodeEncode_func
     (F : L.FuncSymbol)
     (xs : Fin (L.funcArity F) → V) :
     C.domainEmptyDecode.domainEmptyEncode.func F xs = C.func F xs := by
+  classical
   change (if C.rel (.inr (.inl F)) xs then
     some (C.func F xs) else none).getD ∅ = C.func F xs
   by_cases hd : C.rel (.inr (.inl F)) xs
@@ -189,6 +195,7 @@ private theorem exact_partial_ext
 its faithful native Dom/Empty/value encoding, including some empty. -/
 theorem domainEmptyDecode_encode_eq (A : PartialSetStructure L V) :
     A.domainEmptyEncode.domainEmptyDecode = A := by
+  classical
   apply exact_partial_ext
   · intro R xs
     rfl
