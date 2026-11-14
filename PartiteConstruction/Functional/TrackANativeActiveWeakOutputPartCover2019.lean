@@ -1,6 +1,8 @@
 import PartiteConstruction.Functional.TrackAActiveProjectedFibreCover2019
 import PartiteConstruction.Functional.WeakTransversalTests
 import PartiteConstruction.Functional.NativeWholeWeakFreeAmalgam
+import PartiteConstruction.Functional.TrackESourceDefinedPartialIff
+import PartiteConstruction.Functional.LegacyWeakPartialCommutation2019
 
 /-!
 # Track A: native active-output-part closure on a true functional partite System
@@ -110,5 +112,48 @@ theorem System.support_activeWeakOutputPartCover
     B.ActiveWeakOutputPartCover (B.support α) :=
   System.PartSaturated.activeWeakOutputPartCover B (B.support α)
     (B.support_partSaturated α)
+
+
+/-- The exact ORIGINAL 2019 source-defined weak projection theorem for
+an ACTUAL native transversal functional Picture on any exact carrier
+S. It is equivalent to local active output-part closure, not to global
+part saturation. This is a same-witness, same-map equivalence. -/
+theorem System.arbitraryWeakImage_originalPartial_iff_activePartCover
+    (B : System L P V) (D : Structure L P)
+    (hB : B.WeaklyPartiteOver D) (S : Set V) :
+    Structure.IsOriginalPartialHomomorphism
+      (B.toStructure.weakInduce S)
+      (D.weakInduce (B.part '' S))
+      (PartialSetStructure.clippedWeakImageMap B.part S) ↔
+        B.ActiveWeakOutputPartCover S := by
+  have hp : B.toStructure.IsEHNHomomorphismEmbedding D B.part := hB
+  have hOrig : Structure.IsOriginalPartialHomomorphism
+      B.toStructure D B.part := hp.toOriginalPartial.1
+  have hPartial : PartialSetStructure.IsOriginalPartialHomomorphism
+      B.toStructure.toNonemptyPartial D.toNonemptyPartial B.part :=
+    Structure.TrackESourceDefinedPartialIff.originalPartialHom_iff_nonemptyPartial.mp
+      hOrig
+  have hWeak := hPartial.clippedWeakImage_originalPartial_iff_activeCover S
+  rw [← Structure.toNonemptyPartial_weakInduce_commute B.toStructure S,
+      ← Structure.toNonemptyPartial_weakInduce_commute D (B.part '' S)]
+    at hWeak
+  exact (Structure.TrackESourceDefinedPartialIff.originalPartialHom_iff_nonemptyPartial).trans
+    (hWeak.trans
+      (B.activeWeakOutputPartCover_iff_activeProjectedFibreCover S).symm)
+
+/-- Regression: the canonical selected support really satisfies the
+minimal local criterion, and therefore the existing selected-support
+original-partial projection can be recovered via this new iff.
+There is NO assertion for all arbitrary weak subsets. -/
+theorem System.selectedSupport_originalPartial_via_activePartCover
+    (B : System L P V) (D : Structure L P)
+    (hB : B.WeaklyPartiteOver D)
+    {Q : Type v} (α : Q ↪ P) :
+    Structure.IsOriginalPartialHomomorphism
+      (B.toStructure.weakInduce (B.support α))
+      (D.weakInduce (B.part '' B.support α))
+      (PartialSetStructure.clippedWeakImageMap B.part (B.support α)) := by
+  exact (B.arbitraryWeakImage_originalPartial_iff_activePartCover
+    D hB (B.support α)).mpr (B.support_activeWeakOutputPartCover α)
 
 end StructuralRamsey.FunctionalPartite
