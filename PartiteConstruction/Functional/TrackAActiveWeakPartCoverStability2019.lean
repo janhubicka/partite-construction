@@ -31,8 +31,8 @@ namespace StructuralRamsey.FunctionalPartite
 
 open StructuralRamsey
 
-universe u v w z
-variable {L : Language.{u}} {P : Type v} {V : Type w} {W : Type z}
+universe u v
+variable {L : Language.{u}} {P V W : Type v}
 
 /-- Active output-part cover is closed under intersection of exact
 vertex supports, with no finite-carrier or positive-arity assumption.
