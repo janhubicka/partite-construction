@@ -36,7 +36,6 @@ namespace StructuralRamsey.RelStructure
 
 open StructuralRamsey
 open StructuralRamsey.PartialSetStructure
-open StructuralRamsey.Structure
 
 universe u v w
 variable {L : Language.{u}} {P : Type w} [Fintype P]
@@ -95,7 +94,7 @@ gives an INTERNAL genuine native B-copy containing it.
 This is exactly the missing non-Gaifman shortcut in the functional
 2019 internally B-saturated endgame. -/
 theorem wholeMaskCovered_internalTaggedB_to_native_of_closedUIrred
-    {K : RelStructure.StructureClass
+    {K : StructureClass
       (L := (L.withParts P).wholeMaskTagLanguage P)}
     (C : RelStructure ((L.withParts P).wholeMaskTagLanguage P) W)
     (Base : PartialSetStructure L X) [Finite X]
