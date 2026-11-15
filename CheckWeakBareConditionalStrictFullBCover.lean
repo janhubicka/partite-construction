@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakBareConditionalStrictFullBCover
+
+#print axioms StructuralRamsey.Structure.sparseningRamsey_bareStrict_withBCover_of_controlBudget
