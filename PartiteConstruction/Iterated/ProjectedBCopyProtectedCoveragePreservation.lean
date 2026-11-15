@@ -87,8 +87,10 @@ theorem freeAmalgam_rightEmbeddedInBase_preserves_externalBCoverage
       Embedding Test Right → Nonempty (Embedding Test Base) := by
     intro X Test _ _ e
     exact ⟨eRight.comp e⟩
-  exact freeAmalgam_preserves_externalBCoverage
-    hFree hRoot hLeft hRight hCoverLeft hCoverRight
+  intro X Test hTestClosed hTestIrred e
+  exact (freeAmalgam_preserves_externalBCoverage
+    hFree hRoot hLeft hRight hCoverLeft hCoverRight)
+    Test hTestClosed hTestIrred e
 
 
 /-- The repaired projected B attachment over the exact closed hull
