@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackEClosedSaturationAllNativeBCover2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMask_closedSaturation_allNativeIrreduciblesExtendTo
