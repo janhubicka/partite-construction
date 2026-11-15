@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakBareNativeUnitAttachmentBudget
+
+#print axioms StructuralRamsey.FunctionalPartite.Attachment.UnitAttachD_bareRank_of_controlBudget
