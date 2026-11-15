@@ -84,8 +84,8 @@ theorem wholeMaskCovered_exactRichIrredCopy_taggedUIrreducible
     exact congrArg (fun A : PartialSetStructure L V => A.wholeWeakInduce S)
       (originalLanguageReduct_actualWholeMaskDecoder C)
   have hPlusOriginalIrred :
-      (Plus.wholeWeakInduce S).originalLanguageReduct
-        .IsOptionClosedFreeIrreducible := by
+      IsOptionClosedFreeIrreducible
+        ((Plus.wholeWeakInduce S).originalLanguageReduct) := by
     simpa only [hOriginalWeakEq] using hOriginalImageIrred
   have hPlusIrred :
       (Plus.wholeWeakInduce S).IsOptionClosedFreeIrreducible :=
