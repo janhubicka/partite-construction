@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackBActualLineWholeMaskUClosure2019
+
+#print axioms StructuralRamsey.FunctionalPartite.Induced.weakLine_wholeMaskUClosureHull_image_eq
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.actualWeakLine_wholeMaskUClosureHull_image_eq
