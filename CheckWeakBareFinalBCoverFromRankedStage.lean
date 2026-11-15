@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakBareFinalBCoverFromRankedStage
+
+#print axioms StructuralRamsey.Structure.sparseningRamsey_bareRank_withBCover_of_stage
