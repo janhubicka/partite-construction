@@ -628,3 +628,6 @@ import PartiteConstruction.Iterated.ProjectedBCopyControlCover
 import PartiteConstruction.Iterated.ProjectedBCopyClosedHullAttachment
 import PartiteConstruction.Iterated.ProjectedBCopyProtectedCoveragePreservation
 import PartiteConstruction.Iterated.ProjectedBCopyClosedFiniteSaturation
+
+-- Track E: certified internal covered B-copy descent to the native function language.
+import PartiteConstruction.Functional.TrackEInternalTaggedBCopyNativeDescent2019

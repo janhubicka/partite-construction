@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackEInternalTaggedBCopyNativeDescent2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_internalTaggedB_to_native_of_ordinaryIrred
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_internalTaggedB_to_native_of_closedUIrred
