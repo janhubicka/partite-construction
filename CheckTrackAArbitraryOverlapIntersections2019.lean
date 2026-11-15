@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.TrackAArbitraryOverlapIntersections2019
+
+#print axioms StructuralRamsey.FunctionalPartite.System.ActiveWeakOutputPartCover.iInter
+#print axioms StructuralRamsey.FunctionalPartite.System.iInter_originalPartialWeakProjection
+#print axioms StructuralRamsey.FunctionalPartite.Embedding.iInter_preimage_originalPartialWeakProjection
