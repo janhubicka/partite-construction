@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackCRichDefinedRootSide2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_inducedDefinedInput_side
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_inducedWholeWeakDefinedInput_side
