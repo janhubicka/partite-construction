@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakBareFullAttachmentControlBudget
+
+#print axioms StructuralRamsey.Structure.IsFreeAmalgam.AtMostBare_of_control_budget_mixed_full_cut
