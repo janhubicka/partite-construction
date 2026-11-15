@@ -183,8 +183,9 @@ theorem build_closed_list
           core' (S0 :: sets)
         intro S hmem hIrr
         simp only [List.mem_cons] at hmem
-        rcases hmem with rfl | hmem
-        · refine ⟨right, ?_⟩
+        rcases hmem with hEq | hmem
+        · subst S
+          refine ⟨right, ?_⟩
           intro z
           let w : (↑S0 : Set O) := z
           have hw : eS0 w ∈ H := hSH ⟨w, rfl⟩
