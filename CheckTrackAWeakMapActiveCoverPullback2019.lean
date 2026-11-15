@@ -1,9 +1,8 @@
-import PartiteConstruction.Functional.TrackAWeakMapActiveCoverPullback2019
+import PartiteConstruction.Functional.TrackAActiveWeakPartCoverStability2019
 
 #print axioms StructuralRamsey.FunctionalPartite.System.ActiveWeakOutputPartCover.preimage_weakHom
 #print axioms StructuralRamsey.FunctionalPartite.System.ActiveWeakOutputPartCover.preimage_ehn
 
 -- Re-audit existing public full-embedding theorem after shortening its proof.
-import PartiteConstruction.Functional.TrackAActiveWeakPartCoverStability2019
 #print axioms StructuralRamsey.FunctionalPartite.Embedding.preimage_activeWeakOutputPartCover
 #print axioms StructuralRamsey.FunctionalPartite.Embedding.selectedSupport_preimage_activeWeakOutputPartCover
