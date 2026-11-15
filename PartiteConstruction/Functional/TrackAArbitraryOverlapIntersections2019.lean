@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.TrackAActiveOverlapWeakProjection2019
 import PartiteConstruction.Functional.EHNStage
+import PartiteConstruction.Functional.TrackASelectedSupportPreimage2019
 
 /-!
 # Track A: arbitrary intersections of active-cover exact weak Picture supports
@@ -121,8 +122,27 @@ theorem Stage.selectedSupport_iInter_originalPartialWeakProjection
         (T.system.part '' (⋂ i, T.system.support (α i))))
       (clippedWeakImageMap T.system.part
         (⋂ i, T.system.support (α i))) := by
-  exact T.system.iInter_originalPartialWeakProjection
-    D T.isPartite (fun i => T.system.support (α i))
-    (fun i => T.system.support_activeWeakOutputPartCover (α i))
+  exact T.system.partSaturated_weakImage_originalPartial
+    D T.isPartite (⋂ i, T.system.support (α i))
+    (T.system.selectedSupport_iInter_partSaturated α)
+
+
+/-- Selected-support UNIONS in an actual finite EHN Stage are
+part-saturated, unlike unions of arbitrary locally active-covered
+weak subsets. Hence their exact clipped weak projection is a
+genuine original source-defined partial homomorphism. -/
+theorem Stage.selectedSupport_iUnion_originalPartialWeakProjection
+    (T : Stage K D)
+    {I : Type*} (α : I → (Q ↪ P)) :
+    Structure.IsOriginalPartialHomomorphism
+      (T.system.toStructure.weakInduce
+        (⋃ i, T.system.support (α i)))
+      (D.weakInduce
+        (T.system.part '' (⋃ i, T.system.support (α i))))
+      (clippedWeakImageMap T.system.part
+        (⋃ i, T.system.support (α i))) := by
+  exact T.system.partSaturated_weakImage_originalPartial
+    D T.isPartite (⋃ i, T.system.support (α i))
+    (T.system.selectedSupport_iUnion_partSaturated α)
 
 end StructuralRamsey.FunctionalPartite.EHN
