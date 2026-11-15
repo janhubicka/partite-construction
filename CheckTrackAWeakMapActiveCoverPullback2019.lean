@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackAWeakMapActiveCoverPullback2019
+
+#print axioms StructuralRamsey.FunctionalPartite.System.ActiveWeakOutputPartCover.preimage_weakHom
+#print axioms StructuralRamsey.FunctionalPartite.System.ActiveWeakOutputPartCover.preimage_ehn
