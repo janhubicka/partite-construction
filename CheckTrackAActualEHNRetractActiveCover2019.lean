@@ -3,3 +3,5 @@ import PartiteConstruction.Functional.TrackAActualEHNRetractActiveCover2019
 #print axioms StructuralRamsey.FunctionalPartite.EHN.unitAttach_activeCover_preimage_of_partPreserving_EHN_retraction
 
 #print axioms StructuralRamsey.FunctionalPartite.Induced.power_coordinate_preimage_activeWeakOutputPartCover
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.lineUnitAttachment_activeCover_preimage
