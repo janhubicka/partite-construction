@@ -154,7 +154,6 @@ theorem Stage.fullProjection_clippedWeakPreimage_imageClosure_eq
         (T.system.part ⁻¹' Test)).functionClosure Q) =
     (weakInduce D.toNonemptyPartial Test).functionClosure
       (Structure.imageSet (restrictMap T.system.part Test) Q) :=
-  (hFull.toNonemptyPartial_domainReflecting)
-    .clippedWeakPreimage_imageClosure_eq Test Q
+  (hFull.toNonemptyPartial_domainReflecting).clippedWeakPreimage_imageClosure_eq Test Q
 
 end StructuralRamsey.FunctionalPartite.EHN
