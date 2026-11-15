@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackCRichExactImageIrreducible
+
+#print axioms StructuralRamsey.PartialSetStructure.IsOptionClosedFreeIrreducible.of_surjectiveFullEmbedding
+#print axioms StructuralRamsey.PartialSetStructure.IsOptionClosedFreeIrreducible.exactWholeWeakRange
