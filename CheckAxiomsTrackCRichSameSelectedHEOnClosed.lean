@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackCRichSameSelectedHEOnClosed
+
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskCovered_selectedRichHEOnClosedT
