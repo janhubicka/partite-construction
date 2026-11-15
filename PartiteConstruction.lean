@@ -631,3 +631,6 @@ import PartiteConstruction.Iterated.ProjectedBCopyClosedFiniteSaturation
 
 -- Track E: certified internal covered B-copy descent to the native function language.
 import PartiteConstruction.Functional.TrackEInternalTaggedBCopyNativeDescent2019
+
+-- Track E: native irreducible exact closed-cover obstruction.
+import PartiteConstruction.Functional.TrackENativeClosedCoverIrreducibility2019
