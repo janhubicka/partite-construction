@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackCRichHEArrowTransfer
+
+#print axioms StructuralRamsey.PartialSetStructure.GenuinePartialArrow.of_irreducible_originalPartialHE
