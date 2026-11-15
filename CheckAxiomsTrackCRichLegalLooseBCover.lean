@@ -1,0 +1,6 @@
+import PartiteConstruction.Functional.TrackCRichLegalLooseBCover
+
+#print axioms StructuralRamsey.Structure.IsLegalDomainEmpty.ehn_to_richOptionHE
+#print axioms StructuralRamsey.Structure.LooseTreeAmalgam.richOptionIrreducible_contained_in_BCopy
+#print axioms StructuralRamsey.Structure.LooseTreeAmalgam.richOptionDecoded_internalBCover
+#print axioms StructuralRamsey.Structure.LooseTreeAmalgam.richOptionDecoded_HE_and_internalBCover
