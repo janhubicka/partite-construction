@@ -620,3 +620,6 @@ import PartiteConstruction.Functional.TrackEOriginalNativeClosedTestAdapter2019
 
 -- Track E: generic full genuine partial-function embedding to native.
 import PartiteConstruction.Functional.TrackEPartialFullEmbeddingCollapse2019
+
+-- Track E: actual internal canonical tagged B-copy yields a full original native B-copy.
+import PartiteConstruction.Functional.TrackEInternalTaggedBCopyNativeDescent2019
