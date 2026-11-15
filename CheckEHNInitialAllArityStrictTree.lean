@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.EHNInitialAllArityStrictTree
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initialList_allArity_tree
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initial_allArity_tree
