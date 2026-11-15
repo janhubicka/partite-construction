@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakBarePictureLinesControlBudget
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.pictureLemma_lines_preservingBareRank_of_controlBudget
