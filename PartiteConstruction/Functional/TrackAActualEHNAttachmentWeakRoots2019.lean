@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.TrackAActiveOverlapWeakProjection2019
 import PartiteConstruction.Functional.EHNStage
+import PartiteConstruction.Functional.TrackASelectedSupportPreimage2019
 
 /-!
 # Track A: exact selected weak-root projections through the ACTUAL EHN attachments
@@ -80,18 +81,21 @@ theorem attachList_selectedSupport_preimage_originalPartial
   obtain ⟨T, core, hcopies⟩ :=
     attachList hK B hB hmB Root hRoot E maps indices
   let Cut : Set T.Carrier := T.system.support α
-  have hCut : T.system.ActiveWeakOutputPartCover Cut :=
-    T.system.support_activeWeakOutputPartCover α
+  have hCoreEq : core.toFun ⁻¹' Cut = E.system.support α :=
+    core.preimage_support α
   refine ⟨T, core, ?_, ?_⟩
-  · exact core.preimage_originalPartialWeakProjection
-      D E.isPartite Cut hCut
+  · rw [hCoreEq]
+    exact E.system.support_originalPartial_weakProjection
+      D E.isPartite α
   · intro i hi
     obtain ⟨copy, hext⟩ := hcopies i hi
+    have hCopyEq : copy.toFun ⁻¹' Cut = B.support α :=
+      copy.preimage_support α
     refine ⟨copy, hext, ?_, ?_⟩
     · intro x
       change copy.toFun x.1 ∈ Cut ↔ core.toFun (maps i x) ∈ Cut
       rw [hext x]
-    · exact copy.preimage_originalPartialWeakProjection
-        D hB Cut hCut
+    · rw [hCopyEq]
+      exact B.support_originalPartial_weakProjection D hB α
 
 end StructuralRamsey.FunctionalPartite.EHN
