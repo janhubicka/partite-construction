@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackCRichOptionInternalBCover
+
+#print axioms StructuralRamsey.PartialSetStructure.LooseTreeAmalgam.richOptionIrred_extendsToInternalB
