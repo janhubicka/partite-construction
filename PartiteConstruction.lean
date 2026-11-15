@@ -620,3 +620,11 @@ import PartiteConstruction.Functional.TrackEOriginalNativeClosedTestAdapter2019
 
 -- Track E: generic full genuine partial-function embedding to native.
 import PartiteConstruction.Functional.TrackEPartialFullEmbeddingCollapse2019
+
+-- Track E: finite U-closed controlled B-saturation, preserving protected tests.
+import PartiteConstruction.Iterated.ProjectedBCopyControlAttachment
+import PartiteConstruction.Iterated.ProjectedBCopyFinalCompletion
+import PartiteConstruction.Iterated.ProjectedBCopyControlCover
+import PartiteConstruction.Iterated.ProjectedBCopyClosedHullAttachment
+import PartiteConstruction.Iterated.ProjectedBCopyProtectedCoveragePreservation
+import PartiteConstruction.Iterated.ProjectedBCopyClosedFiniteSaturation

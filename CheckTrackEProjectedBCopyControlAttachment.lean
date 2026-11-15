@@ -1,0 +1,3 @@
+import PartiteConstruction.Iterated.ProjectedBCopyControlAttachment
+
+#print axioms StructuralRamsey.RelStructure.ProjectedBCopyControl.attach_irreducible_preserves_controlHE
