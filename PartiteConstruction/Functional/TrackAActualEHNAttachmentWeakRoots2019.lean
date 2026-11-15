@@ -67,6 +67,9 @@ theorem attachList_selectedSupport_preimage_originalPartial
         ∀ i ∈ indices,
           ∃ copy : FunctionalPartite.Embedding B T.system,
             (∀ x : Root, copy x.1 = core (maps i x)) ∧
+            (∀ x : Root,
+              x.1 ∈ copy.toFun ⁻¹' T.system.support α ↔
+                maps i x ∈ core.toFun ⁻¹' T.system.support α) ∧
             Structure.IsOriginalPartialHomomorphism
               (B.toStructure.weakInduce
                 (copy.toFun ⁻¹' T.system.support α))
@@ -84,8 +87,11 @@ theorem attachList_selectedSupport_preimage_originalPartial
       D E.isPartite Cut hCut
   · intro i hi
     obtain ⟨copy, hext⟩ := hcopies i hi
-    refine ⟨copy, hext, ?_⟩
-    exact copy.preimage_originalPartialWeakProjection
-      D hB Cut hCut
+    refine ⟨copy, hext, ?_, ?_⟩
+    · intro x
+      change copy.toFun x.1 ∈ Cut ↔ core.toFun (maps i x) ∈ Cut
+      rw [hext x]
+    · exact copy.preimage_originalPartialWeakProjection
+        D hB Cut hCut
 
 end StructuralRamsey.FunctionalPartite.EHN
