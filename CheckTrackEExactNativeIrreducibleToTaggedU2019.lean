@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackEExactNativeIrreducibleToTaggedU2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_exactNativeIrred_to_closedTaggedUIrred
