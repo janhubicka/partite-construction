@@ -54,7 +54,7 @@ root injectivity, or closure of weak tested source sets
 is required. This does NOT yet construct the control
 with the larger BARE rank or prove outer n-pass sparsening. -/
 theorem pictureLemma_lines_preservingBareRank_of_controlBudget
-    [Finite P] [Finite U] 
+    [Finite P] [Fintype U] 
     (hK : Structure.FreeAmalgamationClass K)
     (A : Structure L U) (hA : A.Irreducible) (hKA : K A)
     (Base : Structure L VB) (hBase : Base.Irreducible)
