@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.TrackAActiveWeakPartCoverStability2019
+
+#print axioms StructuralRamsey.FunctionalPartite.System.ActiveWeakOutputPartCover.inter
+#print axioms StructuralRamsey.FunctionalPartite.Embedding.preimage_activeWeakOutputPartCover
+#print axioms StructuralRamsey.FunctionalPartite.Embedding.selectedSupport_preimage_activeWeakOutputPartCover
