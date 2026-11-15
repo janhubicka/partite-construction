@@ -1,0 +1,4 @@
+import PartiteConstruction.Structure.GenericUOriginalPictureLemma
+
+#print axioms StructuralRamsey.Partite.OriginalUClosed.from_asReducedUGraph_eq
+#print axioms StructuralRamsey.Partite.OriginalUClosed.pictureLemma
