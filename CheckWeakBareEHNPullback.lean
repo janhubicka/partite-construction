@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.WeakBareEHNPullback
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMostBare.pullback_ehn
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMostBare.of_strictTree
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMostBare.of_ehn_oneCopy
