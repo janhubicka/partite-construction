@@ -1,0 +1,3 @@
+import PartiteConstruction.Structure.GenericUOriginalHalfClosedLiteralTheorem
+
+#print axioms StructuralRamsey.Partite.OriginalUClosed.halfClosedPartiteWitness_of_literal
