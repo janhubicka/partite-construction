@@ -77,4 +77,51 @@ noncomputable def Embedding.codRestrictClosedRange
     (e : Embedding A B) (x : U) :
     (e.codRestrictClosedRange x).1 = e.toFun x := rfl
 
+
+/-- On a GENUINELY function-closed carrier, whole-fibre weak
+induction is literally the genuine full induced Option(Set)
+structure. This is an equality of independent domain bits
+and entire set-valued fibres, including some empty. -/
+theorem wholeWeakInduce_eq_induceClosed_of_isClosed
+    (A : PartialSetStructure L V) (S : Set V)
+    (hS : A.IsClosed S) :
+    A.wholeWeakInduce S = A.induceClosed S hS := by
+  classical
+  change
+    PartialSetStructure.mk
+      (fun R xs => A.rel R (Subtype.val ∘ xs))
+      (fun F xs => wholeWeakValue S (A.func F (Subtype.val ∘ xs))) =
+    PartialSetStructure.mk
+      (fun R xs => A.rel R (Subtype.val ∘ xs))
+      (fun F xs => (A.func F (Subtype.val ∘ xs)).map
+        (fun T => {y : S | y.1 ∈ T}))
+  congr 1
+  funext F xs
+  cases hv : A.func F (Subtype.val ∘ xs) with
+  | none =>
+      simp only [hv, wholeWeakValue_none, Option.map_none]
+  | some T =>
+      have hT : T ⊆ S :=
+        hS F (Subtype.val ∘ xs) T
+          (fun i => (xs i).2) hv
+      simpa only [hv, Option.map_some] using
+        wholeWeakValue_of_subset S T hT
+
+/-- The same EXACT full-image factorization can target the
+whole-fibre weak induced test on that image, because its
+carrier is already genuinely function-closed. No generated
+hull or premature domain deletion is involved. -/
+noncomputable def Embedding.codRestrictWholeWeakRange
+    {A : PartialSetStructure L U} {B : PartialSetStructure L V}
+    (e : Embedding A B) :
+    Embedding A (B.wholeWeakInduce (Set.range e.toFun)) := by
+  classical
+  have hEq :
+      B.wholeWeakInduce (Set.range e.toFun) =
+      B.induceClosed (Set.range e.toFun) e.range_isClosed :=
+    wholeWeakInduce_eq_induceClosed_of_isClosed
+      B (Set.range e.toFun) e.range_isClosed
+  rw [hEq]
+  exact e.codRestrictClosedRange
+
 end StructuralRamsey.PartialSetStructure
