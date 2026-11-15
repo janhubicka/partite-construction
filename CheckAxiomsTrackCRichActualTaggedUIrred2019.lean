@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackCRichActualTaggedUIrred2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_inducedUIrreducible_of_richOptionIrreducible
