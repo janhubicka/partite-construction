@@ -42,6 +42,20 @@ theorem System.PartSaturated.iInter
   intro i
   exact hS i y ⟨x, (Set.mem_iInter.mp hx) i, hxy⟩
 
+/-- Arbitrary unions of literal part-saturated supports are again
+part-saturated. This does NOT contradict the genuine finite
+counterexample to unions of merely ACTIVE-COVERED supports: a
+locally active-covered set need not be part-saturated. -/
+theorem System.PartSaturated.iUnion
+    {I : Type*} (B : System L P V) (S : I → Set V)
+    (hS : ∀ i, B.PartSaturated (S i)) :
+    B.PartSaturated (⋃ i, S i) := by
+  intro y hy
+  obtain ⟨x, hx, hxy⟩ := hy
+  obtain ⟨i, hxi⟩ := Set.mem_iUnion.mp hx
+  exact Set.mem_iUnion.mpr
+    ⟨i, hS i y ⟨x, hxi, hxy⟩⟩
+
 /-- Selected part supports pull back exactly under ANY part-preserving
 vertex map. No functional embedding, injectivity or EHN control
 hypothesis is needed for this set-theoretic identity. -/
@@ -74,6 +88,18 @@ theorem System.selectedSupport_iInter_partSaturated
     {Q : Type v} (α : I → (Q ↪ P)) :
     B.PartSaturated (⋂ i, B.support (α i)) :=
   System.PartSaturated.iInter B
+    (fun i => B.support (α i))
+    (fun i => B.support_partSaturated (α i))
+
+/-- Even though active-cover is not stable under arbitrary
+unions, every indexed union of canonical selected supports is
+part-saturated. It therefore has an exact original partial weak
+projection whenever the ambient System is WeaklyPartiteOver. -/
+theorem System.selectedSupport_iUnion_partSaturated
+    {I : Type*} (B : System L P V)
+    {Q : Type v} (α : I → (Q ↪ P)) :
+    B.PartSaturated (⋃ i, B.support (α i)) :=
+  System.PartSaturated.iUnion B
     (fun i => B.support (α i))
     (fun i => B.support_partSaturated (α i))
 
