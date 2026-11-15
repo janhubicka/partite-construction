@@ -637,3 +637,6 @@ import PartiteConstruction.Functional.TrackENativeClosedCoverIrreducibility2019
 
 -- Track E: exact native irreducible -> closed tagged U-irreducible.
 import PartiteConstruction.Functional.TrackEExactNativeIrreducibleToTaggedU2019
+
+-- Track E: full native irreducible-to-B extension via exact tagged coverage.
+import PartiteConstruction.Functional.TrackEAllNativeInternalBCover2019

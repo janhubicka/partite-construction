@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackEAllNativeInternalBCover2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_internalTaggedB_to_allNativeIrreducibles
