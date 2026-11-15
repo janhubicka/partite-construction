@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakBareOnePassAllArityControlBudget
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.inducedConstruction_allArity_bareRank_of_controlBudget
