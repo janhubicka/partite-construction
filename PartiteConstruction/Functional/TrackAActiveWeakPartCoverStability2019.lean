@@ -1,4 +1,4 @@
-import PartiteConstruction.Functional.TrackANativeActiveWeakOutputPartCover2019
+import PartiteConstruction.Functional.TrackAWeakMapActiveCoverPullback2019
 
 /-!
 # Track A: stability of active weak output-part cover under exact intersections
@@ -65,49 +65,17 @@ theorem System.ActiveWeakOutputPartCover.inter
   exact ⟨hS F xsS hMeetS y hy hPartS,
     hT F xsT hMeetT y hy hPartT⟩
 
-/-- Exact preimage of active-output-part cover under a TRUE FULL,
-part-preserving embedding of native functional partite Systems.
-The only nontrivial use of fullness is exact preservation of the
-complete source output fibre under the target map. -/
+/-- Exact preimage of active-output-part cover under a TRUE FULL
+part-preserving functional embedding. The proof now follows immediately
+from the stronger positive-weak-map pullback theorem: neither complete
+fibre equality nor reflection is needed for THIS source invariant. -/
 theorem Embedding.preimage_activeWeakOutputPartCover
     {B : System L P V} {C : System L P W}
     (e : Embedding B C) (S : Set W)
     (hS : C.ActiveWeakOutputPartCover S) :
     B.ActiveWeakOutputPartCover (e.toFun ⁻¹' S) := by
-  intro F xs hMeet y hy hPart
-  let xsB : Fin (L.funcArity F) → V := Subtype.val ∘ xs
-  let xsC : Fin (L.funcArity F) → S :=
-    fun i => ⟨e.toFun (xs i).1, (xs i).2⟩
-  have hTuple :
-      Subtype.val ∘ xsC = e.toFun ∘ xsB := by
-    funext i
-    rfl
-  have hMap :
-      Structure.imageSet e.toFun (B.toStructure.func F xsB) =
-        C.toStructure.func F (e.toFun ∘ xsB) :=
-    e.toEmbedding.map_func F xsB
-  have hMeetC :
-      ((C.toStructure.func F (Subtype.val ∘ xsC)) ∩ S).Nonempty := by
-    obtain ⟨a, ha, haS⟩ := hMeet
-    have haC : e.toFun a ∈
-        C.toStructure.func F (e.toFun ∘ xsB) := by
-      rw [← hMap]
-      exact ⟨a, ha, rfl⟩
-    refine ⟨e.toFun a, ?_, haS⟩
-    rw [hTuple]
-    exact haC
-  have hyC : e.toFun y ∈
-      C.toStructure.func F (Subtype.val ∘ xsC) := by
-    rw [hTuple, ← hMap]
-    exact ⟨y, hy, rfl⟩
-  have hPartC : C.part (e.toFun y) ∈ C.part '' S := by
-    obtain ⟨a, haS, haPart⟩ := hPart
-    refine ⟨e.toFun a, haS, ?_⟩
-    calc
-      C.part (e.toFun a) = B.part a := e.map_part a
-      _ = B.part y := haPart
-      _ = C.part (e.toFun y) := (e.map_part y).symm
-  exact hS F xsC hMeetC (e.toFun y) hyC hPartC
+  exact System.ActiveWeakOutputPartCover.preimage_weakHom
+    B C e.toFun e.map_part e.toEmbedding.isWeakHomomorphism S hS
 
 /-- In particular, inverse images of canonical selected supports
 along honest full part-preserving copy embeddings satisfy the local
