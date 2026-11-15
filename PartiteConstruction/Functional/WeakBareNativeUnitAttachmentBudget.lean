@@ -70,7 +70,6 @@ theorem UnitAttachD_bareRank_of_controlBudget
       Base (UnitAttachD Old S hS Core f).toStructure (m + 1) := by
   classical
   letI : Fintype P := Fintype.ofFinite _
-  letI : Fintype U := Fintype.ofFinite _
   letI : Fintype V := Fintype.ofFinite _
   letI : Fintype W := Fintype.ofFinite _
   let S := Old.support alpha.toFunctionEmbedding
