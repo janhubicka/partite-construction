@@ -1,5 +1,4 @@
 import PartiteConstruction.Functional.TrackBLocalNoPhantomWholeWeak2019
-import PartiteConstruction.Functional.TrackBDomainReflectingClippedWeak2019
 import PartiteConstruction.Functional.NativePartiteWeakUClosureRankDictionary
 import PartiteConstruction.Functional.LegacyWeakPartialCommutation2019
 
