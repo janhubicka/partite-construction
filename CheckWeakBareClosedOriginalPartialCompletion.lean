@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakBareClosedOriginalPartialCompletion
+
+#print axioms StructuralRamsey.Structure.SetAmbientRelativeWeakTreeWitness.AtMostBare.closedTest_originalPartialCompletion
