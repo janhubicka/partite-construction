@@ -19,3 +19,17 @@ the Ramsey theorem.
 
 Two direct axiom checks, active source root, no admissions or
 custom axioms. Keep draft until exact-head CI passes.
+
+## Exact OLD weak-source interface
+
+Added wholeWeakInduce_eq_induceClosed_of_isClosed: a genuinely
+closed set has an EXACT whole-fibre weak restriction equal to
+the true full induced Option(Set) structure, including original
+defined-empty and undefined domain bits. Consequently
+Embedding.codRestrictWholeWeakRange factors any FULL source
+embedding into the actual whole-fibre weak test on its literal
+closed image. These are the exact interfaces needed to compose
+the merged tagged-test protection #1146 with the original
+source test without taking an auxiliary U-closure hull.
+No global full EHN projection is claimed. Both added declarations
+have named axiom checks; exact-head CI pending.
