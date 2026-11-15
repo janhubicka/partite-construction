@@ -102,4 +102,55 @@ theorem unitAttach_activeCover_preimage_of_partPreserving_EHN_retraction
     (Attachment.UnitAttachD B Root hRoot Core f)
     B r hrPart hr T hT
 
+/-- On a SINGLE ACTUAL native Hales–Jewett line attachment,
+the existing parameter-coordinate EHN retraction is unconditional.
+Consequently EVERY exact locally active-covered weak subset of the old
+Picture pulls back to a locally active-covered weak subset of this
+actual one-line attached Picture, without an extra compatible-shadow
+hypothesis. This does NOT assert a simultaneous retraction for a
+family of unrelated Hales–Jewett lines. -/
+theorem lineUnitAttachment_activeCover_preimage
+    {U : Type v}
+    (B : System L P V) (D : Structure L P)
+    (hB : B.WeaklyPartiteOver D)
+    (A : Structure L U) (alpha : Structure.Embedding A D)
+    (N : ℕ)
+    (line : HalesJewett.Line (Induced.Letter A
+      (B.weakRestrict D hB.1 A alpha)) N)
+    (i : Fin N) (hi : line.symbol i = .parameter)
+    (T : Set V) (hT : B.ActiveWeakOutputPartCover T) :
+    let S : Set V := B.support alpha.toFunctionEmbedding
+    let hS : B.toStructure.IsClosed S :=
+      B.weak_support_closed D hB.1 A alpha
+    let R := B.weakRestrict D hB.1 A alpha
+    let E := Induced.power R N
+    let Core := E.relabel alpha.toFunctionEmbedding
+    ∃ f : FunctionalPartite.Embedding (B.induce S hS) Core,
+      ∃ r : Structure.Attachment.Vertex S
+          (W := Induced.Vertex R N) (I := PUnit.{v+1}) → V,
+        (Attachment.UnitAttachD B S hS Core f).toStructure.IsEHNHomomorphismEmbedding
+          B.toStructure r ∧
+        (∀ c : Induced.Vertex R N,
+          r (Attachment.unitCoreEmbedding B S hS Core f c) =
+            (c.coord i).1) ∧
+        (∀ b : V,
+          r (Attachment.unitCopyEmbedding B S hS Core f b) = b) ∧
+        (∀ z : Structure.Attachment.Vertex S
+            (W := Induced.Vertex R N) (I := PUnit.{v+1}),
+          B.part (r z) = (Attachment.UnitAttachD B S hS Core f).part z) ∧
+        (Attachment.UnitAttachD B S hS Core f).ActiveWeakOutputPartCover
+          (r ⁻¹' T) := by
+  classical
+  dsimp only
+  obtain ⟨f, r, hr, hrCore, hrCopy, hrPart⟩ :=
+    lineUnitAttachment_EHN_retraction B D hB A alpha N line i hi
+  refine ⟨f, r, hr, hrCore, hrCopy, hrPart, ?_⟩
+  exact System.ActiveWeakOutputPartCover.preimage_ehn
+    (Attachment.UnitAttachD B
+      (B.support alpha.toFunctionEmbedding)
+      (B.weak_support_closed D hB.1 A alpha)
+      ((Induced.power (B.weakRestrict D hB.1 A alpha) N).relabel
+        alpha.toFunctionEmbedding) f)
+    B r hrPart hr T hT
+
 end StructuralRamsey.FunctionalPartite.EHN
