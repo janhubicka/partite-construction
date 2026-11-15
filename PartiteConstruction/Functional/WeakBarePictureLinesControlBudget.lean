@@ -102,7 +102,7 @@ theorem pictureLemma_lines_preservingBareRank_of_controlBudget
           (id : Induced.Vertex R N → Induced.Vertex R N)
           (↑S : Set (Induced.Vertex R N))
       exact ⟨Y, Target, hTree, f, hWeak⟩
-    simpa only [Q] using hBareE
+    simpa [Q, FunctionalPartite.System.relabel] using hBareE
   · intro T f hQT
     change
       SetAmbientRelativeWeakTreeWitness.AtMostBare Base
