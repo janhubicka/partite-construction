@@ -67,7 +67,7 @@ theorem LooseTreeAmalgam.richOptionIrred_extendsToInternalB
   let eNative : Structure.Embedding E.domainEmptyEncode T := by
     simpa only [hTCanonical] using eTag
   have hNativeIrred : E.domainEmptyEncode.Irreducible :=
-    hE.domainEmptyEncode_irreducible E
+    IsOptionClosedFreeIrreducible.domainEmptyEncode_irreducible E hE
   obtain ⟨jNative, hjNative⟩ :=
     hTree.irreducible_contained_in_copy hNativeIrred eNative
   let jTag : Structure.Embedding B.domainEmptyEncode
