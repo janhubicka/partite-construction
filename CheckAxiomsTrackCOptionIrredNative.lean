@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackCOptionIrredNative
+
+#print axioms StructuralRamsey.PartialSetStructure.IsOptionClosedFreeIrreducible.domainEmptyEncode_irreducible
