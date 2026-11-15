@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackBAttachListBoth2019UClosure2019
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.fullCopy_both2019UClosureHull_image_eq
+#print axioms StructuralRamsey.FunctionalPartite.EHN.attachList_both2019UClosureHull_copyAndProjected
