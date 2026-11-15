@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackCDomainEmptyFreeLegal
+
+#print axioms StructuralRamsey.Structure.IsLegalDomainEmpty.ofFreeAmalgam
