@@ -55,8 +55,8 @@ theorem wholeMaskCovered_inducedUIrreducible_of_richOptionIrreducible
     (S : Set V)
     (hS : ((wholeMaskTagReduct C).wholeMaskPartialDecode).IsClosed S)
     (hRichIrred :
-      ((wholeMaskTagReduct C).wholeMaskPartialDecode.wholeWeakInduce S)
-        .IsOptionClosedFreeIrreducible) :
+      PartialSetStructure.IsOptionClosedFreeIrreducible
+        (((wholeMaskTagReduct C).wholeMaskPartialDecode).wholeWeakInduce S)) :
     IsUIrreducible (L.wholeMaskClosureRules P) (C.induce S) := by
   classical
   let A : PartialSetStructure L V :=
@@ -78,7 +78,7 @@ theorem wholeMaskCovered_inducedUIrreducible_of_richOptionIrreducible
           .IsClosed Side :=
       wholeMaskCovered_inducedUSubstructure_to_nativeClosed
         C Base part hC hPos hCover S hS Side hSide
-    apply (A.wholeWeakInduce S).isClosed_iff_collapseDomain_isClosed Side |>.mpr
+    apply ((A.wholeWeakInduce S).isClosed_iff_collapseDomain_isClosed Side).mpr
     rw [wholeWeakInduce_collapse_eq_nativeInduce A S hS]
     exact hNative
   have hRelations :
