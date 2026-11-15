@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackCRichSameWitnessLooseRamsey
+
+#print axioms StructuralRamsey.PartialSetStructure.sparseningRamsey_richOption_looseFullTrees_BCover
