@@ -2,6 +2,7 @@ import PartiteConstruction.Functional.WholeMaskCoveredFunctionalTarget2019
 import PartiteConstruction.Functional.TrackEPartialFullEmbeddingCollapse2019
 import PartiteConstruction.Iterated.FinalAttachment
 import PartiteConstruction.Ramsey.ClosureUIrreducible2019
+import PartiteConstruction.Ramsey.ClosureClosedLocalFiniteness
 
 /-!
 # Track E: INTERNAL tagged canonical B copies decode into INTERNAL native B copies
