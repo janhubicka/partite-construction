@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.TrackAActiveOverlapWeakProjection2019
 import PartiteConstruction.Functional.EHNStage
+import PartiteConstruction.Functional.TrackASelectedSupportPreimage2019
 
 /-!
 # Track A: arbitrary intersections of active-cover exact weak Picture supports
@@ -121,8 +122,8 @@ theorem Stage.selectedSupport_iInter_originalPartialWeakProjection
         (T.system.part '' (⋂ i, T.system.support (α i))))
       (clippedWeakImageMap T.system.part
         (⋂ i, T.system.support (α i))) := by
-  exact T.system.iInter_originalPartialWeakProjection
-    D T.isPartite (fun i => T.system.support (α i))
-    (fun i => T.system.support_activeWeakOutputPartCover (α i))
+  exact T.system.partSaturated_weakImage_originalPartial
+    D T.isPartite (⋂ i, T.system.support (α i))
+    (T.system.selectedSupport_iInter_partSaturated α)
 
 end StructuralRamsey.FunctionalPartite.EHN
