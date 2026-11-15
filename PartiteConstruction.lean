@@ -640,3 +640,6 @@ import PartiteConstruction.Functional.TrackEExactNativeIrreducibleToTaggedU2019
 
 -- Track E: full native irreducible-to-B extension via exact tagged coverage.
 import PartiteConstruction.Functional.TrackEAllNativeInternalBCover2019
+
+-- Track E: same-witness B saturation with full native irreducible B extension.
+import PartiteConstruction.Functional.TrackEClosedSaturationAllNativeBCover2019
