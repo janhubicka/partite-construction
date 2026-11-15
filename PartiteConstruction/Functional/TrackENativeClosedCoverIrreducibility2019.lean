@@ -111,14 +111,14 @@ theorem Irreducible.closed_cover_of_local_incidents
             ⟨y, hyX⟩, hy, rfl, rfl⟩
         · exact Or.inr ⟨fun i => ⟨xs i, hArgs i⟩,
             ⟨y, hyY⟩, hy, rfl, rfl⟩
-      · rintro (⟨xs, y, hy, hxs, hvalue⟩ |
-          ⟨xs, y, hy, hxs, hvalue⟩)
+      · rintro (⟨argsL, valueL, hvalueL, hargsL, houtL⟩ |
+          ⟨argsR, valueR, hvalueR, hargsR, houtR⟩)
         · subst xs
           subst y
-          exact hy
+          exact hvalueL
         · subst xs
           subst y
-          exact hy
+          exact hvalueR
   rcases hIrr hFree (Embedding.id A) with hLeft | hRight
   · left
     intro v
