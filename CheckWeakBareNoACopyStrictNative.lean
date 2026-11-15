@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.WeakBareNoACopyStrictNative
+
+#print axioms StructuralRamsey.Structure.sparseningRamsey_bareStrict_noACopy
