@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackCOptionFullExactRange
+
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.codRestrictClosedRange
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.codRestrictClosedRange_apply
