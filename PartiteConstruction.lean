@@ -631,3 +631,6 @@ import PartiteConstruction.Iterated.ProjectedBCopyClosedFiniteSaturation
 
 -- Track E: certified internal covered B-copy descent to the native function language.
 import PartiteConstruction.Functional.TrackEInternalTaggedBCopyNativeDescent2019
+
+-- Track E: internal native B copies after verified selected-control closed saturation.
+import PartiteConstruction.Functional.TrackEClosedSaturationNativeBCover2019
