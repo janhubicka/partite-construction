@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackCRichOptionEHN
+
+#print axioms StructuralRamsey.PartialSetStructure.IsOptionClosedFreeHomomorphismEmbedding.comp
+#print axioms StructuralRamsey.PartialSetStructure.IsOptionClosedFreeHomomorphismEmbedding.ofDomainEmptyEHN
