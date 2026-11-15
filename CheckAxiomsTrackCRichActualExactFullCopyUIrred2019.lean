@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackCRichActualExactFullCopyUIrred2019
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_exactRichIrredCopy_taggedUIrreducible
