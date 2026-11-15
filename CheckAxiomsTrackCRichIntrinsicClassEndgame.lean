@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.TrackCRichIntrinsicClassEndgame
+
+#print axioms StructuralRamsey.PartialSetStructure.HasRichOptionCompletion
+#print axioms StructuralRamsey.PartialSetStructure.RichIntrinsicLocalCompletionAt
+#print axioms StructuralRamsey.PartialSetStructure.richRamsey_of_intrinsicLocalAndExactOldWitness
