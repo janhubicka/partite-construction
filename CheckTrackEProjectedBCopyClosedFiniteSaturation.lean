@@ -1,0 +1,5 @@
+import PartiteConstruction.Iterated.ProjectedBCopyClosedFiniteSaturation
+
+#print axioms StructuralRamsey.RelStructure.ProjectedBCopyControl.build_closed_list
+#print axioms StructuralRamsey.RelStructure.ProjectedBCopyControl.build_closed_all
+#print axioms StructuralRamsey.RelStructure.ProjectedBCopyControl.build_closed_all_with_arrow

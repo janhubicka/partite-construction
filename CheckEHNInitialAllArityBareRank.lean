@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.EHNInitialAllArityBareRank
+
+#print axioms StructuralRamsey.FunctionalPartite.EHN.initial_allArity_bareRank
