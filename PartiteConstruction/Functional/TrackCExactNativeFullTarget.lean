@@ -2,6 +2,7 @@ import PartiteConstruction.Functional.TrackCOptionFullExactRange
 import PartiteConstruction.Functional.TrackCNativeFullPartialNoEmpty
 import PartiteConstruction.Functional.TrackEClosedExactTaggedTestEmbedding2019
 import PartiteConstruction.Functional.TrackEOriginalNativeClosedTestAdapter2019
+import PartiteConstruction.Functional.WholeMaskPartiteRamseyArrow2019
 
 /-!
 # Track C: actual FULL native test E -> full genuine H partial target
@@ -109,9 +110,19 @@ noncomputable def wholeMaskCovered_exactNativeTest_toFullPartialTarget
       (jPlus.originalLanguageReduct)
   let gPartial : PartialSetStructure.Embedding E.toNonemptyPartial P :=
     g.toPartialOfNoDefinedEmpty hNoEmpty
-  let gWeak : PartialSetStructure.Embedding
-      E.toNonemptyPartial (P.wholeWeakInduce S) :=
+  have hgToFun : gPartial.toFun = g.toFun := by
+    funext x
+    rfl
+  have hRange : Set.range gPartial.toFun = S := by
+    change Set.range gPartial.toFun = Set.range g.toFun
+    rw [hgToFun]
+  let gWeakRaw : PartialSetStructure.Embedding
+      E.toNonemptyPartial
+      (P.wholeWeakInduce (Set.range gPartial.toFun)) :=
     gPartial.codRestrictWholeWeakRange
+  let gWeak : PartialSetStructure.Embedding
+      E.toNonemptyPartial (P.wholeWeakInduce S) := by
+    simpa only [hRange] using gWeakRaw
   let composite : PartialSetStructure.Embedding E.toNonemptyPartial Target :=
     jOriginal.comp gWeak
   refine ⟨composite, ?_⟩
