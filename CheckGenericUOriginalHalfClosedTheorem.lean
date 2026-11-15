@@ -1,0 +1,4 @@
+import PartiteConstruction.Structure.GenericUOriginalHalfClosedTheorem
+
+#print axioms StructuralRamsey.RelStructure.originalU_graphRoundtrip_eq
+#print axioms StructuralRamsey.Partite.OriginalUClosed.halfClosedPartiteWitness
