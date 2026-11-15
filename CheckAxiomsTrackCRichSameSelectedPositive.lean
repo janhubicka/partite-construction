@@ -1,0 +1,4 @@
+import PartiteConstruction.Functional.TrackCRichSameSelectedPositive
+
+#print axioms StructuralRamsey.PartialSetStructure.richExactImageMap
+#print axioms StructuralRamsey.PartialSetStructure.wholeMaskCovered_selectedRichPositiveOnClosedT
