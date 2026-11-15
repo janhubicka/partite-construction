@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackCRichSameSelectedFullTarget
+
+#print axioms StructuralRamsey.RelStructure.wholeMaskCovered_selectedRichFullTest_to_sameTarget
