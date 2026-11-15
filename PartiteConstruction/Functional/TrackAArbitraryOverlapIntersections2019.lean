@@ -1,4 +1,5 @@
 import PartiteConstruction.Functional.TrackAActiveOverlapWeakProjection2019
+import PartiteConstruction.Functional.EHNStage
 
 /-!
 # Track A: arbitrary intersections of active-cover exact weak Picture supports
@@ -91,3 +92,37 @@ theorem Embedding.iInter_preimage_originalPartialWeakProjection
     (System.ActiveWeakOutputPartCover.iInter C S hS)
 
 end StructuralRamsey.FunctionalPartite
+
+namespace StructuralRamsey.FunctionalPartite.EHN
+
+open StructuralRamsey
+open StructuralRamsey.PartialSetStructure
+
+universe u v
+variable {L : Language.{u}} {P Q : Type v}
+variable {K : Structure.StructureClass (L := L)}
+variable {D : Structure L P}
+
+/-- The result applies to the ACTUAL finite EHN functional stage,
+using its STORED `isPartite : WeaklyPartiteOver` certificate.
+For any family of selected control-copy supports, their literal
+intersection has the original source-defined clipped weak projection.
+There is no new auxiliary target, re-embedding or function hull.
+
+This establishes a common-source-root projection invariant; it does
+not construct compatible target strict full-functional B-trees. -/
+theorem Stage.selectedSupport_iInter_originalPartialWeakProjection
+    (T : Stage K D)
+    {I : Type*} (α : I → (Q ↪ P)) :
+    Structure.IsOriginalPartialHomomorphism
+      (T.system.toStructure.weakInduce
+        (⋂ i, T.system.support (α i)))
+      (D.weakInduce
+        (T.system.part '' (⋂ i, T.system.support (α i))))
+      (clippedWeakImageMap T.system.part
+        (⋂ i, T.system.support (α i))) := by
+  exact T.system.iInter_originalPartialWeakProjection
+    D T.isPartite (fun i => T.system.support (α i))
+    (fun i => T.system.support_activeWeakOutputPartCover (α i))
+
+end StructuralRamsey.FunctionalPartite.EHN
