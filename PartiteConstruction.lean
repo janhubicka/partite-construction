@@ -634,3 +634,6 @@ import PartiteConstruction.Functional.TrackEInternalTaggedBCopyNativeDescent2019
 
 -- Track E: native irreducible exact closed-cover obstruction.
 import PartiteConstruction.Functional.TrackENativeClosedCoverIrreducibility2019
+
+-- Track E: exact native irreducible -> closed tagged U-irreducible.
+import PartiteConstruction.Functional.TrackEExactNativeIrreducibleToTaggedU2019
