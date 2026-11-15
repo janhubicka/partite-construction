@@ -102,15 +102,28 @@ theorem IsOptionClosedFreeIrreducible.exactWholeWeakRange
     (e : Embedding E A) :
     (A.wholeWeakInduce (Set.range e.toFun)).IsOptionClosedFreeIrreducible := by
   classical
-  let eWeak : Embedding E (A.wholeWeakInduce (Set.range e.toFun)) :=
-    e.codRestrictWholeWeakRange
-  have hSurj : Function.Surjective eWeak.toFun := by
+  -- Take surjectivity in the FULL induced structure, where the
+  -- vertex-map equality has its own verified #701 simp theorem.
+  -- Only afterwards rewrite the two equal induced objects. This
+  -- avoids relying on definitional reduction through an Eq.rec cast.
+  let eClosed : Embedding E
+      (A.induceClosed (Set.range e.toFun) e.range_isClosed) :=
+    e.codRestrictClosedRange
+  have hSurj : Function.Surjective eClosed.toFun := by
     intro y
     obtain ⟨x, hx⟩ := y.2
     refine ⟨x, ?_⟩
     apply Subtype.ext
-    change e.toFun x = y.1
-    exact hx
-  exact hE.of_surjectiveFullEmbedding eWeak hSurj
+    exact (e.codRestrictClosedRange_apply x).trans hx
+  have hClosedIrred :
+      IsOptionClosedFreeIrreducible
+        (A.induceClosed (Set.range e.toFun) e.range_isClosed) :=
+    hE.of_surjectiveFullEmbedding eClosed hSurj
+  have hEq :
+      A.wholeWeakInduce (Set.range e.toFun) =
+        A.induceClosed (Set.range e.toFun) e.range_isClosed :=
+    wholeWeakInduce_eq_induceClosed_of_isClosed
+      A (Set.range e.toFun) e.range_isClosed
+  simpa only [hEq] using hClosedIrred
 
 end StructuralRamsey.PartialSetStructure
