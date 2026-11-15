@@ -43,7 +43,7 @@ embedding f, including those arising from different
 Hales–Jewett lines. Control rank inflation is a real
 hypothesis, not a source weak-test rank inflation. -/
 theorem UnitAttachD_bareRank_of_controlBudget
-    [Finite P] [Finite U] [Finite V] [Finite W]
+    [Finite P] [Fintype U] [Finite V] [Finite W]
     (Old : System L P V) (D : Structure L P)
     (hOld : Old.WeaklyPartiteOver D)
     (A : Structure L U) (hA : A.Irreducible)
