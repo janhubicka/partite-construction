@@ -122,7 +122,7 @@ theorem attachList_both2019UClosureHull_copyAndProjected
                UClosureHull (L.outputPartIndexed P).patternClosureRules
                  ((patternTagExpansion
                    (T.system.splitOutputParts).toStructure.patternGraph).induce Test)
-                 (Structure.imageSet g Q))) ∧
+                 (Structure.imageSet g Q)))) ∧
         (∀ (Test : Set T.Carrier) (Q : Set Test),
           Structure.imageSet (wholeWeakImageMap T.system.part Test)
             (UClosureHull (L.wholeMaskClosureRules P)
