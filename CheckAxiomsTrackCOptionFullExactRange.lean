@@ -2,3 +2,5 @@ import PartiteConstruction.Functional.TrackCOptionFullExactRange
 
 #print axioms StructuralRamsey.PartialSetStructure.Embedding.codRestrictClosedRange
 #print axioms StructuralRamsey.PartialSetStructure.Embedding.codRestrictClosedRange_apply
+#print axioms StructuralRamsey.PartialSetStructure.wholeWeakInduce_eq_induceClosed_of_isClosed
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.codRestrictWholeWeakRange
