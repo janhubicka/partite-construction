@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.TrackAWeakMapActiveCoverPullback2019
 import PartiteConstruction.Functional.EHNPartPreservingRetractAppend
+import PartiteConstruction.Functional.WeakInvariant
 
 /-!
 # Track A — exact active-cover weak roots under genuine EHN retractions
@@ -28,6 +29,31 @@ compatible native Hales–Jewett lines but not automatic for arbitrary
 successive unrelated lines. No strict full-functional mixed-root
 B-tree target witness or class-local completion is constructed.
 -/
+
+namespace StructuralRamsey.FunctionalPartite.Induced
+
+open StructuralRamsey
+
+universe u v
+variable {L : Language.{u}} {P V : Type v}
+
+/-- EVERY actual coordinate projection from the genuine native
+Hales–Jewett power is a positive weak functional homomorphism
+preserving part labels. The inverse image of any arbitrary locally
+active-covered weak support in the original system is therefore
+active-covered in the literal POWER vertex set. No assumption that
+the projection is full, injective, or domain-reflecting. -/
+theorem power_coordinate_preimage_activeWeakOutputPartCover
+    (B : System L P V) (N : ℕ) (i : Fin N)
+    (S : Set V) (hS : B.ActiveWeakOutputPartCover S) :
+    (power B N).ActiveWeakOutputPartCover
+      ((fun z : Vertex B N => z.coord i) ⁻¹' S) := by
+  exact System.ActiveWeakOutputPartCover.preimage_weakHom
+    (power B N) B (fun z : Vertex B N => z.coord i)
+    (fun z => z.belongs i)
+    (coordinateWeak (B := B) i) S hS
+
+end StructuralRamsey.FunctionalPartite.Induced
 
 namespace StructuralRamsey.FunctionalPartite.EHN
 
