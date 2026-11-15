@@ -1,5 +1,6 @@
 import PartiteConstruction.Functional.PartialDomainGraphClosedRange2019
 import PartiteConstruction.Structure.PartialSetFunctionsClosed
+import PartiteConstruction.Structure.PartialSetFunctionsWholeWeak
 
 /-!
 # Track C: full rich partial embedding factors through its exact closed image
@@ -75,7 +76,7 @@ noncomputable def Embedding.codRestrictClosedRange
 @[simp] theorem Embedding.codRestrictClosedRange_apply
     {A : PartialSetStructure L U} {B : PartialSetStructure L V}
     (e : Embedding A B) (x : U) :
-    (e.codRestrictClosedRange x).1 = e.toFun x := rfl
+    ((e.codRestrictClosedRange).toFun x).1 = e.toFun x := rfl
 
 
 /-- On a GENUINELY function-closed carrier, whole-fibre weak
