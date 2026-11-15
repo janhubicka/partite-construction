@@ -1,0 +1,3 @@
+import PartiteConstruction.Functional.TrackCRichOriginalReductIrreducible
+
+#print axioms StructuralRamsey.PartialSetStructure.IsOptionClosedFreeIrreducible.of_originalLanguageReduct
