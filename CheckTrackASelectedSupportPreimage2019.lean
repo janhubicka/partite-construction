@@ -3,10 +3,13 @@ import PartiteConstruction.Functional.TrackAArbitraryOverlapIntersections2019
 import PartiteConstruction.Functional.TrackAActualEHNAttachmentWeakRoots2019
 
 #print axioms StructuralRamsey.FunctionalPartite.System.PartSaturated.iInter
+#print axioms StructuralRamsey.FunctionalPartite.System.PartSaturated.iUnion
 #print axioms StructuralRamsey.FunctionalPartite.System.preimage_support_of_map_part
 #print axioms StructuralRamsey.FunctionalPartite.Embedding.preimage_support
 #print axioms StructuralRamsey.FunctionalPartite.System.selectedSupport_iInter_partSaturated
+#print axioms StructuralRamsey.FunctionalPartite.System.selectedSupport_iUnion_partSaturated
 
 -- Re-audit the shortened existing actual-stage and actual-attachment endpoints.
 #print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.selectedSupport_iInter_originalPartialWeakProjection
 #print axioms StructuralRamsey.FunctionalPartite.EHN.attachList_selectedSupport_preimage_originalPartial
+#print axioms StructuralRamsey.FunctionalPartite.EHN.Stage.selectedSupport_iUnion_originalPartialWeakProjection
