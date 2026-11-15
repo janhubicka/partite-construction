@@ -47,7 +47,7 @@ theorem System.intersection_originalPartialWeakProjection
       (clippedWeakImageMap B.part (S ∩ T)) := by
   apply (B.arbitraryWeakImage_originalPartial_iff_activePartCover
     D hB (S ∩ T)).mpr
-  exact B.ActiveWeakOutputPartCover.inter S T hS hT
+  exact System.ActiveWeakOutputPartCover.inter B S T hS hT
 
 /-- A genuine full part-preserving copy embedding e:B↪C pulls an
 active-cover target weak support S back to an exact source weak
