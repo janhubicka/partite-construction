@@ -1,0 +1,5 @@
+import PartiteConstruction.Functional.TrackCRichDomainEmptyArrow
+
+#print axioms StructuralRamsey.PartialSetStructure.domainEmptyFullEmbeddingEquiv
+#print axioms StructuralRamsey.PartialSetStructure.Embedding.domainEmptyEncode_comp
+#print axioms StructuralRamsey.PartialSetStructure.arrow_iff_canonicalDomainEmpty
